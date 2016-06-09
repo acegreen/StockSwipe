@@ -1,0 +1,220 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "LineScatterCandleRadarChartRenderer"
+provides-nominal:
+- "C6Charts35LineScatterCandleRadarChartRenderer"
+provides-member:
+- ["C6Charts35LineScatterCandleRadarChartRenderer", ""]
+provides-dynamic-lookup:
+- "drawHighlightLines"
+depends-top-level:
+- "LineScatterCandleRadarChartRenderer"
+- !private "CGContextMoveToPoint"
+- "ChartViewPortHandler"
+- !private "CGContextStrokePath"
+- "CGPoint"
+- "CGContext"
+- "ChartDataRendererBase"
+- "LineScatterCandleChartDataSet"
+- "ChartAnimator"
+- !private "CGContextBeginPath"
+- !private "CGContextAddLineToPoint"
+depends-member:
+- !private ["PSs9AnyObject", "CGContextAddLineToPoint"]
+- !private ["PSs9AnyObject", "CGContextBeginPath"]
+- !private ["PSs9AnyObject", "CGContextMoveToPoint"]
+- !private ["PSs9AnyObject", "CGContextStrokePath"]
+- !private ["PSs9AnyObject", "contentBottom"]
+- !private ["PSs9AnyObject", "contentLeft"]
+- !private ["PSs9AnyObject", "contentRight"]
+- !private ["PSs9AnyObject", "contentTop"]
+- ["PSs9AnyObject", "drawHighlightLines"]
+- ["PSs9AnyObject", "init"]
+- !private ["PSs9AnyObject", "isHorizontalHighlightIndicatorEnabled"]
+- !private ["PSs9AnyObject", "isVerticalHighlightIndicatorEnabled"]
+- !private ["PSs9AnyObject", "viewPortHandler"]
+- ["PSs9AnyObject", ""]
+- !private ["C6Charts38BarLineScatterCandleBubbleChartDataSet", "isHorizontalHighlightIndicatorEnabled"]
+- !private ["C6Charts38BarLineScatterCandleBubbleChartDataSet", "isVerticalHighlightIndicatorEnabled"]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["PSs25BooleanLiteralConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs11BooleanType", "_getBuiltinLogicValue"]
+- !private ["VSC7CGPoint", "x"]
+- !private ["VSC7CGPoint", "y"]
+- !private ["PSs11CVarArgType", "CGContextAddLineToPoint"]
+- !private ["PSs11CVarArgType", "CGContextBeginPath"]
+- !private ["PSs11CVarArgType", "CGContextMoveToPoint"]
+- !private ["PSs11CVarArgType", "CGContextStrokePath"]
+- !private ["PSs11CVarArgType", "contentBottom"]
+- !private ["PSs11CVarArgType", "contentLeft"]
+- !private ["PSs11CVarArgType", "contentRight"]
+- !private ["PSs11CVarArgType", "contentTop"]
+- ["PSs11CVarArgType", "drawHighlightLines"]
+- ["PSs11CVarArgType", "init"]
+- !private ["PSs11CVarArgType", "isHorizontalHighlightIndicatorEnabled"]
+- !private ["PSs11CVarArgType", "isVerticalHighlightIndicatorEnabled"]
+- !private ["PSs11CVarArgType", "viewPortHandler"]
+- ["PSs11CVarArgType", ""]
+- ["C6Charts21ChartDataRendererBase", "CGContext"]
+- !private ["C6Charts21ChartDataRendererBase", "CGContextAddLineToPoint"]
+- !private ["C6Charts21ChartDataRendererBase", "CGContextBeginPath"]
+- !private ["C6Charts21ChartDataRendererBase", "CGContextMoveToPoint"]
+- !private ["C6Charts21ChartDataRendererBase", "CGContextStrokePath"]
+- ["C6Charts21ChartDataRendererBase", "CGPoint"]
+- ["C6Charts21ChartDataRendererBase", "ChartAnimator"]
+- ["C6Charts21ChartDataRendererBase", "ChartViewPortHandler"]
+- ["C6Charts21ChartDataRendererBase", "LineScatterCandleChartDataSet"]
+- ["C6Charts21ChartDataRendererBase", "drawHighlightLines"]
+- ["C6Charts21ChartDataRendererBase", "init"]
+- !private ["C6Charts21ChartDataRendererBase", "viewPortHandler"]
+- ["C6Charts21ChartDataRendererBase", ""]
+- !private ["C6Charts12ChartDataSet", "isHorizontalHighlightIndicatorEnabled"]
+- !private ["C6Charts12ChartDataSet", "isVerticalHighlightIndicatorEnabled"]
+- ["C6Charts17ChartRendererBase", "CGContext"]
+- !private ["C6Charts17ChartRendererBase", "CGContextAddLineToPoint"]
+- !private ["C6Charts17ChartRendererBase", "CGContextBeginPath"]
+- !private ["C6Charts17ChartRendererBase", "CGContextMoveToPoint"]
+- !private ["C6Charts17ChartRendererBase", "CGContextStrokePath"]
+- ["C6Charts17ChartRendererBase", "CGPoint"]
+- ["C6Charts17ChartRendererBase", "ChartAnimator"]
+- ["C6Charts17ChartRendererBase", "ChartViewPortHandler"]
+- ["C6Charts17ChartRendererBase", "LineScatterCandleChartDataSet"]
+- ["C6Charts17ChartRendererBase", "drawHighlightLines"]
+- !private ["C6Charts17ChartRendererBase", "viewPortHandler"]
+- !private ["C6Charts20ChartViewPortHandler", "contentBottom"]
+- !private ["C6Charts20ChartViewPortHandler", "contentLeft"]
+- !private ["C6Charts20ChartViewPortHandler", "contentRight"]
+- !private ["C6Charts20ChartViewPortHandler", "contentTop"]
+- !private ["PSs23CustomStringConvertible", "CGContextAddLineToPoint"]
+- !private ["PSs23CustomStringConvertible", "CGContextBeginPath"]
+- !private ["PSs23CustomStringConvertible", "CGContextMoveToPoint"]
+- !private ["PSs23CustomStringConvertible", "CGContextStrokePath"]
+- !private ["PSs23CustomStringConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs23CustomStringConvertible", "contentBottom"]
+- !private ["PSs23CustomStringConvertible", "contentLeft"]
+- !private ["PSs23CustomStringConvertible", "contentRight"]
+- !private ["PSs23CustomStringConvertible", "contentTop"]
+- ["PSs23CustomStringConvertible", "drawHighlightLines"]
+- ["PSs23CustomStringConvertible", "init"]
+- !private ["PSs23CustomStringConvertible", "isHorizontalHighlightIndicatorEnabled"]
+- !private ["PSs23CustomStringConvertible", "isVerticalHighlightIndicatorEnabled"]
+- !private ["PSs23CustomStringConvertible", "viewPortHandler"]
+- ["PSs23CustomStringConvertible", ""]
+- !private ["PSs9Equatable", "CGContextAddLineToPoint"]
+- !private ["PSs9Equatable", "CGContextBeginPath"]
+- !private ["PSs9Equatable", "CGContextMoveToPoint"]
+- !private ["PSs9Equatable", "CGContextStrokePath"]
+- !private ["PSs9Equatable", "_getBuiltinLogicValue"]
+- !private ["PSs9Equatable", "contentBottom"]
+- !private ["PSs9Equatable", "contentLeft"]
+- !private ["PSs9Equatable", "contentRight"]
+- !private ["PSs9Equatable", "contentTop"]
+- ["PSs9Equatable", "drawHighlightLines"]
+- ["PSs9Equatable", "init"]
+- !private ["PSs9Equatable", "isHorizontalHighlightIndicatorEnabled"]
+- !private ["PSs9Equatable", "isVerticalHighlightIndicatorEnabled"]
+- !private ["PSs9Equatable", "viewPortHandler"]
+- !private ["PSs9Equatable", "x"]
+- !private ["PSs9Equatable", "y"]
+- ["PSs9Equatable", ""]
+- !private ["PSs8Hashable", "CGContextAddLineToPoint"]
+- !private ["PSs8Hashable", "CGContextBeginPath"]
+- !private ["PSs8Hashable", "CGContextMoveToPoint"]
+- !private ["PSs8Hashable", "CGContextStrokePath"]
+- !private ["PSs8Hashable", "_getBuiltinLogicValue"]
+- !private ["PSs8Hashable", "contentBottom"]
+- !private ["PSs8Hashable", "contentLeft"]
+- !private ["PSs8Hashable", "contentRight"]
+- !private ["PSs8Hashable", "contentTop"]
+- ["PSs8Hashable", "drawHighlightLines"]
+- ["PSs8Hashable", "init"]
+- !private ["PSs8Hashable", "isHorizontalHighlightIndicatorEnabled"]
+- !private ["PSs8Hashable", "isVerticalHighlightIndicatorEnabled"]
+- !private ["PSs8Hashable", "viewPortHandler"]
+- ["PSs8Hashable", ""]
+- !private ["C6Charts29LineScatterCandleChartDataSet", "isHorizontalHighlightIndicatorEnabled"]
+- !private ["C6Charts29LineScatterCandleChartDataSet", "isVerticalHighlightIndicatorEnabled"]
+- ["C6Charts35LineScatterCandleRadarChartRenderer", "CGContext"]
+- !private ["C6Charts35LineScatterCandleRadarChartRenderer", "CGContextAddLineToPoint"]
+- !private ["C6Charts35LineScatterCandleRadarChartRenderer", "CGContextBeginPath"]
+- !private ["C6Charts35LineScatterCandleRadarChartRenderer", "CGContextMoveToPoint"]
+- !private ["C6Charts35LineScatterCandleRadarChartRenderer", "CGContextStrokePath"]
+- ["C6Charts35LineScatterCandleRadarChartRenderer", "CGPoint"]
+- ["C6Charts35LineScatterCandleRadarChartRenderer", "ChartAnimator"]
+- ["C6Charts35LineScatterCandleRadarChartRenderer", "ChartViewPortHandler"]
+- ["C6Charts35LineScatterCandleRadarChartRenderer", "LineScatterCandleChartDataSet"]
+- ["C6Charts35LineScatterCandleRadarChartRenderer", "deinit"]
+- ["C6Charts35LineScatterCandleRadarChartRenderer", "drawHighlightLines"]
+- ["C6Charts35LineScatterCandleRadarChartRenderer", "init"]
+- !private ["C6Charts35LineScatterCandleRadarChartRenderer", "viewPortHandler"]
+- ["CSo8NSObject", "CGContext"]
+- !private ["CSo8NSObject", "CGContextAddLineToPoint"]
+- !private ["CSo8NSObject", "CGContextBeginPath"]
+- !private ["CSo8NSObject", "CGContextMoveToPoint"]
+- !private ["CSo8NSObject", "CGContextStrokePath"]
+- ["CSo8NSObject", "CGPoint"]
+- ["CSo8NSObject", "ChartAnimator"]
+- ["CSo8NSObject", "ChartViewPortHandler"]
+- ["CSo8NSObject", "LineScatterCandleChartDataSet"]
+- !private ["CSo8NSObject", "contentBottom"]
+- !private ["CSo8NSObject", "contentLeft"]
+- !private ["CSo8NSObject", "contentRight"]
+- !private ["CSo8NSObject", "contentTop"]
+- ["CSo8NSObject", "drawHighlightLines"]
+- !private ["CSo8NSObject", "isHorizontalHighlightIndicatorEnabled"]
+- !private ["CSo8NSObject", "isVerticalHighlightIndicatorEnabled"]
+- !private ["CSo8NSObject", "viewPortHandler"]
+- !private ["PSo16NSObjectProtocol", "CGContextAddLineToPoint"]
+- !private ["PSo16NSObjectProtocol", "CGContextBeginPath"]
+- !private ["PSo16NSObjectProtocol", "CGContextMoveToPoint"]
+- !private ["PSo16NSObjectProtocol", "CGContextStrokePath"]
+- !private ["PSo16NSObjectProtocol", "contentBottom"]
+- !private ["PSo16NSObjectProtocol", "contentLeft"]
+- !private ["PSo16NSObjectProtocol", "contentRight"]
+- !private ["PSo16NSObjectProtocol", "contentTop"]
+- ["PSo16NSObjectProtocol", "drawHighlightLines"]
+- ["PSo16NSObjectProtocol", "init"]
+- !private ["PSo16NSObjectProtocol", "isHorizontalHighlightIndicatorEnabled"]
+- !private ["PSo16NSObjectProtocol", "isVerticalHighlightIndicatorEnabled"]
+- !private ["PSo16NSObjectProtocol", "viewPortHandler"]
+- ["PSo16NSObjectProtocol", ""]
+- !private ["PSs33_BuiltinBooleanLiteralConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs21_ObjectiveCBridgeable", "_getBuiltinLogicValue"]
+- !private ["PSs12_Reflectable", "_getBuiltinLogicValue"]
+- !private ["PSs12_Reflectable", "x"]
+- !private ["PSs12_Reflectable", "y"]
+depends-nominal:
+- "PSs9AnyObject"
+- !private "C6Charts38BarLineScatterCandleBubbleChartDataSet"
+- !private "Sb"
+- !private "PSs25BooleanLiteralConvertible"
+- !private "PSs11BooleanType"
+- !private "VSC7CGPoint"
+- "PSs11CVarArgType"
+- "C6Charts21ChartDataRendererBase"
+- !private "C6Charts12ChartDataSet"
+- "C6Charts17ChartRendererBase"
+- !private "C6Charts20ChartViewPortHandler"
+- "PSs23CustomStringConvertible"
+- "PSs9Equatable"
+- "PSs8Hashable"
+- !private "C6Charts29LineScatterCandleChartDataSet"
+- "C6Charts35LineScatterCandleRadarChartRenderer"
+- "CSo8NSObject"
+- "PSo16NSObjectProtocol"
+- !private "PSs33_BuiltinBooleanLiteralConvertible"
+- !private "PSs21_ObjectiveCBridgeable"
+- !private "PSs12_Reflectable"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Charts/Supporting Files/Charts.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Intermediates/Charts.build/Debug-iphonesimulator/Charts.build/unextended-module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+interface-hash: "6b3d3e7b338a5142915ef014619c95a6"

@@ -1,0 +1,6 @@
+version: "Apple Swift version 2.1 (swiftlang-700.1.101.6 clang-700.1.76)"
+options: "0f96241e2b8439b3b7263425e7368c4d"
+build_time: [501988207, 858118000]
+inputs:
+  "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/StockSwipeWidget/TodayViewController.swift": [497989144, 0]
+  "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/SwiftyJSON.swift": [498851619, 0]

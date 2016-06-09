@@ -1,0 +1,204 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "ChartMarker"
+provides-nominal:
+- "C6Charts11ChartMarker"
+provides-member:
+- ["C6Charts11ChartMarker", ""]
+provides-dynamic-lookup:
+- "offset"
+- "image"
+- "draw"
+- "size"
+- "refreshContent"
+depends-top-level:
+- !private "UIGraphicsPushContext"
+- "CGContext"
+- "ChartMarker"
+- "UIImage"
+- "CGPoint"
+- "ChartDataEntry"
+- !private "+"
+- "CGSize"
+- "ChartComponentBase"
+- "ChartHighlight"
+- !private "UIGraphicsPopContext"
+- !private "CGRect"
+depends-member:
+- ["PSs9AnyObject", "CGPoint"]
+- !private ["PSs9AnyObject", "CGRect"]
+- !private ["PSs9AnyObject", "UIGraphicsPopContext"]
+- !private ["PSs9AnyObject", "UIGraphicsPushContext"]
+- ["PSs9AnyObject", "draw"]
+- !private ["PSs9AnyObject", "drawInRect"]
+- ["PSs9AnyObject", "image"]
+- ["PSs9AnyObject", "init"]
+- ["PSs9AnyObject", "offset"]
+- ["PSs9AnyObject", "refreshContent"]
+- ["PSs9AnyObject", "size"]
+- ["PSs9AnyObject", ""]
+- ["VSC7CGPoint", "init"]
+- !private ["VSC7CGPoint", "x"]
+- !private ["VSC7CGPoint", "y"]
+- !private ["VSC6CGRect", "init"]
+- !private ["VSC6CGSize", "height"]
+- !private ["VSC6CGSize", "width"]
+- ["PSs11CVarArgType", "CGPoint"]
+- !private ["PSs11CVarArgType", "CGRect"]
+- !private ["PSs11CVarArgType", "UIGraphicsPopContext"]
+- !private ["PSs11CVarArgType", "UIGraphicsPushContext"]
+- ["PSs11CVarArgType", "draw"]
+- !private ["PSs11CVarArgType", "drawInRect"]
+- ["PSs11CVarArgType", "image"]
+- ["PSs11CVarArgType", "init"]
+- ["PSs11CVarArgType", "offset"]
+- ["PSs11CVarArgType", "refreshContent"]
+- ["PSs11CVarArgType", "size"]
+- ["PSs11CVarArgType", ""]
+- ["C6Charts18ChartComponentBase", "CGContext"]
+- ["C6Charts18ChartComponentBase", "CGPoint"]
+- !private ["C6Charts18ChartComponentBase", "CGRect"]
+- ["C6Charts18ChartComponentBase", "CGSize"]
+- ["C6Charts18ChartComponentBase", "ChartDataEntry"]
+- ["C6Charts18ChartComponentBase", "ChartHighlight"]
+- !private ["C6Charts18ChartComponentBase", "UIGraphicsPopContext"]
+- !private ["C6Charts18ChartComponentBase", "UIGraphicsPushContext"]
+- ["C6Charts18ChartComponentBase", "UIImage"]
+- ["C6Charts18ChartComponentBase", "draw"]
+- ["C6Charts18ChartComponentBase", "image"]
+- ["C6Charts18ChartComponentBase", "init"]
+- ["C6Charts18ChartComponentBase", "offset"]
+- ["C6Charts18ChartComponentBase", "refreshContent"]
+- ["C6Charts18ChartComponentBase", "size"]
+- ["C6Charts18ChartComponentBase", ""]
+- ["C6Charts11ChartMarker", "CGContext"]
+- ["C6Charts11ChartMarker", "CGPoint"]
+- !private ["C6Charts11ChartMarker", "CGRect"]
+- ["C6Charts11ChartMarker", "CGSize"]
+- ["C6Charts11ChartMarker", "ChartDataEntry"]
+- ["C6Charts11ChartMarker", "ChartHighlight"]
+- !private ["C6Charts11ChartMarker", "UIGraphicsPopContext"]
+- !private ["C6Charts11ChartMarker", "UIGraphicsPushContext"]
+- ["C6Charts11ChartMarker", "UIImage"]
+- ["C6Charts11ChartMarker", "deinit"]
+- ["C6Charts11ChartMarker", "draw"]
+- ["C6Charts11ChartMarker", "image"]
+- ["C6Charts11ChartMarker", "init"]
+- ["C6Charts11ChartMarker", "offset"]
+- ["C6Charts11ChartMarker", "refreshContent"]
+- ["C6Charts11ChartMarker", "size"]
+- ["PSs23CustomStringConvertible", "CGPoint"]
+- !private ["PSs23CustomStringConvertible", "CGRect"]
+- !private ["PSs23CustomStringConvertible", "UIGraphicsPopContext"]
+- !private ["PSs23CustomStringConvertible", "UIGraphicsPushContext"]
+- ["PSs23CustomStringConvertible", "draw"]
+- !private ["PSs23CustomStringConvertible", "drawInRect"]
+- ["PSs23CustomStringConvertible", "image"]
+- ["PSs23CustomStringConvertible", "init"]
+- ["PSs23CustomStringConvertible", "offset"]
+- ["PSs23CustomStringConvertible", "refreshContent"]
+- ["PSs23CustomStringConvertible", "size"]
+- ["PSs23CustomStringConvertible", ""]
+- ["PSs9Equatable", "CGPoint"]
+- !private ["PSs9Equatable", "CGRect"]
+- !private ["PSs9Equatable", "UIGraphicsPopContext"]
+- !private ["PSs9Equatable", "UIGraphicsPushContext"]
+- ["PSs9Equatable", "draw"]
+- !private ["PSs9Equatable", "drawInRect"]
+- !private ["PSs9Equatable", "height"]
+- ["PSs9Equatable", "image"]
+- ["PSs9Equatable", "init"]
+- ["PSs9Equatable", "offset"]
+- ["PSs9Equatable", "refreshContent"]
+- ["PSs9Equatable", "size"]
+- !private ["PSs9Equatable", "width"]
+- !private ["PSs9Equatable", "x"]
+- !private ["PSs9Equatable", "y"]
+- ["PSs9Equatable", ""]
+- ["PSs8Hashable", "CGPoint"]
+- !private ["PSs8Hashable", "CGRect"]
+- !private ["PSs8Hashable", "UIGraphicsPopContext"]
+- !private ["PSs8Hashable", "UIGraphicsPushContext"]
+- ["PSs8Hashable", "draw"]
+- !private ["PSs8Hashable", "drawInRect"]
+- ["PSs8Hashable", "image"]
+- ["PSs8Hashable", "init"]
+- ["PSs8Hashable", "offset"]
+- ["PSs8Hashable", "refreshContent"]
+- ["PSs8Hashable", "size"]
+- ["PSs8Hashable", ""]
+- !private ["PSo8NSCoding", "drawInRect"]
+- !private ["PSo8NSCoding", "size"]
+- ["CSo8NSObject", "CGContext"]
+- ["CSo8NSObject", "CGPoint"]
+- !private ["CSo8NSObject", "CGRect"]
+- ["CSo8NSObject", "CGSize"]
+- ["CSo8NSObject", "ChartDataEntry"]
+- ["CSo8NSObject", "ChartHighlight"]
+- !private ["CSo8NSObject", "UIGraphicsPopContext"]
+- !private ["CSo8NSObject", "UIGraphicsPushContext"]
+- ["CSo8NSObject", "UIImage"]
+- ["CSo8NSObject", "draw"]
+- !private ["CSo8NSObject", "drawInRect"]
+- ["CSo8NSObject", "image"]
+- ["CSo8NSObject", "init"]
+- ["CSo8NSObject", "offset"]
+- ["CSo8NSObject", "refreshContent"]
+- ["CSo8NSObject", "size"]
+- ["PSo16NSObjectProtocol", "CGPoint"]
+- !private ["PSo16NSObjectProtocol", "CGRect"]
+- !private ["PSo16NSObjectProtocol", "UIGraphicsPopContext"]
+- !private ["PSo16NSObjectProtocol", "UIGraphicsPushContext"]
+- ["PSo16NSObjectProtocol", "draw"]
+- !private ["PSo16NSObjectProtocol", "drawInRect"]
+- ["PSo16NSObjectProtocol", "image"]
+- ["PSo16NSObjectProtocol", "init"]
+- ["PSo16NSObjectProtocol", "offset"]
+- ["PSo16NSObjectProtocol", "refreshContent"]
+- ["PSo16NSObjectProtocol", "size"]
+- ["PSo16NSObjectProtocol", ""]
+- !private ["PSo14NSSecureCoding", "drawInRect"]
+- !private ["PSo14NSSecureCoding", "size"]
+- !private ["PSo29UIAccessibilityIdentification", "drawInRect"]
+- !private ["PSo29UIAccessibilityIdentification", "size"]
+- !private ["CSo7UIImage", "drawInRect"]
+- !private ["CSo7UIImage", "size"]
+- !private ["PSs24_ImageLiteralConvertible", "drawInRect"]
+- !private ["PSs24_ImageLiteralConvertible", "size"]
+- !private ["PSs12_Reflectable", "height"]
+- ["PSs12_Reflectable", "init"]
+- !private ["PSs12_Reflectable", "width"]
+- !private ["PSs12_Reflectable", "x"]
+- !private ["PSs12_Reflectable", "y"]
+depends-nominal:
+- "PSs9AnyObject"
+- "VSC7CGPoint"
+- !private "VSC6CGRect"
+- !private "VSC6CGSize"
+- "PSs11CVarArgType"
+- "C6Charts18ChartComponentBase"
+- "C6Charts11ChartMarker"
+- "PSs23CustomStringConvertible"
+- "PSs9Equatable"
+- "PSs8Hashable"
+- !private "PSo8NSCoding"
+- "CSo8NSObject"
+- "PSo16NSObjectProtocol"
+- !private "PSo14NSSecureCoding"
+- !private "PSo29UIAccessibilityIdentification"
+- !private "CSo7UIImage"
+- !private "PSs24_ImageLiteralConvertible"
+- "PSs12_Reflectable"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Charts/Supporting Files/Charts.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Intermediates/Charts.build/Debug-iphonesimulator/Charts.build/unextended-module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+interface-hash: "bfadeae2ce6c89764a7926a74bf49fe1"

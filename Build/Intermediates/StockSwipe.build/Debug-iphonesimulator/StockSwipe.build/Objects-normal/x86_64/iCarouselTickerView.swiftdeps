@@ -1,0 +1,943 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "iCarouselTickerView"
+provides-nominal:
+- "C10StockSwipe19iCarouselTickerView"
+provides-member:
+- ["C10StockSwipe19iCarouselTickerView", ""]
+provides-dynamic-lookup:
+- "priceChangeLabel"
+- "mainViewFontColor"
+- "priceViewFontColor"
+- "viewHeight"
+- "ticker"
+- "leftPadding"
+- "rightPadding"
+- "constructViews"
+- "priceViewFont"
+- "mainViewFont"
+- "priceLabel"
+- "topPadding"
+- "nameLabel"
+depends-top-level:
+- !private "BooleanLiteralType"
+- "UIColor"
+- "iCarouselTickerView"
+- !private "!"
+- "CGFloat"
+- !private "+"
+- !private "CGRectMake"
+- "UIFont"
+- "UIView"
+- "Ticker"
+- "UILabel"
+- !private "CGRectGetWidth"
+- "CGRect"
+- "Void"
+- !private "*"
+- "StringLiteralType"
+- "NSCoder"
+depends-member:
+- !private ["PSs9AnyObject", "CGRectGetWidth"]
+- !private ["PSs9AnyObject", "CGRectMake"]
+- ["PSs9AnyObject", "UIColor"]
+- ["PSs9AnyObject", "UIFont"]
+- !private ["PSs9AnyObject", "UILabel"]
+- !private ["PSs9AnyObject", "addSubview"]
+- !private ["PSs9AnyObject", "adjustsFontSizeToFitWidth"]
+- !private ["PSs9AnyObject", "backgroundColor"]
+- !private ["PSs9AnyObject", "bounds"]
+- !private ["PSs9AnyObject", "clearColor"]
+- ["PSs9AnyObject", "constructViews"]
+- !private ["PSs9AnyObject", "font"]
+- !private ["PSs9AnyObject", "frame"]
+- ["PSs9AnyObject", "init"]
+- !private ["PSs9AnyObject", "isDescendantOfView"]
+- ["PSs9AnyObject", "leftPadding"]
+- ["PSs9AnyObject", "mainViewFont"]
+- ["PSs9AnyObject", "mainViewFontColor"]
+- ["PSs9AnyObject", "nameLabel"]
+- !private ["PSs9AnyObject", "numberOfLines"]
+- ["PSs9AnyObject", "priceChangeLabel"]
+- ["PSs9AnyObject", "priceLabel"]
+- ["PSs9AnyObject", "priceViewFont"]
+- ["PSs9AnyObject", "priceViewFontColor"]
+- ["PSs9AnyObject", "rightPadding"]
+- !private ["PSs9AnyObject", "text"]
+- !private ["PSs9AnyObject", "textAlignment"]
+- !private ["PSs9AnyObject", "textColor"]
+- ["PSs9AnyObject", "ticker"]
+- ["PSs9AnyObject", "topPadding"]
+- ["PSs9AnyObject", "viewHeight"]
+- ["PSs9AnyObject", "whiteColor"]
+- ["PSs9AnyObject", ""]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["PSs25BooleanLiteralConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs11BooleanType", "_getBuiltinLogicValue"]
+- ["V12CoreGraphics7CGFloat", "deinit"]
+- !private ["VSC6CGRect", "height"]
+- !private ["VSC6CGRect", "width"]
+- !private ["PSs11CVarArgType", "CGRectGetWidth"]
+- !private ["PSs11CVarArgType", "CGRectMake"]
+- ["PSs11CVarArgType", "UIColor"]
+- ["PSs11CVarArgType", "UIFont"]
+- !private ["PSs11CVarArgType", "UILabel"]
+- !private ["PSs11CVarArgType", "addSubview"]
+- !private ["PSs11CVarArgType", "adjustsFontSizeToFitWidth"]
+- !private ["PSs11CVarArgType", "backgroundColor"]
+- !private ["PSs11CVarArgType", "bounds"]
+- !private ["PSs11CVarArgType", "clearColor"]
+- ["PSs11CVarArgType", "constructViews"]
+- !private ["PSs11CVarArgType", "font"]
+- !private ["PSs11CVarArgType", "frame"]
+- ["PSs11CVarArgType", "init"]
+- !private ["PSs11CVarArgType", "isDescendantOfView"]
+- ["PSs11CVarArgType", "leftPadding"]
+- ["PSs11CVarArgType", "mainViewFont"]
+- ["PSs11CVarArgType", "mainViewFontColor"]
+- ["PSs11CVarArgType", "nameLabel"]
+- !private ["PSs11CVarArgType", "numberOfLines"]
+- ["PSs11CVarArgType", "priceChangeLabel"]
+- ["PSs11CVarArgType", "priceLabel"]
+- ["PSs11CVarArgType", "priceViewFont"]
+- ["PSs11CVarArgType", "priceViewFontColor"]
+- ["PSs11CVarArgType", "rightPadding"]
+- !private ["PSs11CVarArgType", "text"]
+- !private ["PSs11CVarArgType", "textAlignment"]
+- !private ["PSs11CVarArgType", "textColor"]
+- ["PSs11CVarArgType", "ticker"]
+- ["PSs11CVarArgType", "topPadding"]
+- ["PSs11CVarArgType", "viewHeight"]
+- ["PSs11CVarArgType", "whiteColor"]
+- ["PSs11CVarArgType", ""]
+- !private ["PSs23CustomStringConvertible", "CGRectGetWidth"]
+- !private ["PSs23CustomStringConvertible", "CGRectMake"]
+- ["PSs23CustomStringConvertible", "UIColor"]
+- ["PSs23CustomStringConvertible", "UIFont"]
+- !private ["PSs23CustomStringConvertible", "UILabel"]
+- !private ["PSs23CustomStringConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs23CustomStringConvertible", "addSubview"]
+- !private ["PSs23CustomStringConvertible", "adjustsFontSizeToFitWidth"]
+- !private ["PSs23CustomStringConvertible", "backgroundColor"]
+- !private ["PSs23CustomStringConvertible", "bounds"]
+- !private ["PSs23CustomStringConvertible", "clearColor"]
+- ["PSs23CustomStringConvertible", "constructViews"]
+- !private ["PSs23CustomStringConvertible", "font"]
+- !private ["PSs23CustomStringConvertible", "frame"]
+- ["PSs23CustomStringConvertible", "init"]
+- !private ["PSs23CustomStringConvertible", "isDescendantOfView"]
+- ["PSs23CustomStringConvertible", "leftPadding"]
+- ["PSs23CustomStringConvertible", "mainViewFont"]
+- ["PSs23CustomStringConvertible", "mainViewFontColor"]
+- ["PSs23CustomStringConvertible", "nameLabel"]
+- !private ["PSs23CustomStringConvertible", "numberOfLines"]
+- ["PSs23CustomStringConvertible", "priceChangeLabel"]
+- ["PSs23CustomStringConvertible", "priceLabel"]
+- ["PSs23CustomStringConvertible", "priceViewFont"]
+- ["PSs23CustomStringConvertible", "priceViewFontColor"]
+- ["PSs23CustomStringConvertible", "rightPadding"]
+- !private ["PSs23CustomStringConvertible", "text"]
+- !private ["PSs23CustomStringConvertible", "textAlignment"]
+- !private ["PSs23CustomStringConvertible", "textColor"]
+- ["PSs23CustomStringConvertible", "ticker"]
+- ["PSs23CustomStringConvertible", "topPadding"]
+- ["PSs23CustomStringConvertible", "viewHeight"]
+- ["PSs23CustomStringConvertible", "whiteColor"]
+- ["PSs23CustomStringConvertible", ""]
+- !private ["PSs9Equatable", "CGRectGetWidth"]
+- !private ["PSs9Equatable", "CGRectMake"]
+- !private ["PSs9Equatable", "Center"]
+- ["PSs9Equatable", "UIColor"]
+- ["PSs9Equatable", "UIFont"]
+- !private ["PSs9Equatable", "UILabel"]
+- !private ["PSs9Equatable", "_getBuiltinLogicValue"]
+- !private ["PSs9Equatable", "addSubview"]
+- !private ["PSs9Equatable", "adjustsFontSizeToFitWidth"]
+- !private ["PSs9Equatable", "backgroundColor"]
+- !private ["PSs9Equatable", "bounds"]
+- !private ["PSs9Equatable", "clearColor"]
+- ["PSs9Equatable", "constructViews"]
+- !private ["PSs9Equatable", "font"]
+- !private ["PSs9Equatable", "frame"]
+- !private ["PSs9Equatable", "height"]
+- ["PSs9Equatable", "init"]
+- !private ["PSs9Equatable", "isDescendantOfView"]
+- ["PSs9Equatable", "leftPadding"]
+- ["PSs9Equatable", "mainViewFont"]
+- ["PSs9Equatable", "mainViewFontColor"]
+- ["PSs9Equatable", "nameLabel"]
+- !private ["PSs9Equatable", "numberOfLines"]
+- ["PSs9Equatable", "priceChangeLabel"]
+- ["PSs9Equatable", "priceLabel"]
+- ["PSs9Equatable", "priceViewFont"]
+- ["PSs9Equatable", "priceViewFontColor"]
+- ["PSs9Equatable", "rightPadding"]
+- !private ["PSs9Equatable", "text"]
+- !private ["PSs9Equatable", "textAlignment"]
+- !private ["PSs9Equatable", "textColor"]
+- ["PSs9Equatable", "ticker"]
+- ["PSs9Equatable", "topPadding"]
+- ["PSs9Equatable", "viewHeight"]
+- ["PSs9Equatable", "whiteColor"]
+- !private ["PSs9Equatable", "width"]
+- ["PSs9Equatable", ""]
+- !private ["PSs8Hashable", "CGRectGetWidth"]
+- !private ["PSs8Hashable", "CGRectMake"]
+- !private ["PSs8Hashable", "Center"]
+- ["PSs8Hashable", "UIColor"]
+- ["PSs8Hashable", "UIFont"]
+- !private ["PSs8Hashable", "UILabel"]
+- !private ["PSs8Hashable", "_getBuiltinLogicValue"]
+- !private ["PSs8Hashable", "addSubview"]
+- !private ["PSs8Hashable", "adjustsFontSizeToFitWidth"]
+- !private ["PSs8Hashable", "backgroundColor"]
+- !private ["PSs8Hashable", "bounds"]
+- !private ["PSs8Hashable", "clearColor"]
+- ["PSs8Hashable", "constructViews"]
+- !private ["PSs8Hashable", "font"]
+- !private ["PSs8Hashable", "frame"]
+- ["PSs8Hashable", "init"]
+- !private ["PSs8Hashable", "isDescendantOfView"]
+- ["PSs8Hashable", "leftPadding"]
+- ["PSs8Hashable", "mainViewFont"]
+- ["PSs8Hashable", "mainViewFontColor"]
+- ["PSs8Hashable", "nameLabel"]
+- !private ["PSs8Hashable", "numberOfLines"]
+- ["PSs8Hashable", "priceChangeLabel"]
+- ["PSs8Hashable", "priceLabel"]
+- ["PSs8Hashable", "priceViewFont"]
+- ["PSs8Hashable", "priceViewFontColor"]
+- ["PSs8Hashable", "rightPadding"]
+- !private ["PSs8Hashable", "text"]
+- !private ["PSs8Hashable", "textAlignment"]
+- !private ["PSs8Hashable", "textColor"]
+- ["PSs8Hashable", "ticker"]
+- ["PSs8Hashable", "topPadding"]
+- ["PSs8Hashable", "viewHeight"]
+- ["PSs8Hashable", "whiteColor"]
+- ["PSs8Hashable", ""]
+- !private ["PSo8NSCoding", "CGRectGetWidth"]
+- !private ["PSo8NSCoding", "CGRectMake"]
+- ["PSo8NSCoding", "UIColor"]
+- ["PSo8NSCoding", "UIFont"]
+- !private ["PSo8NSCoding", "UILabel"]
+- !private ["PSo8NSCoding", "addSubview"]
+- !private ["PSo8NSCoding", "adjustsFontSizeToFitWidth"]
+- !private ["PSo8NSCoding", "backgroundColor"]
+- !private ["PSo8NSCoding", "bounds"]
+- !private ["PSo8NSCoding", "clearColor"]
+- ["PSo8NSCoding", "constructViews"]
+- !private ["PSo8NSCoding", "font"]
+- !private ["PSo8NSCoding", "frame"]
+- ["PSo8NSCoding", "init"]
+- !private ["PSo8NSCoding", "isDescendantOfView"]
+- ["PSo8NSCoding", "leftPadding"]
+- ["PSo8NSCoding", "mainViewFont"]
+- ["PSo8NSCoding", "mainViewFontColor"]
+- ["PSo8NSCoding", "nameLabel"]
+- !private ["PSo8NSCoding", "numberOfLines"]
+- ["PSo8NSCoding", "priceChangeLabel"]
+- ["PSo8NSCoding", "priceLabel"]
+- ["PSo8NSCoding", "priceViewFont"]
+- ["PSo8NSCoding", "priceViewFontColor"]
+- ["PSo8NSCoding", "rightPadding"]
+- !private ["PSo8NSCoding", "text"]
+- !private ["PSo8NSCoding", "textAlignment"]
+- !private ["PSo8NSCoding", "textColor"]
+- ["PSo8NSCoding", "ticker"]
+- ["PSo8NSCoding", "topPadding"]
+- ["PSo8NSCoding", "viewHeight"]
+- ["PSo8NSCoding", "whiteColor"]
+- ["PSo8NSCoding", ""]
+- !private ["PSo9NSCopying", "clearColor"]
+- ["PSo9NSCopying", "init"]
+- ["PSo9NSCopying", "whiteColor"]
+- ["CSo8NSObject", "CGFloat"]
+- ["CSo8NSObject", "CGRect"]
+- !private ["CSo8NSObject", "CGRectGetWidth"]
+- !private ["CSo8NSObject", "CGRectMake"]
+- ["CSo8NSObject", "NSCoder"]
+- ["CSo8NSObject", "Ticker"]
+- ["CSo8NSObject", "UIColor"]
+- ["CSo8NSObject", "UIFont"]
+- ["CSo8NSObject", "UILabel"]
+- ["CSo8NSObject", "Void"]
+- !private ["CSo8NSObject", "addSubview"]
+- !private ["CSo8NSObject", "adjustsFontSizeToFitWidth"]
+- !private ["CSo8NSObject", "backgroundColor"]
+- !private ["CSo8NSObject", "bounds"]
+- !private ["CSo8NSObject", "clearColor"]
+- ["CSo8NSObject", "constructViews"]
+- !private ["CSo8NSObject", "font"]
+- !private ["CSo8NSObject", "frame"]
+- ["CSo8NSObject", "init"]
+- !private ["CSo8NSObject", "isDescendantOfView"]
+- ["CSo8NSObject", "leftPadding"]
+- ["CSo8NSObject", "mainViewFont"]
+- ["CSo8NSObject", "mainViewFontColor"]
+- ["CSo8NSObject", "nameLabel"]
+- !private ["CSo8NSObject", "numberOfLines"]
+- ["CSo8NSObject", "priceChangeLabel"]
+- ["CSo8NSObject", "priceLabel"]
+- ["CSo8NSObject", "priceViewFont"]
+- ["CSo8NSObject", "priceViewFontColor"]
+- ["CSo8NSObject", "rightPadding"]
+- !private ["CSo8NSObject", "text"]
+- !private ["CSo8NSObject", "textAlignment"]
+- !private ["CSo8NSObject", "textColor"]
+- ["CSo8NSObject", "ticker"]
+- ["CSo8NSObject", "topPadding"]
+- ["CSo8NSObject", "viewHeight"]
+- ["CSo8NSObject", "whiteColor"]
+- !private ["PSo16NSObjectProtocol", "CGRectGetWidth"]
+- !private ["PSo16NSObjectProtocol", "CGRectMake"]
+- ["PSo16NSObjectProtocol", "UIColor"]
+- ["PSo16NSObjectProtocol", "UIFont"]
+- !private ["PSo16NSObjectProtocol", "UILabel"]
+- !private ["PSo16NSObjectProtocol", "addSubview"]
+- !private ["PSo16NSObjectProtocol", "adjustsFontSizeToFitWidth"]
+- !private ["PSo16NSObjectProtocol", "backgroundColor"]
+- !private ["PSo16NSObjectProtocol", "bounds"]
+- !private ["PSo16NSObjectProtocol", "clearColor"]
+- ["PSo16NSObjectProtocol", "constructViews"]
+- !private ["PSo16NSObjectProtocol", "font"]
+- !private ["PSo16NSObjectProtocol", "frame"]
+- ["PSo16NSObjectProtocol", "init"]
+- !private ["PSo16NSObjectProtocol", "isDescendantOfView"]
+- ["PSo16NSObjectProtocol", "leftPadding"]
+- ["PSo16NSObjectProtocol", "mainViewFont"]
+- ["PSo16NSObjectProtocol", "mainViewFontColor"]
+- ["PSo16NSObjectProtocol", "nameLabel"]
+- !private ["PSo16NSObjectProtocol", "numberOfLines"]
+- ["PSo16NSObjectProtocol", "priceChangeLabel"]
+- ["PSo16NSObjectProtocol", "priceLabel"]
+- ["PSo16NSObjectProtocol", "priceViewFont"]
+- ["PSo16NSObjectProtocol", "priceViewFontColor"]
+- ["PSo16NSObjectProtocol", "rightPadding"]
+- !private ["PSo16NSObjectProtocol", "text"]
+- !private ["PSo16NSObjectProtocol", "textAlignment"]
+- !private ["PSo16NSObjectProtocol", "textColor"]
+- ["PSo16NSObjectProtocol", "ticker"]
+- ["PSo16NSObjectProtocol", "topPadding"]
+- ["PSo16NSObjectProtocol", "viewHeight"]
+- ["PSo16NSObjectProtocol", "whiteColor"]
+- ["PSo16NSObjectProtocol", ""]
+- !private ["PSo14NSSecureCoding", "clearColor"]
+- ["PSo14NSSecureCoding", "whiteColor"]
+- !private ["OSC15NSTextAlignment", "Center"]
+- !private ["Sq", "deinit"]
+- !private ["PSs16RawRepresentable", "Center"]
+- !private ["PSo29UIAccessibilityIdentification", "CGRectGetWidth"]
+- !private ["PSo29UIAccessibilityIdentification", "CGRectMake"]
+- ["PSo29UIAccessibilityIdentification", "UIColor"]
+- ["PSo29UIAccessibilityIdentification", "UIFont"]
+- !private ["PSo29UIAccessibilityIdentification", "UILabel"]
+- !private ["PSo29UIAccessibilityIdentification", "addSubview"]
+- !private ["PSo29UIAccessibilityIdentification", "adjustsFontSizeToFitWidth"]
+- !private ["PSo29UIAccessibilityIdentification", "backgroundColor"]
+- !private ["PSo29UIAccessibilityIdentification", "bounds"]
+- ["PSo29UIAccessibilityIdentification", "constructViews"]
+- !private ["PSo29UIAccessibilityIdentification", "font"]
+- !private ["PSo29UIAccessibilityIdentification", "frame"]
+- ["PSo29UIAccessibilityIdentification", "init"]
+- !private ["PSo29UIAccessibilityIdentification", "isDescendantOfView"]
+- ["PSo29UIAccessibilityIdentification", "leftPadding"]
+- ["PSo29UIAccessibilityIdentification", "mainViewFont"]
+- ["PSo29UIAccessibilityIdentification", "mainViewFontColor"]
+- ["PSo29UIAccessibilityIdentification", "nameLabel"]
+- !private ["PSo29UIAccessibilityIdentification", "numberOfLines"]
+- ["PSo29UIAccessibilityIdentification", "priceChangeLabel"]
+- ["PSo29UIAccessibilityIdentification", "priceLabel"]
+- ["PSo29UIAccessibilityIdentification", "priceViewFont"]
+- ["PSo29UIAccessibilityIdentification", "priceViewFontColor"]
+- ["PSo29UIAccessibilityIdentification", "rightPadding"]
+- !private ["PSo29UIAccessibilityIdentification", "text"]
+- !private ["PSo29UIAccessibilityIdentification", "textAlignment"]
+- !private ["PSo29UIAccessibilityIdentification", "textColor"]
+- ["PSo29UIAccessibilityIdentification", "ticker"]
+- ["PSo29UIAccessibilityIdentification", "topPadding"]
+- ["PSo29UIAccessibilityIdentification", "viewHeight"]
+- ["PSo29UIAccessibilityIdentification", ""]
+- !private ["PSo12UIAppearance", "CGRectGetWidth"]
+- !private ["PSo12UIAppearance", "CGRectMake"]
+- ["PSo12UIAppearance", "UIColor"]
+- ["PSo12UIAppearance", "UIFont"]
+- !private ["PSo12UIAppearance", "UILabel"]
+- !private ["PSo12UIAppearance", "addSubview"]
+- !private ["PSo12UIAppearance", "adjustsFontSizeToFitWidth"]
+- !private ["PSo12UIAppearance", "backgroundColor"]
+- !private ["PSo12UIAppearance", "bounds"]
+- ["PSo12UIAppearance", "constructViews"]
+- !private ["PSo12UIAppearance", "font"]
+- !private ["PSo12UIAppearance", "frame"]
+- ["PSo12UIAppearance", "init"]
+- !private ["PSo12UIAppearance", "isDescendantOfView"]
+- ["PSo12UIAppearance", "leftPadding"]
+- ["PSo12UIAppearance", "mainViewFont"]
+- ["PSo12UIAppearance", "mainViewFontColor"]
+- ["PSo12UIAppearance", "nameLabel"]
+- !private ["PSo12UIAppearance", "numberOfLines"]
+- ["PSo12UIAppearance", "priceChangeLabel"]
+- ["PSo12UIAppearance", "priceLabel"]
+- ["PSo12UIAppearance", "priceViewFont"]
+- ["PSo12UIAppearance", "priceViewFontColor"]
+- ["PSo12UIAppearance", "rightPadding"]
+- !private ["PSo12UIAppearance", "text"]
+- !private ["PSo12UIAppearance", "textAlignment"]
+- !private ["PSo12UIAppearance", "textColor"]
+- ["PSo12UIAppearance", "ticker"]
+- ["PSo12UIAppearance", "topPadding"]
+- ["PSo12UIAppearance", "viewHeight"]
+- ["PSo12UIAppearance", ""]
+- !private ["PSo21UIAppearanceContainer", "CGRectGetWidth"]
+- !private ["PSo21UIAppearanceContainer", "CGRectMake"]
+- ["PSo21UIAppearanceContainer", "UIColor"]
+- ["PSo21UIAppearanceContainer", "UIFont"]
+- !private ["PSo21UIAppearanceContainer", "UILabel"]
+- !private ["PSo21UIAppearanceContainer", "addSubview"]
+- !private ["PSo21UIAppearanceContainer", "adjustsFontSizeToFitWidth"]
+- !private ["PSo21UIAppearanceContainer", "backgroundColor"]
+- !private ["PSo21UIAppearanceContainer", "bounds"]
+- ["PSo21UIAppearanceContainer", "constructViews"]
+- !private ["PSo21UIAppearanceContainer", "font"]
+- !private ["PSo21UIAppearanceContainer", "frame"]
+- ["PSo21UIAppearanceContainer", "init"]
+- !private ["PSo21UIAppearanceContainer", "isDescendantOfView"]
+- ["PSo21UIAppearanceContainer", "leftPadding"]
+- ["PSo21UIAppearanceContainer", "mainViewFont"]
+- ["PSo21UIAppearanceContainer", "mainViewFontColor"]
+- ["PSo21UIAppearanceContainer", "nameLabel"]
+- !private ["PSo21UIAppearanceContainer", "numberOfLines"]
+- ["PSo21UIAppearanceContainer", "priceChangeLabel"]
+- ["PSo21UIAppearanceContainer", "priceLabel"]
+- ["PSo21UIAppearanceContainer", "priceViewFont"]
+- ["PSo21UIAppearanceContainer", "priceViewFontColor"]
+- ["PSo21UIAppearanceContainer", "rightPadding"]
+- !private ["PSo21UIAppearanceContainer", "text"]
+- !private ["PSo21UIAppearanceContainer", "textAlignment"]
+- !private ["PSo21UIAppearanceContainer", "textColor"]
+- ["PSo21UIAppearanceContainer", "ticker"]
+- ["PSo21UIAppearanceContainer", "topPadding"]
+- ["PSo21UIAppearanceContainer", "viewHeight"]
+- ["PSo21UIAppearanceContainer", ""]
+- !private ["CSo7UIColor", "clearColor"]
+- ["CSo7UIColor", "whiteColor"]
+- !private ["PSo17UICoordinateSpace", "CGRectGetWidth"]
+- !private ["PSo17UICoordinateSpace", "CGRectMake"]
+- ["PSo17UICoordinateSpace", "UIColor"]
+- ["PSo17UICoordinateSpace", "UIFont"]
+- !private ["PSo17UICoordinateSpace", "UILabel"]
+- !private ["PSo17UICoordinateSpace", "addSubview"]
+- !private ["PSo17UICoordinateSpace", "adjustsFontSizeToFitWidth"]
+- !private ["PSo17UICoordinateSpace", "backgroundColor"]
+- !private ["PSo17UICoordinateSpace", "bounds"]
+- ["PSo17UICoordinateSpace", "constructViews"]
+- !private ["PSo17UICoordinateSpace", "font"]
+- !private ["PSo17UICoordinateSpace", "frame"]
+- ["PSo17UICoordinateSpace", "init"]
+- !private ["PSo17UICoordinateSpace", "isDescendantOfView"]
+- ["PSo17UICoordinateSpace", "leftPadding"]
+- ["PSo17UICoordinateSpace", "mainViewFont"]
+- ["PSo17UICoordinateSpace", "mainViewFontColor"]
+- ["PSo17UICoordinateSpace", "nameLabel"]
+- !private ["PSo17UICoordinateSpace", "numberOfLines"]
+- ["PSo17UICoordinateSpace", "priceChangeLabel"]
+- ["PSo17UICoordinateSpace", "priceLabel"]
+- ["PSo17UICoordinateSpace", "priceViewFont"]
+- ["PSo17UICoordinateSpace", "priceViewFontColor"]
+- ["PSo17UICoordinateSpace", "rightPadding"]
+- !private ["PSo17UICoordinateSpace", "text"]
+- !private ["PSo17UICoordinateSpace", "textAlignment"]
+- !private ["PSo17UICoordinateSpace", "textColor"]
+- ["PSo17UICoordinateSpace", "ticker"]
+- ["PSo17UICoordinateSpace", "topPadding"]
+- ["PSo17UICoordinateSpace", "viewHeight"]
+- ["PSo17UICoordinateSpace", ""]
+- !private ["PSo13UIDynamicItem", "CGRectGetWidth"]
+- !private ["PSo13UIDynamicItem", "CGRectMake"]
+- ["PSo13UIDynamicItem", "UIColor"]
+- ["PSo13UIDynamicItem", "UIFont"]
+- !private ["PSo13UIDynamicItem", "UILabel"]
+- !private ["PSo13UIDynamicItem", "addSubview"]
+- !private ["PSo13UIDynamicItem", "adjustsFontSizeToFitWidth"]
+- !private ["PSo13UIDynamicItem", "backgroundColor"]
+- !private ["PSo13UIDynamicItem", "bounds"]
+- ["PSo13UIDynamicItem", "constructViews"]
+- !private ["PSo13UIDynamicItem", "font"]
+- !private ["PSo13UIDynamicItem", "frame"]
+- ["PSo13UIDynamicItem", "init"]
+- !private ["PSo13UIDynamicItem", "isDescendantOfView"]
+- ["PSo13UIDynamicItem", "leftPadding"]
+- ["PSo13UIDynamicItem", "mainViewFont"]
+- ["PSo13UIDynamicItem", "mainViewFontColor"]
+- ["PSo13UIDynamicItem", "nameLabel"]
+- !private ["PSo13UIDynamicItem", "numberOfLines"]
+- ["PSo13UIDynamicItem", "priceChangeLabel"]
+- ["PSo13UIDynamicItem", "priceLabel"]
+- ["PSo13UIDynamicItem", "priceViewFont"]
+- ["PSo13UIDynamicItem", "priceViewFontColor"]
+- ["PSo13UIDynamicItem", "rightPadding"]
+- !private ["PSo13UIDynamicItem", "text"]
+- !private ["PSo13UIDynamicItem", "textAlignment"]
+- !private ["PSo13UIDynamicItem", "textColor"]
+- ["PSo13UIDynamicItem", "ticker"]
+- ["PSo13UIDynamicItem", "topPadding"]
+- ["PSo13UIDynamicItem", "viewHeight"]
+- ["PSo13UIDynamicItem", ""]
+- !private ["PSo18UIFocusEnvironment", "CGRectGetWidth"]
+- !private ["PSo18UIFocusEnvironment", "CGRectMake"]
+- ["PSo18UIFocusEnvironment", "UIColor"]
+- ["PSo18UIFocusEnvironment", "UIFont"]
+- !private ["PSo18UIFocusEnvironment", "UILabel"]
+- !private ["PSo18UIFocusEnvironment", "addSubview"]
+- !private ["PSo18UIFocusEnvironment", "adjustsFontSizeToFitWidth"]
+- !private ["PSo18UIFocusEnvironment", "backgroundColor"]
+- !private ["PSo18UIFocusEnvironment", "bounds"]
+- ["PSo18UIFocusEnvironment", "constructViews"]
+- !private ["PSo18UIFocusEnvironment", "font"]
+- !private ["PSo18UIFocusEnvironment", "frame"]
+- ["PSo18UIFocusEnvironment", "init"]
+- !private ["PSo18UIFocusEnvironment", "isDescendantOfView"]
+- ["PSo18UIFocusEnvironment", "leftPadding"]
+- ["PSo18UIFocusEnvironment", "mainViewFont"]
+- ["PSo18UIFocusEnvironment", "mainViewFontColor"]
+- ["PSo18UIFocusEnvironment", "nameLabel"]
+- !private ["PSo18UIFocusEnvironment", "numberOfLines"]
+- ["PSo18UIFocusEnvironment", "priceChangeLabel"]
+- ["PSo18UIFocusEnvironment", "priceLabel"]
+- ["PSo18UIFocusEnvironment", "priceViewFont"]
+- ["PSo18UIFocusEnvironment", "priceViewFontColor"]
+- ["PSo18UIFocusEnvironment", "rightPadding"]
+- !private ["PSo18UIFocusEnvironment", "text"]
+- !private ["PSo18UIFocusEnvironment", "textAlignment"]
+- !private ["PSo18UIFocusEnvironment", "textColor"]
+- ["PSo18UIFocusEnvironment", "ticker"]
+- ["PSo18UIFocusEnvironment", "topPadding"]
+- ["PSo18UIFocusEnvironment", "viewHeight"]
+- ["PSo18UIFocusEnvironment", ""]
+- ["CSo6UIFont", "init"]
+- !private ["CSo7UILabel", "adjustsFontSizeToFitWidth"]
+- !private ["CSo7UILabel", "backgroundColor"]
+- !private ["CSo7UILabel", "font"]
+- !private ["CSo7UILabel", "frame"]
+- !private ["CSo7UILabel", "init"]
+- !private ["CSo7UILabel", "isDescendantOfView"]
+- !private ["CSo7UILabel", "numberOfLines"]
+- !private ["CSo7UILabel", "text"]
+- !private ["CSo7UILabel", "textAlignment"]
+- !private ["CSo7UILabel", "textColor"]
+- ["CSo11UIResponder", "CGFloat"]
+- ["CSo11UIResponder", "CGRect"]
+- !private ["CSo11UIResponder", "CGRectGetWidth"]
+- !private ["CSo11UIResponder", "CGRectMake"]
+- ["CSo11UIResponder", "NSCoder"]
+- ["CSo11UIResponder", "Ticker"]
+- ["CSo11UIResponder", "UIColor"]
+- ["CSo11UIResponder", "UIFont"]
+- ["CSo11UIResponder", "UILabel"]
+- ["CSo11UIResponder", "Void"]
+- !private ["CSo11UIResponder", "addSubview"]
+- !private ["CSo11UIResponder", "adjustsFontSizeToFitWidth"]
+- !private ["CSo11UIResponder", "backgroundColor"]
+- !private ["CSo11UIResponder", "bounds"]
+- ["CSo11UIResponder", "constructViews"]
+- !private ["CSo11UIResponder", "font"]
+- !private ["CSo11UIResponder", "frame"]
+- ["CSo11UIResponder", "init"]
+- !private ["CSo11UIResponder", "isDescendantOfView"]
+- ["CSo11UIResponder", "leftPadding"]
+- ["CSo11UIResponder", "mainViewFont"]
+- ["CSo11UIResponder", "mainViewFontColor"]
+- ["CSo11UIResponder", "nameLabel"]
+- !private ["CSo11UIResponder", "numberOfLines"]
+- ["CSo11UIResponder", "priceChangeLabel"]
+- ["CSo11UIResponder", "priceLabel"]
+- ["CSo11UIResponder", "priceViewFont"]
+- ["CSo11UIResponder", "priceViewFontColor"]
+- ["CSo11UIResponder", "rightPadding"]
+- !private ["CSo11UIResponder", "text"]
+- !private ["CSo11UIResponder", "textAlignment"]
+- !private ["CSo11UIResponder", "textColor"]
+- ["CSo11UIResponder", "ticker"]
+- ["CSo11UIResponder", "topPadding"]
+- ["CSo11UIResponder", "viewHeight"]
+- !private ["PSo18UITraitEnvironment", "CGRectGetWidth"]
+- !private ["PSo18UITraitEnvironment", "CGRectMake"]
+- ["PSo18UITraitEnvironment", "UIColor"]
+- ["PSo18UITraitEnvironment", "UIFont"]
+- !private ["PSo18UITraitEnvironment", "UILabel"]
+- !private ["PSo18UITraitEnvironment", "addSubview"]
+- !private ["PSo18UITraitEnvironment", "adjustsFontSizeToFitWidth"]
+- !private ["PSo18UITraitEnvironment", "backgroundColor"]
+- !private ["PSo18UITraitEnvironment", "bounds"]
+- ["PSo18UITraitEnvironment", "constructViews"]
+- !private ["PSo18UITraitEnvironment", "font"]
+- !private ["PSo18UITraitEnvironment", "frame"]
+- ["PSo18UITraitEnvironment", "init"]
+- !private ["PSo18UITraitEnvironment", "isDescendantOfView"]
+- ["PSo18UITraitEnvironment", "leftPadding"]
+- ["PSo18UITraitEnvironment", "mainViewFont"]
+- ["PSo18UITraitEnvironment", "mainViewFontColor"]
+- ["PSo18UITraitEnvironment", "nameLabel"]
+- !private ["PSo18UITraitEnvironment", "numberOfLines"]
+- ["PSo18UITraitEnvironment", "priceChangeLabel"]
+- ["PSo18UITraitEnvironment", "priceLabel"]
+- ["PSo18UITraitEnvironment", "priceViewFont"]
+- ["PSo18UITraitEnvironment", "priceViewFontColor"]
+- ["PSo18UITraitEnvironment", "rightPadding"]
+- !private ["PSo18UITraitEnvironment", "text"]
+- !private ["PSo18UITraitEnvironment", "textAlignment"]
+- !private ["PSo18UITraitEnvironment", "textColor"]
+- ["PSo18UITraitEnvironment", "ticker"]
+- ["PSo18UITraitEnvironment", "topPadding"]
+- ["PSo18UITraitEnvironment", "viewHeight"]
+- ["PSo18UITraitEnvironment", ""]
+- ["CSo6UIView", "CGFloat"]
+- ["CSo6UIView", "CGRect"]
+- !private ["CSo6UIView", "CGRectGetWidth"]
+- !private ["CSo6UIView", "CGRectMake"]
+- ["CSo6UIView", "NSCoder"]
+- ["CSo6UIView", "Ticker"]
+- ["CSo6UIView", "UIColor"]
+- ["CSo6UIView", "UIFont"]
+- ["CSo6UIView", "UILabel"]
+- ["CSo6UIView", "Void"]
+- !private ["CSo6UIView", "addSubview"]
+- !private ["CSo6UIView", "adjustsFontSizeToFitWidth"]
+- !private ["CSo6UIView", "backgroundColor"]
+- !private ["CSo6UIView", "bounds"]
+- ["CSo6UIView", "constructViews"]
+- !private ["CSo6UIView", "font"]
+- !private ["CSo6UIView", "frame"]
+- ["CSo6UIView", "init"]
+- !private ["CSo6UIView", "isDescendantOfView"]
+- ["CSo6UIView", "leftPadding"]
+- ["CSo6UIView", "mainViewFont"]
+- ["CSo6UIView", "mainViewFontColor"]
+- ["CSo6UIView", "nameLabel"]
+- !private ["CSo6UIView", "numberOfLines"]
+- ["CSo6UIView", "priceChangeLabel"]
+- ["CSo6UIView", "priceLabel"]
+- ["CSo6UIView", "priceViewFont"]
+- ["CSo6UIView", "priceViewFontColor"]
+- ["CSo6UIView", "rightPadding"]
+- !private ["CSo6UIView", "text"]
+- !private ["CSo6UIView", "textAlignment"]
+- !private ["CSo6UIView", "textColor"]
+- ["CSo6UIView", "ticker"]
+- ["CSo6UIView", "topPadding"]
+- ["CSo6UIView", "viewHeight"]
+- ["CSo6UIView", ""]
+- !private ["PSs33_BuiltinBooleanLiteralConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs24_ColorLiteralConvertible", "clearColor"]
+- ["PSs24_ColorLiteralConvertible", "whiteColor"]
+- !private ["PSs21_ObjectiveCBridgeable", "_getBuiltinLogicValue"]
+- !private ["PSs12_Reflectable", "CGRectGetWidth"]
+- !private ["PSs12_Reflectable", "CGRectMake"]
+- ["PSs12_Reflectable", "UIColor"]
+- ["PSs12_Reflectable", "UIFont"]
+- !private ["PSs12_Reflectable", "UILabel"]
+- !private ["PSs12_Reflectable", "_getBuiltinLogicValue"]
+- !private ["PSs12_Reflectable", "addSubview"]
+- !private ["PSs12_Reflectable", "adjustsFontSizeToFitWidth"]
+- !private ["PSs12_Reflectable", "backgroundColor"]
+- !private ["PSs12_Reflectable", "bounds"]
+- ["PSs12_Reflectable", "constructViews"]
+- !private ["PSs12_Reflectable", "font"]
+- !private ["PSs12_Reflectable", "frame"]
+- !private ["PSs12_Reflectable", "height"]
+- ["PSs12_Reflectable", "init"]
+- !private ["PSs12_Reflectable", "isDescendantOfView"]
+- ["PSs12_Reflectable", "leftPadding"]
+- ["PSs12_Reflectable", "mainViewFont"]
+- ["PSs12_Reflectable", "mainViewFontColor"]
+- ["PSs12_Reflectable", "nameLabel"]
+- !private ["PSs12_Reflectable", "numberOfLines"]
+- ["PSs12_Reflectable", "priceChangeLabel"]
+- ["PSs12_Reflectable", "priceLabel"]
+- ["PSs12_Reflectable", "priceViewFont"]
+- ["PSs12_Reflectable", "priceViewFontColor"]
+- ["PSs12_Reflectable", "rightPadding"]
+- !private ["PSs12_Reflectable", "text"]
+- !private ["PSs12_Reflectable", "textAlignment"]
+- !private ["PSs12_Reflectable", "textColor"]
+- ["PSs12_Reflectable", "ticker"]
+- ["PSs12_Reflectable", "topPadding"]
+- ["PSs12_Reflectable", "viewHeight"]
+- !private ["PSs12_Reflectable", "width"]
+- ["PSs12_Reflectable", ""]
+- ["C10StockSwipe19iCarouselTickerView", "CGFloat"]
+- ["C10StockSwipe19iCarouselTickerView", "CGRect"]
+- !private ["C10StockSwipe19iCarouselTickerView", "CGRectGetWidth"]
+- !private ["C10StockSwipe19iCarouselTickerView", "CGRectMake"]
+- ["C10StockSwipe19iCarouselTickerView", "NSCoder"]
+- ["C10StockSwipe19iCarouselTickerView", "Ticker"]
+- ["C10StockSwipe19iCarouselTickerView", "UIColor"]
+- ["C10StockSwipe19iCarouselTickerView", "UIFont"]
+- ["C10StockSwipe19iCarouselTickerView", "UILabel"]
+- ["C10StockSwipe19iCarouselTickerView", "Void"]
+- !private ["C10StockSwipe19iCarouselTickerView", "addSubview"]
+- !private ["C10StockSwipe19iCarouselTickerView", "bounds"]
+- ["C10StockSwipe19iCarouselTickerView", "constructViews"]
+- ["C10StockSwipe19iCarouselTickerView", "deinit"]
+- ["C10StockSwipe19iCarouselTickerView", "init"]
+- ["C10StockSwipe19iCarouselTickerView", "leftPadding"]
+- ["C10StockSwipe19iCarouselTickerView", "mainViewFont"]
+- ["C10StockSwipe19iCarouselTickerView", "mainViewFontColor"]
+- ["C10StockSwipe19iCarouselTickerView", "nameLabel"]
+- ["C10StockSwipe19iCarouselTickerView", "priceChangeLabel"]
+- ["C10StockSwipe19iCarouselTickerView", "priceLabel"]
+- ["C10StockSwipe19iCarouselTickerView", "priceViewFont"]
+- ["C10StockSwipe19iCarouselTickerView", "priceViewFontColor"]
+- ["C10StockSwipe19iCarouselTickerView", "rightPadding"]
+- ["C10StockSwipe19iCarouselTickerView", "ticker"]
+- ["C10StockSwipe19iCarouselTickerView", "topPadding"]
+- ["C10StockSwipe19iCarouselTickerView", "viewHeight"]
+depends-nominal:
+- "PSs9AnyObject"
+- !private "Sb"
+- !private "PSs25BooleanLiteralConvertible"
+- !private "PSs11BooleanType"
+- "V12CoreGraphics7CGFloat"
+- !private "VSC6CGRect"
+- "PSs11CVarArgType"
+- "PSs23CustomStringConvertible"
+- "PSs9Equatable"
+- "PSs8Hashable"
+- "PSo8NSCoding"
+- "PSo9NSCopying"
+- "CSo8NSObject"
+- "PSo16NSObjectProtocol"
+- "PSo14NSSecureCoding"
+- !private "OSC15NSTextAlignment"
+- !private "Sq"
+- !private "PSs16RawRepresentable"
+- "PSo29UIAccessibilityIdentification"
+- "PSo12UIAppearance"
+- "PSo21UIAppearanceContainer"
+- "CSo7UIColor"
+- "PSo17UICoordinateSpace"
+- "PSo13UIDynamicItem"
+- "PSo18UIFocusEnvironment"
+- "CSo6UIFont"
+- !private "CSo7UILabel"
+- "CSo11UIResponder"
+- "PSo18UITraitEnvironment"
+- "CSo6UIView"
+- !private "PSs33_BuiltinBooleanLiteralConvertible"
+- "PSs24_ColorLiteralConvertible"
+- !private "PSs21_ObjectiveCBridgeable"
+- "PSs12_Reflectable"
+- "C10StockSwipe19iCarouselTickerView"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/BridgingHeader.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/SARate-master/SARate/SARate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/SARate-master/SARate/iRate/iRate.h"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/NSDate+NVTimeAgo.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/UIView+TLMotionEffect.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/iCarousel/iCarousel.h"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreData.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCPanState.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeResult.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChooseViewOptions.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChooseView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeOptions.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/UIView+MDCSwipeToChoose.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChooseDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeDirection.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChoose.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChoose-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BoltsVersion.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/Bolts.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFTaskCompletionSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFTask.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFExecutor.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFDefines.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFCancellationTokenSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFCancellationTokenRegistration.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFCancellationToken.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFWebViewAppLinkResolver.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFURL_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFURL.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFMeasurementEvent_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFMeasurementEvent.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkTarget.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkReturnToRefererView_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkReturnToRefererView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkReturnToRefererController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkResolving.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkNavigation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLink_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLink.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/Bolts-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFPurchase.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFProduct.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFPush.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFNetworkActivityIndicatorManager.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFInstallation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFUserAuthenticationDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFRole.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFRelation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFQuery.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFObject+Subclass.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFGeoPoint.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFFile.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFConfig.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFCloud.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFSubclassing.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFObject.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFUser.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFAnonymousUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFAnalytics.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFACL.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/Parse.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/Parse-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Modules/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/PulsingHalo.framework/Headers/PulsingHaloLayer.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/PulsingHalo.framework/Headers/PulsingHalo-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/PulsingHalo.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Headers/SDiOSVersion.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Headers/SDVersion.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Headers/SDVersion-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/CloudWord.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/CloudLayoutOperation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/WordCloud.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Intermediates/StockSwipe.build/Debug-iphonesimulator/WordCloud.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/WebKit.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/ANSCompatibility.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/Answers.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSStackFrame.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSReport.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSLogging.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSAttributes.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/Crashlytics.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/NSString+LKURLEncoded.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/NSDictionary+LKFormEncoded.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKLog.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LaunchKitShared.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LaunchKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKConfig.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKAppUser.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKAPIClient.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKAnalytics.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LaunchKit-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/ParseUI.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFTableViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFPurchaseTableViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFCollectionViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFTextField.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFImageView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFProductTableViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFQueryCollectionViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFQueryTableViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFSignUpViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFSignUpView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFLogInViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFLogInView_Private.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/ParseUIConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFLogInView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/ParseUI-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/PF_Twitter.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/PFTwitterUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/ParseTwitterUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/ParseTwitterUtils-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphRequestDataAttachment.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphErrorRecoveryProcessor.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKUtility.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKTestUsersManager.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKSettings.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKProfilePictureView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKProfile.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKMutableCopying.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphRequest.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKCoreKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKButton.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAppLinkUtility.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAppLinkResolver.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKApplicationDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAppEvents.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKMacros.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphRequestConnection.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKCopying.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAccessToken.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKCoreKit-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginTooltipView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginManagerLoginResult.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKTooltipView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginManager.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginButton.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginKit-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Headers/PFFacebookUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Headers/ParseFacebookUtilsV4.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Headers/ParseFacebookUtilsV4-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Modules/Charts.swiftmodule/x86_64.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Headers/Charts-Swift.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Headers/Charts.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRSessionStore.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRGuestSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRDefines.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRCoreOAuthSigning.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRAuthSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRAuthConfig.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRAPIErrorCode.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TwitterCore.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRUserTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRUser.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweetViewDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweetView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweetTableViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweet.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTimelineViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRShareEmailViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRSearchTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTROAuthSigning.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRLogInButton.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRListTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRComposerTheme.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRComposer.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTimelineType.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRCollectionTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRComposerViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRCardConfiguration.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRAPIClient.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/Twitter.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TwitterKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/DZNEmptyDataSet.framework/Headers/UIScrollView+EmptyDataSet.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/DZNEmptyDataSet.framework/Headers/DZNEmptyDataSet-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/DZNEmptyDataSet.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Fabric.framework/Headers/FABAttributes.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Fabric.framework/Headers/Fabric.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Fabric.framework/Modules/module.modulemap"
+interface-hash: "9a18f45c022b50ab45614eeb00508d87"

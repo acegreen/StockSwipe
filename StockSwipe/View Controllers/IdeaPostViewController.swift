@@ -1,0 +1,214 @@
+//
+//  IdeaPostViewController.swift
+//  StockSwipe
+//
+//  Created by Ace Green on 4/5/16.
+//  Copyright © 2016 StockSwipe. All rights reserved.
+//
+
+import UIKit
+import Parse
+
+protocol IdeaPostDelegate {
+    func ideaPosted(with tradeIdea: TradeIdea)
+}
+
+class IdeaPostViewController: UIViewController, UITextViewDelegate {
+    
+    var symbol: String!
+    var companyName: String!
+    
+    var delegate: IdeaPostDelegate!
+    
+    @IBOutlet var textViewBottomConstraint: NSLayoutConstraint!
+    
+    @IBAction func xButtonPressed(sender: AnyObject) {
+        
+        self.dismissViewControllerAnimated(true, completion: nil)
+        
+    }
+    
+    @IBOutlet var ideaTextView: UITextView!
+    
+    @IBOutlet var textCountLabel: UILabel!
+    
+    @IBOutlet var postButton: CorneredBorderedUIButton!
+    
+    @IBAction func postButttonPressed(sender: AnyObject) {
+        
+        guard Functions.isUserLoggedIn(self) else { return }
+        
+        guard self.ideaTextView.text != nil else { return }
+        
+        QueryHelper.sharedInstance.queryStockObjectFor(symbol) { (result) in
+            
+            do {
+                
+                let stockObject = try result()
+                
+                let tradeIdeaObject = PFObject(className: "TradeIdea")
+                tradeIdeaObject["user"] = PFUser.currentUser()!
+                tradeIdeaObject["stock"] = stockObject
+                tradeIdeaObject["description"] = self.ideaTextView.text
+                
+                tradeIdeaObject.saveInBackgroundWithBlock({ (success, error) in
+                    
+                    if success {
+                        
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            
+                            let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                            
+                            self.delegate.ideaPosted(with: tradeIdea)
+                            
+                            self.dismissViewControllerAnimated(true, completion: {
+                                SweetAlert().showAlert("Posted!", subTitle: nil, style: AlertStyle.Success)
+                            })
+                        })
+                        
+                    } else {
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.description, style: AlertStyle.Warning)
+                        })
+                    }
+                })
+                
+            } catch {
+                
+                if let error = error as? Constants.Errors {
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        
+                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                    })
+                }
+            }
+        }
+        
+    }
+    
+    deinit {
+        stopObservingKeyboardNotifications()
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        // Keep track of keyboard movement and adjust view
+        observeKeyboardNotifications()
+        
+        // flexible height
+        self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight
+        
+        let parentViewController = self.parentViewController as! UINavigationController
+        let parentOfParentViewController  = parentViewController.presentingViewController as! ChartDetailTabBarController
+        
+        symbol = parentOfParentViewController.symbol
+        companyName = parentOfParentViewController.companyName
+        
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(true)
+        
+        if symbol != nil {
+            self.ideaTextView.text = "$\(self.symbol) "
+            self.textCountLabel.text = "6"
+        } else {
+            ideaTextView.text = "Share an idea\n(use $ before ticker: e.g. $AAPL)"
+            ideaTextView.textColor = UIColor.lightGrayColor()
+            ideaTextView.selectedTextRange = ideaTextView.textRangeFromPosition(ideaTextView.beginningOfDocument, toPosition: ideaTextView.beginningOfDocument)
+        }
+        ideaTextView.becomeFirstResponder()
+
+    }
+    
+    func observeKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdeaPostViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdeaPostViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+    }
+    
+    func stopObservingKeyboardNotifications() {
+        NSNotificationCenter.defaultCenter().removeObserver(self)
+    }
+    
+    func keyboardWillShow(n: NSNotification) {
+        
+        if let keyboardRect = n.userInfo![UIKeyboardFrameEndUserInfoKey]?.CGRectValue() {
+            
+            let keyboardSize = keyboardRect.size
+            let keyboardHeight = keyboardSize.height
+            let intersectionFrame = CGRectIntersection(self.view.frame, keyboardRect)
+            
+            print(self.view.frame)
+            print(keyboardRect)
+            print(intersectionFrame)
+            
+            UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
+                
+                if self.isBeingPresentedInFormSheet() {
+                    self.textViewBottomConstraint.constant = -(intersectionFrame.height + 20)
+                } else {
+                    self.textViewBottomConstraint.constant = -keyboardHeight
+                }
+            })
+        }
+    }
+    
+    func keyboardWillHide(n: NSNotification) {
+        
+        UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
+            self.textViewBottomConstraint.constant = 0
+        })
+    }
+    
+    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+        
+        var currentText:NSString = textView.text
+        var updatedText = currentText.stringByReplacingCharactersInRange(range, withString:text)
+        
+        if updatedText.isEmpty {
+            
+            postButton.enabled = false
+            
+            // Keep track of character count and update label
+            self.textCountLabel.text = "0"
+            
+            if symbol != nil {
+                ideaTextView.text = "Share an idea on $\(self.symbol)"
+            } else {
+                ideaTextView.text = "Share an idea\n(use $ before ticker: e.g. $AAPL)"
+            }
+            textView.textColor = UIColor.lightGrayColor()
+            textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
+            
+            return false
+            
+        } else if textView.textColor == UIColor.lightGrayColor() && !text.isEmpty {
+            
+            postButton.enabled = true
+            
+            textView.text = nil
+            textView.textColor = Constants.stockSwipeFontColor
+            
+        }
+    
+        if textView.textColor != UIColor.lightGrayColor() {
+            
+            // Keep track of character count and update label
+            currentText = textView.text
+            updatedText = currentText.stringByReplacingCharactersInRange(range, withString:text)
+            self.textCountLabel.text = String(updatedText.characters.count)
+        }
+        
+        return true
+    }
+    
+    func textViewDidChangeSelection(textView: UITextView) {
+        if self.view.window != nil {
+            if textView.textColor == UIColor.lightGrayColor() {
+                textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
+            }
+        }
+    }
+}

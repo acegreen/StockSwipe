@@ -1,0 +1,16 @@
+#!/bin/bash
+
+LIB_DIR=$(dirname "$0")
+ROLLOUT_DIR=$(dirname "$LIB_DIR")
+CACHE_DIR="${ROLLOUT_DIR}/.cache"
+dynamic_files_path="${ROLLOUT_DIR}/../../Rollout-ios-SDK/auto_generated_code"
+
+echo "Cleaning the cache dir, and emptying the dynamic files"
+rm -vfr "$CACHE_DIR"
+mkdir -p "$dynamic_files_path"
+for i in `seq -f %02g 1 20`; do
+  cat /dev/null > "$dynamic_files_path/RolloutDynamic_$i.m"
+done
+cat /dev/null > "$dynamic_files_path/RolloutDynamic_structs.h"
+
+touch "$ROLLOUT_DIR"/Rollout/RolloutDynamic.m

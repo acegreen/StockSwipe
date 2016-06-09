@@ -1,0 +1,1646 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "StreamTableViewController"
+provides-nominal:
+- "C10StockSwipe25StreamTableViewController"
+provides-member:
+- ["C10StockSwipe25StreamTableViewController", ""]
+provides-dynamic-lookup:
+- "xButtonPressed"
+- "viewWillAppear"
+- "imageForEmptyDataSet"
+- "titleForEmptyDataSet"
+- "emptyDataSetShouldDisplay"
+- "descriptionForEmptyDataSet"
+- "symbol"
+- "viewDidLoad"
+depends-top-level:
+- "AnyObject"
+- !private "Dictionary"
+- !private "NSLineBreakMode"
+- !private "TWTRSearchTimelineDataSource"
+- !private "NSTextAlignment"
+- !private "UIView"
+- !private "BooleanLiteralType"
+- !private "!="
+- "Bool"
+- !private "ChartDetailTabBarController"
+- !private "NSFontAttributeName"
+- "TWTRTimelineViewController"
+- !private "UnicodeScalarType"
+- "DZNEmptyDataSetDelegate"
+- "String"
+- !private "NSMutableParagraphStyle"
+- "DZNEmptyDataSetSource"
+- "UIImage"
+- !private "StringLiteralType"
+- !private "NSParagraphStyleAttributeName"
+- "UIScrollView"
+- !private "TWTRAPIClient"
+- "StreamTableViewController"
+- !private "UIFont"
+- "NSAttributedString"
+depends-member:
+- !private ["PSs9AnyObject", "NSAttributedString"]
+- !private ["PSs9AnyObject", "NSFontAttributeName"]
+- !private ["PSs9AnyObject", "NSLineBreakMode"]
+- !private ["PSs9AnyObject", "NSMutableParagraphStyle"]
+- !private ["PSs9AnyObject", "NSParagraphStyleAttributeName"]
+- !private ["PSs9AnyObject", "NSTextAlignment"]
+- !private ["PSs9AnyObject", "TWTRAPIClient"]
+- !private ["PSs9AnyObject", "TWTRSearchTimelineDataSource"]
+- !private ["PSs9AnyObject", "UIFont"]
+- !private ["PSs9AnyObject", "UIImage"]
+- !private ["PSs9AnyObject", "UIView"]
+- !private ["PSs9AnyObject", "alignment"]
+- ["PSs9AnyObject", "backgroundColorForEmptyDataSet"]
+- !private ["PSs9AnyObject", "boldSystemFontOfSize"]
+- ["PSs9AnyObject", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSs9AnyObject", "buttonImageForEmptyDataSet"]
+- ["PSs9AnyObject", "buttonTitleForEmptyDataSet"]
+- ["PSs9AnyObject", "customViewForEmptyDataSet"]
+- !private ["PSs9AnyObject", "dataSource"]
+- ["PSs9AnyObject", "descriptionForEmptyDataSet"]
+- !private ["PSs9AnyObject", "dismissViewControllerAnimated"]
+- ["PSs9AnyObject", "emptyDataSet"]
+- !private ["PSs9AnyObject", "emptyDataSetDelegate"]
+- ["PSs9AnyObject", "emptyDataSetDidAppear"]
+- ["PSs9AnyObject", "emptyDataSetDidDisappear"]
+- ["PSs9AnyObject", "emptyDataSetDidTapButton"]
+- ["PSs9AnyObject", "emptyDataSetDidTapView"]
+- ["PSs9AnyObject", "emptyDataSetShouldAllowScroll"]
+- ["PSs9AnyObject", "emptyDataSetShouldAllowTouch"]
+- ["PSs9AnyObject", "emptyDataSetShouldAnimateImageView"]
+- ["PSs9AnyObject", "emptyDataSetShouldDisplay"]
+- !private ["PSs9AnyObject", "emptyDataSetSource"]
+- ["PSs9AnyObject", "emptyDataSetWillAppear"]
+- ["PSs9AnyObject", "emptyDataSetWillDisappear"]
+- ["PSs9AnyObject", "imageAnimationForEmptyDataSet"]
+- ["PSs9AnyObject", "imageForEmptyDataSet"]
+- ["PSs9AnyObject", "imageTintColorForEmptyDataSet"]
+- ["PSs9AnyObject", "init"]
+- !private ["PSs9AnyObject", "lineBreakMode"]
+- ["PSs9AnyObject", "offsetForEmptyDataSet"]
+- ["PSs9AnyObject", "spaceHeightForEmptyDataSet"]
+- ["PSs9AnyObject", "symbol"]
+- !private ["PSs9AnyObject", "systemFontOfSize"]
+- !private ["PSs9AnyObject", "tabBarController"]
+- !private ["PSs9AnyObject", "tableFooterView"]
+- !private ["PSs9AnyObject", "tableView"]
+- ["PSs9AnyObject", "titleForEmptyDataSet"]
+- ["PSs9AnyObject", "verticalOffsetForEmptyDataSet"]
+- ["PSs9AnyObject", "viewDidLoad"]
+- ["PSs9AnyObject", "viewWillAppear"]
+- ["PSs9AnyObject", "xButtonPressed"]
+- ["PSs9AnyObject", ""]
+- !private ["Sb", "_getBuiltinLogicValue"]
+- !private ["Sb", "deinit"]
+- !private ["PSs25BooleanLiteralConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs11BooleanType", "_getBuiltinLogicValue"]
+- !private ["V12CoreGraphics7CGFloat", "deinit"]
+- !private ["PSs11CVarArgType", "NSAttributedString"]
+- !private ["PSs11CVarArgType", "NSFontAttributeName"]
+- !private ["PSs11CVarArgType", "NSLineBreakMode"]
+- !private ["PSs11CVarArgType", "NSMutableParagraphStyle"]
+- !private ["PSs11CVarArgType", "NSParagraphStyleAttributeName"]
+- !private ["PSs11CVarArgType", "NSTextAlignment"]
+- !private ["PSs11CVarArgType", "TWTRAPIClient"]
+- !private ["PSs11CVarArgType", "TWTRSearchTimelineDataSource"]
+- !private ["PSs11CVarArgType", "UIFont"]
+- !private ["PSs11CVarArgType", "UIImage"]
+- !private ["PSs11CVarArgType", "UIView"]
+- !private ["PSs11CVarArgType", "alignment"]
+- ["PSs11CVarArgType", "backgroundColorForEmptyDataSet"]
+- !private ["PSs11CVarArgType", "boldSystemFontOfSize"]
+- ["PSs11CVarArgType", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSs11CVarArgType", "buttonImageForEmptyDataSet"]
+- ["PSs11CVarArgType", "buttonTitleForEmptyDataSet"]
+- ["PSs11CVarArgType", "customViewForEmptyDataSet"]
+- !private ["PSs11CVarArgType", "dataSource"]
+- ["PSs11CVarArgType", "descriptionForEmptyDataSet"]
+- !private ["PSs11CVarArgType", "dismissViewControllerAnimated"]
+- ["PSs11CVarArgType", "emptyDataSet"]
+- !private ["PSs11CVarArgType", "emptyDataSetDelegate"]
+- ["PSs11CVarArgType", "emptyDataSetDidAppear"]
+- ["PSs11CVarArgType", "emptyDataSetDidDisappear"]
+- ["PSs11CVarArgType", "emptyDataSetDidTapButton"]
+- ["PSs11CVarArgType", "emptyDataSetDidTapView"]
+- ["PSs11CVarArgType", "emptyDataSetShouldAllowScroll"]
+- ["PSs11CVarArgType", "emptyDataSetShouldAllowTouch"]
+- ["PSs11CVarArgType", "emptyDataSetShouldAnimateImageView"]
+- ["PSs11CVarArgType", "emptyDataSetShouldDisplay"]
+- !private ["PSs11CVarArgType", "emptyDataSetSource"]
+- ["PSs11CVarArgType", "emptyDataSetWillAppear"]
+- ["PSs11CVarArgType", "emptyDataSetWillDisappear"]
+- ["PSs11CVarArgType", "imageAnimationForEmptyDataSet"]
+- ["PSs11CVarArgType", "imageForEmptyDataSet"]
+- ["PSs11CVarArgType", "imageTintColorForEmptyDataSet"]
+- ["PSs11CVarArgType", "init"]
+- !private ["PSs11CVarArgType", "lineBreakMode"]
+- ["PSs11CVarArgType", "offsetForEmptyDataSet"]
+- ["PSs11CVarArgType", "spaceHeightForEmptyDataSet"]
+- ["PSs11CVarArgType", "symbol"]
+- !private ["PSs11CVarArgType", "systemFontOfSize"]
+- !private ["PSs11CVarArgType", "tabBarController"]
+- !private ["PSs11CVarArgType", "tableFooterView"]
+- !private ["PSs11CVarArgType", "tableView"]
+- ["PSs11CVarArgType", "titleForEmptyDataSet"]
+- ["PSs11CVarArgType", "verticalOffsetForEmptyDataSet"]
+- ["PSs11CVarArgType", "viewDidLoad"]
+- ["PSs11CVarArgType", "viewWillAppear"]
+- ["PSs11CVarArgType", "xButtonPressed"]
+- ["PSs11CVarArgType", ""]
+- !private ["VSs9Character", "deinit"]
+- !private ["C10StockSwipe27ChartDetailTabBarController", "symbol"]
+- !private ["PSs14CollectionType", "Key"]
+- !private ["PSs14CollectionType", "Value"]
+- !private ["PSs10Comparable", "init"]
+- !private ["PSs28CustomDebugStringConvertible", "Key"]
+- !private ["PSs28CustomDebugStringConvertible", "Value"]
+- !private ["PSs28CustomDebugStringConvertible", "init"]
+- !private ["PSs23CustomStringConvertible", "Key"]
+- !private ["PSs23CustomStringConvertible", "NSAttributedString"]
+- !private ["PSs23CustomStringConvertible", "NSFontAttributeName"]
+- !private ["PSs23CustomStringConvertible", "NSLineBreakMode"]
+- !private ["PSs23CustomStringConvertible", "NSMutableParagraphStyle"]
+- !private ["PSs23CustomStringConvertible", "NSParagraphStyleAttributeName"]
+- !private ["PSs23CustomStringConvertible", "NSTextAlignment"]
+- !private ["PSs23CustomStringConvertible", "TWTRAPIClient"]
+- !private ["PSs23CustomStringConvertible", "TWTRSearchTimelineDataSource"]
+- !private ["PSs23CustomStringConvertible", "UIFont"]
+- !private ["PSs23CustomStringConvertible", "UIImage"]
+- !private ["PSs23CustomStringConvertible", "UIView"]
+- !private ["PSs23CustomStringConvertible", "Value"]
+- !private ["PSs23CustomStringConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs23CustomStringConvertible", "alignment"]
+- ["PSs23CustomStringConvertible", "backgroundColorForEmptyDataSet"]
+- !private ["PSs23CustomStringConvertible", "boldSystemFontOfSize"]
+- ["PSs23CustomStringConvertible", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSs23CustomStringConvertible", "buttonImageForEmptyDataSet"]
+- ["PSs23CustomStringConvertible", "buttonTitleForEmptyDataSet"]
+- ["PSs23CustomStringConvertible", "customViewForEmptyDataSet"]
+- !private ["PSs23CustomStringConvertible", "dataSource"]
+- ["PSs23CustomStringConvertible", "descriptionForEmptyDataSet"]
+- !private ["PSs23CustomStringConvertible", "dismissViewControllerAnimated"]
+- ["PSs23CustomStringConvertible", "emptyDataSet"]
+- !private ["PSs23CustomStringConvertible", "emptyDataSetDelegate"]
+- ["PSs23CustomStringConvertible", "emptyDataSetDidAppear"]
+- ["PSs23CustomStringConvertible", "emptyDataSetDidDisappear"]
+- ["PSs23CustomStringConvertible", "emptyDataSetDidTapButton"]
+- ["PSs23CustomStringConvertible", "emptyDataSetDidTapView"]
+- ["PSs23CustomStringConvertible", "emptyDataSetShouldAllowScroll"]
+- ["PSs23CustomStringConvertible", "emptyDataSetShouldAllowTouch"]
+- ["PSs23CustomStringConvertible", "emptyDataSetShouldAnimateImageView"]
+- ["PSs23CustomStringConvertible", "emptyDataSetShouldDisplay"]
+- !private ["PSs23CustomStringConvertible", "emptyDataSetSource"]
+- ["PSs23CustomStringConvertible", "emptyDataSetWillAppear"]
+- ["PSs23CustomStringConvertible", "emptyDataSetWillDisappear"]
+- ["PSs23CustomStringConvertible", "imageAnimationForEmptyDataSet"]
+- ["PSs23CustomStringConvertible", "imageForEmptyDataSet"]
+- ["PSs23CustomStringConvertible", "imageTintColorForEmptyDataSet"]
+- ["PSs23CustomStringConvertible", "init"]
+- !private ["PSs23CustomStringConvertible", "lineBreakMode"]
+- ["PSs23CustomStringConvertible", "offsetForEmptyDataSet"]
+- ["PSs23CustomStringConvertible", "spaceHeightForEmptyDataSet"]
+- ["PSs23CustomStringConvertible", "symbol"]
+- !private ["PSs23CustomStringConvertible", "systemFontOfSize"]
+- !private ["PSs23CustomStringConvertible", "tabBarController"]
+- !private ["PSs23CustomStringConvertible", "tableFooterView"]
+- !private ["PSs23CustomStringConvertible", "tableView"]
+- ["PSs23CustomStringConvertible", "titleForEmptyDataSet"]
+- ["PSs23CustomStringConvertible", "verticalOffsetForEmptyDataSet"]
+- ["PSs23CustomStringConvertible", "viewDidLoad"]
+- ["PSs23CustomStringConvertible", "viewWillAppear"]
+- ["PSs23CustomStringConvertible", "xButtonPressed"]
+- ["PSs23CustomStringConvertible", ""]
+- !private ["PSo23DZNEmptyDataSetDelegate", "NSAttributedString"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "NSFontAttributeName"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "NSLineBreakMode"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "NSMutableParagraphStyle"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "NSParagraphStyleAttributeName"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "NSTextAlignment"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "TWTRAPIClient"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "TWTRSearchTimelineDataSource"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "UIFont"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "UIImage"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "UIView"]
+- ["PSo23DZNEmptyDataSetDelegate", "backgroundColorForEmptyDataSet"]
+- ["PSo23DZNEmptyDataSetDelegate", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo23DZNEmptyDataSetDelegate", "buttonImageForEmptyDataSet"]
+- ["PSo23DZNEmptyDataSetDelegate", "buttonTitleForEmptyDataSet"]
+- ["PSo23DZNEmptyDataSetDelegate", "customViewForEmptyDataSet"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "dataSource"]
+- ["PSo23DZNEmptyDataSetDelegate", "descriptionForEmptyDataSet"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "dismissViewControllerAnimated"]
+- ["PSo23DZNEmptyDataSetDelegate", "emptyDataSet"]
+- ["PSo23DZNEmptyDataSetDelegate", "emptyDataSetDidAppear"]
+- ["PSo23DZNEmptyDataSetDelegate", "emptyDataSetDidDisappear"]
+- ["PSo23DZNEmptyDataSetDelegate", "emptyDataSetDidTapButton"]
+- ["PSo23DZNEmptyDataSetDelegate", "emptyDataSetDidTapView"]
+- ["PSo23DZNEmptyDataSetDelegate", "emptyDataSetShouldAllowScroll"]
+- ["PSo23DZNEmptyDataSetDelegate", "emptyDataSetShouldAllowTouch"]
+- ["PSo23DZNEmptyDataSetDelegate", "emptyDataSetShouldAnimateImageView"]
+- ["PSo23DZNEmptyDataSetDelegate", "emptyDataSetShouldDisplay"]
+- ["PSo23DZNEmptyDataSetDelegate", "emptyDataSetWillAppear"]
+- ["PSo23DZNEmptyDataSetDelegate", "emptyDataSetWillDisappear"]
+- ["PSo23DZNEmptyDataSetDelegate", "imageAnimationForEmptyDataSet"]
+- ["PSo23DZNEmptyDataSetDelegate", "imageForEmptyDataSet"]
+- ["PSo23DZNEmptyDataSetDelegate", "imageTintColorForEmptyDataSet"]
+- ["PSo23DZNEmptyDataSetDelegate", "offsetForEmptyDataSet"]
+- ["PSo23DZNEmptyDataSetDelegate", "spaceHeightForEmptyDataSet"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "symbol"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "tabBarController"]
+- !private ["PSo23DZNEmptyDataSetDelegate", "tableView"]
+- ["PSo23DZNEmptyDataSetDelegate", "titleForEmptyDataSet"]
+- ["PSo23DZNEmptyDataSetDelegate", "verticalOffsetForEmptyDataSet"]
+- ["PSo23DZNEmptyDataSetDelegate", ""]
+- !private ["PSo21DZNEmptyDataSetSource", "NSAttributedString"]
+- !private ["PSo21DZNEmptyDataSetSource", "NSFontAttributeName"]
+- !private ["PSo21DZNEmptyDataSetSource", "NSLineBreakMode"]
+- !private ["PSo21DZNEmptyDataSetSource", "NSMutableParagraphStyle"]
+- !private ["PSo21DZNEmptyDataSetSource", "NSParagraphStyleAttributeName"]
+- !private ["PSo21DZNEmptyDataSetSource", "NSTextAlignment"]
+- !private ["PSo21DZNEmptyDataSetSource", "TWTRAPIClient"]
+- !private ["PSo21DZNEmptyDataSetSource", "TWTRSearchTimelineDataSource"]
+- !private ["PSo21DZNEmptyDataSetSource", "UIFont"]
+- !private ["PSo21DZNEmptyDataSetSource", "UIImage"]
+- !private ["PSo21DZNEmptyDataSetSource", "UIView"]
+- ["PSo21DZNEmptyDataSetSource", "backgroundColorForEmptyDataSet"]
+- ["PSo21DZNEmptyDataSetSource", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo21DZNEmptyDataSetSource", "buttonImageForEmptyDataSet"]
+- ["PSo21DZNEmptyDataSetSource", "buttonTitleForEmptyDataSet"]
+- ["PSo21DZNEmptyDataSetSource", "customViewForEmptyDataSet"]
+- !private ["PSo21DZNEmptyDataSetSource", "dataSource"]
+- ["PSo21DZNEmptyDataSetSource", "descriptionForEmptyDataSet"]
+- !private ["PSo21DZNEmptyDataSetSource", "dismissViewControllerAnimated"]
+- ["PSo21DZNEmptyDataSetSource", "emptyDataSet"]
+- ["PSo21DZNEmptyDataSetSource", "emptyDataSetDidAppear"]
+- ["PSo21DZNEmptyDataSetSource", "emptyDataSetDidDisappear"]
+- ["PSo21DZNEmptyDataSetSource", "emptyDataSetDidTapButton"]
+- ["PSo21DZNEmptyDataSetSource", "emptyDataSetDidTapView"]
+- ["PSo21DZNEmptyDataSetSource", "emptyDataSetShouldAllowScroll"]
+- ["PSo21DZNEmptyDataSetSource", "emptyDataSetShouldAllowTouch"]
+- ["PSo21DZNEmptyDataSetSource", "emptyDataSetShouldAnimateImageView"]
+- ["PSo21DZNEmptyDataSetSource", "emptyDataSetShouldDisplay"]
+- ["PSo21DZNEmptyDataSetSource", "emptyDataSetWillAppear"]
+- ["PSo21DZNEmptyDataSetSource", "emptyDataSetWillDisappear"]
+- ["PSo21DZNEmptyDataSetSource", "imageAnimationForEmptyDataSet"]
+- ["PSo21DZNEmptyDataSetSource", "imageForEmptyDataSet"]
+- ["PSo21DZNEmptyDataSetSource", "imageTintColorForEmptyDataSet"]
+- ["PSo21DZNEmptyDataSetSource", "offsetForEmptyDataSet"]
+- ["PSo21DZNEmptyDataSetSource", "spaceHeightForEmptyDataSet"]
+- !private ["PSo21DZNEmptyDataSetSource", "symbol"]
+- !private ["PSo21DZNEmptyDataSetSource", "tabBarController"]
+- !private ["PSo21DZNEmptyDataSetSource", "tableView"]
+- ["PSo21DZNEmptyDataSetSource", "titleForEmptyDataSet"]
+- ["PSo21DZNEmptyDataSetSource", "verticalOffsetForEmptyDataSet"]
+- ["PSo21DZNEmptyDataSetSource", ""]
+- !private ["VSs10Dictionary", "Key"]
+- !private ["VSs10Dictionary", "Value"]
+- !private ["PSs28DictionaryLiteralConvertible", "Key"]
+- !private ["PSs28DictionaryLiteralConvertible", "Value"]
+- !private ["Sd", "deinit"]
+- !private ["PSs9Equatable", "ByWordWrapping"]
+- !private ["PSs9Equatable", "Center"]
+- !private ["PSs9Equatable", "NSAttributedString"]
+- !private ["PSs9Equatable", "NSFontAttributeName"]
+- !private ["PSs9Equatable", "NSLineBreakMode"]
+- !private ["PSs9Equatable", "NSMutableParagraphStyle"]
+- !private ["PSs9Equatable", "NSParagraphStyleAttributeName"]
+- !private ["PSs9Equatable", "NSTextAlignment"]
+- !private ["PSs9Equatable", "TWTRAPIClient"]
+- !private ["PSs9Equatable", "TWTRSearchTimelineDataSource"]
+- !private ["PSs9Equatable", "UIFont"]
+- !private ["PSs9Equatable", "UIImage"]
+- !private ["PSs9Equatable", "UIView"]
+- !private ["PSs9Equatable", "_getBuiltinLogicValue"]
+- !private ["PSs9Equatable", "alignment"]
+- ["PSs9Equatable", "backgroundColorForEmptyDataSet"]
+- !private ["PSs9Equatable", "boldSystemFontOfSize"]
+- ["PSs9Equatable", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSs9Equatable", "buttonImageForEmptyDataSet"]
+- ["PSs9Equatable", "buttonTitleForEmptyDataSet"]
+- ["PSs9Equatable", "customViewForEmptyDataSet"]
+- !private ["PSs9Equatable", "dataSource"]
+- ["PSs9Equatable", "descriptionForEmptyDataSet"]
+- !private ["PSs9Equatable", "dismissViewControllerAnimated"]
+- ["PSs9Equatable", "emptyDataSet"]
+- !private ["PSs9Equatable", "emptyDataSetDelegate"]
+- ["PSs9Equatable", "emptyDataSetDidAppear"]
+- ["PSs9Equatable", "emptyDataSetDidDisappear"]
+- ["PSs9Equatable", "emptyDataSetDidTapButton"]
+- ["PSs9Equatable", "emptyDataSetDidTapView"]
+- ["PSs9Equatable", "emptyDataSetShouldAllowScroll"]
+- ["PSs9Equatable", "emptyDataSetShouldAllowTouch"]
+- ["PSs9Equatable", "emptyDataSetShouldAnimateImageView"]
+- ["PSs9Equatable", "emptyDataSetShouldDisplay"]
+- !private ["PSs9Equatable", "emptyDataSetSource"]
+- ["PSs9Equatable", "emptyDataSetWillAppear"]
+- ["PSs9Equatable", "emptyDataSetWillDisappear"]
+- ["PSs9Equatable", "imageAnimationForEmptyDataSet"]
+- ["PSs9Equatable", "imageForEmptyDataSet"]
+- ["PSs9Equatable", "imageTintColorForEmptyDataSet"]
+- ["PSs9Equatable", "init"]
+- !private ["PSs9Equatable", "lineBreakMode"]
+- ["PSs9Equatable", "offsetForEmptyDataSet"]
+- ["PSs9Equatable", "spaceHeightForEmptyDataSet"]
+- ["PSs9Equatable", "symbol"]
+- !private ["PSs9Equatable", "systemFontOfSize"]
+- !private ["PSs9Equatable", "tabBarController"]
+- !private ["PSs9Equatable", "tableFooterView"]
+- !private ["PSs9Equatable", "tableView"]
+- ["PSs9Equatable", "titleForEmptyDataSet"]
+- ["PSs9Equatable", "verticalOffsetForEmptyDataSet"]
+- ["PSs9Equatable", "viewDidLoad"]
+- ["PSs9Equatable", "viewWillAppear"]
+- ["PSs9Equatable", "xButtonPressed"]
+- ["PSs9Equatable", ""]
+- !private ["PSs41ExtendedGraphemeClusterLiteralConvertible", "init"]
+- !private ["Sf", "deinit"]
+- !private ["PSs8Hashable", "ByWordWrapping"]
+- !private ["PSs8Hashable", "Center"]
+- !private ["PSs8Hashable", "NSAttributedString"]
+- !private ["PSs8Hashable", "NSFontAttributeName"]
+- !private ["PSs8Hashable", "NSLineBreakMode"]
+- !private ["PSs8Hashable", "NSMutableParagraphStyle"]
+- !private ["PSs8Hashable", "NSParagraphStyleAttributeName"]
+- !private ["PSs8Hashable", "NSTextAlignment"]
+- !private ["PSs8Hashable", "TWTRAPIClient"]
+- !private ["PSs8Hashable", "TWTRSearchTimelineDataSource"]
+- !private ["PSs8Hashable", "UIFont"]
+- !private ["PSs8Hashable", "UIImage"]
+- !private ["PSs8Hashable", "UIView"]
+- !private ["PSs8Hashable", "_getBuiltinLogicValue"]
+- !private ["PSs8Hashable", "alignment"]
+- ["PSs8Hashable", "backgroundColorForEmptyDataSet"]
+- !private ["PSs8Hashable", "boldSystemFontOfSize"]
+- ["PSs8Hashable", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSs8Hashable", "buttonImageForEmptyDataSet"]
+- ["PSs8Hashable", "buttonTitleForEmptyDataSet"]
+- ["PSs8Hashable", "customViewForEmptyDataSet"]
+- !private ["PSs8Hashable", "dataSource"]
+- ["PSs8Hashable", "descriptionForEmptyDataSet"]
+- !private ["PSs8Hashable", "dismissViewControllerAnimated"]
+- ["PSs8Hashable", "emptyDataSet"]
+- !private ["PSs8Hashable", "emptyDataSetDelegate"]
+- ["PSs8Hashable", "emptyDataSetDidAppear"]
+- ["PSs8Hashable", "emptyDataSetDidDisappear"]
+- ["PSs8Hashable", "emptyDataSetDidTapButton"]
+- ["PSs8Hashable", "emptyDataSetDidTapView"]
+- ["PSs8Hashable", "emptyDataSetShouldAllowScroll"]
+- ["PSs8Hashable", "emptyDataSetShouldAllowTouch"]
+- ["PSs8Hashable", "emptyDataSetShouldAnimateImageView"]
+- ["PSs8Hashable", "emptyDataSetShouldDisplay"]
+- !private ["PSs8Hashable", "emptyDataSetSource"]
+- ["PSs8Hashable", "emptyDataSetWillAppear"]
+- ["PSs8Hashable", "emptyDataSetWillDisappear"]
+- ["PSs8Hashable", "imageAnimationForEmptyDataSet"]
+- ["PSs8Hashable", "imageForEmptyDataSet"]
+- ["PSs8Hashable", "imageTintColorForEmptyDataSet"]
+- ["PSs8Hashable", "init"]
+- !private ["PSs8Hashable", "lineBreakMode"]
+- ["PSs8Hashable", "offsetForEmptyDataSet"]
+- ["PSs8Hashable", "spaceHeightForEmptyDataSet"]
+- ["PSs8Hashable", "symbol"]
+- !private ["PSs8Hashable", "systemFontOfSize"]
+- !private ["PSs8Hashable", "tabBarController"]
+- !private ["PSs8Hashable", "tableFooterView"]
+- !private ["PSs8Hashable", "tableView"]
+- ["PSs8Hashable", "titleForEmptyDataSet"]
+- ["PSs8Hashable", "verticalOffsetForEmptyDataSet"]
+- ["PSs8Hashable", "viewDidLoad"]
+- ["PSs8Hashable", "viewWillAppear"]
+- ["PSs8Hashable", "xButtonPressed"]
+- ["PSs8Hashable", ""]
+- !private ["SQ", "deinit"]
+- !private ["PSs9Indexable", "Key"]
+- !private ["PSs9Indexable", "Value"]
+- !private ["Si", "deinit"]
+- !private ["VSs5Int16", "deinit"]
+- !private ["VSs5Int32", "deinit"]
+- !private ["VSs5Int64", "deinit"]
+- !private ["VSs4Int8", "deinit"]
+- !private ["PSs14MirrorPathType", "init"]
+- !private ["CSo18NSAttributedString", "init"]
+- !private ["PSo8NSCoding", "NSAttributedString"]
+- !private ["PSo8NSCoding", "NSFontAttributeName"]
+- !private ["PSo8NSCoding", "NSLineBreakMode"]
+- !private ["PSo8NSCoding", "NSMutableParagraphStyle"]
+- !private ["PSo8NSCoding", "NSParagraphStyleAttributeName"]
+- !private ["PSo8NSCoding", "NSTextAlignment"]
+- !private ["PSo8NSCoding", "TWTRAPIClient"]
+- !private ["PSo8NSCoding", "TWTRSearchTimelineDataSource"]
+- !private ["PSo8NSCoding", "UIFont"]
+- !private ["PSo8NSCoding", "UIImage"]
+- !private ["PSo8NSCoding", "UIView"]
+- !private ["PSo8NSCoding", "alignment"]
+- ["PSo8NSCoding", "backgroundColorForEmptyDataSet"]
+- ["PSo8NSCoding", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo8NSCoding", "buttonImageForEmptyDataSet"]
+- ["PSo8NSCoding", "buttonTitleForEmptyDataSet"]
+- ["PSo8NSCoding", "customViewForEmptyDataSet"]
+- !private ["PSo8NSCoding", "dataSource"]
+- ["PSo8NSCoding", "descriptionForEmptyDataSet"]
+- !private ["PSo8NSCoding", "dismissViewControllerAnimated"]
+- ["PSo8NSCoding", "emptyDataSet"]
+- !private ["PSo8NSCoding", "emptyDataSetDelegate"]
+- ["PSo8NSCoding", "emptyDataSetDidAppear"]
+- ["PSo8NSCoding", "emptyDataSetDidDisappear"]
+- ["PSo8NSCoding", "emptyDataSetDidTapButton"]
+- ["PSo8NSCoding", "emptyDataSetDidTapView"]
+- ["PSo8NSCoding", "emptyDataSetShouldAllowScroll"]
+- ["PSo8NSCoding", "emptyDataSetShouldAllowTouch"]
+- ["PSo8NSCoding", "emptyDataSetShouldAnimateImageView"]
+- ["PSo8NSCoding", "emptyDataSetShouldDisplay"]
+- !private ["PSo8NSCoding", "emptyDataSetSource"]
+- ["PSo8NSCoding", "emptyDataSetWillAppear"]
+- ["PSo8NSCoding", "emptyDataSetWillDisappear"]
+- ["PSo8NSCoding", "imageAnimationForEmptyDataSet"]
+- ["PSo8NSCoding", "imageForEmptyDataSet"]
+- ["PSo8NSCoding", "imageTintColorForEmptyDataSet"]
+- ["PSo8NSCoding", "init"]
+- !private ["PSo8NSCoding", "lineBreakMode"]
+- ["PSo8NSCoding", "offsetForEmptyDataSet"]
+- ["PSo8NSCoding", "spaceHeightForEmptyDataSet"]
+- ["PSo8NSCoding", "symbol"]
+- !private ["PSo8NSCoding", "tabBarController"]
+- !private ["PSo8NSCoding", "tableFooterView"]
+- !private ["PSo8NSCoding", "tableView"]
+- ["PSo8NSCoding", "titleForEmptyDataSet"]
+- ["PSo8NSCoding", "verticalOffsetForEmptyDataSet"]
+- ["PSo8NSCoding", "viewDidLoad"]
+- ["PSo8NSCoding", "viewWillAppear"]
+- ["PSo8NSCoding", "xButtonPressed"]
+- ["PSo8NSCoding", ""]
+- !private ["PSo9NSCopying", "alignment"]
+- !private ["PSo9NSCopying", "boldSystemFontOfSize"]
+- !private ["PSo9NSCopying", "init"]
+- !private ["PSo9NSCopying", "lineBreakMode"]
+- !private ["PSo9NSCopying", "systemFontOfSize"]
+- !private ["PSo26NSExtensionRequestHandling", "NSAttributedString"]
+- !private ["PSo26NSExtensionRequestHandling", "NSFontAttributeName"]
+- !private ["PSo26NSExtensionRequestHandling", "NSLineBreakMode"]
+- !private ["PSo26NSExtensionRequestHandling", "NSMutableParagraphStyle"]
+- !private ["PSo26NSExtensionRequestHandling", "NSParagraphStyleAttributeName"]
+- !private ["PSo26NSExtensionRequestHandling", "NSTextAlignment"]
+- !private ["PSo26NSExtensionRequestHandling", "TWTRAPIClient"]
+- !private ["PSo26NSExtensionRequestHandling", "TWTRSearchTimelineDataSource"]
+- !private ["PSo26NSExtensionRequestHandling", "UIFont"]
+- !private ["PSo26NSExtensionRequestHandling", "UIImage"]
+- !private ["PSo26NSExtensionRequestHandling", "UIView"]
+- ["PSo26NSExtensionRequestHandling", "backgroundColorForEmptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "buttonImageForEmptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "buttonTitleForEmptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "customViewForEmptyDataSet"]
+- !private ["PSo26NSExtensionRequestHandling", "dataSource"]
+- ["PSo26NSExtensionRequestHandling", "descriptionForEmptyDataSet"]
+- !private ["PSo26NSExtensionRequestHandling", "dismissViewControllerAnimated"]
+- ["PSo26NSExtensionRequestHandling", "emptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "emptyDataSetDidAppear"]
+- ["PSo26NSExtensionRequestHandling", "emptyDataSetDidDisappear"]
+- ["PSo26NSExtensionRequestHandling", "emptyDataSetDidTapButton"]
+- ["PSo26NSExtensionRequestHandling", "emptyDataSetDidTapView"]
+- ["PSo26NSExtensionRequestHandling", "emptyDataSetShouldAllowScroll"]
+- ["PSo26NSExtensionRequestHandling", "emptyDataSetShouldAllowTouch"]
+- ["PSo26NSExtensionRequestHandling", "emptyDataSetShouldAnimateImageView"]
+- ["PSo26NSExtensionRequestHandling", "emptyDataSetShouldDisplay"]
+- ["PSo26NSExtensionRequestHandling", "emptyDataSetWillAppear"]
+- ["PSo26NSExtensionRequestHandling", "emptyDataSetWillDisappear"]
+- ["PSo26NSExtensionRequestHandling", "imageAnimationForEmptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "imageForEmptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "imageTintColorForEmptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "init"]
+- ["PSo26NSExtensionRequestHandling", "offsetForEmptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "spaceHeightForEmptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "symbol"]
+- !private ["PSo26NSExtensionRequestHandling", "tabBarController"]
+- !private ["PSo26NSExtensionRequestHandling", "tableView"]
+- ["PSo26NSExtensionRequestHandling", "titleForEmptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "verticalOffsetForEmptyDataSet"]
+- ["PSo26NSExtensionRequestHandling", "viewDidLoad"]
+- ["PSo26NSExtensionRequestHandling", "viewWillAppear"]
+- ["PSo26NSExtensionRequestHandling", "xButtonPressed"]
+- ["PSo26NSExtensionRequestHandling", ""]
+- !private ["OSC15NSLineBreakMode", "ByWordWrapping"]
+- !private ["PSo16NSMutableCopying", "alignment"]
+- !private ["PSo16NSMutableCopying", "init"]
+- !private ["PSo16NSMutableCopying", "lineBreakMode"]
+- !private ["CSo23NSMutableParagraphStyle", "alignment"]
+- !private ["CSo23NSMutableParagraphStyle", "init"]
+- !private ["CSo23NSMutableParagraphStyle", "lineBreakMode"]
+- ["CSo8NSObject", "AnyObject"]
+- ["CSo8NSObject", "Bool"]
+- !private ["CSo8NSObject", "ChartDetailTabBarController"]
+- ["CSo8NSObject", "NSAttributedString"]
+- !private ["CSo8NSObject", "NSFontAttributeName"]
+- !private ["CSo8NSObject", "NSLineBreakMode"]
+- !private ["CSo8NSObject", "NSMutableParagraphStyle"]
+- !private ["CSo8NSObject", "NSParagraphStyleAttributeName"]
+- !private ["CSo8NSObject", "NSTextAlignment"]
+- ["CSo8NSObject", "String"]
+- !private ["CSo8NSObject", "TWTRAPIClient"]
+- !private ["CSo8NSObject", "TWTRSearchTimelineDataSource"]
+- !private ["CSo8NSObject", "UIFont"]
+- ["CSo8NSObject", "UIImage"]
+- ["CSo8NSObject", "UIScrollView"]
+- !private ["CSo8NSObject", "UIView"]
+- !private ["CSo8NSObject", "alignment"]
+- ["CSo8NSObject", "backgroundColorForEmptyDataSet"]
+- !private ["CSo8NSObject", "boldSystemFontOfSize"]
+- ["CSo8NSObject", "buttonBackgroundImageForEmptyDataSet"]
+- ["CSo8NSObject", "buttonImageForEmptyDataSet"]
+- ["CSo8NSObject", "buttonTitleForEmptyDataSet"]
+- ["CSo8NSObject", "customViewForEmptyDataSet"]
+- !private ["CSo8NSObject", "dataSource"]
+- ["CSo8NSObject", "descriptionForEmptyDataSet"]
+- !private ["CSo8NSObject", "dismissViewControllerAnimated"]
+- ["CSo8NSObject", "emptyDataSet"]
+- !private ["CSo8NSObject", "emptyDataSetDelegate"]
+- ["CSo8NSObject", "emptyDataSetDidAppear"]
+- ["CSo8NSObject", "emptyDataSetDidDisappear"]
+- ["CSo8NSObject", "emptyDataSetDidTapButton"]
+- ["CSo8NSObject", "emptyDataSetDidTapView"]
+- ["CSo8NSObject", "emptyDataSetShouldAllowScroll"]
+- ["CSo8NSObject", "emptyDataSetShouldAllowTouch"]
+- ["CSo8NSObject", "emptyDataSetShouldAnimateImageView"]
+- ["CSo8NSObject", "emptyDataSetShouldDisplay"]
+- !private ["CSo8NSObject", "emptyDataSetSource"]
+- ["CSo8NSObject", "emptyDataSetWillAppear"]
+- ["CSo8NSObject", "emptyDataSetWillDisappear"]
+- ["CSo8NSObject", "imageAnimationForEmptyDataSet"]
+- ["CSo8NSObject", "imageForEmptyDataSet"]
+- ["CSo8NSObject", "imageTintColorForEmptyDataSet"]
+- ["CSo8NSObject", "init"]
+- !private ["CSo8NSObject", "lineBreakMode"]
+- ["CSo8NSObject", "offsetForEmptyDataSet"]
+- ["CSo8NSObject", "spaceHeightForEmptyDataSet"]
+- ["CSo8NSObject", "symbol"]
+- !private ["CSo8NSObject", "systemFontOfSize"]
+- !private ["CSo8NSObject", "tabBarController"]
+- !private ["CSo8NSObject", "tableFooterView"]
+- !private ["CSo8NSObject", "tableView"]
+- ["CSo8NSObject", "titleForEmptyDataSet"]
+- ["CSo8NSObject", "verticalOffsetForEmptyDataSet"]
+- ["CSo8NSObject", "viewDidLoad"]
+- ["CSo8NSObject", "viewWillAppear"]
+- ["CSo8NSObject", "xButtonPressed"]
+- !private ["PSo16NSObjectProtocol", "NSAttributedString"]
+- !private ["PSo16NSObjectProtocol", "NSFontAttributeName"]
+- !private ["PSo16NSObjectProtocol", "NSLineBreakMode"]
+- !private ["PSo16NSObjectProtocol", "NSMutableParagraphStyle"]
+- !private ["PSo16NSObjectProtocol", "NSParagraphStyleAttributeName"]
+- !private ["PSo16NSObjectProtocol", "NSTextAlignment"]
+- !private ["PSo16NSObjectProtocol", "TWTRAPIClient"]
+- !private ["PSo16NSObjectProtocol", "TWTRSearchTimelineDataSource"]
+- !private ["PSo16NSObjectProtocol", "UIFont"]
+- !private ["PSo16NSObjectProtocol", "UIImage"]
+- !private ["PSo16NSObjectProtocol", "UIView"]
+- !private ["PSo16NSObjectProtocol", "alignment"]
+- ["PSo16NSObjectProtocol", "backgroundColorForEmptyDataSet"]
+- !private ["PSo16NSObjectProtocol", "boldSystemFontOfSize"]
+- ["PSo16NSObjectProtocol", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo16NSObjectProtocol", "buttonImageForEmptyDataSet"]
+- ["PSo16NSObjectProtocol", "buttonTitleForEmptyDataSet"]
+- ["PSo16NSObjectProtocol", "customViewForEmptyDataSet"]
+- !private ["PSo16NSObjectProtocol", "dataSource"]
+- ["PSo16NSObjectProtocol", "descriptionForEmptyDataSet"]
+- !private ["PSo16NSObjectProtocol", "dismissViewControllerAnimated"]
+- ["PSo16NSObjectProtocol", "emptyDataSet"]
+- !private ["PSo16NSObjectProtocol", "emptyDataSetDelegate"]
+- ["PSo16NSObjectProtocol", "emptyDataSetDidAppear"]
+- ["PSo16NSObjectProtocol", "emptyDataSetDidDisappear"]
+- ["PSo16NSObjectProtocol", "emptyDataSetDidTapButton"]
+- ["PSo16NSObjectProtocol", "emptyDataSetDidTapView"]
+- ["PSo16NSObjectProtocol", "emptyDataSetShouldAllowScroll"]
+- ["PSo16NSObjectProtocol", "emptyDataSetShouldAllowTouch"]
+- ["PSo16NSObjectProtocol", "emptyDataSetShouldAnimateImageView"]
+- ["PSo16NSObjectProtocol", "emptyDataSetShouldDisplay"]
+- !private ["PSo16NSObjectProtocol", "emptyDataSetSource"]
+- ["PSo16NSObjectProtocol", "emptyDataSetWillAppear"]
+- ["PSo16NSObjectProtocol", "emptyDataSetWillDisappear"]
+- ["PSo16NSObjectProtocol", "imageAnimationForEmptyDataSet"]
+- ["PSo16NSObjectProtocol", "imageForEmptyDataSet"]
+- ["PSo16NSObjectProtocol", "imageTintColorForEmptyDataSet"]
+- ["PSo16NSObjectProtocol", "init"]
+- !private ["PSo16NSObjectProtocol", "lineBreakMode"]
+- ["PSo16NSObjectProtocol", "offsetForEmptyDataSet"]
+- ["PSo16NSObjectProtocol", "spaceHeightForEmptyDataSet"]
+- ["PSo16NSObjectProtocol", "symbol"]
+- !private ["PSo16NSObjectProtocol", "systemFontOfSize"]
+- !private ["PSo16NSObjectProtocol", "tabBarController"]
+- !private ["PSo16NSObjectProtocol", "tableFooterView"]
+- !private ["PSo16NSObjectProtocol", "tableView"]
+- ["PSo16NSObjectProtocol", "titleForEmptyDataSet"]
+- ["PSo16NSObjectProtocol", "verticalOffsetForEmptyDataSet"]
+- ["PSo16NSObjectProtocol", "viewDidLoad"]
+- ["PSo16NSObjectProtocol", "viewWillAppear"]
+- ["PSo16NSObjectProtocol", "xButtonPressed"]
+- ["PSo16NSObjectProtocol", ""]
+- !private ["CSo16NSParagraphStyle", "alignment"]
+- !private ["CSo16NSParagraphStyle", "init"]
+- !private ["CSo16NSParagraphStyle", "lineBreakMode"]
+- !private ["PSo14NSSecureCoding", "alignment"]
+- !private ["PSo14NSSecureCoding", "init"]
+- !private ["PSo14NSSecureCoding", "lineBreakMode"]
+- !private ["CSo8NSString", "init"]
+- !private ["OSC15NSTextAlignment", "Center"]
+- !private ["Sq", "deinit"]
+- !private ["PSs16OutputStreamType", "init"]
+- !private ["PSs16RawRepresentable", "ByWordWrapping"]
+- !private ["PSs16RawRepresentable", "Center"]
+- !private ["PSs12SequenceType", "Key"]
+- !private ["PSs12SequenceType", "Value"]
+- ["C10StockSwipe25StreamTableViewController", "AnyObject"]
+- ["C10StockSwipe25StreamTableViewController", "Bool"]
+- !private ["C10StockSwipe25StreamTableViewController", "ChartDetailTabBarController"]
+- ["C10StockSwipe25StreamTableViewController", "NSAttributedString"]
+- !private ["C10StockSwipe25StreamTableViewController", "NSFontAttributeName"]
+- !private ["C10StockSwipe25StreamTableViewController", "NSLineBreakMode"]
+- !private ["C10StockSwipe25StreamTableViewController", "NSMutableParagraphStyle"]
+- !private ["C10StockSwipe25StreamTableViewController", "NSParagraphStyleAttributeName"]
+- !private ["C10StockSwipe25StreamTableViewController", "NSTextAlignment"]
+- ["C10StockSwipe25StreamTableViewController", "String"]
+- !private ["C10StockSwipe25StreamTableViewController", "TWTRAPIClient"]
+- !private ["C10StockSwipe25StreamTableViewController", "TWTRSearchTimelineDataSource"]
+- !private ["C10StockSwipe25StreamTableViewController", "UIFont"]
+- ["C10StockSwipe25StreamTableViewController", "UIImage"]
+- ["C10StockSwipe25StreamTableViewController", "UIScrollView"]
+- !private ["C10StockSwipe25StreamTableViewController", "UIView"]
+- ["C10StockSwipe25StreamTableViewController", "backgroundColorForEmptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "buttonBackgroundImageForEmptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "buttonImageForEmptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "buttonTitleForEmptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "customViewForEmptyDataSet"]
+- !private ["C10StockSwipe25StreamTableViewController", "dataSource"]
+- ["C10StockSwipe25StreamTableViewController", "deinit"]
+- ["C10StockSwipe25StreamTableViewController", "descriptionForEmptyDataSet"]
+- !private ["C10StockSwipe25StreamTableViewController", "dismissViewControllerAnimated"]
+- ["C10StockSwipe25StreamTableViewController", "emptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "emptyDataSetDidAppear"]
+- ["C10StockSwipe25StreamTableViewController", "emptyDataSetDidDisappear"]
+- ["C10StockSwipe25StreamTableViewController", "emptyDataSetDidTapButton"]
+- ["C10StockSwipe25StreamTableViewController", "emptyDataSetDidTapView"]
+- ["C10StockSwipe25StreamTableViewController", "emptyDataSetShouldAllowScroll"]
+- ["C10StockSwipe25StreamTableViewController", "emptyDataSetShouldAllowTouch"]
+- ["C10StockSwipe25StreamTableViewController", "emptyDataSetShouldAnimateImageView"]
+- ["C10StockSwipe25StreamTableViewController", "emptyDataSetShouldDisplay"]
+- ["C10StockSwipe25StreamTableViewController", "emptyDataSetWillAppear"]
+- ["C10StockSwipe25StreamTableViewController", "emptyDataSetWillDisappear"]
+- ["C10StockSwipe25StreamTableViewController", "imageAnimationForEmptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "imageForEmptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "imageTintColorForEmptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "init"]
+- ["C10StockSwipe25StreamTableViewController", "offsetForEmptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "spaceHeightForEmptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "symbol"]
+- !private ["C10StockSwipe25StreamTableViewController", "tabBarController"]
+- !private ["C10StockSwipe25StreamTableViewController", "tableView"]
+- ["C10StockSwipe25StreamTableViewController", "titleForEmptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "verticalOffsetForEmptyDataSet"]
+- ["C10StockSwipe25StreamTableViewController", "viewDidLoad"]
+- ["C10StockSwipe25StreamTableViewController", "viewWillAppear"]
+- ["C10StockSwipe25StreamTableViewController", "xButtonPressed"]
+- !private ["PSs10Streamable", "init"]
+- !private ["SS", "deinit"]
+- !private ["SS", "init"]
+- !private ["PSs30StringInterpolationConvertible", "init"]
+- !private ["PSs24StringLiteralConvertible", "init"]
+- !private ["P10StockSwipe13SubscriptType", "init"]
+- !private ["CSo13TWTRAPIClient", "init"]
+- !private ["CSo28TWTRSearchTimelineDataSource", "init"]
+- !private ["PSo22TWTRTimelineDataSource", "init"]
+- ["CSo26TWTRTimelineViewController", "AnyObject"]
+- ["CSo26TWTRTimelineViewController", "Bool"]
+- !private ["CSo26TWTRTimelineViewController", "ChartDetailTabBarController"]
+- ["CSo26TWTRTimelineViewController", "NSAttributedString"]
+- !private ["CSo26TWTRTimelineViewController", "NSFontAttributeName"]
+- !private ["CSo26TWTRTimelineViewController", "NSLineBreakMode"]
+- !private ["CSo26TWTRTimelineViewController", "NSMutableParagraphStyle"]
+- !private ["CSo26TWTRTimelineViewController", "NSParagraphStyleAttributeName"]
+- !private ["CSo26TWTRTimelineViewController", "NSTextAlignment"]
+- ["CSo26TWTRTimelineViewController", "String"]
+- !private ["CSo26TWTRTimelineViewController", "TWTRAPIClient"]
+- !private ["CSo26TWTRTimelineViewController", "TWTRSearchTimelineDataSource"]
+- !private ["CSo26TWTRTimelineViewController", "UIFont"]
+- ["CSo26TWTRTimelineViewController", "UIImage"]
+- ["CSo26TWTRTimelineViewController", "UIScrollView"]
+- !private ["CSo26TWTRTimelineViewController", "UIView"]
+- ["CSo26TWTRTimelineViewController", "backgroundColorForEmptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "buttonBackgroundImageForEmptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "buttonImageForEmptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "buttonTitleForEmptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "customViewForEmptyDataSet"]
+- !private ["CSo26TWTRTimelineViewController", "dataSource"]
+- ["CSo26TWTRTimelineViewController", "descriptionForEmptyDataSet"]
+- !private ["CSo26TWTRTimelineViewController", "dismissViewControllerAnimated"]
+- ["CSo26TWTRTimelineViewController", "emptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "emptyDataSetDidAppear"]
+- ["CSo26TWTRTimelineViewController", "emptyDataSetDidDisappear"]
+- ["CSo26TWTRTimelineViewController", "emptyDataSetDidTapButton"]
+- ["CSo26TWTRTimelineViewController", "emptyDataSetDidTapView"]
+- ["CSo26TWTRTimelineViewController", "emptyDataSetShouldAllowScroll"]
+- ["CSo26TWTRTimelineViewController", "emptyDataSetShouldAllowTouch"]
+- ["CSo26TWTRTimelineViewController", "emptyDataSetShouldAnimateImageView"]
+- ["CSo26TWTRTimelineViewController", "emptyDataSetShouldDisplay"]
+- ["CSo26TWTRTimelineViewController", "emptyDataSetWillAppear"]
+- ["CSo26TWTRTimelineViewController", "emptyDataSetWillDisappear"]
+- ["CSo26TWTRTimelineViewController", "imageAnimationForEmptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "imageForEmptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "imageTintColorForEmptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "init"]
+- ["CSo26TWTRTimelineViewController", "offsetForEmptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "spaceHeightForEmptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "symbol"]
+- !private ["CSo26TWTRTimelineViewController", "tabBarController"]
+- !private ["CSo26TWTRTimelineViewController", "tableView"]
+- ["CSo26TWTRTimelineViewController", "titleForEmptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "verticalOffsetForEmptyDataSet"]
+- ["CSo26TWTRTimelineViewController", "viewDidLoad"]
+- ["CSo26TWTRTimelineViewController", "viewWillAppear"]
+- ["CSo26TWTRTimelineViewController", "xButtonPressed"]
+- ["CSo26TWTRTimelineViewController", ""]
+- !private ["PSo29UIAccessibilityIdentification", "emptyDataSetDelegate"]
+- !private ["PSo29UIAccessibilityIdentification", "emptyDataSetSource"]
+- !private ["PSo29UIAccessibilityIdentification", "init"]
+- !private ["PSo29UIAccessibilityIdentification", "tableFooterView"]
+- !private ["PSo12UIAppearance", "emptyDataSetDelegate"]
+- !private ["PSo12UIAppearance", "emptyDataSetSource"]
+- !private ["PSo12UIAppearance", "init"]
+- !private ["PSo12UIAppearance", "tableFooterView"]
+- !private ["PSo21UIAppearanceContainer", "NSAttributedString"]
+- !private ["PSo21UIAppearanceContainer", "NSFontAttributeName"]
+- !private ["PSo21UIAppearanceContainer", "NSLineBreakMode"]
+- !private ["PSo21UIAppearanceContainer", "NSMutableParagraphStyle"]
+- !private ["PSo21UIAppearanceContainer", "NSParagraphStyleAttributeName"]
+- !private ["PSo21UIAppearanceContainer", "NSTextAlignment"]
+- !private ["PSo21UIAppearanceContainer", "TWTRAPIClient"]
+- !private ["PSo21UIAppearanceContainer", "TWTRSearchTimelineDataSource"]
+- !private ["PSo21UIAppearanceContainer", "UIFont"]
+- !private ["PSo21UIAppearanceContainer", "UIImage"]
+- !private ["PSo21UIAppearanceContainer", "UIView"]
+- ["PSo21UIAppearanceContainer", "backgroundColorForEmptyDataSet"]
+- ["PSo21UIAppearanceContainer", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo21UIAppearanceContainer", "buttonImageForEmptyDataSet"]
+- ["PSo21UIAppearanceContainer", "buttonTitleForEmptyDataSet"]
+- ["PSo21UIAppearanceContainer", "customViewForEmptyDataSet"]
+- !private ["PSo21UIAppearanceContainer", "dataSource"]
+- ["PSo21UIAppearanceContainer", "descriptionForEmptyDataSet"]
+- !private ["PSo21UIAppearanceContainer", "dismissViewControllerAnimated"]
+- ["PSo21UIAppearanceContainer", "emptyDataSet"]
+- !private ["PSo21UIAppearanceContainer", "emptyDataSetDelegate"]
+- ["PSo21UIAppearanceContainer", "emptyDataSetDidAppear"]
+- ["PSo21UIAppearanceContainer", "emptyDataSetDidDisappear"]
+- ["PSo21UIAppearanceContainer", "emptyDataSetDidTapButton"]
+- ["PSo21UIAppearanceContainer", "emptyDataSetDidTapView"]
+- ["PSo21UIAppearanceContainer", "emptyDataSetShouldAllowScroll"]
+- ["PSo21UIAppearanceContainer", "emptyDataSetShouldAllowTouch"]
+- ["PSo21UIAppearanceContainer", "emptyDataSetShouldAnimateImageView"]
+- ["PSo21UIAppearanceContainer", "emptyDataSetShouldDisplay"]
+- !private ["PSo21UIAppearanceContainer", "emptyDataSetSource"]
+- ["PSo21UIAppearanceContainer", "emptyDataSetWillAppear"]
+- ["PSo21UIAppearanceContainer", "emptyDataSetWillDisappear"]
+- ["PSo21UIAppearanceContainer", "imageAnimationForEmptyDataSet"]
+- ["PSo21UIAppearanceContainer", "imageForEmptyDataSet"]
+- ["PSo21UIAppearanceContainer", "imageTintColorForEmptyDataSet"]
+- ["PSo21UIAppearanceContainer", "init"]
+- ["PSo21UIAppearanceContainer", "offsetForEmptyDataSet"]
+- ["PSo21UIAppearanceContainer", "spaceHeightForEmptyDataSet"]
+- ["PSo21UIAppearanceContainer", "symbol"]
+- !private ["PSo21UIAppearanceContainer", "tabBarController"]
+- !private ["PSo21UIAppearanceContainer", "tableFooterView"]
+- !private ["PSo21UIAppearanceContainer", "tableView"]
+- ["PSo21UIAppearanceContainer", "titleForEmptyDataSet"]
+- ["PSo21UIAppearanceContainer", "verticalOffsetForEmptyDataSet"]
+- ["PSo21UIAppearanceContainer", "viewDidLoad"]
+- ["PSo21UIAppearanceContainer", "viewWillAppear"]
+- ["PSo21UIAppearanceContainer", "xButtonPressed"]
+- ["PSo21UIAppearanceContainer", ""]
+- !private ["PSo18UIContentContainer", "NSAttributedString"]
+- !private ["PSo18UIContentContainer", "NSFontAttributeName"]
+- !private ["PSo18UIContentContainer", "NSLineBreakMode"]
+- !private ["PSo18UIContentContainer", "NSMutableParagraphStyle"]
+- !private ["PSo18UIContentContainer", "NSParagraphStyleAttributeName"]
+- !private ["PSo18UIContentContainer", "NSTextAlignment"]
+- !private ["PSo18UIContentContainer", "TWTRAPIClient"]
+- !private ["PSo18UIContentContainer", "TWTRSearchTimelineDataSource"]
+- !private ["PSo18UIContentContainer", "UIFont"]
+- !private ["PSo18UIContentContainer", "UIImage"]
+- !private ["PSo18UIContentContainer", "UIView"]
+- ["PSo18UIContentContainer", "backgroundColorForEmptyDataSet"]
+- ["PSo18UIContentContainer", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo18UIContentContainer", "buttonImageForEmptyDataSet"]
+- ["PSo18UIContentContainer", "buttonTitleForEmptyDataSet"]
+- ["PSo18UIContentContainer", "customViewForEmptyDataSet"]
+- !private ["PSo18UIContentContainer", "dataSource"]
+- ["PSo18UIContentContainer", "descriptionForEmptyDataSet"]
+- !private ["PSo18UIContentContainer", "dismissViewControllerAnimated"]
+- ["PSo18UIContentContainer", "emptyDataSet"]
+- ["PSo18UIContentContainer", "emptyDataSetDidAppear"]
+- ["PSo18UIContentContainer", "emptyDataSetDidDisappear"]
+- ["PSo18UIContentContainer", "emptyDataSetDidTapButton"]
+- ["PSo18UIContentContainer", "emptyDataSetDidTapView"]
+- ["PSo18UIContentContainer", "emptyDataSetShouldAllowScroll"]
+- ["PSo18UIContentContainer", "emptyDataSetShouldAllowTouch"]
+- ["PSo18UIContentContainer", "emptyDataSetShouldAnimateImageView"]
+- ["PSo18UIContentContainer", "emptyDataSetShouldDisplay"]
+- ["PSo18UIContentContainer", "emptyDataSetWillAppear"]
+- ["PSo18UIContentContainer", "emptyDataSetWillDisappear"]
+- ["PSo18UIContentContainer", "imageAnimationForEmptyDataSet"]
+- ["PSo18UIContentContainer", "imageForEmptyDataSet"]
+- ["PSo18UIContentContainer", "imageTintColorForEmptyDataSet"]
+- ["PSo18UIContentContainer", "init"]
+- ["PSo18UIContentContainer", "offsetForEmptyDataSet"]
+- ["PSo18UIContentContainer", "spaceHeightForEmptyDataSet"]
+- ["PSo18UIContentContainer", "symbol"]
+- !private ["PSo18UIContentContainer", "tabBarController"]
+- !private ["PSo18UIContentContainer", "tableView"]
+- ["PSo18UIContentContainer", "titleForEmptyDataSet"]
+- ["PSo18UIContentContainer", "verticalOffsetForEmptyDataSet"]
+- ["PSo18UIContentContainer", "viewDidLoad"]
+- ["PSo18UIContentContainer", "viewWillAppear"]
+- ["PSo18UIContentContainer", "xButtonPressed"]
+- ["PSo18UIContentContainer", ""]
+- !private ["PSo17UICoordinateSpace", "emptyDataSetDelegate"]
+- !private ["PSo17UICoordinateSpace", "emptyDataSetSource"]
+- !private ["PSo17UICoordinateSpace", "init"]
+- !private ["PSo17UICoordinateSpace", "tableFooterView"]
+- !private ["PSo13UIDynamicItem", "emptyDataSetDelegate"]
+- !private ["PSo13UIDynamicItem", "emptyDataSetSource"]
+- !private ["PSo13UIDynamicItem", "init"]
+- !private ["PSo13UIDynamicItem", "tableFooterView"]
+- !private ["PSo18UIFocusEnvironment", "NSAttributedString"]
+- !private ["PSo18UIFocusEnvironment", "NSFontAttributeName"]
+- !private ["PSo18UIFocusEnvironment", "NSLineBreakMode"]
+- !private ["PSo18UIFocusEnvironment", "NSMutableParagraphStyle"]
+- !private ["PSo18UIFocusEnvironment", "NSParagraphStyleAttributeName"]
+- !private ["PSo18UIFocusEnvironment", "NSTextAlignment"]
+- !private ["PSo18UIFocusEnvironment", "TWTRAPIClient"]
+- !private ["PSo18UIFocusEnvironment", "TWTRSearchTimelineDataSource"]
+- !private ["PSo18UIFocusEnvironment", "UIFont"]
+- !private ["PSo18UIFocusEnvironment", "UIImage"]
+- !private ["PSo18UIFocusEnvironment", "UIView"]
+- ["PSo18UIFocusEnvironment", "backgroundColorForEmptyDataSet"]
+- ["PSo18UIFocusEnvironment", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo18UIFocusEnvironment", "buttonImageForEmptyDataSet"]
+- ["PSo18UIFocusEnvironment", "buttonTitleForEmptyDataSet"]
+- ["PSo18UIFocusEnvironment", "customViewForEmptyDataSet"]
+- !private ["PSo18UIFocusEnvironment", "dataSource"]
+- ["PSo18UIFocusEnvironment", "descriptionForEmptyDataSet"]
+- !private ["PSo18UIFocusEnvironment", "dismissViewControllerAnimated"]
+- ["PSo18UIFocusEnvironment", "emptyDataSet"]
+- !private ["PSo18UIFocusEnvironment", "emptyDataSetDelegate"]
+- ["PSo18UIFocusEnvironment", "emptyDataSetDidAppear"]
+- ["PSo18UIFocusEnvironment", "emptyDataSetDidDisappear"]
+- ["PSo18UIFocusEnvironment", "emptyDataSetDidTapButton"]
+- ["PSo18UIFocusEnvironment", "emptyDataSetDidTapView"]
+- ["PSo18UIFocusEnvironment", "emptyDataSetShouldAllowScroll"]
+- ["PSo18UIFocusEnvironment", "emptyDataSetShouldAllowTouch"]
+- ["PSo18UIFocusEnvironment", "emptyDataSetShouldAnimateImageView"]
+- ["PSo18UIFocusEnvironment", "emptyDataSetShouldDisplay"]
+- !private ["PSo18UIFocusEnvironment", "emptyDataSetSource"]
+- ["PSo18UIFocusEnvironment", "emptyDataSetWillAppear"]
+- ["PSo18UIFocusEnvironment", "emptyDataSetWillDisappear"]
+- ["PSo18UIFocusEnvironment", "imageAnimationForEmptyDataSet"]
+- ["PSo18UIFocusEnvironment", "imageForEmptyDataSet"]
+- ["PSo18UIFocusEnvironment", "imageTintColorForEmptyDataSet"]
+- ["PSo18UIFocusEnvironment", "init"]
+- ["PSo18UIFocusEnvironment", "offsetForEmptyDataSet"]
+- ["PSo18UIFocusEnvironment", "spaceHeightForEmptyDataSet"]
+- ["PSo18UIFocusEnvironment", "symbol"]
+- !private ["PSo18UIFocusEnvironment", "tabBarController"]
+- !private ["PSo18UIFocusEnvironment", "tableFooterView"]
+- !private ["PSo18UIFocusEnvironment", "tableView"]
+- ["PSo18UIFocusEnvironment", "titleForEmptyDataSet"]
+- ["PSo18UIFocusEnvironment", "verticalOffsetForEmptyDataSet"]
+- ["PSo18UIFocusEnvironment", "viewDidLoad"]
+- ["PSo18UIFocusEnvironment", "viewWillAppear"]
+- ["PSo18UIFocusEnvironment", "xButtonPressed"]
+- ["PSo18UIFocusEnvironment", ""]
+- !private ["CSo6UIFont", "boldSystemFontOfSize"]
+- !private ["CSo6UIFont", "systemFontOfSize"]
+- !private ["CSo7UIImage", "init"]
+- ["CSo11UIResponder", "AnyObject"]
+- ["CSo11UIResponder", "Bool"]
+- !private ["CSo11UIResponder", "ChartDetailTabBarController"]
+- ["CSo11UIResponder", "NSAttributedString"]
+- !private ["CSo11UIResponder", "NSFontAttributeName"]
+- !private ["CSo11UIResponder", "NSLineBreakMode"]
+- !private ["CSo11UIResponder", "NSMutableParagraphStyle"]
+- !private ["CSo11UIResponder", "NSParagraphStyleAttributeName"]
+- !private ["CSo11UIResponder", "NSTextAlignment"]
+- ["CSo11UIResponder", "String"]
+- !private ["CSo11UIResponder", "TWTRAPIClient"]
+- !private ["CSo11UIResponder", "TWTRSearchTimelineDataSource"]
+- !private ["CSo11UIResponder", "UIFont"]
+- ["CSo11UIResponder", "UIImage"]
+- ["CSo11UIResponder", "UIScrollView"]
+- !private ["CSo11UIResponder", "UIView"]
+- ["CSo11UIResponder", "backgroundColorForEmptyDataSet"]
+- ["CSo11UIResponder", "buttonBackgroundImageForEmptyDataSet"]
+- ["CSo11UIResponder", "buttonImageForEmptyDataSet"]
+- ["CSo11UIResponder", "buttonTitleForEmptyDataSet"]
+- ["CSo11UIResponder", "customViewForEmptyDataSet"]
+- !private ["CSo11UIResponder", "dataSource"]
+- ["CSo11UIResponder", "descriptionForEmptyDataSet"]
+- !private ["CSo11UIResponder", "dismissViewControllerAnimated"]
+- ["CSo11UIResponder", "emptyDataSet"]
+- !private ["CSo11UIResponder", "emptyDataSetDelegate"]
+- ["CSo11UIResponder", "emptyDataSetDidAppear"]
+- ["CSo11UIResponder", "emptyDataSetDidDisappear"]
+- ["CSo11UIResponder", "emptyDataSetDidTapButton"]
+- ["CSo11UIResponder", "emptyDataSetDidTapView"]
+- ["CSo11UIResponder", "emptyDataSetShouldAllowScroll"]
+- ["CSo11UIResponder", "emptyDataSetShouldAllowTouch"]
+- ["CSo11UIResponder", "emptyDataSetShouldAnimateImageView"]
+- ["CSo11UIResponder", "emptyDataSetShouldDisplay"]
+- !private ["CSo11UIResponder", "emptyDataSetSource"]
+- ["CSo11UIResponder", "emptyDataSetWillAppear"]
+- ["CSo11UIResponder", "emptyDataSetWillDisappear"]
+- ["CSo11UIResponder", "imageAnimationForEmptyDataSet"]
+- ["CSo11UIResponder", "imageForEmptyDataSet"]
+- ["CSo11UIResponder", "imageTintColorForEmptyDataSet"]
+- ["CSo11UIResponder", "init"]
+- ["CSo11UIResponder", "offsetForEmptyDataSet"]
+- ["CSo11UIResponder", "spaceHeightForEmptyDataSet"]
+- ["CSo11UIResponder", "symbol"]
+- !private ["CSo11UIResponder", "tabBarController"]
+- !private ["CSo11UIResponder", "tableFooterView"]
+- !private ["CSo11UIResponder", "tableView"]
+- ["CSo11UIResponder", "titleForEmptyDataSet"]
+- ["CSo11UIResponder", "verticalOffsetForEmptyDataSet"]
+- ["CSo11UIResponder", "viewDidLoad"]
+- ["CSo11UIResponder", "viewWillAppear"]
+- ["CSo11UIResponder", "xButtonPressed"]
+- !private ["CSo12UIScrollView", "emptyDataSetDelegate"]
+- !private ["CSo12UIScrollView", "emptyDataSetSource"]
+- !private ["CSo12UIScrollView", "tableFooterView"]
+- !private ["PSo20UIScrollViewDelegate", "NSAttributedString"]
+- !private ["PSo20UIScrollViewDelegate", "NSFontAttributeName"]
+- !private ["PSo20UIScrollViewDelegate", "NSLineBreakMode"]
+- !private ["PSo20UIScrollViewDelegate", "NSMutableParagraphStyle"]
+- !private ["PSo20UIScrollViewDelegate", "NSParagraphStyleAttributeName"]
+- !private ["PSo20UIScrollViewDelegate", "NSTextAlignment"]
+- !private ["PSo20UIScrollViewDelegate", "TWTRAPIClient"]
+- !private ["PSo20UIScrollViewDelegate", "TWTRSearchTimelineDataSource"]
+- !private ["PSo20UIScrollViewDelegate", "UIFont"]
+- !private ["PSo20UIScrollViewDelegate", "UIImage"]
+- !private ["PSo20UIScrollViewDelegate", "UIView"]
+- ["PSo20UIScrollViewDelegate", "backgroundColorForEmptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "buttonImageForEmptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "buttonTitleForEmptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "customViewForEmptyDataSet"]
+- !private ["PSo20UIScrollViewDelegate", "dataSource"]
+- ["PSo20UIScrollViewDelegate", "descriptionForEmptyDataSet"]
+- !private ["PSo20UIScrollViewDelegate", "dismissViewControllerAnimated"]
+- ["PSo20UIScrollViewDelegate", "emptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "emptyDataSetDidAppear"]
+- ["PSo20UIScrollViewDelegate", "emptyDataSetDidDisappear"]
+- ["PSo20UIScrollViewDelegate", "emptyDataSetDidTapButton"]
+- ["PSo20UIScrollViewDelegate", "emptyDataSetDidTapView"]
+- ["PSo20UIScrollViewDelegate", "emptyDataSetShouldAllowScroll"]
+- ["PSo20UIScrollViewDelegate", "emptyDataSetShouldAllowTouch"]
+- ["PSo20UIScrollViewDelegate", "emptyDataSetShouldAnimateImageView"]
+- ["PSo20UIScrollViewDelegate", "emptyDataSetShouldDisplay"]
+- ["PSo20UIScrollViewDelegate", "emptyDataSetWillAppear"]
+- ["PSo20UIScrollViewDelegate", "emptyDataSetWillDisappear"]
+- ["PSo20UIScrollViewDelegate", "imageAnimationForEmptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "imageForEmptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "imageTintColorForEmptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "init"]
+- ["PSo20UIScrollViewDelegate", "offsetForEmptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "spaceHeightForEmptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "symbol"]
+- !private ["PSo20UIScrollViewDelegate", "tabBarController"]
+- !private ["PSo20UIScrollViewDelegate", "tableView"]
+- ["PSo20UIScrollViewDelegate", "titleForEmptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "verticalOffsetForEmptyDataSet"]
+- ["PSo20UIScrollViewDelegate", "viewDidLoad"]
+- ["PSo20UIScrollViewDelegate", "viewWillAppear"]
+- ["PSo20UIScrollViewDelegate", "xButtonPressed"]
+- ["PSo20UIScrollViewDelegate", ""]
+- !private ["PSo16UIStateRestoring", "NSAttributedString"]
+- !private ["PSo16UIStateRestoring", "NSFontAttributeName"]
+- !private ["PSo16UIStateRestoring", "NSLineBreakMode"]
+- !private ["PSo16UIStateRestoring", "NSMutableParagraphStyle"]
+- !private ["PSo16UIStateRestoring", "NSParagraphStyleAttributeName"]
+- !private ["PSo16UIStateRestoring", "NSTextAlignment"]
+- !private ["PSo16UIStateRestoring", "TWTRAPIClient"]
+- !private ["PSo16UIStateRestoring", "TWTRSearchTimelineDataSource"]
+- !private ["PSo16UIStateRestoring", "UIFont"]
+- !private ["PSo16UIStateRestoring", "UIImage"]
+- !private ["PSo16UIStateRestoring", "UIView"]
+- ["PSo16UIStateRestoring", "backgroundColorForEmptyDataSet"]
+- ["PSo16UIStateRestoring", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo16UIStateRestoring", "buttonImageForEmptyDataSet"]
+- ["PSo16UIStateRestoring", "buttonTitleForEmptyDataSet"]
+- ["PSo16UIStateRestoring", "customViewForEmptyDataSet"]
+- !private ["PSo16UIStateRestoring", "dataSource"]
+- ["PSo16UIStateRestoring", "descriptionForEmptyDataSet"]
+- !private ["PSo16UIStateRestoring", "dismissViewControllerAnimated"]
+- ["PSo16UIStateRestoring", "emptyDataSet"]
+- ["PSo16UIStateRestoring", "emptyDataSetDidAppear"]
+- ["PSo16UIStateRestoring", "emptyDataSetDidDisappear"]
+- ["PSo16UIStateRestoring", "emptyDataSetDidTapButton"]
+- ["PSo16UIStateRestoring", "emptyDataSetDidTapView"]
+- ["PSo16UIStateRestoring", "emptyDataSetShouldAllowScroll"]
+- ["PSo16UIStateRestoring", "emptyDataSetShouldAllowTouch"]
+- ["PSo16UIStateRestoring", "emptyDataSetShouldAnimateImageView"]
+- ["PSo16UIStateRestoring", "emptyDataSetShouldDisplay"]
+- ["PSo16UIStateRestoring", "emptyDataSetWillAppear"]
+- ["PSo16UIStateRestoring", "emptyDataSetWillDisappear"]
+- ["PSo16UIStateRestoring", "imageAnimationForEmptyDataSet"]
+- ["PSo16UIStateRestoring", "imageForEmptyDataSet"]
+- ["PSo16UIStateRestoring", "imageTintColorForEmptyDataSet"]
+- ["PSo16UIStateRestoring", "init"]
+- ["PSo16UIStateRestoring", "offsetForEmptyDataSet"]
+- ["PSo16UIStateRestoring", "spaceHeightForEmptyDataSet"]
+- ["PSo16UIStateRestoring", "symbol"]
+- !private ["PSo16UIStateRestoring", "tabBarController"]
+- !private ["PSo16UIStateRestoring", "tableView"]
+- ["PSo16UIStateRestoring", "titleForEmptyDataSet"]
+- ["PSo16UIStateRestoring", "verticalOffsetForEmptyDataSet"]
+- ["PSo16UIStateRestoring", "viewDidLoad"]
+- ["PSo16UIStateRestoring", "viewWillAppear"]
+- ["PSo16UIStateRestoring", "xButtonPressed"]
+- ["PSo16UIStateRestoring", ""]
+- !private ["CSo18UITabBarController", "symbol"]
+- !private ["PSo16UITabBarDelegate", "symbol"]
+- !private ["CSo11UITableView", "emptyDataSetDelegate"]
+- !private ["CSo11UITableView", "emptyDataSetSource"]
+- !private ["CSo11UITableView", "tableFooterView"]
+- ["CSo21UITableViewController", "AnyObject"]
+- ["CSo21UITableViewController", "Bool"]
+- !private ["CSo21UITableViewController", "ChartDetailTabBarController"]
+- ["CSo21UITableViewController", "NSAttributedString"]
+- !private ["CSo21UITableViewController", "NSFontAttributeName"]
+- !private ["CSo21UITableViewController", "NSLineBreakMode"]
+- !private ["CSo21UITableViewController", "NSMutableParagraphStyle"]
+- !private ["CSo21UITableViewController", "NSParagraphStyleAttributeName"]
+- !private ["CSo21UITableViewController", "NSTextAlignment"]
+- ["CSo21UITableViewController", "String"]
+- !private ["CSo21UITableViewController", "TWTRAPIClient"]
+- !private ["CSo21UITableViewController", "TWTRSearchTimelineDataSource"]
+- !private ["CSo21UITableViewController", "UIFont"]
+- ["CSo21UITableViewController", "UIImage"]
+- ["CSo21UITableViewController", "UIScrollView"]
+- !private ["CSo21UITableViewController", "UIView"]
+- ["CSo21UITableViewController", "backgroundColorForEmptyDataSet"]
+- ["CSo21UITableViewController", "buttonBackgroundImageForEmptyDataSet"]
+- ["CSo21UITableViewController", "buttonImageForEmptyDataSet"]
+- ["CSo21UITableViewController", "buttonTitleForEmptyDataSet"]
+- ["CSo21UITableViewController", "customViewForEmptyDataSet"]
+- !private ["CSo21UITableViewController", "dataSource"]
+- ["CSo21UITableViewController", "descriptionForEmptyDataSet"]
+- !private ["CSo21UITableViewController", "dismissViewControllerAnimated"]
+- ["CSo21UITableViewController", "emptyDataSet"]
+- ["CSo21UITableViewController", "emptyDataSetDidAppear"]
+- ["CSo21UITableViewController", "emptyDataSetDidDisappear"]
+- ["CSo21UITableViewController", "emptyDataSetDidTapButton"]
+- ["CSo21UITableViewController", "emptyDataSetDidTapView"]
+- ["CSo21UITableViewController", "emptyDataSetShouldAllowScroll"]
+- ["CSo21UITableViewController", "emptyDataSetShouldAllowTouch"]
+- ["CSo21UITableViewController", "emptyDataSetShouldAnimateImageView"]
+- ["CSo21UITableViewController", "emptyDataSetShouldDisplay"]
+- ["CSo21UITableViewController", "emptyDataSetWillAppear"]
+- ["CSo21UITableViewController", "emptyDataSetWillDisappear"]
+- ["CSo21UITableViewController", "imageAnimationForEmptyDataSet"]
+- ["CSo21UITableViewController", "imageForEmptyDataSet"]
+- ["CSo21UITableViewController", "imageTintColorForEmptyDataSet"]
+- ["CSo21UITableViewController", "init"]
+- ["CSo21UITableViewController", "offsetForEmptyDataSet"]
+- ["CSo21UITableViewController", "spaceHeightForEmptyDataSet"]
+- ["CSo21UITableViewController", "symbol"]
+- !private ["CSo21UITableViewController", "tabBarController"]
+- !private ["CSo21UITableViewController", "tableView"]
+- ["CSo21UITableViewController", "titleForEmptyDataSet"]
+- ["CSo21UITableViewController", "verticalOffsetForEmptyDataSet"]
+- ["CSo21UITableViewController", "viewDidLoad"]
+- ["CSo21UITableViewController", "viewWillAppear"]
+- ["CSo21UITableViewController", "xButtonPressed"]
+- !private ["PSo21UITableViewDataSource", "NSAttributedString"]
+- !private ["PSo21UITableViewDataSource", "NSFontAttributeName"]
+- !private ["PSo21UITableViewDataSource", "NSLineBreakMode"]
+- !private ["PSo21UITableViewDataSource", "NSMutableParagraphStyle"]
+- !private ["PSo21UITableViewDataSource", "NSParagraphStyleAttributeName"]
+- !private ["PSo21UITableViewDataSource", "NSTextAlignment"]
+- !private ["PSo21UITableViewDataSource", "TWTRAPIClient"]
+- !private ["PSo21UITableViewDataSource", "TWTRSearchTimelineDataSource"]
+- !private ["PSo21UITableViewDataSource", "UIFont"]
+- !private ["PSo21UITableViewDataSource", "UIImage"]
+- !private ["PSo21UITableViewDataSource", "UIView"]
+- ["PSo21UITableViewDataSource", "backgroundColorForEmptyDataSet"]
+- ["PSo21UITableViewDataSource", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo21UITableViewDataSource", "buttonImageForEmptyDataSet"]
+- ["PSo21UITableViewDataSource", "buttonTitleForEmptyDataSet"]
+- ["PSo21UITableViewDataSource", "customViewForEmptyDataSet"]
+- !private ["PSo21UITableViewDataSource", "dataSource"]
+- ["PSo21UITableViewDataSource", "descriptionForEmptyDataSet"]
+- !private ["PSo21UITableViewDataSource", "dismissViewControllerAnimated"]
+- ["PSo21UITableViewDataSource", "emptyDataSet"]
+- ["PSo21UITableViewDataSource", "emptyDataSetDidAppear"]
+- ["PSo21UITableViewDataSource", "emptyDataSetDidDisappear"]
+- ["PSo21UITableViewDataSource", "emptyDataSetDidTapButton"]
+- ["PSo21UITableViewDataSource", "emptyDataSetDidTapView"]
+- ["PSo21UITableViewDataSource", "emptyDataSetShouldAllowScroll"]
+- ["PSo21UITableViewDataSource", "emptyDataSetShouldAllowTouch"]
+- ["PSo21UITableViewDataSource", "emptyDataSetShouldAnimateImageView"]
+- ["PSo21UITableViewDataSource", "emptyDataSetShouldDisplay"]
+- ["PSo21UITableViewDataSource", "emptyDataSetWillAppear"]
+- ["PSo21UITableViewDataSource", "emptyDataSetWillDisappear"]
+- ["PSo21UITableViewDataSource", "imageAnimationForEmptyDataSet"]
+- ["PSo21UITableViewDataSource", "imageForEmptyDataSet"]
+- ["PSo21UITableViewDataSource", "imageTintColorForEmptyDataSet"]
+- ["PSo21UITableViewDataSource", "init"]
+- ["PSo21UITableViewDataSource", "offsetForEmptyDataSet"]
+- ["PSo21UITableViewDataSource", "spaceHeightForEmptyDataSet"]
+- ["PSo21UITableViewDataSource", "symbol"]
+- !private ["PSo21UITableViewDataSource", "tabBarController"]
+- !private ["PSo21UITableViewDataSource", "tableView"]
+- ["PSo21UITableViewDataSource", "titleForEmptyDataSet"]
+- ["PSo21UITableViewDataSource", "verticalOffsetForEmptyDataSet"]
+- ["PSo21UITableViewDataSource", "viewDidLoad"]
+- ["PSo21UITableViewDataSource", "viewWillAppear"]
+- ["PSo21UITableViewDataSource", "xButtonPressed"]
+- ["PSo21UITableViewDataSource", ""]
+- !private ["PSo19UITableViewDelegate", "NSAttributedString"]
+- !private ["PSo19UITableViewDelegate", "NSFontAttributeName"]
+- !private ["PSo19UITableViewDelegate", "NSLineBreakMode"]
+- !private ["PSo19UITableViewDelegate", "NSMutableParagraphStyle"]
+- !private ["PSo19UITableViewDelegate", "NSParagraphStyleAttributeName"]
+- !private ["PSo19UITableViewDelegate", "NSTextAlignment"]
+- !private ["PSo19UITableViewDelegate", "TWTRAPIClient"]
+- !private ["PSo19UITableViewDelegate", "TWTRSearchTimelineDataSource"]
+- !private ["PSo19UITableViewDelegate", "UIFont"]
+- !private ["PSo19UITableViewDelegate", "UIImage"]
+- !private ["PSo19UITableViewDelegate", "UIView"]
+- ["PSo19UITableViewDelegate", "backgroundColorForEmptyDataSet"]
+- ["PSo19UITableViewDelegate", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo19UITableViewDelegate", "buttonImageForEmptyDataSet"]
+- ["PSo19UITableViewDelegate", "buttonTitleForEmptyDataSet"]
+- ["PSo19UITableViewDelegate", "customViewForEmptyDataSet"]
+- !private ["PSo19UITableViewDelegate", "dataSource"]
+- ["PSo19UITableViewDelegate", "descriptionForEmptyDataSet"]
+- !private ["PSo19UITableViewDelegate", "dismissViewControllerAnimated"]
+- ["PSo19UITableViewDelegate", "emptyDataSet"]
+- ["PSo19UITableViewDelegate", "emptyDataSetDidAppear"]
+- ["PSo19UITableViewDelegate", "emptyDataSetDidDisappear"]
+- ["PSo19UITableViewDelegate", "emptyDataSetDidTapButton"]
+- ["PSo19UITableViewDelegate", "emptyDataSetDidTapView"]
+- ["PSo19UITableViewDelegate", "emptyDataSetShouldAllowScroll"]
+- ["PSo19UITableViewDelegate", "emptyDataSetShouldAllowTouch"]
+- ["PSo19UITableViewDelegate", "emptyDataSetShouldAnimateImageView"]
+- ["PSo19UITableViewDelegate", "emptyDataSetShouldDisplay"]
+- ["PSo19UITableViewDelegate", "emptyDataSetWillAppear"]
+- ["PSo19UITableViewDelegate", "emptyDataSetWillDisappear"]
+- ["PSo19UITableViewDelegate", "imageAnimationForEmptyDataSet"]
+- ["PSo19UITableViewDelegate", "imageForEmptyDataSet"]
+- ["PSo19UITableViewDelegate", "imageTintColorForEmptyDataSet"]
+- ["PSo19UITableViewDelegate", "init"]
+- ["PSo19UITableViewDelegate", "offsetForEmptyDataSet"]
+- ["PSo19UITableViewDelegate", "spaceHeightForEmptyDataSet"]
+- ["PSo19UITableViewDelegate", "symbol"]
+- !private ["PSo19UITableViewDelegate", "tabBarController"]
+- !private ["PSo19UITableViewDelegate", "tableView"]
+- ["PSo19UITableViewDelegate", "titleForEmptyDataSet"]
+- ["PSo19UITableViewDelegate", "verticalOffsetForEmptyDataSet"]
+- ["PSo19UITableViewDelegate", "viewDidLoad"]
+- ["PSo19UITableViewDelegate", "viewWillAppear"]
+- ["PSo19UITableViewDelegate", "xButtonPressed"]
+- ["PSo19UITableViewDelegate", ""]
+- !private ["PSo18UITraitEnvironment", "NSAttributedString"]
+- !private ["PSo18UITraitEnvironment", "NSFontAttributeName"]
+- !private ["PSo18UITraitEnvironment", "NSLineBreakMode"]
+- !private ["PSo18UITraitEnvironment", "NSMutableParagraphStyle"]
+- !private ["PSo18UITraitEnvironment", "NSParagraphStyleAttributeName"]
+- !private ["PSo18UITraitEnvironment", "NSTextAlignment"]
+- !private ["PSo18UITraitEnvironment", "TWTRAPIClient"]
+- !private ["PSo18UITraitEnvironment", "TWTRSearchTimelineDataSource"]
+- !private ["PSo18UITraitEnvironment", "UIFont"]
+- !private ["PSo18UITraitEnvironment", "UIImage"]
+- !private ["PSo18UITraitEnvironment", "UIView"]
+- ["PSo18UITraitEnvironment", "backgroundColorForEmptyDataSet"]
+- ["PSo18UITraitEnvironment", "buttonBackgroundImageForEmptyDataSet"]
+- ["PSo18UITraitEnvironment", "buttonImageForEmptyDataSet"]
+- ["PSo18UITraitEnvironment", "buttonTitleForEmptyDataSet"]
+- ["PSo18UITraitEnvironment", "customViewForEmptyDataSet"]
+- !private ["PSo18UITraitEnvironment", "dataSource"]
+- ["PSo18UITraitEnvironment", "descriptionForEmptyDataSet"]
+- !private ["PSo18UITraitEnvironment", "dismissViewControllerAnimated"]
+- ["PSo18UITraitEnvironment", "emptyDataSet"]
+- !private ["PSo18UITraitEnvironment", "emptyDataSetDelegate"]
+- ["PSo18UITraitEnvironment", "emptyDataSetDidAppear"]
+- ["PSo18UITraitEnvironment", "emptyDataSetDidDisappear"]
+- ["PSo18UITraitEnvironment", "emptyDataSetDidTapButton"]
+- ["PSo18UITraitEnvironment", "emptyDataSetDidTapView"]
+- ["PSo18UITraitEnvironment", "emptyDataSetShouldAllowScroll"]
+- ["PSo18UITraitEnvironment", "emptyDataSetShouldAllowTouch"]
+- ["PSo18UITraitEnvironment", "emptyDataSetShouldAnimateImageView"]
+- ["PSo18UITraitEnvironment", "emptyDataSetShouldDisplay"]
+- !private ["PSo18UITraitEnvironment", "emptyDataSetSource"]
+- ["PSo18UITraitEnvironment", "emptyDataSetWillAppear"]
+- ["PSo18UITraitEnvironment", "emptyDataSetWillDisappear"]
+- ["PSo18UITraitEnvironment", "imageAnimationForEmptyDataSet"]
+- ["PSo18UITraitEnvironment", "imageForEmptyDataSet"]
+- ["PSo18UITraitEnvironment", "imageTintColorForEmptyDataSet"]
+- ["PSo18UITraitEnvironment", "init"]
+- ["PSo18UITraitEnvironment", "offsetForEmptyDataSet"]
+- ["PSo18UITraitEnvironment", "spaceHeightForEmptyDataSet"]
+- ["PSo18UITraitEnvironment", "symbol"]
+- !private ["PSo18UITraitEnvironment", "tabBarController"]
+- !private ["PSo18UITraitEnvironment", "tableFooterView"]
+- !private ["PSo18UITraitEnvironment", "tableView"]
+- ["PSo18UITraitEnvironment", "titleForEmptyDataSet"]
+- ["PSo18UITraitEnvironment", "verticalOffsetForEmptyDataSet"]
+- ["PSo18UITraitEnvironment", "viewDidLoad"]
+- ["PSo18UITraitEnvironment", "viewWillAppear"]
+- ["PSo18UITraitEnvironment", "xButtonPressed"]
+- ["PSo18UITraitEnvironment", ""]
+- !private ["CSo6UIView", "emptyDataSetDelegate"]
+- !private ["CSo6UIView", "emptyDataSetSource"]
+- !private ["CSo6UIView", "init"]
+- !private ["CSo6UIView", "tableFooterView"]
+- ["CSo16UIViewController", "AnyObject"]
+- ["CSo16UIViewController", "Bool"]
+- !private ["CSo16UIViewController", "ChartDetailTabBarController"]
+- ["CSo16UIViewController", "NSAttributedString"]
+- !private ["CSo16UIViewController", "NSFontAttributeName"]
+- !private ["CSo16UIViewController", "NSLineBreakMode"]
+- !private ["CSo16UIViewController", "NSMutableParagraphStyle"]
+- !private ["CSo16UIViewController", "NSParagraphStyleAttributeName"]
+- !private ["CSo16UIViewController", "NSTextAlignment"]
+- ["CSo16UIViewController", "String"]
+- !private ["CSo16UIViewController", "TWTRAPIClient"]
+- !private ["CSo16UIViewController", "TWTRSearchTimelineDataSource"]
+- !private ["CSo16UIViewController", "UIFont"]
+- ["CSo16UIViewController", "UIImage"]
+- ["CSo16UIViewController", "UIScrollView"]
+- !private ["CSo16UIViewController", "UIView"]
+- ["CSo16UIViewController", "backgroundColorForEmptyDataSet"]
+- ["CSo16UIViewController", "buttonBackgroundImageForEmptyDataSet"]
+- ["CSo16UIViewController", "buttonImageForEmptyDataSet"]
+- ["CSo16UIViewController", "buttonTitleForEmptyDataSet"]
+- ["CSo16UIViewController", "customViewForEmptyDataSet"]
+- !private ["CSo16UIViewController", "dataSource"]
+- ["CSo16UIViewController", "descriptionForEmptyDataSet"]
+- !private ["CSo16UIViewController", "dismissViewControllerAnimated"]
+- ["CSo16UIViewController", "emptyDataSet"]
+- ["CSo16UIViewController", "emptyDataSetDidAppear"]
+- ["CSo16UIViewController", "emptyDataSetDidDisappear"]
+- ["CSo16UIViewController", "emptyDataSetDidTapButton"]
+- ["CSo16UIViewController", "emptyDataSetDidTapView"]
+- ["CSo16UIViewController", "emptyDataSetShouldAllowScroll"]
+- ["CSo16UIViewController", "emptyDataSetShouldAllowTouch"]
+- ["CSo16UIViewController", "emptyDataSetShouldAnimateImageView"]
+- ["CSo16UIViewController", "emptyDataSetShouldDisplay"]
+- ["CSo16UIViewController", "emptyDataSetWillAppear"]
+- ["CSo16UIViewController", "emptyDataSetWillDisappear"]
+- ["CSo16UIViewController", "imageAnimationForEmptyDataSet"]
+- ["CSo16UIViewController", "imageForEmptyDataSet"]
+- ["CSo16UIViewController", "imageTintColorForEmptyDataSet"]
+- ["CSo16UIViewController", "init"]
+- ["CSo16UIViewController", "offsetForEmptyDataSet"]
+- ["CSo16UIViewController", "spaceHeightForEmptyDataSet"]
+- ["CSo16UIViewController", "symbol"]
+- !private ["CSo16UIViewController", "tabBarController"]
+- !private ["CSo16UIViewController", "tableView"]
+- ["CSo16UIViewController", "titleForEmptyDataSet"]
+- ["CSo16UIViewController", "verticalOffsetForEmptyDataSet"]
+- ["CSo16UIViewController", "viewDidLoad"]
+- ["CSo16UIViewController", "viewWillAppear"]
+- ["CSo16UIViewController", "xButtonPressed"]
+- !private ["Su", "deinit"]
+- !private ["VSs6UInt16", "deinit"]
+- !private ["VSs6UInt32", "deinit"]
+- !private ["VSs6UInt64", "deinit"]
+- !private ["VSs5UInt8", "deinit"]
+- !private ["Sc", "deinit"]
+- !private ["PSs31UnicodeScalarLiteralConvertible", "init"]
+- !private ["PSs33_BuiltinBooleanLiteralConvertible", "_getBuiltinLogicValue"]
+- !private ["PSs49_BuiltinExtendedGraphemeClusterLiteralConvertible", "init"]
+- !private ["PSs32_BuiltinStringLiteralConvertible", "init"]
+- !private ["PSs37_BuiltinUTF16StringLiteralConvertible", "init"]
+- !private ["PSs39_BuiltinUnicodeScalarLiteralConvertible", "init"]
+- !private ["PSs16_CocoaStringType", "init"]
+- !private ["PSs24_ImageLiteralConvertible", "init"]
+- !private ["PSs21_ObjectiveCBridgeable", "Key"]
+- !private ["PSs21_ObjectiveCBridgeable", "Value"]
+- !private ["PSs21_ObjectiveCBridgeable", "_getBuiltinLogicValue"]
+- !private ["PSs21_ObjectiveCBridgeable", "init"]
+- !private ["VSs26_OptionalNilComparisonType", "deinit"]
+- !private ["PSs12_Reflectable", "Key"]
+- !private ["PSs12_Reflectable", "Value"]
+- !private ["PSs12_Reflectable", "_getBuiltinLogicValue"]
+- !private ["PSs12_Reflectable", "emptyDataSetDelegate"]
+- !private ["PSs12_Reflectable", "emptyDataSetSource"]
+- !private ["PSs12_Reflectable", "init"]
+- !private ["PSs12_Reflectable", "tableFooterView"]
+depends-nominal:
+- "PSs9AnyObject"
+- !private "Sb"
+- !private "PSs25BooleanLiteralConvertible"
+- !private "PSs11BooleanType"
+- !private "V12CoreGraphics7CGFloat"
+- "PSs11CVarArgType"
+- !private "VSs9Character"
+- !private "C10StockSwipe27ChartDetailTabBarController"
+- !private "PSs14CollectionType"
+- !private "PSs10Comparable"
+- !private "PSs28CustomDebugStringConvertible"
+- "PSs23CustomStringConvertible"
+- "PSo23DZNEmptyDataSetDelegate"
+- "PSo21DZNEmptyDataSetSource"
+- !private "VSs10Dictionary"
+- !private "PSs28DictionaryLiteralConvertible"
+- !private "Sd"
+- "PSs9Equatable"
+- !private "PSs41ExtendedGraphemeClusterLiteralConvertible"
+- !private "Sf"
+- "PSs8Hashable"
+- !private "SQ"
+- !private "PSs9Indexable"
+- !private "Si"
+- !private "VSs5Int16"
+- !private "VSs5Int32"
+- !private "VSs5Int64"
+- !private "VSs4Int8"
+- !private "PSs14MirrorPathType"
+- !private "CSo18NSAttributedString"
+- "PSo8NSCoding"
+- !private "PSo9NSCopying"
+- "PSo26NSExtensionRequestHandling"
+- !private "OSC15NSLineBreakMode"
+- !private "PSo16NSMutableCopying"
+- !private "CSo23NSMutableParagraphStyle"
+- "CSo8NSObject"
+- "PSo16NSObjectProtocol"
+- !private "CSo16NSParagraphStyle"
+- !private "PSo14NSSecureCoding"
+- !private "CSo8NSString"
+- !private "OSC15NSTextAlignment"
+- !private "Sq"
+- !private "PSs16OutputStreamType"
+- !private "PSs16RawRepresentable"
+- !private "PSs12SequenceType"
+- "C10StockSwipe25StreamTableViewController"
+- !private "PSs10Streamable"
+- !private "SS"
+- !private "PSs30StringInterpolationConvertible"
+- !private "PSs24StringLiteralConvertible"
+- !private "P10StockSwipe13SubscriptType"
+- !private "CSo13TWTRAPIClient"
+- !private "CSo28TWTRSearchTimelineDataSource"
+- !private "PSo22TWTRTimelineDataSource"
+- "CSo26TWTRTimelineViewController"
+- !private "PSo29UIAccessibilityIdentification"
+- !private "PSo12UIAppearance"
+- "PSo21UIAppearanceContainer"
+- "PSo18UIContentContainer"
+- !private "PSo17UICoordinateSpace"
+- !private "PSo13UIDynamicItem"
+- "PSo18UIFocusEnvironment"
+- !private "CSo6UIFont"
+- !private "CSo7UIImage"
+- "CSo11UIResponder"
+- !private "CSo12UIScrollView"
+- "PSo20UIScrollViewDelegate"
+- "PSo16UIStateRestoring"
+- !private "CSo18UITabBarController"
+- !private "PSo16UITabBarDelegate"
+- !private "CSo11UITableView"
+- "CSo21UITableViewController"
+- "PSo21UITableViewDataSource"
+- "PSo19UITableViewDelegate"
+- "PSo18UITraitEnvironment"
+- !private "CSo6UIView"
+- "CSo16UIViewController"
+- !private "Su"
+- !private "VSs6UInt16"
+- !private "VSs6UInt32"
+- !private "VSs6UInt64"
+- !private "VSs5UInt8"
+- !private "Sc"
+- !private "PSs31UnicodeScalarLiteralConvertible"
+- !private "PSs33_BuiltinBooleanLiteralConvertible"
+- !private "PSs49_BuiltinExtendedGraphemeClusterLiteralConvertible"
+- !private "PSs32_BuiltinStringLiteralConvertible"
+- !private "PSs37_BuiltinUTF16StringLiteralConvertible"
+- !private "PSs39_BuiltinUnicodeScalarLiteralConvertible"
+- !private "PSs16_CocoaStringType"
+- !private "PSs24_ImageLiteralConvertible"
+- !private "PSs21_ObjectiveCBridgeable"
+- !private "VSs26_OptionalNilComparisonType"
+- !private "PSs12_Reflectable"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/BridgingHeader.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/SARate-master/SARate/SARate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/SARate-master/SARate/iRate/iRate.h"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/NSDate+NVTimeAgo.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/UIView+TLMotionEffect.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/iCarousel/iCarousel.h"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreData.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCPanState.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeResult.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChooseViewOptions.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChooseView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeOptions.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/UIView+MDCSwipeToChoose.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChooseDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeDirection.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChoose.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChoose-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BoltsVersion.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/Bolts.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFTaskCompletionSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFTask.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFExecutor.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFDefines.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFCancellationTokenSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFCancellationTokenRegistration.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFCancellationToken.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFWebViewAppLinkResolver.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFURL_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFURL.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFMeasurementEvent_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFMeasurementEvent.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkTarget.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkReturnToRefererView_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkReturnToRefererView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkReturnToRefererController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkResolving.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkNavigation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLink_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLink.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/Bolts-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFPurchase.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFProduct.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFPush.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFNetworkActivityIndicatorManager.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFInstallation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFUserAuthenticationDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFRole.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFRelation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFQuery.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFObject+Subclass.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFGeoPoint.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFFile.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFConfig.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFCloud.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFSubclassing.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFObject.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFUser.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFAnonymousUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFAnalytics.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFACL.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/Parse.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/Parse-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Modules/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/PulsingHalo.framework/Headers/PulsingHaloLayer.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/PulsingHalo.framework/Headers/PulsingHalo-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/PulsingHalo.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Headers/SDiOSVersion.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Headers/SDVersion.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Headers/SDVersion-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/CloudWord.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/CloudLayoutOperation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/WordCloud.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Intermediates/StockSwipe.build/Debug-iphonesimulator/WordCloud.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/WebKit.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/ANSCompatibility.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/Answers.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSStackFrame.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSReport.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSLogging.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSAttributes.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/Crashlytics.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/NSString+LKURLEncoded.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/NSDictionary+LKFormEncoded.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKLog.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LaunchKitShared.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LaunchKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKConfig.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKAppUser.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKAPIClient.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKAnalytics.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LaunchKit-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/ParseUI.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFTableViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFPurchaseTableViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFCollectionViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFTextField.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFImageView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFProductTableViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFQueryCollectionViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFQueryTableViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFSignUpViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFSignUpView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFLogInViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFLogInView_Private.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/ParseUIConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFLogInView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/ParseUI-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/PF_Twitter.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/PFTwitterUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/ParseTwitterUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/ParseTwitterUtils-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphRequestDataAttachment.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphErrorRecoveryProcessor.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKUtility.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKTestUsersManager.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKSettings.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKProfilePictureView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKProfile.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKMutableCopying.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphRequest.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKCoreKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKButton.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAppLinkUtility.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAppLinkResolver.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKApplicationDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAppEvents.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKMacros.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphRequestConnection.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKCopying.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAccessToken.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKCoreKit-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginTooltipView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginManagerLoginResult.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKTooltipView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginManager.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginButton.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginKit-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Headers/PFFacebookUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Headers/ParseFacebookUtilsV4.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Headers/ParseFacebookUtilsV4-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Modules/Charts.swiftmodule/x86_64.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Headers/Charts-Swift.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Headers/Charts.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRSessionStore.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRGuestSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRDefines.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRCoreOAuthSigning.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRAuthSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRAuthConfig.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRAPIErrorCode.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TwitterCore.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRUserTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRUser.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweetViewDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweetView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweetTableViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweet.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTimelineViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRShareEmailViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRSearchTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTROAuthSigning.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRLogInButton.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRListTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRComposerTheme.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRComposer.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTimelineType.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRCollectionTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRComposerViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRCardConfiguration.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRAPIClient.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/Twitter.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TwitterKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/DZNEmptyDataSet.framework/Headers/UIScrollView+EmptyDataSet.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/DZNEmptyDataSet.framework/Headers/DZNEmptyDataSet-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/DZNEmptyDataSet.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Fabric.framework/Headers/FABAttributes.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Fabric.framework/Headers/Fabric.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Fabric.framework/Modules/module.modulemap"
+interface-hash: "7fd66d591900f3990b8ffd2f83f3aaee"

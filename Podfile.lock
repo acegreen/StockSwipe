@@ -1,0 +1,102 @@
+PODS:
+  - AMPopTip (1.0.3)
+  - Bolts (1.7.0):
+    - Bolts/AppLinks (= 1.7.0)
+    - Bolts/Tasks (= 1.7.0)
+  - Bolts/AppLinks (1.7.0):
+    - Bolts/Tasks
+  - Bolts/Tasks (1.7.0)
+  - BubbleTransition (1.0.3)
+  - Charts (2.2.5):
+    - Charts/Core (= 2.2.5)
+  - Charts/Core (2.2.5)
+  - ChimpKit (3.1.1)
+  - DZNEmptyDataSet (1.7.2)
+  - FBSDKCoreKit (4.12.0):
+    - Bolts (~> 1.7)
+  - FBSDKLoginKit (4.12.0):
+    - FBSDKCoreKit
+  - LaunchKit (2.1.4):
+    - LaunchKit/LaunchKit (= 2.1.4)
+  - LaunchKit/LaunchKit (2.1.4)
+  - MDCSwipeToChoose (0.2.3)
+  - Parse (1.13.0):
+    - Bolts/Tasks (~> 1.6)
+  - ParseFacebookUtilsV4 (1.11.1):
+    - Bolts/Tasks (>= 1.6)
+    - FBSDKCoreKit (~> 4.10)
+    - FBSDKLoginKit (~> 4.10)
+    - FBSDKTVOSKit (~> 4.10)
+    - Parse (~> 1.12)
+  - ParseTwitterUtils (1.10.0):
+    - Bolts/Tasks (~> 1.5)
+    - Parse (~> 1.9)
+  - ParseUI (1.2.0):
+    - Bolts/Tasks (~> 1.3)
+    - Parse (~> 1.9)
+  - PulsingHalo (0.1.0)
+  - Rollout.io (0.14.5)
+  - SDVersion (3.0.1)
+  - Spring (1.0.3)
+  - SwiftyJSON (2.3.2)
+  - SWXMLHash (2.3.1)
+
+DEPENDENCIES:
+  - AMPopTip
+  - BubbleTransition
+  - Charts
+  - ChimpKit
+  - DZNEmptyDataSet (= 1.7.2)
+  - LaunchKit
+  - MDCSwipeToChoose
+  - Parse
+  - ParseFacebookUtilsV4
+  - ParseTwitterUtils
+  - ParseUI
+  - PulsingHalo (from `https://github.com/shu223/PulsingHalo.git`)
+  - Rollout.io (~> 0.14.4)
+  - SDVersion
+  - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift2`)
+  - SwiftyJSON
+  - SWXMLHash
+
+EXTERNAL SOURCES:
+  PulsingHalo:
+    :git: https://github.com/shu223/PulsingHalo.git
+  Spring:
+    :branch: swift2
+    :git: https://github.com/MengTo/Spring.git
+
+CHECKOUT OPTIONS:
+  PulsingHalo:
+    :commit: 0799f509e146605e20cb8d6391b1fb86e3985b1f
+    :git: https://github.com/shu223/PulsingHalo.git
+  Spring:
+    :commit: 18d5c7b74489de8044e34767f856d1e574f0820e
+    :git: https://github.com/MengTo/Spring.git
+
+SPEC CHECKSUMS:
+  AMPopTip: 42ab801c5d4519093908d14134c8c9d7ffc435b4
+  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
+  BubbleTransition: a7ae6678721406d60f604cbbea1ace505563119d
+  Charts: b48fcc8d7190de910ff9e9748f5360c8ea7856e5
+  ChimpKit: d020126089544daa349397a91f1489a3f271b791
+  DZNEmptyDataSet: 0ec00bfc230d7450997b60c127afdd0b9f24f3b6
+  FBSDKCoreKit: 6e56d5a2a64a755ad4efb5dbeee8f82fb1b99775
+  FBSDKLoginKit: 03f68a8d48c2c8bb81d7eb8097973d483543e1f6
+  LaunchKit: 95ad4fb171a0f8ea1c80aa26d4fb7bd637788f9c
+  MDCSwipeToChoose: 56239d98b4558c66e7c3c9069482befd26092270
+  Parse: f51c24d2feb412e4b2d6cc73d37cb24e8d0089bc
+  ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
+  ParseTwitterUtils: 8856ac80da50bbb0f0bcf251def20b62e1ae6bc4
+  ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
+  PulsingHalo: d2684152281a3f7398b9554734b9a4f8feb9129a
+  Rollout.io: e5b35636dba2e110536d54d561d7d95ed5fdc953
+  SDVersion: 99fc7a356ed89db3d41f17af49e0310c42248190
+  Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
+  SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
+  SWXMLHash: 795c66e74f4cc9473ad6465c6653c5a6f59f417e
+
+PODFILE CHECKSUM: 514ae07f9951159366dbedcf3131bae70f7eb8d3
+
+COCOAPODS: 1.0.0

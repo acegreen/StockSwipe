@@ -1,0 +1,6 @@
+framework module WordCloud {
+  umbrella header "WordCloud.h"
+
+  export *
+  module * { export * }
+}

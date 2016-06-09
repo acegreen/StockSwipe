@@ -1,0 +1,6 @@
+framework module Pods_StockSwipe {
+  umbrella header "Pods-StockSwipe-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,58 @@
+{
+  'version': 0,
+  'case-sensitive': 'false',
+  'roots': [
+    {
+      'type': 'directory',
+      'name': "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/WordCloud.framework/Headers",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "CloudLayoutOperation.h",
+          'external-contents': "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/CloudLayoutOperation.h"
+        },
+        {
+          'type': 'file',
+          'name': "CloudWord.h",
+          'external-contents': "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/CloudWord.h"
+        },
+        {
+          'type': 'file',
+          'name': "QuadTree.h",
+          'external-contents': "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/QuadTree.h"
+        },
+        {
+          'type': 'file',
+          'name': "UIColor+CloudSettings.h",
+          'external-contents': "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/UIColor+CloudSettings.h"
+        },
+        {
+          'type': 'file',
+          'name': "UIFont+CloudSettings.h",
+          'external-contents': "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/UIFont+CloudSettings.h"
+        },
+        {
+          'type': 'file',
+          'name': "WordCloud-Swift.h",
+          'external-contents': "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/WordCloud.framework/Headers/WordCloud-Swift.h"
+        },
+        {
+          'type': 'file',
+          'name': "WordCloud.h",
+          'external-contents': "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/WordCloud.h"
+        }
+      ]
+    },
+    {
+      'type': 'directory',
+      'name': "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/WordCloud.framework/Modules",
+      'contents': [
+        {
+          'type': 'file',
+          'name': "module.modulemap",
+          'external-contents': "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Intermediates/StockSwipe.build/Debug-iphonesimulator/WordCloud.build/module.modulemap"
+        }
+      ]
+    }
+  ]
+}

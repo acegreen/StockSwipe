@@ -1,0 +1,796 @@
+### Swift dependencies file v0 ###
+provides-top-level:
+- "chartWidth"
+- "chartHeight"
+- "horizontalPadding"
+- "verticalPadding"
+- "numberOfCellsHorizontally"
+- "numberOfCellsVertically"
+- "infoDict"
+- "current"
+- "payload"
+- "appLink"
+- "appLinkURL"
+- "appURL"
+- "appReviewURL"
+- "appEmail"
+- "settingsURL"
+- "emailDiagnosticInfo"
+- "app"
+- "appDel"
+- "context"
+- "entity"
+- "fetchRequest"
+- "stockQuery"
+- "stockQuery2"
+- "stockCountQuery"
+- "parseLocalQuery"
+- "stockSwipeFont"
+- "stockSwipeFontColor"
+- "userDefaults"
+- "okAlertAction"
+- "settingsAlertAction"
+- "cancelAlertAction"
+- "congratulationsImage"
+- "emptyTableGuyImage"
+- "storyboard"
+- "nsUserActivityArray"
+- "motionOffset"
+provides-nominal:
+provides-member:
+provides-dynamic-lookup:
+depends-top-level:
+- "AppDelegate"
+- "appDel"
+- "StringLiteralType"
+- "stockSwipeFont"
+- "stockCountQuery"
+- "cancelAlertAction"
+- "Dictionary"
+- "infoDict"
+- "NSBundle"
+- "motionOffset"
+- "/"
+- "appReviewURL"
+- "stockSwipeFontColor"
+- "okAlertAction"
+- "CGFloat"
+- "emptyTableGuyImage"
+- "UIAlertAction"
+- "NSManagedObjectContext"
+- "app"
+- "horizontalPadding"
+- "appLinkURL"
+- "context"
+- "fetchRequest"
+- "UIFont"
+- "ExtendedGraphemeClusterType"
+- "UIColor"
+- "chartHeight"
+- "verticalPadding"
+- "appURL"
+- "NSFetchRequest"
+- "chartWidth"
+- "payload"
+- "settingsURL"
+- "emailDiagnosticInfo"
+- "UIDevice"
+- "NSEntityDescription"
+- "numberOfCellsVertically"
+- "parseLocalQuery"
+- "entity"
+- "NSURL"
+- "UIImage"
+- "NSUserDefaults"
+- "numberOfCellsHorizontally"
+- "appLink"
+- "settingsAlertAction"
+- "congratulationsImage"
+- "UIApplicationOpenSettingsURLString"
+- "PFQuery"
+- "UIApplication"
+- "NSUserActivity"
+- "Array"
+- "current"
+- "stockQuery"
+- "String"
+- "appEmail"
+- "stockQuery2"
+- "UIStoryboard"
+- "userDefaults"
+- "storyboard"
+- "nsUserActivityArray"
+depends-member:
+- ["PSs9AnyObject", "currentDevice"]
+- ["PSs9AnyObject", "delegate"]
+- ["PSs9AnyObject", "entityForName"]
+- ["PSs9AnyObject", "infoDictionary"]
+- ["PSs9AnyObject", "init"]
+- ["PSs9AnyObject", "mainBundle"]
+- ["PSs9AnyObject", "managedObjectContext"]
+- ["PSs9AnyObject", "model"]
+- ["PSs9AnyObject", "openURL"]
+- ["PSs9AnyObject", "sharedApplication"]
+- ["PSs9AnyObject", "standardUserDefaults"]
+- ["PSs9AnyObject", "systemName"]
+- ["PSs9AnyObject", "systemVersion"]
+- ["C10StockSwipe11AppDelegate", "managedObjectContext"]
+- ["Sa", "Generator"]
+- ["Sa", "Index"]
+- ["Sa", "_Element"]
+- ["Sa", "init"]
+- ["Sa", "reduce"]
+- ["PSs23ArrayLiteralConvertible", "Generator"]
+- ["PSs23ArrayLiteralConvertible", "Index"]
+- ["PSs23ArrayLiteralConvertible", "_Element"]
+- ["PSs23ArrayLiteralConvertible", "init"]
+- ["PSs23ArrayLiteralConvertible", "reduce"]
+- ["PSs22BidirectionalIndexType", "Distance"]
+- ["PSs22BidirectionalIndexType", "IntegerLiteralType"]
+- ["PSs21BitwiseOperationsType", "Distance"]
+- ["PSs21BitwiseOperationsType", "IntegerLiteralType"]
+- ["Sb", "deinit"]
+- ["V12CoreGraphics7CGFloat", "deinit"]
+- ["PSs11CVarArgType", "Distance"]
+- ["PSs11CVarArgType", "IntegerLiteralType"]
+- ["PSs11CVarArgType", "currentDevice"]
+- ["PSs11CVarArgType", "delegate"]
+- ["PSs11CVarArgType", "entityForName"]
+- ["PSs11CVarArgType", "infoDictionary"]
+- ["PSs11CVarArgType", "init"]
+- ["PSs11CVarArgType", "mainBundle"]
+- ["PSs11CVarArgType", "managedObjectContext"]
+- ["PSs11CVarArgType", "model"]
+- ["PSs11CVarArgType", "openURL"]
+- ["PSs11CVarArgType", "sharedApplication"]
+- ["PSs11CVarArgType", "standardUserDefaults"]
+- ["PSs11CVarArgType", "systemName"]
+- ["PSs11CVarArgType", "systemVersion"]
+- ["VSs9Character", "deinit"]
+- ["PSs14CollectionType", "Generator"]
+- ["PSs14CollectionType", "Index"]
+- ["PSs14CollectionType", "Key"]
+- ["PSs14CollectionType", "SubSequence"]
+- ["PSs14CollectionType", "Value"]
+- ["PSs14CollectionType", "_Element"]
+- ["PSs14CollectionType", "init"]
+- ["PSs14CollectionType", "keys"]
+- ["PSs14CollectionType", "reduce"]
+- ["PSs14CollectionType", "subscript"]
+- ["PSs10Comparable", "Distance"]
+- ["PSs10Comparable", "IntegerLiteralType"]
+- ["PSs10Comparable", "_DisabledRangeIndex"]
+- ["PSs10Comparable", "init"]
+- ["PSs28CustomDebugStringConvertible", "Generator"]
+- ["PSs28CustomDebugStringConvertible", "Index"]
+- ["PSs28CustomDebugStringConvertible", "Key"]
+- ["PSs28CustomDebugStringConvertible", "SubSequence"]
+- ["PSs28CustomDebugStringConvertible", "Value"]
+- ["PSs28CustomDebugStringConvertible", "_Element"]
+- ["PSs28CustomDebugStringConvertible", "init"]
+- ["PSs28CustomDebugStringConvertible", "keys"]
+- ["PSs28CustomDebugStringConvertible", "reduce"]
+- ["PSs28CustomDebugStringConvertible", "subscript"]
+- ["PSs23CustomStringConvertible", "Distance"]
+- ["PSs23CustomStringConvertible", "Generator"]
+- ["PSs23CustomStringConvertible", "Index"]
+- ["PSs23CustomStringConvertible", "IntegerLiteralType"]
+- ["PSs23CustomStringConvertible", "Key"]
+- ["PSs23CustomStringConvertible", "SubSequence"]
+- ["PSs23CustomStringConvertible", "Value"]
+- ["PSs23CustomStringConvertible", "_Element"]
+- ["PSs23CustomStringConvertible", "currentDevice"]
+- ["PSs23CustomStringConvertible", "delegate"]
+- ["PSs23CustomStringConvertible", "entityForName"]
+- ["PSs23CustomStringConvertible", "infoDictionary"]
+- ["PSs23CustomStringConvertible", "init"]
+- ["PSs23CustomStringConvertible", "keys"]
+- ["PSs23CustomStringConvertible", "mainBundle"]
+- ["PSs23CustomStringConvertible", "managedObjectContext"]
+- ["PSs23CustomStringConvertible", "model"]
+- ["PSs23CustomStringConvertible", "openURL"]
+- ["PSs23CustomStringConvertible", "reduce"]
+- ["PSs23CustomStringConvertible", "sharedApplication"]
+- ["PSs23CustomStringConvertible", "standardUserDefaults"]
+- ["PSs23CustomStringConvertible", "subscript"]
+- ["PSs23CustomStringConvertible", "systemName"]
+- ["PSs23CustomStringConvertible", "systemVersion"]
+- ["VSs10Dictionary", "Generator"]
+- ["VSs10Dictionary", "Index"]
+- ["VSs10Dictionary", "Key"]
+- ["VSs10Dictionary", "SubSequence"]
+- ["VSs10Dictionary", "Value"]
+- ["VSs10Dictionary", "_Element"]
+- ["VSs10Dictionary", "deinit"]
+- ["VSs10Dictionary", "keys"]
+- ["VSs10Dictionary", "subscript"]
+- ["VSs19DictionaryGenerator", "Element"]
+- ["VSs15DictionaryIndex", "Distance"]
+- ["VSs15DictionaryIndex", "_DisabledRangeIndex"]
+- ["PSs28DictionaryLiteralConvertible", "Generator"]
+- ["PSs28DictionaryLiteralConvertible", "Index"]
+- ["PSs28DictionaryLiteralConvertible", "Key"]
+- ["PSs28DictionaryLiteralConvertible", "SubSequence"]
+- ["PSs28DictionaryLiteralConvertible", "Value"]
+- ["PSs28DictionaryLiteralConvertible", "_Element"]
+- ["PSs28DictionaryLiteralConvertible", "keys"]
+- ["PSs28DictionaryLiteralConvertible", "subscript"]
+- ["Sd", "deinit"]
+- ["PSs9Equatable", "Cancel"]
+- ["PSs9Equatable", "Default"]
+- ["PSs9Equatable", "Distance"]
+- ["PSs9Equatable", "IntegerLiteralType"]
+- ["PSs9Equatable", "_DisabledRangeIndex"]
+- ["PSs9Equatable", "currentDevice"]
+- ["PSs9Equatable", "delegate"]
+- ["PSs9Equatable", "entityForName"]
+- ["PSs9Equatable", "infoDictionary"]
+- ["PSs9Equatable", "init"]
+- ["PSs9Equatable", "mainBundle"]
+- ["PSs9Equatable", "managedObjectContext"]
+- ["PSs9Equatable", "model"]
+- ["PSs9Equatable", "openURL"]
+- ["PSs9Equatable", "sharedApplication"]
+- ["PSs9Equatable", "standardUserDefaults"]
+- ["PSs9Equatable", "systemName"]
+- ["PSs9Equatable", "systemVersion"]
+- ["PSs41ExtendedGraphemeClusterLiteralConvertible", "init"]
+- ["Sf", "deinit"]
+- ["PSs16ForwardIndexType", "Distance"]
+- ["PSs16ForwardIndexType", "IntegerLiteralType"]
+- ["PSs16ForwardIndexType", "_DisabledRangeIndex"]
+- ["PSs13GeneratorType", "Element"]
+- ["PSs8Hashable", "Cancel"]
+- ["PSs8Hashable", "Default"]
+- ["PSs8Hashable", "Distance"]
+- ["PSs8Hashable", "IntegerLiteralType"]
+- ["PSs8Hashable", "currentDevice"]
+- ["PSs8Hashable", "delegate"]
+- ["PSs8Hashable", "entityForName"]
+- ["PSs8Hashable", "infoDictionary"]
+- ["PSs8Hashable", "init"]
+- ["PSs8Hashable", "mainBundle"]
+- ["PSs8Hashable", "managedObjectContext"]
+- ["PSs8Hashable", "model"]
+- ["PSs8Hashable", "openURL"]
+- ["PSs8Hashable", "sharedApplication"]
+- ["PSs8Hashable", "standardUserDefaults"]
+- ["PSs8Hashable", "systemName"]
+- ["PSs8Hashable", "systemVersion"]
+- ["PSs9Indexable", "Generator"]
+- ["PSs9Indexable", "Index"]
+- ["PSs9Indexable", "Key"]
+- ["PSs9Indexable", "SubSequence"]
+- ["PSs9Indexable", "Value"]
+- ["PSs9Indexable", "_Element"]
+- ["PSs9Indexable", "init"]
+- ["PSs9Indexable", "keys"]
+- ["PSs9Indexable", "reduce"]
+- ["PSs9Indexable", "subscript"]
+- ["VSs17IndexingGenerator", "Element"]
+- ["Si", "Distance"]
+- ["Si", "IntegerLiteralType"]
+- ["Si", "deinit"]
+- ["VSs5Int16", "deinit"]
+- ["VSs5Int32", "deinit"]
+- ["VSs5Int64", "deinit"]
+- ["VSs4Int8", "deinit"]
+- ["PSs21IntegerArithmeticType", "Distance"]
+- ["PSs21IntegerArithmeticType", "IntegerLiteralType"]
+- ["PSs25IntegerLiteralConvertible", "Distance"]
+- ["PSs25IntegerLiteralConvertible", "IntegerLiteralType"]
+- ["PSs11IntegerType", "Distance"]
+- ["PSs11IntegerType", "IntegerLiteralType"]
+- ["PSs18LazyCollectionType", "Generator"]
+- ["VSs17LazyMapCollection", "Generator"]
+- ["VSs16LazyMapGenerator", "Element"]
+- ["PSs16LazySequenceType", "Generator"]
+- ["PSs14MirrorPathType", "Distance"]
+- ["PSs14MirrorPathType", "IntegerLiteralType"]
+- ["PSs14MirrorPathType", "init"]
+- ["PSs21MutableCollectionType", "Generator"]
+- ["PSs21MutableCollectionType", "Index"]
+- ["PSs21MutableCollectionType", "_Element"]
+- ["PSs21MutableCollectionType", "init"]
+- ["PSs21MutableCollectionType", "reduce"]
+- ["PSs16MutableIndexable", "Generator"]
+- ["PSs16MutableIndexable", "Index"]
+- ["PSs16MutableIndexable", "_Element"]
+- ["PSs16MutableIndexable", "init"]
+- ["PSs16MutableIndexable", "reduce"]
+- ["PSs16MutableSliceable", "Generator"]
+- ["PSs16MutableSliceable", "Index"]
+- ["PSs16MutableSliceable", "_Element"]
+- ["PSs16MutableSliceable", "init"]
+- ["PSs16MutableSliceable", "reduce"]
+- ["CSo8NSBundle", "infoDictionary"]
+- ["CSo8NSBundle", "mainBundle"]
+- ["PSo8NSCoding", "entityForName"]
+- ["PSo8NSCoding", "init"]
+- ["PSo9NSCopying", "entityForName"]
+- ["PSo9NSCopying", "init"]
+- ["CSo19NSEntityDescription", "entityForName"]
+- ["PSo17NSFastEnumeration", "entityForName"]
+- ["CSo14NSFetchRequest", "init"]
+- ["PSo16NSMutableCopying", "init"]
+- ["CSo8NSObject", "currentDevice"]
+- ["CSo8NSObject", "delegate"]
+- ["CSo8NSObject", "entityForName"]
+- ["CSo8NSObject", "infoDictionary"]
+- ["CSo8NSObject", "init"]
+- ["CSo8NSObject", "mainBundle"]
+- ["CSo8NSObject", "managedObjectContext"]
+- ["CSo8NSObject", "model"]
+- ["CSo8NSObject", "openURL"]
+- ["CSo8NSObject", "sharedApplication"]
+- ["CSo8NSObject", "standardUserDefaults"]
+- ["CSo8NSObject", "systemName"]
+- ["CSo8NSObject", "systemVersion"]
+- ["PSo16NSObjectProtocol", "currentDevice"]
+- ["PSo16NSObjectProtocol", "delegate"]
+- ["PSo16NSObjectProtocol", "entityForName"]
+- ["PSo16NSObjectProtocol", "infoDictionary"]
+- ["PSo16NSObjectProtocol", "init"]
+- ["PSo16NSObjectProtocol", "mainBundle"]
+- ["PSo16NSObjectProtocol", "managedObjectContext"]
+- ["PSo16NSObjectProtocol", "model"]
+- ["PSo16NSObjectProtocol", "openURL"]
+- ["PSo16NSObjectProtocol", "sharedApplication"]
+- ["PSo16NSObjectProtocol", "standardUserDefaults"]
+- ["PSo16NSObjectProtocol", "systemName"]
+- ["PSo16NSObjectProtocol", "systemVersion"]
+- ["CSo24NSPersistentStoreRequest", "init"]
+- ["PSo14NSSecureCoding", "init"]
+- ["CSo8NSString", "init"]
+- ["CSo5NSURL", "init"]
+- ["CSo14NSUserDefaults", "standardUserDefaults"]
+- ["Sq", "deinit"]
+- ["PSs16OutputStreamType", "init"]
+- ["CSo7PFQuery", "init"]
+- ["PSs21RandomAccessIndexType", "Distance"]
+- ["PSs21RandomAccessIndexType", "IntegerLiteralType"]
+- ["PSs30RangeReplaceableCollectionType", "Generator"]
+- ["PSs30RangeReplaceableCollectionType", "Index"]
+- ["PSs30RangeReplaceableCollectionType", "_Element"]
+- ["PSs30RangeReplaceableCollectionType", "init"]
+- ["PSs30RangeReplaceableCollectionType", "reduce"]
+- ["PSs16RawRepresentable", "Cancel"]
+- ["PSs16RawRepresentable", "Default"]
+- ["PSs12SequenceType", "Element"]
+- ["PSs12SequenceType", "Generator"]
+- ["PSs12SequenceType", "Index"]
+- ["PSs12SequenceType", "Key"]
+- ["PSs12SequenceType", "SubSequence"]
+- ["PSs12SequenceType", "Value"]
+- ["PSs12SequenceType", "_Element"]
+- ["PSs12SequenceType", "init"]
+- ["PSs12SequenceType", "keys"]
+- ["PSs12SequenceType", "reduce"]
+- ["PSs12SequenceType", "subscript"]
+- ["PSs17SignedIntegerType", "Distance"]
+- ["PSs17SignedIntegerType", "IntegerLiteralType"]
+- ["PSs16SignedNumberType", "Distance"]
+- ["PSs16SignedNumberType", "IntegerLiteralType"]
+- ["VSs5Slice", "Generator"]
+- ["VSs5Slice", "Index"]
+- ["VSs5Slice", "SubSequence"]
+- ["VSs5Slice", "_Element"]
+- ["PSs10Streamable", "init"]
+- ["PSs10Strideable", "Distance"]
+- ["PSs10Strideable", "IntegerLiteralType"]
+- ["SS", "deinit"]
+- ["SS", "init"]
+- ["PSs30StringInterpolationConvertible", "init"]
+- ["PSs24StringLiteralConvertible", "init"]
+- ["P10StockSwipe13SubscriptType", "Distance"]
+- ["P10StockSwipe13SubscriptType", "IntegerLiteralType"]
+- ["P10StockSwipe13SubscriptType", "init"]
+- ["PSo29UIAccessibilityIdentification", "init"]
+- ["CSo13UIAlertAction", "init"]
+- ["OSC18UIAlertActionStyle", "Cancel"]
+- ["OSC18UIAlertActionStyle", "Default"]
+- ["CSo13UIApplication", "delegate"]
+- ["CSo13UIApplication", "openURL"]
+- ["CSo13UIApplication", "sharedApplication"]
+- ["PSo21UIApplicationDelegate", "managedObjectContext"]
+- ["CSo7UIColor", "init"]
+- ["CSo8UIDevice", "currentDevice"]
+- ["CSo8UIDevice", "model"]
+- ["CSo8UIDevice", "systemName"]
+- ["CSo8UIDevice", "systemVersion"]
+- ["CSo6UIFont", "init"]
+- ["CSo7UIImage", "init"]
+- ["CSo11UIResponder", "delegate"]
+- ["CSo11UIResponder", "managedObjectContext"]
+- ["CSo11UIResponder", "openURL"]
+- ["CSo11UIResponder", "sharedApplication"]
+- ["CSo12UIStoryboard", "init"]
+- ["Su", "deinit"]
+- ["VSs6UInt16", "deinit"]
+- ["VSs6UInt32", "deinit"]
+- ["VSs6UInt64", "deinit"]
+- ["VSs5UInt8", "deinit"]
+- ["Sc", "deinit"]
+- ["PSs31UnicodeScalarLiteralConvertible", "init"]
+- ["PSs10_ArrayType", "Generator"]
+- ["PSs10_ArrayType", "Index"]
+- ["PSs10_ArrayType", "_Element"]
+- ["PSs10_ArrayType", "init"]
+- ["PSs10_ArrayType", "reduce"]
+- ["PSs49_BuiltinExtendedGraphemeClusterLiteralConvertible", "init"]
+- ["PSs33_BuiltinIntegerLiteralConvertible", "Distance"]
+- ["PSs33_BuiltinIntegerLiteralConvertible", "IntegerLiteralType"]
+- ["PSs32_BuiltinStringLiteralConvertible", "init"]
+- ["PSs37_BuiltinUTF16StringLiteralConvertible", "init"]
+- ["PSs39_BuiltinUnicodeScalarLiteralConvertible", "init"]
+- ["PSs16_CocoaStringType", "init"]
+- ["PSs24_ColorLiteralConvertible", "init"]
+- ["PSs24_DestructorSafeContainer", "Generator"]
+- ["PSs24_DestructorSafeContainer", "Index"]
+- ["PSs24_DestructorSafeContainer", "_Element"]
+- ["PSs24_DestructorSafeContainer", "init"]
+- ["PSs24_DestructorSafeContainer", "reduce"]
+- ["PSs32_FileReferenceLiteralConvertible", "init"]
+- ["PSs24_ImageLiteralConvertible", "init"]
+- ["PSs14_Incrementable", "Distance"]
+- ["PSs14_Incrementable", "IntegerLiteralType"]
+- ["PSs14_Incrementable", "_DisabledRangeIndex"]
+- ["PSs22_IntegerArithmeticType", "Distance"]
+- ["PSs22_IntegerArithmeticType", "IntegerLiteralType"]
+- ["PSs12_IntegerType", "Distance"]
+- ["PSs12_IntegerType", "IntegerLiteralType"]
+- ["PSs21_ObjectiveCBridgeable", "Distance"]
+- ["PSs21_ObjectiveCBridgeable", "Generator"]
+- ["PSs21_ObjectiveCBridgeable", "Index"]
+- ["PSs21_ObjectiveCBridgeable", "IntegerLiteralType"]
+- ["PSs21_ObjectiveCBridgeable", "Key"]
+- ["PSs21_ObjectiveCBridgeable", "SubSequence"]
+- ["PSs21_ObjectiveCBridgeable", "Value"]
+- ["PSs21_ObjectiveCBridgeable", "_Element"]
+- ["PSs21_ObjectiveCBridgeable", "init"]
+- ["PSs21_ObjectiveCBridgeable", "keys"]
+- ["PSs21_ObjectiveCBridgeable", "reduce"]
+- ["PSs21_ObjectiveCBridgeable", "subscript"]
+- ["PSs22_RandomAccessAmbiguity", "Distance"]
+- ["PSs22_RandomAccessAmbiguity", "IntegerLiteralType"]
+- ["PSs12_Reflectable", "Distance"]
+- ["PSs12_Reflectable", "Generator"]
+- ["PSs12_Reflectable", "Index"]
+- ["PSs12_Reflectable", "IntegerLiteralType"]
+- ["PSs12_Reflectable", "Key"]
+- ["PSs12_Reflectable", "SubSequence"]
+- ["PSs12_Reflectable", "Value"]
+- ["PSs12_Reflectable", "_Element"]
+- ["PSs12_Reflectable", "init"]
+- ["PSs12_Reflectable", "keys"]
+- ["PSs12_Reflectable", "reduce"]
+- ["PSs12_Reflectable", "subscript"]
+- ["PSs18_SignedIntegerType", "Distance"]
+- ["PSs18_SignedIntegerType", "IntegerLiteralType"]
+- ["PSs11_Strideable", "Distance"]
+- ["PSs11_Strideable", "IntegerLiteralType"]
+- ["PSo13iRateDelegate", "managedObjectContext"]
+depends-nominal:
+- "PSs9AnyObject"
+- "C10StockSwipe11AppDelegate"
+- "Sa"
+- "PSs23ArrayLiteralConvertible"
+- "PSs22BidirectionalIndexType"
+- "PSs21BitwiseOperationsType"
+- "Sb"
+- "V12CoreGraphics7CGFloat"
+- "PSs11CVarArgType"
+- "VSs9Character"
+- "PSs14CollectionType"
+- "PSs10Comparable"
+- "PSs28CustomDebugStringConvertible"
+- "PSs23CustomStringConvertible"
+- "VSs10Dictionary"
+- "VSs19DictionaryGenerator"
+- "VSs15DictionaryIndex"
+- "PSs28DictionaryLiteralConvertible"
+- "Sd"
+- "PSs9Equatable"
+- "PSs41ExtendedGraphemeClusterLiteralConvertible"
+- "Sf"
+- "PSs16ForwardIndexType"
+- "PSs13GeneratorType"
+- "PSs8Hashable"
+- "PSs9Indexable"
+- "VSs17IndexingGenerator"
+- "Si"
+- "VSs5Int16"
+- "VSs5Int32"
+- "VSs5Int64"
+- "VSs4Int8"
+- "PSs21IntegerArithmeticType"
+- "PSs25IntegerLiteralConvertible"
+- "PSs11IntegerType"
+- "PSs18LazyCollectionType"
+- "VSs17LazyMapCollection"
+- "VSs16LazyMapGenerator"
+- "PSs16LazySequenceType"
+- "PSs14MirrorPathType"
+- "PSs21MutableCollectionType"
+- "PSs16MutableIndexable"
+- "PSs16MutableSliceable"
+- "CSo8NSBundle"
+- "PSo8NSCoding"
+- "PSo9NSCopying"
+- "CSo19NSEntityDescription"
+- "PSo17NSFastEnumeration"
+- "CSo14NSFetchRequest"
+- "PSo16NSMutableCopying"
+- "CSo8NSObject"
+- "PSo16NSObjectProtocol"
+- "CSo24NSPersistentStoreRequest"
+- "PSo14NSSecureCoding"
+- "CSo8NSString"
+- "CSo5NSURL"
+- "CSo14NSUserDefaults"
+- "Sq"
+- "PSs16OutputStreamType"
+- "CSo7PFQuery"
+- "PSs21RandomAccessIndexType"
+- "PSs30RangeReplaceableCollectionType"
+- "PSs16RawRepresentable"
+- "PSs12SequenceType"
+- "PSs17SignedIntegerType"
+- "PSs16SignedNumberType"
+- "VSs5Slice"
+- "PSs10Streamable"
+- "PSs10Strideable"
+- "SS"
+- "PSs30StringInterpolationConvertible"
+- "PSs24StringLiteralConvertible"
+- "P10StockSwipe13SubscriptType"
+- "PSo29UIAccessibilityIdentification"
+- "CSo13UIAlertAction"
+- "OSC18UIAlertActionStyle"
+- "CSo13UIApplication"
+- "PSo21UIApplicationDelegate"
+- "CSo7UIColor"
+- "CSo8UIDevice"
+- "CSo6UIFont"
+- "CSo7UIImage"
+- "CSo11UIResponder"
+- "CSo12UIStoryboard"
+- "Su"
+- "VSs6UInt16"
+- "VSs6UInt32"
+- "VSs6UInt64"
+- "VSs5UInt8"
+- "Sc"
+- "PSs31UnicodeScalarLiteralConvertible"
+- "PSs10_ArrayType"
+- "PSs49_BuiltinExtendedGraphemeClusterLiteralConvertible"
+- "PSs33_BuiltinIntegerLiteralConvertible"
+- "PSs32_BuiltinStringLiteralConvertible"
+- "PSs37_BuiltinUTF16StringLiteralConvertible"
+- "PSs39_BuiltinUnicodeScalarLiteralConvertible"
+- "PSs16_CocoaStringType"
+- "PSs24_ColorLiteralConvertible"
+- "PSs24_DestructorSafeContainer"
+- "PSs32_FileReferenceLiteralConvertible"
+- "PSs24_ImageLiteralConvertible"
+- "PSs14_Incrementable"
+- "PSs22_IntegerArithmeticType"
+- "PSs12_IntegerType"
+- "PSs21_ObjectiveCBridgeable"
+- "PSs22_RandomAccessAmbiguity"
+- "PSs12_Reflectable"
+- "PSs18_SignedIntegerType"
+- "PSs11_Strideable"
+- "PSo13iRateDelegate"
+depends-dynamic-lookup:
+depends-external:
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Swift.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/BridgingHeader.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/SARate-master/SARate/SARate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/SARate-master/SARate/iRate/iRate.h"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Darwin.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/UIKit.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Foundation.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/Dispatch.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/ObjectiveC.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreGraphics.swiftmodule"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreImage.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/NSDate+NVTimeAgo.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/UIView+TLMotionEffect.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/iCarousel/iCarousel.h"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreData.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCPanState.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeResult.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChooseViewOptions.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChooseView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeOptions.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/UIView+MDCSwipeToChoose.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChooseDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeDirection.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChoose.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Headers/MDCSwipeToChoose-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/MDCSwipeToChoose.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BoltsVersion.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/Bolts.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFTaskCompletionSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFTask.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFExecutor.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFDefines.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFCancellationTokenSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFCancellationTokenRegistration.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFCancellationToken.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFWebViewAppLinkResolver.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFURL_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFURL.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFMeasurementEvent_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFMeasurementEvent.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkTarget.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkReturnToRefererView_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkReturnToRefererView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkReturnToRefererController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkResolving.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLinkNavigation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLink_Internal.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/BFAppLink.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Headers/Bolts-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Bolts.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFPurchase.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFProduct.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFPush.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFNetworkActivityIndicatorManager.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFInstallation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFUserAuthenticationDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFRole.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFRelation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFQuery.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFObject+Subclass.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFGeoPoint.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFFile.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFConfig.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFCloud.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFSubclassing.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFObject.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFUser.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFAnonymousUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFAnalytics.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/PFACL.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/Parse.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Headers/Parse-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Parse.framework/Modules/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/CoreLocation.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/PulsingHalo.framework/Headers/PulsingHaloLayer.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/PulsingHalo.framework/Headers/PulsingHalo-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/PulsingHalo.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Headers/SDiOSVersion.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Headers/SDVersion.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Headers/SDVersion-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/SDVersion.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/CloudWord.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/CloudLayoutOperation.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/WordCloud/WordCloud.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Intermediates/StockSwipe.build/Debug-iphonesimulator/WordCloud.build/module.modulemap"
+- "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/swift/iphonesimulator/x86_64/WebKit.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/ANSCompatibility.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/Answers.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSStackFrame.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSReport.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSLogging.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/CLSAttributes.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Headers/Crashlytics.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Crashlytics.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/NSString+LKURLEncoded.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/NSDictionary+LKFormEncoded.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKLog.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LaunchKitShared.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LaunchKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKConfig.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKAppUser.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKAPIClient.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LKAnalytics.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Headers/LaunchKit-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/LaunchKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/ParseUI.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFTableViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFPurchaseTableViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFCollectionViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFTextField.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFImageView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFProductTableViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFQueryCollectionViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFQueryTableViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFSignUpViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFSignUpView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFLogInViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFLogInView_Private.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/ParseUIConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/PFLogInView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Headers/ParseUI-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseUI.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/PF_Twitter.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/PFTwitterUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/ParseTwitterUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Headers/ParseTwitterUtils-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseTwitterUtils.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphRequestDataAttachment.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphErrorRecoveryProcessor.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKUtility.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKTestUsersManager.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKSettings.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKProfilePictureView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKProfile.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKMutableCopying.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphRequest.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKCoreKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKButton.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAppLinkUtility.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAppLinkResolver.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKApplicationDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAppEvents.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKMacros.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKGraphRequestConnection.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKCopying.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKAccessToken.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Headers/FBSDKCoreKit-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKCoreKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginTooltipView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginManagerLoginResult.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKTooltipView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginManager.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginButton.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Headers/FBSDKLoginKit-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/FBSDKLoginKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Headers/PFFacebookUtils.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Headers/ParseFacebookUtilsV4.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Headers/ParseFacebookUtilsV4-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/ParseFacebookUtilsV4.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Modules/Charts.swiftmodule/x86_64.swiftmodule"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Headers/Charts-Swift.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Headers/Charts.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/Charts.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRSessionStore.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRGuestSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRDefines.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRCoreOAuthSigning.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRConstants.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRAuthSession.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRAuthConfig.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TWTRAPIErrorCode.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Headers/TwitterCore.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterCore.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRUserTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRUser.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweetViewDelegate.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweetView.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweetTableViewCell.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTweet.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTimelineViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRShareEmailViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRSearchTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTROAuthSigning.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRLogInButton.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRListTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRComposerTheme.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRComposer.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTimelineType.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRCollectionTimelineDataSource.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRComposerViewController.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRCardConfiguration.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TWTRAPIClient.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/Twitter.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Headers/TwitterKit.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/TwitterKit.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/DZNEmptyDataSet.framework/Headers/UIScrollView+EmptyDataSet.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/DZNEmptyDataSet.framework/Headers/DZNEmptyDataSet-umbrella.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Build/Products/Debug-iphonesimulator/DZNEmptyDataSet.framework/Modules/module.modulemap"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Fabric.framework/Headers/FABAttributes.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Fabric.framework/Headers/Fabric.h"
+- "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/Chartinder/Fabric.framework/Modules/module.modulemap"
+interface-hash: "0ed0ea266d87d75ed3c67a4d893fe487"

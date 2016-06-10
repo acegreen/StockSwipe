@@ -47,6 +47,7 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
             
             let querySymbol = self.symbol.stringByReplacingOccurrencesOfString("^", withString: "")
             self.dataSource = TWTRSearchTimelineDataSource(searchQuery: "$\(querySymbol) OR \(companyName)", APIClient: client)
+            self.showTweetActions = true
         }
     }
     

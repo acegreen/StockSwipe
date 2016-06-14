@@ -9,14 +9,21 @@
 import UIKit
 import Parse
 
-//protocol chartDetailDelegate {
-//    var symbol: String! { get set }
-//    var companyName: String! { get set }
-//}
+protocol ChartDetailDelegate {
+    var symbol: String! { get set }
+    var companyName: String? { get set }
+}
 
 class ChartDetailTabBarController: UITabBarController {
     
-    // symbol should be passed as we segue to here
-    var symbol: String!
+    // symbol should be passed as we segue here
+    var symbol: String! {
+        didSet {
+            if symbol != symbol.uppercaseString {
+                symbol = symbol.uppercaseString
+            }
+        }
+    }
+    
     var companyName: String?
 }

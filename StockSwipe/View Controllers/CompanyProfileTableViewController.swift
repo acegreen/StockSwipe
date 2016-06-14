@@ -10,7 +10,7 @@ import UIKit
 import Charts
 import SwiftyJSON
 
-class CompanyProfileTableViewController: UITableViewController, ChartViewDelegate {
+class CompanyProfileTableViewController: UITableViewController, ChartDetailDelegate, ChartViewDelegate  {
     
     var symbol: String!
     var companyName:String?

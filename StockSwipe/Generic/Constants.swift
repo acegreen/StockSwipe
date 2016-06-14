@@ -82,7 +82,8 @@ public class Constants {
         case LaunchKit
         case Rollout
         case ChimpKit
-        case TradeIt
+        case TradeItDev
+        case TradeItProd
         
         public func key() -> String {
             switch self {
@@ -96,7 +97,9 @@ public class Constants {
                 return "568730c9045462554abcb4cc"
             case .ChimpKit:
                 return "549c43655bcc48fb60af6a1c24e77495-us12"
-            case .TradeIt:
+            case .TradeItDev:
+                return "3e6d674e62714a1ea041a455ae0d2fe2"
+            case .TradeItProd:
                 return "3972dfa21434487b9fe084f30edb8f3c"
             }
         }
@@ -110,7 +113,7 @@ public class Constants {
             }
         }
         
-        static let allAPIKeys = [Parse, TwitterKit, LaunchKit, Rollout, ChimpKit, TradeIt]
+        static let allAPIKeys = [Parse, TwitterKit, LaunchKit, Rollout, ChimpKit, TradeItDev, TradeItProd]
     }
     
     public enum Errors: ErrorType {

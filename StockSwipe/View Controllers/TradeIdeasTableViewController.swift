@@ -11,7 +11,7 @@ import DZNEmptyDataSet
 import SwiftyJSON
 import Parse
 
-class TradeIdeasTableViewController: UITableViewController, CellType, IdeaPostDelegate {
+class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate, CellType, IdeaPostDelegate {
     
     enum CellIdentifier: String {
         case IdeaCell = "IdeaCell"
@@ -23,7 +23,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, IdeaPostDe
     }
     
     var symbol: String!
-    var companyName: String!
+    var companyName: String?
     weak var stockObject: PFObject?
     
     var tradeIdeas = [TradeIdea]()
@@ -70,11 +70,11 @@ class TradeIdeasTableViewController: UITableViewController, CellType, IdeaPostDe
     
     func getTradeIdeas(skip: Int) {
         
-        QueryHelper.sharedInstance.queryStockObjectFor(self.symbol) { (result) in
+        QueryHelper.sharedInstance.queryStockObjectsFor([self.symbol]) { (result) in
             
             do {
                 
-                self.stockObject = try result()
+                self.stockObject = try result().first
             
                 QueryHelper.sharedInstance.queryTradeIdeaObjectFor("stock", object: self.stockObject!, skip: skip) { (result) in
                     

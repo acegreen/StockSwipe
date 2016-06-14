@@ -13,10 +13,10 @@ protocol IdeaPostDelegate {
     func ideaPosted(with tradeIdea: TradeIdea)
 }
 
-class IdeaPostViewController: UIViewController, UITextViewDelegate {
+class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewDelegate {
     
     var symbol: String!
-    var companyName: String!
+    var companyName: String?
     
     var delegate: IdeaPostDelegate!
     
@@ -40,7 +40,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         
         guard self.ideaTextView.text != nil else { return }
         
-        QueryHelper.sharedInstance.queryStockObjectFor(symbol) { (result) in
+        QueryHelper.sharedInstance.queryStockObjectsFor([symbol]) { (result) in
             
             do {
                 
@@ -68,7 +68,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                         
                     } else {
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.description, style: AlertStyle.Warning)
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
                         })
                     }
                 })

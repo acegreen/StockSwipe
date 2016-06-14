@@ -2749,8 +2749,8 @@
                                     <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Cambridge, UK" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kre-p4-MTd">
-                                    <rect key="frame" x="239" y="166" width="120.5" height="21.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cambridge, UK" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kre-p4-MTd">
+                                    <rect key="frame" x="239" y="163" width="120.5" height="21.5"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                     <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -3119,7 +3119,7 @@
                                 </connections>
                             </containerView>
                             <segmentedControl contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ZbD-uc-JhG">
-                                <rect key="frame" x="5" y="190" width="590" height="51"/>
+                                <rect key="frame" x="5" y="200" width="590" height="51"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="6X2-TY-KMm"/>
@@ -3143,7 +3143,7 @@
                             <constraint firstItem="ZbD-uc-JhG" firstAttribute="leading" secondItem="VqH-Kx-C6e" secondAttribute="leading" constant="5" id="oGG-Wg-blg"/>
                             <constraint firstAttribute="trailing" secondItem="PZW-qp-N1s" secondAttribute="trailing" id="qVm-4w-83C"/>
                             <constraint firstAttribute="bottom" secondItem="PZW-qp-N1s" secondAttribute="bottom" id="rSn-jd-fIr"/>
-                            <constraint firstItem="ZbD-uc-JhG" firstAttribute="top" secondItem="ai9-nG-7wv" secondAttribute="bottom" constant="190" id="zaF-lU-qa4"/>
+                            <constraint firstItem="ZbD-uc-JhG" firstAttribute="top" secondItem="ai9-nG-7wv" secondAttribute="bottom" constant="200" id="zaF-lU-qa4"/>
                         </constraints>
                     </view>
                     <tabBarItem key="tabBarItem" title="Profile" image="profile" id="JFo-SZ-4fd"/>

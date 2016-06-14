@@ -11,7 +11,7 @@ import TwitterKit
 import DZNEmptyDataSet
 import SafariServices
 
-class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelegate, ChartDetailDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     var symbol: String!
     var companyName: String?

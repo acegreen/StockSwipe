@@ -196,11 +196,11 @@ public class Functions {
     
     class func getStockObjectAndChart(symbol: String, completion: (result: () throws -> (object: PFObject, chart: Chart)) -> Void) {
         
-        QueryHelper.sharedInstance.queryStockObjectFor(symbol) { (result) in
+        QueryHelper.sharedInstance.queryStockObjectsFor([symbol]) { (result) in
             
             do {
                 
-                let stockObject = try result()
+                let stockObject = try result().first!
                 
                 QueryHelper.sharedInstance.queryChartImage(symbol, completion: { (result) in
                     
@@ -211,7 +211,7 @@ public class Functions {
                         let shorts: AnyObject? = stockObject["Shorted_By"]
                         let longs: AnyObject? = stockObject["Longed_By"]
                         
-                        let chart = Chart(symbol: symbol, companyName: companyName, image: chartImage, shorts: shorts?.count, longs: longs?.count)
+                        let chart = Chart(symbol: symbol, companyName: companyName, image: chartImage, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
                         completion(result: { (object: stockObject, chart: chart)})
                         
                     } catch {
@@ -301,7 +301,7 @@ public class Functions {
             
             if fetchedObjectArray.count == 0 {
                 
-                print("no object exists")
+                print("no object exists in core data")
                 
                 let newChart = ChartModel(entity: Constants.entity!, insertIntoManagedObjectContext: Constants.context)
                 newChart.symbol = chart.symbol

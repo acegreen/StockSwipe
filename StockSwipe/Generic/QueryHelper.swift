@@ -178,7 +178,7 @@ public class QueryHelper {
         task.resume()
     }
     
-    public func queryStockObjectFor(symbol: String, completion: (result: () throws -> (PFObject)) -> Void) {
+    public func queryStockObjectsFor(symbols: [String], completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
@@ -187,8 +187,7 @@ public class QueryHelper {
         let stockQuery = PFQuery(className:"Stocks")
         stockQuery.cancel()
         stockQuery.includeKeys(["Shorted_By", "Longed_By"])
-        stockQuery.limit = 1
-        stockQuery.whereKey("Symbol", containedIn: [symbol])
+        stockQuery.whereKey("Symbol", containedIn: symbols)
         
         stockQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             
@@ -200,11 +199,11 @@ public class QueryHelper {
                 return completion(result: {throw Constants.Errors.QueryDataEmpty})
             }
             
-            guard let object = objects?.first else {
+            guard let objects = objects else {
                 return completion(result: {throw Constants.Errors.ParseObjectNotFound})
             }
             
-            completion(result: {return (object: object)})
+            completion(result: {return (objects: objects)})
             
         }
     }

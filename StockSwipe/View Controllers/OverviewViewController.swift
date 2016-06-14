@@ -353,28 +353,44 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                 
                 let trendingStocksData = try trendingStocksData()
                 
-                self.cloudWords = []
                 self.trendingStocksJSON = JSON(data: trendingStocksData)["symbols"]
-                
                 guard self.trendingStocksJSON.error == nil else { return }
                 
-                for (index, subJson) in self.trendingStocksJSON {
+                QueryHelper.sharedInstance.queryStockObjectsFor(self.trendingStocksJSON.map { $0.1 }.map{ $0["symbol"].string! }, completion: { (result) in
                     
-                    let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: self.trendingStocksJSON.count - Int(index)!, wordTappable: true)
-                    self.cloudWords.append(cloudWord)
-                    
-                    // Index to Spotlight
-                    let chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: nil, shorts: nil, longs: nil)
-                    Functions.addToSpotlight(chart, uniqueIdentifier: chart.symbol, domainIdentifier: "com.stockswipe.stocksQueried")
-                    
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
-                    self.layoutCloudWords()
-                    self.stockTwitsLastQueriedDate = NSDate()
-                    
-                    print("cloud query complete")
+                    do {
+                        
+                        let stockObjects = try result()
+                        
+                        self.cloudWords = []
+                        
+                        for (index, subJson) in self.trendingStocksJSON {
+                            
+                            let parseObject = stockObjects.find{ $0["Symbol"] as! String == subJson["symbol"].string!}
+                            
+                            let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: self.trendingStocksJSON.count - Int(index)!, wordTappable: true)
+                            self.cloudWords.append(cloudWord)
+                            
+                            // Index to Spotlight
+                            let chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: nil, shorts: nil, longs: nil, parseObject: parseObject)
+                            Functions.addToSpotlight(chart, uniqueIdentifier: chart.symbol, domainIdentifier: "com.stockswipe.stocksQueried")
+                            
+                        }
+                        
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            
+                            self.layoutCloudWords()
+                            self.stockTwitsLastQueriedDate = NSDate()
+                            
+                            print("cloud query complete")
+                            
+                        })
+                        
+                    } catch {
+                        
+                        if let error = error as? Constants.Errors {
+                        }
+                    }
                     
                 })
                 

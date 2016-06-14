@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import Parse
 
 public class Chart: NSObject {
     
@@ -16,6 +17,7 @@ public class Chart: NSObject {
     var image: UIImage?
     var shorts: Int?
     var longs: Int?
+    let parseObject: PFObject!
     
     var searchDescription: String {
         
@@ -29,12 +31,13 @@ public class Chart: NSObject {
         }
     }
     
-    init(symbol: String?, companyName: String?, image: UIImage?, shorts: Int?, longs: Int?) {
+    init(symbol: String!, companyName: String!, image: UIImage?, shorts: Int?, longs: Int?, parseObject: PFObject!) {
         
         self.symbol = symbol ?? ""
         self.companyName = companyName!
         self.image = image
         self.shorts = shorts
         self.longs = longs
+        self.parseObject = parseObject
     }
 }

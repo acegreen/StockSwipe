@@ -14,7 +14,7 @@ import Crashlytics
 import SDVersion
 import SwiftyJSON
 
-class ChartWebViewController: UIViewController {
+class ChartWebViewController: UIViewController, ChartDetailDelegate {
     
     var symbol: String!
     var companyName: String?
@@ -26,29 +26,29 @@ class ChartWebViewController: UIViewController {
     
     @IBOutlet var actionButton: UIBarButtonItem!
     
-//    @IBOutlet var tradeItButton: UIBarButtonItem!
+    //    @IBOutlet var tradeItButton: UIBarButtonItem!
     
     @IBAction func xButtonPressed(sender: AnyObject) {
         
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-//    @IBAction func tradeButtonPressed(sender: AnyObject) {
-//        
-//        #if DEBUG
-//            
-//            TradeItTicketController.showTicketWithApiKey(Constants.APIKeys.TradeIt.key(), symbol: self.symbol, orderAction: nil, orderQuantity: nil, viewController: self, withDebug: true, onCompletion: { (TradeItTicketControllerResult) -> Void in
-//                
-//            })
-//            
-//        #else
-//            
-//            TradeItTicketController.showTicketWithApiKey(Constants.APIKeys.TradeIt.key(), symbol: self.symbol, orderAction: nil, orderQuantity: nil, viewController: self, withDebug: false, onCompletion: { (TradeItTicketControllerResult) -> Void in
-//                
-//            })
-//            
-//        #endif
-//    }
+    //    @IBAction func tradeButtonPressed(sender: AnyObject) {
+    //
+    //        #if DEBUG
+    //
+    //            TradeItTicketController.showTicketWithApiKey(Constants.APIKeys.TradeItDev.key(), symbol: self.symbol, orderAction: nil, orderQuantity: nil, viewController: self, withDebug: true, onCompletion: { (TradeItTicketControllerResult) -> Void in
+    //
+    //            })
+    //
+    //        #else
+    //
+    //            TradeItTicketController.showTicketWithApiKey(Constants.APIKeys.TradeItProd.key(), symbol: self.symbol, orderAction: nil, orderQuantity: nil, viewController: self, withDebug: false, onCompletion: { (TradeItTicketControllerResult) -> Void in
+    //
+    //            })
+    //
+    //        #endif
+    //    }
     
     @IBAction func actionButtonPressed(sender: AnyObject) {
         
@@ -58,35 +58,34 @@ class ChartWebViewController: UIViewController {
         
         Functions.getStockObjectAndChart(self.symbol) { (result) in
             
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+                self.customAlert.closeAlert(nil)
+                
                 do {
                     
                     let results = try result()
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    let view = SwipeChartView(frame: CGRectMake(0, 0, results.chart.image!.size.width, results.chart.image!.size.height + Constants.informationViewHeight + Constants.chartImageTopPadding), chart: results.chart, options: nil)
+                    let chartImage = UIImage(view: view)
+                    
+                    Functions.presentActivityVC(textToShare, imageToShare: chartImage, url: Constants.appLinkURL!, sender: self.actionButton, vc: self, completion: { (activity, success, items, error) -> Void in
                         
-                        self.customAlert.closeAlert(nil)
-                        
-                        let view = SwipeChartView(frame: CGRectMake(0, 0, results.chart.image!.size.width, results.chart.image!.size.height + Constants.informationViewHeight + Constants.chartImageTopPadding), chart: results.chart, options: nil)
-                        let chartImage = UIImage(view: view)
-                        
-                        Functions.presentActivityVC(textToShare, imageToShare: chartImage, url: Constants.appLinkURL!, sender: self.actionButton, vc: self, completion: { (activity, success, items, error) -> Void in
+                        if success {
                             
-                            if success {
-                                
-                                SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.Success)
-                                
-                                // log shared successfully
-                                Answers.logShareWithMethod("\(activity!)",
-                                    contentName: "\(self.symbol) chart shared",
-                                    contentType: "chart share",
-                                    contentId: nil,
-                                    customAttributes: ["Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])
-                                
-                            } else if error != nil {
-                                
-                                SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.Error)
-                            }
-                        })
+                            SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.Success)
+                            
+                            // log shared successfully
+                            Answers.logShareWithMethod("\(activity!)",
+                                contentName: "\(self.symbol) chart shared",
+                                contentType: "chart share",
+                                contentId: nil,
+                                customAttributes: ["Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])
+                            
+                        } else if error != nil {
+                            
+                            SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.Error)
+                        }
                     })
                     
                 } catch {
@@ -99,6 +98,8 @@ class ChartWebViewController: UIViewController {
                         })
                     }
                 }
+                
+            })
         }
     }
     
@@ -115,7 +116,7 @@ class ChartWebViewController: UIViewController {
         self.webView.scrollView.bounces = false
         self.webView.scrollView.scrollEnabled = false
         
-        // title 
+        // title
         if companyName != nil {
             self.navigationItem.title = companyName
         } else {
@@ -149,23 +150,23 @@ extension ChartWebViewController: WKNavigationDelegate {
     func webView(webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         
         actionButton.enabled = false
-//        tradeItButton.enabled = false
+        //        tradeItButton.enabled = false
     }
     
     func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
-    
+        
         actionButton.enabled = true
-//        tradeItButton.enabled = true
+        //        tradeItButton.enabled = true
         
         Functions.showPopTip(popTipText: NSLocalizedString("Share this trade idea", comment: ""),
-            inView: view,
-            fromFrame: CGRect(x: view.frame.width - 30, y: -10, width: 1, height: 1), direction: .Down, color: Constants.stockSwipeGreenColor)
+                             inView: view,
+                             fromFrame: CGRect(x: view.frame.width - 30, y: -10, width: 1, height: 1), direction: .Down, color: Constants.stockSwipeGreenColor)
     }
     
     func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
-    
+        
         actionButton.enabled = false
-//        tradeItButton.enabled = false
+        //        tradeItButton.enabled = false
         
         print("error: \(error.localizedDescription): \(error.userInfo)")
         

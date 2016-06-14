@@ -8,6 +8,12 @@
 
 import Foundation
 
+extension CollectionType {
+    func find(@noescape predicate: (Self.Generator.Element) throws -> Bool) rethrows -> Self.Generator.Element? {
+        return try indexOf(predicate).map({self[$0]})
+    }
+}
+
 extension Array {
     
     // Safely lookup an index that might be out of bounds,

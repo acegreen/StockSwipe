@@ -29,10 +29,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     var charts = [Chart]()
     
-    var currentObject: PFObject!
-    var currentObjectIndex: Int!
-    var currentChart: Chart!
-    
     var numberOfCardsToQuery: Int = 50
     var numberofCardsInStack: Int = 3
     
@@ -183,8 +179,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 
                 do {
                     
-                    self.parseObjects = []
-                    self.charts = []
                     self.randomIndexes = []
                     self.excludedIndexes = []
                     
@@ -318,7 +312,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                     
                     if let chartImage = UIImage(data: chartImagedata!) {
                         
-                        let chart = Chart(symbol: symbol, companyName: company, image: chartImage, shorts: shortedObject?.count, longs: longedObject?.count)
+                        let chart = Chart(symbol: symbol, companyName: company, image: chartImage, shorts: shortedObject?.count, longs: longedObject?.count, parseObject: object)
                         
                         if !self.charts.contains(chart) {
                             
@@ -353,11 +347,10 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             self.activityIndicatorSearchImageOnOff("Off")
             
             // Display First Card
-            guard self.firstCardView == nil else { return }
             
-            self.setFrontCardViewUpdate(self.popPersonViewWithFrame(CardType.firstCard  , frame: CGRectMake(self.view.bounds.width + self.frontCardViewFrame().width, self.mainViewNavigationBar.frame.height + 50, chartWidth, chartHeight))!)
-            
-            if self.firstCardView != nil {
+            if self.firstCardView == nil {
+                
+                self.setFrontCardViewUpdate(self.popChartViewWithFrame(CardType.firstCard  , frame: CGRectMake(self.view.bounds.width + self.frontCardViewFrame().width, self.mainViewNavigationBar.frame.height + 50, chartWidth, chartHeight))!)
                 
                 self.firstCardView.userInteractionEnabled = true
                 
@@ -382,11 +375,10 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             }
             
             // Display Second Card
-            guard self.secondCardView == nil else { return }
             
-            self.secondCardView = self.popPersonViewWithFrame(CardType.secondCard, frame: CGRectMake(0 - self.frontCardViewFrame().width, self.frontCardViewFrame().origin.y + self.chartOffsetsY, CGRectGetWidth(self.frontCardViewFrame()) - (self.chartOffsetsX * 2), CGRectGetHeight(self.frontCardViewFrame())))
-            
-            if self.secondCardView != nil {
+            if self.secondCardView == nil {
+                
+                self.secondCardView = self.popChartViewWithFrame(CardType.secondCard, frame: CGRectMake(0 - self.frontCardViewFrame().width, self.frontCardViewFrame().origin.y + self.chartOffsetsY, CGRectGetWidth(self.frontCardViewFrame()) - (self.chartOffsetsX * 2), CGRectGetHeight(self.frontCardViewFrame())))
                 
                 self.secondCardView.userInteractionEnabled = false
                 
@@ -407,11 +399,10 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             }
             
             // Display Third Card
-            guard self.thirdCardView == nil else { return }
             
-            self.thirdCardView = self.popPersonViewWithFrame(CardType.thirdCard, frame: CGRectMake(self.middleCardViewFrame().origin.x + self.chartOffsetsX, self.view.bounds.height + CGRectGetHeight(self.middleCardViewFrame()), CGRectGetWidth(self.middleCardViewFrame()) - (self.chartOffsetsX * 2), CGRectGetHeight(self.middleCardViewFrame())))
+            if self.thirdCardView == nil {
             
-            if self.thirdCardView != nil {
+                self.thirdCardView = self.popChartViewWithFrame(CardType.thirdCard, frame: CGRectMake(self.middleCardViewFrame().origin.x + self.chartOffsetsX, self.view.bounds.height + CGRectGetHeight(self.middleCardViewFrame()), CGRectGetWidth(self.middleCardViewFrame()) - (self.chartOffsetsX * 2), CGRectGetHeight(self.middleCardViewFrame())))
                 
                 self.thirdCardView.userInteractionEnabled = false
                 
@@ -426,7 +417,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                         // Display Fourth Card
                         if self.fourthCardView == nil {
                             
-                            self.fourthCardView = self.popPersonViewWithFrame(CardType.fourthCard, frame: self.fourthCardViewFrame())
+                            self.fourthCardView = self.popChartViewWithFrame(CardType.fourthCard, frame: self.fourthCardViewFrame())
                             
                             if self.fourthCardView != nil {
                                 
@@ -532,30 +523,24 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         // MDCSwipeToChooseView shows "SHORT" on swipes to the left,
         // and "LONG" on swipes to the right.
         
-        guard let chartChoosen: Chart = self.charts[0] else { return }
+        guard let chartChoosen: Chart = self.charts.find({$0.symbol == self.firstCardView.chart.symbol}) else { return }
         
         if wasChosenWithDirection == MDCSwipeDirection.Left {
             
-            Functions.registerUserChoice(chartChoosen, and: currentObject, with: .SHORT)
-            
-            self.parseObjects.removeAtIndex(currentObjectIndex)
-            self.charts.removeAtIndex(0)
+            Functions.registerUserChoice(chartChoosen, and: chartChoosen.parseObject, with: .SHORT)
             
         } else if wasChosenWithDirection == MDCSwipeDirection.Right {
             
-            Functions.registerUserChoice(chartChoosen, and: currentObject, with: .LONG)
-            
-            self.parseObjects.removeAtIndex(currentObjectIndex)
-            self.charts.removeAtIndex(0)
+            Functions.registerUserChoice(chartChoosen, and: chartChoosen.parseObject, with: .LONG)
             
         } else if wasChosenWithDirection == MDCSwipeDirection.Up {
             
-            self.parseObjects.removeAtIndex(currentObjectIndex)
-            self.charts.removeAtIndex(0)
-            
-            print("swiped up, removed object")
+            print("swiped up")
             
         }
+        
+        self.parseObjects.removeObject(chartChoosen.parseObject!)
+        self.charts.removeObject(chartChoosen)
         
         // MDCSwipeToChooseView removes the view from the view hierarchy
         // after it is swiped (this behavior can be customized via the
@@ -571,7 +556,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         self.resizeCardViews()
         
         // Fade the back card into view.
-        self.fourthCardView = self.popPersonViewWithFrame(CardType.fourthCard, frame: self.fourthCardViewFrame())
+        self.fourthCardView = self.popChartViewWithFrame(CardType.fourthCard, frame: self.fourthCardViewFrame())
         
         // Display Fourth Card
         if self.fourthCardView != nil {
@@ -671,19 +656,9 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             self.firstCardView.userInteractionEnabled = true
             
         }
-        
-        for (index,object) in parseObjects.enumerate() {
-            
-            if object.objectForKey("Symbol") as? NSString == firstCardView.chart.symbol {
-                
-                currentObject = object
-                currentObjectIndex = index
-                
-            }
-        }
     }
     
-    func popPersonViewWithFrame(cardType: CardType, frame:CGRect) -> SwipeChartView? {
+    func popChartViewWithFrame(cardType: CardType, frame:CGRect) -> SwipeChartView? {
         
         if let chartAtIndex = self.charts.get(cardLocation(cardType)) {
             

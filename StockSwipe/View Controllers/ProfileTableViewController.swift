@@ -316,7 +316,7 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
         
         let attributedTitle: NSAttributedString!
             
-        attributedTitle = NSAttributedString(string: "Work In Progress", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        attributedTitle = NSAttributedString(string: "No Data!", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
         
         return attributedTitle
     }
@@ -328,7 +328,7 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
         paragraphStyle.alignment = NSTextAlignment.Center
         
         let attributedDescription: NSAttributedString!
-        attributedDescription = NSAttributedString(string: "but coming soon", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(18), NSParagraphStyleAttributeName: paragraphStyle])
+        attributedDescription = NSAttributedString(string: "Table is empty", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(18), NSParagraphStyleAttributeName: paragraphStyle])
         
         return attributedDescription
         

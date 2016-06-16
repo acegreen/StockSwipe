@@ -823,6 +823,7 @@
 				23E7F69C1BCB57A0009A016D /* Resources */,
 				773D38C05ADA2DAD6FDEBBFE /* 📦 Copy Pods Resources */,
 				AD8A9E2DCD003A2F617336AE /* 📦 Embed Pods Frameworks */,
+				23B999891D122B0300E9BFE6 /* ShellScript */,
 				236DB51F1D0264F000CE9869 /* ShellScript */,
 			);
 			buildRules = (
@@ -1034,6 +1035,19 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "cd \"${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/\"\nif [[ -d \"Frameworks\" ]]; then\nrm -fr Frameworks\nfi";
+		};
+		23B999891D122B0300E9BFE6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/bash;
+			shellScript = "# Auto Increment Version Script\n#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
 		};
 		58B6642F3B6926F22922ACFF /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

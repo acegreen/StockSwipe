@@ -48,7 +48,7 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
                 
                 let tradeIdeaObject = PFObject(className: "TradeIdea")
                 tradeIdeaObject["user"] = PFUser.currentUser()!
-                tradeIdeaObject["stock"] = stockObject
+                tradeIdeaObject["stock"] = stockObject.first
                 tradeIdeaObject["description"] = self.ideaTextView.text
                 
                 tradeIdeaObject.saveInBackgroundWithBlock({ (success, error) in

@@ -119,7 +119,7 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
                 return
             }
             
-            SARate.sharedInstance().promptIfNetworkAvailable()
+            self.parentViewController?.parentViewController?.performSegueWithIdentifier("FeedbackSegueIdentifier", sender: self)
             
         case "GiveFeedbackCell":
             

@@ -23,9 +23,7 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
     @IBOutlet var textViewBottomConstraint: NSLayoutConstraint!
     
     @IBAction func xButtonPressed(sender: AnyObject) {
-        
         self.dismissViewControllerAnimated(true, completion: nil)
-        
     }
     
     @IBOutlet var ideaTextView: UITextView!

@@ -178,6 +178,34 @@ public class QueryHelper {
         task.resume()
     }
     
+    public func queryUserObjectFor(username: String, completion: (result: () throws -> (PFUser)) -> Void) {
+        
+        guard Functions.isConnectedToNetwork() else {
+            return completion(result: {throw Constants.Errors.NoInternetConnection})
+        }
+        
+        let userQuery = PFUser.query()
+        userQuery?.whereKey("username", equalTo: username)
+        
+        userQuery?.findObjectsInBackgroundWithBlock { (object, error) -> Void in
+            
+            guard error == nil else {
+                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+            }
+            
+            guard object?.isEmpty != nil else {
+                return completion(result: {throw Constants.Errors.QueryDataEmpty})
+            }
+            
+            guard let object = object?.first as? PFUser else {
+                return completion(result: {throw Constants.Errors.ParseUserObjectNotFound})
+            }
+            
+            completion(result: {return (objects: object)})
+            
+        }
+    }
+    
     public func queryStockObjectsFor(symbols: [String], completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
@@ -200,7 +228,7 @@ public class QueryHelper {
             }
             
             guard let objects = objects else {
-                return completion(result: {throw Constants.Errors.ParseObjectNotFound})
+                return completion(result: {throw Constants.Errors.ParseStockObjectNotFound})
             }
             
             completion(result: {return (objects: objects)})
@@ -208,7 +236,7 @@ public class QueryHelper {
         }
     }
     
-    public func queryTradeIdeaObjectFor(key: String, object: PFObject, skip: Int, completion: (result: () throws -> ([PFObject])) -> Void) {
+    public func queryTradeIdeaObjectsFor(key: String, object: PFObject, skip: Int, completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
@@ -219,7 +247,7 @@ public class QueryHelper {
         tradeIdeaQuery.whereKey(key, equalTo: object)
         tradeIdeaQuery.includeKeys(["user","stock"])
         tradeIdeaQuery.orderByDescending("createdAt")
-        tradeIdeaQuery.limit = 5
+        tradeIdeaQuery.limit = 10
         tradeIdeaQuery.skip  = skip
         
         tradeIdeaQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -228,8 +256,12 @@ public class QueryHelper {
                 return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
             }
             
-            guard let objects = objects where !objects.isEmpty else {
+            guard objects?.isEmpty != nil else {
                 return completion(result: {throw Constants.Errors.QueryDataEmpty})
+            }
+            
+            guard let objects = objects else {
+                return completion(result: {throw Constants.Errors.ParseTradeIdeaObjectNotFound})
             }
             
             // The find succeeded.

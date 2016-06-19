@@ -25,6 +25,10 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, SubScr
     
     @IBOutlet var barOffset: NSLayoutConstraint!
     @IBOutlet var headerHeight: NSLayoutConstraint!
+        
+    @IBAction func xButtonPressed(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
     
     var delegate: SubSegmentedControlDelegate!
     

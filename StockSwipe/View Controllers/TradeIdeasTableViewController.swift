@@ -29,13 +29,10 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     var tradeIdeas = [TradeIdea]()
     
     @IBAction func xButtonPressed(sender: AnyObject) {
-        
         self.dismissViewControllerAnimated(true, completion: nil)
-        
     }
     
     @IBAction func refreshControlAction(sender: UIRefreshControl) {
-        
         self.getTradeIdeas(0)
     }
     
@@ -76,7 +73,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 
                 self.stockObject = try result().first
             
-                QueryHelper.sharedInstance.queryTradeIdeaObjectFor("stock", object: self.stockObject!, skip: skip) { (result) in
+                QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("stock", object: self.stockObject!, skip: skip) { (result) in
                     
                     do {
                         
@@ -127,7 +124,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             self.footerActivityIndicator.startAnimating()
         }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectFor("stock", object: stock, skip: skip) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("stock", object: stock, skip: skip) { (result) in
             
             do {
                 
@@ -224,6 +221,9 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
         case .ProfileSegueIdentifier:
             
             let destinationViewController = segue.destinationViewController as! ProfileContainerController
+            
+            // Just a workaround.. There should be a cleaner way to sort this out 
+            destinationViewController.navigationItem.rightBarButtonItem = nil
             
             let cell = sender as! IdeaCell
             destinationViewController.user = cell.user

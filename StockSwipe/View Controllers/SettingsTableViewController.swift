@@ -84,19 +84,6 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
             guard Functions.isUserLoggedIn(self) else { return }
             
             self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: self)
-            
-        case "LogInOutCell":
-            
-            let logInViewcontroller = LoginViewController.sharedInstance
-            
-            if PFUser.currentUser() != nil {
-                logInViewcontroller.logOut()
-                
-                self.updateProfile()
-                
-            } else {
-                logInViewcontroller.logIn(self)
-            }
         
         case "TutorialCell":
             
@@ -196,6 +183,19 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
                 }
             }
             
+        case "LogInOutCell":
+            
+            let logInViewcontroller = LoginViewController.sharedInstance
+            
+            if PFUser.currentUser() != nil {
+                logInViewcontroller.logOut()
+                
+                self.updateProfile()
+                
+            } else {
+                logInViewcontroller.logIn(self)
+            }
+            
         default:
             break;
         }
@@ -210,6 +210,9 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
             
             let destinationViewController = segue.destinationViewController as! ProfileContainerController
             destinationViewController.user = PFUser.currentUser()
+            
+            // Just a workaround.. There should be a cleaner way to sort this out
+            destinationViewController.navigationItem.rightBarButtonItem = nil
             
         case .FAQSegueIdentifier:
             break

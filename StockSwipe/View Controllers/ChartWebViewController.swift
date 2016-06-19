@@ -29,7 +29,6 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
     //    @IBOutlet var tradeItButton: UIBarButtonItem!
     
     @IBAction func xButtonPressed(sender: AnyObject) {
-        
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

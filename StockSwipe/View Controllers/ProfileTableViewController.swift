@@ -101,12 +101,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
 
     func getProfile(user: PFUser?) {
         
-        guard let user = user where user.authenticated else {
-            self.avatarImage.image = UIImage(named: "dummy_avatar")
-            return
-        }
+        guard let user = user else { return }
         
-        if let profileImageURL = PFUser.currentUser()!.objectForKey("profile_image_url") as? String {
+        if let profileImageURL = user.objectForKey("profile_image_url") as? String {
             
             QueryHelper.sharedInstance.queryWith(profileImageURL, completionHandler: { (result) in
                 
@@ -128,11 +125,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             })
         }
         
-        if let username =  PFUser.currentUser()!.username {
+        if let username = user.username {
             self.usernameLabel.text = username
         }
         
-        if let location =  PFUser.currentUser()!.objectForKey("location") as? String {
+        if let location = user.objectForKey("location") as? String {
             self.locationLabel.text = location
         }
     }
@@ -143,7 +140,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectFor("user", object: user, skip: skip) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user, skip: skip) { (result) in
             
             do {
                 
@@ -188,7 +185,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             self.footerActivityIndicator.startAnimating()
         }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectFor("user", object: user, skip: skip) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user, skip: skip) { (result) in
             
             do {
                 

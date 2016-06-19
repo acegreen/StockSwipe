@@ -225,6 +225,7 @@ extension UIImage {
         case IdeaGuyImage = "idea_guy"
         case ideaBulbBigImage = "idea_bulb_big"
         case newsBigImage = "news_big"
+        case xButton = "x"
     }
     
     convenience init!(assetIdentifier: AssetIdentifier) {
@@ -267,7 +268,7 @@ extension UIImage {
 
 extension UITextView {
     
-    func resolveCashTags(){
+    func resolveTags() {
         
         // turn string in to NSString
         let nsText:NSString = self.text
@@ -314,6 +315,30 @@ extension UITextView {
                     attrString.addAttribute(NSLinkAttributeName, value: "cash:\(stringifiedWord)", range: matchRange)
                 }
                 
+            } else if word.hasPrefix("@") {
+                // a range is the character position, followed by how many characters are in the word.
+                // we need this because we staple the "href" to this range.
+                let matchRange:NSRange = nsText.rangeOfString(word as String)
+                
+                // convert the word from NSString to String
+                // this allows us to call "dropFirst" to remove the hashtag
+                var stringifiedWord:String = word as String
+                
+                // drop the hashtag
+                stringifiedWord = String(stringifiedWord.characters.dropFirst())
+                
+                // check to see if the hashtag has numbers.
+                // ribl is "#1" shouldn't be considered a hashtag.
+                let digits = NSCharacterSet.decimalDigitCharacterSet()
+                
+                if stringifiedWord.rangeOfCharacterFromSet(digits) != nil {
+                    // hashtag contains a number, like "#1"
+                    // so not clickable
+                } else {
+                    // set a link for when the user clicks on this word.
+                    // url scheme syntax "mention://"
+                    attrString.addAttribute(NSLinkAttributeName, value: "mention:\(stringifiedWord)", range: matchRange)
+                }
             }
         }
         

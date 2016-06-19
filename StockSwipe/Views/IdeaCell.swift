@@ -34,7 +34,7 @@ class IdeaCell: UITableViewCell, UITextViewDelegate {
         user = tradeIdea.user
         
         self.ideaDescription.text = tradeIdea.description
-        self.ideaDescription.resolveCashTags()
+        self.ideaDescription.resolveTags()
         
         self.ideaTime.text = tradeIdea.publishedDate.formattedAsTimeAgo()
         
@@ -73,7 +73,31 @@ class IdeaCell: UITableViewCell, UITextViewDelegate {
             Functions.findTopViewController()?.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
             
         case "mention" :
-            print("mention tap")
+            
+            QueryHelper.sharedInstance.queryUserObjectFor(URL.resourceSpecifier, completion: { (result) in
+                
+                do {
+                    
+                    let userObject = try result()
+                    
+                    let profileNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileNavigationController") as! UINavigationController
+                    let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
+                    profileContainerController.user = userObject
+                                        
+                    Functions.findTopViewController()?.presentViewController(profileNavigationController, animated: true, completion: nil)
+                    
+                } catch {
+                    
+                    if let error = error as? Constants.Errors {
+                        
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                        })
+                    }
+                }
+            })
+        
         default:
             Functions.presentSafariBrowser(URL)
         }

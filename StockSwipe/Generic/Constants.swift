@@ -125,7 +125,9 @@ public class Constants {
         case ErrorQueryingForData
         case QueryDataEmpty
         case ErrorParsingData
-        case ParseObjectNotFound
+        case ParseUserObjectNotFound
+        case ParseStockObjectNotFound
+        case ParseTradeIdeaObjectNotFound
         case ChartImageCorrupt
         case URLEmpty
         
@@ -147,15 +149,19 @@ public class Constants {
                 return "Oops! We ran into an issue querying for data"
             case .ErrorParsingData:
                 return "Oops! We ran into an issue querying for data"
-            case .ParseObjectNotFound:
+            case .ParseUserObjectNotFound:
+                return "We could not find this user in our database"
+            case .ParseStockObjectNotFound:
                 return "We could not find this symbol in our database"
+            case .ParseTradeIdeaObjectNotFound:
+                return "We could not find this trade idea in our database"
             case .ChartImageCorrupt:
                 return "Oops! We ran into an issue querying for data"
             case .URLEmpty:
                 return "Oops! We ran into an issue querying for data"
             }
         }
-        static let allErrors = [NoInternetConnection, NoExchangesOrSectorsSelected, RanOutOfChartCards, ErrorAccessingParseDatabase, ErrorAccessingServer, ErrorQueryingForData, QueryDataEmpty, ErrorParsingData, ParseObjectNotFound, ChartImageCorrupt, URLEmpty]
+        static let allErrors = [NoInternetConnection, NoExchangesOrSectorsSelected, RanOutOfChartCards, ErrorAccessingParseDatabase, ErrorAccessingServer, ErrorQueryingForData, QueryDataEmpty, ErrorParsingData, ParseUserObjectNotFound,ParseStockObjectNotFound,ParseTradeIdeaObjectNotFound, ChartImageCorrupt, URLEmpty]
     }
     
     public enum UserChoices: String {

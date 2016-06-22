@@ -17,3 +17,16 @@ public struct Ticker {
     let changeInDollar: String?
     let changeInPercent: String?
 }
+
+extension Ticker: Equatable {}
+
+public func ==(lhs: Ticker, rhs: Ticker) -> Bool {
+    let areEqual = lhs.symbol == rhs.symbol &&
+        lhs.companyName == rhs.companyName &&
+        lhs.exchange == rhs.exchange &&
+        lhs.currentPrice == rhs.currentPrice &&
+        lhs.changeInDollar == rhs.changeInDollar &&
+        lhs.changeInPercent == rhs.changeInPercent
+    
+    return areEqual
+}

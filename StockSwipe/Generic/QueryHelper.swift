@@ -22,10 +22,15 @@ public class QueryHelper {
             
             let task = session.dataTaskWithURL(companyQuoteUrl, completionHandler: { (queryData, response, error) -> Void in
                 
-                guard error == nil else { return completionHandler(result: { throw Constants.Errors.ErrorQueryingForData })}
-                guard queryData != nil else { return completionHandler(result: { throw Constants.Errors.QueryDataEmpty })}
+                guard error == nil else {
+                    return completionHandler(result: {throw Constants.Errors.ErrorQueryingForData})
+                }
                 
-                return completionHandler(result: { queryData! })
+                guard queryData != nil, let queryData = queryData else {
+                    return completionHandler(result: {throw Constants.Errors.QueryDataEmpty})
+                }
+                
+                return completionHandler(result: { queryData })
                 
             })
             task.resume()
@@ -193,11 +198,7 @@ public class QueryHelper {
                 return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
             }
             
-            guard object?.isEmpty != nil else {
-                return completion(result: {throw Constants.Errors.QueryDataEmpty})
-            }
-            
-            guard let object = object?.first as? PFUser else {
+            guard object?.isEmpty == false, let object = object?.first as? PFUser else {
                 return completion(result: {throw Constants.Errors.ParseUserObjectNotFound})
             }
             
@@ -223,11 +224,7 @@ public class QueryHelper {
                 return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
             }
             
-            guard objects?.isEmpty != nil else {
-                return completion(result: {throw Constants.Errors.QueryDataEmpty})
-            }
-            
-            guard let objects = objects else {
+            guard objects?.isEmpty == false, let objects = objects else {
                 return completion(result: {throw Constants.Errors.ParseStockObjectNotFound})
             }
             
@@ -256,11 +253,7 @@ public class QueryHelper {
                 return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
             }
             
-            guard objects?.isEmpty != nil else {
-                return completion(result: {throw Constants.Errors.QueryDataEmpty})
-            }
-            
-            guard let objects = objects else {
+            guard objects?.isEmpty == false, let objects = objects else {
                 return completion(result: {throw Constants.Errors.ParseTradeIdeaObjectNotFound})
             }
             

@@ -17,6 +17,7 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
     
     var symbol: String!
     var companyName: String?
+    var stockObject: PFObject!
     
     var delegate: IdeaPostDelegate!
     
@@ -35,53 +36,32 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
     @IBAction func postButttonPressed(sender: AnyObject) {
         
         guard Functions.isUserLoggedIn(self) else { return }
-        
         guard self.ideaTextView.text != nil else { return }
         
-        QueryHelper.sharedInstance.queryStockObjectsFor([symbol]) { (result) in
+        let tradeIdeaObject = PFObject(className: "TradeIdea")
+        tradeIdeaObject["user"] = PFUser.currentUser()!
+        tradeIdeaObject["stock"] = stockObject
+        tradeIdeaObject["description"] = self.ideaTextView.text
+        
+        tradeIdeaObject.saveInBackgroundWithBlock({ (success, error) in
             
-            do {
+            if success {
                 
-                let stockObject = try result()
-                
-                let tradeIdeaObject = PFObject(className: "TradeIdea")
-                tradeIdeaObject["user"] = PFUser.currentUser()!
-                tradeIdeaObject["stock"] = stockObject.first
-                tradeIdeaObject["description"] = self.ideaTextView.text
-                
-                tradeIdeaObject.saveInBackgroundWithBlock({ (success, error) in
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
-                    if success {
-                        
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            
-                            let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
-                            
-                            self.delegate.ideaPosted(with: tradeIdea)
-                            
-                            self.dismissViewControllerAnimated(true, completion: {
-                                SweetAlert().showAlert("Posted!", subTitle: nil, style: AlertStyle.Success)
-                            })
-                        })
-                        
-                    } else {
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
-                        })
-                    }
+                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                    
+                    self.delegate.ideaPosted(with: tradeIdea)
+                    
+                    self.dismissViewControllerAnimated(true, completion: nil)
                 })
                 
-            } catch {
-                
-                if let error = error as? Constants.Errors {
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        
-                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
-                    })
-                }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                })
             }
-        }
+        })
         
     }
     
@@ -103,6 +83,7 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
         
         symbol = parentOfParentViewController.symbol
         companyName = parentOfParentViewController.companyName
+        stockObject = parentOfParentViewController.chart.parseObject
         
     }
     

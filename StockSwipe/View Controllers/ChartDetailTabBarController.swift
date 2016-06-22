@@ -16,7 +16,10 @@ protocol ChartDetailDelegate {
 
 class ChartDetailTabBarController: UITabBarController {
     
-    // symbol should be passed as we segue here
+    // Symbol should be passed as we segue here
+    var chart: Chart!
+    
+    // Will be set below
     var symbol: String! {
         didSet {
             if symbol != symbol.uppercaseString {
@@ -26,4 +29,11 @@ class ChartDetailTabBarController: UITabBarController {
     }
     
     var companyName: String?
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.symbol = chart.symbol
+        self.companyName = chart.companyName
+    }
 }

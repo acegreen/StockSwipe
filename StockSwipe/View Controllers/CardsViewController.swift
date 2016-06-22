@@ -179,11 +179,10 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 
                 do {
                     
-                    self.randomIndexes = []
-                    self.excludedIndexes = []
-                    
                     try result()
                     
+                    self.randomIndexes = []
+                    self.excludedIndexes = []
                     self.parseObjects += self.extraSetOfObjects
                     
                     self.getCharts({ (result) -> Void in
@@ -883,9 +882,10 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         if segue.identifier == "showChartDetail" {
             
+            guard let chart: Chart = self.charts.find({$0.symbol == self.firstCardView.chart.symbol}) else { return }
+            
             let destinationView = segue.destinationViewController as! ChartDetailTabBarController
-            destinationView.symbol = firstCardView.chart.symbol
-            destinationView.companyName = firstCardView.chart.companyName
+            destinationView.chart = chart
         }
     }
     

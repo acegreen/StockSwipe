@@ -24,7 +24,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     
     var symbol: String!
     var companyName: String?
-    weak var stockObject: PFObject?
+    var stockObject: PFObject?
     
     var tradeIdeas = [TradeIdea]()
     
@@ -33,8 +33,10 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     }
     
     @IBAction func refreshControlAction(sender: UIRefreshControl) {
-        self.getTradeIdeas(0)
+        self.getTradeIdeas(skip: 0)
     }
+    
+    @IBOutlet var tradeIdeaPostButton: UIBarButtonItem!
     
     @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
     
@@ -44,6 +46,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         let parentTabBarController = self.tabBarController as! ChartDetailTabBarController
         symbol = parentTabBarController.symbol
         companyName = parentTabBarController.companyName
+        stockObject = parentTabBarController.chart.parseObject
         
         // title
         if companyName != nil {
@@ -52,8 +55,12 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             self.navigationItem.title = symbol
         }
         
-        self.getTradeIdeas(0)
+        self.getTradeIdeas(skip: 0)
         
+        // Hide post button if symbol is not available
+        if self.stockObject == nil {
+            tradeIdeaPostButton.enabled = false
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -65,47 +72,34 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    func getTradeIdeas(skip: Int) {
+    func getTradeIdeas(skip skip: Int) {
         
-        QueryHelper.sharedInstance.queryStockObjectsFor([self.symbol]) { (result) in
+        guard let stockObject = self.stockObject else { return }
+        
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("stock", object: stockObject, skip: skip) { (result) in
             
             do {
                 
-                self.stockObject = try result().first
-            
-                QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("stock", object: self.stockObject!, skip: skip) { (result) in
+                let tradeIdeasObjects = try result()
+                
+                self.tradeIdeas = []
+                for tradeIdeaObject: PFObject in tradeIdeasObjects {
                     
-                    do {
-                        
-                        let tradeIdeasObjects = try result()
-                        
-                        self.tradeIdeas = []
-                        for tradeIdeaObject: PFObject in tradeIdeasObjects {
-                      
-                            let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
-                            
-                            self.tradeIdeas.append(tradeIdea)
-                            
-                        }
-                        
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.tableView.reloadData()
-                            
-                            if self.refreshControl?.refreshing == true {
-                                self.refreshControl?.endRefreshing()
-                            }
-                            
-                            self.updaterefreshDate()
-                        })
-                        
-                    } catch {
-                        
-                        // TO-DO: Show sweet alert with Error.message()
-                        if self.refreshControl?.refreshing == true {
-                            self.refreshControl?.endRefreshing()
-                        }
-                    }
+                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                    
+                    self.tradeIdeas.append(tradeIdea)
+                    
                 }
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.tableView.reloadData()
+                    
+                    if self.refreshControl?.refreshing == true {
+                        self.refreshControl?.endRefreshing()
+                    }
+                    
+                    self.updaterefreshDate()
+                })
                 
             } catch {
                 
@@ -115,16 +109,19 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 }
             }
         }
+
     }
     
-    func loadMoreTradeIdeas(stock: PFObject, skip: Int) {
+    func loadMoreTradeIdeas(skip skip: Int) {
+        
+        guard let stockObject = self.stockObject else { return }
         
         if self.refreshControl?.refreshing == false {
             
             self.footerActivityIndicator.startAnimating()
         }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("stock", object: stock, skip: skip) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("stock", object: stockObject, skip: skip) { (result) in
             
             do {
                 
@@ -206,7 +203,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
         if offset >= 0 && offset <= 5 {
             // This is the last cell so get more data
-            self.loadMoreTradeIdeas(self.stockObject!, skip: tradeIdeas.count)
+            self.loadMoreTradeIdeas(skip: tradeIdeas.count)
         }
     }
 }

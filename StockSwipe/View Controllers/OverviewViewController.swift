@@ -22,6 +22,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
     var cloudWords = [CloudWord]()
     var trendingStocksJSON = JSON.null
     var news = [News]()
+    var charts = [Chart]()
     
     var cloudColors:[UIColor] = [UIColor.grayColor()]
     var cloudFontName = "HelveticaNeue"
@@ -111,8 +112,6 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                     guard let carsouelJsonResults:JSON? = carsouelJson!["query"]["results"] else { return }
                     guard let quoteJsonResultsQuote = carsouelJsonResults!["quote"].array else { return }
                     
-                    self.tickers = []
-                    
                     for quote in quoteJsonResultsQuote {
                         
                         let symbol = quote["Symbol"].string
@@ -122,7 +121,22 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                         let changeInDollar = quote["Change"].string
                         let changeInPercent = quote["ChangeinPercent"].string
                         
-                        self.tickers.append(Ticker(symbol: symbol, companyName: companyName, exchange: exchange, currentPrice: currentPrice, changeInDollar: changeInDollar, changeInPercent: changeInPercent))
+                        if let ticker = (self.tickers.find{ $0.symbol == symbol}) {
+                            self.tickers.removeObject(ticker)
+                        }
+                        
+                        if let chart = (self.charts.find{ $0.symbol == symbol}) {
+                            self.charts.removeObject(chart)
+                        }
+                        
+                        let ticker = Ticker(symbol: symbol, companyName: companyName, exchange: exchange, currentPrice: currentPrice, changeInDollar: changeInDollar, changeInPercent: changeInPercent)
+                        
+                        let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shorts: nil, longs: nil, parseObject: nil)
+                        
+                        self.tickers.append(ticker)
+                        self.charts.append(chart)
+                        
+                        
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -241,52 +255,20 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                 return
             }
             
-            var symbol: String!
-            var companyName: String!
-            
-            for (_, subJson) in self.trendingStocksJSON {
-                
-                if subJson["symbol"].string == (sender.view as! UIButton).currentTitle {
-                    
-                    symbol = subJson["symbol"].string
-                    companyName = subJson["title"].string
-                    
-                }
-            }
+            guard let chart = (self.charts.find{ $0.symbol == (sender.view as! UIButton).currentTitle }) else { return }
             
             SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.CustomImag(imageFile: "add"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.redColor() , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
             
                 guard Functions.isUserLoggedIn(self) else { return }
                 
-                Functions.getStockObjectAndChart(symbol, completion: { (result) in
+                if !isOtherButton {
                     
-                    do {
-                        
-                        let results = try result()
-                        
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            
-                            if !isOtherButton {
-                                
-                                Functions.registerUserChoice(results.chart, and: results.object, with: .LONG)
-                                
-                            } else if isOtherButton {
-                                
-                                Functions.registerUserChoice(results.chart, and: results.object, with: .SHORT)
-                            }
-                        })
-                        
-                    } catch {
-                        
-                        if let error = error as? Constants.Errors {
-                            
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                
-                                SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
-                            })
-                        }
-                    }
-                })
+                    Functions.registerUserChoice(chart, and: chart.parseObject, with: .LONG)
+                    
+                } else if isOtherButton {
+                    
+                    Functions.registerUserChoice(chart, and: chart.parseObject, with: .SHORT)
+                }
             }
         }
     }
@@ -330,6 +312,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
             dispatch_async(dispatch_get_main_queue(), { () -> Void in
                 
                 self.layoutCloudWords()
+                self.cloudWords = []
                 
             })
         }
@@ -362,9 +345,15 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                         
                         let stockObjects = try result()
                         
-                        self.cloudWords = []
-                        
                         for (index, subJson) in self.trendingStocksJSON {
+                            
+                            if let cloudWord = (self.cloudWords.find{ $0.wordText == subJson["symbol"].string!}) {
+                                self.cloudWords.removeObject(cloudWord)
+                            }
+                            
+                            if let chart = (self.charts.find{ $0.symbol == subJson["symbol"].string!}) {
+                                self.charts.removeObject(chart)
+                            }
                             
                             let parseObject = stockObjects.find{ $0["Symbol"] as! String == subJson["symbol"].string!}
                             
@@ -372,9 +361,26 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                             self.cloudWords.append(cloudWord)
                             
                             // Index to Spotlight
-                            let chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: nil, shorts: nil, longs: nil, parseObject: parseObject)
-                            Functions.addToSpotlight(chart, uniqueIdentifier: chart.symbol, domainIdentifier: "com.stockswipe.stocksQueried")
-                            
+                            QueryHelper.sharedInstance.queryChartImage(subJson["symbol"].string!, completion: { (result) in
+                                
+                                var chart: Chart!
+                                
+                                do {
+                                    
+                                    let chartImage = try result()
+                                    
+                                    chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: chartImage, shorts: nil, longs: nil, parseObject: parseObject)
+                                    
+                                    self.charts.append(chart)
+                                    
+                                } catch {
+                                    
+                                    chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: nil, shorts: nil, longs: nil, parseObject: parseObject)
+                                }
+                                
+                                // Index to Spotlight
+                                Functions.addToSpotlight(chart, uniqueIdentifier: chart.symbol, domainIdentifier: "com.stockswipe.stocksQueried")
+                            })
                         }
                         
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -389,6 +395,11 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                     } catch {
                         
                         if let error = error as? Constants.Errors {
+                            
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                
+                                SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                            })
                         }
                     }
                     
@@ -489,7 +500,9 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                 
             } catch {
                 
-                
+                if error is Constants.Errors {
+                        print(error)
+                }
             }
         }
     }
@@ -500,20 +513,17 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         
         if segue.identifier == "showChartDetail" {
             
+            var symbol: String!
+            
             switch sender {
                 
             case is UIButton:
         
-                for (_, subJson) in self.trendingStocksJSON {
-                    
-                    if subJson["symbol"].string == sender!.currentTitle {
-                        
-                        let destinationView = segue.destinationViewController as! ChartDetailTabBarController
-                        
-                        destinationView.symbol = subJson["symbol"].string
-                        destinationView.companyName = subJson["title"].string
-                    }
-                }
+                symbol = sender?.currentTitle
+                
+                let destinationView = segue.destinationViewController as! ChartDetailTabBarController
+                destinationView.chart = self.charts.find{ $0.symbol == symbol }
+                
             case is UIView:
                 
                 print(carousel.indexOfItemView(sender as! UIView))
@@ -521,13 +531,13 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                 if tickers.get(carousel.indexOfItemView(sender as! UIView)) != nil {
                     
                     let tickerAtIndex = tickers[carousel.indexOfItemView(sender as! UIView)]
-                
-                    let destinationView = segue.destinationViewController as! ChartDetailTabBarController
                     
-                    destinationView.symbol = tickerAtIndex.symbol
-                    destinationView.companyName = tickerAtIndex.companyName
+                    symbol = tickerAtIndex.symbol
                     
                 }
+                
+                let destinationView = segue.destinationViewController as! ChartDetailTabBarController
+                destinationView.chart = self.charts.find{ $0.symbol == symbol }
                 
             default:
                 break
@@ -691,7 +701,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         
         let attributedTitle: NSAttributedString!
         
-        attributedTitle = NSAttributedString(string: "No News or No Internet?", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        attributedTitle = NSAttributedString(string: "No News?", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
         
         return attributedTitle
     }

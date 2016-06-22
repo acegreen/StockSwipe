@@ -46,17 +46,14 @@ class SwipeChartView: MDCSwipeToChooseView {
         self.backgroundColor = UIColor.whiteColor()
         self.chart = chart
         
-        if let image = self.chart.image {
+        self.imageView = UIImageView(frame: CGRectMake(0, Constants.chartImageTopPadding, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) - Constants.informationViewHeight - Constants.chartImageTopPadding))
+        self.imageView.image = chart.image
+        
+        if !imageView .isDescendantOfView(self) {
             
-            self.imageView = UIImageView(frame: CGRectMake(0, Constants.chartImageTopPadding, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) - Constants.informationViewHeight - Constants.chartImageTopPadding))
-            self.imageView.image = image
+            self.addSubview(imageView)
+            self.sendSubviewToBack(imageView)
             
-            if !imageView .isDescendantOfView(self) {
-                
-                self.addSubview(imageView)
-                self.sendSubviewToBack(imageView)
-                
-            }
         }
         
         self.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]

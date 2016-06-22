@@ -35,6 +35,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
     var blurView: UIVisualEffectView!
     
     var swippeChartsdArray = [ChartModel]()
+    var charts = [Chart]()
     
     var cellWidth: CGFloat!
     var cellHeight: CGFloat!
@@ -192,21 +193,57 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
     }
     
     override func viewWillAppear(animated: Bool) {
+        reloadViewData()
+    }
+    
+    func reloadViewData() {
         
         // Get charts from CoreData
         swippeChartsdArray = Functions.getChartsFromCoreData()?.mutableCopy() as! [ChartModel]
         
-        // Enable edit button if array exists
-        if self.swippeChartsdArray.count != 0 {
+        QueryHelper.sharedInstance.queryStockObjectsFor(extractSymbolNames(self.swippeChartsdArray)) { (result) in
             
-            self.CollectionView.reloadData()
-            self.EditButton.enabled = true
-            
-        } else if swippeChartsdArray.count == 0 {
-            
-            self.CollectionView.reloadEmptyDataSet()
+            do {
+                
+                let stockObjects = try result()
+                
+                for stockObject in stockObjects {
+                    
+                    let symbol = stockObject["Symbol"] as? String
+                    let companyName = stockObject["Company"] as? String
+                    let shorts: AnyObject? = stockObject["Shorted_By"]
+                    let longs: AnyObject? = stockObject["Longed_By"]
+                    
+                    if let chart = (self.charts.find{ $0.symbol == symbol }) {
+                        self.charts.removeObject(chart)
+                    }
+                    
+                    let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
+                    self.charts.append(chart)
+                }
+                
+                // Enable edit button if array exists
+                if self.swippeChartsdArray.count != 0 {
+                    
+                    self.CollectionView.reloadData()
+                    self.EditButton.enabled = true
+                    
+                } else if self.swippeChartsdArray.count == 0 {
+                    
+                    self.CollectionView.reloadEmptyDataSet()
+                }
+                
+            } catch {
+                
+                if let error = error as? Constants.Errors {
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        
+                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                    })
+                }
+            }
         }
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -391,26 +428,16 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         })
     }
 
-    func extractSymbolNames (CoreDataObjects: [ChartModel]) -> [String] {
+    func extractSymbolNames (coreDataObjects: [ChartModel]) -> [String] {
         
-        var symbolStringArray: [String] = [String]()
-        
-        if CoreDataObjects.isEmpty {
+        if coreDataObjects.isEmpty {
             
             return []
             
         } else {
             
-            for object in CoreDataObjects {
-                
-                symbolStringArray.append(object.symbol as String)
-                
-            }
+            return coreDataObjects.map { $0.symbol }
         }
-        
-        print(symbolStringArray)
-        
-        return symbolStringArray
     }
 }
 
@@ -471,9 +498,10 @@ extension ChartCollectionViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
             
             let selectedObject = swippeChartsdArray[self.CollectionView.indexPathsForSelectedItems()!.first!.row]
             
+            let chart = charts.find{ $0.symbol == selectedObject.symbol }
+
             let destinationView = segue.destinationViewController as! ChartDetailTabBarController
-            destinationView.symbol = selectedObject.symbol
-            destinationView.companyName = selectedObject.companyName
+            destinationView.chart = chart
         }
     }
 }

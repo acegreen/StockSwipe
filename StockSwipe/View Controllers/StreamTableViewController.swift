@@ -17,9 +17,7 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
     var companyName: String?
     
     @IBAction func xButtonPressed(sender: AnyObject) {
-        
         self.dismissViewControllerAnimated(true, completion: nil)
-        
     }
     
     override func viewDidLoad() {
@@ -56,7 +54,6 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
     }
     
     // TWTRTweetViewDelegate
-    
     func tweetView(tweetView: TWTRTweetView, shouldDisplayDetailViewController controller: TWTRTweetDetailViewController) -> Bool {
         return false
     }
@@ -69,13 +66,13 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
         Functions.presentSafariBrowser(user.profileURL)
     }
     
-    func tweetView(tweetView: TWTRTweetView, didTapImage image: UIImage, withURL imageURL: NSURL) {
-        Functions.presentSafariBrowser(imageURL)
-    }
+//    func tweetView(tweetView: TWTRTweetView, didTapImage image: UIImage, withURL imageURL: NSURL) {
+//        Functions.presentSafariBrowser(imageURL)
+//    }
     
-    func tweetView(tweetView: TWTRTweetView, didTapVideoWithURL videoURL: NSURL) {
-        Functions.presentSafariBrowser(videoURL)
-    }
+//    func tweetView(tweetView: TWTRTweetView, didTapVideoWithURL videoURL: NSURL) {
+//        Functions.presentSafariBrowser(videoURL)
+//    }
     
     // DZNEmptyDataSet delegate functions
     

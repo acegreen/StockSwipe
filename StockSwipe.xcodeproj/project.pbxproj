@@ -104,6 +104,7 @@
 		23CAE2661C2B46A800D15819 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CAE2651C2B46A800D15819 /* LocalAuthentication.framework */; };
 		23CAE26D1C2CB41300D15819 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CAE26C1C2CB41300D15819 /* Settings.swift */; };
 		23CE716D1C1215C800E87420 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE716C1C1215C800E87420 /* AdSupport.framework */; };
+		23CF54A51D19BF3B004A01DC /* SuperUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF54A41D19BF3B004A01DC /* SuperUITextView.swift */; };
 		23CF60461B1CA8310087B9D5 /* BorderedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF60451B1CA8310087B9D5 /* BorderedLabel.swift */; };
 		23D4FFE81C317ECE00A1102D /* FiltersTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D4FFE71C317ECE00A1102D /* FiltersTableViewCell.swift */; };
 		23D6D8F51B7E597900902B3E /* CardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D6D8F41B7E597900902B3E /* CardsViewController.swift */; };
@@ -292,6 +293,7 @@
 		23CAE2651C2B46A800D15819 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		23CAE26C1C2CB41300D15819 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		23CE716C1C1215C800E87420 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		23CF54A41D19BF3B004A01DC /* SuperUITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuperUITextView.swift; sourceTree = "<group>"; };
 		23CF60451B1CA8310087B9D5 /* BorderedLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedLabel.swift; sourceTree = "<group>"; };
 		23D4FFE71C317ECE00A1102D /* FiltersTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersTableViewCell.swift; sourceTree = "<group>"; };
 		23D6D8F41B7E597900902B3E /* CardsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardsViewController.swift; sourceTree = "<group>"; };
@@ -712,6 +714,7 @@
 				235459051CB59AE9004080B7 /* LikedIdeaCell.swift */,
 				233C7D5F1CB3F620006A014A /* TimeFormattedLabel.swift */,
 				236DB5221D048D8800CE9869 /* GradientAnimationImage.swift */,
+				23CF54A41D19BF3B004A01DC /* SuperUITextView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1167,6 +1170,7 @@
 				23875DF81B11752600966012 /* Funtions.swift in Sources */,
 				23CAE26D1C2CB41300D15819 /* Settings.swift in Sources */,
 				236DB5231D048D8800CE9869 /* GradientAnimationImage.swift in Sources */,
+				23CF54A51D19BF3B004A01DC /* SuperUITextView.swift in Sources */,
 				23D7602A1B629831009777E1 /* CustomSegue.swift in Sources */,
 				235459061CB59AE9004080B7 /* LikedIdeaCell.swift in Sources */,
 				233C7D561CB2AC7E006A014A /* ProfileContainerController.swift in Sources */,

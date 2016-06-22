@@ -266,7 +266,7 @@ extension UIImage {
     }
 }
 
-extension UITextView {
+extension DetectTags where Self: UITextView {
     
     func resolveTags() {
         
@@ -344,7 +344,6 @@ extension UITextView {
         
         self.attributedText = attrString
     }
-    
 }
 
 extension UIViewController {

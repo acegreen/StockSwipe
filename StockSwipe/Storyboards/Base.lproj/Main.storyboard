@@ -1494,7 +1494,7 @@
                                             <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="dsz-Dg-tL1">
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="dsz-Dg-tL1" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
                                             <rect key="frame" x="83" y="40" width="501.5" height="34.5"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <color key="textColor" red="0.36078432199999999" green="0.36078432199999999" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
@@ -1509,9 +1509,6 @@
                                                     <rect key="value" x="0.0" y="0.0" width="0.0" height="0.0"/>
                                                 </userDefinedRuntimeAttribute>
                                             </userDefinedRuntimeAttributes>
-                                            <connections>
-                                                <outlet property="delegate" destination="mzC-D1-lyu" id="FCk-1E-gQP"/>
-                                            </connections>
                                         </textView>
                                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Idea Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="X53-XB-7dS">
                                             <rect key="frame" x="517" y="8" width="67.5" height="18"/>
@@ -1593,6 +1590,7 @@
                     </refreshControl>
                     <connections>
                         <outlet property="footerActivityIndicator" destination="OK2-ZX-j7n" id="cG0-h2-L3O"/>
+                        <outlet property="tradeIdeaPostButton" destination="pke-Cq-q83" id="0rr-hw-NwI"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uGm-Kw-EZU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2586,14 +2584,8 @@
                             <rect key="frame" x="0.0" y="0.0" width="600" height="250"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="iamusername" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yau-Wk-age">
-                                    <rect key="frame" x="235" y="137" width="130" height="24"/>
-                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
-                                    <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
-                                    <nil key="highlightedColor"/>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cambridge, UK" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kre-p4-MTd">
-                                    <rect key="frame" x="239" y="163" width="120.5" height="21.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mars" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kre-p4-MTd">
+                                    <rect key="frame" x="281" y="163" width="39" height="22"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="18"/>
                                     <color key="textColor" white="0.5" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     <nil key="highlightedColor"/>
@@ -2632,6 +2624,12 @@
                                         <action selector="followButtonPressed:" destination="eDN-Sc-NCM" eventType="touchUpInside" id="Wd9-7j-bSE"/>
                                     </connections>
                                 </button>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="no name" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yau-Wk-age">
+                                    <rect key="frame" x="258.5" y="134.5" width="83" height="24"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
+                                    <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                             </subviews>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
@@ -2676,25 +2674,6 @@
                                             <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="YAx-sj-kXA">
-                                            <rect key="frame" x="83" y="40" width="501.5" height="34.5"/>
-                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                            <color key="textColor" red="0.36078432202339172" green="0.36078432202339172" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
-                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                            <dataDetectorType key="dataDetectorTypes" link="YES"/>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="textContainer.lineFragmentPadding">
-                                                    <integer key="value" value="0"/>
-                                                </userDefinedRuntimeAttribute>
-                                                <userDefinedRuntimeAttribute type="rect" keyPath="textContainerInset">
-                                                    <rect key="value" x="0.0" y="0.0" width="0.0" height="0.0"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                            <connections>
-                                                <outlet property="delegate" destination="R5l-VM-dlO" id="r97-eD-Xj3"/>
-                                            </connections>
-                                        </textView>
                                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Idea Time" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="GRp-l7-30s">
                                             <rect key="frame" x="517" y="8" width="67.5" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -2712,6 +2691,22 @@
                                                 <constraint firstAttribute="height" constant="50" id="POE-u6-6N8"/>
                                             </constraints>
                                         </imageView>
+                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalCompressionResistancePriority="749" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="YAx-sj-kXA" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
+                                            <rect key="frame" x="83" y="40" width="501.5" height="34.5"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="textColor" red="0.36078432202339172" green="0.36078432202339172" blue="0.40000000596046448" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                            <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="textContainer.lineFragmentPadding">
+                                                    <integer key="value" value="0"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="rect" keyPath="textContainerInset">
+                                                    <rect key="value" x="0.0" y="0.0" width="0.0" height="0.0"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </textView>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="trailing" secondItem="YAx-sj-kXA" secondAttribute="trailing" constant="15" id="2iw-Zb-dAw"/>
@@ -2972,6 +2967,13 @@
                             <userLayoutGuide location="243" affinity="minY"/>
                         </userGuides>
                         <subviews>
+                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PZW-qp-N1s">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <segue destination="eDN-Sc-NCM" kind="embed" identifier="embedProfile" id="awA-C8-Ghw"/>
+                                </connections>
+                            </containerView>
                             <segmentedControl contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ZbD-uc-JhG">
                                 <rect key="frame" x="5" y="200" width="590" height="51"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -2988,13 +2990,6 @@
                                     <action selector="segmentedControlAction:" destination="sLt-GA-u8S" eventType="valueChanged" id="TjX-rl-1Va"/>
                                 </connections>
                             </segmentedControl>
-                            <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PZW-qp-N1s">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <connections>
-                                    <segue destination="eDN-Sc-NCM" kind="embed" identifier="embedProfile" id="awA-C8-Ghw"/>
-                                </connections>
-                            </containerView>
                         </subviews>
                         <color key="backgroundColor" white="0.94600637340000004" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>

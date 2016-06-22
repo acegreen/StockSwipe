@@ -43,9 +43,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
     @IBOutlet var ratingBarChartView: BarChartView!
     
     @IBAction func xButtonPressed(sender: AnyObject) {
-        
         self.dismissViewControllerAnimated(true, completion: nil)
-        
     }
     
     override func viewDidLoad() {

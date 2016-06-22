@@ -306,7 +306,7 @@ public class Functions {
                 let newChart = ChartModel(entity: Constants.entity!, insertIntoManagedObjectContext: Constants.context)
                 newChart.symbol = chart.symbol
                 newChart.companyName = chart.companyName
-                newChart.image = (UIImagePNGRepresentation(chart.image!) ?? nil)
+                newChart.image = UIImagePNGRepresentation(chart.image)
                 newChart.shorts = Int32(chart.shorts ?? 0)
                 newChart.longs = Int32(chart.longs ?? 0)
                 newChart.userChoice = userChoice.key()
@@ -319,7 +319,7 @@ public class Functions {
                 let fetchedObject:NSManagedObject = fetchedObjectArray.first!
                 
                 fetchedObject.setValue(chart.symbol, forKey: "symbol")
-                fetchedObject.setValue((UIImagePNGRepresentation(chart.image!) ?? nil), forKey: "image")
+                fetchedObject.setValue(UIImagePNGRepresentation(chart.image), forKey: "image")
                 fetchedObject.setValue(chart.shorts, forKey: "shorts")
                 fetchedObject.setValue(chart.longs, forKey: "longs")
                 fetchedObject.setValue(userChoice.key(), forKey: "userChoice")

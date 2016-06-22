@@ -65,7 +65,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                     
                     let results = try result()
                     
-                    let view = SwipeChartView(frame: CGRectMake(0, 0, results.chart.image!.size.width, results.chart.image!.size.height + Constants.informationViewHeight + Constants.chartImageTopPadding), chart: results.chart, options: nil)
+                    let view = SwipeChartView(frame: CGRectMake(0, 0, results.chart.image.size.width, results.chart.image.size.height + Constants.informationViewHeight + Constants.chartImageTopPadding), chart: results.chart, options: nil)
                     let chartImage = UIImage(view: view)
                     
                     Functions.presentActivityVC(textToShare, imageToShare: chartImage, url: Constants.appLinkURL!, sender: self.actionButton, vc: self, completion: { (activity, success, items, error) -> Void in
@@ -133,6 +133,8 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
     }
     
     deinit {
+        
+        guard webView != nil else { return }
         
         if webView.loading {
             

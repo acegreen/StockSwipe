@@ -6,6 +6,7 @@
 //  Copyright © 2016 StockSwipe. All rights reserved.
 //
 
+import UIKit
 import Foundation
 
 protocol SegueHandlerType {
@@ -15,3 +16,5 @@ protocol SegueHandlerType {
 protocol CellType {
     associatedtype CellIdentifier: RawRepresentable
 }
+
+protocol DetectTags { }

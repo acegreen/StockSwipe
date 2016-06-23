@@ -366,12 +366,9 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                     do {
                         
                         let stockObjects = try result()
+                        self.cloudWords = []
                         
                         for (index, subJson) in self.trendingStocksJSON {
-                            
-                            if let cloudWord = (self.cloudWords.find{ $0.wordText == subJson["symbol"].string!}) {
-                                self.cloudWords.removeObject(cloudWord)
-                            }
                             
                             if let chart = (self.charts.find{ $0.symbol == subJson["symbol"].string!}) {
                                 self.charts.removeObject(chart)

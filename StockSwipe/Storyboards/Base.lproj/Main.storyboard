@@ -619,7 +619,6 @@
                                             <outlet property="nameLabel" destination="7Wt-Fx-9Gb" id="8lS-He-Nog"/>
                                             <outlet property="overlayLabel" destination="Ua7-Hp-bes" id="AAu-ej-QHL"/>
                                             <outlet property="shortLabel" destination="BX8-jh-oIL" id="cHs-Fs-cJo"/>
-                                            <segue destination="M9z-OK-JZ7" kind="showDetail" identifier="showChartDetail" id="vP8-tW-JHc"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -659,6 +658,7 @@
                         <outlet property="SelectAllButton" destination="jV0-YY-20U" id="Siw-YQ-ruo"/>
                         <outlet property="TrashButton" destination="XAc-BX-hwa" id="qu7-Xf-2lT"/>
                         <outlet property="navigationBar" destination="mON-vX-YcR" id="SyN-g4-LQT"/>
+                        <segue destination="M9z-OK-JZ7" kind="showDetail" identifier="showChartDetail" id="quK-gg-uD0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DxK-Od-Ml5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -3344,8 +3344,8 @@
         <image name="x" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="quK-gg-uD0"/>
         <segue reference="sLE-BL-QrO"/>
-        <segue reference="TrH-G2-UNU"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.098039215686274508" green="0.84313725490196079" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
 </document>

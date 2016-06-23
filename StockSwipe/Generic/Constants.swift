@@ -134,7 +134,7 @@ public class Constants {
         public func message() -> String {
             switch self {
             case .NoInternetConnection:
-                return "No internet connection!\nMake sure your device is connected to begin search"
+                return "No internet connection!\nMake sure your device is connected"
             case .NoExchangesOrSectorsSelected:
                 return "No Filters?\nYou must have at least one exchange and one sector selected"
             case .RanOutOfChartCards:

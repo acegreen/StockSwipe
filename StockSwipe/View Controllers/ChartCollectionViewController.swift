@@ -35,7 +35,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
     var blurView: UIVisualEffectView!
     
     var swippeChartsdArray = [ChartModel]()
-    var charts = [Chart]()
+    var selectedChart: Chart!
     
     var cellWidth: CGFloat!
     var cellHeight: CGFloat!
@@ -201,48 +201,15 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         // Get charts from CoreData
         swippeChartsdArray = Functions.getChartsFromCoreData()?.mutableCopy() as! [ChartModel]
         
-        QueryHelper.sharedInstance.queryStockObjectsFor(extractSymbolNames(self.swippeChartsdArray)) { (result) in
+        // Enable edit button if array exists
+        if self.swippeChartsdArray.count != 0 {
             
-            do {
-                
-                let stockObjects = try result()
-                
-                for stockObject in stockObjects {
-                    
-                    let symbol = stockObject["Symbol"] as? String
-                    let companyName = stockObject["Company"] as? String
-                    let shorts: AnyObject? = stockObject["Shorted_By"]
-                    let longs: AnyObject? = stockObject["Longed_By"]
-                    
-                    if let chart = (self.charts.find{ $0.symbol == symbol }) {
-                        self.charts.removeObject(chart)
-                    }
-                    
-                    let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
-                    self.charts.append(chart)
-                }
-                
-                // Enable edit button if array exists
-                if self.swippeChartsdArray.count != 0 {
-                    
-                    self.CollectionView.reloadData()
-                    self.EditButton.enabled = true
-                    
-                } else if self.swippeChartsdArray.count == 0 {
-                    
-                    self.CollectionView.reloadEmptyDataSet()
-                }
-                
-            } catch {
-                
-                if let error = error as? Constants.Errors {
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        
-                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
-                    })
-                }
-            }
+            self.CollectionView.reloadData()
+            self.EditButton.enabled = true
+            
+        } else if self.swippeChartsdArray.count == 0 {
+            
+            self.CollectionView.reloadEmptyDataSet()
         }
     }
     
@@ -290,6 +257,39 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             }
             
         } else {
+            
+            let selectedObject = swippeChartsdArray[self.CollectionView.indexPathsForSelectedItems()!.first!.row]
+            
+            QueryHelper.sharedInstance.queryStockObjectsFor([selectedObject.symbol]) { (result) in
+                
+                do {
+                    
+                    let stockObjects = try result()
+                    
+                    for stockObject in stockObjects {
+                        
+                        let symbol = stockObject["Symbol"] as? String
+                        let companyName = stockObject["Company"] as? String
+                        let shorts: AnyObject? = stockObject["Shorted_By"]
+                        let longs: AnyObject? = stockObject["Longed_By"]
+                        
+                        let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
+                        self.selectedChart = chart
+                        
+                        self.performSegueWithIdentifier("showChartDetail", sender: self)
+                    }
+                    
+                } catch {
+                    
+                    if let error = error as? Constants.Errors {
+                        
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                        })
+                    }
+                }
+            }
             
             self.CollectionView.deselectItemAtIndexPath(indexPath, animated: false)
         }
@@ -471,37 +471,12 @@ extension ChartCollectionViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
     
     // MARK: - Segue stuff
     
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
-        
-        if identifier == "showChartDetail" {
-            
-            if !self.editing  && !Functions.isConnectedToNetwork() {
-                
-                SweetAlert().showAlert("Can't Access Chart!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.Warning)
-                
-            } else if !self.editing && Functions.isConnectedToNetwork() {
-                
-                return true
-            }
-            
-            return false
-            
-        }
-        
-        return true
-        
-    }
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "showChartDetail" {
-            
-            let selectedObject = swippeChartsdArray[self.CollectionView.indexPathsForSelectedItems()!.first!.row]
-            
-            let chart = charts.find{ $0.symbol == selectedObject.symbol }
 
             let destinationView = segue.destinationViewController as! ChartDetailTabBarController
-            destinationView.chart = chart
+            destinationView.chart = selectedChart
         }
     }
 }

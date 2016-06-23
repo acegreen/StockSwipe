@@ -279,7 +279,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     }
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        return true
+        
+        if user == PFUser.currentUser() {
+            return true
+        }
+        
+        return false
     }
 
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {

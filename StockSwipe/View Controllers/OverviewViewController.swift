@@ -257,19 +257,41 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
             
             guard let chart = (self.charts.find{ $0.symbol == (sender.view as! UIButton).currentTitle }) else { return }
             
-            SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.CustomImag(imageFile: "add"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.redColor() , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
-            
-                guard Functions.isUserLoggedIn(self) else { return }
+            QueryHelper.sharedInstance.queryChartImage(chart.symbol, completion: { (result) in
                 
-                if !isOtherButton {
+                do {
                     
-                    Functions.registerUserChoice(chart, and: chart.parseObject, with: .LONG)
+                    let chartImage = try result()
                     
-                } else if isOtherButton {
+                    chart.image = chartImage
                     
-                    Functions.registerUserChoice(chart, and: chart.parseObject, with: .SHORT)
+                    
+                } catch {
+                    
+                    print(error)
                 }
-            }
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.CustomImag(imageFile: "add"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.redColor() , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+                        
+                        guard Functions.isUserLoggedIn(self) else { return }
+                        
+                        if !isOtherButton {
+                            
+                            Functions.registerUserChoice(chart, and: chart.parseObject, with: .LONG)
+                            
+                        } else if isOtherButton {
+                            
+                            Functions.registerUserChoice(chart, and: chart.parseObject, with: .SHORT)
+                        }
+                    }
+                    
+                })
+                
+                // Index to Spotlight
+                Functions.addToSpotlight(chart, uniqueIdentifier: chart.symbol, domainIdentifier: "com.stockswipe.stocksQueried")
+            })
         }
     }
     
@@ -357,30 +379,17 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                             
                             let parseObject = stockObjects.find{ $0["Symbol"] as! String == subJson["symbol"].string!}
                             
+                            let shorts = parseObject?["Shorted_By"]
+                            let longs = parseObject?["Longed_By"]
+                            
                             let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: self.trendingStocksJSON.count - Int(index)!, wordTappable: true)
                             self.cloudWords.append(cloudWord)
                             
-                            // Index to Spotlight
-                            QueryHelper.sharedInstance.queryChartImage(subJson["symbol"].string!, completion: { (result) in
-                                
-                                var chart: Chart!
-                                
-                                do {
-                                    
-                                    let chartImage = try result()
-                                    
-                                    chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: chartImage, shorts: nil, longs: nil, parseObject: parseObject)
-                                    
-                                    self.charts.append(chart)
-                                    
-                                } catch {
-                                    
-                                    chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: nil, shorts: nil, longs: nil, parseObject: parseObject)
-                                }
-                                
-                                // Index to Spotlight
-                                Functions.addToSpotlight(chart, uniqueIdentifier: chart.symbol, domainIdentifier: "com.stockswipe.stocksQueried")
-                            })
+                            let chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: parseObject)
+                            self.charts.append(chart)
+                            
+                            //Index to Spotlight
+                            Functions.addToSpotlight(chart, uniqueIdentifier: chart.symbol, domainIdentifier: "com.stockswipe.stocksQueried")
                         }
                         
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in

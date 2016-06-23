@@ -22,7 +22,7 @@ class ChartCollectionViewCell: UICollectionViewCell {
     
     func configure(withDataSource dataSource: ChartModel) {
         
-        if let image = UIImage(data: dataSource.image!) {
+        if dataSource.image != nil, let image = UIImage(data: dataSource.image!) {
             self.imageView.image = image
         }
         

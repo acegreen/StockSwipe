@@ -11,8 +11,8 @@ import Parse
 
 public class Chart: NSObject {
     
-    let symbol: String!
-    let companyName: String!
+    var symbol: String!
+    var companyName: String!
     var image: UIImage! {
         didSet {
             if image == nil {
@@ -23,7 +23,7 @@ public class Chart: NSObject {
     
     var shorts: Int?
     var longs: Int?
-    let parseObject: PFObject?
+    var parseObject: PFObject?
     
     var searchDescription: String {
         
@@ -39,9 +39,11 @@ public class Chart: NSObject {
     
     init(symbol: String!, companyName: String!, image: UIImage!, shorts: Int?, longs: Int?, parseObject: PFObject?) {
         
+        super.init()
+        
         self.symbol = symbol ?? ""
         self.companyName = companyName!
-        self.image = image
+        ({  self.image = image })()
         self.shorts = shorts
         self.longs = longs
         self.parseObject = parseObject

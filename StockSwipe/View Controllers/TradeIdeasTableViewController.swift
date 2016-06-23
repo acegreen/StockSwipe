@@ -23,7 +23,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     }
     
     var symbol: String!
-    var companyName: String?
+    var companyName: String!
     var stockObject: PFObject?
     
     var tradeIdeas = [TradeIdea]()

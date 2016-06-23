@@ -11,7 +11,7 @@ import Parse
 
 protocol ChartDetailDelegate {
     var symbol: String! { get set }
-    var companyName: String? { get set }
+    var companyName: String! { get set }
 }
 
 class ChartDetailTabBarController: UITabBarController {

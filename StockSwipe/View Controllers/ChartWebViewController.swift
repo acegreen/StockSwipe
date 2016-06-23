@@ -17,7 +17,8 @@ import SwiftyJSON
 class ChartWebViewController: UIViewController, ChartDetailDelegate {
     
     var symbol: String!
-    var companyName: String?
+    var companyName: String!
+    var chart: Chart!
     
     var webView: WKWebView!
     var jsContext: JSContext!
@@ -55,18 +56,20 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
         
         customAlert.showAlert("Hold On!", subTitle: "While we prepare the snapshot", style: AlertStyle.ActivityIndicator, dismissTime: nil)
         
-        Functions.getStockObjectAndChart(self.symbol) { (result) in
+        QueryHelper.sharedInstance.queryChartImage(symbol, completion: { (result) in
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            do {
                 
-                self.customAlert.closeAlert(nil)
+                let chartImageResult = try result()
+                self.chart.image = chartImageResult
                 
-                do {
+                let view = SwipeChartView(frame: CGRectMake(0, 0, self.chart.image.size.width, self.chart.image.size.height + Constants.informationViewHeight + Constants.chartImageTopPadding), chart: self.chart, options: nil)
+                
+                let chartImage = UIImage(view: view)
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
-                    let results = try result()
-                    
-                    let view = SwipeChartView(frame: CGRectMake(0, 0, results.chart.image.size.width, results.chart.image.size.height + Constants.informationViewHeight + Constants.chartImageTopPadding), chart: results.chart, options: nil)
-                    let chartImage = UIImage(view: view)
+                    self.customAlert.closeAlertDismissButton()
                     
                     Functions.presentActivityVC(textToShare, imageToShare: chartImage, url: Constants.appLinkURL!, sender: self.actionButton, vc: self, completion: { (activity, success, items, error) -> Void in
                         
@@ -86,20 +89,19 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                             SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.Error)
                         }
                     })
-                    
-                } catch {
-                    
-                    if let error = error as? Constants.Errors {
-                        
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
-                        })
-                    }
-                }
+                })
                 
-            })
-        }
+            } catch {
+                
+                if let error = error as? Constants.Errors {
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        
+                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                    })
+                }
+            }
+        })
     }
     
     override func viewDidLoad() {
@@ -108,6 +110,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
         let parentTabBarController = self.tabBarController as! ChartDetailTabBarController
         symbol = parentTabBarController.symbol
         companyName = parentTabBarController.companyName
+        chart = parentTabBarController.chart
         
         self.webView = WKWebView()
         self.view = self.webView!

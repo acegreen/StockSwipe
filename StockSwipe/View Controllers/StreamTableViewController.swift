@@ -14,7 +14,7 @@ import SafariServices
 class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelegate, ChartDetailDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     var symbol: String!
-    var companyName: String?
+    var companyName: String!
     
     @IBAction func xButtonPressed(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)

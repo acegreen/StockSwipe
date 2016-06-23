@@ -13,7 +13,7 @@ import SwiftyJSON
 class CompanyProfileTableViewController: UITableViewController, ChartDetailDelegate, ChartViewDelegate  {
     
     var symbol: String!
-    var companyName:String?
+    var companyName:String!
     
     var ratingsType: [String] = ["Buy", "Outperform", "Hold", "Underperform", "Sell"]
     var ratings: [Double] = [Double](count: 5, repeatedValue: 0.0)

@@ -16,7 +16,7 @@ protocol IdeaPostDelegate {
 class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewDelegate {
     
     var symbol: String!
-    var companyName: String?
+    var companyName: String!
     var stockObject: PFObject!
     
     var delegate: IdeaPostDelegate!

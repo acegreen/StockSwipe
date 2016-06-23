@@ -8,7 +8,7 @@
 
 import UIKit
 
-class NewsTableViewCell: UITableViewCell {
+class NewsCell: UITableViewCell {
     
     @IBOutlet var newsImage: UIImageView!
     

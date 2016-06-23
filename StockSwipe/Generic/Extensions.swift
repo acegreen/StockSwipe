@@ -355,6 +355,18 @@ extension UIViewController {
     }
 }
 
+extension UITableView {
+    
+    func dequeueReusableCell<T: UITableViewCell where T: ReusableView>(forIndexPath indexPath: NSIndexPath) -> T {
+        guard let cell = dequeueReusableCellWithIdentifier(T.reuseIdentifier, forIndexPath: indexPath) as? T else {
+            fatalError("Could not dequeue cell with identifier: \(T.reuseIdentifier)")
+        }
+        return cell
+    }
+}
+
+extension UITableViewCell: ReusableView { }
+
 extension SegueHandlerType where Self: UIViewController, SegueIdentifier.RawValue == String {
     func performSegueWithIdentifier(segueIdentifier: SegueIdentifier, sender: AnyObject?) {
         performSegueWithIdentifier(segueIdentifier.rawValue, sender: sender)
@@ -369,8 +381,24 @@ extension SegueHandlerType where Self: UIViewController, SegueIdentifier.RawValu
     }
 }
 
-//extension CellType where Self: UITableViewCell, CellIdentifier.RawValue == String {
+extension ReusableView where Self: UIView {
+    
+    static var reuseIdentifier: String {
+        return String(self)
+    }
+}
+
+extension CellType where Self: UIViewController, CellIdentifier.RawValue == String {
+    
+    func reuseIdentifierForCell(tableView: UITableView, indexPath: NSIndexPath) -> CellIdentifier {
+        guard let reuseIdentifier = tableView.cellForRowAtIndexPath(indexPath)?.reuseIdentifier,
+            cellIdentifier = CellIdentifier(rawValue: reuseIdentifier)
+            else { fatalError("Invalid reuseidentifier for \(tableView.cellForRowAtIndexPath(indexPath)?.reuseIdentifier)") }
+        
+        return cellIdentifier
+    }
+    
 //    func dequeueReusableCellWithIdentifier(cellIdentifier: CellIdentifier, forIndexPath: NSIndexPath) {
 //         dequeueReusableCellWithIdentifier(cellIdentifier.rawValue, forIndexPath: forIndexPath)
 //    }
-//}
+}

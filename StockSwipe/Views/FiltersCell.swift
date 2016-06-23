@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FiltersTableViewCell: UITableViewCell {
+class FiltersCell: UITableViewCell {
     
     @IBOutlet var filtersCellLeftLabel: UILabel!
 

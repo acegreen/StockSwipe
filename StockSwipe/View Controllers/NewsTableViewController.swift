@@ -10,7 +10,11 @@ import UIKit
 import DZNEmptyDataSet
 import SwiftyJSON
 
-class NewsTableViewController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class NewsTableViewController: UITableViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CellType {
+    
+    enum CellIdentifier: String {
+        case NewsCell = "NewsCell"
+    }
     
     var symbol: String!
     var companyName: String!
@@ -74,7 +78,7 @@ class NewsTableViewController: UITableViewController, DZNEmptyDataSetSource, DZN
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("newsCell", forIndexPath: indexPath) as! NewsTableViewCell
+        let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as NewsCell
         
         let newsAtIndex = self.news[indexPath.row]
         

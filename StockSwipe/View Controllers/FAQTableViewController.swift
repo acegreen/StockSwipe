@@ -9,9 +9,12 @@
 import UIKit
 import Parse
 
-class FAQTableViewController: UITableViewController {
+class FAQTableViewController: UITableViewController, CellType {
     
-    let expandingCellId = "expandingCell"
+    enum CellIdentifier: String {
+        case ExpandingCell = "ExpandingCell"
+    }
+    
     let estimatedHeight: CGFloat = 150
     let topInset: CGFloat = 20
     
@@ -86,7 +89,7 @@ class FAQTableViewController: UITableViewController {
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("FAQCell", forIndexPath: indexPath) as! ExpandingCell
+        let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as ExpandingCell
         
         let questionAtIndex = self.questionObjects[indexPath.row]
         

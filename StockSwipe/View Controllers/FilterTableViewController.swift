@@ -8,8 +8,12 @@
 
 import UIKit
 
-class FilterTableViewController: UITableViewController {
+class FilterTableViewController: UITableViewController, CellType {
 
+    enum CellIdentifier: String {
+        case FiltersCell = "FiltersCell"
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -70,7 +74,7 @@ class FilterTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("filtersCell", forIndexPath: indexPath) as! FiltersTableViewCell
+        let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as FiltersCell
         
         switch indexPath.section {
         case 0:

@@ -638,7 +638,11 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
     }
 }
 
-extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CellType {
+    
+    enum CellIdentifier: String {
+        case TopNewsCell = "TopNewsCell"
+    }
 
     // MARK: - Table view data source
     
@@ -662,7 +666,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier("newsCell", forIndexPath: indexPath) as! TopStoriesTableViewCell
+        let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as TopNewsCell
         
         guard news.get(indexPath.row) != nil else { return cell }
         

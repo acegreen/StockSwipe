@@ -18,3 +18,5 @@ protocol CellType {
 }
 
 protocol DetectTags { }
+
+protocol ReusableView: class {}

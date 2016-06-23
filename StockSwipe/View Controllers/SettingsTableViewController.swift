@@ -11,12 +11,22 @@ import MessageUI
 import Crashlytics
 import Parse
 
-class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, SegueHandlerType {
+class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, SegueHandlerType, CellType {
     
     enum SegueIdentifier: String {
         
         case FAQSegueIdentifier = "FAQSegueIdentifier"
         case ProfileSegueIdentifier = "ProfileSegueIdentifier"
+    }
+    
+    enum CellIdentifier: String {
+        case ProfileCell = "ProfileCell"
+        case TutorialCell = "TutorialCell"
+        case FAQCell = "FAQCell"
+        case WriteReviewCell = "WriteReviewCell"
+        case GiveFeedbackCell =  "GiveFeedbackCell"
+        case ShareCell = "ShareCell"
+        case LogInOutCell = "LogInOutCell"
     }
     
     @IBOutlet var profileAvatarImage: CircularImageView!
@@ -75,22 +85,22 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        guard let reuseIdentifier = tableView.cellForRowAtIndexPath(indexPath)?.reuseIdentifier else { return }
+        let reuseIdentifier = reuseIdentifierForCell(tableView, indexPath: indexPath)
         
         switch reuseIdentifier {
             
-        case "ProfileCell":
+        case .ProfileCell:
             
             guard Functions.isUserLoggedIn(self) else { return }
             
             self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: self)
         
-        case "TutorialCell":
+        case .TutorialCell:
             
             let logInViewcontroller = LoginViewController.sharedInstance
             self.showViewController(logInViewcontroller, sender: self)
             
-        case "FAQCell":
+        case .FAQCell:
             
             guard Functions.isConnectedToNetwork() else {
                 SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
@@ -99,7 +109,7 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
             
             self.performSegueWithIdentifier(.FAQSegueIdentifier, sender: self)
             
-        case "WriteReviewCell":
+        case .WriteReviewCell:
             
             guard Functions.isConnectedToNetwork() else {
                 SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
@@ -108,7 +118,7 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
             
             self.parentViewController?.parentViewController?.performSegueWithIdentifier("FeedbackSegueIdentifier", sender: self)
             
-        case "GiveFeedbackCell":
+        case .GiveFeedbackCell:
             
             guard Functions.isConnectedToNetwork() else {
                 SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
@@ -132,7 +142,7 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
                 
             }
             
-        case "ShareCell":
+        case .ShareCell:
             
             guard Functions.isConnectedToNetwork() else {
                 SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
@@ -183,7 +193,7 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
                 }
             }
             
-        case "LogInOutCell":
+        case .LogInOutCell:
             
             let logInViewcontroller = LoginViewController.sharedInstance
             
@@ -195,9 +205,6 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
             } else {
                 logInViewcontroller.logIn(self)
             }
-            
-        default:
-            break;
         }
     }
     

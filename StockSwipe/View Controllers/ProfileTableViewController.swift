@@ -262,17 +262,17 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         switch selectedSegmentIndex {
         case .Zero:
-            let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.IdeaCell.rawValue, forIndexPath: indexPath) as! IdeaCell
+            let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
             cell.configureIdeaCell(tradeIdeas[indexPath.row])
             return cell
         case .One:
-            let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.FollowingCell.rawValue, forIndexPath: indexPath) as! FollowingCell
+            let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as FollowingCell
             return cell
         case .Two:
-            let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.FollowersCell.rawValue, forIndexPath: indexPath) as! FollowersCell
+            let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as FollowersCell
             return cell
         case .Three:
-            let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.LikedIdeaCell.rawValue, forIndexPath: indexPath) as! LikedIdeaCell
+            let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as LikedIdeaCell
             return cell
         }
         

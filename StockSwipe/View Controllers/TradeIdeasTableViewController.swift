@@ -192,7 +192,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.IdeaCell.rawValue, forIndexPath: indexPath) as! IdeaCell
+        let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
         cell.configureIdeaCell(tradeIdeas[indexPath.row])
         
         return cell
@@ -215,6 +215,7 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
         let segueIdentifier = segueIdentifierForSegue(segue)
         
         switch segueIdentifier {
+            
         case .ProfileSegueIdentifier:
             
             let destinationViewController = segue.destinationViewController as! ProfileContainerController

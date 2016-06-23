@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TopStoriesTableViewCell: UITableViewCell {
+class TopNewsCell: UITableViewCell {
     
     @IBOutlet var newsTitle: UILabel!
     

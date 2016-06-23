@@ -790,7 +790,7 @@
                                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                                                                 <prototypes>
-                                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="newsCell" id="Fmd-Ho-fg4" customClass="TopStoriesTableViewCell" customModule="StockSwipe" customModuleProvider="target">
+                                                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TopNewsCell" id="Fmd-Ho-fg4" customClass="TopNewsCell" customModule="StockSwipe" customModuleProvider="target">
                                                                         <rect key="frame" x="0.0" y="28" width="590" height="100"/>
                                                                         <autoresizingMask key="autoresizingMask"/>
                                                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Fmd-Ho-fg4" id="uPZ-5J-dgY">
@@ -917,7 +917,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="filtersCell" textLabel="pNa-6G-ICY" style="IBUITableViewCellStyleDefault" id="IFD-i2-75E" customClass="FiltersTableViewCell" customModule="StockSwipe" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="FiltersCell" textLabel="pNa-6G-ICY" style="IBUITableViewCellStyleDefault" id="IFD-i2-75E" customClass="FiltersCell" customModule="StockSwipe" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="49.5" width="600" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="IFD-i2-75E" id="WlM-Rt-Uft">
@@ -2498,7 +2498,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="15" minY="0.0" maxX="15" maxY="0.0"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FAQCell" id="PW6-d8-Jpd" customClass="ExpandingCell" customModule="StockSwipe" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ExpandingCell" id="PW6-d8-Jpd" customClass="ExpandingCell" customModule="StockSwipe" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="600" height="150"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PW6-d8-Jpd" id="TpL-Ke-vux">
@@ -3140,7 +3140,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="newsCell" id="Q84-7h-CEF" customClass="NewsTableViewCell" customModule="StockSwipe" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewsCell" id="Q84-7h-CEF" customClass="NewsCell" customModule="StockSwipe" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="600" height="125"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Q84-7h-CEF" id="2Vz-An-UCb">
@@ -3344,8 +3344,8 @@
         <image name="x" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="vP8-tW-JHc"/>
-        <segue reference="f6v-TN-kad"/>
+        <segue reference="sLE-BL-QrO"/>
+        <segue reference="TrH-G2-UNU"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.098039215686274508" green="0.84313725490196079" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
 </document>

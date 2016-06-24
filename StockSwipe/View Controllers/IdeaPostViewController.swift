@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import Crashlytics
 
 protocol IdeaPostDelegate {
     func ideaPosted(with tradeIdea: TradeIdea)
@@ -39,7 +40,7 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
         guard self.ideaTextView.text != nil else { return }
         
         let tradeIdeaObject = PFObject(className: "TradeIdea")
-        tradeIdeaObject["user"] = PFUser.currentUser()!
+        tradeIdeaObject["user"] = PFUser.currentUser()
         tradeIdeaObject["stock"] = stockObject
         tradeIdeaObject["description"] = self.ideaTextView.text
         
@@ -53,7 +54,11 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
                     
                     self.delegate.ideaPosted(with: tradeIdea)
                     
+                    // log trade idea
+                    Answers.logCustomEventWithName("Trade Idea", customAttributes: ["Symbol":self.symbol,"User": PFUser.currentUser()?.username ?? "N/A","Description": self.ideaTextView.text,"Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])
+                    
                     self.dismissViewControllerAnimated(true, completion: nil)
+                    
                 })
                 
             } else {

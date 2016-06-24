@@ -17,7 +17,12 @@ protocol ChartDetailDelegate {
 class ChartDetailTabBarController: UITabBarController {
     
     // Symbol should be passed as we segue here
-    var chart: Chart!
+    var chart: Chart! {
+        didSet {
+            self.symbol = chart.symbol
+            self.companyName = chart.companyName
+        }
+    }
     
     // Will be set below
     private(set) var symbol: String! {
@@ -28,12 +33,5 @@ class ChartDetailTabBarController: UITabBarController {
         }
     }
     
-    private(set) var companyName: String?
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        self.symbol = chart.symbol
-        self.companyName = chart.companyName
-    }
+    private(set) var companyName: String!
 }

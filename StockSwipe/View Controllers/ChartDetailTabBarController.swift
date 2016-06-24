@@ -10,8 +10,8 @@ import UIKit
 import Parse
 
 protocol ChartDetailDelegate {
-    var symbol: String! { get set }
-    var companyName: String! { get set }
+    var symbol: String! { get }
+    var companyName: String! { get }
 }
 
 class ChartDetailTabBarController: UITabBarController {
@@ -20,7 +20,7 @@ class ChartDetailTabBarController: UITabBarController {
     var chart: Chart!
     
     // Will be set below
-    var symbol: String! {
+    private(set) var symbol: String! {
         didSet {
             if symbol != symbol.uppercaseString {
                 symbol = symbol.uppercaseString
@@ -28,7 +28,7 @@ class ChartDetailTabBarController: UITabBarController {
         }
     }
     
-    var companyName: String?
+    private(set) var companyName: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()

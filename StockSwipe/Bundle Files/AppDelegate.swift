@@ -146,24 +146,46 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
             
         case "stockswipe":
             
-            guard url.host == "Chart", let window = self.window else { return true }
-            
-            let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
+            guard url.host == "chart", let window = self.window else { return true }
             
             guard let symbolDict = url.parseQueryString(url.query!, firstSeperator: "&", secondSeperator: "=") else { return false }
             
-            let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
-            
-            if mainTabBarController.presentationController != nil {
+            QueryHelper.sharedInstance.queryStockObjectsFor([symbolDict["symbol"] as! String], completion: { (result) in
                 
-                mainTabBarController.dismissViewControllerAnimated(false, completion: nil)
+                do {
+                    
+                    guard let stockObject = try result().first else { return }
+                    let companyName = stockObject["Company"] as! String
+                    let shorts = stockObject["Shorted_By"]
+                    let longs = stockObject["Longed_By"]
+                    
+                    let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
+                    let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
+                    
+                    if mainTabBarController.presentationController != nil {
+                        
+                        mainTabBarController.dismissViewControllerAnimated(false, completion: nil)
+                        
+                    }
+                    
+                    let chart = Chart(symbol: symbolDict["symbol"] as! String, companyName: companyName, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
+                    
+                    chartDetailTabBarController.chart = chart
+                        
+                    mainTabBarController.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
+                    
+                } catch {
+                    
+                    if let error = error as? Constants.Errors {
+                        
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                        })
+                    }
+                }
                 
-            }
-            
-            chartDetailTabBarController.symbol = symbolDict["symbol"] as? String
-            chartDetailTabBarController.companyName = symbolDict["companyName"] as? String
-            
-            mainTabBarController.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
+            })
             
             return true
             
@@ -181,31 +203,57 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         
         guard let window = self.window else { return true }
         
-        let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
-        
-        let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
-        
-        if mainTabBarController.presentationController != nil {
-            
-            mainTabBarController.dismissViewControllerAnimated(false, completion: nil)
-            
-        }
+        var symbol: String!
         
         if userActivity.activityType == CSSearchableItemActionType {
             
             print(userActivity.userInfo)
             
             if let uniqueIdentifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
-                chartDetailTabBarController.symbol = uniqueIdentifier
+                symbol = uniqueIdentifier
             }
             
         } else if let userInfo = userActivity.userInfo {
             
-            chartDetailTabBarController.symbol = userInfo["symbol"] as? String
-            chartDetailTabBarController.companyName = userInfo["companyName"] as? String
+            symbol = userInfo["symbol"] as? String
         }
         
-        mainTabBarController.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
+        QueryHelper.sharedInstance.queryStockObjectsFor([symbol], completion: { (result) in
+            
+            do {
+                
+                guard let stockObject = try result().first else { return }
+                let companyName = stockObject["Company"] as! String
+                let shorts = stockObject["Shorted_By"]
+                let longs = stockObject["Longed_By"]
+                
+                let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
+                let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
+                
+                if mainTabBarController.presentationController != nil {
+                    
+                    mainTabBarController.dismissViewControllerAnimated(false, completion: nil)
+                    
+                }
+                
+                let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
+                
+                chartDetailTabBarController.chart = chart
+                
+                mainTabBarController.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
+                
+            } catch {
+                
+                if let error = error as? Constants.Errors {
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        
+                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                    })
+                }
+            }
+            
+        })
         
         return true
     }

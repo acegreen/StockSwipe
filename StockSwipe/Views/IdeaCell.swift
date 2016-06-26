@@ -23,6 +23,16 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
     
     @IBOutlet private weak var ideaTime: TimeFormattedLabel!
     
+    @IBOutlet var nestedTradeIdeaStack: UIStackView!
+    
+    @IBOutlet var buttonsStack: UIStackView!
+    
+    @IBOutlet var nestedUserAvatar: CircularImageView!
+    
+    @IBOutlet var nestedUsername: UILabel!
+    
+    @IBOutlet var nestedIdeaDescription: SuperUITextView!
+    
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var likeCountLabel: UILabel!
     
@@ -41,12 +51,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
     
     var user: PFUser!
     
-    //    required init?(coder aDecoder: NSCoder) {
-    //        super.init(coder: aDecoder)
-    //
-    //        ideaDescription.delegate = self
-    //    }
-    
     func configureIdeaCell(tradeIdea: TradeIdea?) {
         
         guard let tradeIdea = tradeIdea else { return }
@@ -56,9 +60,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
         
         self.ideaDescription.text = tradeIdea.description
         self.ideaTime.text = tradeIdea.publishedDate.formattedAsTimeAgo()
-        
-        checkLike(tradeIdea, sender: self.likeButton)
-        checkReshare(tradeIdea, sender: self.reshareButton)
         
         self.userName.text = user.username
         
@@ -75,11 +76,57 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
                 })
                 
             } catch {
-                
-                // Handle error and show sweet alert with error.message()
-                
+                // TODO: Handle error
             }
         })
+        
+        checkLike(tradeIdea, sender: self.likeButton)
+        checkReshare(tradeIdea, sender: self.reshareButton)
+        
+        configureNestedTradeIdea(tradeIdea)
+    }
+    
+    func configureNestedTradeIdea(tradeIdea: TradeIdea!) {
+        
+        guard let object = tradeIdea?.parseObject else { return }
+            
+        guard let resharedTradeIdea = object.objectForKey("reshare_of") as? PFObject else { return }
+        
+        do {
+            
+            let user = resharedTradeIdea["user"] as? PFUser
+            
+            try user?.fetchIfNeeded()
+            
+            self.nestedUsername.text = user!.username
+            
+            if let avatarURL = user?.objectForKey("profile_image_url") as? String  {
+                
+                QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
+                    
+                    do {
+                        
+                        let avatarData  = try result()
+                        
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.nestedUserAvatar.image = UIImage(data: avatarData)
+                        })
+                        
+                    } catch {
+                        // TODO: Handle error
+                    }
+                })
+            }
+            
+        } catch {
+            // TODO: Handle error
+            print(error)
+        }
+        
+        let description = resharedTradeIdea["description"] as! String
+        self.nestedIdeaDescription.text = description
+        
+        self.nestedTradeIdeaStack.hidden = false
     }
     
     func ideaPosted(with tradeIdea: TradeIdea) {

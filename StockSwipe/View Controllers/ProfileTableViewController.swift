@@ -14,7 +14,7 @@ protocol SubScrollDelegate {
     func subScrollViewDidScroll(scrollView: UIScrollView)
 }
 
-class ProfileTableViewController: UITableViewController, CellType, SubSegmentedControlDelegate {
+class ProfileTableViewController: UITableViewController, CellType, SubSegmentedControlDelegate, SegueHandlerType {
     
     enum SegmentIndex: Int {
         case Zero
@@ -25,9 +25,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     enum CellIdentifier: String {
         case IdeaCell = "IdeaCell"
-        case FollowingCell = "FollowingCell"
-        case FollowersCell = "FollowersCell"
-        case LikedIdeaCell = "LikedIdeaCell"
+        case UserCell = "UserCell"
+    }
+    
+    enum SegueIdentifier: String {
+        case TradeIdeaDetailSegueIdentifier = "TradeIdeaDetailSegueIdentifier"
     }
     
     var delegate: SubScrollDelegate!
@@ -261,18 +263,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         switch selectedSegmentIndex {
-        case .Zero:
+        case .Zero, .Three:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
             cell.configureIdeaCell(tradeIdeas[indexPath.row])
             return cell
-        case .One:
-            let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as FollowingCell
-            return cell
-        case .Two:
-            let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as FollowersCell
-            return cell
-        case .Three:
-            let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as LikedIdeaCell
+        case .One, .Two:
+            let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as UserCell
             return cell
         }
         
@@ -294,7 +290,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             guard let tradeIdeaAtIndex = tradeIdeas.get(indexPath.row) else { return }
             
             if let resharedOf = tradeIdeaAtIndex.parseObject.objectForKey("reshare_of") as? PFObject {
-            
+                
                 if let reshared_by = resharedOf["reshared_by"] as? [PFUser] {
                     if let _ = reshared_by.find({ $0.objectId == PFUser.currentUser()?.objectId }) {
                         resharedOf.removeObject(PFUser.currentUser()!, forKey: "reshared_by")
@@ -317,6 +313,21 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             self.loadMoreTradeIdeas(user, skip: tradeIdeas.count)
         }
     }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        let segueIdentifier = segueIdentifierForSegue(segue)
+        
+        switch segueIdentifier {
+            
+        case .TradeIdeaDetailSegueIdentifier:
+            
+            let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
+            
+            let cell = sender as! IdeaCell
+            destinationViewController.tradeIdea = cell.tradeIdea
+        }
+    }
 }
 
 extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
@@ -325,14 +336,24 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
     
     func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
         
-        return UIImage(assetIdentifier: .IdeaGuyImage)
+        switch selectedSegmentIndex {
+        case .Zero:
+            return UIImage(assetIdentifier: .ideaGuyImage)
+        case .One, .Two, .Three:
+            return UIImage(assetIdentifier: .comingSoonImage)
+        }
     }
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle: NSAttributedString!
         
-        attributedTitle = NSAttributedString(string: "No Data!", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        switch selectedSegmentIndex {
+        case .Zero:
+            attributedTitle = NSAttributedString(string: "No Data!", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        case .One, .Two, .Three:
+            attributedTitle = NSAttributedString(string: "We are working hard to make it happen", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        }
         
         return attributedTitle
     }
@@ -344,7 +365,13 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
         paragraphStyle.alignment = NSTextAlignment.Center
         
         let attributedDescription: NSAttributedString!
-        attributedDescription = NSAttributedString(string: "Table is empty", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(18), NSParagraphStyleAttributeName: paragraphStyle])
+        
+        switch selectedSegmentIndex {
+        case .Zero:
+            attributedDescription = NSAttributedString(string: "Table is empty", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(18), NSParagraphStyleAttributeName: paragraphStyle])
+        case .One, .Two, .Three:
+            attributedDescription = NSAttributedString(string: "", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(18), NSParagraphStyleAttributeName: paragraphStyle])
+        }
         
         return attributedDescription
         

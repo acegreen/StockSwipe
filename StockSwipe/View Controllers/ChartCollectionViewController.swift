@@ -259,6 +259,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         } else {
             
             let selectedObject = swippeChartsdArray[self.CollectionView.indexPathsForSelectedItems()!.first!.row]
+            self.CollectionView.deselectItemAtIndexPath(indexPath, animated: false)
             
             // Disable selection until async query is complete
             self.CollectionView.allowsSelection = false
@@ -269,9 +270,6 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             }
             
             QueryHelper.sharedInstance.queryStockObjectsFor([selectedObject.symbol]) { (result) in
-                
-                self.CollectionView.allowsSelection = true
-                self.CollectionView.deselectItemAtIndexPath(indexPath, animated: false)
                 
                 do {
                     
@@ -301,6 +299,8 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
                     }
                 }
             }
+            
+            self.CollectionView.allowsSelection = true
         }
     }
     
@@ -456,7 +456,7 @@ extension ChartCollectionViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
     
     func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
         
-        return UIImage(assetIdentifier: .IdeaGuyImage)
+        return UIImage(assetIdentifier: .ideaGuyImage)
     }
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {

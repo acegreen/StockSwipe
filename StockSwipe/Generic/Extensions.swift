@@ -222,10 +222,11 @@ extension UIImage {
     
     enum AssetIdentifier: String  {
         
-        case IdeaGuyImage = "idea_guy"
+        case ideaGuyImage = "idea_guy"
         case ideaBulbBigImage = "idea_bulb_big"
         case newsBigImage = "news_big"
         case xButton = "x"
+        case comingSoonImage = "coming_soon"
     }
     
     convenience init!(assetIdentifier: AssetIdentifier) {
@@ -278,7 +279,7 @@ extension DetectTags where Self: UITextView {
         
         // you can't set the font size in the storyboard anymore, since it gets overridden here.
         let attrs = [
-            NSFontAttributeName : UIFont.systemFontOfSize(17.0)
+            NSFontAttributeName : UIFont(name: self.font!.familyName, size: self.font!.pointSize) as! AnyObject
         ]
         
         // you can staple URLs onto attributed strings

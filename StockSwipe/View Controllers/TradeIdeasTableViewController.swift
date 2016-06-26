@@ -16,14 +16,14 @@ protocol IdeaPostDelegate {
     func ideaDeleted(with parseObject: PFObject)
 }
 
-class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate, CellType, IdeaPostDelegate {
+class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate, CellType, SegueHandlerType, IdeaPostDelegate {
     
     enum CellIdentifier: String {
         case IdeaCell = "IdeaCell"
     }
     
     enum SegueIdentifier: String {
-        case ProfileSegueIdentifier = "ProfileSegueIdentifier"
+        case TradeIdeaDetailSegueIdentifier = "TradeIdeaDetailSegueIdentifier"
         case PostIdeaSegueIdentifier = "PostIdeaSegueIdentifier"
         case PostReplySegueIdentifier = "PostReplySegueIdentifier"
         case PostReshareSegueIdentifier = "PostReshareSegueIdentifier"
@@ -219,6 +219,11 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         return cell
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
+    }
+    
     override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
         
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
@@ -227,9 +232,6 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             self.loadMoreTradeIdeas(skip: tradeIdeas.count)
         }
     }
-}
-
-extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, SegueHandlerType {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
@@ -237,15 +239,12 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
         
         switch segueIdentifier {
             
-        case .ProfileSegueIdentifier:
+        case .TradeIdeaDetailSegueIdentifier:
             
-            let destinationViewController = segue.destinationViewController as! ProfileContainerController
-            
-            // Just a workaround.. There should be a cleaner way to sort this out 
-            destinationViewController.navigationItem.rightBarButtonItem = nil
+            let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
             
             let cell = sender as! IdeaCell
-            destinationViewController.user = cell.user
+            destinationViewController.tradeIdea = cell.tradeIdea
             
         case .PostIdeaSegueIdentifier:
             
@@ -253,15 +252,15 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
             let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
             
             ideaPostViewController.delegate =  self
-
-        case .PostReplySegueIdentifier:
             
-            let destinationViewController = segue.destinationViewController as! UINavigationController
-            let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
+        case .PostReplySegueIdentifier:
             
             guard let btnPos: CGPoint = sender?.convertPoint(CGPointZero, toView: self.tableView) else { return }
             let indexpath = self.tableView.indexPathForRowAtPoint(btnPos)
             let tradeIdeaAtIndex = self.tradeIdeas[indexpath!.row]
+            
+            let destinationViewController = segue.destinationViewController as! UINavigationController
+            let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
             
             ideaPostViewController.replyTradeIdea = tradeIdeaAtIndex
             ideaPostViewController.delegate =  self
@@ -279,11 +278,20 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
             ideaPostViewController.delegate =  self
         }
     }
+}
+
+extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-//    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
-//        
-//        if identifier
-//    }
+    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
+        
+        if identifier == SegueIdentifier.PostReshareSegueIdentifier.rawValue {
+            if sender?.selected == true {
+                return false
+            }
+        }
+        
+        return true
+    }
     
     // DZNEmptyDataSet delegate functions
     

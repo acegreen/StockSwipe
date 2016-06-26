@@ -8,7 +8,7 @@
 
 import UIKit
 
-class FollowingCell: UITableViewCell {
+class UserCell: UITableViewCell {
     
     @IBOutlet private weak var userAvatar: CircularImageView!
     

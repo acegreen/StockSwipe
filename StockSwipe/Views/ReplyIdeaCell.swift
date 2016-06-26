@@ -1,5 +1,5 @@
 //
-//  ideaCell.swift
+//  ReplyIdeaCell.swift
 //  StockSwipe
 //
 //  Created by Ace Green on 4/4/16.
@@ -9,26 +9,37 @@
 import UIKit
 import Parse
 
-class LikedIdeaCell: UITableViewCell, UITextViewDelegate {
+class ReplyIdeaCell: UITableViewCell {
+    
+    var tradeIdea: TradeIdea!
     
     @IBOutlet private weak var userAvatar: CircularImageView!
     
-    @IBOutlet private weak var ideaUser: UILabel!
+    @IBOutlet private weak var userName: UILabel!
     
     @IBOutlet private weak var ideaDescription: UITextView!
     
-    @IBOutlet private weak var ideaTime: TimeFormattedLabel!
+    var user: PFUser!
     
-    func configureIdeaCell(tradeIdea: TradeIdea!) {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        var contentViewFrame: CGRect = self.contentView.frame
+        contentViewFrame.size.width = 320
+        self.contentView.frame = contentViewFrame
+    }
+    
+    func configureIdeaCell(tradeIdea: TradeIdea?) {
         
-        let user = tradeIdea.user
+        guard let tradeIdea = tradeIdea else { return }
+        self.tradeIdea = tradeIdea
+        
+        user = tradeIdea.user
         
         self.ideaDescription.text = tradeIdea.description
-        self.ideaTime.text = tradeIdea.publishedDate.formattedAsTimeAgo()
         
-        self.ideaUser.text = user.username!
+        self.userName.text = user.username
         
-        let avatarURL = user.objectForKey("profile_image_url") as! String
+        guard let avatarURL = user.objectForKey("profile_image_url") as? String else { return }
         
         QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
             
@@ -41,9 +52,7 @@ class LikedIdeaCell: UITableViewCell, UITextViewDelegate {
                 })
                 
             } catch {
-                
-                // Handle error and show sweet alert with error.message()
-                
+                // TODO: Handle error
             }
         })
     }

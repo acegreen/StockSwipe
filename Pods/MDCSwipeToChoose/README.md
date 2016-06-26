@@ -31,7 +31,7 @@ Every public class contains documentation in its header file.
 
 The following is an example of how you can use `MDCSwipeToChooseView` to display a photo. The user can choose to delete it by swiping left, or save it by swiping right.
 
-#### Objective-c
+#### Objective-C
 
 ```objc
 #import <MDCSwipeToChoose/MDCSwipeToChoose.h>
@@ -45,7 +45,6 @@ The following is an example of how you can use `MDCSwipeToChooseView` to display
 
     // You can customize MDCSwipeToChooseView using MDCSwipeToChooseViewOptions.
     MDCSwipeToChooseViewOptions *options = [MDCSwipeToChooseViewOptions new];
-    options.delegate = self;
     options.likedText = @"Keep";
     options.likedColor = [UIColor blueColor];
     options.nopeText = @"Delete";
@@ -92,12 +91,6 @@ The following is an example of how you can use `MDCSwipeToChooseView` to display
 }
 ```
 
-As of version 0.2.0, you may also swipe a view programmatically:
-
-```objc
-[self.swipeToChooseView mdc_swipe:MDCSwipeDirectionLeft];
-```
-
 #### Swift
 
 To use objective-c code from swift, you need to use bridging-header.
@@ -116,7 +109,7 @@ To use objective-c code from swift, you need to use bridging-header.
 ```swift
 import UIKit
 
-// ... in a view controller
+// ... in a view controller that confirms to MDCSwipeToChooseDelegate protocol
 
 override func viewDidLoad() {
     super.viewDidLoad()
@@ -170,6 +163,12 @@ func view(view: UIView, wasChosenWithDirection: MDCSwipeDirection) -> Void{
 }
 
 ```
+If you're using CocoaPods 0.36+ (perhaps because you want to include pods that contain Swift code) and you've included the use_frameworks! directive in your Podfile, then you've converted all your pods (including MDCSwipeToChoose) into frameworks. Therefore, you'll need to include the line
+
+```swift
+import MDCSwipeToChoose
+```
+...in your Swift files (even if you're using a bridging header).
 
 ## More Generic Swiping
 
@@ -231,11 +230,11 @@ override func viewDidLoad(){
     var options:MDCSwipeToChooseViewOptions = MDCSwipeToChooseViewOptions()
     options.delegate = self
     options.likedText = "Keep"
-    options.likedColor = [UIColor blueColor]
+    options.likedColor = UIColor.blueColor()
     options.nopeText = "Delete"
     options.onPan = { state -> Void in
     if (state.thresholdRatio == 1.0 && state.direction == MDCSwipeDirection.Left) {
-        Println("Let go now to delete the photo!")
+        println("Let go now to delete the photo!")
     }
 }
 
@@ -248,37 +247,61 @@ var view:MDCSwipeToChooseView = MDCSwipeToChooseView(frame:self.view.bounds, opt
 
 // This is called when a user didn't fully swipe left or right.
 func viewDidCancelSwipe(view: UIView) -> Void{
-    Println("Couldn't decide, huh?")
+    println("Couldn't decide, huh?")
 }
 
-// Sent before a choice is made. Cancel the choice by returning `NO`. Otherwise return `YES`.
-func view(view:UIView, shouldBeChosenWithDirection:MDCSwipeDirection) -> BOOL {
+// Sent before a choice is made. Cancel the choice by returning `false`. Otherwise return `true`.
+func view(view:UIView, shouldBeChosenWithDirection:MDCSwipeDirection) -> Bool {
     if (shouldBeChosenWithDirection == MDCSwipeDirection.Left) {
-        return YES;
+        return true;
     } else {
         // Snap the view back and cancel the choice.
-        UIView.animateWithDuration(0.16, animations: {
-        view.transform = CGAffineTransformIdentity
-        view.center = self.superview.center
-        }
-    return NO;
+        UIView.animateWithDuration(0.16, animations: { () -> Void in
+            view.transform = CGAffineTransformIdentity
+            view.center = self.view.center
+        })
+    return false;
     }
 }
 
 // This is called then a user swipes the view fully left or right.
 func view(view: UIView, wasChosenWithDirection: MDCSwipeDirection) -> Void{
     if (wasChosenWithDirection == MDCSwipeDirection.Left) {
-        Println("Photo deleted!");
+        println("Photo deleted!");
     } else {
-        Println("Photo saved!");
+        println("Photo saved!");
     }
 }
+
 ```
 
+### Swiping programmatically
 As of version 0.2.0, you may also swipe a view programmatically:
 
+#### Objective-C
 ```objc
 self.swipeToChooseView(mdc_swipe:MDCSwipeDirection.Left)
+[self.swipeToChooseView mdc_swipe:MDCSwipeDirectionLeft];
+```
+
+#### Swift
+```swift
+self.swipeToChooseView.mdc_swipe(.Left)
+```
+
+### Disable swiping gesture
+You may also disable the swiping gesture and only allowed to swipe programmatically
+
+#### Objective-C
+```objc
+MDCSwipeToChooseViewOptions *options = [MDCSwipeToChooseViewOptions new];
+options.swipeEnabled = NO;
+```
+
+#### Swift
+```swift
+var options = MDCSwipeToChooseViewOptions()
+options.swipeEnabled = false
 ```
 
 

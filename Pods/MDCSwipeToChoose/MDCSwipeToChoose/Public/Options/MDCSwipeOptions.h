@@ -23,7 +23,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MDCSwipeDirection.h"
 
 @class MDCPanState;
 @class MDCSwipeResult;
@@ -84,12 +83,6 @@ typedef void (^MDCSwipeToChooseOnCancelBlock)(UIView *swipedView);
 @property (nonatomic, assign) CGFloat rotationFactor;
 
 /*!
- * Contains the directions on which the swipe will be recognized
- * Must be set using a OR operator (like MDCSwipeDirectionUp | MDCSwipeDirectionDown)
- */
-@property (nonatomic, assign) MDCSwipeDirection allowedSwipeDirections;
-
-/*!
  * A callback to be executed when the view is panned. The block takes an instance of
  * `MDCPanState` as an argument. Use this `state` instance to determine the pan direction
  * and the distance until the threshold is reached.
@@ -99,18 +92,25 @@ typedef void (^MDCSwipeToChooseOnCancelBlock)(UIView *swipedView);
 /*!
  * A callback to be executed when the view is swiped and chosen. The default
  is the block returned by the `-exitScreenOnChosenWithDuration:block:` method.
+
  @warning that this block must execute the `MDCSwipeResult` argument's `onCompletion`
  block in order to properly notify the delegate of the swipe result.
  */
 @property (nonatomic, copy) MDCSwipeToChooseOnChosenBlock onChosen;
 
 /*!
- * A callback to be executed when the view is swiped and the swipe is cancelled
+ * A callback to be executed when the view is swiped and the swipe is cancelled 
  (i.e. because view:shouldBeChosen: delegate callback returned NO for swiped view).
- The view that was swiped is passed into this block so that you can restore its
+ The view that was swiped is passed into this block so that you can restore its 
  state in this callback. May be nil.
  */
 @property (nonatomic, copy) MDCSwipeToChooseOnCancelBlock onCancel;
+
+/*!
+ * By default, user should be allowed to use gesture to swipe the view.
+ * By disable this property, user can only swipe the view programmatically
+ */
+@property (nonatomic, assign) BOOL swipeEnabled;
 
 /*!
  * The default callback for when a view is swiped an chosen. This callback moves the view

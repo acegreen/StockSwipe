@@ -49,6 +49,12 @@
 @property (nonatomic, strong) UIColor *longColor;
 
 /*!
+ * The image used to displayed in the `likeView`. If this is present, it will take
+ * precedence over the likeText
+ */
+@property (nonatomic, strong) UIImage *longImage;
+
+/*!
  * The rotation angle of the `likedView`. A default value is provided in the
  * `-init` method.
  */
@@ -65,6 +71,12 @@
  * `-init` method.
  */
 @property (nonatomic, strong) UIColor *shortColor;
+
+/*!
+ * The image used to displayed in the `likeView`. If this is present, it will take
+ * precedence over the likeText
+ */
+@property (nonatomic, strong) UIImage *shortImage;
 
 /*!
  * The rotation angle of the `nopeView`. A default value is provided in the
@@ -85,16 +97,16 @@
 @property (nonatomic, strong) UIColor *skipColor;
 
 /*!
+ * The image used to displayed in the `likeView`. If this is present, it will take
+ * precedence over the likeText
+ */
+@property (nonatomic, strong) UIImage *skipImage;
+
+/*!
  * The rotation angle of the `skipView`. A default value is provided in the
  * `-init` method.
  */
 @property (nonatomic, assign) CGFloat skipRotationAngle;
-
-/*!
- * Contains the directions on which the swipe will be recognized
- * Must be set using a OR operator (like MDCSwipeDirectionUp | MDCSwipeDirectionDown)
- */
-@property (nonatomic, assign) MDCSwipeDirection allowedSwipeDirections;
 
 /*!
  * The distance, in pixels, that a view must be panned in order to constitue a selection.
@@ -110,5 +122,11 @@
  * and the distance until the threshold is reached.
  */
 @property (nonatomic, copy) MDCSwipeToChooseOnPanBlock onPan;
+
+/*!
+ * By default, user should be allowed to use gesture to swipe the view.
+ * By disable this property, user can only swipe the view programmatically
+ */
+@property (nonatomic, assign) BOOL swipeEnabled;
 
 @end

@@ -11,6 +11,11 @@ import DZNEmptyDataSet
 import SwiftyJSON
 import Parse
 
+protocol IdeaPostDelegate {
+    func ideaPosted(with tradeIdea: TradeIdea)
+    func ideaDeleted(with parseObject: PFObject)
+}
+
 class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate, CellType, IdeaPostDelegate {
     
     enum CellIdentifier: String {
@@ -19,7 +24,9 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     
     enum SegueIdentifier: String {
         case ProfileSegueIdentifier = "ProfileSegueIdentifier"
-        case PostSegueIdentifier = "PostSegueIdentifier"
+        case PostIdeaSegueIdentifier = "PostIdeaSegueIdentifier"
+        case PostReplySegueIdentifier = "PostReplySegueIdentifier"
+        case PostReshareSegueIdentifier = "PostReshareSegueIdentifier"
     }
     
     var symbol: String!
@@ -47,6 +54,10 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         symbol = parentTabBarController.symbol
         companyName = parentTabBarController.companyName
         stockObject = parentTabBarController.chart.parseObject
+        
+        // set tableView properties
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 100.0
         
         // title
         if companyName != nil {
@@ -85,7 +96,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 self.tradeIdeas = []
                 for tradeIdeaObject: PFObject in tradeIdeasObjects {
                     
-                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                     
                     self.tradeIdeas.append(tradeIdea)
                     
@@ -131,7 +142,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                     
                     for tradeIdeaObject: PFObject in tradeIdeasObjects {
                         
-                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                         
                         //add datasource object here for tableview
                         self.tradeIdeas.append(tradeIdea)
@@ -158,9 +169,18 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     }
     
     func ideaPosted(with tradeIdea: TradeIdea) {
-        
+        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
         self.tradeIdeas.insert(tradeIdea, atIndex: 0)
-        self.tableView.reloadData()
+        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+    }
+    
+    func ideaDeleted(with parseObject: PFObject) {
+        
+        if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
+            let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(tradeIdea)!, inSection: 0)
+            self.tradeIdeas.removeObject(tradeIdea)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        }
     }
     
     func updaterefreshDate() {
@@ -194,6 +214,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
         cell.configureIdeaCell(tradeIdeas[indexPath.row])
+        cell.delegate = self
         
         return cell
     }
@@ -226,14 +247,36 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
             let cell = sender as! IdeaCell
             destinationViewController.user = cell.user
             
-        case .PostSegueIdentifier:
+        case .PostIdeaSegueIdentifier:
             
             let destinationViewController = segue.destinationViewController as! UINavigationController
             let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
             
-            ideaPostViewController.symbol = self.symbol
             ideaPostViewController.delegate =  self
-            break
+
+        case .PostReplySegueIdentifier:
+            
+            let destinationViewController = segue.destinationViewController as! UINavigationController
+            let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
+            
+            guard let btnPos: CGPoint = sender?.convertPoint(CGPointZero, toView: self.tableView) else { return }
+            let indexpath = self.tableView.indexPathForRowAtPoint(btnPos)
+            let tradeIdeaAtIndex = self.tradeIdeas[indexpath!.row]
+            
+            ideaPostViewController.replyTradeIdea = tradeIdeaAtIndex
+            ideaPostViewController.delegate =  self
+            
+        case .PostReshareSegueIdentifier:
+            
+            let destinationViewController = segue.destinationViewController as! UINavigationController
+            let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
+            
+            guard let btnPos: CGPoint = sender?.convertPoint(CGPointZero, toView: self.tableView) else { return }
+            let indexpath = self.tableView.indexPathForRowAtPoint(btnPos)
+            let tradeIdeaAtIndex = self.tradeIdeas[indexpath!.row]
+            
+            ideaPostViewController.reshareTradeIdea = tradeIdeaAtIndex
+            ideaPostViewController.delegate =  self
         }
     }
     

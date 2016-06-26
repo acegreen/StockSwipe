@@ -242,7 +242,7 @@ public class QueryHelper {
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
         tradeIdeaQuery.cancel()
         tradeIdeaQuery.whereKey(key, equalTo: object)
-        tradeIdeaQuery.includeKeys(["user","stock"])
+        tradeIdeaQuery.includeKeys(["user","stock", "reply_to", "reshare_of"])
         tradeIdeaQuery.orderByDescending("createdAt")
         tradeIdeaQuery.limit = 10
         tradeIdeaQuery.skip  = skip

@@ -10,15 +10,14 @@ import UIKit
 import Parse
 import Crashlytics
 
-protocol IdeaPostDelegate {
-    func ideaPosted(with tradeIdea: TradeIdea)
-}
-
 class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewDelegate {
     
     var symbol: String!
     var companyName: String!
+    
     var stockObject: PFObject!
+    var replyTradeIdea: TradeIdea!
+    var reshareTradeIdea: TradeIdea!
     
     var delegate: IdeaPostDelegate!
     
@@ -44,13 +43,19 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
         tradeIdeaObject["stock"] = stockObject
         tradeIdeaObject["description"] = self.ideaTextView.text
         
+        if let tradeIdeaParseObject = self.replyTradeIdea?.parseObject {
+            tradeIdeaObject["reply_to"] = tradeIdeaParseObject
+        } else if let tradeIdeaParseObject = self.reshareTradeIdea?.parseObject {
+            tradeIdeaObject["reshare_of"] = tradeIdeaParseObject
+        }
+        
         tradeIdeaObject.saveInBackgroundWithBlock({ (success, error) in
             
             if success {
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
-                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                     
                     self.delegate.ideaPosted(with: tradeIdea)
                     

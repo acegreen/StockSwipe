@@ -58,8 +58,6 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
         
         QueryHelper.sharedInstance.queryChartImage(symbol, completion: { (result) in
             
-            self.customAlert.closeAlertDismissButton()
-            
             do {
                 
                 let chartImageResult = try result()
@@ -70,6 +68,8 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                 let chartImage = UIImage(view: view)
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+                    self.customAlert.closeAlertDismissButton()
                     
                     Functions.presentActivityVC(textToShare, imageToShare: chartImage, url: Constants.appLinkURL!, sender: self.actionButton, vc: self, completion: { (activity, success, items, error) -> Void in
                         
@@ -96,6 +96,8 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                 if let error = error as? Constants.Errors {
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+                        self.customAlert.closeAlertDismissButton()
                         
                         SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
                     })

@@ -33,6 +33,11 @@
 @interface MDCSwipeToChooseView : UIView
 
 /*!
+ * The main image to be displayed and then "liked" or "disliked".
+ */
+@property (nonatomic, strong) UIView *contentView;
+
+/*!
  * The "liked" view, which fades in as the `MDCSwipeToChooseView` is panned to the right.
  */
 @property (nonatomic, strong) UIView *longView;
@@ -48,10 +53,6 @@
 @property (nonatomic, strong) UIView *skipView;
 
 /*!
- * The xOrigin of the "short" overlayView, which fades in as the `MDCSwipeToChooseView` is panned to the left.
- */
-@property (nonatomic) CGFloat xOrigin;
-/*!
  * The designated initializer takes a `frame` and a set of options to customize
  * the behavior of the view.
  */
@@ -59,5 +60,3 @@
                       options:(MDCSwipeToChooseViewOptions *)options;
 
 @end
-
-

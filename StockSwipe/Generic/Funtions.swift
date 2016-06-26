@@ -274,17 +274,18 @@ public class Functions {
 //                    }
 //                    
 //                })
+                
+                // Update longl/shorts on chart before passing it to coreData
+                chart.longs = object.objectForKey("Longed_By")?.count ?? 0
+                chart.shorts = object.objectForKey("Shorted_By")?.count ?? 0
+                
+                print("\(choice)", object)
+                print("Chart:", chart.searchDescription)
+                
+                saveIntoCoreData(chart, userChoice: choice)
+                
             })
-            
-            // Update longl/shorts on chart before passing it to coreData
-            //chart.longs = object.objectForKey("Longed_By")?.count ?? 0
-            //chart.shorts = object.objectForKey("Shorted_By")?.count ?? 0
         }
-        
-        print("\(choice)", object)
-        print("Chart:", chart.searchDescription)
-        
-        saveIntoCoreData(chart, userChoice: choice)
         
     }
     

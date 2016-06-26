@@ -6,7 +6,7 @@ def shared_pods
 end
 
 target 'StockSwipe' do
-    pod 'MDCSwipeToChoose'
+    pod 'MDCSwipeToChoose', :git => 'https://github.com/acegreen/MDCSwipeToChoose.git'
     pod 'SDVersion'
     pod 'DZNEmptyDataSet', '1.7.2'
     #pod 'DZNSegmentedControl'
@@ -25,6 +25,12 @@ target 'StockSwipe' do
     #pod 'ChameleonFramework/Swift'
     pod 'Charts'
     #pod 'SwiftSpinner'
+    pod 'Fabric'
+    pod 'Crashlytics'
+    #pod 'Answers'
+    pod 'TwitterKit'
+    pod 'TwitterCore'
+    pod 'Appsee'
     shared_pods
 end
 

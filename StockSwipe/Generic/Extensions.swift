@@ -388,6 +388,17 @@ extension ReusableView where Self: UIView {
     }
 }
 
+extension Tintable where Self: UIView {
+    
+    func tint(bool: Bool) {
+        if bool {
+            self.tintColor = Constants.stockSwipeGreenColor
+        } else {
+            self.tintColor = UIColor.lightGrayColor()
+        }
+    }
+}
+
 extension CellType where Self: UIViewController, CellIdentifier.RawValue == String {
     
     func reuseIdentifierForCell(tableView: UITableView, indexPath: NSIndexPath) -> CellIdentifier {

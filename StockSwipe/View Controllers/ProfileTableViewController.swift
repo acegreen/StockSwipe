@@ -33,7 +33,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     var delegate: SubScrollDelegate!
     
     var user: PFUser?
-
+    
     var tradeIdeas = [TradeIdea]()
     var followingUsers = [PFUser]()
     var followersUsers = [PFUser]()
@@ -98,7 +98,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         self.delegate.subScrollViewDidScroll(scrollView)
     }
-
+    
     func getProfile(user: PFUser?) {
         
         guard let user = user else { return }
@@ -149,7 +149,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 self.tradeIdeas = []
                 for tradeIdeaObject: PFObject in tradeIdeasObjects {
                     
-                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                     
                     self.tradeIdeas.append(tradeIdea)
                     
@@ -195,7 +195,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     
                     for tradeIdeaObject: PFObject in tradeIdeasObjects {
                         
-                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                        let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                         
                         //add datasource object here for tableview
                         self.tradeIdeas.append(tradeIdea)
@@ -257,7 +257,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return likedTradeIdeas.count
         }
     }
-
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         switch selectedSegmentIndex {
@@ -280,17 +280,31 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         
-        if user == PFUser.currentUser() {
+        if user?.objectId == PFUser.currentUser()?.objectId {
             return true
         }
         
         return false
     }
-
+    
     override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
         if editingStyle == .Delete {
-            tradeIdeas[indexPath.row].parseObject.deleteEventually()
-            tradeIdeas.removeAtIndex(indexPath.row)
+            
+            guard let tradeIdeaAtIndex = tradeIdeas.get(indexPath.row) else { return }
+            
+            if let resharedOf = tradeIdeaAtIndex.parseObject.objectForKey("reshare_of") as? PFObject {
+            
+                if let reshared_by = resharedOf["reshared_by"] as? [PFUser] {
+                    if let _ = reshared_by.find({ $0.objectId == PFUser.currentUser()?.objectId }) {
+                        resharedOf.removeObject(PFUser.currentUser()!, forKey: "reshared_by")
+                        resharedOf.saveEventually()
+                    }
+                }
+            }
+            
+            tradeIdeaAtIndex.parseObject.deleteEventually()
+            self.tradeIdeas.removeAtIndex(indexPath.row)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
         }
     }
@@ -317,7 +331,7 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle: NSAttributedString!
-            
+        
         attributedTitle = NSAttributedString(string: "No Data!", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
         
         return attributedTitle
@@ -337,6 +351,6 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
     }
     
     func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
-       return (self.tableView.frame.midY - self.headerView.frame.midY) / 2
+        return (self.tableView.frame.midY - self.headerView.frame.midY) / 2
     }
 }

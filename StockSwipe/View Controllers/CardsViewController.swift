@@ -344,6 +344,45 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             
             self.activityIndicatorSearchImageOnOff("Off")
+
+            self.options.delegate = self
+            Functions.setupConfigParameter("THRESHOLDX", completion: { (parameterValue) -> Void in
+                
+                if parameterValue != nil {
+                    self.thresholdX = parameterValue as! CGFloat
+                }
+                
+                self.options.threshold = (self.view.bounds.width / 2) * self.thresholdX
+                print("threshold:",self.options.threshold)
+                
+                self.options.onPan = { state -> Void in
+                    
+                    if self.secondCardView != nil {
+                        
+                        let frame:CGRect = self.middleCardViewFrame()
+                        self.secondCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio * 10), CGRectGetWidth(frame), CGRectGetHeight(frame))
+                    }
+                    
+                    if self.thirdCardView != nil {
+                        
+                        let frame:CGRect = self.backCardViewFrame()
+                        self.thirdCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio * 8), CGRectGetWidth(frame), CGRectGetHeight(frame))
+                    }
+                    
+                    if self.fourthCardView != nil {
+                        
+                        let frame:CGRect = self.backCardViewFrame()
+                        self.fourthCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio), CGRectGetWidth(frame), CGRectGetHeight(frame))
+                    }
+                    
+                    if self.informationCardView != nil {
+                        
+                        let frame:CGRect = self.backCardViewFrame()
+                        self.informationCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio), CGRectGetWidth(frame), CGRectGetHeight(frame))
+                    }
+                }
+                
+            })
             
             // Display First Card
             if self.firstCardView == nil {
@@ -431,45 +470,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                     
                 }
             }
-            
-            self.options.delegate = self
-            Functions.setupConfigParameter("THRESHOLDX", completion: { (parameterValue) -> Void in
-                
-                if parameterValue != nil {
-                     self.thresholdX = parameterValue as! CGFloat
-                }
-                
-                self.options.threshold = (self.view.bounds.width / 2) * self.thresholdX
-                print(self.options.threshold)
-                
-                self.options.onPan = { state -> Void in
-                    
-                    if self.secondCardView != nil {
-                        
-                        let frame:CGRect = self.middleCardViewFrame()
-                        self.secondCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio * 10), CGRectGetWidth(frame), CGRectGetHeight(frame))
-                    }
-                    
-                    if self.thirdCardView != nil {
-                        
-                        let frame:CGRect = self.backCardViewFrame()
-                        self.thirdCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio * 8), CGRectGetWidth(frame), CGRectGetHeight(frame))
-                    }
-                    
-                    if self.fourthCardView != nil {
-                        
-                        let frame:CGRect = self.backCardViewFrame()
-                        self.fourthCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio), CGRectGetWidth(frame), CGRectGetHeight(frame))
-                    }
-                    
-                    if self.informationCardView != nil {
-                        
-                        let frame:CGRect = self.backCardViewFrame()
-                        self.informationCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio), CGRectGetWidth(frame), CGRectGetHeight(frame))
-                    }
-                }
-                
-            })
         })
     }
     
@@ -502,14 +502,21 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         })
     }
     
-    func view(view: UIView!, shouldBeChosenWithDirection direction: MDCSwipeDirection) -> Bool {
+    func view(view: UIView!, shouldBeChosenWithDirection direction: MDCSwipeDirection, yes: (() -> Void)!, no: (() -> Void)!) {
         
         if (direction == .Left || direction == .Right) {
             
-            guard Functions.isUserLoggedIn(self) else { return false }
+            guard Functions.isUserLoggedIn(self) else { return no() }
+            
+            return yes()
+            
+        } else if direction == .Up {
+            
+            return yes()
+            
+        } else {
+            return no()
         }
-        
-        return true
     }
     
     // This is called when a user swipes the view in a direction.

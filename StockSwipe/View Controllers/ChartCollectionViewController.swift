@@ -260,7 +260,18 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             
             let selectedObject = swippeChartsdArray[self.CollectionView.indexPathsForSelectedItems()!.first!.row]
             
+            // Disable selection until async query is complete
+            self.CollectionView.allowsSelection = false
+            
+            guard Functions.isConnectedToNetwork() else {
+                SweetAlert().showAlert("Can't Access Chart!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.Warning)
+                return
+            }
+            
             QueryHelper.sharedInstance.queryStockObjectsFor([selectedObject.symbol]) { (result) in
+                
+                self.CollectionView.allowsSelection = true
+                self.CollectionView.deselectItemAtIndexPath(indexPath, animated: false)
                 
                 do {
                     
@@ -290,8 +301,6 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
                     }
                 }
             }
-            
-            self.CollectionView.deselectItemAtIndexPath(indexPath, animated: false)
         }
     }
     

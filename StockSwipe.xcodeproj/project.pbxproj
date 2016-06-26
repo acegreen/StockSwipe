@@ -9,10 +9,10 @@
 /* Begin PBXBuildFile section */
 		230428D41CA2E419009DDC21 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23332BA11CA08404006E4863 /* MainInterface.storyboard */; };
 		230428D51CA2E46C009DDC21 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23332BA41CA08416006E4863 /* TodayViewController.swift */; };
-		230668411C1CE332003BDF03 /* Appsee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 230668401C1CE332003BDF03 /* Appsee.framework */; };
+		230FBB2B1D1F0505000394AD /* TintableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230FBB2A1D1F0505000394AD /* TintableButton.swift */; };
+		230FBB2D1D1F05B2000394AD /* TintableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230FBB2C1D1F05B2000394AD /* TintableLabel.swift */; };
 		23157AF41BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23157AF31BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift */; };
 		231643031C1A00F000C92C03 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231643021C1A00F000C92C03 /* FeedbackViewController.swift */; };
-		23190D061C8CD4DF00320EFF /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23190D051C8CD4DF00320EFF /* Crashlytics.framework */; };
 		231E09941B3DABC100A2EFC2 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */; };
 		232A4E901B7E32A100A0FE4B /* ImageLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */; };
 		232EDE351C1A1804007D0103 /* KaushanScript.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 232EDE331C1A1804007D0103 /* KaushanScript.ttf */; };
@@ -61,9 +61,6 @@
 		236280C41CB41A290022A129 /* IdeaPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236280C31CB41A290022A129 /* IdeaPostViewController.swift */; };
 		236875B21B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 236875B11B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m */; };
 		23698CCF1BCC36FD00EBEC7B /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7F6701BCB55EB009A016D /* WordCloud.framework */; };
-		236BC4451B98954400026ED1 /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 236BC4411B98954400026ED1 /* Fabric.framework */; };
-		236BC4461B98954400026ED1 /* TwitterKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 236BC4421B98954400026ED1 /* TwitterKit.framework */; };
-		236BC4481B98954400026ED1 /* TwitterCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 236BC4441B98954400026ED1 /* TwitterCore.framework */; };
 		236C49371B4E5D7700E82416 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236C49361B4E5D7700E82416 /* WebViewController.swift */; };
 		236D28241BCC2750001D757F /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236D28231BCC2750001D757F /* MainTabBarController.swift */; };
 		236DB5211D048D6400CE9869 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236DB5201D048D6400CE9869 /* LaunchScreenViewController.swift */; };
@@ -91,7 +88,6 @@
 		2394DFAA1C8C691B0018A5A9 /* SweetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2394DFA91C8C691B0018A5A9 /* SweetAlert.swift */; };
 		2394DFAC1C8CAE230018A5A9 /* FAQTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2394DFAB1C8CAE230018A5A9 /* FAQTableViewController.swift */; };
 		2394DFAE1C8CAE610018A5A9 /* ExpandingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2394DFAD1C8CAE610018A5A9 /* ExpandingCell.swift */; };
-		2394DFB01C8CD3B00018A5A9 /* TwitterKitResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2394DFAF1C8CD3B00018A5A9 /* TwitterKitResources.bundle */; };
 		239A3E491BAA1CCF00894D1E /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239A3E481BAA1CCF00894D1E /* JavaScriptCore.framework */; };
 		239EDA6D1BB0258B001CC63C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239EDA6C1BB0258B001CC63C /* Extensions.swift */; };
 		239EDA6F1BB025B0001CC63C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239EDA6E1BB025B0001CC63C /* Constants.swift */; };
@@ -188,10 +184,10 @@
 
 /* Begin PBXFileReference section */
 		20F0DA058379F7E7BCD77D90 /* Pods_StockSwipeWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockSwipeWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		230668401C1CE332003BDF03 /* Appsee.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Appsee.framework; sourceTree = "<group>"; };
+		230FBB2A1D1F0505000394AD /* TintableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TintableButton.swift; sourceTree = "<group>"; };
+		230FBB2C1D1F05B2000394AD /* TintableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TintableLabel.swift; sourceTree = "<group>"; };
 		23157AF31BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudInfoPopoverViewController.swift; sourceTree = "<group>"; };
 		231643021C1A00F000C92C03 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
-		23190D051C8CD4DF00320EFF /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
 		232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLabelView.swift; sourceTree = "<group>"; };
 		232EDE331C1A1804007D0103 /* KaushanScript.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KaushanScript.ttf; sourceTree = "<group>"; };
@@ -247,9 +243,6 @@
 		236280C31CB41A290022A129 /* IdeaPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdeaPostViewController.swift; sourceTree = "<group>"; };
 		236875B01B9DDAC4003D0C21 /* NSDate+NVTimeAgo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+NVTimeAgo.h"; sourceTree = "<group>"; };
 		236875B11B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+NVTimeAgo.m"; sourceTree = "<group>"; };
-		236BC4411B98954400026ED1 /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Frameworks/Fabric/Fabric.framework; sourceTree = SOURCE_ROOT; };
-		236BC4421B98954400026ED1 /* TwitterKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterKit.framework; path = Frameworks/Fabric/TwitterKit.framework; sourceTree = SOURCE_ROOT; };
-		236BC4441B98954400026ED1 /* TwitterCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = TwitterCore.framework; path = Frameworks/Fabric/TwitterCore.framework; sourceTree = SOURCE_ROOT; };
 		236C49361B4E5D7700E82416 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		236D28231BCC2750001D757F /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
 		236DB5201D048D6400CE9869 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
@@ -280,7 +273,6 @@
 		2394DFA91C8C691B0018A5A9 /* SweetAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SweetAlert.swift; sourceTree = "<group>"; };
 		2394DFAB1C8CAE230018A5A9 /* FAQTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQTableViewController.swift; sourceTree = "<group>"; };
 		2394DFAD1C8CAE610018A5A9 /* ExpandingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandingCell.swift; sourceTree = "<group>"; };
-		2394DFAF1C8CD3B00018A5A9 /* TwitterKitResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = TwitterKitResources.bundle; path = TwitterKit.framework/Versions/A/Resources/TwitterKitResources.bundle; sourceTree = "<group>"; };
 		239A3E481BAA1CCF00894D1E /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		239EDA6C1BB0258B001CC63C /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		239EDA6E1BB025B0001CC63C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -365,7 +357,6 @@
 				23CE716D1C1215C800E87420 /* AdSupport.framework in Frameworks */,
 				239A3E491BAA1CCF00894D1E /* JavaScriptCore.framework in Frameworks */,
 				23EA70181B11981F008F6C12 /* MobileCoreServices.framework in Frameworks */,
-				236BC4461B98954400026ED1 /* TwitterKit.framework in Frameworks */,
 				7888E1041B669C780087C255 /* CoreSpotlight.framework in Frameworks */,
 				2339B0AF1B41A6CB009CE3EB /* MessageUI.framework in Frameworks */,
 				2372FDC91BCC326C006C7F0B /* WordCloud.framework in Frameworks */,
@@ -377,15 +368,11 @@
 				23EA70201B119839008F6C12 /* SystemConfiguration.framework in Frameworks */,
 				23EA701E1B119831008F6C12 /* StoreKit.framework in Frameworks */,
 				23EA701C1B11982D008F6C12 /* Security.framework in Frameworks */,
-				236BC4481B98954400026ED1 /* TwitterCore.framework in Frameworks */,
 				23EA701A1B119827008F6C12 /* QuartzCore.framework in Frameworks */,
-				23190D061C8CD4DF00320EFF /* Crashlytics.framework in Frameworks */,
 				23EA70161B119818008F6C12 /* CoreLocation.framework in Frameworks */,
 				23EA70141B119812008F6C12 /* CoreGraphics.framework in Frameworks */,
 				23EA70121B11980A008F6C12 /* CFNetwork.framework in Frameworks */,
-				230668411C1CE332003BDF03 /* Appsee.framework in Frameworks */,
 				23EA70101B119803008F6C12 /* AudioToolbox.framework in Frameworks */,
-				236BC4451B98954400026ED1 /* Fabric.framework in Frameworks */,
 				C2364103441D8611646C3A53 /* Pods_StockSwipe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -490,19 +477,6 @@
 				236875B11B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m */,
 			);
 			path = "NSDate-Time-Ago";
-			sourceTree = "<group>";
-		};
-		236BC4491B9895BE00026ED1 /* Fabric */ = {
-			isa = PBXGroup;
-			children = (
-				2394DFAF1C8CD3B00018A5A9 /* TwitterKitResources.bundle */,
-				230668401C1CE332003BDF03 /* Appsee.framework */,
-				236BC4411B98954400026ED1 /* Fabric.framework */,
-				23190D051C8CD4DF00320EFF /* Crashlytics.framework */,
-				236BC4421B98954400026ED1 /* TwitterKit.framework */,
-				236BC4441B98954400026ED1 /* TwitterCore.framework */,
-			);
-			path = Fabric;
 			sourceTree = "<group>";
 		};
 		2378B5861B115FB3002ACFDC /* StockSwipeTests */ = {
@@ -626,7 +600,6 @@
 				236875AF1B9DDAB7003D0C21 /* NSDate-Time-Ago */,
 				2339B0941B41A697009CE3EB /* SARate-master */,
 				23190D001C8CD42B00320EFF /* TradeIt */,
-				236BC4491B9895BE00026ED1 /* Fabric */,
 				23CAE2651C2B46A800D15819 /* LocalAuthentication.framework */,
 				23EA700F1B119803008F6C12 /* AudioToolbox.framework */,
 				239A3E481BAA1CCF00894D1E /* JavaScriptCore.framework */,
@@ -715,6 +688,8 @@
 				233C7D5F1CB3F620006A014A /* TimeFormattedLabel.swift */,
 				236DB5221D048D8800CE9869 /* GradientAnimationImage.swift */,
 				23CF54A41D19BF3B004A01DC /* SuperUITextView.swift */,
+				230FBB2A1D1F0505000394AD /* TintableButton.swift */,
+				230FBB2C1D1F05B2000394AD /* TintableLabel.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -820,12 +795,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 23E7F6AB1BCB57A0009A016D /* Build configuration list for PBXNativeTarget "StockSwipeWidget" */;
 			buildPhases = (
-				0A788CCCA35E28DD51AF80BF /* 📦 Check Pods Manifest.lock */,
+				0A788CCCA35E28DD51AF80BF /* [CP] Check Pods Manifest.lock */,
 				23E7F69A1BCB57A0009A016D /* Sources */,
 				23E7F69B1BCB57A0009A016D /* Frameworks */,
 				23E7F69C1BCB57A0009A016D /* Resources */,
-				773D38C05ADA2DAD6FDEBBFE /* 📦 Copy Pods Resources */,
-				AD8A9E2DCD003A2F617336AE /* 📦 Embed Pods Frameworks */,
+				773D38C05ADA2DAD6FDEBBFE /* [CP] Copy Pods Resources */,
+				AD8A9E2DCD003A2F617336AE /* [CP] Embed Pods Frameworks */,
 				23B999891D122B0300E9BFE6 /* ShellScript */,
 				236DB51F1D0264F000CE9869 /* ShellScript */,
 			);
@@ -842,17 +817,16 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AC17DC21AC7366A004E6D2D /* Build configuration list for PBXNativeTarget "StockSwipe" */;
 			buildPhases = (
-				58B6642F3B6926F22922ACFF /* 📦 Check Pods Manifest.lock */,
+				58B6642F3B6926F22922ACFF /* [CP] Check Pods Manifest.lock */,
 				8AC17D9C1AC7366A004E6D2D /* Sources */,
 				8AC17D9D1AC7366A004E6D2D /* Frameworks */,
 				8AC17D9E1AC7366A004E6D2D /* Resources */,
 				98EB0D74F4064484A649AE33 /* Rollout.io dsym upload */,
+				234F8EB41B14A48600A0E706 /* Run Script */,
 				23B8A9BD1B9E75DA0065D65E /* Embed Frameworks */,
 				23E7F6AE1BCB57A0009A016D /* Embed App Extensions */,
-				236BC4401B98950000026ED1 /* Run Script */,
-				234F8EB41B14A48600A0E706 /* Run Script */,
-				816270F03CFA12797FF94487 /* 📦 Embed Pods Frameworks */,
-				1A12D03F3D98D4DD994CBE82 /* 📦 Copy Pods Resources */,
+				816270F03CFA12797FF94487 /* [CP] Embed Pods Frameworks */,
+				1A12D03F3D98D4DD994CBE82 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -949,7 +923,6 @@
 				238C1AE71C8C6387009F9CC1 /* GeneralPreferences.plist in Resources */,
 				2339B0AB1B41A697009CE3EB /* star.png in Resources */,
 				238C1AEA1C8C6387009F9CC1 /* StockSectorPreferences.plist in Resources */,
-				2394DFB01C8CD3B00018A5A9 /* TwitterKitResources.bundle in Resources */,
 				238C1AE81C8C6387009F9CC1 /* StockExchangePreferences_CA.plist in Resources */,
 				238C1B021C8C6600009F9CC1 /* LaunchScreen.storyboard in Resources */,
 				2339B0A41B41A697009CE3EB /* LICENSE in Resources */,
@@ -968,14 +941,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0A788CCCA35E28DD51AF80BF /* 📦 Check Pods Manifest.lock */ = {
+		0A788CCCA35E28DD51AF80BF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -983,14 +956,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		1A12D03F3D98D4DD994CBE82 /* 📦 Copy Pods Resources */ = {
+		1A12D03F3D98D4DD994CBE82 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1011,20 +984,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/bash;
 			shellScript = "# Auto Increment Version Script\n#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
-		};
-		236BC4401B98950000026ED1 /* Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "./Frameworks/Fabric/Fabric.framework/run a2f6ea076be955480fbc29c2f8e699b31c176eee 02d6e59a1350ec2cf623eb4e41c9b0649e0739bc0100febae451d731a304c832";
 		};
 		236DB51F1D0264F000CE9869 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1052,14 +1011,14 @@
 			shellPath = /bin/bash;
 			shellScript = "# Auto Increment Version Script\n#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
 		};
-		58B6642F3B6926F22922ACFF /* 📦 Check Pods Manifest.lock */ = {
+		58B6642F3B6926F22922ACFF /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Check Pods Manifest.lock";
+			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1067,14 +1026,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		773D38C05ADA2DAD6FDEBBFE /* 📦 Copy Pods Resources */ = {
+		773D38C05ADA2DAD6FDEBBFE /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Copy Pods Resources";
+			name = "[CP] Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1082,14 +1041,14 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StockSwipeWidget/Pods-StockSwipeWidget-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		816270F03CFA12797FF94487 /* 📦 Embed Pods Frameworks */ = {
+		816270F03CFA12797FF94487 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1111,14 +1070,14 @@
 			shellPath = /bin/sh;
 			shellScript = "ROLLOUT_lastXcodeprojConfiguration=5 \"${SRCROOT}/Pods/Rollout.io/lib/upload_dsym_phase\" -k 568730c9045462554abcb4cc";
 		};
-		AD8A9E2DCD003A2F617336AE /* 📦 Embed Pods Frameworks */ = {
+		AD8A9E2DCD003A2F617336AE /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "📦 Embed Pods Frameworks";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1194,6 +1153,7 @@
 				233C7D581CB3044D006A014A /* TransparentView.swift in Sources */,
 				23F5B3E51B9D004200C74FED /* CompanyProfileTableViewController.swift in Sources */,
 				236280C21CB3FABF0022A129 /* TradeIdea.swift in Sources */,
+				230FBB2D1D1F05B2000394AD /* TintableLabel.swift in Sources */,
 				238C1AFA1C8C65D6009F9CC1 /* AppDelegate.swift in Sources */,
 				2394DFAE1C8CAE610018A5A9 /* ExpandingCell.swift in Sources */,
 				23E09E851B97E1E400A9C9B3 /* StreamTableViewController.swift in Sources */,
@@ -1221,6 +1181,7 @@
 				23E0FFDA1B1B6AE000251BC6 /* StockSwipe.xcdatamodeld in Sources */,
 				23ECED0E1B9B566300688768 /* NewsTableViewController.swift in Sources */,
 				233C22011BBB4717004B3C41 /* OverviewViewController.swift in Sources */,
+				230FBB2B1D1F0505000394AD /* TintableButton.swift in Sources */,
 				236280C01CB3F7D40022A129 /* TradeIdeasTableViewController.swift in Sources */,
 				2339B0A81B41A697009CE3EB /* SARateViewController.m in Sources */,
 				23E0FFDE1B1BEDD800251BC6 /* NoChartView.swift in Sources */,

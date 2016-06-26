@@ -28,15 +28,13 @@
 @implementation MDCSwipeToChooseViewOptions
 
 - (instancetype)init {
-    
     self = [super init];
-    
     if (self) {
-        
+
         _longText = [NSLocalizedString(@"long", nil) uppercaseString];
         _longColor = [UIColor colorWithRed: 25/255 green: 215/255.0f blue: 25/255.0f alpha: 1.0f];
         _longRotationAngle = -15.f;
-
+        
         _shortText = [NSLocalizedString(@"short", nil) uppercaseString];
         _shortColor = [UIColor redColor];
         _shortRotationAngle = 15.f;
@@ -46,10 +44,8 @@
         _skipRotationAngle = 0.f;
 
         _threshold = 250.f;
-        
-        _allowedSwipeDirections = MDCSwipeDirectionUp | MDCSwipeDirectionLeft | MDCSwipeDirectionRight;
+        _swipeEnabled = YES;
     }
-    
     return self;
 }
 

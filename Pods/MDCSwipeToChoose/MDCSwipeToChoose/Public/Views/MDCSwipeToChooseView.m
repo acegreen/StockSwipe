@@ -29,8 +29,9 @@
 #import "UIColor+MDCRGB8Bit.h"
 #import <QuartzCore/QuartzCore.h>
 
-//static CGFloat const MDCSwipeToChooseViewHorizontalPadding = 30.f;
-//static CGFloat const MDCSwipeToChooseViewTopPadding = 50.f;
+static CGFloat const MDCSwipeToChooseViewHorizontalPadding = 30.f;
+static CGFloat const MDCSwipeToChooseViewTopPadding = 50.f;
+static CGFloat const MDCSwipeToChooseViewImageTopPadding = 150.f;
 static CGFloat const MDCSwipeToChooseViewLabelWidth = 150.f;
 static CGFloat const MDCSwipeToChooseViewLabelHeight = 75.f;
 
@@ -46,141 +47,138 @@ static CGFloat const MDCSwipeToChooseViewLabelHeight = 75.f;
     self = [super initWithFrame:frame];
     if (self) {
         _options = options ? options : [MDCSwipeToChooseViewOptions new];
-        
         [self setupView];
-        
+        [self constructContentView];
+        [self constructLongView];
+        [self constructShortView];
+        [self constructSkipView];
+        [self setupSwipeToChoose];
     }
     return self;
-}
-
-- (void) layoutSubviews {
-
-    [self constructLongOverlayView];
-    [self constructShortOverlayImageView];
-    [self constructSkipOverlayImageView];
-    [self setupSwipeToChoose];
-    
-    [self bringSubviewToFront:self];
-    
 }
 
 #pragma mark - Internal Methods
 
 - (void)setupView {
-    
     self.backgroundColor = [UIColor clearColor];
-    self.layer.masksToBounds = true;
     self.layer.cornerRadius = 15.f;
+    self.layer.masksToBounds = YES;
     self.layer.borderWidth = 1.f;
-    self.layer.borderColor = [UIColor grayColor].CGColor;
-    
+    self.layer.borderColor = [UIColor mdc_colorWith8BitRed:220.f
+                                                 green:220.f
+                                                  blue:220.f
+                                                 alpha:1.f].CGColor;
 }
 
-- (void)constructLongOverlayView {
-    
-    self.longView = [[UIImageView alloc] initWithFrame:CGRectMake((CGRectGetMidX(self.bounds) - (MDCSwipeToChooseViewLabelWidth / 2)),
-                                                                   (CGRectGetMidY(self.bounds) - (MDCSwipeToChooseViewLabelHeight / 2)),
-                                                                   MDCSwipeToChooseViewLabelWidth,
-                                                                   MDCSwipeToChooseViewLabelHeight)];
-    [self.longView constructBorderedLabelWithText:self.options.longText
-                                             color:self.options.longColor
-                                             angle:self.options.longRotationAngle];
+- (void)constructContentView {
+    _contentView = [[UIView alloc] initWithFrame:self.bounds];
+    _contentView.clipsToBounds = YES;
+    [self addSubview:_contentView];
+}
+
+- (void)constructLongView {
+//    CGFloat yOrigin = (self.options.longImage ? MDCSwipeToChooseViewImageTopPadding : MDCSwipeToChooseViewTopPadding);
+
+    CGRect frame = CGRectMake((CGRectGetMidX(self.bounds) - (MDCSwipeToChooseViewLabelWidth / 2)),
+                              (CGRectGetMidY(self.bounds) - (MDCSwipeToChooseViewLabelHeight / 2)),
+                              MDCSwipeToChooseViewLabelWidth,
+                              MDCSwipeToChooseViewLabelHeight);
+    if (self.options.longImage) {
+        self.longView = [[UIImageView alloc] initWithImage:self.options.longImage];
+        self.longView.frame = frame;
+        self.longView.contentMode = UIViewContentModeScaleAspectFit;
+    } else {
+        self.longView = [[UIView alloc] initWithFrame:frame];
+        [self.longView constructBorderedLabelWithText:self.options.longText
+                                                 color:self.options.longColor
+                                                 angle:self.options.longRotationAngle];
+    }
     self.longView.alpha = 0.f;
-    
-    if (![_longView isDescendantOfView:self]) {
-    
-        [self addSubview:self.longView];
-        
-    }
+    [self.contentView addSubview:self.longView];
 }
 
-- (void)constructShortOverlayImageView {
-    
-    self.shortView = [[UIImageView alloc] initWithFrame:CGRectMake((CGRectGetMidX(self.bounds) - (MDCSwipeToChooseViewLabelWidth / 2)),
-                                                                  (CGRectGetMidY(self.bounds) - (MDCSwipeToChooseViewLabelHeight / 2)),
-                                                                  MDCSwipeToChooseViewLabelWidth,
-                                                                  MDCSwipeToChooseViewLabelHeight)];
-    [self.shortView constructBorderedLabelWithText:self.options.shortText
-                                            color:self.options.shortColor
-                                            angle:self.options.shortRotationAngle];
-    
+- (void)constructShortView {
+    CGFloat width = CGRectGetMidX(self.contentView.bounds);
+//    CGFloat xOrigin = CGRectGetMaxX(self.contentView.bounds) - width - MDCSwipeToChooseViewHorizontalPadding;
+//    CGFloat yOrigin = (self.options.shortImage ? MDCSwipeToChooseViewImageTopPadding : MDCSwipeToChooseViewTopPadding);
+    CGRect frame = CGRectMake((CGRectGetMidX(self.bounds) - (MDCSwipeToChooseViewLabelWidth / 2)),
+                              (CGRectGetMidY(self.bounds) - (MDCSwipeToChooseViewLabelHeight / 2)),
+                              MDCSwipeToChooseViewLabelWidth,
+                              MDCSwipeToChooseViewLabelHeight);
+    if (self.options.shortImage) {
+        self.shortView = [[UIImageView alloc] initWithImage:self.options.shortImage];
+        self.shortView.frame = frame;
+        self.shortView.contentMode = UIViewContentModeScaleAspectFit;
+    } else {
+        self.shortView = [[UIView alloc] initWithFrame:frame];
+        [self.shortView constructBorderedLabelWithText:self.options.shortText
+                                                color:self.options.shortColor
+                                                angle:self.options.shortRotationAngle];
+    }
     self.shortView.alpha = 0.f;
-    
-    if (![_shortView isDescendantOfView:self]) {
-        
-        [self addSubview:self.shortView];
-        
-    }
+    [self.contentView addSubview:self.shortView];
 }
 
-- (void)constructSkipOverlayImageView {
-    
-    self.skipView = [[UIImageView alloc] initWithFrame:CGRectMake((CGRectGetMidX(self.bounds) - (MDCSwipeToChooseViewLabelWidth / 2)),
-                                                                  (CGRectGetMidY(self.bounds) - (MDCSwipeToChooseViewLabelHeight / 2)),
-                                                                  MDCSwipeToChooseViewLabelWidth,
-                                                                  MDCSwipeToChooseViewLabelHeight)];
-    [self.skipView constructBorderedLabelWithText:self.options.skipText
-                                            color:self.options.skipColor
-                                            angle:self.options.skipRotationAngle];
-    
-    self.skipView.alpha = 0.f;
-
-    if (![_skipView isDescendantOfView:self]) {
-        
-        [self addSubview:self.skipView];
-        
+- (void)constructSkipView {
+    CGFloat width = CGRectGetMidX(self.contentView.bounds);
+//    CGFloat xOrigin = CGRectGetMaxX(self.contentView.bounds) - width - MDCSwipeToChooseViewHorizontalPadding;
+//    CGFloat yOrigin = (self.options.skipImage ? MDCSwipeToChooseViewImageTopPadding : MDCSwipeToChooseViewTopPadding);
+    CGRect frame = CGRectMake((CGRectGetMidX(self.bounds) - (MDCSwipeToChooseViewLabelWidth / 2)),
+                              (CGRectGetMidY(self.bounds) - (MDCSwipeToChooseViewLabelHeight / 2)),
+                              MDCSwipeToChooseViewLabelWidth,
+                              MDCSwipeToChooseViewLabelHeight);
+    if (self.options.skipImage) {
+        self.skipView = [[UIImageView alloc] initWithImage:self.options.skipImage];
+        self.skipView.frame = frame;
+        self.skipView.contentMode = UIViewContentModeScaleAspectFit;
+    } else {
+        self.skipView = [[UIView alloc] initWithFrame:frame];
+        [self.skipView constructBorderedLabelWithText:self.options.skipText
+                                                color:self.options.skipColor
+                                                angle:self.options.skipRotationAngle];
     }
+    self.skipView.alpha = 0.f;
+    [self.contentView addSubview:self.skipView];
 }
 
 - (void)setupSwipeToChoose {
     MDCSwipeOptions *options = [MDCSwipeOptions new];
     options.delegate = self.options.delegate;
     options.threshold = self.options.threshold;
-    options.allowedSwipeDirections = self.options.allowedSwipeDirections;
-    
+    options.swipeEnabled = self.options.swipeEnabled;
+
     __block UIView *longImageView = self.longView;
     __block UIView *shortImageView = self.shortView;
     __block UIView *skipImageView = self.skipView;
     __weak MDCSwipeToChooseView *weakself = self;
-    
     options.onPan = ^(MDCPanState *state) {
-        
         if (state.direction == MDCSwipeDirectionNone) {
-            
             longImageView.alpha = 0.f;
             shortImageView.alpha = 0.f;
             skipImageView.alpha = 0.f;
-            
         } else if (state.direction == MDCSwipeDirectionLeft) {
-            
             longImageView.alpha = 0.f;
             shortImageView.alpha = state.thresholdRatio;
             skipImageView.alpha = 0.f;
-            
         } else if (state.direction == MDCSwipeDirectionRight) {
-            
             longImageView.alpha = state.thresholdRatio;
             shortImageView.alpha = 0.f;
             skipImageView.alpha = 0.f;
-            
         } else if (state.direction == MDCSwipeDirectionUp) {
-            
             longImageView.alpha = 0.f;
             shortImageView.alpha = 0.f;
             skipImageView.alpha = state.thresholdRatio;
-            
         } else if (state.direction == MDCSwipeDirectionDown) {
-            
             longImageView.alpha = 0.f;
             shortImageView.alpha = 0.f;
             skipImageView.alpha = 0.f;
         }
-        
+
         if (weakself.options.onPan) {
             weakself.options.onPan(state);
         }
     };
-    
+
     [self mdc_swipeToChooseSetup:options];
 }
 

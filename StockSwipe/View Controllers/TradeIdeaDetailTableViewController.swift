@@ -37,7 +37,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         
         // set tableView properties
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 100.0
+        self.tableView.estimatedRowHeight = 200.0
         
         self.getReplyTradeIdeas()
     }

@@ -10,10 +10,9 @@ import UIKit
 import Parse
 import Crashlytics
 
-class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewDelegate {
+class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
-    var symbol: String!
-    var companyName: String!
+    var prefillText: String!
     
     var stockObject: PFObject!
     var replyTradeIdea: TradeIdea!
@@ -40,8 +39,21 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
         
         let tradeIdeaObject = PFObject(className: "TradeIdea")
         tradeIdeaObject["user"] = PFUser.currentUser()
-        tradeIdeaObject["stock"] = stockObject
         tradeIdeaObject["description"] = self.ideaTextView.text
+        
+        if let tradeIdeaStockObject = self.stockObject {
+            tradeIdeaObject["stock"] = tradeIdeaStockObject
+        } else if let tradeIdeaStockObject = self.replyTradeIdea?.stock {
+            tradeIdeaObject["stock"] = tradeIdeaStockObject
+        } else if let tradeIdeaStockObject = self.reshareTradeIdea?.stock {
+            tradeIdeaObject["stock"] = tradeIdeaStockObject
+        }
+        
+        if let tradeIdeaParseObject = self.replyTradeIdea?.parseObject {
+            tradeIdeaObject["reply_to"] = tradeIdeaParseObject
+        } else if let tradeIdeaParseObject = self.reshareTradeIdea?.parseObject {
+            tradeIdeaObject["reshare_of"] = tradeIdeaParseObject
+        }
         
         if let tradeIdeaParseObject = self.replyTradeIdea?.parseObject {
             tradeIdeaObject["reply_to"] = tradeIdeaParseObject
@@ -60,7 +72,7 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
                     self.delegate.ideaPosted(with: tradeIdea)
                     
                     // log trade idea
-                    Answers.logCustomEventWithName("Trade Idea", customAttributes: ["Symbol":self.symbol,"User": PFUser.currentUser()?.username ?? "N/A","Description": self.ideaTextView.text,"Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])
+                    Answers.logCustomEventWithName("Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.currentUser()?.username ?? "N/A","Description": self.ideaTextView.text,"Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])
                     
                     self.dismissViewControllerAnimated(true, completion: nil)
                     
@@ -88,20 +100,20 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
         // flexible height
         self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight
         
-        let parentViewController = self.parentViewController as! UINavigationController
-        let parentOfParentViewController  = parentViewController.presentingViewController as! ChartDetailTabBarController
-        
-        symbol = parentOfParentViewController.symbol
-        companyName = parentOfParentViewController.companyName
-        stockObject = parentOfParentViewController.chart.parseObject
-        
+        if let tradeIdea = self.stockObject {
+            self.prefillText = "$" + (tradeIdea.objectForKey("Symbol") as! String)
+        } else if let tradeIdea = self.replyTradeIdea {
+            self.prefillText = "@" + (tradeIdea.user.objectForKey("username") as! String)
+        } else if let tradeIdea = self.reshareTradeIdea {
+            self.prefillText = "$" + (tradeIdea.stock.objectForKey("Symbol") as! String)
+        }
     }
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
-        if symbol != nil {
-            self.ideaTextView.text = "$\(self.symbol) "
+        if !prefillText.isEmpty {
+            self.ideaTextView.text = "\(self.prefillText) "
             self.textCountLabel.text = "6"
         } else {
             ideaTextView.text = "Share an idea\n(use $ before ticker: e.g. $AAPL)"
@@ -163,8 +175,8 @@ class IdeaPostViewController: UIViewController, ChartDetailDelegate, UITextViewD
             // Keep track of character count and update label
             self.textCountLabel.text = "0"
             
-            if symbol != nil {
-                ideaTextView.text = "Share an idea on $\(self.symbol)"
+            if !prefillText.isEmpty {
+                ideaTextView.text = "\(self.prefillText)"
             } else {
                 ideaTextView.text = "Share an idea\n(use $ before ticker: e.g. $AAPL)"
             }

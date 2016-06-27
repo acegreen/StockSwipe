@@ -80,7 +80,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         // set tableView properties
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 100.0
+        self.tableView.estimatedRowHeight = 200.0
         
         self.getProfile(user)
         self.getTradeIdeas(user, skip: 0)

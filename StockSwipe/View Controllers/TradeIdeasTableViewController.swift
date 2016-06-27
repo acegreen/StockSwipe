@@ -25,8 +25,6 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     enum SegueIdentifier: String {
         case TradeIdeaDetailSegueIdentifier = "TradeIdeaDetailSegueIdentifier"
         case PostIdeaSegueIdentifier = "PostIdeaSegueIdentifier"
-        case PostReplySegueIdentifier = "PostReplySegueIdentifier"
-        case PostReshareSegueIdentifier = "PostReshareSegueIdentifier"
     }
     
     var symbol: String!
@@ -57,7 +55,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         
         // set tableView properties
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 100.0
+        self.tableView.estimatedRowHeight = 200.0
         
         // title
         if companyName != nil {
@@ -251,47 +249,14 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             let destinationViewController = segue.destinationViewController as! UINavigationController
             let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
             
-            ideaPostViewController.delegate =  self
+            ideaPostViewController.stockObject = self.stockObject
             
-        case .PostReplySegueIdentifier:
-            
-            guard let btnPos: CGPoint = sender?.convertPoint(CGPointZero, toView: self.tableView) else { return }
-            let indexpath = self.tableView.indexPathForRowAtPoint(btnPos)
-            let tradeIdeaAtIndex = self.tradeIdeas[indexpath!.row]
-            
-            let destinationViewController = segue.destinationViewController as! UINavigationController
-            let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
-            
-            ideaPostViewController.replyTradeIdea = tradeIdeaAtIndex
-            ideaPostViewController.delegate =  self
-            
-        case .PostReshareSegueIdentifier:
-            
-            let destinationViewController = segue.destinationViewController as! UINavigationController
-            let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
-            
-            guard let btnPos: CGPoint = sender?.convertPoint(CGPointZero, toView: self.tableView) else { return }
-            let indexpath = self.tableView.indexPathForRowAtPoint(btnPos)
-            let tradeIdeaAtIndex = self.tradeIdeas[indexpath!.row]
-            
-            ideaPostViewController.reshareTradeIdea = tradeIdeaAtIndex
             ideaPostViewController.delegate =  self
         }
     }
 }
 
 extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    
-    override func shouldPerformSegueWithIdentifier(identifier: String, sender: AnyObject?) -> Bool {
-        
-        if identifier == SegueIdentifier.PostReshareSegueIdentifier.rawValue {
-            if sender?.selected == true {
-                return false
-            }
-        }
-        
-        return true
-    }
     
     // DZNEmptyDataSet delegate functions
     

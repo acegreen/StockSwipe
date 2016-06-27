@@ -9,7 +9,12 @@
 import UIKit
 import Parse
 
-class IdeaCell: UITableViewCell, IdeaPostDelegate {
+class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
+    
+    enum SegueIdentifier: String {
+        case PostReplySegueIdentifier = "PostReplySegueIdentifier"
+        case PostReshareSegueIdentifier = "PostReshareSegueIdentifier"
+    }
     
     var delegate: IdeaPostDelegate!
     
@@ -40,13 +45,36 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
     @IBOutlet var reshareCountLabel: UILabel!
     
     @IBAction func likeButton(sender: UIButton) {
-        
         registerLike(sender: sender)
+    }
+    
+    @IBAction func replyButton(sender: AnyObject) {
         
+        let tradeIdeaPostNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("TradeIdeaPostNavigationController") as! UINavigationController
+        let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
+        
+        ideaPostViewController.replyTradeIdea = self.tradeIdea
+        ideaPostViewController.delegate =  self
+        
+        tradeIdeaPostNavigationController.modalPresentationStyle = .FormSheet
+        Functions.findTopViewController()?.presentViewController(tradeIdeaPostNavigationController, animated: true, completion: nil)
     }
     
     @IBAction func reshareButton(sender: UIButton) {
+        
         registerReshare(sender: sender)
+    
+        if !sender.selected == true {
+            
+            let tradeIdeaPostNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("TradeIdeaPostNavigationController") as! UINavigationController
+            let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
+            
+            ideaPostViewController.reshareTradeIdea = self.tradeIdea
+            ideaPostViewController.delegate =  self
+
+            tradeIdeaPostNavigationController.modalPresentationStyle = .FormSheet
+            Functions.findTopViewController()?.presentViewController(tradeIdeaPostNavigationController, animated: true, completion: nil)
+        }
     }
     
     var user: PFUser!
@@ -90,17 +118,19 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
         
         guard let object = tradeIdea?.parseObject else { return }
             
-        guard let resharedTradeIdea = object.objectForKey("reshare_of") as? PFObject else { return }
+        guard let resharedTradeIdea = object.objectForKey("reshare_of") as? PFObject else {
+            self.nestedTradeIdeaStack.hidden = true
+            return
+        }
         
-        do {
+        let user = resharedTradeIdea["user"] as? PFUser
+        user?.fetchInBackgroundWithBlock({ (user, error) in
             
-            let user = resharedTradeIdea["user"] as? PFUser
+            guard let user = user as? PFUser else { return }
             
-            try user?.fetchIfNeeded()
+            self.nestedUsername.text = user.username
             
-            self.nestedUsername.text = user!.username
-            
-            if let avatarURL = user?.objectForKey("profile_image_url") as? String  {
+            if let avatarURL = user.objectForKey("profile_image_url") as? String  {
                 
                 QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
                     
@@ -117,11 +147,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
                     }
                 })
             }
-            
-        } catch {
-            // TODO: Handle error
-            print(error)
-        }
+        })
         
         let description = resharedTradeIdea["description"] as! String
         self.nestedIdeaDescription.text = description
@@ -145,12 +171,18 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
             if let liked_by = object["liked_by"] as? [PFUser] {
                 if let _ = liked_by.find({ $0.objectId == PFUser.currentUser()?.objectId }) {
                     sender.selected = true
+                } else {
+                    sender.selected = false
                 }
+            } else {
+                sender.selected = false
             }
             
             if let likeCount = tradeIdea?.likeCount where likeCount > 0 {
                 self.likeCountLabel.text = String(likeCount)
                 self.likeCountLabel.hidden = false
+            } else {
+                self.likeCountLabel.hidden = true
             }
         }
     }
@@ -186,6 +218,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
                     } else {
                         sender.selected = false
                     }
+                } else {
+                    sender.selected = false
                 }
                 
                 if let likeCount = self.tradeIdea?.likeCount where likeCount > 0 {
@@ -207,12 +241,18 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
             if let reshared_by = object["reshared_by"] as? [PFUser] {
                 if let _ = reshared_by.find({ $0.objectId == PFUser.currentUser()?.objectId }) {
                     sender.selected = true
+                } else {
+                    sender.selected = false
                 }
+            } else {
+                sender.selected = false
             }
             
             if let reshareCount = tradeIdea?.reshareCount where reshareCount > 0 {
                 self.reshareCountLabel.text = String(reshareCount)
                 self.reshareCountLabel.hidden = false
+            } else {
+                self.reshareCountLabel.hidden = true
             }
         }
     }
@@ -252,6 +292,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
                                             } else {
                                                 sender.selected = false
                                             }
+                                        } else {
+                                            sender.selected = false
                                         }
                                         
                                         if let reshareCount = self.tradeIdea?.reshareCount where reshareCount > 0 {
@@ -262,8 +304,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
                                         }
                                     })
                                     
-                                    self.delegate.ideaDeleted(with: tradeIdeasObjects!)
-                                    
+                                    self.delegate?.ideaDeleted(with: tradeIdeasObjects!)
+                        
                                     return
                                 }
                             })
@@ -290,6 +332,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
                     } else {
                         sender.selected = false
                     }
+                } else {
+                    sender.selected = false
                 }
                 
                 if let reshareCount = self.tradeIdea?.reshareCount where reshareCount > 0 {
@@ -300,6 +344,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate {
                 }
             })
         }
-        
     }
 }
+

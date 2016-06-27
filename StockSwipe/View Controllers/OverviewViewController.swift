@@ -299,11 +299,6 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         
         overviewVCOperationQueue.cancelAllOperations()
         overviewVCOperationQueue.waitUntilAllOperationsAreFinished()
-    
-        let topStoriesOperation = NSBlockOperation { () -> Void in
-            self.grabTopStories()
-        }
-        topStoriesOperation.queuePriority = .VeryHigh
         
         let trendingCloudOperation = NSBlockOperation { () -> Void in
             self.requestStockTwitsTrendingStocks()
@@ -315,7 +310,12 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         }
         marketCarouselOperation.queuePriority = .Normal
         
-        overviewVCOperationQueue.addOperations([topStoriesOperation, trendingCloudOperation, marketCarouselOperation], waitUntilFinished: false)
+        let topStoriesOperation = NSBlockOperation { () -> Void in
+            self.grabTopStories()
+        }
+        topStoriesOperation.queuePriority = .Normal
+        
+        overviewVCOperationQueue.addOperations([trendingCloudOperation, marketCarouselOperation, topStoriesOperation], waitUntilFinished: false)
     }
     
     func requestStockTwitsTrendingStocks() {

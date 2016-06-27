@@ -213,10 +213,12 @@ public class QueryHelper {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
         }
         
+        let mappedSymbols = symbols.map ({ $0.uppercaseString })
+        
         let stockQuery = PFQuery(className:"Stocks")
         stockQuery.cancel()
         stockQuery.includeKeys(["Shorted_By", "Longed_By"])
-        stockQuery.whereKey("Symbol", containedIn: symbols)
+        stockQuery.whereKey("Symbol", containedIn: mappedSymbols)
         
         stockQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             
@@ -233,7 +235,7 @@ public class QueryHelper {
         }
     }
     
-    public func queryTradeIdeaObjectsFor(key: String, object: PFObject, skip: Int, completion: (result: () throws -> ([PFObject])) -> Void) {
+    public func queryTradeIdeaObjectsFor(key: String, object: PFObject, skip: Int, limit: Int?, completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
@@ -244,7 +246,10 @@ public class QueryHelper {
         tradeIdeaQuery.whereKey(key, equalTo: object)
         tradeIdeaQuery.includeKeys(["user","stock", "reply_to", "reshare_of"])
         tradeIdeaQuery.orderByDescending("createdAt")
-        tradeIdeaQuery.limit = 10
+        
+        if let limit = limit  where limit > 0 {
+            tradeIdeaQuery.limit = limit
+        }
         tradeIdeaQuery.skip  = skip
         
         tradeIdeaQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -260,7 +265,7 @@ public class QueryHelper {
             // The find succeeded.
             print("Successfully retrieved \(objects.count) objects")
             
-            completion(result: {return (object: objects)})
+            completion(result: {return (objects: objects)})
             
         }
     }

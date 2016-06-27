@@ -142,7 +142,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user, skip: skip) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user, skip: skip, limit: 15) { (result) in
             
             do {
                 
@@ -187,7 +187,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             self.footerActivityIndicator.startAnimating()
         }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user, skip: skip) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user, skip: skip, limit: 15) { (result) in
             
             do {
                 

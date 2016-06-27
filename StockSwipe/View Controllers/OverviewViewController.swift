@@ -341,7 +341,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         
         guard Functions.isConnectedToNetwork() else { return }
         
-        if stockTwitsLastQueriedDate != nil {
+        if stockTwitsLastQueriedDate != nil && self.cloudWords.count > 0 {
             
             let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(stockTwitsLastQueriedDate)
             
@@ -390,13 +390,12 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                         }
                         
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            
                             self.layoutCloudWords()
-                            self.stockTwitsLastQueriedDate = NSDate()
-                            
-                            print("cloud query complete")
-                            
                         })
+                        
+                        self.stockTwitsLastQueriedDate = NSDate()
+                        
+                        print("cloud query complete")
                         
                     } catch {
                         

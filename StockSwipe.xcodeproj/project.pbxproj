@@ -53,11 +53,10 @@
 		236DB5211D048D6400CE9869 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236DB5201D048D6400CE9869 /* LaunchScreenViewController.swift */; };
 		236DB5231D048D8800CE9869 /* GradientAnimationImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236DB5221D048D8800CE9869 /* GradientAnimationImage.swift */; };
 		237537F71B1617FB00F05984 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237537F61B1617FB00F05984 /* LogInViewController.swift */; };
-		23761C9C1D20C8EB00FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761C9B1D20C8EB00FA66C1 /* WordCloud.framework */; };
-		23761CA51D20CCA300FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CA41D20CCA300FA66C1 /* WordCloud.framework */; };
-		23761CA61D20CCA600FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CA41D20CCA300FA66C1 /* WordCloud.framework */; };
-		23761CA71D20CCF900FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CA41D20CCA300FA66C1 /* WordCloud.framework */; };
-		23761CA81D20CCF900FA66C1 /* WordCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CA41D20CCA300FA66C1 /* WordCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		23761CDF1D21B5B900FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CDC1D21B57200FA66C1 /* WordCloud.framework */; };
+		23761CE01D21B5B900FA66C1 /* WordCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CDC1D21B57200FA66C1 /* WordCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		23761CE21D21B87900FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CE11D21B87900FA66C1 /* WordCloud.framework */; };
+		23761CE31D21B87900FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CE11D21B87900FA66C1 /* WordCloud.framework */; };
 		2376E41F1C2B0D7A00B85656 /* QueryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2376E41E1C2B0D7A00B85656 /* QueryHelper.swift */; };
 		2378B58A1B115FB3002ACFDC /* StockSwipeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378B5891B115FB3002ACFDC /* StockSwipeTests.swift */; };
 		23875DEE1B11745A00966012 /* SwipeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23875DED1B11745A00966012 /* SwipeChartView.swift */; };
@@ -148,7 +147,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				23761CA81D20CCF900FA66C1 /* WordCloud.framework in Embed Frameworks */,
+				23761CE01D21B5B900FA66C1 /* WordCloud.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -219,8 +218,8 @@
 		236DB5201D048D6400CE9869 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		236DB5221D048D8800CE9869 /* GradientAnimationImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientAnimationImage.swift; sourceTree = "<group>"; };
 		237537F61B1617FB00F05984 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
-		23761C9B1D20C8EB00FA66C1 /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WordCloud.framework; path = "/Users/AceGreen/Library/Developer/Xcode/DerivedData/WordCloud-gzqhkbvziyjuyyejbxizadfqcznz/Build/Products/Debug-iphonesimulator/WordCloud.framework"; sourceTree = "<absolute>"; };
-		23761CA41D20CCA300FA66C1 /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WordCloud.framework; sourceTree = "<group>"; };
+		23761CDC1D21B57200FA66C1 /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WordCloud.framework; path = /Users/AceGreen/iOS/BitBucket/StockSwipe/Frameworks/WordCloud/WordCloud.framework; sourceTree = "<absolute>"; };
+		23761CE11D21B87900FA66C1 /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WordCloud.framework; sourceTree = "<group>"; };
 		2376E41E1C2B0D7A00B85656 /* QueryHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryHelper.swift; sourceTree = "<group>"; };
 		2378B5851B115FB3002ACFDC /* StockSwipeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StockSwipeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2378B5881B115FB3002ACFDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -309,7 +308,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23761CA61D20CCA600FA66C1 /* WordCloud.framework in Frameworks */,
+				23761CE31D21B87900FA66C1 /* WordCloud.framework in Frameworks */,
 				23E7F6A01BCB57A0009A016D /* NotificationCenter.framework in Frameworks */,
 				A9A3E6D544B258A12E459335 /* Pods_StockSwipeWidget.framework in Frameworks */,
 			);
@@ -319,14 +318,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23761C9C1D20C8EB00FA66C1 /* WordCloud.framework in Frameworks */,
+				23761CDF1D21B5B900FA66C1 /* WordCloud.framework in Frameworks */,
 				23CAE2661C2B46A800D15819 /* LocalAuthentication.framework in Frameworks */,
-				23761CA71D20CCF900FA66C1 /* WordCloud.framework in Frameworks */,
 				23CE716D1C1215C800E87420 /* AdSupport.framework in Frameworks */,
 				239A3E491BAA1CCF00894D1E /* JavaScriptCore.framework in Frameworks */,
 				23EA70181B11981F008F6C12 /* MobileCoreServices.framework in Frameworks */,
 				7888E1041B669C780087C255 /* CoreSpotlight.framework in Frameworks */,
-				23761CA51D20CCA300FA66C1 /* WordCloud.framework in Frameworks */,
+				23761CE21D21B87900FA66C1 /* WordCloud.framework in Frameworks */,
 				2339B0AF1B41A6CB009CE3EB /* MessageUI.framework in Frameworks */,
 				233BFDC41B1A28A3008B39ED /* CoreData.framework in Frameworks */,
 				23EA70281B119861008F6C12 /* Social.framework in Frameworks */,
@@ -413,7 +411,7 @@
 		2343B6111C8361CF008BF2CA /* WordCloud */ = {
 			isa = PBXGroup;
 			children = (
-				23761CA41D20CCA300FA66C1 /* WordCloud.framework */,
+				23761CE11D21B87900FA66C1 /* WordCloud.framework */,
 			);
 			path = WordCloud;
 			sourceTree = "<group>";
@@ -1185,6 +1183,7 @@
 				INFOPLIST_FILE = StockSwipeWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = AG.StockSwipe.StockSwipeWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1196,7 +1195,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 302A57B5A56184CF31B8BD67 /* Pods-StockSwipeWidget.release.xcconfig */;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
@@ -1291,6 +1290,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1335,7 +1335,7 @@
 			baseConfigurationReference = CEDDC51E64E945056DDC5558 /* Pods-StockSwipe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = "$(inherited)";
 				ENABLE_BITCODE = YES;
@@ -1353,7 +1353,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				OTHER_SWIFT_FLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = "AG.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = StockSwipe;

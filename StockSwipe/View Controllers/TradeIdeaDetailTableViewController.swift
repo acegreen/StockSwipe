@@ -30,8 +30,6 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         self.getReplyTradeIdeas()
     }
     
-    @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -55,7 +53,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         
         guard let tradeIdea = self.tradeIdea else { return }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("reply_to", object: tradeIdea.parseObject, skip: 0) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("reply_to", object: tradeIdea.parseObject, skip: 0, limit: nil) { (result) in
             
             do {
                 

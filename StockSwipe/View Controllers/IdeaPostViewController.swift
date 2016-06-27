@@ -41,24 +41,19 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         tradeIdeaObject["user"] = PFUser.currentUser()
         tradeIdeaObject["description"] = self.ideaTextView.text
         
-        if let tradeIdeaStockObject = self.stockObject {
-            tradeIdeaObject["stock"] = tradeIdeaStockObject
-        } else if let tradeIdeaStockObject = self.replyTradeIdea?.stock {
-            tradeIdeaObject["stock"] = tradeIdeaStockObject
-        } else if let tradeIdeaStockObject = self.reshareTradeIdea?.stock {
-            tradeIdeaObject["stock"] = tradeIdeaStockObject
-        }
+        var tradeIdeaType: Constants.TradeIdeaType = .New
         
-        if let tradeIdeaParseObject = self.replyTradeIdea?.parseObject {
-            tradeIdeaObject["reply_to"] = tradeIdeaParseObject
-        } else if let tradeIdeaParseObject = self.reshareTradeIdea?.parseObject {
-            tradeIdeaObject["reshare_of"] = tradeIdeaParseObject
-        }
-        
-        if let tradeIdeaParseObject = self.replyTradeIdea?.parseObject {
-            tradeIdeaObject["reply_to"] = tradeIdeaParseObject
-        } else if let tradeIdeaParseObject = self.reshareTradeIdea?.parseObject {
-            tradeIdeaObject["reshare_of"] = tradeIdeaParseObject
+        if let tradeIdea = self.stockObject {
+            tradeIdeaObject["stock"] = tradeIdea
+            tradeIdeaType = .New
+        } else if let tradeIdea = self.replyTradeIdea {
+            tradeIdeaObject["stock"] = tradeIdea.stock
+            tradeIdeaObject["reply_to"] = tradeIdea.parseObject
+            tradeIdeaType = .Reply
+        } else if let tradeIdea = self.reshareTradeIdea {
+            tradeIdeaObject["stock"] = tradeIdea.stock
+            tradeIdeaObject["reshare_of"] = tradeIdea.parseObject
+            tradeIdeaType = .Reshare
         }
         
         tradeIdeaObject.saveInBackgroundWithBlock({ (success, error) in
@@ -69,7 +64,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                     
                     let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                     
-                    self.delegate.ideaPosted(with: tradeIdea)
+                    self.delegate.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaType)
                     
                     // log trade idea
                     Answers.logCustomEventWithName("Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.currentUser()?.username ?? "N/A","Description": self.ideaTextView.text,"Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])

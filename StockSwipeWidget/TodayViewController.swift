@@ -12,13 +12,37 @@ import WordCloud
 import SwiftyJSON
 
 class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOperationDelegate {
+    
+    enum Errors: ErrorType {
+        case TimeOut
+        case ErrorQueryingForData
+        case QueryDataEmpty
+        case ErrorParsingData
+        case URLEmpty
         
+        func message() -> String {
+            switch self {
+            case .TimeOut:
+                return "We have to wait before requesting new data"
+            case .ErrorQueryingForData:
+                return  "Oops! We ran into an issue querying for data"
+            case .QueryDataEmpty:
+                return "Oops! We ran into an issue querying for data"
+            case .ErrorParsingData:
+                return "Oops! We ran into an issue querying for data"
+            case .URLEmpty:
+                return "Oops! We ran into an issue querying for data"
+            }
+        }
+    }
+    
     var cloudColors:[UIColor] = [UIColor.whiteColor()]
     var cloudFontName = "HelveticaNeue"
     var cloudLayoutOperationQueue: NSOperationQueue!
     var cloudWords = [CloudWord]()
  
     var trendingStocksJSON = JSON.null
+    var stockTwitsLastQueriedDate: NSDate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +52,12 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         cloudLayoutOperationQueue = NSOperationQueue()
         cloudLayoutOperationQueue.name = "Cloud layout operation queue"
         cloudLayoutOperationQueue.maxConcurrentOperationCount = 1
+    }
+    
+    override func viewWillAppear(animated: Bool) {
         
-        if cloudWords.count == 0 {
-            requestStockTwitsTrendingStocks()
+        requestStockTwitsTrendingStocks { (result) in
+            
         }
     }
     
@@ -167,16 +194,16 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
             
             if subJson["symbol"].string == buttonPressed.currentTitle {
                 
-                let symbol = subJson["symbol"].string!
-                
-                guard let url = NSURL(string: "stockswipe://chart?symbol=" + symbol) else { return }
+                guard let symbol = subJson["symbol"].string,
+                      let url = NSURL(string: "stockswipe://chart?symbol=" + symbol)
+                else { return }
                             
                 extensionContext?.openURL(url, completionHandler: nil)
             }
         }
     }
     
-    func requestStockTwitsTrendingStocks() {
+    func requestStockTwitsTrendingStocks(completion: (result: () throws -> ()) -> Void) {
         
         if let trendingStocksUrl = NSURL(string: "https://api.stocktwits.com/api/2/trending/symbols/equities.json") {
             
@@ -184,31 +211,37 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
             
             let task = trendingStocksSession.dataTaskWithURL(trendingStocksUrl, completionHandler: { (trendingStocksData, response, error) -> Void in
                 
-                if error != nil {
-                    
-                    print("error: \(error!.localizedDescription): \(error!.userInfo)")
-                    
-                } else if trendingStocksData != nil {
-                    
-                    self.cloudWords = []
-                    self.trendingStocksJSON = JSON(data: trendingStocksData!)["symbols"]
-                    
-                    for (index, subJson) in self.trendingStocksJSON {
-                        
-                        let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: self.trendingStocksJSON.count - Int(index)!, wordTappable: true)
-                        self.cloudWords.append(cloudWord)
-                        
-                    }
-                    
-                    self.layoutCloudWords()
+                guard error == nil else {
+                    return completion(result: {throw Errors.ErrorQueryingForData})
                 }
+                
+                guard trendingStocksData != nil, let trendingStocksData = trendingStocksData else {
+                    return completion(result: {throw Errors.QueryDataEmpty})
+                }
+                
+                self.cloudWords = []
+                self.trendingStocksJSON = JSON(data: trendingStocksData)["symbols"]
+                
+                for (index, subJson) in self.trendingStocksJSON {
+                    
+                    let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: self.trendingStocksJSON.count - Int(index)!, wordTappable: true)
+                    self.cloudWords.append(cloudWord)
+                    
+                }
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.layoutCloudWords()
+                })
+                
+                self.stockTwitsLastQueriedDate = NSDate()
+                
+                completion(result: {})
             })
             
             task.resume()
             
         } else {
-            
-            print("couldn't grab URL")
+            completion(result: {throw Errors.URLEmpty})
         }
         
         print("trending symbols requested")
@@ -220,8 +253,17 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         // If an error is encountered, use NCUpdateResult.Failed
         // If there's no update required, use NCUpdateResult.NoData
         // If there's an update, use NCUpdateResult.NewData
-
-        completionHandler(NCUpdateResult.NewData)
+        
+        requestStockTwitsTrendingStocks({ (result) in
+            do {
+                try result()
+                completionHandler(NCUpdateResult.NewData)
+            } catch {
+                if error is Errors {
+                    completionHandler(NCUpdateResult.Failed)
+                }
+            }
+        })
     }
     
     func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {

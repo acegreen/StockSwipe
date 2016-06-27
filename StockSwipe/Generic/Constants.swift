@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreData
-import Parse
 
 var chartWidth:CGFloat = 0
 var chartHeight:CGFloat = 0
@@ -76,7 +75,7 @@ public class Constants {
     
     public static let countryCode = NSLocale.currentLocale().objectForKey(NSLocaleCountryCode) as! String
     
-    public enum APIKeys: ErrorType {
+    public enum APIKeys: String {
         case Parse
         case TwitterKit
         case LaunchKit
@@ -179,6 +178,12 @@ public class Constants {
         }
         
         static let allChoices = [LONG, SHORT, SKIP]
+    }
+    
+    enum TradeIdeaType {
+        case New
+        case Reply
+        case Reshare
     }
     
     public struct Symbol {

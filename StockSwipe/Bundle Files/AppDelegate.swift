@@ -150,7 +150,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
             
             guard let symbolDict = url.parseQueryString(url.query!, firstSeperator: "&", secondSeperator: "=") else { return false }
             
-            QueryHelper.sharedInstance.queryStockObjectsFor([symbolDict["symbol"] as! String], completion: { (result) in
+            guard let symbol = symbolDict["symbol"] as? String else { return
+                //TO-DO: Alert user that symbol was not found
+                false
+            }
+            
+            QueryHelper.sharedInstance.queryStockObjectsFor([symbol], completion: { (result) in
                 
                 do {
                     

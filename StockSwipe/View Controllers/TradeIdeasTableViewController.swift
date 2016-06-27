@@ -12,7 +12,7 @@ import SwiftyJSON
 import Parse
 
 protocol IdeaPostDelegate {
-    func ideaPosted(with tradeIdea: TradeIdea)
+    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType)
     func ideaDeleted(with parseObject: PFObject)
 }
 
@@ -85,7 +85,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         
         guard let stockObject = self.stockObject else { return }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("stock", object: stockObject, skip: skip) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("stock", object: stockObject, skip: skip, limit: 15) { (result) in
             
             do {
                 
@@ -130,7 +130,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             self.footerActivityIndicator.startAnimating()
         }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("stock", object: stockObject, skip: skip) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("stock", object: stockObject, skip: skip, limit: 15) { (result) in
             
             do {
                 
@@ -166,7 +166,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         }
     }
     
-    func ideaPosted(with tradeIdea: TradeIdea) {
+    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
         let indexPath = NSIndexPath(forRow: 0, inSection: 0)
         self.tradeIdeas.insert(tradeIdea, atIndex: 0)
         self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)

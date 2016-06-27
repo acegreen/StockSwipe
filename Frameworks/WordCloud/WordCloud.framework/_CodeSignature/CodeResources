@@ -4,13 +4,33 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>Headers/CloudLayoutOperation.h</key>
+		<data>
+		+q9LQ5z/JSsC3VrF7mWagjeX+w4=
+		</data>
+		<key>Headers/CloudWord.h</key>
+		<data>
+		kzxd+Gn3vVhphTXFStOIBl4tCjI=
+		</data>
+		<key>Headers/QuadTree.h</key>
+		<data>
+		PBhZ/0nXggajP+TBZYCPid9eXsg=
+		</data>
+		<key>Headers/UIColor+CloudSettings.h</key>
+		<data>
+		SF4LkKUOXztt4bgn/0NgLWRT6Xk=
+		</data>
+		<key>Headers/UIFont+CloudSettings.h</key>
+		<data>
+		BnPNk3U/DuYYFag2eCIk4o8aMxQ=
+		</data>
 		<key>Headers/WordCloud.h</key>
 		<data>
-		cdDn3xuDTuMmbr2ETbFld/9LJY4=
+		cAFtmR3FfePW8+s4bXsvcmGFr08=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		LxYqLm9oxF6YuE5YOLsekDtScEM=
+		qolfHIiZI80YXd50LyCeRHgC0sI=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -19,15 +39,70 @@
 	</dict>
 	<key>files2</key>
 	<dict>
+		<key>Headers/CloudLayoutOperation.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			+q9LQ5z/JSsC3VrF7mWagjeX+w4=
+			</data>
+			<key>hash2</key>
+			<data>
+			f5g1pgMRESJmeV31hKRVZ7bhZVOcNwMPR1I8EDi39/8=
+			</data>
+		</dict>
+		<key>Headers/CloudWord.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			kzxd+Gn3vVhphTXFStOIBl4tCjI=
+			</data>
+			<key>hash2</key>
+			<data>
+			riiU6OaZLk1RdEEDkbaRDK+wtrUpkG7MYfw5Xr3IeBk=
+			</data>
+		</dict>
+		<key>Headers/QuadTree.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			PBhZ/0nXggajP+TBZYCPid9eXsg=
+			</data>
+			<key>hash2</key>
+			<data>
+			fws77hKfdp7ui8UHWq4L4UTdTPmZZD8INjNrNAO7QwE=
+			</data>
+		</dict>
+		<key>Headers/UIColor+CloudSettings.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			SF4LkKUOXztt4bgn/0NgLWRT6Xk=
+			</data>
+			<key>hash2</key>
+			<data>
+			t3SRWO/PzvuG99mdiVJRB+WA5tuAFfZGhDj/81dJzKU=
+			</data>
+		</dict>
+		<key>Headers/UIFont+CloudSettings.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			BnPNk3U/DuYYFag2eCIk4o8aMxQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			agcfRO8a8lCUMJQiHnkYSzYS5BAHuMZ+I4QUzHzTQB8=
+			</data>
+		</dict>
 		<key>Headers/WordCloud.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			cdDn3xuDTuMmbr2ETbFld/9LJY4=
+			cAFtmR3FfePW8+s4bXsvcmGFr08=
 			</data>
 			<key>hash2</key>
 			<data>
-			0hN5kfO23WlX8VvDYllmen0gspcRSUBThWGXXqcTwzs=
+			BFhd0wT1z3b6NvojwWYCiIlVXWgdzGSqgRe0AzALafU=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>

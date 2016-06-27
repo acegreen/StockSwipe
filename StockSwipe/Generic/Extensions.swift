@@ -206,12 +206,11 @@ extension NSURL {
             
             let elements: NSArray = pair.componentsSeparatedByString(secondSeperator)
             
-            guard elements.count != 0 else { return nil }
+            guard let key = elements.objectAtIndex(0).stringByRemovingPercentEncoding,
+                  let value = elements.objectAtIndex(1).stringByRemovingPercentEncoding
+                else { return dict }
             
-            let key = elements.objectAtIndex(0).stringByRemovingPercentEncoding
-            let value = elements.objectAtIndex(1).stringByRemovingPercentEncoding
-            
-            dict.setObject(value!!, forKey: key!!)
+            dict.setObject(value!, forKey: key!)
         }
         
         return dict

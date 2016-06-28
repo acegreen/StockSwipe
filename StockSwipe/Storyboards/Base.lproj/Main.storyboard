@@ -61,6 +61,8 @@
             <string>HelveticaNeue</string>
             <string>HelveticaNeue-Bold</string>
             <string>HelveticaNeue</string>
+            <string>HelveticaNeue-Bold</string>
+            <string>HelveticaNeue</string>
             <string>HelveticaNeue</string>
             <string>HelveticaNeue</string>
             <string>HelveticaNeue</string>
@@ -70,10 +72,8 @@
             <string>HelveticaNeue</string>
             <string>HelveticaNeue-Bold</string>
             <string>HelveticaNeue</string>
-            <string>HelveticaNeue</string>
             <string>HelveticaNeue-Bold</string>
             <string>HelveticaNeue</string>
-            <string>HelveticaNeue-Bold</string>
         </mutableArray>
         <mutableArray key="HelveticaNeueExtras.ttc">
             <string>HelveticaNeue-CondensedBold</string>
@@ -227,6 +227,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <color key="tintColor" red="0.098039217293262482" green="0.84313726425170898" blue="0.098039217293262482" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="selectedImageTintColor" red="0.098039217289999994" green="0.84313726430000002" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
                     </tabBar>
                     <connections>
                         <segue destination="czn-83-RqK" kind="presentation" identifier="FeedbackSegueIdentifier" id="36T-be-AP2"/>
@@ -807,33 +809,35 @@
                                                                             <rect key="frame" x="0.0" y="0.0" width="590" height="99.5"/>
                                                                             <autoresizingMask key="autoresizingMask"/>
                                                                             <subviews>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Loading News" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4WI-rs-f5R">
-                                                                                    <rect key="frame" x="10" y="10" width="570" height="19"/>
-                                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
-                                                                                    <color key="textColor" red="0.36078432199999999" green="0.36078432199999999" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                                                    <nil key="highlightedColor"/>
-                                                                                    <variation key="heightClass=regular-widthClass=regular">
-                                                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                                                                    </variation>
-                                                                                </label>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="This shouldn't take too long! " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="upT-LD-Ak6">
-                                                                                    <rect key="frame" x="10" y="29" width="570" height="60.5"/>
-                                                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                                                    <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                                                                    <nil key="highlightedColor"/>
-                                                                                    <variation key="heightClass=regular-widthClass=regular">
-                                                                                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                                                                    </variation>
-                                                                                </label>
+                                                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="SaN-pD-szL">
+                                                                                    <rect key="frame" x="10" y="10" width="570" height="80"/>
+                                                                                    <subviews>
+                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="Loading News" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4WI-rs-f5R">
+                                                                                            <rect key="frame" x="0.0" y="0.0" width="570" height="19"/>
+                                                                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
+                                                                                            <color key="textColor" red="0.36078432199999999" green="0.36078432199999999" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                                                            <nil key="highlightedColor"/>
+                                                                                            <variation key="heightClass=regular-widthClass=regular">
+                                                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                                                                            </variation>
+                                                                                        </label>
+                                                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="This shouldn't take too long! " textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="upT-LD-Ak6">
+                                                                                            <rect key="frame" x="0.0" y="29" width="570" height="51"/>
+                                                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                                                                            <nil key="highlightedColor"/>
+                                                                                            <variation key="heightClass=regular-widthClass=regular">
+                                                                                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                                                                            </variation>
+                                                                                        </label>
+                                                                                    </subviews>
+                                                                                </stackView>
                                                                             </subviews>
                                                                             <constraints>
-                                                                                <constraint firstAttribute="trailing" secondItem="4WI-rs-f5R" secondAttribute="trailing" constant="10" id="4UF-AZ-Eru"/>
-                                                                                <constraint firstItem="4WI-rs-f5R" firstAttribute="top" secondItem="uPZ-5J-dgY" secondAttribute="top" constant="10" id="Vnu-fm-ngk"/>
-                                                                                <constraint firstItem="4WI-rs-f5R" firstAttribute="leading" secondItem="uPZ-5J-dgY" secondAttribute="leading" constant="10" id="cQ4-kM-A9H"/>
-                                                                                <constraint firstAttribute="trailing" secondItem="upT-LD-Ak6" secondAttribute="trailing" constant="10" id="gXN-Xu-Lo2"/>
-                                                                                <constraint firstItem="upT-LD-Ak6" firstAttribute="top" secondItem="4WI-rs-f5R" secondAttribute="bottom" id="kT4-WG-ynp"/>
-                                                                                <constraint firstItem="upT-LD-Ak6" firstAttribute="leading" secondItem="uPZ-5J-dgY" secondAttribute="leading" constant="10" id="kiN-IA-7WX"/>
-                                                                                <constraint firstAttribute="bottom" secondItem="upT-LD-Ak6" secondAttribute="bottom" constant="10" id="vwW-et-7dd"/>
+                                                                                <constraint firstItem="SaN-pD-szL" firstAttribute="top" secondItem="uPZ-5J-dgY" secondAttribute="top" constant="10" id="1Ev-Ud-1c9"/>
+                                                                                <constraint firstAttribute="bottom" secondItem="SaN-pD-szL" secondAttribute="bottom" constant="10" id="7Bp-dc-jYp"/>
+                                                                                <constraint firstItem="SaN-pD-szL" firstAttribute="leading" secondItem="uPZ-5J-dgY" secondAttribute="leading" constant="10" id="tet-lV-x1b"/>
+                                                                                <constraint firstAttribute="trailing" secondItem="SaN-pD-szL" secondAttribute="trailing" constant="10" id="u0S-Xe-RW7"/>
                                                                             </constraints>
                                                                         </tableViewCellContentView>
                                                                         <connections>
@@ -1501,7 +1505,7 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="uIk-xY-tuz">
                                             <rect key="frame" x="10" y="10" width="580" height="211"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="esI-Av-5QI" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
+                                                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="esI-Av-5QI" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                                     <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -1538,7 +1542,7 @@
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="dsz-Dg-tL1" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="32" width="510" height="38"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <color key="textColor" red="0.36078432199999999" green="0.36078432199999999" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
@@ -1559,7 +1563,7 @@
                                                                 <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="WVr-o1-z3K">
                                                                     <rect key="frame" x="0.0" y="0.0" width="510" height="0.0"/>
                                                                     <subviews>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="QQc-vb-97D" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
+                                                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="QQc-vb-97D" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
                                                                             <rect key="frame" x="0.0" y="-40" width="40" height="40"/>
                                                                             <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <constraints>
@@ -1578,7 +1582,7 @@
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="iV8-wk-UDH" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="510" height="0.0"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <color key="textColor" red="0.36078432199999999" green="0.36078432199999999" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
@@ -2813,7 +2817,7 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="9Cy-fS-A0f">
                                             <rect key="frame" x="10" y="10" width="580" height="180"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="hYI-RB-Mwg" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
+                                                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="hYI-RB-Mwg" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                                     <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
@@ -2850,7 +2854,7 @@
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="UkS-1g-IQ0" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="32" width="510" height="38"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <color key="textColor" red="0.36078432199999999" green="0.36078432199999999" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
@@ -2871,7 +2875,7 @@
                                                                 <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="39R-Hz-sqv">
                                                                     <rect key="frame" x="0.0" y="0.0" width="510" height="0.0"/>
                                                                     <subviews>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="mbY-fi-QsV" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
+                                                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="mbY-fi-QsV" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
                                                                             <rect key="frame" x="0.0" y="-40" width="40" height="40"/>
                                                                             <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <constraints>
@@ -2890,7 +2894,7 @@
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="cg7-he-DHH" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="510" height="0.0"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <color key="textColor" red="0.36078432199999999" green="0.36078432199999999" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
@@ -3201,10 +3205,10 @@
                             <userLayoutGuide location="278" affinity="minY"/>
                         </userGuides>
                         <subviews>
-                            <textView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="whn-bf-sZU">
+                            <textView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="whn-bf-sZU">
                                 <rect key="frame" x="0.0" y="0.0" width="600" height="564"/>
-                                <color key="textColor" red="0.43529412150382996" green="0.44313725829124451" blue="0.47450980544090271" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="25"/>
+                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="21"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" keyboardAppearance="alert"/>
                                 <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                 <userDefinedRuntimeAttributes>
@@ -3235,14 +3239,15 @@
                             </connections>
                         </barButtonItem>
                         <rightBarButtonItems>
-                            <barButtonItem style="plain" id="aq2-Mv-2Ob">
-                                <button key="customView" opaque="NO" contentMode="scaleAspectFit" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" id="aok-fZ-z8P" customClass="CorneredBorderedUIButton" customModule="StockSwipe" customModuleProvider="target">
+                            <barButtonItem title="Item" style="plain" id="aq2-Mv-2Ob">
+                                <button key="customView" opaque="NO" contentMode="scaleAspectFit" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="clip" id="aok-fZ-z8P" customClass="IdeaPostButton" customModule="StockSwipe" customModuleProvider="target">
                                     <rect key="frame" x="447" y="5" width="133" height="33"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="0.098039217293262482" green="0.84313726425170898" blue="0.098039217293262482" alpha="1" colorSpace="calibratedRGB"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                    <state key="normal" title="Post">
-                                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                    <state key="normal" title="Post"/>
+                                    <state key="disabled">
+                                        <color key="titleColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                     </state>
                                     <connections>
                                         <action selector="postButttonPressed:" destination="vGf-jN-UVG" eventType="touchUpInside" id="J5W-Vu-NKD"/>
@@ -3257,7 +3262,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VBm-ON-bRf">
                                             <rect key="frame" x="-1" y="6" width="134" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.43529412150382996" green="0.44313725829124451" blue="0.47450980544090271" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
@@ -3477,7 +3482,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="TradeIdeaDetailTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5qt-w7-t0G" customClass="TradeIdeaDetailTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" dataMode="prototypes" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="111" sectionHeaderHeight="28" sectionFooterHeight="28" id="LuP-Gx-rBc">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -3506,16 +3511,17 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="eXM-4g-UNv">
                                                     <rect key="frame" x="0.0" y="0.0" width="570" height="80"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="MqZ-54-O75" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
+                                                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="MqZ-54-O75" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
                                                             <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                                             <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <gestureRecognizers/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" secondItem="MqZ-54-O75" secondAttribute="height" multiplier="1:1" id="nxc-Kg-dbk"/>
                                                                 <constraint firstAttribute="height" constant="80" id="vO2-yb-LmQ"/>
                                                             </constraints>
                                                         </imageView>
                                                         <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="g2z-TX-jzd">
-                                                            <rect key="frame" x="90" y="0.0" width="480" height="73"/>
+                                                            <rect key="frame" x="90" y="0.0" width="480" height="72"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5bg-pv-yrZ">
                                                                     <rect key="frame" x="0.0" y="0.0" width="480" height="22"/>
@@ -3538,10 +3544,10 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="eht-bz-163" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="32" width="480" height="42"/>
+                                                                    <rect key="frame" x="0.0" y="32" width="480" height="40"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <color key="textColor" red="0.36078432199999999" green="0.36078432199999999" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="21"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
                                                                     <userDefinedRuntimeAttributes>
@@ -3554,13 +3560,13 @@
                                                                     </userDefinedRuntimeAttributes>
                                                                 </textView>
                                                                 <stackView hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="4Y2-kd-A7P">
-                                                                    <rect key="frame" x="0.0" y="73" width="480" height="0.0"/>
+                                                                    <rect key="frame" x="0.0" y="72" width="480" height="0.0"/>
                                                                     <subviews>
                                                                         <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="R1I-kV-JML">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="480" height="50"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="480" height="0.0"/>
                                                                             <subviews>
-                                                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="N2l-Tf-7cu" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="N2l-Tf-7cu" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
+                                                                                    <rect key="frame" x="0.0" y="-50" width="50" height="50"/>
                                                                                     <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <constraints>
                                                                                         <constraint firstAttribute="height" constant="50" id="HEp-3A-99B"/>
@@ -3568,7 +3574,7 @@
                                                                                     </constraints>
                                                                                 </imageView>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HHY-zA-G6e">
-                                                                                    <rect key="frame" x="55" y="0.0" width="425" height="50"/>
+                                                                                    <rect key="frame" x="55" y="-50" width="425" height="50"/>
                                                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
                                                                                     <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <nil key="highlightedColor"/>
@@ -3578,7 +3584,7 @@
                                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="8G2-wL-u08" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
                                                                             <rect key="frame" x="0.0" y="0.0" width="480" height="0.0"/>
                                                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                            <color key="textColor" red="0.36078432199999999" green="0.36078432199999999" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                                             <dataDetectorType key="dataDetectorTypes" link="YES"/>
@@ -3704,9 +3710,10 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="3uC-Om-7eQ">
                                             <rect key="frame" x="15" y="15" width="570" height="170"/>
                                             <subviews>
-                                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="nD1-uH-oEd" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
+                                                <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="nD1-uH-oEd" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                                     <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <gestureRecognizers/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="60" id="3TY-2n-e3B"/>
                                                         <constraint firstAttribute="width" secondItem="nD1-uH-oEd" secondAttribute="height" multiplier="1:1" id="aQP-rm-fob"/>
@@ -3741,7 +3748,7 @@
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="5CD-Ks-Jn6" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="32" width="500" height="38"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <color key="textColor" red="0.36078432199999999" green="0.36078432199999999" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
@@ -3760,10 +3767,10 @@
                                                             <rect key="frame" x="0.0" y="77" width="500" height="0.0"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qLH-s2-aa8">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="500" height="40"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="500" height="0.0"/>
                                                                     <subviews>
-                                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="f6c-um-lpC" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="dummy_avatar" translatesAutoresizingMaskIntoConstraints="NO" id="f6c-um-lpC" customClass="CircularImageView" customModule="StockSwipe" customModuleProvider="target">
+                                                                            <rect key="frame" x="0.0" y="-40" width="40" height="40"/>
                                                                             <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="40" id="FxI-Dm-5Yq"/>
@@ -3771,7 +3778,7 @@
                                                                             </constraints>
                                                                         </imageView>
                                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="F0c-z4-pUF">
-                                                                            <rect key="frame" x="45" y="0.0" width="455" height="40"/>
+                                                                            <rect key="frame" x="45" y="-40" width="455" height="40"/>
                                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
                                                                             <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
@@ -3781,7 +3788,7 @@
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="W9U-ef-GrM" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
                                                                     <rect key="frame" x="0.0" y="0.0" width="500" height="0.0"/>
                                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                                    <color key="textColor" red="0.36078432199999999" green="0.36078432199999999" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                                     <dataDetectorType key="dataDetectorTypes" link="YES"/>
@@ -3966,9 +3973,9 @@
         <image name="x" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="quK-gg-uD0"/>
+        <segue reference="TrH-G2-UNU"/>
         <segue reference="sLE-BL-QrO"/>
-        <segue reference="e7d-xk-5st"/>
+        <segue reference="Vca-aI-z5e"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.098039215686274508" green="0.84313725490196079" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
 </document>

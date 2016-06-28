@@ -99,6 +99,7 @@
 		23E09E851B97E1E400A9C9B3 /* StreamTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E09E841B97E1E400A9C9B3 /* StreamTableViewController.swift */; };
 		23E0FFDA1B1B6AE000251BC6 /* StockSwipe.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 23E0FFD91B1B6AE000251BC6 /* StockSwipe.xcdatamodeld */; };
 		23E0FFDE1B1BEDD800251BC6 /* NoChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E0FFDD1B1BEDD800251BC6 /* NoChartView.swift */; };
+		23E6D6E41D221ED1005DB3F7 /* IdeaPostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E6D6E31D221ED1005DB3F7 /* IdeaPostButton.swift */; };
 		23E7F6A01BCB57A0009A016D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7F69F1BCB57A0009A016D /* NotificationCenter.framework */; };
 		23E7F6AA1BCB57A0009A016D /* StockSwipeWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 23E7F69E1BCB57A0009A016D /* StockSwipeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		23EA70101B119803008F6C12 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA700F1B119803008F6C12 /* AudioToolbox.framework */; };
@@ -268,6 +269,7 @@
 		23E09E841B97E1E400A9C9B3 /* StreamTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamTableViewController.swift; sourceTree = "<group>"; };
 		23E0FFD91B1B6AE000251BC6 /* StockSwipe.xcdatamodeld */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodeld; path = StockSwipe.xcdatamodeld; sourceTree = "<group>"; };
 		23E0FFDD1B1BEDD800251BC6 /* NoChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoChartView.swift; sourceTree = "<group>"; };
+		23E6D6E31D221ED1005DB3F7 /* IdeaPostButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdeaPostButton.swift; sourceTree = "<group>"; };
 		23E7F69E1BCB57A0009A016D /* StockSwipeWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StockSwipeWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E7F69F1BCB57A0009A016D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		23E7F6A71BCB57A0009A016D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = StockSwipeWidget/Info.plist; sourceTree = "<group>"; };
@@ -643,6 +645,7 @@
 				23CF54A41D19BF3B004A01DC /* SuperUITextView.swift */,
 				230FBB2A1D1F0505000394AD /* TintableButton.swift */,
 				230FBB2C1D1F05B2000394AD /* TintableLabel.swift */,
+				23E6D6E31D221ED1005DB3F7 /* IdeaPostButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1038,6 +1041,7 @@
 				23875DEE1B11745A00966012 /* SwipeChartView.swift in Sources */,
 				236C49371B4E5D7700E82416 /* WebViewController.swift in Sources */,
 				23D92A7A1D2030920091C356 /* ReplyIdeaCell.swift in Sources */,
+				23E6D6E41D221ED1005DB3F7 /* IdeaPostButton.swift in Sources */,
 				23C925601B1A7D9400D17B70 /* Chart.swift in Sources */,
 				236D28241BCC2750001D757F /* MainTabBarController.swift in Sources */,
 				237537F71B1617FB00F05984 /* LogInViewController.swift in Sources */,

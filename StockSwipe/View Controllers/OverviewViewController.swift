@@ -53,6 +53,10 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         carousel.type = .Linear
         carousel.contentOffset = CGSize(width: 0, height: 10)
         
+        // set tableView properties
+        self.latestNewsTableView.rowHeight = UITableViewAutomaticDimension
+        self.latestNewsTableView.estimatedRowHeight = 100.0
+        
         // Add refresh control to top stories tableView
         self.latestNewsTableView.tableFooterView = UIView(frame: CGRectZero)
         refreshControl.addTarget(self, action: #selector(OverviewViewController.refreshTopStories(_:)), forControlEvents: .ValueChanged)
@@ -650,14 +654,6 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return news.count
-    }
-    
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
-            return 110
-        } else {
-            return 100
-        }
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {

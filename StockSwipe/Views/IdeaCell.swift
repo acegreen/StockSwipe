@@ -19,6 +19,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     var delegate: IdeaPostDelegate!
     
     var tradeIdea: TradeIdea!
+    var nestedTradeIdea: TradeIdea!
     
     @IBOutlet private weak var userAvatar: CircularImageView!
     
@@ -77,19 +78,29 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
     }
     
-    var user: PFUser!
+    func handleGestureRecognizer(tapGestureRecognizer: UITapGestureRecognizer) {
+        
+        let profileContainerController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileContainerController") as! ProfileContainerController
+        
+        if (tapGestureRecognizer.view == userAvatar) {
+            profileContainerController.user = self.tradeIdea.user
+        } else if (tapGestureRecognizer.view == nestedUserAvatar) {
+            profileContainerController.user = self.nestedTradeIdea.user
+        }
+        
+        Functions.findTopViewController()?.showViewController(profileContainerController, sender: self)
+    }
     
     func configureIdeaCell(tradeIdea: TradeIdea?) {
         
         guard let tradeIdea = tradeIdea else { return }
         self.tradeIdea = tradeIdea
         
-        user = tradeIdea.user
+        let user = tradeIdea.user
+        self.userName.text = user.username
         
         self.ideaDescription.text = tradeIdea.description
         self.ideaTime.text = tradeIdea.publishedDate.formattedAsTimeAgo()
-        
-        self.userName.text = user.username
         
         guard let avatarURL = user.objectForKey("profile_image_url") as? String else { return }
         
@@ -112,18 +123,27 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         checkReshare(tradeIdea, sender: self.reshareButton)
         
         configureNestedTradeIdea(tradeIdea)
+        
+        // Add Gesture Recognizers
+        let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+        self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
+        
+        let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+        self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
     }
     
     func configureNestedTradeIdea(tradeIdea: TradeIdea!) {
         
         guard let object = tradeIdea?.parseObject else { return }
             
-        guard let resharedTradeIdea = object.objectForKey("reshare_of") as? PFObject else {
+        guard let nestedTradeIdeaObject = object.objectForKey("reshare_of") as? PFObject else {
             self.nestedTradeIdeaStack.hidden = true
             return
         }
         
-        let user = resharedTradeIdea["user"] as? PFUser
+        self.nestedTradeIdeaStack.hidden = false
+        
+        let user = nestedTradeIdeaObject["user"] as? PFUser
         user?.fetchInBackgroundWithBlock({ (user, error) in
             
             guard let user = user as? PFUser else { return }
@@ -149,10 +169,10 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             }
         })
         
-        let description = resharedTradeIdea["description"] as! String
+        let description = nestedTradeIdeaObject["description"] as! String
         self.nestedIdeaDescription.text = description
         
-        self.nestedTradeIdeaStack.hidden = false
+        self.nestedTradeIdea = TradeIdea(user: nestedTradeIdeaObject["user"] as! PFUser, stock: nestedTradeIdeaObject["stock"] as! PFObject, description: nestedTradeIdeaObject["description"] as! String, likeCount: nestedTradeIdeaObject["liked_by"]?.count, reshareCount: nestedTradeIdeaObject["reshared_by"]?.count, publishedDate: nestedTradeIdeaObject.createdAt, parseObject: nestedTradeIdeaObject)
     }
     
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {

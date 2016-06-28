@@ -278,7 +278,8 @@ extension DetectTags where Self: UITextView {
         
         // you can't set the font size in the storyboard anymore, since it gets overridden here.
         let attrs = [
-            NSFontAttributeName : UIFont(name: self.font!.familyName, size: self.font!.pointSize) as! AnyObject
+            NSFontAttributeName : UIFont(name: self.font!.familyName, size: self.font!.pointSize) as! AnyObject,
+            NSForegroundColorAttributeName : (self.textColor ?? UIColor.blackColor()) as AnyObject
         ]
         
         // you can staple URLs onto attributed strings

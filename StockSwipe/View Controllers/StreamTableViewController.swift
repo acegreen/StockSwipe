@@ -28,6 +28,10 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
         self.tableView.emptyDataSetSource = self
         self.tableView.tableFooterView = UIView()
         
+        //Setup Appearance
+        //TWTRTweetView.appearance().primaryTextColor = Constants.stockSwipeFontColor
+        TWTRTweetView.appearance().linkTextColor = Constants.stockSwipeGreenColor
+        
         let parentTabBarController = self.tabBarController as! ChartDetailTabBarController
         symbol = parentTabBarController.symbol
         companyName = parentTabBarController.companyName

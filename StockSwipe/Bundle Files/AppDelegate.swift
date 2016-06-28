@@ -105,8 +105,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         UITabBar.appearance().barTintColor = UIColor.whiteColor()
         UITabBar.appearance().tintColor = Constants.stockSwipeGreenColor
         self.window?.backgroundColor = UIColor.whiteColor()
-        TWTRTweetView.appearance().primaryTextColor = Constants.stockSwipeFontColor
-        TWTRTweetView.appearance().linkTextColor = Constants.stockSwipeGreenColor
         
         // Adding paging indicator
         let pageControl = UIPageControl.appearance()

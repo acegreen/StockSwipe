@@ -16,6 +16,8 @@ class CorneredBorderedUIButton: UIButton {
         super.drawRect(rect)
         
         self.layer.cornerRadius = 9
+        self.layer.borderWidth = 0.5
+        self.layer.borderColor = UIColor.lightGrayColor().CGColor
         self.clipsToBounds = true
     }
 

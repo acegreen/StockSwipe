@@ -57,7 +57,6 @@ DEPENDENCIES:
   - ChimpKit
   - Crashlytics
   - DZNEmptyDataSet (= 1.7.2)
-  - Fabric
   - LaunchKit
   - MDCSwipeToChoose (from `https://github.com/acegreen/MDCSwipeToChoose.git`)
   - Parse
@@ -70,7 +69,6 @@ DEPENDENCIES:
   - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift2`)
   - SwiftyJSON
   - SWXMLHash
-  - TwitterCore
   - TwitterKit
 
 EXTERNAL SOURCES:
@@ -120,6 +118,6 @@ SPEC CHECKSUMS:
   TwitterCore: 817eae3e291fa4125b47789e26a4f6f024115c1f
   TwitterKit: 8a383da8d9c21b0423716381ea8bbfce20622d91
 
-PODFILE CHECKSUM: 55d535ee797e55ff589222af16c4f9a5915f4e46
+PODFILE CHECKSUM: d0e090d944250d01b943510049415d94508c7418
 
 COCOAPODS: 1.0.1

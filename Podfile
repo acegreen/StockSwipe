@@ -25,11 +25,11 @@ target 'StockSwipe' do
     #pod 'ChameleonFramework/Swift'
     pod 'Charts'
     #pod 'SwiftSpinner'
-    pod 'Fabric'
+    #pod 'Fabric'
     pod 'Crashlytics'
     #pod 'Answers'
     pod 'TwitterKit'
-    pod 'TwitterCore'
+    #pod 'TwitterCore'
     pod 'Appsee'
     shared_pods
 end

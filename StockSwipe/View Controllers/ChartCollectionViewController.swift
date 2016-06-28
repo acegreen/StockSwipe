@@ -261,9 +261,6 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             let selectedObject = swippeChartsdArray[self.CollectionView.indexPathsForSelectedItems()!.first!.row]
             self.CollectionView.deselectItemAtIndexPath(indexPath, animated: false)
             
-            // Disable selection until async query is complete
-            self.CollectionView.allowsSelection = false
-            
             guard Functions.isConnectedToNetwork() else {
                 SweetAlert().showAlert("Can't Access Chart!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.Warning)
                 return
@@ -299,8 +296,6 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
                     }
                 }
             }
-            
-            self.CollectionView.allowsSelection = true
         }
     }
     

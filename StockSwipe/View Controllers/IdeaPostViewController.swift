@@ -13,6 +13,7 @@ import Crashlytics
 class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     var prefillText: String!
+    var tradeIdeaPostCharacterLimit = 199
     
     var stockObject: PFObject!
     var replyTradeIdea: TradeIdea!
@@ -34,8 +35,14 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     @IBAction func postButttonPressed(sender: AnyObject) {
         
+        guard Functions.isConnectedToNetwork() else {
+            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
+            return
+        }
         guard Functions.isUserLoggedIn(self) else { return }
-        guard self.ideaTextView.text != nil else { return }
+        guard self.ideaTextView.text != nil && (self.ideaTextView.text.characters.filter{ $0 != " " }.count <= self.tradeIdeaPostCharacterLimit) && self.ideaTextView.textColor != UIColor.lightGrayColor() else {
+            return
+        }
         
         let tradeIdeaObject = PFObject(className: "TradeIdea")
         tradeIdeaObject["user"] = PFUser.currentUser()
@@ -85,7 +92,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     deinit {
         stopObservingKeyboardNotifications()
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -107,16 +114,21 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
-        if !prefillText.isEmpty {
-            self.ideaTextView.text = "\(self.prefillText) "
-            self.textCountLabel.text = "6"
-        } else {
-            ideaTextView.text = "Share an idea\n(use $ before ticker: e.g. $AAPL)"
-            ideaTextView.textColor = UIColor.lightGrayColor()
-            ideaTextView.selectedTextRange = ideaTextView.textRangeFromPosition(ideaTextView.beginningOfDocument, toPosition: ideaTextView.beginningOfDocument)
+        // Setup config parameters
+        Functions.setupConfigParameter("TRADEIDEAPOSTCHARACTERLIMIT") { (parameterValue) -> Void in
+            self.tradeIdeaPostCharacterLimit = parameterValue as? Int ?? 199
+            
+            if !self.prefillText.isEmpty {
+                self.ideaTextView.text = "\(self.prefillText) "
+                self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit - self.ideaTextView.text.characters.count)
+            } else {
+                self.ideaTextView.text = "Share an idea\n(use $ before ticker: e.g. $AAPL)"
+                self.ideaTextView.textColor = UIColor.lightGrayColor()
+                self.ideaTextView.selectedTextRange = self.ideaTextView.textRangeFromPosition(self.ideaTextView.beginningOfDocument, toPosition: self.ideaTextView.beginningOfDocument)
+            }
+            
+            self.ideaTextView.becomeFirstResponder()
         }
-        ideaTextView.becomeFirstResponder()
-
     }
     
     func observeKeyboardNotifications() {
@@ -143,19 +155,35 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
                 
                 if self.isBeingPresentedInFormSheet() {
-                    self.textViewBottomConstraint.constant = -(intersectionFrame.height + 20)
+                    self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height - (intersectionFrame.height + 20))
                 } else {
-                    self.textViewBottomConstraint.constant = -keyboardHeight
+                    
+                    self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height - (keyboardHeight + 20))
                 }
+                self.view.layoutIfNeeded()
             })
         }
     }
     
     func keyboardWillHide(n: NSNotification) {
         
-        UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
-            self.textViewBottomConstraint.constant = 0
-        })
+        if let keyboardRect = n.userInfo![UIKeyboardFrameEndUserInfoKey]?.CGRectValue() {
+            
+            let keyboardSize = keyboardRect.size
+            let keyboardHeight = keyboardSize.height
+            let intersectionFrame = CGRectIntersection(self.view.frame, keyboardRect)
+            
+            UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
+                
+                if self.isBeingPresentedInFormSheet() {
+                    self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height + (intersectionFrame.height + 20))
+                } else {
+                    
+                    self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height + (keyboardHeight + 20))
+                }
+                self.view.layoutIfNeeded()
+            })
+        }
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
@@ -167,13 +195,13 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             
             postButton.enabled = false
             
-            // Keep track of character count and update label
-            self.textCountLabel.text = "0"
+            // Set label to 0
+            self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit)
             
             if !prefillText.isEmpty {
-                ideaTextView.text = "\(self.prefillText)"
+                ideaTextView.text = "Share a idea on \(self.prefillText)"
             } else {
-                ideaTextView.text = "Share an idea\n(use $ before ticker: e.g. $AAPL)"
+                ideaTextView.text = "Share a idea\n(use $ before ticker: e.g. $AAPL)"
             }
             textView.textColor = UIColor.lightGrayColor()
             textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
@@ -182,29 +210,36 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             
         } else if textView.textColor == UIColor.lightGrayColor() && !text.isEmpty {
             
-            postButton.enabled = true
-            
             textView.text = nil
-            textView.textColor = Constants.stockSwipeFontColor
+            textView.textColor = UIColor.blackColor()
             
         }
-    
+        
         if textView.textColor != UIColor.lightGrayColor() {
             
             // Keep track of character count and update label
             currentText = textView.text
             updatedText = currentText.stringByReplacingCharactersInRange(range, withString:text)
-            self.textCountLabel.text = String(updatedText.characters.count)
+            self.textCountLabel.text = String(tradeIdeaPostCharacterLimit - updatedText.characters.count)
+            
+            if tradeIdeaPostCharacterLimit - updatedText.characters.count < 0 {
+                self.textCountLabel.textColor = UIColor.redColor()
+                postButton.enabled = false
+            } else {
+                self.textCountLabel.textColor = Constants.stockSwipeFontColor
+                
+                if (updatedText.characters.filter{$0 != " "}.count > 0) {
+                    postButton.enabled = true
+                }
+            }
         }
         
         return true
     }
     
     func textViewDidChangeSelection(textView: UITextView) {
-        if self.view.window != nil {
-            if textView.textColor == UIColor.lightGrayColor() {
-                textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
-            }
+        if textView.textColor == UIColor.lightGrayColor() {
+            textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
         }
     }
 }

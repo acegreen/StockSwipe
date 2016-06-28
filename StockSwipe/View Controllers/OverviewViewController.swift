@@ -277,7 +277,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
-                    SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.CustomImag(imageFile: "add"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.redColor() , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+                    SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.CustomImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.redColor() , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
                         
                         guard Functions.isUserLoggedIn(self) else { return }
                         
@@ -406,7 +406,6 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                         if let error = error as? Constants.Errors {
                             
                             dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                
                                 SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
                             })
                         }
@@ -424,7 +423,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         let topStoriesOperation = NSBlockOperation { () -> Void in
             self.grabTopStories()
         }
-        topStoriesOperation.queuePriority = .VeryHigh
+        topStoriesOperation.queuePriority = .Normal
         overviewVCOperationQueue.addOperation(topStoriesOperation)
     }
     
@@ -451,61 +450,55 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                 let result = try result()
                 let xml = SWXMLHash.parse(result)
                 
-                do {
+                let items = xml["rss"]["channel"]["item"]
+                
+                self.news = []
+                
+                for item in items {
                     
-                    let items = try xml.byKey("rss").byKey("channel").byKey("item")
+                    var newsDecodedTitle: String!
+                    var newsUrl: String!
+                    var newsDetails: String!
+                    var newsPublishedDate: String!
                     
-                    self.news = []
-                    
-                    for item in items {
-                        
-                        var newsDecodedTitle: String!
-                        var newsUrl: String!
-                        var newsDetails: String!
-                        var newsPublishedDate: String!
-                        
-                        // Get title
-                        if let title = item["title"].element!.text {
-                            newsDecodedTitle = title.decodeEncodedString()
-                        }
-                        
-                        // Get URL
-                        if let link = item["link"].element!.text {
-                            newsUrl = link.decodeEncodedString()
-                        }
-                        
-                        // Get details
-                        if let description = item["description"].element!.text {
-                            newsDetails = description.decodeEncodedString()
-                        }
-                        
-                        // Get Published Date
-                        if let pubDate = item["pubDate"].element!.text {
-                            let publishedDateFormatter = NSDateFormatter()
-                            publishedDateFormatter.dateFormat = "EEE, dd MMM yy HH:mm:ss z"
-                            
-                            if let formattedDate: NSDate? = publishedDateFormatter.dateFromString(pubDate) {
-                                newsPublishedDate = formattedDate!.formattedAsTimeAgo()
-                            }
-                        }
-                        
-                        let newNews = News(image: nil, title: newsDecodedTitle, details: newsDetails,url: newsUrl, publisher: nil, publishedDate: newsPublishedDate)
-                        self.news.append(newNews)
+                    // Get title
+                    if let title = item["title"].element?.text {
+                        newsDecodedTitle = title.decodeEncodedString()
                     }
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        
-                        self.latestNewsTableView.reloadData()
-                        self.refreshControl.endRefreshing()
-                        self.topStoriesLastQueriedDate = NSDate()
-                        
-                        print("top stories query complete")
-                        
-                    })
+                    // Get URL
+                    if let link = item["link"].element?.text {
+                        newsUrl = link.decodeEncodedString()
+                    }
                     
-                } catch let error as XMLIndexer.Error {
-                        print("\(error)")
+                    // Get details
+                    if let description = item["description"].element?.text {
+                        newsDetails = description.decodeEncodedString()
+                    }
+                    
+                    // Get Published Date
+                    if let pubDate = item["pubDate"].element?.text {
+                        let publishedDateFormatter = NSDateFormatter()
+                        publishedDateFormatter.dateFormat = "EEE, dd MMM yy HH:mm:ss z"
+                        
+                        if let formattedDate: NSDate? = publishedDateFormatter.dateFromString(pubDate) {
+                            newsPublishedDate = formattedDate!.formattedAsTimeAgo()
+                        }
+                    }
+                    
+                    let newNews = News(image: nil, title: newsDecodedTitle, details: newsDetails,url: newsUrl, publisher: nil, publishedDate: newsPublishedDate)
+                    self.news.append(newNews)
                 }
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    self.latestNewsTableView.reloadData()
+                    self.refreshControl.endRefreshing()
+                    self.topStoriesLastQueriedDate = NSDate()
+                    
+                    print("top stories query complete")
+                    
+                })
                 
             } catch {
                 

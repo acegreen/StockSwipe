@@ -13,7 +13,11 @@ import Crashlytics
 class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     var prefillText: String!
-    var tradeIdeaPostCharacterLimit = 199
+    var tradeIdeaPostCharacterLimit = 199 {
+        didSet{
+            self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit - self.ideaTextView.text.characters.count)
+        }
+    }
     
     var stockObject: PFObject!
     var replyTradeIdea: TradeIdea!
@@ -102,6 +106,12 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         // flexible height
         self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight
         
+        // Setup config parameters
+        Functions.setupConfigParameter("TRADEIDEAPOSTCHARACTERLIMIT") { (parameterValue) -> Void in
+            self.tradeIdeaPostCharacterLimit = parameterValue as? Int ?? 199
+        }
+        
+        // prefill text
         if let tradeIdea = self.stockObject {
             self.prefillText = "$" + (tradeIdea.objectForKey("Symbol") as! String)
         } else if let tradeIdea = self.replyTradeIdea {
@@ -114,21 +124,16 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
         
-        // Setup config parameters
-        Functions.setupConfigParameter("TRADEIDEAPOSTCHARACTERLIMIT") { (parameterValue) -> Void in
-            self.tradeIdeaPostCharacterLimit = parameterValue as? Int ?? 199
-            
-            if !self.prefillText.isEmpty {
-                self.ideaTextView.text = "\(self.prefillText) "
-                self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit - self.ideaTextView.text.characters.count)
-            } else {
-                self.ideaTextView.text = "Share an idea\n(use $ before ticker: e.g. $AAPL)"
-                self.ideaTextView.textColor = UIColor.lightGrayColor()
-                self.ideaTextView.selectedTextRange = self.ideaTextView.textRangeFromPosition(self.ideaTextView.beginningOfDocument, toPosition: self.ideaTextView.beginningOfDocument)
-            }
-            
-            self.ideaTextView.becomeFirstResponder()
+        if !self.prefillText.isEmpty {
+            self.ideaTextView.text = "\(self.prefillText) "
+            self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit - self.ideaTextView.text.characters.count)
+        } else {
+            self.ideaTextView.text = "Share an idea\n(use $ before ticker: e.g. $AAPL)"
+            self.ideaTextView.textColor = UIColor.lightGrayColor()
+            self.ideaTextView.selectedTextRange = self.ideaTextView.textRangeFromPosition(self.ideaTextView.beginningOfDocument, toPosition: self.ideaTextView.beginningOfDocument)
         }
+        
+        self.ideaTextView.becomeFirstResponder()
     }
     
     func observeKeyboardNotifications() {

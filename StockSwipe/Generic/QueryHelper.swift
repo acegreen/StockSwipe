@@ -16,11 +16,11 @@ public class QueryHelper {
     
     public func queryWith(queryString: String, completionHandler: (result: () throws -> NSData) -> Void) -> Void {
         
-        if let companyQuoteUrl: NSURL = NSURL(string: queryString) {
+        if let queryUrl: NSURL = NSURL(string: queryString) {
             
             let session = NSURLSession.sharedSession()
             
-            let task = session.dataTaskWithURL(companyQuoteUrl, completionHandler: { (queryData, response, error) -> Void in
+            let task = session.dataTaskWithURL(queryUrl, completionHandler: { (queryData, response, error) -> Void in
                 
                 guard error == nil else {
                     return completionHandler(result: {throw Constants.Errors.ErrorQueryingForData})
@@ -31,7 +31,6 @@ public class QueryHelper {
                 }
                 
                 return completionHandler(result: { queryData })
-                
             })
             task.resume()
         }

@@ -25,6 +25,7 @@
 
 import UIKit
 
+@IBDesignable
 class BorderedLabel: UILabel {
 
     init(frame: CGRect, text: NSString, color: UIColor, angle: Double) {

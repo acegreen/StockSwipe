@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class TintableButton: UIButton, Tintable {
     
     override var selected: Bool {

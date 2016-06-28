@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 
+@IBDesignable
 class TransparentView: UIView {
     
     override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {

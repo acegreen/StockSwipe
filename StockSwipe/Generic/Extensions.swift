@@ -159,6 +159,37 @@ extension String {
     }
 }
 
+extension UIView {
+    
+    @IBInspectable var cornerRadius: CGFloat {
+        get {
+            return self.cornerRadius
+        }
+        set {
+            layer.cornerRadius = newValue
+            layer.masksToBounds = newValue > 0
+        }
+    }
+    
+    @IBInspectable var borderWidth: CGFloat {
+        get {
+            return self.borderWidth
+        }
+        set {
+            layer.borderWidth = newValue
+        }
+    }
+    
+    @IBInspectable var borderColor: UIColor?  {
+        get {
+            return self.borderColor
+        }
+        set {
+            layer.borderColor = newValue?.CGColor
+        }
+    }
+}
+
 extension UIColor {
     
     convenience init(red: Int, green: Int, blue: Int) {
@@ -353,6 +384,23 @@ extension UIViewController {
             return traitCollection.horizontalSizeClass == .Compact && presentingViewController.traitCollection.horizontalSizeClass == .Regular
         }
         return false
+    }
+}
+
+extension UIApplication {
+    class func topViewController(base: UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController) -> UIViewController? {
+        if let nav = base as? UINavigationController {
+            return topViewController(nav.visibleViewController)
+        }
+        if let tab = base as? UITabBarController {
+            if let selected = tab.selectedViewController {
+                return topViewController(selected)
+            }
+        }
+        if let presented = base?.presentedViewController {
+            return topViewController(presented)
+        }
+        return base
     }
 }
 

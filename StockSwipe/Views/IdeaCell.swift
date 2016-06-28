@@ -21,7 +21,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     var tradeIdea: TradeIdea!
     var nestedTradeIdea: TradeIdea!
     
-    @IBOutlet private weak var userAvatar: CircularImageView!
+    @IBOutlet private weak var userAvatar: UIImageView!
     
     @IBOutlet private weak var userName: UILabel!
     
@@ -33,7 +33,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     @IBOutlet var buttonsStack: UIStackView!
     
-    @IBOutlet var nestedUserAvatar: CircularImageView!
+    @IBOutlet var nestedUserAvatar: UIImageView!
     
     @IBOutlet var nestedUsername: UILabel!
     
@@ -58,7 +58,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         ideaPostViewController.delegate =  self
         
         tradeIdeaPostNavigationController.modalPresentationStyle = .FormSheet
-        Functions.findTopViewController()?.presentViewController(tradeIdeaPostNavigationController, animated: true, completion: nil)
+        UIApplication.topViewController()?.presentViewController(tradeIdeaPostNavigationController, animated: true, completion: nil)
     }
     
     @IBAction func reshareButton(sender: UIButton) {
@@ -72,7 +72,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             ideaPostViewController.delegate =  self
 
             tradeIdeaPostNavigationController.modalPresentationStyle = .FormSheet
-            Functions.findTopViewController()?.presentViewController(tradeIdeaPostNavigationController, animated: true, completion: nil)
+            UIApplication.topViewController()?.presentViewController(tradeIdeaPostNavigationController, animated: true, completion: nil)
         } else {
             registerReshare(sender: sender)
         }
@@ -82,13 +82,15 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         let profileContainerController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileContainerController") as! ProfileContainerController
         
-        if (tapGestureRecognizer.view == userAvatar) {
+        if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == userName) {
             profileContainerController.user = self.tradeIdea.user
-        } else if (tapGestureRecognizer.view == nestedUserAvatar) {
+        } else if (tapGestureRecognizer.view == nestedUserAvatar || tapGestureRecognizer.view == nestedUsername ) {
             profileContainerController.user = self.nestedTradeIdea.user
         }
         
-        Functions.findTopViewController()?.showViewController(profileContainerController, sender: self)
+        profileContainerController.navigationItem.rightBarButtonItem = nil
+        
+        UIApplication.topViewController()?.showViewController(profileContainerController, sender: self)
     }
     
     func configureIdeaCell(tradeIdea: TradeIdea?) {
@@ -128,8 +130,14 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
         self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
         
+        let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+        self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
+        
         let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
         self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
+        
+        let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+        self.nestedUsername.addGestureRecognizer(tapGestureRecognizerNestedUsername)
     }
     
     func configureNestedTradeIdea(tradeIdea: TradeIdea!) {
@@ -212,7 +220,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     func registerLike(sender sender: UIButton) {
         
         guard (PFUser.currentUser() != nil) else {
-            Functions.isUserLoggedIn(Functions.findTopViewController()!)
+            Functions.isUserLoggedIn(UIApplication.topViewController()!)
             return
         }
         
@@ -286,7 +294,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     func registerReshare(sender sender: UIButton) {
         
         guard (PFUser.currentUser() != nil) else {
-            Functions.isUserLoggedIn(Functions.findTopViewController()!)
+            Functions.isUserLoggedIn(UIApplication.topViewController()!)
             return
         }
         

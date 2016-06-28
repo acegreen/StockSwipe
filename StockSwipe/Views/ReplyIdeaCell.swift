@@ -13,7 +13,7 @@ class ReplyIdeaCell: UITableViewCell {
     
     var tradeIdea: TradeIdea!
     
-    @IBOutlet private weak var userAvatar: CircularImageView!
+    @IBOutlet private weak var userAvatar: UIImageView!
     
     @IBOutlet private weak var userName: UILabel!
     

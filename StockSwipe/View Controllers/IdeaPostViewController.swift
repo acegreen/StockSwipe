@@ -31,7 +31,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet var textCountLabel: UILabel!
     
-    @IBOutlet var postButton: CorneredBorderedUIButton!
+    @IBOutlet var postButton: UIButton!
     
     @IBAction func postButttonPressed(sender: AnyObject) {
         
@@ -155,10 +155,11 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
                 
                 if self.isBeingPresentedInFormSheet() {
-                    self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height - (intersectionFrame.height + 20))
+                    // self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height - (intersectionFrame.height + 20))
+                    self.textViewBottomConstraint.constant = intersectionFrame.height + 20
                 } else {
-                    
-                    self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height - (keyboardHeight + 20))
+                    // self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height - (keyboardHeight + 20))
+                     self.textViewBottomConstraint.constant = keyboardHeight + 20
                 }
                 self.view.layoutIfNeeded()
             })
@@ -169,17 +170,18 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         
         if let keyboardRect = n.userInfo![UIKeyboardFrameEndUserInfoKey]?.CGRectValue() {
             
-            let keyboardSize = keyboardRect.size
-            let keyboardHeight = keyboardSize.height
-            let intersectionFrame = CGRectIntersection(self.view.frame, keyboardRect)
+//            let keyboardSize = keyboardRect.size
+//            let keyboardHeight = keyboardSize.height
+//            let intersectionFrame = CGRectIntersection(self.view.frame, keyboardRect)
             
             UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
                 
                 if self.isBeingPresentedInFormSheet() {
-                    self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height + (intersectionFrame.height + 20))
+                    //self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height + (intersectionFrame.height + 20))
+                    self.textViewBottomConstraint.constant = 0
                 } else {
-                    
-                    self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height + (keyboardHeight + 20))
+                    //self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height + (keyboardHeight + 20))
+                    self.textViewBottomConstraint.constant = 0
                 }
                 self.view.layoutIfNeeded()
             })

@@ -8,7 +8,8 @@
 
 import UIKit
 
-class IdeaPostButton: CorneredBorderedUIButton {
+@IBDesignable
+class IdeaPostButton: UIButton {
 
     override var enabled: Bool {
         didSet {

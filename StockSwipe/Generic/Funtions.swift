@@ -563,17 +563,7 @@ public class Functions {
         svc.modalPresentationStyle = .OverFullScreen
         svc.view.tintColor = Constants.stockSwipeGreenColor
         
-        findTopViewController()?.presentViewController(svc, animated: true, completion: nil)
-    }
-    
-    class func findTopViewController() -> UIViewController? {
-    
-        var topVC = UIApplication.sharedApplication().keyWindow?.rootViewController
-        while((topVC!.presentedViewController) != nil){
-            topVC = topVC!.presentedViewController
-        }
-        
-        return topVC
+        UIApplication.topViewController()?.presentViewController(svc, animated: true, completion: nil)
     }
     
     // Random number between low and high range

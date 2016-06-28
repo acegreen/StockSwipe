@@ -48,7 +48,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
                     
                     chartDetailTabBarController.chart = chart
-                    Functions.findTopViewController()?.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
+                    UIApplication.topViewController()?.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
                     
                 } catch {
                     
@@ -74,7 +74,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
                     profileContainerController.user = userObject
                     
-                    Functions.findTopViewController()?.presentViewController(profileNavigationController, animated: true, completion: nil)
+                    UIApplication.topViewController()?.presentViewController(profileNavigationController, animated: true, completion: nil)
                     
                 } catch {
                     

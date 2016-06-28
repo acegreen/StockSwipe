@@ -48,13 +48,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     @IBOutlet var usernameLabel: UILabel!
     @IBOutlet var locationLabel: UILabel!
     
-    @IBOutlet var unfollowButton: CircleButton!
+    @IBOutlet var unfollowButton: UIButton!
     
     @IBAction func UnfollowButtonPressed(sender: AnyObject) {
         
     }
     
-    @IBOutlet var followButton: CircleButton!
+    @IBOutlet var followButton: UIButton!
     
     
     @IBAction func followButtonPressed(sender: AnyObject) {

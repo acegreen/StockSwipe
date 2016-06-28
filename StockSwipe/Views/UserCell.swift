@@ -10,7 +10,7 @@ import UIKit
 
 class UserCell: UITableViewCell {
     
-    @IBOutlet private weak var userAvatar: CircularImageView!
+    @IBOutlet private weak var userAvatar: UIImageView!
     
     @IBOutlet private weak var username: UILabel!
     

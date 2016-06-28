@@ -29,7 +29,7 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
         case LogInOutCell = "LogInOutCell"
     }
     
-    @IBOutlet var profileAvatarImage: CircularImageView!
+    @IBOutlet var profileAvatarImage: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()

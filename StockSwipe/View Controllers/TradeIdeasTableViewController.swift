@@ -72,10 +72,6 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -105,9 +101,8 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                     
                     if self.refreshControl?.refreshing == true {
                         self.refreshControl?.endRefreshing()
+                        self.updateRefreshDate()
                     }
-                    
-                    self.updaterefreshDate()
                 })
                 
             } catch {
@@ -115,6 +110,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 // TO-DO: Show sweet alert with Error.message()
                 if self.refreshControl?.refreshing == true {
                     self.refreshControl?.endRefreshing()
+                    self.updateRefreshDate()
                 }
             }
         }
@@ -151,9 +147,8 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                     
                     if self.footerActivityIndicator?.isAnimating() == true {
                         self.footerActivityIndicator.stopAnimating()
+                        self.updateRefreshDate()
                     }
-                    
-                    self.updaterefreshDate()
                 })
                 
             } catch {
@@ -161,6 +156,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 // TO-DO: Show sweet alert with Error.message()
                 if self.footerActivityIndicator?.isAnimating() == true {
                     self.footerActivityIndicator.stopAnimating()
+                    self.updateRefreshDate()
                 }
             }
         }
@@ -170,6 +166,8 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         let indexPath = NSIndexPath(forRow: 0, inSection: 0)
         self.tradeIdeas.insert(tradeIdea, atIndex: 0)
         self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        
+        self.tableView.reloadEmptyDataSet()
     }
     
     func ideaDeleted(with parseObject: PFObject) {
@@ -181,13 +179,9 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         }
     }
     
-    func updaterefreshDate() {
+    func updateRefreshDate() {
         
-        let refreshDateFormatter = NSDateFormatter()
-        refreshDateFormatter.dateStyle = .LongStyle
-        refreshDateFormatter.timeStyle = .ShortStyle
-        
-        let title: String = "Last Update: \(refreshDateFormatter.stringFromDate(NSDate()))"
+        let title: String = "Last Update: \(NSDate().formattedAsTimeAgo())"
         let attrsDictionary = [
             NSForegroundColorAttributeName : UIColor.whiteColor()
         ]
@@ -215,11 +209,6 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         cell.delegate = self
         
         return cell
-    }
-    
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        
-        tableView.deselectRowAtIndexPath(indexPath, animated: true)
     }
     
     override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {

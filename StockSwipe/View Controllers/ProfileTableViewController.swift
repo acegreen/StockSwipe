@@ -162,9 +162,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     
                     if self.refreshControl?.refreshing == true {
                         self.refreshControl?.endRefreshing()
+                        self.updateRefreshDate()
                     }
-                    
-                    self.updaterefreshDate()
                 })
                 
             } catch {
@@ -172,6 +171,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 // TO-DO: Show sweet alert with Error.message()
                 if self.refreshControl?.refreshing == true {
                     self.refreshControl?.endRefreshing()
+                    self.updateRefreshDate()
                 }
             }
         }
@@ -208,9 +208,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     
                     if self.footerActivityIndicator?.isAnimating() == true {
                         self.footerActivityIndicator.stopAnimating()
+                        self.updateRefreshDate()
                     }
-                    
-                    self.updaterefreshDate()
                 })
                 
             } catch {
@@ -218,19 +217,16 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 // TO-DO: Show sweet alert with Error.message()
                 if self.footerActivityIndicator?.isAnimating() == true {
                     self.footerActivityIndicator.stopAnimating()
+                    self.updateRefreshDate()
                 }
                 
             }
         }
     }
     
-    func updaterefreshDate() {
+    func updateRefreshDate() {
         
-        let refreshDateFormatter = NSDateFormatter()
-        refreshDateFormatter.dateStyle = .LongStyle
-        refreshDateFormatter.timeStyle = .ShortStyle
-        
-        let title: String = "Last Update: \(refreshDateFormatter.stringFromDate(NSDate()))"
+        let title: String = "Last Update: \(NSDate().formattedAsTimeAgo())"
         let attrsDictionary = [
             NSForegroundColorAttributeName : UIColor.whiteColor()
         ]

@@ -40,10 +40,6 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         self.getReplyTradeIdeas()
     }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(true)
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -75,9 +71,8 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                     
                     if self.refreshControl?.refreshing == true {
                         self.refreshControl?.endRefreshing()
+                        self.updateRefreshDate()
                     }
-                    
-                    self.updaterefreshDate()
                 })
                 
             } catch {
@@ -85,19 +80,16 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                 // TO-DO: Show sweet alert with Error.message()
                 if self.refreshControl?.refreshing == true {
                     self.refreshControl?.endRefreshing()
+                    self.updateRefreshDate()
                 }
             }
         }
 
     }
     
-    func updaterefreshDate() {
+    func updateRefreshDate() {
         
-        let refreshDateFormatter = NSDateFormatter()
-        refreshDateFormatter.dateStyle = .LongStyle
-        refreshDateFormatter.timeStyle = .ShortStyle
-        
-        let title: String = "Last Update: \(refreshDateFormatter.stringFromDate(NSDate()))"
+        let title: String = "Last Update: \(NSDate().formattedAsTimeAgo())"
         let attrsDictionary = [
             NSForegroundColorAttributeName : UIColor.whiteColor()
         ]

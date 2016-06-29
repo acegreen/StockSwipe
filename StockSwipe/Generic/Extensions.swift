@@ -359,18 +359,9 @@ extension DetectTags where Self: UITextView {
                 // drop the hashtag
                 stringifiedWord = String(stringifiedWord.characters.dropFirst())
                 
-                // check to see if the hashtag has numbers.
-                // ribl is "#1" shouldn't be considered a hashtag.
-                let digits = NSCharacterSet.decimalDigitCharacterSet()
-                
-                if stringifiedWord.rangeOfCharacterFromSet(digits) != nil {
-                    // hashtag contains a number, like "#1"
-                    // so not clickable
-                } else {
-                    // set a link for when the user clicks on this word.
-                    // url scheme syntax "mention://"
-                    attrString.addAttribute(NSLinkAttributeName, value: "mention:\(stringifiedWord)", range: matchRange)
-                }
+                // set a link for when the user clicks on this word.
+                // url scheme syntax "mention://"
+                attrString.addAttribute(NSLinkAttributeName, value: "mention:\(stringifiedWord)", range: matchRange)
             }
         }
         

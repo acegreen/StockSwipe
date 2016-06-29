@@ -94,7 +94,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
             }
         }
         
-        print("refreshing carousel")
+        NSLog("refreshing carousel on %@", NSThread.isMainThread() ? "main thread" : "other thread")
         
         // Setup config parameters
         Functions.setupConfigParameter("CAROUSELTICKERARRAY") { (parameterValue) -> Void in
@@ -143,12 +143,13 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                         
                     }
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+                        // Main thread work (UI usually)
                         
                         self.carousel.reloadData()
                         self.carouselLastQueriedDate = NSDate()
                         
-                        print("carousel query complete")
+                        NSLog("carousel completed on %@", NSThread.isMainThread() ? "main thread" : "other thread")
                     })
                 }
             })
@@ -233,7 +234,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: self.cloudView.bounds, scale: UIScreen.mainScreen().scale, delegate: self)
         self.overviewVCOperationQueue.addOperation(newCloudLayoutOperation)
         
-        print("layoutCloudWords complete")
+        NSLog("cloud completed on %@", NSThread.isMainThread() ? "main thread" : "other thread")
     }
     
     func wordTapped(sender: UITapGestureRecognizer) {
@@ -335,8 +336,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                 self.cloudWords.append(cloudWord)
             }
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                
+            NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
                 self.layoutCloudWords()
                 self.cloudWords = []
                 
@@ -354,7 +354,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
             }
         }
         
-        print("refreshing cloud")
+        NSLog("refreshing cloud on %@", NSThread.isMainThread() ? "main thread" : "other thread")
         
         QueryHelper.sharedInstance.queryStockTwitsTrendingStocks { (trendingStocksData) in
         
@@ -393,19 +393,16 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                             Functions.addToSpotlight(chart, uniqueIdentifier: chart.symbol, domainIdentifier: "com.stockswipe.stocksQueried")
                         }
                         
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
                             self.layoutCloudWords()
                         })
                         
                         self.stockTwitsLastQueriedDate = NSDate()
                         
-                        print("cloud query complete")
-                        
                     } catch {
                         
                         if let error = error as? Constants.Errors {
-                            
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
                                 SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
                             })
                         }
@@ -439,7 +436,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
             }
         }
         
-        print("refreshing top stories")
+        NSLog("refreshing top stories on %@", NSThread.isMainThread() ? "main thread" : "other thread")
         
         let queryString = "http://feeds.reuters.com/reuters/businessNews?format=xml"
         
@@ -490,16 +487,14 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                     self.news.append(newNews)
                 }
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
                     
                     self.latestNewsTableView.reloadData()
                     self.refreshControl.endRefreshing()
                     self.topStoriesLastQueriedDate = NSDate()
                     
-                    print("top stories query complete")
-                    
+                    NSLog("top stories completed on %@", NSThread.isMainThread() ? "main thread" : "other thread")
                 })
-                
             } catch {
                 
                 if error is Constants.Errors {

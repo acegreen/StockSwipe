@@ -82,7 +82,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   MDCSwipeToChoose:
-    :commit: fe4863f279dc1d5ec8d83fb847d6498966566009
+    :commit: 030edd038e96a52ce8614a762fad83755a942d3a
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
   PulsingHalo:
     :commit: 0799f509e146605e20cb8d6391b1fb86e3985b1f

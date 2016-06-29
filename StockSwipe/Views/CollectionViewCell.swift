@@ -49,30 +49,21 @@ class ChartCollectionViewCell: UICollectionViewCell {
         self.overlayLabel.layer.cornerRadius = 7.5
     }
     
-    override func drawRect(rect: CGRect) {
-        
-        // Add normal self border
-        self.layer.cornerRadius = 15.0
-        self.layer.borderWidth = 1.0
-        self.layer.borderColor = UIColor.grayColor().CGColor
-        
-    }
-    
     override var selected: Bool {
         didSet {
             if self.selected {
                 
                 // Set self border to show selection
                 self.layer.cornerRadius = 7.5
-                self.layer.borderWidth = 3.0
-                self.layer.borderColor = UIColor.grayColor().CGColor
+                self.layer.borderWidth = 1.5
+                self.layer.borderColor = Constants.stockSwipeFontColor.CGColor
                 
             } else {
                 
                 // Remove bold cell border
                 self.layer.cornerRadius = 7.5
-                self.layer.borderWidth = 1.0
-                self.layer.borderColor = UIColor.grayColor().CGColor
+                self.layer.borderWidth = 0.5
+                self.layer.borderColor = Constants.stockSwipeFontColor.CGColor
                 
             }
         }

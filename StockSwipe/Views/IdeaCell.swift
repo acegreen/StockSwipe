@@ -93,7 +93,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         UIApplication.topViewController()?.showViewController(profileContainerController, sender: self)
     }
     
-    func configureIdeaCell(tradeIdea: TradeIdea?) {
+    func configureCell(tradeIdea: TradeIdea?) {
         
         guard let tradeIdea = tradeIdea else { return }
         self.tradeIdea = tradeIdea
@@ -262,7 +262,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                 })
             })
         }
-        
     }
     
     func checkReshare(tradeIdea: TradeIdea!, sender: UIButton?) {

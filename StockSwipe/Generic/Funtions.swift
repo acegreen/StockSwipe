@@ -240,13 +240,13 @@ public class Functions {
         switch choice {
             
         case .LONG:
+            
             removeFromKey = Constants.UserChoices.SHORT.key()
             addToKey = Constants.UserChoices.LONG.key()
-            
         case .SHORT:
+            
             removeFromKey = Constants.UserChoices.LONG.key()
             addToKey = Constants.UserChoices.SHORT.key()
-            
         default:
             break
         }
@@ -266,21 +266,21 @@ public class Functions {
             
             object.saveEventually({ (success, error) -> Void in
                 
-//                object.pinInBackgroundWithBlock({ (success, error) -> Void in
-//                    
-//                    if success {
-//                        
-//                        print("pinned successfully")
-//                    }
-//                    
-//                })
+                switch choice {
+                    
+                case .LONG:
+                    
+                    chart.longs = (chart.longs ?? 0) + 1
+
+                case .SHORT:
+                    
+                    chart.shorts = (chart.shorts ?? 0) + 1
+                    
+                default:
+                    break
+                }
                 
-                // Update longl/shorts on chart before passing it to coreData
-                chart.longs = object.objectForKey("Longed_By")?.count ?? 0
-                chart.shorts = object.objectForKey("Shorted_By")?.count ?? 0
-                
-                print("\(choice)", object)
-                print("Chart:", chart.searchDescription)
+                print("\(choice)", chart)
                 
                 saveIntoCoreData(chart, userChoice: choice)
                 

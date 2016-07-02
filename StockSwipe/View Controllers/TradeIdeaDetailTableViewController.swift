@@ -119,10 +119,10 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         
         if indexPath.section == 0 {
             cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            cell.configureIdeaCell(tradeIdea)
+            cell.configureCell(tradeIdea)
         } else {
             cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.ReplyIdeaCell.rawValue, forIndexPath: indexPath) as! IdeaCell
-            cell.configureIdeaCell(tradeIdeas[indexPath.row])
+            cell.configureCell(tradeIdeas[indexPath.row])
         }
         
         return cell

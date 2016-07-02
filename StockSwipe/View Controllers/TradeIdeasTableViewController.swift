@@ -205,7 +205,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-        cell.configureIdeaCell(tradeIdeas[indexPath.row])
+        cell.configureCell(tradeIdeas[indexPath.row])
         cell.delegate = self
         
         return cell

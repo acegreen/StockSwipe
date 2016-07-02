@@ -10,10 +10,12 @@ import UIKit
 import WordCloud
 import Parse
 import TwitterKit
+import LaunchKit
 import SWXMLHash
 import SwiftyJSON
 import SafariServices
 import DZNEmptyDataSet
+import SKSplashView
 
 class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
     
@@ -32,7 +34,10 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
     var topStoriesLastQueriedDate: NSDate!
     
     var refreshControl = UIRefreshControl()
+    var splashView: SKSplashView!
+    
     var overviewVCOperationQueue: NSOperationQueue = NSOperationQueue()
+    var cloudLayoutOperationQueue: NSOperationQueue = NSOperationQueue()
     
     @IBOutlet var carousel : iCarousel!
     
@@ -48,6 +53,10 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    
+        // Add splash
+        //initializerSplash()
+        loadViewData()
         
         carousel.autoscroll = -0.3
         carousel.type = .Linear
@@ -69,7 +78,6 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
-        reloadViewData()
     }
     
     //    deinit {
@@ -80,8 +88,6 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    // MARK: - Carousel Functions
     
     func queryICarouselTickers() {
         
@@ -156,7 +162,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         }
     }
     
-    // MARK: - <CloudLayoutOperationDelegate>
+    // MARK: - CloudLayoutOperationDelegate
     
     func insertWord(word: String, pointSize: CGFloat,color: Int, center: CGPoint, vertical isVertical: Bool, tappable: Bool) {
             
@@ -232,7 +238,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         self.removeCloudWords()
         self.view.backgroundColor = UIColor.whiteColor()
         let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: self.cloudView.bounds, scale: UIScreen.mainScreen().scale, delegate: self)
-        self.overviewVCOperationQueue.addOperation(newCloudLayoutOperation)
+        self.cloudLayoutOperationQueue.addOperation(newCloudLayoutOperation)
         
         NSLog("cloud completed on %@", NSThread.isMainThread() ? "main thread" : "other thread")
     }
@@ -300,10 +306,9 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         }
     }
     
-    func reloadViewData() {
+    func loadViewData() {
         
         overviewVCOperationQueue.cancelAllOperations()
-        overviewVCOperationQueue.waitUntilAllOperationsAreFinished()
         
         let trendingCloudOperation = NSBlockOperation { () -> Void in
             self.requestStockTwitsTrendingStocks()
@@ -321,6 +326,14 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         topStoriesOperation.queuePriority = .Normal
         
         overviewVCOperationQueue.addOperations([trendingCloudOperation, marketCarouselOperation, topStoriesOperation], waitUntilFinished: false)
+        
+//        let animationOperation = NSBlockOperation { () -> Void in
+//            self.splashView.startAnimation()
+//        }
+//        animationOperation.queuePriority = .Low
+//        
+//        overviewVCOperationQueue.addOperation(animationOperation)
+        
     }
     
     func requestStockTwitsTrendingStocks() {
@@ -453,10 +466,10 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                 
                 for item in items {
                     
-                    var newsDecodedTitle: String!
-                    var newsUrl: String!
-                    var newsDetails: String!
-                    var newsPublishedDate: String!
+                    var newsDecodedTitle: String?
+                    var newsUrl: String?
+                    var newsDetails: String?
+                    var newsPublishedDate: String?
                     
                     // Get title
                     if let title = item["title"].element?.text {
@@ -624,6 +637,17 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
         
         return value
     }
+    
+    func initializerSplash() {
+        //Twitter style splash
+        let stockswipeLaunchScreenLogoSize = UIImage(named: "stockswipe_logo")!.size
+        let splashIcon: SKSplashIcon = SKSplashIcon(image: UIImage(named: "stockswipe_logo_large"), initialSize: stockswipeLaunchScreenLogoSize, preAnimationType: .Bounce, postAnimationType: .Bounce)
+        let backgroundColor: UIColor = Constants.stockSwipeGreenColor
+        self.splashView = SKSplashView(splashIcon: splashIcon, backgroundColor: backgroundColor, animationType: .None)
+        //self.splashView.delegate = self
+        splashView.animationDuration = 0.50
+        self.tabBarController?.view.addSubview(splashView)
+    }
 }
 
 extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CellType {
@@ -632,7 +656,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         case TopNewsCell = "TopNewsCell"
     }
 
-    // MARK: - Table view data source
+    // MARK: - TableView data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -683,7 +707,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         tableView.deselectRowAtIndexPath(indexPath, animated: false)
     }
     
-    // DZNEmptyDataSet delegate functions
+    // MARK: - DZNEmptyDataSet Delegates
     
     func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
         
@@ -697,5 +721,38 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         attributedTitle = NSAttributedString(string: "No News?", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
         
         return attributedTitle
+    }
+}
+
+extension OverviewViewController {
+    
+    // MARK: - SKSplashView Delegates
+    
+    func splashView(splashView: SKSplashView, didBeginAnimatingWithDuration duration: Float) {
+    }
+    
+    func splashViewDidEndAnimating(splashView: SKSplashView) {
+        
+        if PFUser.currentUser() == nil && Settings.userDefaults.boolForKey("TUTORIAL_SHOWN") == false {
+            
+            let logInViewcontroller = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
+            self.presentViewController(logInViewcontroller, animated: true, completion: {
+                Settings.userDefaults.setBool(true, forKey: "TUTORIAL_SHOWN")
+            })
+            
+        } else if SARate.sharedInstance().eventCount >= SARate.sharedInstance().eventsUntilPrompt && Settings.userDefaults.boolForKey("FEEDBACK_GIVEN") == false {
+            
+            self.tabBarController?.performSegueWithIdentifier("FeedbackSegueIdentifier", sender: self)
+            SARate.sharedInstance().eventCount = 0
+            
+        } else {
+            
+            // Release notes on update
+            LaunchKit.sharedInstance().presentAppReleaseNotesIfNeededFromViewController(self, completion: { (didPresent) -> Void in
+                if didPresent {
+                    print("Woohoo, we showed the release notes card!")
+                }
+            })
+        }
     }
 }

@@ -14,6 +14,7 @@
 		23157AF41BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23157AF31BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift */; };
 		231643031C1A00F000C92C03 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231643021C1A00F000C92C03 /* FeedbackViewController.swift */; };
 		231E09941B3DABC100A2EFC2 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */; };
+		231E89BE1D2714D500CD009A /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89BD1D2714D500CD009A /* FollowButton.swift */; };
 		232A4E901B7E32A100A0FE4B /* ImageLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */; };
 		232EDE351C1A1804007D0103 /* KaushanScript.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 232EDE331C1A1804007D0103 /* KaushanScript.ttf */; };
 		232EDE361C1A1804007D0103 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 232EDE341C1A1804007D0103 /* Lato-Light.ttf */; };
@@ -53,7 +54,6 @@
 		237537F71B1617FB00F05984 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237537F61B1617FB00F05984 /* LogInViewController.swift */; };
 		23761CDF1D21B5B900FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CDC1D21B57200FA66C1 /* WordCloud.framework */; };
 		23761CE01D21B5B900FA66C1 /* WordCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CDC1D21B57200FA66C1 /* WordCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		23761CE21D21B87900FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CE11D21B87900FA66C1 /* WordCloud.framework */; };
 		23761CE31D21B87900FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CE11D21B87900FA66C1 /* WordCloud.framework */; };
 		2376E41F1C2B0D7A00B85656 /* QueryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2376E41E1C2B0D7A00B85656 /* QueryHelper.swift */; };
 		2378B58A1B115FB3002ACFDC /* StockSwipeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378B5891B115FB3002ACFDC /* StockSwipeTests.swift */; };
@@ -170,6 +170,7 @@
 		23157AF31BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudInfoPopoverViewController.swift; sourceTree = "<group>"; };
 		231643021C1A00F000C92C03 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
+		231E89BD1D2714D500CD009A /* FollowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
 		232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLabelView.swift; sourceTree = "<group>"; };
 		232EDE331C1A1804007D0103 /* KaushanScript.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KaushanScript.ttf; sourceTree = "<group>"; };
 		232EDE341C1A1804007D0103 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
@@ -320,7 +321,6 @@
 				239A3E491BAA1CCF00894D1E /* JavaScriptCore.framework in Frameworks */,
 				23EA70181B11981F008F6C12 /* MobileCoreServices.framework in Frameworks */,
 				7888E1041B669C780087C255 /* CoreSpotlight.framework in Frameworks */,
-				23761CE21D21B87900FA66C1 /* WordCloud.framework in Frameworks */,
 				2339B0AF1B41A6CB009CE3EB /* MessageUI.framework in Frameworks */,
 				233BFDC41B1A28A3008B39ED /* CoreData.framework in Frameworks */,
 				23EA70281B119861008F6C12 /* Social.framework in Frameworks */,
@@ -629,6 +629,7 @@
 				230FBB2A1D1F0505000394AD /* TintableButton.swift */,
 				230FBB2C1D1F05B2000394AD /* TintableLabel.swift */,
 				23E6D6E31D221ED1005DB3F7 /* IdeaPostButton.swift */,
+				231E89BD1D2714D500CD009A /* FollowButton.swift */,
 				23C122541C5AA0FE00524721 /* TopNewsCell.swift */,
 				23C925671B1AB6E400D17B70 /* CollectionViewCell.swift */,
 				23D4FFE71C317ECE00A1102D /* FiltersCell.swift */,
@@ -1017,6 +1018,7 @@
 				2347E61A1BD7FEEE0036EA65 /* iCarouselTickerView.swift in Sources */,
 				23875DF81B11752600966012 /* Funtions.swift in Sources */,
 				23CAE26D1C2CB41300D15819 /* Settings.swift in Sources */,
+				231E89BE1D2714D500CD009A /* FollowButton.swift in Sources */,
 				236DB5231D048D8800CE9869 /* GradientAnimationImage.swift in Sources */,
 				23CF54A51D19BF3B004A01DC /* SuperUITextView.swift in Sources */,
 				23D7602A1B629831009777E1 /* CustomSegue.swift in Sources */,

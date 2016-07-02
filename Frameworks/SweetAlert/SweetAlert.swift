@@ -59,7 +59,7 @@ public class SweetAlert: UIViewController {
     private func setupDismissButton() {
         
         dismissButton = UIButton(type: UIButtonType.Custom)
-        dismissButton.setImage(UIImage(named: "stop_black"), forState: UIControlState.Normal)
+        dismissButton.setImage(UIImage(named: "x"), forState: UIControlState.Normal)
         dismissButton.addTarget(self, action: #selector(SweetAlert.dismissButtonPressed(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         dismissView!.addSubview(dismissButton)
     }

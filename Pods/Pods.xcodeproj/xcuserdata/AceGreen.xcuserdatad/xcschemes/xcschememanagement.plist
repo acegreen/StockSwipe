@@ -99,6 +99,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SKSplashView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SWXMLHash.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -142,17 +147,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>31A68C7D2D290385B0B871D1C52F97FE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>322C0092DF7361AAD37BFC94103C6A97</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>34D51911BF3430E0212A09C97A5CF7A7</key>
+		<key>49B1609B8ACD9D8BC19AFC7D0122E95F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -182,6 +177,11 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>6DDB2A014BE9AD6854815475CCAC416E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>6EDC37F3FA92533C6AC3562458AA91F1</key>
 		<dict>
 			<key>primary</key>
@@ -192,12 +192,32 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7C31F0C271C0A64288CA99A522F5C5C3</key>
+		<key>7DD8226D090A5C42355CA5B8601F1CA3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>8978C7FB7007A28B676AB1EA004C3923</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A1C5915D25B1B10528AB7B7759A37846</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A286BCFA625E26FCB5249FB55B6D9112</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A87D806BDD5F59D26BD78E75B74173B6</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AF07EA19424DA4C8B9CAFDB6E649BC1D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -213,16 +233,6 @@
 			<true/>
 		</dict>
 		<key>E1F78B1C5F8F2CCD0E68552EAF2B9B52</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>E7C9EF96FE2B1808550371690CD9A1BE</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F3D423A9BF9722BCAC05786C1D60956F</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -11,7 +11,7 @@ import TwitterKit
 import DZNEmptyDataSet
 import SafariServices
 
-class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelegate, ChartDetailDelegate, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelegate, ChartDetailDelegate {
     
     var symbol: String!
     var companyName: String!
@@ -78,33 +78,36 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
 //        Functions.presentSafariBrowser(videoURL)
 //    }
     
-    // DZNEmptyDataSet delegate functions
+}
+
+// DZNEmptyDataSet delegate functions
+extension StreamTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
-        
-        return UIImage(named: "twitter_big")
-    }
+//        func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+//    
+//            return UIImage(named: "twitter_big")
+//        }
     
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        
-        let attributedTitle: NSAttributedString!
-        
-        attributedTitle = NSAttributedString(string: "No Tweets!", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
-        
-        return attributedTitle
-    }
-    
-    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
-        
-        let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        paragraphStyle.alignment = NSTextAlignment.Center
-        
-        let attributedDescription: NSAttributedString!
-        
-        attributedDescription = NSAttributedString(string: "No one seems to be tweeting about \(self.symbol)", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(18), NSParagraphStyleAttributeName: paragraphStyle])
-        
-        return attributedDescription
-        
-    }
+//    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+//        
+//        let attributedTitle: NSAttributedString!
+//        
+//        attributedTitle = NSAttributedString(string: "No Tweets!", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+//        
+//        return attributedTitle
+//    }
+//    
+//    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+//        
+//        let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
+//        paragraphStyle.lineBreakMode = NSLineBreakMode.ByWordWrapping
+//        paragraphStyle.alignment = NSTextAlignment.Center
+//        
+//        let attributedDescription: NSAttributedString!
+//        
+//        attributedDescription = NSAttributedString(string: "No one seems to be tweeting about \(self.symbol)", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(18), NSParagraphStyleAttributeName: paragraphStyle])
+//        
+//        return attributedDescription
+//        
+//    }
 }

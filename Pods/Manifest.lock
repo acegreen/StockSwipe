@@ -41,6 +41,7 @@ PODS:
   - PulsingHalo (0.1.0)
   - Rollout.io (0.14.5)
   - SDVersion (3.0.1)
+  - SKSplashView (0.1.2)
   - Spring (1.0.3)
   - SwiftyJSON (2.3.2)
   - SWXMLHash (2.3.2)
@@ -66,6 +67,7 @@ DEPENDENCIES:
   - PulsingHalo (from `https://github.com/shu223/PulsingHalo.git`)
   - Rollout.io (~> 0.14.4)
   - SDVersion
+  - SKSplashView (from `https://github.com/acegreen/SKSplashView.git`, branch `supporting-nsoperationqueue`)
   - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift2`)
   - SwiftyJSON
   - SWXMLHash
@@ -76,6 +78,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
   PulsingHalo:
     :git: https://github.com/shu223/PulsingHalo.git
+  SKSplashView:
+    :branch: supporting-nsoperationqueue
+    :git: https://github.com/acegreen/SKSplashView.git
   Spring:
     :branch: swift2
     :git: https://github.com/MengTo/Spring.git
@@ -87,6 +92,9 @@ CHECKOUT OPTIONS:
   PulsingHalo:
     :commit: 0799f509e146605e20cb8d6391b1fb86e3985b1f
     :git: https://github.com/shu223/PulsingHalo.git
+  SKSplashView:
+    :commit: 1016435db7e5fecf3f4b44d289c412c7d31c5e61
+    :git: https://github.com/acegreen/SKSplashView.git
   Spring:
     :commit: 18d5c7b74489de8044e34767f856d1e574f0820e
     :git: https://github.com/MengTo/Spring.git
@@ -112,12 +120,13 @@ SPEC CHECKSUMS:
   PulsingHalo: d2684152281a3f7398b9554734b9a4f8feb9129a
   Rollout.io: e5b35636dba2e110536d54d561d7d95ed5fdc953
   SDVersion: 99fc7a356ed89db3d41f17af49e0310c42248190
+  SKSplashView: c65333b6707be6f237d09e7c8977941114b0a70d
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   SWXMLHash: 2f8c49af765718ad56020c4f875ec3ff22612f06
   TwitterCore: 817eae3e291fa4125b47789e26a4f6f024115c1f
   TwitterKit: 8a383da8d9c21b0423716381ea8bbfce20622d91
 
-PODFILE CHECKSUM: d0e090d944250d01b943510049415d94508c7418
+PODFILE CHECKSUM: eda7e6c9c7259d879a18e13942d8c2bc96cbae05
 
 COCOAPODS: 1.0.1

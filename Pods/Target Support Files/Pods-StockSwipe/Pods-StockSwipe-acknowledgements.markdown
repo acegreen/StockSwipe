@@ -565,6 +565,10 @@ SOFTWARE.
 
 
 
+## SKSplashView
+
+Copyright 2014 Sachin Kesiraju
+
 ## SWXMLHash
 
 Copyright (c) 2014 David Mohundro

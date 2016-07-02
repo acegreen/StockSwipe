@@ -24,7 +24,12 @@ let motionOffset: CGFloat = 20
 
 public class Constants {
     
-    public static let window: UIWindow? = UIApplication.sharedApplication().keyWindow
+    public static var window: UIWindow? {
+        get {
+            return UIApplication.sharedApplication().keyWindow
+        }
+    }
+    
     public static let current = UIDevice.currentDevice()
     public static let bundleIdentifier = NSBundle.mainBundle().bundleIdentifier
     public static let infoDict = NSBundle.mainBundle().infoDictionary

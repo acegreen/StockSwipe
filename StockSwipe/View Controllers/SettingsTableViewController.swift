@@ -116,7 +116,7 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
                 return
             }
             
-            self.parentViewController?.parentViewController?.performSegueWithIdentifier("FeedbackSegueIdentifier", sender: self)
+            iRate.sharedInstance().openRatingsPageInAppStore()
             
         case .GiveFeedbackCell:
             

@@ -265,6 +265,38 @@ public class QueryHelper {
             print("Successfully retrieved \(objects.count) objects")
             
             completion(result: {return (objects: objects)})
+        }
+    }
+    
+    public func queryUserActivityFor(fromUser: PFUser?, toUser: PFUser?, completion: (result: () throws -> ([PFObject]?)) -> Void) {
+        
+        guard Functions.isConnectedToNetwork() else {
+            return completion(result: {throw Constants.Errors.NoInternetConnection})
+        }
+        
+        let userActivityQuery = PFQuery(className:"UserActivity")
+        userActivityQuery.cancel()
+        userActivityQuery.orderByDescending("createdAt")
+        
+        if let fromUser = fromUser {
+            userActivityQuery.whereKey("fromUser", equalTo: fromUser)
+        }
+        
+        if let toUser = toUser {
+            userActivityQuery.whereKey("toUser", equalTo: toUser)
+        }
+        
+        userActivityQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            
+            guard error == nil else {
+                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+            }
+            
+            let objects = objects
+            
+            print("retrieved \(objects?.count) objects")
+            
+            completion(result: {return (objects: objects)})
             
         }
     }

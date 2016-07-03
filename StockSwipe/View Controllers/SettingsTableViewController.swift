@@ -216,7 +216,7 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
         case .ProfileSegueIdentifier:
             
             let destinationViewController = segue.destinationViewController as! ProfileContainerController
-            destinationViewController.user = PFUser.currentUser()
+            destinationViewController.user = User(userObject: PFUser.currentUser())
             
             // Just a workaround.. There should be a cleaner way to sort this out
             destinationViewController.navigationItem.rightBarButtonItem = nil

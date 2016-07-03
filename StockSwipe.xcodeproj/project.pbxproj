@@ -15,6 +15,8 @@
 		231643031C1A00F000C92C03 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231643021C1A00F000C92C03 /* FeedbackViewController.swift */; };
 		231E09941B3DABC100A2EFC2 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */; };
 		231E89BE1D2714D500CD009A /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89BD1D2714D500CD009A /* FollowButton.swift */; };
+		231E89C01D28055C00CD009A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89BF1D28055C00CD009A /* User.swift */; };
+		231E89C21D28729000CD009A /* IdeaPostUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89C11D28729000CD009A /* IdeaPostUITextView.swift */; };
 		232A4E901B7E32A100A0FE4B /* ImageLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */; };
 		232EDE351C1A1804007D0103 /* KaushanScript.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 232EDE331C1A1804007D0103 /* KaushanScript.ttf */; };
 		232EDE361C1A1804007D0103 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 232EDE341C1A1804007D0103 /* Lato-Light.ttf */; };
@@ -171,6 +173,8 @@
 		231643021C1A00F000C92C03 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
 		231E89BD1D2714D500CD009A /* FollowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
+		231E89BF1D28055C00CD009A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		231E89C11D28729000CD009A /* IdeaPostUITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdeaPostUITextView.swift; sourceTree = "<group>"; };
 		232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLabelView.swift; sourceTree = "<group>"; };
 		232EDE331C1A1804007D0103 /* KaushanScript.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KaushanScript.ttf; sourceTree = "<group>"; };
 		232EDE341C1A1804007D0103 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
@@ -626,6 +630,7 @@
 				233C7D5F1CB3F620006A014A /* TimeFormattedLabel.swift */,
 				236DB5221D048D8800CE9869 /* GradientAnimationImage.swift */,
 				23CF54A41D19BF3B004A01DC /* SuperUITextView.swift */,
+				231E89C11D28729000CD009A /* IdeaPostUITextView.swift */,
 				230FBB2A1D1F0505000394AD /* TintableButton.swift */,
 				230FBB2C1D1F05B2000394AD /* TintableLabel.swift */,
 				23E6D6E31D221ED1005DB3F7 /* IdeaPostButton.swift */,
@@ -676,6 +681,7 @@
 			isa = PBXGroup;
 			children = (
 				23C9255F1B1A7D9400D17B70 /* Chart.swift */,
+				231E89BF1D28055C00CD009A /* User.swift */,
 				23505C4C1BA8717100E5887B /* News.swift */,
 				236280C11CB3FABF0022A129 /* TradeIdea.swift */,
 				2347E61B1BD7FFD80036EA65 /* Ticker.swift */,
@@ -737,8 +743,8 @@
 				8AC17D9D1AC7366A004E6D2D /* Frameworks */,
 				8AC17D9E1AC7366A004E6D2D /* Resources */,
 				98EB0D74F4064484A649AE33 /* Rollout.io dsym upload */,
-				234F8EB41B14A48600A0E706 /* Run Script */,
 				23B8A9BD1B9E75DA0065D65E /* Embed Frameworks */,
+				234F8EB41B14A48600A0E706 /* Run Script */,
 				23E7F6AE1BCB57A0009A016D /* Embed App Extensions */,
 				816270F03CFA12797FF94487 /* [CP] Embed Pods Frameworks */,
 				1A12D03F3D98D4DD994CBE82 /* [CP] Copy Pods Resources */,
@@ -1034,6 +1040,7 @@
 				236C49371B4E5D7700E82416 /* WebViewController.swift in Sources */,
 				23D92A7A1D2030920091C356 /* ReplyIdeaCell.swift in Sources */,
 				23E6D6E41D221ED1005DB3F7 /* IdeaPostButton.swift in Sources */,
+				231E89C01D28055C00CD009A /* User.swift in Sources */,
 				23C925601B1A7D9400D17B70 /* Chart.swift in Sources */,
 				236D28241BCC2750001D757F /* MainTabBarController.swift in Sources */,
 				237537F71B1617FB00F05984 /* LogInViewController.swift in Sources */,
@@ -1048,6 +1055,7 @@
 				2394DFAE1C8CAE610018A5A9 /* ExpandingCell.swift in Sources */,
 				23E09E851B97E1E400A9C9B3 /* StreamTableViewController.swift in Sources */,
 				2347E6151BD7C4A20036EA65 /* iCarousel.m in Sources */,
+				231E89C21D28729000CD009A /* IdeaPostUITextView.swift in Sources */,
 				233C7D5A1CB33E78006A014A /* IdeaCell.swift in Sources */,
 				236280C41CB41A290022A129 /* IdeaPostViewController.swift in Sources */,
 				231E09941B3DABC100A2EFC2 /* FilterTableViewController.swift in Sources */,

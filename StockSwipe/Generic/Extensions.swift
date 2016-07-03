@@ -50,6 +50,39 @@ extension Array where Element: Equatable {
     }
 }
 
+extension Double {
+
+    /// Rounds the double to decimal places value
+    func roundToPlaces(places:Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return round(self * divisor) / divisor
+    }
+    
+    func formatPoints() -> String {
+        let thousandNum = self/1000
+        let millionNum = self/1000000
+        if self >= 1000 && self < 1000000{
+            if(floor(thousandNum) == thousandNum){
+                return("\(Int(thousandNum))k")
+            }
+            return("\(thousandNum.roundToPlaces(1))k")
+        }
+        if self > 1000000{
+            if(floor(millionNum) == millionNum){
+                return("\(Int(thousandNum))k")
+            }
+            return ("\(millionNum.roundToPlaces(1))M")
+        }
+        else{
+            if(floor(self) == self){
+                return ("\(Int(self))")
+            }
+            return ("\(self)")
+        }
+        
+    }
+}
+
 extension String {
     
     func URLEncodedString() -> String? {
@@ -188,6 +221,46 @@ extension UIView {
             layer.borderColor = newValue?.CGColor
         }
     }
+    
+    func imageFromLayer() -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, 0)
+        self.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+}
+
+extension UISegmentedControl {
+    
+    func insertSegmentWithMultilineTitle(title: String, atIndex segment: Int, animated: Bool) {
+        let label: UILabel = UILabel()
+        label.text = title
+        label.textColor = self.tintColor
+        label.backgroundColor = UIColor.clearColor()
+        label.textAlignment = .Center
+        label.lineBreakMode = .ByWordWrapping
+        label.numberOfLines = 0
+        label.sizeToFit()
+        self.insertSegmentWithImage(label.imageFromLayer(), atIndex: segment, animated: animated)
+    }
+    
+    func insertSegmentWithMultilineAttributedTitle(attributedTitle: NSAttributedString, atIndex segment: Int, animated: Bool) {
+        let label: UILabel = UILabel()
+        label.attributedText = attributedTitle
+        label.numberOfLines = 0
+        label.sizeToFit()
+        self.insertSegmentWithImage(label.imageFromLayer(), atIndex: segment, animated: animated)
+    }
+    
+    func segmentWithMultilineAttributedTitle(attributedTitle: NSAttributedString, atIndex segment: Int, animated: Bool) {
+        let label: UILabel = UILabel()
+        label.attributedText = attributedTitle
+        label.numberOfLines = 0
+        label.sizeToFit()
+        
+        self.setImage(label.imageFromLayer(), forSegmentAtIndex: segment)
+    }
 }
 
 extension UIColor {
@@ -298,6 +371,37 @@ extension UIImage {
 }
 
 extension DetectTags where Self: UITextView {
+    
+//    func detectTags(inout updatedText: String) {
+//        
+//        // turn string in to NSString
+//        let nsText:NSString = updatedText
+//        
+//        // this needs to be an array of NSString.  String does not work.
+//        let words:[NSString] = nsText.componentsSeparatedByString(" ")
+//        
+//        // you can staple URLs onto attributed strings
+//        let attrString = NSMutableAttributedString(string: nsText as String, attributes:nil)
+//        
+//        // tag each word if it has a hashtag
+//        for word in words {
+//            
+//            // found a word that is prepended by a hashtag!
+//            // homework for you: implement @mentions here too.
+//            if word.hasPrefix("$") || word.hasPrefix("@") {
+//                
+//                // a range is the character position, followed by how many characters are in the word.
+//                // we need this because we staple the "href" to this range.
+//                let matchRange:NSRange = nsText.rangeOfString(word as String)
+//                
+//                // set a link for when the user clicks on this word.
+//                attrString.addAttribute(NSForegroundColorAttributeName, value: Constants.stockSwipeGreenColor, range: matchRange)
+//                
+//            }
+//        }
+//        
+//        updatedText = String(attrString)
+//    }
     
     func resolveTags() {
         

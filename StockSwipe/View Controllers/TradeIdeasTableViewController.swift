@@ -11,11 +11,6 @@ import DZNEmptyDataSet
 import SwiftyJSON
 import Parse
 
-protocol IdeaPostDelegate {
-    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType)
-    func ideaDeleted(with parseObject: PFObject)
-}
-
 class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate, CellType, SegueHandlerType, IdeaPostDelegate {
     
     enum CellIdentifier: String {

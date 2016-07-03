@@ -22,9 +22,7 @@ public class QueryHelper {
             
             let task = session.dataTaskWithURL(queryUrl, completionHandler: { (queryData, response, error) -> Void in
                 
-                guard error == nil else {
-                    return completionHandler(result: {throw Constants.Errors.ErrorQueryingForData})
-                }
+                guard error == nil else { return completionHandler(result: {throw Constants.Errors.ErrorQueryingForData}) }
                 
                 guard queryData != nil, let queryData = queryData else {
                     return completionHandler(result: {throw Constants.Errors.QueryDataEmpty})
@@ -44,10 +42,13 @@ public class QueryHelper {
             
             let task = trendingStocksSession.dataTaskWithURL(trendingStocksUrl, completionHandler: { (trendingStocksData, response, error) -> Void in
                 
-                guard error == nil else { return completionHandler(trendingStocksData: { throw Constants.Errors.ErrorQueryingForData })}
-                guard trendingStocksData != nil else { return completionHandler(trendingStocksData: { throw Constants.Errors.QueryDataEmpty })}
+                guard error == nil else { return completionHandler(trendingStocksData: { throw Constants.Errors.ErrorQueryingForData }) }
                 
-                return completionHandler(trendingStocksData: { trendingStocksData! })
+                guard trendingStocksData != nil, let trendingStocksData = trendingStocksData else {
+                    return completionHandler(trendingStocksData: { throw Constants.Errors.QueryDataEmpty })
+                }
+                
+                return completionHandler(trendingStocksData: { trendingStocksData })
             })
             task.resume()
         }
@@ -216,7 +217,7 @@ public class QueryHelper {
         
         let stockQuery = PFQuery(className:"Stocks")
         stockQuery.cancel()
-        stockQuery.includeKeys(["Shorted_By", "Longed_By"])
+        //stockQuery.includeKeys(["Shorted_By", "Longed_By"])
         stockQuery.whereKey("Symbol", containedIn: mappedSymbols)
         
         stockQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -243,7 +244,7 @@ public class QueryHelper {
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
         tradeIdeaQuery.cancel()
         tradeIdeaQuery.whereKey(key, equalTo: object)
-        tradeIdeaQuery.includeKeys(["user","stock", "reply_to", "reshare_of"])
+        tradeIdeaQuery.includeKeys(["user","stock", "reshare_of"])
         tradeIdeaQuery.orderByDescending("createdAt")
         
         if let limit = limit  where limit > 0 {
@@ -265,6 +266,30 @@ public class QueryHelper {
             print("Successfully retrieved \(objects.count) objects")
             
             completion(result: {return (objects: objects)})
+        }
+    }
+    
+    public func countTradeIdeasFor(key: String, object: PFObject, completion: (result: () throws -> (Int)) -> Void) {
+        
+        guard Functions.isConnectedToNetwork() else {
+            return completion(result: {throw Constants.Errors.NoInternetConnection})
+        }
+        
+        let tradeIdeaQuery = PFQuery(className:"TradeIdea")
+        tradeIdeaQuery.cancel()
+        tradeIdeaQuery.whereKey(key, equalTo: object)
+
+        tradeIdeaQuery.countObjectsInBackgroundWithBlock { (count, error) in
+            
+            guard error == nil else {
+                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+            }
+            
+            let count = Int(count)
+            
+            print("tradeIdeas count", count)
+            
+            completion(result: {return (count: count)})
         }
     }
     
@@ -298,6 +323,109 @@ public class QueryHelper {
             
             completion(result: {return (objects: objects)})
             
+        }
+    }
+    
+    public func countUserActivityFor(fromUser: PFUser?, toUser: PFUser?, completion: (result: () throws -> (Int)) -> Void) {
+        
+        guard Functions.isConnectedToNetwork() else {
+            return completion(result: {throw Constants.Errors.NoInternetConnection})
+        }
+        
+        let userActivityQuery = PFQuery(className:"UserActivity")
+        userActivityQuery.cancel()
+        
+        if let fromUser = fromUser {
+            userActivityQuery.whereKey("fromUser", equalTo: fromUser)
+        }
+        
+        if let toUser = toUser {
+            userActivityQuery.whereKey("toUser", equalTo: toUser)
+        }
+        
+        userActivityQuery.countObjectsInBackgroundWithBlock { (count, error) in
+            
+            guard error == nil else {
+                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+            }
+            
+            let count = Int(count)
+            
+            print("userActivity count", count)
+            
+            completion(result: {return (count: count)})
+        }
+    }
+    
+    public func queryStockActivityFor(stock: PFObject?, longed_by: PFUser?, shorted_by: PFUser?, completion: (result: () throws -> ([PFObject]?)) -> Void) {
+        
+        guard Functions.isConnectedToNetwork() else {
+            return completion(result: {throw Constants.Errors.NoInternetConnection})
+        }
+        
+        let stockActivityQuery = PFQuery(className:"StockActivity")
+        stockActivityQuery.cancel()
+        stockActivityQuery.orderByDescending("createdAt")
+        
+        if let stock = stock {
+            stockActivityQuery.whereKey("stock", equalTo: stock)
+        }
+        
+        if let longed_by = longed_by {
+            stockActivityQuery.whereKey("longed_by", equalTo: longed_by)
+        }
+        
+        if let shorted_by = shorted_by {
+            stockActivityQuery.whereKey("shorted_by", equalTo: shorted_by)
+        }
+        
+        stockActivityQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            
+            guard error == nil else {
+                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+            }
+            
+            let objects = objects
+            
+            print("retrieved \(objects?.count) objects")
+            
+            completion(result: {return (objects: objects)})
+            
+        }
+    }
+    
+    public func countStockActivityFor(stock: PFObject?, longed_by: PFUser?, shorted_by: PFUser?, completion: (result: () throws -> (Int)) -> Void) {
+        
+        guard Functions.isConnectedToNetwork() else {
+            return completion(result: {throw Constants.Errors.NoInternetConnection})
+        }
+        
+        let stockActivityQuery = PFQuery(className:"StockActivity")
+        stockActivityQuery.cancel()
+        
+        if let stock = stock {
+            stockActivityQuery.whereKey("stock", equalTo: stock)
+        }
+        
+        if let longed_by = longed_by {
+            stockActivityQuery.whereKey("longed_by", equalTo: longed_by)
+        }
+        
+        if let shorted_by = shorted_by {
+            stockActivityQuery.whereKey("shorted_by", equalTo: shorted_by)
+        }
+        
+        stockActivityQuery.countObjectsInBackgroundWithBlock { (count, error) in
+            
+            guard error == nil else {
+                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+            }
+            
+            let count = Int(count)
+            
+            print("userActivity count", count)
+            
+            completion(result: {return (count: count)})
         }
     }
 }

@@ -17,7 +17,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        super.delegate = self
+        self.delegate = self
     }
 
     override var text: String? {
@@ -72,7 +72,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     
                     let profileNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileNavigationController") as! UINavigationController
                     let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
-                    profileContainerController.user = userObject
+                    profileContainerController.user = User(userObject: userObject)
                     
                     UIApplication.topViewController()?.presentViewController(profileNavigationController, animated: true, completion: nil)
                     

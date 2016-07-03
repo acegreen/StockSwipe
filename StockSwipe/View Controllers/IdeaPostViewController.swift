@@ -10,8 +10,14 @@ import UIKit
 import Parse
 import Crashlytics
 
+protocol IdeaPostDelegate {
+    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType)
+    func ideaDeleted(with parseObject: PFObject)
+}
+
 class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
+    var originalSize: CGSize!
     var prefillText: String!
     var tradeIdeaPostCharacterLimit = 199 {
         didSet{
@@ -90,7 +96,6 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 })
             }
         })
-        
     }
     
     deinit {
@@ -99,6 +104,9 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // set original size for later
+        originalSize = self.view.bounds.size
         
         // Keep track of keyboard movement and adjust view
         observeKeyboardNotifications()
@@ -148,49 +156,38 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     func keyboardWillShow(n: NSNotification) {
         
         if let keyboardRect = n.userInfo![UIKeyboardFrameEndUserInfoKey]?.CGRectValue() {
-            
-            let keyboardSize = keyboardRect.size
-            let keyboardHeight = keyboardSize.height
+
             let intersectionFrame = CGRectIntersection(self.view.frame, keyboardRect)
             
-            print(self.view.frame)
-            print(keyboardRect)
-            print(intersectionFrame)
+            print("self.view.frame: ", self.view.frame)
+            print("keyboardRect: ", keyboardRect)
+            print("intersectionFrame:", intersectionFrame)
+            
+            if self.isBeingPresentedInFormSheet() {
+                if UIDevice.currentDevice().orientation.isLandscape {
+                    self.preferredContentSize = CGSize(width: self.originalSize.width, height: self.originalSize.height - intersectionFrame.height)
+                } else if UIDevice.currentDevice().orientation.isPortrait {
+                    self.preferredContentSize = CGSize(width: self.originalSize.width, height: self.originalSize.height - intersectionFrame.height)
+                }
+            }
             
             UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
-                
-                if self.isBeingPresentedInFormSheet() {
-                    // self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height - (intersectionFrame.height + 20))
-                    self.textViewBottomConstraint.constant = intersectionFrame.height + 20
-                } else {
-                    // self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height - (keyboardHeight + 20))
-                     self.textViewBottomConstraint.constant = keyboardHeight + 20
-                }
-                self.view.layoutIfNeeded()
+                self.presentationController?.containerView?.setNeedsLayout()
+                self.presentationController?.containerView?.layoutIfNeeded()
             })
         }
     }
     
     func keyboardWillHide(n: NSNotification) {
         
-        if let keyboardRect = n.userInfo![UIKeyboardFrameEndUserInfoKey]?.CGRectValue() {
-            
-//            let keyboardSize = keyboardRect.size
-//            let keyboardHeight = keyboardSize.height
-//            let intersectionFrame = CGRectIntersection(self.view.frame, keyboardRect)
-            
-            UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
-                
-                if self.isBeingPresentedInFormSheet() {
-                    //self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height + (intersectionFrame.height + 20))
-                    self.textViewBottomConstraint.constant = 0
-                } else {
-                    //self.view.frame = CGRect(x: self.view.frame.origin.x, y: self.view.frame.origin.y, width: self.view.frame.width, height: self.view.frame.height + (keyboardHeight + 20))
-                    self.textViewBottomConstraint.constant = 0
-                }
-                self.view.layoutIfNeeded()
-            })
+        if self.isBeingPresentedInFormSheet() {
+            self.preferredContentSize = CGSize(width: self.originalSize.width, height: self.originalSize.height)
         }
+        
+        UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
+            self.presentationController?.containerView?.setNeedsLayout()
+            self.presentationController?.containerView?.layoutIfNeeded()
+        })
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {

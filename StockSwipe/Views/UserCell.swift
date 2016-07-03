@@ -65,7 +65,7 @@ class UserCell: UITableViewCell {
         let profileContainerController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileContainerController") as! ProfileContainerController
         
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == username) {
-            profileContainerController.user = self.user
+            profileContainerController.user = User(userObject: self.user)
         }
         
         profileContainerController.navigationItem.rightBarButtonItem = nil

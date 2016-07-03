@@ -10,18 +10,11 @@ import UIKit
 import Parse
 import DZNEmptyDataSet
 
-protocol SubScrollDelegate {
+protocol ProfileTableVieDelegate {
     func subScrollViewDidScroll(scrollView: UIScrollView)
 }
 
 class ProfileTableViewController: UITableViewController, CellType, SubSegmentedControlDelegate, SegueHandlerType {
-    
-    enum SegmentIndex: Int {
-        case Zero
-        case One
-        case Two
-        case Three
-    }
     
     enum CellIdentifier: String {
         case IdeaCell = "IdeaCell"
@@ -33,16 +26,16 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         case ProfileDetailSegueIdentifier = "ProfileDetailSegueIdentifier"
     }
     
-    var delegate: SubScrollDelegate!
+    var delegate: ProfileTableVieDelegate!
     
-    var user: PFUser?
+    var user: User?
     
     var tradeIdeas = [TradeIdea]()
     var followingUsers = [PFUser]()
     var followersUsers = [PFUser]()
     var likedTradeIdeas = [TradeIdea]()
     
-    var selectedSegmentIndex: SegmentIndex = SegmentIndex(rawValue: 0)!
+    var selectedSegmentIndex: ProfileContainerController.SegmentIndex = ProfileContainerController.SegmentIndex(rawValue: 0)!
     
     @IBOutlet var headerView: UIView!
     @IBOutlet var avatarImage:UIImageView!
@@ -72,7 +65,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         super.viewDidLoad()
         
         // Remove follow/unfollow buttons if user == currentUser
-        if user?.objectId == PFUser.currentUser()?.objectId {
+        if user?.userObject.objectId == PFUser.currentUser()?.objectId {
             followButton.hidden = true
         }
         
@@ -80,7 +73,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         self.tableView.rowHeight = UITableViewAutomaticDimension
         self.tableView.estimatedRowHeight = 200.0
         
-        self.getProfile(user)
+        self.getProfile()
         self.getUserTradeIdeas()
         
     }
@@ -91,7 +84,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func subDidSelectSegment(segmentedControl: UISegmentedControl) {
         
-        selectedSegmentIndex = SegmentIndex(rawValue: segmentedControl.selectedSegmentIndex)!
+        selectedSegmentIndex = ProfileContainerController.SegmentIndex(rawValue: segmentedControl.selectedSegmentIndex)!
         
         switch selectedSegmentIndex {
         case .Zero:
@@ -118,11 +111,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         self.delegate.subScrollViewDidScroll(scrollView)
     }
     
-    func getProfile(user: PFUser?) {
+    func getProfile() {
         
         guard let user = user else { return }
         
-        if let profileImageURL = user.objectForKey("profile_image_url") as? String {
+        if let profileImageURL = user.userObject.objectForKey("profile_image_url") as? String {
             
             QueryHelper.sharedInstance.queryWith(profileImageURL, completionHandler: { (result) in
                 
@@ -144,11 +137,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             })
         }
         
-        if let username = user.username {
+        if let username = user.userObject.username {
             self.usernameLabel.text = username
         }
         
-        if let location = user.objectForKey("location") as? String {
+        if let location = user.userObject.objectForKey("location") as? String {
             self.locationLabel.text = location
         }
         
@@ -164,7 +157,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         switch selectedSegmentIndex {
         case .Zero:
             
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user, skip: 0, limit: 15) { (result) in
+            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user.userObject, skip: 0, limit: 15) { (result) in
                 
                 do {
                     
@@ -202,7 +195,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         case .Two:
             return
         case .Three:
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("liked_by", object: user, skip: 0, limit: 15) { (result) in
+            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("liked_by", object: user.userObject, skip: 0, limit: 15) { (result) in
                 
                 do {
                     
@@ -239,9 +232,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func loadMoreTradeIdeas(skip skip: Int) {
         
-        guard let user = user else {
-            return
-        }
+        guard let user = user else { return }
         
         if self.refreshControl?.refreshing == false && !self.footerActivityIndicator.isAnimating() {
             self.footerActivityIndicator.startAnimating()
@@ -249,7 +240,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         switch selectedSegmentIndex {
         case .Zero:
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user, skip: skip, limit: 15) { (result) in
+            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user.userObject, skip: skip, limit: 15) { (result) in
                 
                 do {
                     
@@ -290,7 +281,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         case .Three:
             
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("liked_by", object: user, skip: skip, limit: 15) { (result) in
+            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("liked_by", object: user.userObject, skip: skip, limit: 15) { (result) in
                 
                 do {
                     
@@ -330,7 +321,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func getUsersFollowing() {
         
-        QueryHelper.sharedInstance.queryUserActivityFor(user, toUser: nil) { (result) in
+        guard let user = user else { return }
+        
+        QueryHelper.sharedInstance.queryUserActivityFor(user.userObject, toUser: nil) { (result) in
             
             do {
                 
@@ -364,7 +357,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func getUsersFollowers() {
         
-        QueryHelper.sharedInstance.queryUserActivityFor(nil, toUser: user) { (result) in
+        guard let user = user else { return }
+        
+        QueryHelper.sharedInstance.queryUserActivityFor(nil, toUser: user.userObject) { (result) in
             
             do {
                 
@@ -401,7 +396,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let currentUser = PFUser.currentUser() else { return }
         guard let user = self.user else { return }
         
-        QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: user) { (result) in
+        QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: user.userObject) { (result) in
             
             do {
                 
@@ -427,7 +422,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         guard let user = self.user else { return }
         
-        QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: user) { (result) in
+        QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: user.userObject) { (result) in
             
             do {
                 
@@ -437,7 +432,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     
                     let userActivityObject = PFObject(className: "UserActivity")
                     userActivityObject["fromUser"] = currentUser
-                    userActivityObject["toUser"] = user
+                    userActivityObject["toUser"] = user.userObject
                     
                     userActivityObject.saveInBackgroundWithBlock({ (success, error) in
                         
@@ -516,7 +511,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         
-        if user?.objectId == PFUser.currentUser()?.objectId {
+        if user?.userObject.objectId == PFUser.currentUser()?.objectId {
             return true
         }
         
@@ -572,7 +567,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             profileContainerController.navigationItem.rightBarButtonItem = nil
             
             let cell = sender as! UserCell
-            profileContainerController.user = cell.user
+            profileContainerController.user = User(userObject: cell.user)
 
         }
     }

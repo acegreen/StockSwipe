@@ -211,10 +211,8 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
             
             let task = trendingStocksSession.dataTaskWithURL(trendingStocksUrl, completionHandler: { (trendingStocksData, response, error) -> Void in
                 
-                guard error == nil else {
-                    return completion(result: {throw Errors.ErrorQueryingForData})
-                }
-                
+                guard error == nil else { return completion(result: {throw Errors.ErrorQueryingForData}) }
+            
                 guard trendingStocksData != nil, let trendingStocksData = trendingStocksData else {
                     return completion(result: {throw Errors.QueryDataEmpty})
                 }

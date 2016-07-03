@@ -83,9 +83,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         let profileContainerController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileContainerController") as! ProfileContainerController
         
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == userName) {
-            profileContainerController.user = self.tradeIdea.user
+            profileContainerController.user = User(userObject: self.tradeIdea.user)
         } else if (tapGestureRecognizer.view == nestedUserAvatar || tapGestureRecognizer.view == nestedUsername ) {
-            profileContainerController.user = self.nestedTradeIdea.user
+            profileContainerController.user = User(userObject: self.nestedTradeIdea.user)
         }
         
         profileContainerController.navigationItem.rightBarButtonItem = nil

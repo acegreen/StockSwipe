@@ -17,6 +17,9 @@
 		231E89BE1D2714D500CD009A /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89BD1D2714D500CD009A /* FollowButton.swift */; };
 		231E89C01D28055C00CD009A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89BF1D28055C00CD009A /* User.swift */; };
 		231E89C21D28729000CD009A /* IdeaPostUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89C11D28729000CD009A /* IdeaPostUITextView.swift */; };
+		231E89C41D2A1A6200CD009A /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89C31D2A1A6200CD009A /* SettingsTableViewController.swift */; };
+		231E89C61D2A1C8000CD009A /* BlockedAccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89C51D2A1C8000CD009A /* BlockedAccountsTableViewController.swift */; };
+		231E89C81D2A222A00CD009A /* BlockButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89C71D2A222A00CD009A /* BlockButton.swift */; };
 		232A4E901B7E32A100A0FE4B /* ImageLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */; };
 		232EDE351C1A1804007D0103 /* KaushanScript.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 232EDE331C1A1804007D0103 /* KaushanScript.ttf */; };
 		232EDE361C1A1804007D0103 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 232EDE341C1A1804007D0103 /* Lato-Light.ttf */; };
@@ -61,7 +64,7 @@
 		2378B58A1B115FB3002ACFDC /* StockSwipeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378B5891B115FB3002ACFDC /* StockSwipeTests.swift */; };
 		23875DEE1B11745A00966012 /* SwipeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23875DED1B11745A00966012 /* SwipeChartView.swift */; };
 		23875DF81B11752600966012 /* Funtions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23875DF71B11752600966012 /* Funtions.swift */; };
-		2389CB181B417D7C00CCE26A /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2389CB171B417D7C00CCE26A /* SettingsTableViewController.swift */; };
+		2389CB181B417D7C00CCE26A /* MoreTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2389CB171B417D7C00CCE26A /* MoreTableViewController.swift */; };
 		238A112A1C834A00002C1A73 /* ConcurrentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238A11291C834A00002C1A73 /* ConcurrentOperation.swift */; };
 		238C1AE71C8C6387009F9CC1 /* GeneralPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 238C1AE31C8C6387009F9CC1 /* GeneralPreferences.plist */; };
 		238C1AE81C8C6387009F9CC1 /* StockExchangePreferences_CA.plist in Resources */ = {isa = PBXBuildFile; fileRef = 238C1AE41C8C6387009F9CC1 /* StockExchangePreferences_CA.plist */; };
@@ -175,6 +178,9 @@
 		231E89BD1D2714D500CD009A /* FollowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
 		231E89BF1D28055C00CD009A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		231E89C11D28729000CD009A /* IdeaPostUITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdeaPostUITextView.swift; sourceTree = "<group>"; };
+		231E89C31D2A1A6200CD009A /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		231E89C51D2A1C8000CD009A /* BlockedAccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedAccountsTableViewController.swift; sourceTree = "<group>"; };
+		231E89C71D2A222A00CD009A /* BlockButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockButton.swift; sourceTree = "<group>"; };
 		232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLabelView.swift; sourceTree = "<group>"; };
 		232EDE331C1A1804007D0103 /* KaushanScript.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KaushanScript.ttf; sourceTree = "<group>"; };
 		232EDE341C1A1804007D0103 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
@@ -227,7 +233,7 @@
 		2378B5891B115FB3002ACFDC /* StockSwipeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSwipeTests.swift; sourceTree = "<group>"; };
 		23875DED1B11745A00966012 /* SwipeChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeChartView.swift; sourceTree = "<group>"; };
 		23875DF71B11752600966012 /* Funtions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Funtions.swift; sourceTree = "<group>"; };
-		2389CB171B417D7C00CCE26A /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
+		2389CB171B417D7C00CCE26A /* MoreTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreTableViewController.swift; sourceTree = "<group>"; };
 		238A11291C834A00002C1A73 /* ConcurrentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentOperation.swift; sourceTree = "<group>"; };
 		238C1AE31C8C6387009F9CC1 /* GeneralPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GeneralPreferences.plist; sourceTree = "<group>"; };
 		238C1AE41C8C6387009F9CC1 /* StockExchangePreferences_CA.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = StockExchangePreferences_CA.plist; sourceTree = "<group>"; };
@@ -635,6 +641,7 @@
 				230FBB2C1D1F05B2000394AD /* TintableLabel.swift */,
 				23E6D6E31D221ED1005DB3F7 /* IdeaPostButton.swift */,
 				231E89BD1D2714D500CD009A /* FollowButton.swift */,
+				231E89C71D2A222A00CD009A /* BlockButton.swift */,
 				23C122541C5AA0FE00524721 /* TopNewsCell.swift */,
 				23C925671B1AB6E400D17B70 /* CollectionViewCell.swift */,
 				23D4FFE71C317ECE00A1102D /* FiltersCell.swift */,
@@ -663,9 +670,11 @@
 				236280C31CB41A290022A129 /* IdeaPostViewController.swift */,
 				23E09E841B97E1E400A9C9B3 /* StreamTableViewController.swift */,
 				23F5B3E41B9D004200C74FED /* CompanyProfileTableViewController.swift */,
-				2389CB171B417D7C00CCE26A /* SettingsTableViewController.swift */,
+				2389CB171B417D7C00CCE26A /* MoreTableViewController.swift */,
 				233C7D551CB2AC7E006A014A /* ProfileContainerController.swift */,
 				23356F001CAE2EF600E1A0F7 /* ProfileTableViewController.swift */,
+				231E89C31D2A1A6200CD009A /* SettingsTableViewController.swift */,
+				231E89C51D2A1C8000CD009A /* BlockedAccountsTableViewController.swift */,
 				2394DFAB1C8CAE230018A5A9 /* FAQTableViewController.swift */,
 				231643021C1A00F000C92C03 /* FeedbackViewController.swift */,
 				231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */,
@@ -1022,6 +1031,7 @@
 				239EDA6D1BB0258B001CC63C /* Extensions.swift in Sources */,
 				2394DFAC1C8CAE230018A5A9 /* FAQTableViewController.swift in Sources */,
 				2347E61A1BD7FEEE0036EA65 /* iCarouselTickerView.swift in Sources */,
+				231E89C41D2A1A6200CD009A /* SettingsTableViewController.swift in Sources */,
 				23875DF81B11752600966012 /* Funtions.swift in Sources */,
 				23CAE26D1C2CB41300D15819 /* Settings.swift in Sources */,
 				231E89BE1D2714D500CD009A /* FollowButton.swift in Sources */,
@@ -1044,7 +1054,7 @@
 				23C925601B1A7D9400D17B70 /* Chart.swift in Sources */,
 				236D28241BCC2750001D757F /* MainTabBarController.swift in Sources */,
 				237537F71B1617FB00F05984 /* LogInViewController.swift in Sources */,
-				2389CB181B417D7C00CCE26A /* SettingsTableViewController.swift in Sources */,
+				2389CB181B417D7C00CCE26A /* MoreTableViewController.swift in Sources */,
 				23D4FFE81C317ECE00A1102D /* FiltersCell.swift in Sources */,
 				23356F021CAE2EF600E1A0F7 /* ProfileTableViewController.swift in Sources */,
 				233C7D581CB3044D006A014A /* TransparentView.swift in Sources */,
@@ -1070,9 +1080,11 @@
 				23157AF41BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift in Sources */,
 				2376E41F1C2B0D7A00B85656 /* QueryHelper.swift in Sources */,
 				236875B21B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m in Sources */,
+				231E89C61D2A1C8000CD009A /* BlockedAccountsTableViewController.swift in Sources */,
 				7888E10A1B66D5880087C255 /* CustomUnwindSegue.swift in Sources */,
 				231643031C1A00F000C92C03 /* FeedbackViewController.swift in Sources */,
 				2347E61C1BD7FFD90036EA65 /* Ticker.swift in Sources */,
+				231E89C81D2A222A00CD009A /* BlockButton.swift in Sources */,
 				239EDA6F1BB025B0001CC63C /* Constants.swift in Sources */,
 				238A112A1C834A00002C1A73 /* ConcurrentOperation.swift in Sources */,
 				233C7D5C1CB33E8B006A014A /* UserCell.swift in Sources */,

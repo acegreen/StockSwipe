@@ -73,7 +73,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             tradeIdeaType = .Reshare
         }
         
-        tradeIdeaObject.saveInBackgroundWithBlock({ (success, error) in
+        tradeIdeaObject.saveEventually({ (success, error) in
             
             if success {
                 

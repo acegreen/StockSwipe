@@ -73,12 +73,16 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
     }
     
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
         if indexPath == NSIndexPath(forRow: 0, inSection: 1) {
             
             if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
                 
-                return 260
+                return 300
                 
             } else {
                 
@@ -91,9 +95,9 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
             
         } else {
             
-            return 30
+            return 45
         }
-        
+
     }
     
     func runDataQueueries() {
@@ -209,7 +213,6 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                         if let companyAnalystsRatingNumberOfAnalysts = companyAnalystRatingJSON["table"][1]["tbody"]["tr"][4]["td"][1]["content"].string {
                             
                             self.numberOfAnalysts.text = companyAnalystsRatingNumberOfAnalysts
-                            
                         }
                         
                         let companyAnalystRatingJsonBuySellHoldTable = companyAnalystRatingJSON["table"][3]["tbody"]["tr"]["td"]["table"]["tbody"]
@@ -217,31 +220,26 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                         if let companyAnalystRatingNumberOfBuys = companyAnalystRatingJsonBuySellHoldTable["tr"][1]["td"][0]["content"].string {
                             
                             self.ratings[0] = Double(companyAnalystRatingNumberOfBuys)!
-                            
                         }
                         
                         if let companyAnalystRatingNumberOfOutperform = companyAnalystRatingJsonBuySellHoldTable["tr"][2]["td"][0]["content"].string {
                             
                             self.ratings[1] = Double(companyAnalystRatingNumberOfOutperform)!
-                            
                         }
                         
                         if let companyAnalystRatingNumberOfHolds = companyAnalystRatingJsonBuySellHoldTable["tr"][3]["td"][0]["content"].string {
                             
                             self.ratings[2] = Double(companyAnalystRatingNumberOfHolds)!
-                            
                         }
                         
                         if let companyAnalystRatingNumberOfUnderPerform = companyAnalystRatingJsonBuySellHoldTable["tr"][4]["td"][0]["content"].string {
                             
                             self.ratings[3] = Double(companyAnalystRatingNumberOfUnderPerform)!
-                            
                         }
                         
                         if let companyAnalystRatingNumberOfSells = companyAnalystRatingJsonBuySellHoldTable["tr"][5]["td"][0]["content"].string {
                             
                             self.ratings[4] = Double(companyAnalystRatingNumberOfSells)!
-                            
                         }
                         
                         self.setChart(self.ratingsType, values: self.ratings)
@@ -272,13 +270,11 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                         if let companyProfileSector = companyProfileJsonResults["table"][0]["tbody"]["tr"]["td"]["table"]["tbody"]["tr"][1]["td"][1]["a"]["content"].string {
                             
                             self.companySector.text = companyProfileSector
-                            
                         }
                         
                         if let companyProfileIndustry = companyProfileJsonResults["table"][0]["tbody"]["tr"]["td"]["table"]["tbody"]["tr"][2]["td"][1]["a"]["content"].string {
                             
                             self.companyIndustry.text = companyProfileIndustry
-                            
                         }
                     })
                 }
@@ -304,12 +300,9 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                                 
                                 self.companySummary.text = companySummaryJsonResults
                                 self.companySummary.flashScrollIndicators()
-                                
                             }
                         })
-                        
                     })
-                    
                 }
             }
         }
@@ -322,44 +315,49 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
 
     func setChart(dataPoints: [String], values: [Double]) {
         
-        var dataEntries = [BarChartDataEntry]()
-        
-        for i in 0..<dataPoints.count {
-            let dataEntry = BarChartDataEntry(value: values[i], xIndex: i)
-            dataEntries.append(dataEntry)
+        if let _ = values.find ({ $0 > 1 }) {
+            
+            var dataEntries = [BarChartDataEntry]()
+            
+            for i in 0..<dataPoints.count {
+                let dataEntry = BarChartDataEntry(value: values[i], xIndex: i)
+                dataEntries.append(dataEntry)
+            }
+            
+            let chartDataSet = BarChartDataSet(yVals: dataEntries, label: "Analysts Rating")
+            chartDataSet.colors = [UIColor.greenColor(), ChartreuseWebColor, UIColor.yellowColor(), UIColor.orangeColor() , UIColor.redColor()]
+            chartDataSet.valueFont = UIFont(name: "HelveticaNeue", size: 15.0)!
+            chartDataSet.valueTextColor = Constants.stockSwipeFontColor
+            
+            let numberFormatter = NSNumberFormatter()
+            numberFormatter.numberStyle = .NoStyle
+            chartDataSet.valueFormatter = numberFormatter
+            
+            //        ratingBarChartView.noDataText = "Loading Analysts Data"
+            //        ratingBarChartView.infoFont = UIFont(name: "HelveticaNeue", size: 20.0)!
+            //        ratingBarChartView.infoTextColor = Constants.stockSwipeFontColor
+            ratingBarChartView.descriptionText = ""
+            ratingBarChartView.xAxis.labelPosition = .Bottom
+            ratingBarChartView.xAxis.drawGridLinesEnabled = false
+            ratingBarChartView.xAxis.labelFont = UIFont(name: "HelveticaNeue", size: 11.0)!
+            ratingBarChartView.xAxis.labelTextColor = Constants.stockSwipeFontColor
+            ratingBarChartView.leftAxis.enabled = false
+            ratingBarChartView.leftAxis.drawGridLinesEnabled = false
+            ratingBarChartView.leftAxis.axisMinValue = 0.0
+            ratingBarChartView.rightAxis.enabled = false
+            ratingBarChartView.rightAxis.drawGridLinesEnabled = false
+            ratingBarChartView.drawBordersEnabled = false
+            ratingBarChartView.drawGridBackgroundEnabled = false
+            ratingBarChartView.legend.enabled = false
+            ratingBarChartView.userInteractionEnabled = false
+            
+            let chartData = BarChartData(xVals: ratingsType, dataSet: chartDataSet)
+            ratingBarChartView.data = chartData
+            
+            ratingBarChartView.animate(xAxisDuration: 0.5, yAxisDuration: 0.5)
+        } else {
+            ratingBarChartView.hidden = true
         }
-        
-        let chartDataSet = BarChartDataSet(yVals: dataEntries, label: "Analysts Rating")
-        chartDataSet.colors = [UIColor.greenColor(), ChartreuseWebColor, UIColor.yellowColor(), UIColor.orangeColor() , UIColor.redColor()]
-        chartDataSet.valueFont = UIFont(name: "HelveticaNeue", size: 15.0)!
-        chartDataSet.valueTextColor = Constants.stockSwipeFontColor
-        
-        let numberFormatter = NSNumberFormatter()
-        numberFormatter.numberStyle = .NoStyle
-        chartDataSet.valueFormatter = numberFormatter
-        
-//        ratingBarChartView.noDataText = "Loading Analysts Data"
-//        ratingBarChartView.infoFont = UIFont(name: "HelveticaNeue", size: 20.0)!
-//        ratingBarChartView.infoTextColor = Constants.stockSwipeFontColor
-        ratingBarChartView.descriptionText = ""
-        ratingBarChartView.xAxis.labelPosition = .Bottom
-        ratingBarChartView.xAxis.drawGridLinesEnabled = false
-        ratingBarChartView.xAxis.labelFont = UIFont(name: "HelveticaNeue", size: 11.0)!
-        ratingBarChartView.xAxis.labelTextColor = Constants.stockSwipeFontColor
-        ratingBarChartView.leftAxis.enabled = false
-        ratingBarChartView.leftAxis.drawGridLinesEnabled = false
-        ratingBarChartView.leftAxis.axisMinValue = 0.0
-        ratingBarChartView.rightAxis.enabled = false
-        ratingBarChartView.rightAxis.drawGridLinesEnabled = false
-        ratingBarChartView.drawBordersEnabled = false
-        ratingBarChartView.drawGridBackgroundEnabled = false
-        ratingBarChartView.legend.enabled = false
-        ratingBarChartView.userInteractionEnabled = false
-        
-        let chartData = BarChartData(xVals: ratingsType, dataSet: chartDataSet)
-        ratingBarChartView.data = chartData
-        
-        ratingBarChartView.animate(xAxisDuration: 0.5, yAxisDuration: 0.5)
     }
     
     func setOverallAnalystRating(input: Double) {

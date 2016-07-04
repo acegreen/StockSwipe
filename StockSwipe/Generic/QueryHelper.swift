@@ -243,8 +243,26 @@ public class QueryHelper {
         
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
         tradeIdeaQuery.cancel()
-        tradeIdeaQuery.whereKey(key, equalTo: object)
         tradeIdeaQuery.includeKeys(["user","stock", "reshare_of"])
+
+        tradeIdeaQuery.whereKey(key, equalTo: object)
+        
+        if key != "user", let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
+            tradeIdeaQuery.whereKey("user", notContainedIn: blockedUsers)
+        }
+        
+        if key != "user", let currentUser = PFUser.currentUser() {
+            tradeIdeaQuery.whereKey("user.blocked_users", notEqualTo: currentUser)
+        }
+        
+//        if key != "user", let currentUser = PFUser.currentUser() {
+//            
+//            let subTradeIdeaQuery = PFQuery(className:"TradeIdea")
+//            subTradeIdeaQuery.whereKey("user.blocked_users", notEqualTo: currentUser)
+//            
+//            tradeIdeaQuery.whereKey("user", matchesQuery: subTradeIdeaQuery)
+//        }
+        
         tradeIdeaQuery.orderByDescending("createdAt")
         
         if let limit = limit  where limit > 0 {
@@ -278,7 +296,11 @@ public class QueryHelper {
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
         tradeIdeaQuery.cancel()
         tradeIdeaQuery.whereKey(key, equalTo: object)
-
+        
+        if key != "user", let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
+            tradeIdeaQuery.whereKey("user", notContainedIn: blockedUsers)
+        }
+        
         tradeIdeaQuery.countObjectsInBackgroundWithBlock { (count, error) in
             
             guard error == nil else {
@@ -301,6 +323,7 @@ public class QueryHelper {
         
         let userActivityQuery = PFQuery(className:"UserActivity")
         userActivityQuery.cancel()
+        userActivityQuery.includeKeys(["fromUser", "toUser"])
         userActivityQuery.orderByDescending("createdAt")
         
         if let fromUser = fromUser {

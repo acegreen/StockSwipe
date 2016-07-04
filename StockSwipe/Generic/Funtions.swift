@@ -230,7 +230,7 @@ public class Functions {
         }
     }
     
-    class func registerUserChoice(chart: Chart, and object: PFObject?, with choice: Constants.UserChoices) {
+    class func registerUserChoice(chart: Chart, with choice: Constants.UserChoices) {
         
         guard (PFUser.currentUser() != nil) else { return }
         
@@ -251,7 +251,7 @@ public class Functions {
             break
         }
         
-        if let object = object {
+        if let object = chart.parseObject {
             
             object.removeObject(PFUser.currentUser()!, forKey: removeFromKey)
             
@@ -286,7 +286,6 @@ public class Functions {
                 
             })
         }
-        
     }
     
     class func saveIntoCoreData(chart: Chart, userChoice: Constants.UserChoices) {

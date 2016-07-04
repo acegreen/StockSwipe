@@ -22,9 +22,11 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         case TradeIdeaDetailSegueIdentifier = "TradeIdeaDetailSegueIdentifier"
     }
     
+    var delegate: IdeaPostDelegate!
+    
     var tradeIdea: TradeIdea!
     
-    var tradeIdeas = [TradeIdea]()
+    var replyTradeIdeas = [TradeIdea]()
     
     @IBAction func refreshControlAction(sender: UIRefreshControl) {
         self.getReplyTradeIdeas()
@@ -55,12 +57,12 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                 
                 let tradeIdeasObjects = try result()
                 
-                self.tradeIdeas = []
+                self.replyTradeIdeas = []
                 for tradeIdeaObject: PFObject in tradeIdeasObjects {
                     
                     let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                     
-                    self.tradeIdeas.append(tradeIdea)
+                    self.replyTradeIdeas.append(tradeIdea)
                     
                 }
                 
@@ -110,7 +112,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             return 1
         }
         
-        return tradeIdeas.count
+        return replyTradeIdeas.count
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -120,9 +122,11 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         if indexPath.section == 0 {
             cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
             cell.configureCell(tradeIdea)
+            cell.delegate = self
         } else {
             cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.ReplyIdeaCell.rawValue, forIndexPath: indexPath) as! IdeaCell
-            cell.configureCell(tradeIdeas[indexPath.row])
+            cell.configureCell(replyTradeIdeas[indexPath.row])
+            cell.delegate = self
         }
         
         return cell
@@ -138,8 +142,29 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             
             let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
             
-            let cell = sender as! IdeaCell
+            guard let cell = sender as? IdeaCell else { return }
             destinationViewController.tradeIdea = cell.tradeIdea
         }
+    }
+}
+
+extension TradeIdeaDetailTableViewController: IdeaPostDelegate {
+    
+    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
+        print("idea posted")
+    }
+    
+    func ideaDeleted(with parseObject: PFObject) {
+        
+        if parseObject == self.tradeIdea.parseObject {
+            self.tradeIdea = nil
+            self.navigationController?.popViewControllerAnimated(true)
+        } else if let tradeIdea = self.replyTradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
+            let indexPath = NSIndexPath(forRow: self.replyTradeIdeas.indexOf(tradeIdea)!, inSection: 0)
+            self.replyTradeIdeas.removeObject(tradeIdea)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        }
+        
+        self.delegate?.ideaDeleted(with: parseObject)
     }
 }

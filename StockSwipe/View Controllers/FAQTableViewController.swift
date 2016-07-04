@@ -23,7 +23,7 @@ class FAQTableViewController: UITableViewController, CellType {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        tableView.tableFooterView = UIView(frame: CGRectZero)
+        tableView.tableFooterView = UIView()
         tableView.contentInset.top = topInset
         tableView.estimatedRowHeight = estimatedHeight
         tableView.rowHeight = UITableViewAutomaticDimension

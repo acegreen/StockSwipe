@@ -24,9 +24,6 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
         super.viewDidLoad()
         
         self.tweetViewDelegate = self
-        self.tableView.emptyDataSetDelegate = self
-        self.tableView.emptyDataSetSource = self
-        self.tableView.tableFooterView = UIView()
         
         //Setup Appearance
         //TWTRTweetView.appearance().primaryTextColor = Constants.stockSwipeFontColor

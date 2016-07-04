@@ -11,7 +11,7 @@ import DZNEmptyDataSet
 import SwiftyJSON
 import Parse
 
-class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate, CellType, SegueHandlerType, IdeaPostDelegate {
+class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate, CellType, SegueHandlerType {
     
     enum CellIdentifier: String {
         case IdeaCell = "IdeaCell"
@@ -157,23 +157,6 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         }
     }
     
-    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
-        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        self.tradeIdeas.insert(tradeIdea, atIndex: 0)
-        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-        
-        self.tableView.reloadEmptyDataSet()
-    }
-    
-    func ideaDeleted(with parseObject: PFObject) {
-        
-        if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
-            let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(tradeIdea)!, inSection: 0)
-            self.tradeIdeas.removeObject(tradeIdea)
-            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-        }
-    }
-    
     func updateRefreshDate() {
         
         let title: String = "Last Update: \(NSDate().formattedAsTimeAgo())"
@@ -224,8 +207,9 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         case .TradeIdeaDetailSegueIdentifier:
             
             let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
+            destinationViewController.delegate = self
             
-            let cell = sender as! IdeaCell
+            guard let cell = sender as? IdeaCell else { return }
             destinationViewController.tradeIdea = cell.tradeIdea
             
         case .PostIdeaSegueIdentifier:
@@ -234,8 +218,31 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
             
             ideaPostViewController.stockObject = self.stockObject
-            
             ideaPostViewController.delegate =  self
+        }
+    }
+}
+
+extension TradeIdeasTableViewController: IdeaPostDelegate {
+
+    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
+        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+        self.tradeIdeas.insert(tradeIdea, atIndex: 0)
+        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        
+        self.tableView.reloadEmptyDataSet()
+    }
+    
+    func ideaDeleted(with parseObject: PFObject) {
+        
+        if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
+            let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(tradeIdea)!, inSection: 0)
+            self.tradeIdeas.removeObject(tradeIdea)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        }
+        
+        if tradeIdeas.count == 0 {
+            self.tableView.reloadEmptyDataSet()
         }
     }
 }

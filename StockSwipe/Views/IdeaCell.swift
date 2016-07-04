@@ -31,13 +31,13 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     @IBOutlet var nestedTradeIdeaStack: UIStackView!
     
-    @IBOutlet var buttonsStack: UIStackView!
-    
     @IBOutlet var nestedUserAvatar: UIImageView!
     
     @IBOutlet var nestedUsername: UILabel!
     
     @IBOutlet var nestedIdeaDescription: SuperUITextView!
+    
+    @IBOutlet var threeDotsStack: UIStackView!
     
     @IBOutlet var likeButton: UIButton!
     @IBOutlet var likeCountLabel: UILabel!
@@ -62,7 +62,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     }
     
     @IBAction func reshareButton(sender: UIButton) {
-    
+        
         if !sender.selected == true {
             
             let tradeIdeaPostNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("TradeIdeaPostNavigationController") as! UINavigationController
@@ -70,12 +70,109 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             ideaPostViewController.reshareTradeIdea = self.tradeIdea
             ideaPostViewController.delegate =  self
-
+            
             tradeIdeaPostNavigationController.modalPresentationStyle = .FormSheet
             UIApplication.topViewController()?.presentViewController(tradeIdeaPostNavigationController, animated: true, completion: nil)
         } else {
             registerReshare(sender: sender)
         }
+    }
+    
+    @IBAction func threeDotsButton(sender: AnyObject) {
+        
+        guard let viewRect = sender as? UIView else {
+            return
+        }
+        
+        let threeDotsAlert = UIAlertController()
+        threeDotsAlert.modalPresentationStyle = .Popover
+        
+        if let currentUser = PFUser.currentUser() where self.tradeIdea.user.objectId != currentUser.objectId  {
+            threeDotsAlert.addAction(blockAction(self.tradeIdea.user))
+            
+            let reportIdea = UIAlertAction(title: "Report", style: .Default) { action in
+                
+                SweetAlert().showAlert("Report \(self.tradeIdea.user.username!)?", subTitle: "", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor.colorFromRGB(0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+                    
+                    if !isOtherButton {
+                        
+                        self.handleBlock(self.tradeIdea.user)
+                        
+                        let spamObject = PFObject(className: "Spam")
+                        spamObject["reported_idea"] = self.tradeIdea.parseObject
+                        spamObject["reported_by"] = currentUser
+                        
+                        spamObject.saveEventually ({ (success, error) in
+                            
+                            if success {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.Success)
+                                })
+                                
+                            } else {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                                })
+                            }
+                        })
+                        
+                    } else {
+                        
+                        let spamObject = PFObject(className: "Spam")
+                        spamObject["reported_idea"] = self.tradeIdea.parseObject
+                        spamObject["reported_by"] = currentUser
+                        
+                        spamObject.saveEventually ({ (success, error) in
+                            
+                            if success {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.Success)
+                                })
+                                
+                            } else {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+            threeDotsAlert.addAction(reportIdea)
+        }
+        
+        if let user = PFUser.currentUser() where self.tradeIdea.user.objectId == user.objectId  {
+            let deleteIdea = UIAlertAction(title: "Delete Idea", style: .Default) { action in
+
+                if let resharedOf = self.tradeIdea.parseObject.objectForKey("reshare_of") as? PFObject {
+                    
+                    if let reshared_by = resharedOf["reshared_by"] as? [PFUser] {
+                        if let _ = reshared_by.find({ $0.objectId == PFUser.currentUser()?.objectId }) {
+                            resharedOf.removeObject(PFUser.currentUser()!, forKey: "reshared_by")
+                            resharedOf.saveEventually()
+                        }
+                    }
+                }
+                
+                self.tradeIdea.parseObject.deleteEventually()
+                self.delegate?.ideaDeleted(with: self.tradeIdea.parseObject)
+            }
+            threeDotsAlert.addAction(deleteIdea)
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .Cancel) { action in
+        }
+        
+        threeDotsAlert.addAction(cancel)
+        
+        if let presenter = threeDotsAlert.popoverPresentationController {
+            presenter.sourceView = viewRect;
+            presenter.sourceRect = viewRect.bounds;
+        }
+        
+        UIApplication.topViewController()?.presentViewController(threeDotsAlert, animated: true, completion: nil)
+        threeDotsAlert.view.tintColor = Constants.stockSwipeGreenColor
+        
     }
     
     func handleGestureRecognizer(tapGestureRecognizer: UITapGestureRecognizer) {
@@ -132,18 +229,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
         self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
-        
-        let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
-        
-        let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.nestedUsername.addGestureRecognizer(tapGestureRecognizerNestedUsername)
     }
     
     func configureNestedTradeIdea(tradeIdea: TradeIdea!) {
         
         guard let object = tradeIdea?.parseObject else { return }
-            
+        
         guard let nestedTradeIdeaObject = object.objectForKey("reshare_of") as? PFObject else {
             self.nestedTradeIdeaStack.hidden = true
             return
@@ -179,6 +270,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         let description = nestedTradeIdeaObject["description"] as! String
         self.nestedIdeaDescription.text = description
+        
+        let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+        self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
+        
+        let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+        self.nestedUsername.addGestureRecognizer(tapGestureRecognizerNestedUsername)
         
         self.nestedTradeIdea = TradeIdea(user: nestedTradeIdeaObject["user"] as! PFUser, stock: nestedTradeIdeaObject["stock"] as! PFObject, description: nestedTradeIdeaObject["description"] as! String, likeCount: nestedTradeIdeaObject["liked_by"]?.count, reshareCount: nestedTradeIdeaObject["reshared_by"]?.count, publishedDate: nestedTradeIdeaObject.createdAt, parseObject: nestedTradeIdeaObject)
     }
@@ -267,7 +364,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     func checkReshare(tradeIdea: TradeIdea!, sender: UIButton?) {
         
         guard let sender = sender else { return }
-    
+        
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             if let object = tradeIdea?.parseObject {
                 if let reshared_by = object["reshared_by"] as? [PFUser] {
@@ -380,6 +477,96 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     }
                 })
             })
+        }
+    }
+    
+    func blockAction(user: PFUser) -> UIAlertAction {
+        
+        let currentUser = PFUser.currentUser()
+        
+        if let blocked_users = currentUser!["blocked_users"] as? [PFUser], let blockedUser = blocked_users .find({ $0.objectId == user.objectId }) {
+            
+            let unblockUser = UIAlertAction(title: "Unblock", style: .Default) { action in
+                
+                currentUser!.removeObject(blockedUser, forKey: "blocked_users")
+                
+                currentUser!.saveEventually()
+            }
+            
+            return unblockUser
+            
+        } else {
+            
+            let blockUser = UIAlertAction(title: "Block", style: .Default) { action in
+                
+                SweetAlert().showAlert("Block @\(self.tradeIdea.user.username!)?", subTitle: "@\(self.tradeIdea.user.username!) will not be able to follow or view your ideas, and you will not see anything from @\(self.tradeIdea.user.username!)", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.stockSwipeGreenColor, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+                    
+                    if isOtherButton {
+                        self.handleBlock(user)
+                    }
+                }
+            }
+            
+            return blockUser
+        }
+    }
+    
+    func handleBlock(user: PFUser) {
+        
+        guard let currentUser = PFUser.currentUser() else { return }
+        
+        if currentUser.objectForKey("blocked_users") != nil {
+            
+            currentUser.addUniqueObject(user, forKey: "blocked_users")
+            
+        } else {
+            
+            currentUser.setObject([user], forKey: "blocked_users")
+        }
+        
+        currentUser.saveEventually { (success, error) in
+            
+            if success {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.Success)
+                })
+                
+                QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: user) { (result) in
+                    
+                    do {
+                        
+                        let userActivityObject = try result()
+                        
+                        userActivityObject?.first?.deleteEventually()
+                        
+                        
+                        
+                    } catch {
+                        
+                        // TO-DO: handle error
+                        
+                    }
+                }
+                
+                QueryHelper.sharedInstance.queryUserActivityFor(user, toUser: currentUser) { (result) in
+                    
+                    do {
+                        
+                        let userActivityObject = try result()
+                        
+                        userActivityObject?.first?.deleteEventually()
+                        
+                    } catch {
+                        
+                        // TO-DO: handle error
+                        
+                    }
+                }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                })
+            }
         }
     }
 }

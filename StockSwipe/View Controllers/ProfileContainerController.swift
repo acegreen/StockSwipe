@@ -61,6 +61,10 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
         segmentedControl.layer.transform = segmentedControlTransform
     }
     
+    func didReloadProfileTableView() {
+        layoutSegementedControl()
+    }
+    
     func layoutSegementedControl() {
         
         guard var user = user else { return }

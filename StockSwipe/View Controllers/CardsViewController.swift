@@ -529,11 +529,11 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         if wasChosenWithDirection == MDCSwipeDirection.Left {
             
-            Functions.registerUserChoice(chartChoosen, and: chartChoosen.parseObject, with: .SHORT)
+            Functions.registerUserChoice(chartChoosen, with: .SHORT)
             
         } else if wasChosenWithDirection == MDCSwipeDirection.Right {
             
-            Functions.registerUserChoice(chartChoosen, and: chartChoosen.parseObject, with: .LONG)
+            Functions.registerUserChoice(chartChoosen, with: .LONG)
             
         } else if wasChosenWithDirection == MDCSwipeDirection.Up {
             

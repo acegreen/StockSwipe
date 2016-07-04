@@ -290,11 +290,11 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                         
                         if !isOtherButton {
                             
-                            Functions.registerUserChoice(chart, and: chart.parseObject, with: .LONG)
+                            Functions.registerUserChoice(chart, with: .LONG)
                             
                         } else if isOtherButton {
                             
-                            Functions.registerUserChoice(chart, and: chart.parseObject, with: .SHORT)
+                            Functions.registerUserChoice(chart, with: .SHORT)
                         }
                     }
                     

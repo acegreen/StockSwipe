@@ -12,6 +12,7 @@ import DZNEmptyDataSet
 
 protocol ProfileTableVieDelegate {
     func subScrollViewDidScroll(scrollView: UIScrollView)
+    func didReloadProfileTableView()
 }
 
 class ProfileTableViewController: UITableViewController, CellType, SubSegmentedControlDelegate, SegueHandlerType {
@@ -41,13 +42,15 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     @IBOutlet var avatarImage:UIImageView!
     @IBOutlet var usernameLabel: UILabel!
     @IBOutlet var locationLabel: UILabel!
-    @IBOutlet var followButton: UIButton!
+    @IBOutlet var followButton: FollowButton!
     
-    @IBAction func followButtonPressed(sender: UIButton) {
-        registerFollow(sender: sender)
+    @IBAction func followButtonPressed(sender: FollowButton) {
+        self.registerFollow(sender)
     }
     
     @IBAction func refreshControlAction(sender: UIRefreshControl) {
+        
+        self.getProfile()
         
         switch selectedSegmentIndex {
         case .Zero, .Three:
@@ -57,6 +60,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         case .Two:
             getUsersFollowers()
         }
+        
+        self.delegate?.didReloadProfileTableView()
     }
     
     @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
@@ -391,21 +396,28 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         }
     }
     
-    func checkFollow(sender: UIButton) {
+    func checkFollow(sender: FollowButton) {
         
         guard let currentUser = PFUser.currentUser() else { return }
-        guard let user = self.user else { return }
+        guard let userObject = self.user?.userObject else { return }
         
-        QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: user.userObject) { (result) in
+        print(currentUser["blocked_users"] as? [PFUser])
+        
+        if let blocked_users = currentUser["blocked_users"] as? [PFUser] where blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
+            sender.buttonState = FollowButton.state.Blocked
+            return
+        }
+        
+        QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: userObject) { (result) in
             
             do {
                 
                 let userActivityObject = try result()
                 
                 if userActivityObject?.first != nil {
-                    sender.selected = true
+                    sender.buttonState = FollowButton.state.Following
                 } else {
-                    sender.selected = false
+                    sender.buttonState = FollowButton.state.NotFollowing
                 }
                 
             } catch {
@@ -413,16 +425,28 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         }
     }
     
-    func registerFollow(sender sender: UIButton) {
+    func registerFollow(sender: FollowButton) {
         
         guard let currentUser = PFUser.currentUser() else {
             Functions.isUserLoggedIn(UIApplication.topViewController()!)
             return
         }
         
-        guard let user = self.user else { return }
+        guard let userObject = self.user?.userObject else { return }
         
-        QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: user.userObject) { (result) in
+        if let blocked_users = currentUser["blocked_users"] as? [PFUser], let blockedUser = blocked_users .find({ $0.objectId == userObject.objectId }) {
+            
+            currentUser.removeObject(blockedUser, forKey: "blocked_users")
+            
+            currentUser.saveEventually({ (success, error) in
+                if success {
+                    sender.buttonState = FollowButton.state.NotFollowing
+                }
+            })
+            return
+        }
+        
+        QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: userObject) { (result) in
             
             do {
                 
@@ -432,19 +456,19 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     
                     let userActivityObject = PFObject(className: "UserActivity")
                     userActivityObject["fromUser"] = currentUser
-                    userActivityObject["toUser"] = user.userObject
+                    userActivityObject["toUser"] = userObject
                     
                     userActivityObject.saveInBackgroundWithBlock({ (success, error) in
                         
                         if success {
-                            sender.selected = true
+                            sender.buttonState = FollowButton.state.Following
                         } else {
-                            sender.selected = false
+                            sender.buttonState = FollowButton.state.NotFollowing
                         }
                     })
                 } else {
                     userActivityObject?.first?.deleteEventually()
-                    sender.selected = false
+                    sender.buttonState = FollowButton.state.NotFollowing
                 }
                 
             } catch {
@@ -453,6 +477,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 
             }
         }
+
     }
     
     func updateRefreshDate() {
@@ -493,6 +518,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         case .Zero:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
             cell.configureCell(tradeIdeas[indexPath.row])
+            cell.delegate = self
             return cell
         case .One:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as UserCell
@@ -505,6 +531,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         case .Three:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
             cell.configureCell(likedTradeIdeas[indexPath.row])
+            cell.delegate = self
             return cell
         }
     }
@@ -516,28 +543,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         }
         
         return false
-    }
-    
-    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
-        
-        if editingStyle == .Delete {
-            
-            guard let tradeIdeaAtIndex = tradeIdeas.get(indexPath.row) else { return }
-            
-            if let resharedOf = tradeIdeaAtIndex.parseObject.objectForKey("reshare_of") as? PFObject {
-                
-                if let reshared_by = resharedOf["reshared_by"] as? [PFUser] {
-                    if let _ = reshared_by.find({ $0.objectId == PFUser.currentUser()?.objectId }) {
-                        resharedOf.removeObject(PFUser.currentUser()!, forKey: "reshared_by")
-                        resharedOf.saveEventually()
-                    }
-                }
-            }
-            
-            tradeIdeaAtIndex.parseObject.deleteEventually()
-            self.tradeIdeas.removeAtIndex(indexPath.row)
-            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Fade)
-        }
     }
     
     override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
@@ -558,17 +563,42 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         case .TradeIdeaDetailSegueIdentifier:
             
             let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
+            destinationViewController.delegate = self
             
-            let cell = sender as! IdeaCell
+            guard let cell = sender as? IdeaCell else { return }
             destinationViewController.tradeIdea = cell.tradeIdea
             
         case .ProfileDetailSegueIdentifier:
             let profileContainerController = segue.destinationViewController as! ProfileContainerController
             profileContainerController.navigationItem.rightBarButtonItem = nil
             
-            let cell = sender as! UserCell
+            guard let cell = sender as? UserCell  else { return }
             profileContainerController.user = User(userObject: cell.user)
 
+        }
+    }
+}
+
+extension ProfileTableViewController: IdeaPostDelegate {
+    
+    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
+        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+        self.tradeIdeas.insert(tradeIdea, atIndex: 0)
+        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        
+        self.tableView.reloadEmptyDataSet()
+    }
+    
+    func ideaDeleted(with parseObject: PFObject) {
+        
+        if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
+            let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(tradeIdea)!, inSection: 0)
+            self.tradeIdeas.removeObject(tradeIdea)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        }
+        
+        if tradeIdeas.count == 0 {
+            self.tableView.reloadEmptyDataSet()
         }
     }
 }

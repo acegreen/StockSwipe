@@ -11,20 +11,26 @@ import Parse
 
 class UserCell: UITableViewCell {
     
+    var user: PFUser!
+    
     @IBOutlet private weak var userAvatar: UIImageView!
     
     @IBOutlet private weak var username: UILabel!
     
     @IBOutlet private weak var userLocation: UILabel!
     
-    var user:PFUser!
+    @IBOutlet var blockButton: BlockButton!
+    
+    @IBAction func blockButton(sender: BlockButton) {
+        registerBlock(sender)
+    }
 
     func configureCell(user: PFUser?) {
         
         guard let user = user else { return }
         self.user = user
         
-        user.fetchInBackgroundWithBlock({ (user, error) in
+        user.fetchIfNeededInBackgroundWithBlock({ (user, error) in
             
             guard let user = user as? PFUser else { return }
             
@@ -57,6 +63,8 @@ class UserCell: UITableViewCell {
             
             let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
             self.username.addGestureRecognizer(tapGestureRecognizerMainUsername)
+            
+            self.checkBlock(self.blockButton)
         })
     }
     
@@ -73,4 +81,89 @@ class UserCell: UITableViewCell {
         UIApplication.topViewController()?.showViewController(profileContainerController, sender: self)
     }
     
+    func checkBlock(sender: BlockButton?) {
+        
+        guard let sender = sender else { return }
+        
+        guard let currentUser = PFUser.currentUser() else { return }
+        guard let user = self.user else { return }
+        
+        print(currentUser["blocked_users"] as? [PFUser])
+        
+        if let blocked_users = currentUser["blocked_users"] as? [PFUser] where blocked_users.find({ $0.objectId == user.objectId }) != nil {
+            sender.buttonState = BlockButton.state.Blocked
+            return
+        }
+    }
+    
+    func registerBlock(sender: BlockButton) {
+        
+        guard let currentUser = PFUser.currentUser() else { return }
+        
+        if let blocked_users = currentUser["blocked_users"] as? [PFUser], let blockedUser = blocked_users .find({ $0.objectId == user.objectId })   {
+            
+            currentUser.removeObject(blockedUser, forKey: "blocked_users")
+            
+            currentUser.saveEventually({ (success, error) in
+                sender.buttonState = BlockButton.state.Unblocked
+            })
+            return
+        }
+        
+        if currentUser.objectForKey("blocked_users") != nil {
+            
+            currentUser.addUniqueObject(user, forKey: "blocked_users")
+            
+        } else {
+            
+            currentUser.setObject([user], forKey: "blocked_users")
+        }
+        
+        currentUser.saveEventually { (success, error) in
+            
+            if success {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.Success)
+                })
+                
+                sender.buttonState = .Blocked
+                
+                QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: self.user) { (result) in
+                    
+                    do {
+                        
+                        let userActivityObject = try result()
+                        
+                        userActivityObject?.first?.deleteEventually()
+                        
+                        
+                        
+                    } catch {
+                        
+                        // TO-DO: handle error
+                        
+                    }
+                }
+                
+                QueryHelper.sharedInstance.queryUserActivityFor(self.user, toUser: currentUser) { (result) in
+                    
+                    do {
+                        
+                        let userActivityObject = try result()
+                        
+                        userActivityObject?.first?.deleteEventually()
+                        
+                    } catch {
+                        
+                        // TO-DO: handle error
+                        
+                    }
+                }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                })
+            }
+        }
+    }
 }

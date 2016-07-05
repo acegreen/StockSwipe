@@ -103,13 +103,16 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             } catch {
                 
                 // TO-DO: Show sweet alert with Error.message()
-                if self.refreshControl?.refreshing == true {
-                    self.refreshControl?.endRefreshing()
-                    self.updateRefreshDate()
-                }
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    self.tableView.reloadData()
+                    
+                    if self.refreshControl?.refreshing == true {
+                        self.refreshControl?.endRefreshing()
+                        self.updateRefreshDate()
+                    }
+                })
             }
         }
-
     }
     
     func loadMoreTradeIdeas(skip skip: Int) {

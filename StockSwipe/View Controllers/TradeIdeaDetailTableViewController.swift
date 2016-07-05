@@ -80,10 +80,15 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             } catch {
                 
                 // TO-DO: Show sweet alert with Error.message()
-                if self.refreshControl?.refreshing == true {
-                    self.refreshControl?.endRefreshing()
-                    self.updateRefreshDate()
-                }
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    let indexSet = NSIndexSet(index: 1)
+                    self.tableView.reloadSections(indexSet, withRowAnimation: .Automatic)
+                    
+                    if self.refreshControl?.refreshing == true {
+                        self.refreshControl?.endRefreshing()
+                        self.updateRefreshDate()
+                    }
+                })
             }
         }
 

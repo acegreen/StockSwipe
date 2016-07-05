@@ -136,8 +136,6 @@ class UserCell: UITableViewCell {
                         
                         userActivityObject?.first?.deleteEventually()
                         
-                        
-                        
                     } catch {
                         
                         // TO-DO: handle error

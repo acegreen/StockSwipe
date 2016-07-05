@@ -81,7 +81,6 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     if let error = error as? Constants.Errors {
                         
                         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            
                             SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
                         })
                     }

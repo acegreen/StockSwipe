@@ -15,6 +15,7 @@ class FollowButton: UIButton {
         case Following
         case NotFollowing
         case Blocked
+        case Disabled
         
         static let allStates = [Following, NotFollowing, Blocked]
     }
@@ -28,18 +29,28 @@ class FollowButton: UIButton {
                 tintColor = Constants.stockSwipeGreenColor
                 setImage(UIImage(named: "user_add"), forState: .Normal)
                 self.setTitle("Follow", forState: .Normal)
+                self.enabled = true
             case .Following:
                 backgroundColor = Constants.stockSwipeGreenColor
                 borderColor = Constants.stockSwipeGreenColor
                 tintColor = UIColor.whiteColor()
                 setImage(UIImage(named: "user_checked"), forState: .Normal)
                 setTitle("Following", forState: .Normal)
+                self.enabled = true
             case .Blocked:
                 backgroundColor = UIColor.redColor()
                 borderColor = UIColor.whiteColor()
                 tintColor = UIColor.whiteColor()
                 setImage(UIImage(named: "user_blocked"), forState: .Normal)
                 setTitle("Blocked", forState: .Normal)
+                self.enabled = true
+            case .Disabled:
+                backgroundColor = UIColor.whiteColor()
+                borderColor = Constants.stockSwipeFontColor
+                tintColor = Constants.stockSwipeFontColor
+                setImage(UIImage(named: "user_add"), forState: .Normal)
+                self.setTitle("Follow", forState: .Normal)
+                self.enabled = false
             }
         }
     }

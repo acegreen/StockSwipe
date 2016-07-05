@@ -30,6 +30,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     var delegate: ProfileTableVieDelegate!
     
     var user: User?
+    var isCurrentUserBlocked: Bool = false
+    var isUserBlocked: Bool = false
+    var shouldShowProfile: Bool = true
     
     var tradeIdeas = [TradeIdea]()
     var followingUsers = [PFUser]()
@@ -50,7 +53,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     @IBAction func refreshControlAction(sender: UIRefreshControl) {
         
-        self.getProfile()
+        getProfile()
         
         switch selectedSegmentIndex {
         case .Zero, .Three:
@@ -138,7 +141,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     // TO-DO: Show sweet alert with Error.message()
                     
                 }
-                
             })
         }
         
@@ -150,19 +152,38 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             self.locationLabel.text = location
         }
         
+        checkBlocked()
         checkFollow(self.followButton)
+    }
+    
+    func checkBlocked() {
+
+        guard let currentUser = PFUser.currentUser() else { return }
+        guard let userObject = self.user?.userObject else { return }
+        
+        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] where users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
+            self.isCurrentUserBlocked = true
+            self.shouldShowProfile = false
+            self.tableView.reloadEmptyDataSet()
+            return
+        }
+        
+        if let blocked_users = currentUser["blocked_users"] as? [PFUser] where blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
+            self.isUserBlocked = true
+            self.tableView.reloadEmptyDataSet()
+            return
+        }
     }
     
     func getUserTradeIdeas() {
         
-        guard let user = user else {
-            return
-        }
+        guard !isCurrentUserBlocked else { return }
+        guard let userObject = self.user?.userObject else { return }
         
         switch selectedSegmentIndex {
         case .Zero:
             
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user.userObject, skip: 0, limit: 15) { (result) in
+            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: userObject, skip: 0, limit: 15) { (result) in
                 
                 do {
                     
@@ -188,10 +209,14 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 } catch {
                     
                     // TO-DO: Show sweet alert with Error.message()
-                    if self.refreshControl?.refreshing == true {
-                        self.refreshControl?.endRefreshing()
-                        self.updateRefreshDate()
-                    }
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.tableView.reloadData()
+                        
+                        if self.refreshControl?.refreshing == true {
+                            self.refreshControl?.endRefreshing()
+                            self.updateRefreshDate()
+                        }
+                    })
                 }
             }
             
@@ -200,7 +225,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         case .Two:
             return
         case .Three:
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("liked_by", object: user.userObject, skip: 0, limit: 15) { (result) in
+            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("liked_by", object: userObject, skip: 0, limit: 15) { (result) in
                 
                 do {
                     
@@ -226,10 +251,14 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 } catch {
                     
                     // TO-DO: Show sweet alert with Error.message()
-                    if self.refreshControl?.refreshing == true {
-                        self.refreshControl?.endRefreshing()
-                        self.updateRefreshDate()
-                    }
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.tableView.reloadData()
+                        
+                        if self.refreshControl?.refreshing == true {
+                            self.refreshControl?.endRefreshing()
+                            self.updateRefreshDate()
+                        }
+                    })
                 }
             }
         }
@@ -237,6 +266,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func loadMoreTradeIdeas(skip skip: Int) {
         
+        guard !isCurrentUserBlocked else { return }
         guard let user = user else { return }
         
         if self.refreshControl?.refreshing == false && !self.footerActivityIndicator.isAnimating() {
@@ -273,11 +303,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 } catch {
                     
                     // TO-DO: Show sweet alert with Error.message()
-                    if self.footerActivityIndicator?.isAnimating() == true {
-                        self.footerActivityIndicator.stopAnimating()
-                        self.updateRefreshDate()
-                    }
-                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if self.footerActivityIndicator?.isAnimating() == true {
+                            self.footerActivityIndicator.stopAnimating()
+                            self.updateRefreshDate()
+                        }
+                    })
                 }
             }
         case .One:
@@ -314,11 +345,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 } catch {
                     
                     // TO-DO: Show sweet alert with Error.message()
-                    if self.footerActivityIndicator?.isAnimating() == true {
-                        self.footerActivityIndicator.stopAnimating()
-                        self.updateRefreshDate()
-                    }
-                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if self.footerActivityIndicator?.isAnimating() == true {
+                            self.footerActivityIndicator.stopAnimating()
+                            self.updateRefreshDate()
+                        }
+                    })
                 }
             }
         }
@@ -326,6 +358,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func getUsersFollowing() {
         
+        guard !isCurrentUserBlocked else { return }
         guard let user = user else { return }
         
         QueryHelper.sharedInstance.queryUserActivityFor(user.userObject, toUser: nil) { (result) in
@@ -345,23 +378,28 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         self.tableView.reloadData()
                     }
                     
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if self.refreshControl?.refreshing == true {
+                            self.refreshControl?.endRefreshing()
+                            self.updateRefreshDate()
+                        }
+                    })
+                })
+                
+            } catch {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     if self.refreshControl?.refreshing == true {
                         self.refreshControl?.endRefreshing()
                         self.updateRefreshDate()
                     }
                 })
-                
-            } catch {
-                if self.refreshControl?.refreshing == true {
-                    self.refreshControl?.endRefreshing()
-                    self.updateRefreshDate()
-                }
             }
         }
     }
     
     func getUsersFollowers() {
         
+        guard !isCurrentUserBlocked else { return }
         guard let user = user else { return }
         
         QueryHelper.sharedInstance.queryUserActivityFor(nil, toUser: user.userObject) { (result) in
@@ -381,17 +419,21 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         self.tableView.reloadData()
                     }
                     
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if self.refreshControl?.refreshing == true {
+                            self.refreshControl?.endRefreshing()
+                            self.updateRefreshDate()
+                        }
+                    })
+                })
+                
+            } catch {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     if self.refreshControl?.refreshing == true {
                         self.refreshControl?.endRefreshing()
                         self.updateRefreshDate()
                     }
                 })
-                
-            } catch {
-                if self.refreshControl?.refreshing == true {
-                    self.refreshControl?.endRefreshing()
-                    self.updateRefreshDate()
-                }
             }
         }
     }
@@ -401,7 +443,10 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let currentUser = PFUser.currentUser() else { return }
         guard let userObject = self.user?.userObject else { return }
         
-        print(currentUser["blocked_users"] as? [PFUser])
+        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] where users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
+            sender.buttonState = FollowButton.state.Disabled
+            return
+        }
         
         if let blocked_users = currentUser["blocked_users"] as? [PFUser] where blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
             sender.buttonState = FollowButton.state.Blocked
@@ -609,17 +654,24 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
     
 //    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
 //        
-//        switch selectedSegmentIndex {
-//        case .Zero:
-//            return UIImage(assetIdentifier: .ideaGuyImage)
-//        case .One, .Two, .Three:
-//            return UIImage(assetIdentifier: .comingSoonImage)
+//        guard !isCurrentUserBlocked else {
+//            return UIImage(assetIdentifier: .UserBlockedBig)
 //        }
 //    }
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle: NSAttributedString!
+        
+        guard !isCurrentUserBlocked else {
+            attributedTitle = NSAttributedString(string: "", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+            return attributedTitle
+        }
+        
+        guard !isUserBlocked else {
+            attributedTitle = NSAttributedString(string: "@\(self.user!.userObject.username!) is blocked", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+            return attributedTitle
+        }
         
         switch selectedSegmentIndex {
         case .Zero:
@@ -635,7 +687,29 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
         return attributedTitle
     }
     
+    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+        
+        let attributedTitle: NSAttributedString!
+        
+        guard !isCurrentUserBlocked else {
+            attributedTitle = NSAttributedString(string: "You are blocked from following @\(self.user!.userObject.username!) and viewing their profile", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+            return attributedTitle
+        }
+        
+        guard !isUserBlocked else {
+            attributedTitle = NSAttributedString(string: "Are you sure you want to view this profile? Viewing this profile won't unblock @\(self.user!.userObject.username!)", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+            return attributedTitle
+        }
+        
+        return NSAttributedString(string: "", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+    }
+    
     func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
         return (self.tableView.frame.midY - self.headerView.frame.midY) / 2
     }
+    
+//    func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
+//        shouldShowProfile = true
+//        self.refreshControlAction(self.refreshControl!)
+//    }
 }

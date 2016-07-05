@@ -43,12 +43,17 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
     var delegate: SubSegmentedControlDelegate!
     
     var user: User?
+    var isCurrentUserBlocked: Bool = false
+    var isUserBlocked: Bool = false
+    var shouldShowProfile: Bool = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         containerView.layer.zPosition = 0
         segmentedControl.layer.zPosition = 1
+        
+        checkBlocked()
         
         layoutSegementedControl()
     }
@@ -65,8 +70,26 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
         layoutSegementedControl()
     }
     
+    func checkBlocked() {
+        
+        guard let currentUser = PFUser.currentUser() else { return }
+        guard let userObject = self.user?.userObject else { return }
+        
+        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] where users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
+            self.isCurrentUserBlocked = true
+            self.shouldShowProfile = false
+            return
+        }
+        
+        if let blocked_users = currentUser["blocked_users"] as? [PFUser] where blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
+            self.isUserBlocked = true
+            return
+        }
+    }
+    
     func layoutSegementedControl() {
         
+        guard !isCurrentUserBlocked else { return }
         guard var user = user else { return }
         
         let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()

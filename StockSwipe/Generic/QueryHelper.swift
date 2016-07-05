@@ -192,6 +192,14 @@ public class QueryHelper {
         let userQuery = PFUser.query()
         userQuery?.whereKey("username", equalTo: username)
         
+//        if let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
+//            userQuery?.whereKey("user", notContainedIn: blockedUsers)
+//        }
+//        
+//        if let currentUser = PFUser.currentUser() {
+//            userQuery?.whereKey("blocked_users", notEqualTo: currentUser)
+//        }
+        
         userQuery?.findObjectsInBackgroundWithBlock { (object, error) -> Void in
             
             guard error == nil else {
@@ -252,16 +260,12 @@ public class QueryHelper {
         }
         
         if key != "user", let currentUser = PFUser.currentUser() {
-            tradeIdeaQuery.whereKey("user.blocked_users", notEqualTo: currentUser)
+            
+            let subTradeIdeaQuery = PFUser.query()
+            subTradeIdeaQuery?.whereKey("blocked_users", notEqualTo: currentUser)
+            
+            tradeIdeaQuery.whereKey("user", matchesQuery: subTradeIdeaQuery!)
         }
-        
-//        if key != "user", let currentUser = PFUser.currentUser() {
-//            
-//            let subTradeIdeaQuery = PFQuery(className:"TradeIdea")
-//            subTradeIdeaQuery.whereKey("user.blocked_users", notEqualTo: currentUser)
-//            
-//            tradeIdeaQuery.whereKey("user", matchesQuery: subTradeIdeaQuery)
-//        }
         
         tradeIdeaQuery.orderByDescending("createdAt")
         
@@ -299,6 +303,14 @@ public class QueryHelper {
         
         if key != "user", let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             tradeIdeaQuery.whereKey("user", notContainedIn: blockedUsers)
+        }
+        
+        if key != "user", let currentUser = PFUser.currentUser() {
+            
+            let subTradeIdeaQuery = PFUser.query()
+            subTradeIdeaQuery?.whereKey("blocked_users", notEqualTo: currentUser)
+            
+            tradeIdeaQuery.whereKey("user", matchesQuery: subTradeIdeaQuery!)
         }
         
         tradeIdeaQuery.countObjectsInBackgroundWithBlock { (count, error) in

@@ -10,7 +10,11 @@ import UIKit
 import Parse
 import DZNEmptyDataSet
 
-class BlockedAccountsTableViewController: UITableViewController {
+class BlockedAccountsTableViewController: UITableViewController, SegueHandlerType {
+    
+    enum SegueIdentifier: String {
+        case ProfileSegueIdentifier = "ProfileSegueIdentifier"
+    }
     
     var blocked_users = [PFUser]()
 
@@ -60,20 +64,28 @@ class BlockedAccountsTableViewController: UITableViewController {
         return cell
     }
 
-    /*
     // MARK: - Navigation
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        
+        let segueIdentifier = segueIdentifierForSegue(segue)
+        
+        switch segueIdentifier {
+        case .ProfileSegueIdentifier:
+            
+            let destinationViewController = segue.destinationViewController as! ProfileContainerController
+        
+            guard let cell = sender as? UserCell else { return }
+            destinationViewController.user = User(userObject: cell.user)
+            
+            // Just a workaround.. There should be a cleaner way to sort this out
+            destinationViewController.navigationItem.rightBarButtonItem = nil
+        }
     }
-    */
-
 }
 
 extension BlockedAccountsTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    
+ 
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle = NSAttributedString(string: "No blocked accounts", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])

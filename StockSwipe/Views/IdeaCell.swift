@@ -539,8 +539,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         
                         userActivityObject?.first?.deleteEventually()
                         
-                        
-                        
                     } catch {
                         
                         // TO-DO: handle error

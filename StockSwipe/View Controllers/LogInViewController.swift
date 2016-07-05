@@ -258,47 +258,59 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 let result = JSON(data: data)
                 
                 print(result)
-
-                if let twitterEmail = result["email"].string {
+                
+                var firstName: String?
+                var lastName: String?
+                
+                if let twitterUsername = PFTwitterUtils.twitter()?.screenName {
+                    user.username = twitterUsername
+                    user["username_lowercase"] = user.username!.lowercaseString
+                }
+                
+                if let twitterName = result["name"].string {
+                    user["full_name"] = twitterName
                     
-                    PFUser.currentUser()!.email = twitterEmail
+                    firstName = twitterName.componentsSeparatedByString(" ").first
+                    lastName = twitterName.componentsSeparatedByString(" ").last
+                    
+                } else {
+                    user["full_name"] = PFTwitterUtils.twitter()?.screenName
+                }
+
+                if let twitterEmail = result["email"].string  where user.email?.isEmpty == true {
+                    user.email = twitterEmail
                 }
                 
                 if let location = result["location"].string {
-                    
-                    PFUser.currentUser()!["location"] = location
-                    
+                    user["location"] = location
                 }
                 
                 if let profilePictureURL = result["profile_image_url_https"].URL?.absoluteString {
-                    
-                    PFUser.currentUser()!["profile_image_url"] = profilePictureURL.stringByReplacingOccurrencesOfString("_normal", withString: "")
+                    user["profile_image_url"] = profilePictureURL.stringByReplacingOccurrencesOfString("_normal", withString: "")
                 }
                 
                 if let profileBannerURL = result["profile_banner_url"].URL?.absoluteString {
-                    
-                    PFUser.currentUser()!["profile_banner_url"] = profileBannerURL
+                    user["profile_banner_url"] = profileBannerURL
                 }
                 
-                let twitterUsername = PFTwitterUtils.twitter()!.screenName
-                
-                PFUser.currentUser()!.username = twitterUsername
-                
-                PFUser.currentUser()!.saveInBackgroundWithBlock({ (success, error) in
+                user.saveInBackgroundWithBlock({ (success, error) in
                     if success {
                     
                         // register current installation
                         let currentInstallation: PFInstallation = PFInstallation.currentInstallation()
-                        currentInstallation["user"] = PFUser.currentUser()
+                        currentInstallation["user"] = user
                         currentInstallation.saveInBackground()
                         
                         // register to LaunchKit
-                        LaunchKit.sharedInstance().setUserIdentifier(PFUser.currentUser()!.objectId, email: PFUser.currentUser()!.email, name: PFUser.currentUser()!.username)
+                        LaunchKit.sharedInstance().setUserIdentifier(user.objectId, email: user.email, name: user.username)
                         
                         // register to MailChimp
-                        self.registerUserMailChimp("4266807125", firstName: nil,lastName: nil,username: PFUser.currentUser()!.username, email: PFUser.currentUser()!.email)
+                        self.registerUserMailChimp("4266807125", firstName: firstName, lastName: lastName, username: user.username, email: user.email)
                         
-                        //            if let authData = PFUser.currentUser()?.performSelector(Selector("authData")).takeUnretainedValue() {
+                        // send delegate info
+                        self.loginDelegate?.didLoginSuccessfully()
+                        
+                        //            if let authData = user.performSelector(Selector("authData")).takeUnretainedValue() {
                         //
                         //                print(authData["twitter"]!!["id"])
                         //
@@ -311,8 +323,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         self.dismissViewControllerAnimated(true, completion: nil)
                         
                         SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.Success)
-                        
-                        self.loginDelegate?.didLoginSuccessfully()
                     })
                 })
                 
@@ -327,13 +337,14 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
             // Get user email
             let accessToken = FBSDKAccessToken.currentAccessToken()
+            
             if accessToken != nil {
         
                 let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,name,location,picture.type(large),cover"], tokenString: accessToken.tokenString, version: nil, HTTPMethod: "GET")
                 req.startWithCompletionHandler({ (connection, object, error) in
                     
-                    var firstName:String?
-                    var lastName:String?
+                    var firstName: String?
+                    var lastName: String?
                     
                     if error == nil {
                         
@@ -342,52 +353,56 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         guard result != nil else { return }
                         
                         print(result)
-                        
-                        if let facebookEmail = result["email"].string {
                             
-                            PFUser.currentUser()!.email = facebookEmail
-                            
+                        if let facebookNameFromName = result["name"].string where user.username?.isEmpty == true {
+                            user.username = facebookNameFromName.stringByReplacingOccurrencesOfString(" ", withString: "")
+                            user["username_lowercase"] = user.username!.lowercaseString
+                        } else if let facebookNameFromEmail = result["email"].string where user.username?.isEmpty == true {
+                            user.username = facebookNameFromEmail.componentsSeparatedByString("@").first?.stringByReplacingOccurrencesOfString(" ", withString: "")
+                            user["username_lowercase"] = user.username!.lowercaseString
                         }
                         
                         if let facebookName = result["name"].string {
+                            user["full_name"] = facebookName
                             
-                            PFUser.currentUser()!.username = facebookName
                             firstName = facebookName.componentsSeparatedByString(" ").first
                             lastName = facebookName.componentsSeparatedByString(" ").last
-                            
+                        }
+                        
+                        if let facebookEmail = result["email"].string where user.email?.isEmpty == true {
+                            user.email = facebookEmail
                         }
                         
                         if let location = result["location"]["name"].string {
-                            
-                            PFUser.currentUser()!["location"] = location
-                            
+                            user["location"] = location
                         }
                         
                         if let pictureURL = result["picture"]["data"]["url"].URL?.absoluteString {
-                            
-                            PFUser.currentUser()!["profile_image_url"] = pictureURL
+                            user["profile_image_url"] = pictureURL
                         }
                         
                         if let profileBannerURL = result["cover"]["source"].URL?.absoluteString {
-
-                            PFUser.currentUser()!["profile_banner_url"] = profileBannerURL
+                            user["profile_banner_url"] = profileBannerURL
                         }
                         
                     }
                     
-                    PFUser.currentUser()!.saveInBackgroundWithBlock({ (success, error) in
+                    user.saveInBackgroundWithBlock({ (success, error) in
                         
                         if success {
                             // register current installation
                             let currentInstallation: PFInstallation = PFInstallation.currentInstallation()
-                            currentInstallation["user"] = PFUser.currentUser()
+                            currentInstallation["user"] = user
                             currentInstallation.saveInBackground()
                             
                             // register to LaunchKit
-                            LaunchKit.sharedInstance().setUserIdentifier(PFUser.currentUser()!.objectId, email: PFUser.currentUser()!.email, name: PFUser.currentUser()!.username)
+                            LaunchKit.sharedInstance().setUserIdentifier(user.objectId, email: user.email, name: user.username)
                             
                             // register to MailChimp
-                            self.registerUserMailChimp("4266807125", firstName: firstName,lastName: lastName,username: PFUser.currentUser()!.username, email: PFUser.currentUser()!.email)
+                            self.registerUserMailChimp("4266807125", firstName: firstName, lastName: lastName, username: user.username, email: user.email)
+                            
+                            // send delegate info
+                            self.loginDelegate?.didLoginSuccessfully()
 
                         }
                         
@@ -396,8 +411,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                             self.dismissViewControllerAnimated(true, completion: nil)
                             
                             SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.Success)
-                            
-                            self.loginDelegate?.didLoginSuccessfully()
                         })
                     })
                 })

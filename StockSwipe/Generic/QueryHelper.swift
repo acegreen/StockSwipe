@@ -190,7 +190,7 @@ public class QueryHelper {
         }
         
         let userQuery = PFUser.query()
-        userQuery?.whereKey("username", equalTo: username)
+        userQuery?.whereKey("username_lowercase", equalTo: username.lowercaseString)
         
 //        if let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
 //            userQuery?.whereKey("user", notContainedIn: blockedUsers)

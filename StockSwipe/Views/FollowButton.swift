@@ -24,37 +24,37 @@ class FollowButton: UIButton {
         didSet {
             switch buttonState {
             case .NotFollowing:
+                enabled = true
                 backgroundColor = UIColor.whiteColor()
                 borderColor = Constants.stockSwipeGreenColor
                 tintColor = Constants.stockSwipeGreenColor
                 setTitleColor(Constants.stockSwipeGreenColor, forState: .Normal)
                 setImage(UIImage(named: "user_add"), forState: .Normal)
                 setTitle("Follow", forState: .Normal)
-                enabled = true
             case .Following:
+                enabled = true
                 backgroundColor = Constants.stockSwipeGreenColor
                 borderColor = Constants.stockSwipeGreenColor
                 tintColor = UIColor.whiteColor()
                 setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 setImage(UIImage(named: "user_checked"), forState: .Normal)
                 setTitle("Following", forState: .Normal)
-                enabled = true
             case .Blocked:
+                enabled = true
                 backgroundColor = UIColor.redColor()
                 borderColor = UIColor.whiteColor()
                 tintColor = UIColor.whiteColor()
                 setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 setImage(UIImage(named: "user_blocked"), forState: .Normal)
                 setTitle("Blocked", forState: .Normal)
-                enabled = true
             case .Disabled:
+                enabled = false
                 backgroundColor = UIColor.whiteColor()
                 borderColor = Constants.stockSwipeFontColor
                 tintColor = UIColor.lightGrayColor()
-                setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
-                setImage(UIImage(named: "user_add"), forState: .Normal)
+                setTitleColor(UIColor.lightGrayColor(), forState: .Disabled)
+                setImage(UIImage(named: "user_add"), forState: .Disabled)
                 setTitle("Follow", forState: .Normal)
-                enabled = false
             }
         }
     }

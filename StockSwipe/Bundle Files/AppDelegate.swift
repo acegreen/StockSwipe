@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         
         //configure
         SARate.sharedInstance().minAppStoreRaiting = 4
-        SARate.sharedInstance().eventsUntilPrompt = 10
+        SARate.sharedInstance().eventsUntilPrompt = 7
         SARate.sharedInstance().daysUntilPrompt = 7
         SARate.sharedInstance().remindPeriod = 0
         

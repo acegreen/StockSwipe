@@ -732,27 +732,5 @@ extension OverviewViewController {
     }
     
     func splashViewDidEndAnimating(splashView: SKSplashView) {
-        
-        if PFUser.currentUser() == nil && Settings.userDefaults.boolForKey("TUTORIAL_SHOWN") == false {
-            
-            let logInViewcontroller = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
-            self.presentViewController(logInViewcontroller, animated: true, completion: {
-                Settings.userDefaults.setBool(true, forKey: "TUTORIAL_SHOWN")
-            })
-            
-        } else if SARate.sharedInstance().eventCount >= SARate.sharedInstance().eventsUntilPrompt && Settings.userDefaults.boolForKey("FEEDBACK_GIVEN") == false {
-            
-            self.tabBarController?.performSegueWithIdentifier("FeedbackSegueIdentifier", sender: self)
-            SARate.sharedInstance().eventCount = 0
-            
-        } else {
-            
-            // Release notes on update
-            LaunchKit.sharedInstance().presentAppReleaseNotesIfNeededFromViewController(self, completion: { (didPresent) -> Void in
-                if didPresent {
-                    print("Woohoo, we showed the release notes card!")
-                }
-            })
-        }
     }
 }

@@ -15,9 +15,16 @@ import LaunchKit
 import ChimpKit
 import SwiftyJSON
 
+protocol LoginDelegate {
+    func didLoginSuccessfully()
+    func didLogoutSuccessfully()
+}
+
 class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
     
     static let sharedInstance = LoginViewController()
+    
+    var loginDelegate: LoginDelegate?
     
     var pageViewController: UIPageViewController!
     var pageImages: NSArray!
@@ -203,6 +210,8 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 LaunchKit.sharedInstance().setUserIdentifier(nil, email: nil, name: nil)
                 
                 SweetAlert().showAlert("Logged Out!", subTitle: "You are now logged out", style: AlertStyle.Success)
+                
+                self.loginDelegate?.didLogoutSuccessfully()
             }
         }
     }
@@ -302,6 +311,8 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         self.dismissViewControllerAnimated(true, completion: nil)
                         
                         SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.Success)
+                        
+                        self.loginDelegate?.didLoginSuccessfully()
                     })
                 })
                 
@@ -385,6 +396,8 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                             self.dismissViewControllerAnimated(true, completion: nil)
                             
                             SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.Success)
+                            
+                            self.loginDelegate?.didLoginSuccessfully()
                         })
                     })
                 })
@@ -396,8 +409,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 
             }
             
-            PFUser.logOut()
-            
+            self.logOut()
         }
         
 //        else if user.valueForKey("emailVerified") as? Bool == true {

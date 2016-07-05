@@ -220,6 +220,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         checkLike(tradeIdea, sender: self.likeButton)
         checkReshare(tradeIdea, sender: self.reshareButton)
+        checkMore()
         
         configureNestedTradeIdea(tradeIdea)
         
@@ -288,6 +289,16 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     func ideaDeleted(with parseObject: PFObject) {
         print("ideaDeleted")
+    }
+    
+    func checkMore() {
+        guard let _ = PFUser.currentUser() else {
+            
+            if threeDotsStack != nil && threeDotsStack.isDescendantOfView(self) {
+                threeDotsStack.hidden = true
+            }
+            return
+        }
     }
     
     func checkLike(tradeIdea: TradeIdea!, sender: UIButton?) {

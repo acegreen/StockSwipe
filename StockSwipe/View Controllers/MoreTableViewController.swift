@@ -11,7 +11,7 @@ import MessageUI
 import Crashlytics
 import Parse
 
-class MoreTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, SegueHandlerType, CellType {
+class MoreTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, SegueHandlerType, CellType, LoginDelegate {
     
     enum SegueIdentifier: String {
         
@@ -32,6 +32,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     }
     
     @IBOutlet var profileAvatarImage: UIImageView!
+    @IBOutlet var profileLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,12 +47,14 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     func updateProfile() {
         
         guard PFUser.currentUser() != nil else {
+            self.profileAvatarImage.image = UIImage(assetIdentifier: .UserDummyImage)
+            self.profileLabel.text = "My Profile"
             return
         }
         
-        guard PFUser.currentUser()!.authenticated else { return }
+        guard let currentUser = PFUser.currentUser() where currentUser.authenticated else { return }
         
-        if let profileImageURL = PFUser.currentUser()!.objectForKey("profile_image_url") as? String {
+        if let profileImageURL = currentUser.objectForKey("profile_image_url") as? String {
             
             QueryHelper.sharedInstance.queryWith(profileImageURL, completionHandler: { (result) in
                 
@@ -62,6 +65,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         let profileImage = UIImage(data: imageData)
                         self.profileAvatarImage.image = profileImage
+                        self.profileLabel.text = currentUser.username
                     })
                     
                 } catch {
@@ -70,6 +74,14 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                 
             })
         }
+    }
+    
+    func didLoginSuccessfully() {
+        self.updateProfile()
+    }
+    
+    func didLogoutSuccessfully() {
+        self.updateProfile()
     }
     
     // MARK: - Table view data source
@@ -199,12 +211,10 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         case .LogInOutCell:
             
             let logInViewcontroller = LoginViewController.sharedInstance
+            logInViewcontroller.loginDelegate = self
             
             if PFUser.currentUser() != nil {
                 logInViewcontroller.logOut()
-                
-                self.updateProfile()
-                
             } else {
                 logInViewcontroller.logIn(self)
             }

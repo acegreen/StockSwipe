@@ -729,9 +729,9 @@
 				23E7F69A1BCB57A0009A016D /* Sources */,
 				23E7F69B1BCB57A0009A016D /* Frameworks */,
 				23E7F69C1BCB57A0009A016D /* Resources */,
+				23B999891D122B0300E9BFE6 /* ShellScript */,
 				773D38C05ADA2DAD6FDEBBFE /* [CP] Copy Pods Resources */,
 				AD8A9E2DCD003A2F617336AE /* [CP] Embed Pods Frameworks */,
-				23B999891D122B0300E9BFE6 /* ShellScript */,
 				236DB51F1D0264F000CE9869 /* ShellScript */,
 			);
 			buildRules = (
@@ -751,9 +751,9 @@
 				8AC17D9C1AC7366A004E6D2D /* Sources */,
 				8AC17D9D1AC7366A004E6D2D /* Frameworks */,
 				8AC17D9E1AC7366A004E6D2D /* Resources */,
+				234F8EB41B14A48600A0E706 /* Run Script */,
 				98EB0D74F4064484A649AE33 /* Rollout.io dsym upload */,
 				23B8A9BD1B9E75DA0065D65E /* Embed Frameworks */,
-				234F8EB41B14A48600A0E706 /* Run Script */,
 				23E7F6AE1BCB57A0009A016D /* Embed App Extensions */,
 				816270F03CFA12797FF94487 /* [CP] Embed Pods Frameworks */,
 				1A12D03F3D98D4DD994CBE82 /* [CP] Copy Pods Resources */,

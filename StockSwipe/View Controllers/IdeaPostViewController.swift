@@ -163,31 +163,31 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             print("keyboardRect: ", keyboardRect)
             print("intersectionFrame:", intersectionFrame)
             
-            if self.isBeingPresentedInFormSheet() {
-                if UIDevice.currentDevice().orientation.isLandscape {
-                    self.preferredContentSize = CGSize(width: self.originalSize.width, height: self.originalSize.height - intersectionFrame.height)
-                } else if UIDevice.currentDevice().orientation.isPortrait {
-                    self.preferredContentSize = CGSize(width: self.originalSize.width, height: self.originalSize.height - intersectionFrame.height)
-                }
-            }
-            
-            UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
-                self.presentationController?.containerView?.setNeedsLayout()
-                self.presentationController?.containerView?.layoutIfNeeded()
-            })
+//            if self.isBeingPresentedInFormSheet() {
+//                if UIDevice.currentDevice().orientation.isLandscape {
+//                    self.preferredContentSize = CGSize(width: self.originalSize.width, height: self.originalSize.height - intersectionFrame.height)
+//                } else if UIDevice.currentDevice().orientation.isPortrait {
+//                    self.preferredContentSize = CGSize(width: self.originalSize.width, height: self.originalSize.height - intersectionFrame.height)
+//                }
+//            }
+//            
+//            UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
+//                self.presentationController?.containerView?.setNeedsLayout()
+//                self.presentationController?.containerView?.layoutIfNeeded()
+//            })
         }
     }
     
     func keyboardWillHide(n: NSNotification) {
         
-        if self.isBeingPresentedInFormSheet() {
-            self.preferredContentSize = CGSize(width: self.originalSize.width, height: self.originalSize.height)
-        }
-        
-        UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
-            self.presentationController?.containerView?.setNeedsLayout()
-            self.presentationController?.containerView?.layoutIfNeeded()
-        })
+//        if self.isBeingPresentedInFormSheet() {
+//            self.preferredContentSize = CGSize(width: self.originalSize.width, height: self.originalSize.height)
+//        }
+//        
+//        UIView.animateWithDuration(n.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue, animations: {() -> Void in
+//            self.presentationController?.containerView?.setNeedsLayout()
+//            self.presentationController?.containerView?.layoutIfNeeded()
+//        })
     }
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {

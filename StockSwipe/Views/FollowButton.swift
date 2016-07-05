@@ -20,37 +20,41 @@ class FollowButton: UIButton {
         static let allStates = [Following, NotFollowing, Blocked]
     }
     
-    var buttonState = state.Following {
+    var buttonState = state.NotFollowing {
         didSet {
             switch buttonState {
             case .NotFollowing:
                 backgroundColor = UIColor.whiteColor()
                 borderColor = Constants.stockSwipeGreenColor
                 tintColor = Constants.stockSwipeGreenColor
+                setTitleColor(Constants.stockSwipeGreenColor, forState: .Normal)
                 setImage(UIImage(named: "user_add"), forState: .Normal)
-                self.setTitle("Follow", forState: .Normal)
-                self.enabled = true
+                setTitle("Follow", forState: .Normal)
+                enabled = true
             case .Following:
                 backgroundColor = Constants.stockSwipeGreenColor
                 borderColor = Constants.stockSwipeGreenColor
                 tintColor = UIColor.whiteColor()
+                setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 setImage(UIImage(named: "user_checked"), forState: .Normal)
                 setTitle("Following", forState: .Normal)
-                self.enabled = true
+                enabled = true
             case .Blocked:
                 backgroundColor = UIColor.redColor()
                 borderColor = UIColor.whiteColor()
                 tintColor = UIColor.whiteColor()
+                setTitleColor(UIColor.whiteColor(), forState: .Normal)
                 setImage(UIImage(named: "user_blocked"), forState: .Normal)
                 setTitle("Blocked", forState: .Normal)
-                self.enabled = true
+                enabled = true
             case .Disabled:
                 backgroundColor = UIColor.whiteColor()
                 borderColor = Constants.stockSwipeFontColor
-                tintColor = Constants.stockSwipeFontColor
+                tintColor = UIColor.lightGrayColor()
+                setTitleColor(UIColor.lightGrayColor(), forState: .Normal)
                 setImage(UIImage(named: "user_add"), forState: .Normal)
-                self.setTitle("Follow", forState: .Normal)
-                self.enabled = false
+                setTitle("Follow", forState: .Normal)
+                enabled = false
             }
         }
     }

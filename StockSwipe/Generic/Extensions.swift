@@ -331,6 +331,7 @@ extension UIImage {
         case xButton = "x"
         case comingSoonImage = "coming_soon"
         case UserBlockedBig = "user_blocked_big"
+        case UserDummyImage = "dummy_profile_male_big"
     }
     
     convenience init!(assetIdentifier: AssetIdentifier) {

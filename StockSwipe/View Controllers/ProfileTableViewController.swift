@@ -15,7 +15,7 @@ protocol ProfileTableVieDelegate {
     func didReloadProfileTableView()
 }
 
-class ProfileTableViewController: UITableViewController, CellType, SubSegmentedControlDelegate, SegueHandlerType {
+class ProfileTableViewController: UITableViewController, CellType, SubSegmentedControlDelegate, SegueHandlerType, LoginDelegate {
     
     enum CellIdentifier: String {
         case IdeaCell = "IdeaCell"
@@ -32,7 +32,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     var user: User?
     var isCurrentUserBlocked: Bool = false
     var isUserBlocked: Bool = false
-    var shouldShowProfile: Bool = true
+    var shouldShowProfileAnyway: Bool = true
     
     var tradeIdeas = [TradeIdea]()
     var followingUsers = [PFUser]()
@@ -71,11 +71,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Remove follow/unfollow buttons if user == currentUser
-        if user?.userObject.objectId == PFUser.currentUser()?.objectId {
-            followButton.hidden = true
-        }
         
         // set tableView properties
         self.tableView.rowHeight = UITableViewAutomaticDimension
@@ -163,7 +158,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         if let users_blocked_users = userObject["blocked_users"] as? [PFUser] where users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
             self.isCurrentUserBlocked = true
-            self.shouldShowProfile = false
+            self.shouldShowProfileAnyway = false
             self.tableView.reloadEmptyDataSet()
             return
         }
@@ -440,6 +435,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func checkFollow(sender: FollowButton) {
         
+        guard user?.userObject.objectId != PFUser.currentUser()?.objectId else {
+            followButton.hidden = true
+            return
+        }
+        
         guard let currentUser = PFUser.currentUser() else { return }
         guard let userObject = self.user?.userObject else { return }
         
@@ -472,12 +472,24 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func registerFollow(sender: FollowButton) {
         
+        guard user?.userObject.objectId != PFUser.currentUser()?.objectId else {
+            followButton.hidden = true
+            return
+        }
+        
         guard let currentUser = PFUser.currentUser() else {
+            let logInViewcontroller = LoginViewController.sharedInstance
+            logInViewcontroller.loginDelegate = self
             Functions.isUserLoggedIn(UIApplication.topViewController()!)
             return
         }
         
         guard let userObject = self.user?.userObject else { return }
+        
+        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] where users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
+            sender.buttonState = FollowButton.state.Disabled
+            return
+        }
         
         if let blocked_users = currentUser["blocked_users"] as? [PFUser], let blockedUser = blocked_users .find({ $0.objectId == userObject.objectId }) {
             
@@ -522,7 +534,14 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 
             }
         }
-
+    }
+    
+    func didLoginSuccessfully() {
+        self.getProfile()
+    }
+    
+    func didLogoutSuccessfully() {
+        self.getProfile()
     }
     
     func updateRefreshDate() {
@@ -668,7 +687,7 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
             return attributedTitle
         }
         
-        guard !isUserBlocked else {
+        if isUserBlocked  && !shouldShowProfileAnyway {
             attributedTitle = NSAttributedString(string: "@\(self.user!.userObject.username!) is blocked", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
             return attributedTitle
         }
@@ -696,7 +715,7 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
             return attributedTitle
         }
         
-        guard !isUserBlocked else {
+        if isUserBlocked  && !shouldShowProfileAnyway {
             attributedTitle = NSAttributedString(string: "Are you sure you want to view this profile? Viewing this profile won't unblock @\(self.user!.userObject.username!)", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
             return attributedTitle
         }

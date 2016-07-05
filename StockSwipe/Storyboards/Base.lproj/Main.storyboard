@@ -1428,6 +1428,7 @@
                     </navigationItem>
                     <connections>
                         <outlet property="profileAvatarImage" destination="NNt-5r-8jH" id="8o6-VS-O6L"/>
+                        <outlet property="profileLabel" destination="mvi-wl-Qai" id="poH-e1-Io8"/>
                         <segue destination="1A4-zn-if9" kind="show" identifier="FAQSegueIdentifier" id="ZT6-u9-tjp"/>
                         <segue destination="sLt-GA-u8S" kind="show" identifier="ProfileSegueIdentifier" id="sLE-BL-QrO"/>
                     </connections>
@@ -2780,7 +2781,7 @@
                                 <stackView opaque="NO" contentMode="scaleToFill" misplaced="YES" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="8C8-5j-Pg8">
                                     <rect key="frame" x="425" y="48" width="120" height="40"/>
                                     <userGuides>
-                                        <userLayoutGuide location="20" affinity="minY"/>
+                                        <userLayoutGuide location="19" affinity="minY"/>
                                     </userGuides>
                                     <subviews>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fm6-q6-kRG">
@@ -2794,9 +2795,10 @@
                                                 <constraint firstAttribute="width" secondItem="I9G-iB-fyA" secondAttribute="height" multiplier="3:1" id="WgU-9S-s7c"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                             <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                            <state key="normal" title="Follow" image="user_add"/>
+                                            <state key="normal" title="Follow" image="user_add">
+                                                <color key="titleColor" red="0.098039217293262482" green="0.84313726425170898" blue="0.098039217293262482" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
                                             <userDefinedRuntimeAttributes>
                                                 <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                     <real key="value" value="9"/>
@@ -2944,10 +2946,10 @@
                                                             <rect key="frame" x="0.0" y="77" width="500" height="0.0"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="2yF-Rc-DCq">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="131" height="0.0"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="131" height="40"/>
                                                                     <subviews>
                                                                         <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="dummy_profile_male_big" translatesAutoresizingMaskIntoConstraints="NO" id="yI6-FF-0ga">
-                                                                            <rect key="frame" x="0.0" y="-40" width="40" height="40"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
                                                                             <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="40" id="g32-b4-BhL"/>
@@ -2966,7 +2968,7 @@
                                                                             </userDefinedRuntimeAttributes>
                                                                         </imageView>
                                                                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oJo-l8-ulM">
-                                                                            <rect key="frame" x="45" y="-40" width="86" height="40"/>
+                                                                            <rect key="frame" x="45" y="0.0" width="86" height="40"/>
                                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
                                                                             <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <nil key="highlightedColor"/>
@@ -3214,7 +3216,7 @@
                         <viewControllerLayoutGuide type="bottom" id="rh3-5w-5qU"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="VqH-Kx-C6e">
-                        <rect key="frame" x="0.0" y="44" width="600" height="556"/>
+                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <userGuides>
                             <userLayoutGuide location="244" affinity="minY"/>
@@ -3581,7 +3583,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="TradeIdeaDetailTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5qt-w7-t0G" customClass="TradeIdeaDetailTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" dataMode="prototypes" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="111" sectionHeaderHeight="28" sectionFooterHeight="28" id="LuP-Gx-rBc">
-                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="580"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -3655,7 +3657,7 @@
                                                                         <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="R1I-kV-JML">
                                                                             <rect key="frame" x="0.0" y="0.0" width="141" height="0.0"/>
                                                                             <subviews>
-                                                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="dummy_profile_male_big" translatesAutoresizingMaskIntoConstraints="NO" id="N2l-Tf-7cu">
+                                                                                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="dummy_profile_male_big" translatesAutoresizingMaskIntoConstraints="NO" id="N2l-Tf-7cu">
                                                                                     <rect key="frame" x="0.0" y="-50" width="50" height="50"/>
                                                                                     <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <constraints>
@@ -3894,7 +3896,7 @@
                                                                 <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="qLH-s2-aa8">
                                                                     <rect key="frame" x="0.0" y="0.0" width="131" height="0.0"/>
                                                                     <subviews>
-                                                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="dummy_profile_male_big" translatesAutoresizingMaskIntoConstraints="NO" id="f6c-um-lpC">
+                                                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="dummy_profile_male_big" translatesAutoresizingMaskIntoConstraints="NO" id="f6c-um-lpC">
                                                                             <rect key="frame" x="0.0" y="-40" width="40" height="40"/>
                                                                             <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <constraints>
@@ -4325,8 +4327,8 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="quK-gg-uD0"/>
-        <segue reference="mr4-9a-IiG"/>
-        <segue reference="5hk-aD-U7Z"/>
+        <segue reference="sLE-BL-QrO"/>
+        <segue reference="LV6-dP-Ocn"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.098039217293262482" green="0.84313726425170898" blue="0.098039217293262482" alpha="1" colorSpace="calibratedRGB"/>
 </document>

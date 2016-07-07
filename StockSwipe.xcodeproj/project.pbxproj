@@ -23,6 +23,8 @@
 		232A4E901B7E32A100A0FE4B /* ImageLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */; };
 		232EDE351C1A1804007D0103 /* KaushanScript.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 232EDE331C1A1804007D0103 /* KaushanScript.ttf */; };
 		232EDE361C1A1804007D0103 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 232EDE341C1A1804007D0103 /* Lato-Light.ttf */; };
+		233167FE1D2EDC7D007F9D62 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233167FD1D2EDC7D007F9D62 /* WordCloud.framework */; };
+		233167FF1D2EDC7D007F9D62 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233167FD1D2EDC7D007F9D62 /* WordCloud.framework */; };
 		233378501D1FFAA80003694A /* TradeIdeaDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2333784F1D1FFAA80003694A /* TradeIdeaDetailTableViewController.swift */; };
 		23356F021CAE2EF600E1A0F7 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23356F001CAE2EF600E1A0F7 /* ProfileTableViewController.swift */; };
 		2339B0A41B41A697009CE3EB /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 2339B0951B41A697009CE3EB /* LICENSE */; };
@@ -84,7 +86,6 @@
 		239EDA6F1BB025B0001CC63C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239EDA6E1BB025B0001CC63C /* Constants.swift */; };
 		23B378841C668CE300B498AC /* ChartWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B378831C668CE300B498AC /* ChartWebViewController.swift */; };
 		23B70D5B1B115BEF00FF2C04 /* ChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B70D5A1B115BEF00FF2C04 /* ChartModel.swift */; };
-		23BE757F1D2DDD720002407D /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23BE757E1D2DDD720002407D /* WordCloud.framework */; };
 		23C122551C5AA0FE00524721 /* TopNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C122541C5AA0FE00524721 /* TopNewsCell.swift */; };
 		23C925601B1A7D9400D17B70 /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C9255F1B1A7D9400D17B70 /* Chart.swift */; };
 		23C925661B1AA8B300D17B70 /* ChartCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C925651B1AA8B300D17B70 /* ChartCollectionViewController.swift */; };
@@ -185,6 +186,7 @@
 		232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLabelView.swift; sourceTree = "<group>"; };
 		232EDE331C1A1804007D0103 /* KaushanScript.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KaushanScript.ttf; sourceTree = "<group>"; };
 		232EDE341C1A1804007D0103 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
+		233167FD1D2EDC7D007F9D62 /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WordCloud.framework; sourceTree = "<group>"; };
 		23332BA21CA08404006E4863 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = StockSwipeWidget/Base.lproj/MainInterface.storyboard; sourceTree = SOURCE_ROOT; };
 		23332BA41CA08416006E4863 /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TodayViewController.swift; path = StockSwipeWidget/TodayViewController.swift; sourceTree = SOURCE_ROOT; };
 		2333784F1D1FFAA80003694A /* TradeIdeaDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeIdeaDetailTableViewController.swift; sourceTree = "<group>"; };
@@ -258,7 +260,6 @@
 		239EDA6E1BB025B0001CC63C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		23B378831C668CE300B498AC /* ChartWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartWebViewController.swift; sourceTree = "<group>"; };
 		23B70D5A1B115BEF00FF2C04 /* ChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
-		23BE757E1D2DDD720002407D /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WordCloud.framework; sourceTree = "<group>"; };
 		23C122541C5AA0FE00524721 /* TopNewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopNewsCell.swift; sourceTree = "<group>"; };
 		23C9255F1B1A7D9400D17B70 /* Chart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
 		23C925651B1AA8B300D17B70 /* ChartCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartCollectionViewController.swift; sourceTree = "<group>"; };
@@ -318,6 +319,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				233167FF1D2EDC7D007F9D62 /* WordCloud.framework in Frameworks */,
 				23E7F6A01BCB57A0009A016D /* NotificationCenter.framework in Frameworks */,
 				A9A3E6D544B258A12E459335 /* Pods_StockSwipeWidget.framework in Frameworks */,
 			);
@@ -339,7 +341,7 @@
 				23EA70241B119854008F6C12 /* libsqlite3.dylib in Frameworks */,
 				23EA70221B11984C008F6C12 /* libz.dylib in Frameworks */,
 				23EA70201B119839008F6C12 /* SystemConfiguration.framework in Frameworks */,
-				23BE757F1D2DDD720002407D /* WordCloud.framework in Frameworks */,
+				233167FE1D2EDC7D007F9D62 /* WordCloud.framework in Frameworks */,
 				23EA701E1B119831008F6C12 /* StoreKit.framework in Frameworks */,
 				23EA701C1B11982D008F6C12 /* Security.framework in Frameworks */,
 				23EA701A1B119827008F6C12 /* QuartzCore.framework in Frameworks */,
@@ -419,7 +421,7 @@
 		2343B6111C8361CF008BF2CA /* WordCloud */ = {
 			isa = PBXGroup;
 			children = (
-				23BE757E1D2DDD720002407D /* WordCloud.framework */,
+				233167FD1D2EDC7D007F9D62 /* WordCloud.framework */,
 			);
 			path = WordCloud;
 			sourceTree = "<group>";

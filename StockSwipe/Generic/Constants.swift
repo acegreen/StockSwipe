@@ -36,6 +36,8 @@ public class Constants {
     public static let AppVersion = infoDict!["CFBundleShortVersionString"]!
     public static let BundleVersion = infoDict!["CFBundleVersion"]!
     
+    public static let userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    
     public static let payloadShort = "Version: \(AppVersion) (\(BundleVersion)) \n Copyright © 2015"
     public static let payload = [ "BundleID" : infoDict!["CFBundleIdentifier"]!,
         "AppVersion" : AppVersion,
@@ -65,7 +67,7 @@ public class Constants {
     public static let entity = NSEntityDescription.entityForName("Charts", inManagedObjectContext: context)
     public static let fetchRequest = NSFetchRequest(entityName: "Charts")
     
-    public static let stockSwipeFont = UIFont(name: "HelveticaNeue", size: 20)
+    public static let stockSwipeFont: UIFont? = UIFont(name: "HelveticaNeue", size: 20)
     public static let stockSwipeFontColor: UIColor = UIColor(red: 111/255, green: 113/255, blue: 121/255, alpha: 1.0)
     public static let stockSwipeGreenColor: UIColor = UIColor(red: 25/255, green: 215/255, blue: 25/255, alpha: 1.0)
     public static let okAlertAction = UIAlertAction(title: "Ok", style: .Default, handler:{ (ACTION :UIAlertAction!)in })

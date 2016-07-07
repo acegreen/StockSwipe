@@ -10,16 +10,14 @@ import Foundation
 
 public class Settings {
     
-    static let userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
-    
     public class func registerGeneralDefaults() {
         let generalPrefsFile: NSURL = NSBundle.mainBundle().URLForResource("GeneralPreferences", withExtension: "plist")!
         let generalPrefs: NSDictionary = NSDictionary(contentsOfURL: generalPrefsFile)!
-        userDefaults.registerDefaults(generalPrefs as! [String : AnyObject])
-        userDefaults.setBool(true, forKey: "GENERAL_DEFAULTS_INSTALLED")
+        Constants.userDefaults.registerDefaults(generalPrefs as! [String : AnyObject])
+        Constants.userDefaults.setBool(true, forKey: "GENERAL_DEFAULTS_INSTALLED")
         
         print("GeneralPreferences installed")
-        userDefaults.synchronize()
+        Constants.userDefaults.synchronize()
     }
     
     public class func registerStocksDefaults() {
@@ -30,8 +28,8 @@ public class Settings {
             
             let stockExchangePrefsFile: NSURL = NSBundle.mainBundle().URLForResource("StockExchangePreferences_CA", withExtension: "plist")!
             let stockExchangePrefs: NSDictionary = NSDictionary(contentsOfURL: stockExchangePrefsFile)!
-            userDefaults.registerDefaults(stockExchangePrefs as! [String : AnyObject])
-            userDefaults.setBool(true, forKey: "STOCK_EXCHANGE_DEFAULTS_INSTALLED")
+            Constants.userDefaults.registerDefaults(stockExchangePrefs as! [String : AnyObject])
+            Constants.userDefaults.setBool(true, forKey: "STOCK_EXCHANGE_DEFAULTS_INSTALLED")
             
             print("StockExchangePreferences_CA installed")
             
@@ -39,8 +37,8 @@ public class Settings {
             
             let stockExchangePrefsFile: NSURL = NSBundle.mainBundle().URLForResource("StockExchangePreferences_US", withExtension: "plist")!
             let stockExchangePrefs: NSDictionary = NSDictionary(contentsOfURL: stockExchangePrefsFile)!
-            userDefaults.registerDefaults(stockExchangePrefs as! [String : AnyObject])
-            userDefaults.setBool(true, forKey: "STOCK_EXCHANGE_DEFAULTS_INSTALLED")
+            Constants.userDefaults.registerDefaults(stockExchangePrefs as! [String : AnyObject])
+            Constants.userDefaults.setBool(true, forKey: "STOCK_EXCHANGE_DEFAULTS_INSTALLED")
             
             print("StockExchangePreferences_US installed")
             
@@ -48,13 +46,23 @@ public class Settings {
         
         let stockSectorPrefsFile: NSURL = NSBundle.mainBundle().URLForResource("StockSectorPreferences", withExtension: "plist")!
         let stockSectorPrefs: NSDictionary = NSDictionary(contentsOfURL: stockSectorPrefsFile)!
-        userDefaults.registerDefaults(stockSectorPrefs as! [String : AnyObject])
-        userDefaults.setBool(true, forKey: "STOCK_SECTOR_DEFAULTS_INSTALLED")
+        Constants.userDefaults.registerDefaults(stockSectorPrefs as! [String : AnyObject])
+        Constants.userDefaults.setBool(true, forKey: "STOCK_SECTOR_DEFAULTS_INSTALLED")
         
         print("StockSectorPreferences installed")
         
         print(Constants.countryCode)
         
-        userDefaults.synchronize()
+        Constants.userDefaults.synchronize()
+    }
+    
+    public class func registerNotificationDefaults() {
+        let notificationPrefsFile: NSURL = NSBundle.mainBundle().URLForResource("NotificationPreferences", withExtension: "plist")!
+        let notificationPrefs: NSDictionary = NSDictionary(contentsOfURL: notificationPrefsFile)!
+        Constants.userDefaults.registerDefaults(notificationPrefs as! [String : AnyObject])
+        Constants.userDefaults.setBool(true, forKey: "NOTIFICATION_DEFAULTS_INSTALLED")
+        
+        print("NotificationPreferences installed")
+        Constants.userDefaults.synchronize()
     }
 }

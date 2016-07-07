@@ -87,7 +87,7 @@ class FilterTableViewController: UITableViewController, CellType {
             break
         }
         
-        if Settings.userDefaults.boolForKey("\(cell.textLabel!.text!)".uppercaseString) == true {
+        if Constants.userDefaults.boolForKey("\(cell.textLabel!.text!)".uppercaseString) == true {
             
             cell.accessoryType = .Checkmark
             
@@ -145,8 +145,8 @@ class FilterTableViewController: UITableViewController, CellType {
     
     func saveUserDefaults(value: Bool, cell: UITableViewCell) {
         
-        Settings.userDefaults.setBool(value, forKey: "\(cell.textLabel!.text!)".uppercaseString)
-        print("value for \(cell.textLabel!.text!)", Settings.userDefaults.boolForKey("\(cell.textLabel!.text)") as Bool)
+        Constants.userDefaults.setBool(value, forKey: "\(cell.textLabel!.text!)".uppercaseString)
+        print("value for \(cell.textLabel!.text!)", Constants.userDefaults.boolForKey("\(cell.textLabel!.text)") as Bool)
         
     }
 }

@@ -10,18 +10,11 @@ import Foundation
 
 class TimeFormattedLabel: UILabel {
     
-    override func drawTextInRect(rect: CGRect) {
-        
-        super.drawTextInRect(rect)
-        
-        if let timeText = self.text  {
-            
-            let publishedDateFormatter = NSDateFormatter()
-            publishedDateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZ" //EEE, dd MMM yyyy HH:mm:ss z"
-            
-            if let formattedDate: NSDate = publishedDateFormatter.dateFromString(timeText) {
-                self.text = formattedDate.formattedAsTimeAgo()
-            }
-        }
-    }
+//    override var text: String? {
+//        didSet {
+//            if let formattedDate: NSDate = publishedDateFormatter.dateFromString(text) {
+//                self.text = formattedDate.formattedAsTimeAgo()
+//            }
+//        }
+//    }
 }

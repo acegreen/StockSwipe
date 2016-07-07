@@ -48,6 +48,8 @@
 		2347E61A1BD7FEEE0036EA65 /* iCarouselTickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2347E6191BD7FEEE0036EA65 /* iCarouselTickerView.swift */; };
 		2347E61C1BD7FFD90036EA65 /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2347E61B1BD7FFD80036EA65 /* Ticker.swift */; };
 		23505C4D1BA8717100E5887B /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23505C4C1BA8717100E5887B /* News.swift */; };
+		235534BE1D2D38D300821E25 /* NotificationPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 235534BD1D2D38D300821E25 /* NotificationPreferences.plist */; };
+		235534C01D2D39FB00821E25 /* NotificationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235534BF1D2D39FB00821E25 /* NotificationsTableViewController.swift */; };
 		236280C01CB3F7D40022A129 /* TradeIdeasTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236280BF1CB3F7D40022A129 /* TradeIdeasTableViewController.swift */; };
 		236280C21CB3FABF0022A129 /* TradeIdea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236280C11CB3FABF0022A129 /* TradeIdea.swift */; };
 		236280C41CB41A290022A129 /* IdeaPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236280C31CB41A290022A129 /* IdeaPostViewController.swift */; };
@@ -57,9 +59,7 @@
 		236DB5211D048D6400CE9869 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236DB5201D048D6400CE9869 /* LaunchScreenViewController.swift */; };
 		236DB5231D048D8800CE9869 /* GradientAnimationImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236DB5221D048D8800CE9869 /* GradientAnimationImage.swift */; };
 		237537F71B1617FB00F05984 /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237537F61B1617FB00F05984 /* LogInViewController.swift */; };
-		23761CDF1D21B5B900FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CDC1D21B57200FA66C1 /* WordCloud.framework */; };
 		23761CE01D21B5B900FA66C1 /* WordCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CDC1D21B57200FA66C1 /* WordCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		23761CE31D21B87900FA66C1 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CE11D21B87900FA66C1 /* WordCloud.framework */; };
 		2376E41F1C2B0D7A00B85656 /* QueryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2376E41E1C2B0D7A00B85656 /* QueryHelper.swift */; };
 		2378B58A1B115FB3002ACFDC /* StockSwipeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378B5891B115FB3002ACFDC /* StockSwipeTests.swift */; };
 		23875DEE1B11745A00966012 /* SwipeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23875DED1B11745A00966012 /* SwipeChartView.swift */; };
@@ -84,6 +84,7 @@
 		239EDA6F1BB025B0001CC63C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239EDA6E1BB025B0001CC63C /* Constants.swift */; };
 		23B378841C668CE300B498AC /* ChartWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B378831C668CE300B498AC /* ChartWebViewController.swift */; };
 		23B70D5B1B115BEF00FF2C04 /* ChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B70D5A1B115BEF00FF2C04 /* ChartModel.swift */; };
+		23BE757F1D2DDD720002407D /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23BE757E1D2DDD720002407D /* WordCloud.framework */; };
 		23C122551C5AA0FE00524721 /* TopNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C122541C5AA0FE00524721 /* TopNewsCell.swift */; };
 		23C925601B1A7D9400D17B70 /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C9255F1B1A7D9400D17B70 /* Chart.swift */; };
 		23C925661B1AA8B300D17B70 /* ChartCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C925651B1AA8B300D17B70 /* ChartCollectionViewController.swift */; };
@@ -215,6 +216,8 @@
 		2347E6191BD7FEEE0036EA65 /* iCarouselTickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iCarouselTickerView.swift; sourceTree = "<group>"; };
 		2347E61B1BD7FFD80036EA65 /* Ticker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ticker.swift; sourceTree = "<group>"; };
 		23505C4C1BA8717100E5887B /* News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
+		235534BD1D2D38D300821E25 /* NotificationPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NotificationPreferences.plist; sourceTree = "<group>"; };
+		235534BF1D2D39FB00821E25 /* NotificationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewController.swift; sourceTree = "<group>"; };
 		236280BF1CB3F7D40022A129 /* TradeIdeasTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeIdeasTableViewController.swift; sourceTree = "<group>"; };
 		236280C11CB3FABF0022A129 /* TradeIdea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeIdea.swift; sourceTree = "<group>"; };
 		236280C31CB41A290022A129 /* IdeaPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdeaPostViewController.swift; sourceTree = "<group>"; };
@@ -226,7 +229,6 @@
 		236DB5221D048D8800CE9869 /* GradientAnimationImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientAnimationImage.swift; sourceTree = "<group>"; };
 		237537F61B1617FB00F05984 /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
 		23761CDC1D21B57200FA66C1 /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WordCloud.framework; path = /Users/AceGreen/iOS/BitBucket/StockSwipe/Frameworks/WordCloud/WordCloud.framework; sourceTree = "<absolute>"; };
-		23761CE11D21B87900FA66C1 /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WordCloud.framework; sourceTree = "<group>"; };
 		2376E41E1C2B0D7A00B85656 /* QueryHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryHelper.swift; sourceTree = "<group>"; };
 		2378B5851B115FB3002ACFDC /* StockSwipeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StockSwipeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2378B5881B115FB3002ACFDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -256,6 +258,7 @@
 		239EDA6E1BB025B0001CC63C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		23B378831C668CE300B498AC /* ChartWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartWebViewController.swift; sourceTree = "<group>"; };
 		23B70D5A1B115BEF00FF2C04 /* ChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
+		23BE757E1D2DDD720002407D /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WordCloud.framework; sourceTree = "<group>"; };
 		23C122541C5AA0FE00524721 /* TopNewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopNewsCell.swift; sourceTree = "<group>"; };
 		23C9255F1B1A7D9400D17B70 /* Chart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
 		23C925651B1AA8B300D17B70 /* ChartCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartCollectionViewController.swift; sourceTree = "<group>"; };
@@ -315,7 +318,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23761CE31D21B87900FA66C1 /* WordCloud.framework in Frameworks */,
 				23E7F6A01BCB57A0009A016D /* NotificationCenter.framework in Frameworks */,
 				A9A3E6D544B258A12E459335 /* Pods_StockSwipeWidget.framework in Frameworks */,
 			);
@@ -325,7 +327,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23761CDF1D21B5B900FA66C1 /* WordCloud.framework in Frameworks */,
 				23CAE2661C2B46A800D15819 /* LocalAuthentication.framework in Frameworks */,
 				23CE716D1C1215C800E87420 /* AdSupport.framework in Frameworks */,
 				239A3E491BAA1CCF00894D1E /* JavaScriptCore.framework in Frameworks */,
@@ -338,6 +339,7 @@
 				23EA70241B119854008F6C12 /* libsqlite3.dylib in Frameworks */,
 				23EA70221B11984C008F6C12 /* libz.dylib in Frameworks */,
 				23EA70201B119839008F6C12 /* SystemConfiguration.framework in Frameworks */,
+				23BE757F1D2DDD720002407D /* WordCloud.framework in Frameworks */,
 				23EA701E1B119831008F6C12 /* StoreKit.framework in Frameworks */,
 				23EA701C1B11982D008F6C12 /* Security.framework in Frameworks */,
 				23EA701A1B119827008F6C12 /* QuartzCore.framework in Frameworks */,
@@ -417,7 +419,7 @@
 		2343B6111C8361CF008BF2CA /* WordCloud */ = {
 			isa = PBXGroup;
 			children = (
-				23761CE11D21B87900FA66C1 /* WordCloud.framework */,
+				23BE757E1D2DDD720002407D /* WordCloud.framework */,
 			);
 			path = WordCloud;
 			sourceTree = "<group>";
@@ -464,6 +466,7 @@
 				238C1AE41C8C6387009F9CC1 /* StockExchangePreferences_CA.plist */,
 				238C1AE51C8C6387009F9CC1 /* StockExchangePreferences_US.plist */,
 				238C1AE61C8C6387009F9CC1 /* StockSectorPreferences.plist */,
+				235534BD1D2D38D300821E25 /* NotificationPreferences.plist */,
 			);
 			name = Localization;
 			path = ../StockSwipe/Localization;
@@ -675,6 +678,7 @@
 				23356F001CAE2EF600E1A0F7 /* ProfileTableViewController.swift */,
 				231E89C31D2A1A6200CD009A /* SettingsTableViewController.swift */,
 				231E89C51D2A1C8000CD009A /* BlockedAccountsTableViewController.swift */,
+				235534BF1D2D39FB00821E25 /* NotificationsTableViewController.swift */,
 				2394DFAB1C8CAE230018A5A9 /* FAQTableViewController.swift */,
 				231643021C1A00F000C92C03 /* FeedbackViewController.swift */,
 				231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */,
@@ -729,9 +733,8 @@
 				23E7F69A1BCB57A0009A016D /* Sources */,
 				23E7F69B1BCB57A0009A016D /* Frameworks */,
 				23E7F69C1BCB57A0009A016D /* Resources */,
-				23B999891D122B0300E9BFE6 /* ShellScript */,
 				773D38C05ADA2DAD6FDEBBFE /* [CP] Copy Pods Resources */,
-				AD8A9E2DCD003A2F617336AE /* [CP] Embed Pods Frameworks */,
+				23B999891D122B0300E9BFE6 /* ShellScript */,
 				236DB51F1D0264F000CE9869 /* ShellScript */,
 			);
 			buildRules = (
@@ -851,6 +854,7 @@
 				232EDE351C1A1804007D0103 /* KaushanScript.ttf in Resources */,
 				238C1AFB1C8C65D6009F9CC1 /* Images.xcassets in Resources */,
 				238C1AE91C8C6387009F9CC1 /* StockExchangePreferences_US.plist in Resources */,
+				235534BE1D2D38D300821E25 /* NotificationPreferences.plist in Resources */,
 				232EDE361C1A1804007D0103 /* Lato-Light.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -987,21 +991,6 @@
 			shellPath = /bin/sh;
 			shellScript = "ROLLOUT_lastXcodeprojConfiguration=5 \"${SRCROOT}/Pods/Rollout.io/lib/upload_dsym_phase\" -k 568730c9045462554abcb4cc";
 		};
-		AD8A9E2DCD003A2F617336AE /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StockSwipeWidget/Pods-StockSwipeWidget-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1058,6 +1047,7 @@
 				23D4FFE81C317ECE00A1102D /* FiltersCell.swift in Sources */,
 				23356F021CAE2EF600E1A0F7 /* ProfileTableViewController.swift in Sources */,
 				233C7D581CB3044D006A014A /* TransparentView.swift in Sources */,
+				235534C01D2D39FB00821E25 /* NotificationsTableViewController.swift in Sources */,
 				23F5B3E51B9D004200C74FED /* CompanyProfileTableViewController.swift in Sources */,
 				236280C21CB3FABF0022A129 /* TradeIdea.swift in Sources */,
 				230FBB2D1D1F05B2000394AD /* TintableLabel.swift in Sources */,
@@ -1192,6 +1182,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/WordCloud",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = StockSwipeWidget/Info.plist;
@@ -1216,11 +1207,13 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Frameworks/WordCloud",
+					"$(PROJECT_DIR)/Frameworks",
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = StockSwipeWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = AG.StockSwipe.StockSwipeWidget;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";

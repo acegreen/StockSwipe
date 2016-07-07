@@ -239,6 +239,13 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
     func ideaDeleted(with parseObject: PFObject) {
         
         if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
+            
+            if let reshareOf = tradeIdea.parseObject.objectForKey("reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == reshareOf.objectId })  {
+                
+                let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(reshareTradeIdea)!, inSection: 0)
+                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            }
+            
             let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(tradeIdea)!, inSection: 0)
             self.tradeIdeas.removeObject(tradeIdea)
             self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)

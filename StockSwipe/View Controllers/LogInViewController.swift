@@ -48,7 +48,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     
     override func viewDidLoad() {
         super.viewDidLoad()
-            
+        
         self.pageImages = NSArray(objects: "page1", "page2", "page3", "page4", "page5")
         self.pageViewController = Constants.storyboard.instantiateViewControllerWithIdentifier("PageViewController") as! UIPageViewController
         self.pageViewController.dataSource = self
@@ -106,7 +106,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         let vc = viewController as! PageContentViewController
         
         var index = vc.pageIndex as Int
-
+        
         if (index == 0 || index == NSNotFound) {
             
             return nil
@@ -115,7 +115,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         index -= 1
         
         return self.viewControllerAtIndex(index)
-
+        
     }
     
     func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
@@ -136,7 +136,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         }
         
         return self.viewControllerAtIndex(index)
-
+        
     }
     
     func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
@@ -176,11 +176,11 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             self.logInViewController.fields = [PFLogInFields.Twitter, PFLogInFields.Facebook, PFLogInFields.DismissButton]
             
             self.logInViewController.logInView?.logo = logInLogoLabel
-//            self.signUpViewController.signUpView?.logo = signUpLogoLabel
+            //            self.signUpViewController.signUpView?.logo = signUpLogoLabel
             
             self.logInViewController.delegate = self
-//            self.signUpViewController.delegate = self
-//            self.logInViewController.signUpController = self.signUpViewController
+            //            self.signUpViewController.delegate = self
+            //            self.logInViewController.signUpController = self.signUpViewController
             
             viewController.presentViewController(self.logInViewController, animated: true, completion: nil)
             
@@ -226,7 +226,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
             return false
         }
-            
+        
         if !username.isEmpty && !password.isEmpty {
             
             return true
@@ -276,8 +276,8 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 } else {
                     user["full_name"] = PFTwitterUtils.twitter()?.screenName
                 }
-
-                if let twitterEmail = result["email"].string  where user.email?.isEmpty == true {
+                
+                if let twitterEmail = result["email"].string {
                     user.email = twitterEmail
                 }
                 
@@ -293,9 +293,15 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     user["profile_banner_url"] = profileBannerURL
                 }
                 
+                user["follower_notification"] = true
+                user["newTradeIdea_notification"] = true
+                user["replyTradeIdea_notification"] = true
+                user["likeTradeIdea_notification"] = true
+                user["reshareTradeIdea_notification"] = true
+                
                 user.saveInBackgroundWithBlock({ (success, error) in
                     if success {
-                    
+                        
                         // register current installation
                         let currentInstallation: PFInstallation = PFInstallation.currentInstallation()
                         currentInstallation["user"] = user
@@ -332,15 +338,16 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 print("Fetch failed: \(error.localizedDescription)")
                 
             }
-        
+            
         } else if PFFacebookUtils.isLinkedWithUser(user) {
             
             // Get user email
             let accessToken = FBSDKAccessToken.currentAccessToken()
             
             if accessToken != nil {
-        
+                
                 let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,name,location,picture.type(large),cover"], tokenString: accessToken.tokenString, version: nil, HTTPMethod: "GET")
+                
                 req.startWithCompletionHandler({ (connection, object, error) in
                     
                     var firstName: String?
@@ -353,23 +360,24 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         guard result != nil else { return }
                         
                         print(result)
+                        
+                        if let facebookNameFromName = result["name"].string {
                             
-                        if let facebookNameFromName = result["name"].string where user.username?.isEmpty == true {
                             user.username = facebookNameFromName.stringByReplacingOccurrencesOfString(" ", withString: "")
                             user["username_lowercase"] = user.username!.lowercaseString
-                        } else if let facebookNameFromEmail = result["email"].string where user.username?.isEmpty == true {
+                            
+                            user["full_name"] = facebookNameFromName
+                            
+                            firstName = facebookNameFromName.componentsSeparatedByString(" ").first
+                            lastName = facebookNameFromName.componentsSeparatedByString(" ").last
+                            
+                        } else if let facebookNameFromEmail = result["email"].string {
+                            
                             user.username = facebookNameFromEmail.componentsSeparatedByString("@").first?.stringByReplacingOccurrencesOfString(" ", withString: "")
                             user["username_lowercase"] = user.username!.lowercaseString
                         }
                         
-                        if let facebookName = result["name"].string {
-                            user["full_name"] = facebookName
-                            
-                            firstName = facebookName.componentsSeparatedByString(" ").first
-                            lastName = facebookName.componentsSeparatedByString(" ").last
-                        }
-                        
-                        if let facebookEmail = result["email"].string where user.email?.isEmpty == true {
+                        if let facebookEmail = result["email"].string {
                             user.email = facebookEmail
                         }
                         
@@ -384,8 +392,13 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         if let profileBannerURL = result["cover"]["source"].URL?.absoluteString {
                             user["profile_banner_url"] = profileBannerURL
                         }
-                        
                     }
+                    
+                    user["follower_notification"] = true
+                    user["newTradeIdea_notification"] = true
+                    user["replyTradeIdea_notification"] = true
+                    user["likeTradeIdea_notification"] = true
+                    user["reshareTradeIdea_notification"] = true
                     
                     user.saveInBackgroundWithBlock({ (success, error) in
                         
@@ -403,7 +416,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                             
                             // send delegate info
                             self.loginDelegate?.didLoginSuccessfully()
-
+                            
                         }
                         
                         self.logInViewController.dismissViewControllerAnimated(true, completion: { () -> Void in
@@ -415,7 +428,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     })
                 })
             }
-       
+            
         } else {
             
             SweetAlert().showAlert("Email Verification Required", subTitle: "Please verify your email first using the email sent to you", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
@@ -425,15 +438,15 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             self.logOut()
         }
         
-//        else if user.valueForKey("emailVerified") as? Bool == true {
-//            
-//            self.logInViewController.dismissViewControllerAnimated(true, completion: { () -> Void in
-//                
-//                self.dismissViewControllerAnimated(false, completion: nil)
-//                
-//            })
-//            
-//        }
+        //        else if user.valueForKey("emailVerified") as? Bool == true {
+        //
+        //            self.logInViewController.dismissViewControllerAnimated(true, completion: { () -> Void in
+        //
+        //                self.dismissViewControllerAnimated(false, completion: nil)
+        //
+        //            })
+        //
+        //        }
     }
     
     func logInViewController(logInController: PFLogInViewController, didFailToLogInWithError error: NSError?) {
@@ -475,61 +488,61 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     
     // Mark - Parse Signup
     
-//    func signUpViewController(signUpController: PFSignUpViewController, shouldBeginSignUp info: [NSObject : AnyObject]) -> Bool {
-//        
-//        if Functions.isConnectedToNetwork() == false {
-//            
-//            signUpController.presentViewController(Functions.displayAlert("No Internet Connection", message: "Make sure your device is connected to the internet", Action1: okAlertAction, Action2: nil), animated: true, completion: nil)
-//            
-//            return false
-//            
-//        } else {
-//            
-//            var usernameField: String!
-//            var passwordField: String!
-//            var emailField: String!
-//            
-//            for _ in info {
-//                
-//                usernameField = info["username"] as? String
-//                passwordField = info["password"] as? String
-//                emailField = info["email"] as? String
-//            }
-//            
-//            if usernameField?.isEmpty == true || passwordField?.isEmpty == true || emailField?.isEmpty == true {
-//                
-//                signUpController.presentViewController(Functions.displayAlert("Missing Information", message: "Please fill in all the fields", Action1: okAlertAction, Action2: nil), animated: true, completion: nil)
-//                
-//                return false
-//                
-//            }
-//
-//            return true
-//        }
-//    }
-//    
-//    func signUpViewController(signUpController: PFSignUpViewController, didSignUpUser user: PFUser) {
-//        
-//        let dismissAlertAction = UIAlertAction(title: "Ok", style: .Default, handler:{ (ACTION :UIAlertAction!) in
-//            
-//            signUpController.dismissViewControllerAnimated(true, completion: nil)
-//            
-//        })
-//        
-//        signUpController.presentViewController(Functions.displayAlert("Sign Up Complete!", message: "We have sent you a verification email - you must verify your email to continue.", Action1: dismissAlertAction, Action2: nil), animated: true, completion: nil)
-//        
-//    }
-//    
-//    func signUpViewController(signUpController: PFSignUpViewController, didFailToSignUpWithError error: NSError?) {
-//        
-//        print("Failed to sign up")
-//        
-//    }
-//    
-//    func signUpViewControllerDidCancelSignUp(signUpController: PFSignUpViewController) {
-//        
-//        print("User dismissed sign up")
-//    }
+    //    func signUpViewController(signUpController: PFSignUpViewController, shouldBeginSignUp info: [NSObject : AnyObject]) -> Bool {
+    //
+    //        if Functions.isConnectedToNetwork() == false {
+    //
+    //            signUpController.presentViewController(Functions.displayAlert("No Internet Connection", message: "Make sure your device is connected to the internet", Action1: okAlertAction, Action2: nil), animated: true, completion: nil)
+    //
+    //            return false
+    //
+    //        } else {
+    //
+    //            var usernameField: String!
+    //            var passwordField: String!
+    //            var emailField: String!
+    //
+    //            for _ in info {
+    //
+    //                usernameField = info["username"] as? String
+    //                passwordField = info["password"] as? String
+    //                emailField = info["email"] as? String
+    //            }
+    //
+    //            if usernameField?.isEmpty == true || passwordField?.isEmpty == true || emailField?.isEmpty == true {
+    //
+    //                signUpController.presentViewController(Functions.displayAlert("Missing Information", message: "Please fill in all the fields", Action1: okAlertAction, Action2: nil), animated: true, completion: nil)
+    //
+    //                return false
+    //
+    //            }
+    //
+    //            return true
+    //        }
+    //    }
+    //
+    //    func signUpViewController(signUpController: PFSignUpViewController, didSignUpUser user: PFUser) {
+    //
+    //        let dismissAlertAction = UIAlertAction(title: "Ok", style: .Default, handler:{ (ACTION :UIAlertAction!) in
+    //
+    //            signUpController.dismissViewControllerAnimated(true, completion: nil)
+    //
+    //        })
+    //
+    //        signUpController.presentViewController(Functions.displayAlert("Sign Up Complete!", message: "We have sent you a verification email - you must verify your email to continue.", Action1: dismissAlertAction, Action2: nil), animated: true, completion: nil)
+    //
+    //    }
+    //
+    //    func signUpViewController(signUpController: PFSignUpViewController, didFailToSignUpWithError error: NSError?) {
+    //
+    //        print("Failed to sign up")
+    //
+    //    }
+    //
+    //    func signUpViewControllerDidCancelSignUp(signUpController: PFSignUpViewController) {
+    //
+    //        print("User dismissed sign up")
+    //    }
     
     func registerUserMailChimp(listID: String, firstName:String?, lastName:String?, username: String?, email: String?) {
         

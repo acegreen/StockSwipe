@@ -21,19 +21,23 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     var tradeIdea: TradeIdea!
     var nestedTradeIdea: TradeIdea!
     
-    @IBOutlet private weak var userAvatar: UIImageView!
+    @IBOutlet var userAvatar: UIImageView!
     
-    @IBOutlet private weak var userName: UILabel!
+    @IBOutlet var userName: UILabel!
     
-    @IBOutlet private weak var ideaDescription: UITextView!
+    @IBOutlet var userTag: UILabel!
     
-    @IBOutlet private weak var ideaTime: TimeFormattedLabel!
+    @IBOutlet var ideaDescription: UITextView!
+    
+    @IBOutlet var ideaTime: UILabel!
     
     @IBOutlet var nestedTradeIdeaStack: UIStackView!
     
     @IBOutlet var nestedUserAvatar: UIImageView!
     
     @IBOutlet var nestedUsername: UILabel!
+    
+    @IBOutlet var nestedUserTag: UILabel!
     
     @IBOutlet var nestedIdeaDescription: SuperUITextView!
     
@@ -96,7 +100,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     
                     if !isOtherButton {
                         
-                        self.handleBlock(self.tradeIdea.user)
+                        self.handleBlock(self.tradeIdea.user, postAlert: false)
                         
                         let spamObject = PFObject(className: "Spam")
                         spamObject["reported_idea"] = self.tradeIdea.parseObject
@@ -190,39 +194,21 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         UIApplication.topViewController()?.showViewController(profileContainerController, sender: self)
     }
     
-    func configureCell(tradeIdea: TradeIdea?) {
+    func configureCell(tradeIdea: TradeIdea) {
         
-        guard let tradeIdea = tradeIdea else { return }
         self.tradeIdea = tradeIdea
-        
-        let user = tradeIdea.user
-        self.userName.text = user.username
-        
-        self.ideaDescription.text = tradeIdea.description
-        self.ideaTime.text = tradeIdea.publishedDate.formattedAsTimeAgo()
-        
-        guard let avatarURL = user.objectForKey("profile_image_url") as? String else { return }
-        
-        QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
+    
+        if let nestedTradeIdeaObject = self.tradeIdea.parseObject.objectForKey("reshare_of") as? PFObject {
             
-            do {
-                
-                let avatarData  = try result()
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    self.userAvatar.image = UIImage(data: avatarData)
-                })
-                
-            } catch {
-                // TODO: Handle error
-            }
-        })
+            self.nestedTradeIdea = TradeIdea(user: nestedTradeIdeaObject["user"] as! PFUser, stock: nestedTradeIdeaObject["stock"] as! PFObject, description: nestedTradeIdeaObject["description"] as! String, likeCount: nestedTradeIdeaObject["liked_by"]?.count, reshareCount: nestedTradeIdeaObject["reshared_by"]?.count, publishedDate: nestedTradeIdeaObject.createdAt, parseObject: nestedTradeIdeaObject)
+        }
+        
+        configureMainTradeIdea(self.tradeIdea)
+        configureNestedTradeIdea(self.nestedTradeIdea)
         
         checkLike(tradeIdea, sender: self.likeButton)
         checkReshare(tradeIdea, sender: self.reshareButton)
         checkMore()
-        
-        configureNestedTradeIdea(tradeIdea)
         
         // Add Gesture Recognizers
         let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
@@ -232,23 +218,58 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
     }
     
-    func configureNestedTradeIdea(tradeIdea: TradeIdea!) {
+    func configureMainTradeIdea(tradeIdea: TradeIdea!) {
         
-        guard let object = tradeIdea?.parseObject else { return }
+        let user = tradeIdea.user
         
-        guard let nestedTradeIdeaObject = object.objectForKey("reshare_of") as? PFObject else {
+        user?.fetchIfNeededInBackgroundWithBlock({ (user, error) in
+            
+            guard let user = user as? PFUser else { return }
+            
+            self.userName.text = user["full_name"] as? String
+            self.userTag.text = "@\(user.username!)"
+            
+            self.ideaDescription.text = tradeIdea.description
+            self.ideaTime.text = tradeIdea.publishedDate.formattedAsTimeAgo()
+            
+            guard let avatarURL = user.objectForKey("profile_image_url") as? String else { return }
+            
+            QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
+                
+                do {
+                    
+                    let avatarData  = try result()
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.userAvatar.image = UIImage(data: avatarData)
+                    })
+                    
+                } catch {
+                    // TODO: Handle error
+                }
+            })
+            
+        })
+    }
+    
+    func configureNestedTradeIdea(nestedTradeIdea: TradeIdea?) {
+        
+        guard nestedTradeIdeaStack != nil else { return }
+        
+        guard let nestedTradeIdea = nestedTradeIdea else {
             self.nestedTradeIdeaStack.hidden = true
             return
         }
         
         self.nestedTradeIdeaStack.hidden = false
         
-        let user = nestedTradeIdeaObject["user"] as? PFUser
-        user?.fetchInBackgroundWithBlock({ (user, error) in
+        let user = nestedTradeIdea.user
+        user?.fetchIfNeededInBackgroundWithBlock({ (user, error) in
             
             guard let user = user as? PFUser else { return }
             
-            self.nestedUsername.text = user.username
+            self.nestedUsername.text = user["full_name"] as? String
+            self.nestedUserTag.text = "@\(user.username!)"
             
             if let avatarURL = user.objectForKey("profile_image_url") as? String  {
                 
@@ -269,25 +290,43 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             }
         })
         
-        let description = nestedTradeIdeaObject["description"] as! String
-        self.nestedIdeaDescription.text = description
+        self.nestedIdeaDescription.text = nestedTradeIdea.description
         
         let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
         self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
         
         let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
         self.nestedUsername.addGestureRecognizer(tapGestureRecognizerNestedUsername)
-        
-        self.nestedTradeIdea = TradeIdea(user: nestedTradeIdeaObject["user"] as! PFUser, stock: nestedTradeIdeaObject["stock"] as! PFObject, description: nestedTradeIdeaObject["description"] as! String, likeCount: nestedTradeIdeaObject["liked_by"]?.count, reshareCount: nestedTradeIdeaObject["reshared_by"]?.count, publishedDate: nestedTradeIdeaObject.createdAt, parseObject: nestedTradeIdeaObject)
     }
     
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
+        
         if tradeIdeaTyp == .Reshare {
             self.registerReshare(sender: self.reshareButton)
         }
+        
+        self.delegate.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaTyp)
+        
+        guard let currentUser = PFUser.currentUser() where currentUser.objectId != self.tradeIdea.user.objectId else { return }
+    
+        // Send push
+        switch tradeIdeaTyp {
+        case .New:
+            return
+            
+        case .Reply:
+            
+            PFCloud.callFunctionInBackground("pushNotificationToUser", withParameters: ["userObjectId":self.tradeIdea.user.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply", "message": "@\(currentUser.username!) replied to a trade idea you posted"]) { (results, error) -> Void in
+            }
+            
+        case .Reshare:
+            
+            PFCloud.callFunctionInBackground("pushNotificationToUser", withParameters: ["userObjectId":self.tradeIdea.user.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare:", "message": "@\(currentUser.username!) reshared your trade idea for $\(self.tradeIdea.stock["Symbol"])"]) { (results, error) -> Void in
+            }
+        }
     }
     
-    func ideaDeleted(with parseObject: PFObject) {
+    func ideaDeleted(with tradeIdeaObject: PFObject) {
         print("ideaDeleted")
     }
     
@@ -327,7 +366,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     func registerLike(sender sender: UIButton) {
         
-        guard (PFUser.currentUser() != nil) else {
+        guard let currentUser = PFUser.currentUser() else {
             Functions.isUserLoggedIn(UIApplication.topViewController()!)
             return
         }
@@ -338,12 +377,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             if let liked_by = object["liked_by"] as? [PFUser] {
                 if let _ = liked_by.find({ $0.objectId == PFUser.currentUser()?.objectId }) {
-                    object.removeObject(PFUser.currentUser()!, forKey: "liked_by")
+                    object.removeObject(currentUser, forKey: "liked_by")
                 } else {
-                    object.addUniqueObject(PFUser.currentUser()!, forKey: "liked_by")
+                    object.addUniqueObject(currentUser, forKey: "liked_by")
                 }
             } else {
-                object.setObject([PFUser.currentUser()!], forKey: "liked_by")
+                object.setObject([currentUser], forKey: "liked_by")
             }
             
             object.saveEventually({ (success, error) -> Void in
@@ -354,6 +393,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     if let liked_by = object["liked_by"] as? [PFUser] {
                         if let _ = liked_by.find({ $0.objectId == PFUser.currentUser()?.objectId }) {
                             sender.selected = true
+                            
+                            // Send push
+                            if currentUser.objectId != self.tradeIdea.user.objectId {
+                                PFCloud.callFunctionInBackground("pushNotificationToUser", withParameters: ["userObjectId":self.tradeIdea.user.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Reply", "message": "@\(currentUser.username!) liked a trade idea you posted"]) { (results, error) -> Void in
+                                }
+                            }
                         } else {
                             sender.selected = false
                         }
@@ -513,7 +558,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                 SweetAlert().showAlert("Block @\(self.tradeIdea.user.username!)?", subTitle: "@\(self.tradeIdea.user.username!) will not be able to follow or view your ideas, and you will not see anything from @\(self.tradeIdea.user.username!)", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.stockSwipeGreenColor, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                     
                     if isOtherButton {
-                        self.handleBlock(user)
+                        self.handleBlock(user, postAlert: true)
                     }
                 }
             }
@@ -522,7 +567,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
     }
     
-    func handleBlock(user: PFUser) {
+    func handleBlock(user: PFUser, postAlert: Bool) {
         
         guard let currentUser = PFUser.currentUser() else { return }
         
@@ -538,9 +583,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         currentUser.saveEventually { (success, error) in
             
             if success {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.Success)
-                })
+                
+                if postAlert == true {
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.Success)
+                    })
+                }
                 
                 QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: user) { (result) in
                     

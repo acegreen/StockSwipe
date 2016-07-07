@@ -100,6 +100,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         // setup user defaults
         Settings.registerGeneralDefaults()
         Settings.registerStocksDefaults()
+        Settings.registerNotificationDefaults()
         
         // Setup General Appearance
         UITabBar.appearance().barTintColor = UIColor.whiteColor()
@@ -418,8 +419,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         print("iRateDidDetectAppUpdate")
         
         SARate.sharedInstance().eventCount = 0
-        Settings.userDefaults.setBool(false, forKey: "FEEDBACK_GIVEN")
-        Settings.userDefaults.synchronize()
+        Constants.userDefaults.setBool(false, forKey: "FEEDBACK_GIVEN")
+        Constants.userDefaults.synchronize()
         
     }
 }

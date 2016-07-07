@@ -273,7 +273,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             completion(result: {return true})
             
         }
-        
     }
     
     // Mark - Get Charts
@@ -405,7 +404,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                         
                         }, completion: { (finished) -> Void in
                             
-                            Functions.showPopTipOnceForKey("TAP_CARD_TIP_SHOWN", userDefaults: Settings.userDefaults,
+                            Functions.showPopTipOnceForKey("TAP_CARD_TIP_SHOWN", userDefaults: Constants.userDefaults,
                                 popTipText: NSLocalizedString("Tap a card to view more details", comment: ""),
                                 inView: self.view,
                                 fromFrame: self.frontCardViewFrame(), direction: .Up, color: Constants.stockSwipeGreenColor)
@@ -717,14 +716,14 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         for exchange in Constants.Symbol.Exchange.allExchanges {
             
-            guard Settings.userDefaults.boolForKey(exchange.key()) == true else { continue }
+            guard Constants.userDefaults.boolForKey(exchange.key()) == true else { continue }
             
             includedExchanges.append(exchange.key())
         }
         
         for sector in Constants.Symbol.Sector.allSectors {
             
-            guard Settings.userDefaults.boolForKey(sector.key()) else { continue }
+            guard Constants.userDefaults.boolForKey(sector.key()) else { continue }
             
             includedSectors.append(sector.key().startCase)
         }

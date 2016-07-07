@@ -15,9 +15,9 @@ class UserCell: UITableViewCell {
     
     @IBOutlet private weak var userAvatar: UIImageView!
     
-    @IBOutlet private weak var username: UILabel!
+    @IBOutlet private weak var fullname: UILabel!
     
-    @IBOutlet private weak var userLocation: UILabel!
+    @IBOutlet private weak var username: UILabel!
     
     @IBOutlet var blockButton: BlockButton!
     
@@ -34,10 +34,12 @@ class UserCell: UITableViewCell {
             
             guard let user = user as? PFUser else { return }
             
-            self.username.text = user.username
+            if let fullname = user["full_name"] as? String {
+                self.fullname.text = fullname
+            }
             
-            if let location = user["location"] as? String {
-                self.userLocation.text = location
+            if let username = user.username {
+                 self.username.text = "@\(username)"
             }
             
             guard let avatarURL = user.objectForKey("profile_image_url") as? String else { return }

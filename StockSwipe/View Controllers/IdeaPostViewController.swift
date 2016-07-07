@@ -12,13 +12,15 @@ import Crashlytics
 
 protocol IdeaPostDelegate {
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType)
-    func ideaDeleted(with parseObject: PFObject)
+    func ideaDeleted(with tradeIdeaObject: PFObject)
 }
 
 class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     var originalSize: CGSize!
     var prefillText: String!
+    var textToPost: String!
+    
     var tradeIdeaPostCharacterLimit = 199 {
         didSet{
             self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit - self.ideaTextView.text.characters.count)
@@ -49,14 +51,18 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
             return
         }
-        guard Functions.isUserLoggedIn(self) else { return }
-        guard self.ideaTextView.text != nil && (self.ideaTextView.text.characters.filter{ $0 != " " }.count <= self.tradeIdeaPostCharacterLimit) && self.ideaTextView.textColor != UIColor.lightGrayColor() else {
+        guard let currentUser = PFUser.currentUser() else {
+            Functions.isUserLoggedIn(self)
+            return
+        }
+        
+        guard self.textToPost != nil && (self.ideaTextView.text.characters.filter{ $0 != " " }.count <= self.tradeIdeaPostCharacterLimit) else {
             return
         }
         
         let tradeIdeaObject = PFObject(className: "TradeIdea")
-        tradeIdeaObject["user"] = PFUser.currentUser()
-        tradeIdeaObject["description"] = self.ideaTextView.text
+        tradeIdeaObject["user"] = currentUser
+        tradeIdeaObject["description"] = self.textToPost
         
         var tradeIdeaType: Constants.TradeIdeaType = .New
         
@@ -77,24 +83,31 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             
             if success {
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                
+                self.delegate.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaType)
+                
+                switch tradeIdeaType {
+                case .New:
                     
-                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                    PFCloud.callFunctionInBackground("pushNotificationToFollowers", withParameters: ["userObjectId":currentUser.objectId!, "checkSetting": "newTradeIdea_notification", "title": "New Trade Idea", "message": "@\(currentUser.username!) just posted a trade idea for $\(tradeIdea.stock["Symbol"])"]) { (results, error) -> Void in
+                    }
                     
-                    self.delegate.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaType)
-                    
-                    // log trade idea
-                    Answers.logCustomEventWithName("Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.currentUser()?.username ?? "N/A","Description": self.ideaTextView.text,"Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])
-                    
-                    self.dismissViewControllerAnimated(true, completion: nil)
-                    
-                })
+                case .Reply, .Reshare: break   
+                }
+                
+                // log trade idea
+                Answers.logCustomEventWithName("Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.currentUser()?.username ?? "N/A","Description": self.ideaTextView.text,"Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])
                 
             } else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
                 })
             }
+        })
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.dismissViewControllerAnimated(true, completion: nil)
         })
     }
     
@@ -134,6 +147,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         
         if !self.prefillText.isEmpty {
             self.ideaTextView.text = "\(self.prefillText) "
+            self.textToPost = self.prefillText
             self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit - self.ideaTextView.text.characters.count)
         } else {
             self.ideaTextView.text = "Share an idea\n(use $ before ticker: e.g. $AAPL)"
@@ -192,12 +206,12 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
         
-        var currentText:NSString = textView.text
+        var currentText: NSString = textView.text
         var updatedText = currentText.stringByReplacingCharactersInRange(range, withString:text)
         
         if updatedText.isEmpty {
             
-            postButton.enabled = false
+            postButton.enabled = false            
             
             // Set label to 0
             self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit)
@@ -209,6 +223,8 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             }
             textView.textColor = UIColor.lightGrayColor()
             textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
+            
+            textToPost = ""
             
             return false
             
@@ -225,6 +241,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             currentText = textView.text
             updatedText = currentText.stringByReplacingCharactersInRange(range, withString:text)
             self.textCountLabel.text = String(tradeIdeaPostCharacterLimit - updatedText.characters.count)
+            self.textToPost = updatedText
             
             if tradeIdeaPostCharacterLimit - updatedText.characters.count < 0 {
                 self.textCountLabel.textColor = UIColor.redColor()

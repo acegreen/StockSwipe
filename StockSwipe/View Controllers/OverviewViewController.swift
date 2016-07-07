@@ -492,7 +492,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                         publishedDateFormatter.dateFormat = "EEE, dd MMM yy HH:mm:ss z"
                         
                         if let formattedDate: NSDate? = publishedDateFormatter.dateFromString(pubDate) {
-                            newsPublishedDate = formattedDate!.formattedAsTimeAgo()
+                            newsPublishedDate = formattedDate?.formattedAsTimeAgo()
                         }
                     }
                     

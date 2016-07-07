@@ -17,12 +17,10 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         
         case FAQSegueIdentifier = "FAQSegueIdentifier"
         case ProfileSegueIdentifier = "ProfileSegueIdentifier"
-        case SettingsSegueIdentifier = "SettingsSegueIdentifier"
     }
     
     enum CellIdentifier: String {
         case ProfileCell = "ProfileCell"
-        case SettingsCell = "SettingsCell"
         case FAQCell = "FAQCell"
         case TutorialCell = "TutorialCell"
         case WriteReviewCell = "WriteReviewCell"
@@ -65,7 +63,10 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         let profileImage = UIImage(data: imageData)
                         self.profileAvatarImage.image = profileImage
-                        self.profileLabel.text = currentUser.username
+                        
+                        if let fullName = currentUser.objectForKey("full_name") as? String {
+                            self.profileLabel.text = fullName
+                        }
                     })
                     
                 } catch {
@@ -108,8 +109,6 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             
             self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: self)
             
-        case .SettingsCell:
-            print("settings cell pressed")
         case .FAQCell:
             
             guard Functions.isConnectedToNetwork() else {
@@ -235,8 +234,6 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             destinationViewController.navigationItem.rightBarButtonItem = nil
             
         case .FAQSegueIdentifier:
-            break
-        case .SettingsSegueIdentifier:
             break
         }
     }

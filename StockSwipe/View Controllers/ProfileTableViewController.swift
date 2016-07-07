@@ -25,6 +25,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     enum SegueIdentifier: String {
         case TradeIdeaDetailSegueIdentifier = "TradeIdeaDetailSegueIdentifier"
         case ProfileDetailSegueIdentifier = "ProfileDetailSegueIdentifier"
+        case SettingsSegueIdentifier = "SettingsSegueIdentifier"
     }
     
     var delegate: ProfileTableVieDelegate!
@@ -43,9 +44,96 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     @IBOutlet var headerView: UIView!
     @IBOutlet var avatarImage:UIImageView!
+    @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
-    @IBOutlet var locationLabel: UILabel!
     @IBOutlet var followButton: FollowButton!
+    @IBOutlet var settingsButton: UIButton!
+    
+    @IBAction func settingsButton(sender: AnyObject) {
+        
+        guard let viewRect = sender as? UIView else {
+            return
+        }
+        
+        guard let currentUser = PFUser.currentUser() else { return }
+        guard let user = self.user else { return }
+        
+        if user.userObject.objectId == currentUser.objectId  {
+            self.performSegueWithIdentifier(.SettingsSegueIdentifier, sender: self)
+            return
+        }
+        
+        let settingsAlert = UIAlertController()
+        settingsAlert.modalPresentationStyle = .Popover
+        if user.userObject.objectId != currentUser.objectId  {
+            
+            settingsAlert.addAction(blockAction(user.userObject))
+            
+            let reportIdea = UIAlertAction(title: "Report", style: .Default) { action in
+                
+                SweetAlert().showAlert("Report \(user.userObject.username!)?", subTitle: "", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor.colorFromRGB(0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+                    
+                    if !isOtherButton {
+                        
+                        self.handleBlock(user.userObject, postAlert: false)
+                        
+                        let spamObject = PFObject(className: "Spam")
+                        spamObject["reported_user"] = user.userObject
+                        spamObject["reported_by"] = currentUser
+                        
+                        spamObject.saveEventually ({ (success, error) in
+                            
+                            if success {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.Success)
+                                })
+                                
+                            } else {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                                })
+                            }
+                        })
+                        
+                    } else {
+                        
+                        let spamObject = PFObject(className: "Spam")
+                        spamObject["reported_user"] = user.userObject
+                        spamObject["reported_by"] = currentUser
+                        
+                        spamObject.saveEventually ({ (success, error) in
+                            
+                            if success {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.Success)
+                                })
+                                
+                            } else {
+                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                                })
+                            }
+                        })
+                    }
+                }
+            }
+            settingsAlert.addAction(reportIdea)
+        }
+        
+        let cancel = UIAlertAction(title: "Cancel", style: .Cancel) { action in
+        }
+        
+        settingsAlert.addAction(cancel)
+        
+        if let presenter = settingsAlert.popoverPresentationController {
+            presenter.sourceView = viewRect;
+            presenter.sourceRect = viewRect.bounds;
+        }
+        
+        UIApplication.topViewController()?.presentViewController(settingsAlert, animated: true, completion: nil)
+        settingsAlert.view.tintColor = Constants.stockSwipeGreenColor
+        
+    }
     
     @IBAction func followButtonPressed(sender: FollowButton) {
         self.registerFollow(sender)
@@ -118,6 +206,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         guard let user = user else { return }
         
+        checkFollow(self.followButton)
+        
         if let profileImageURL = user.userObject.objectForKey("profile_image_url") as? String {
             
             QueryHelper.sharedInstance.queryWith(profileImageURL, completionHandler: { (result) in
@@ -139,37 +229,14 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             })
         }
         
-        if let username = user.userObject.username {
-            self.usernameLabel.text = username
+        if let fullName = user.userObject.objectForKey("full_name") as? String {
+            self.fullNameLabel.text = fullName
         }
         
-        if let location = user.userObject.objectForKey("location") as? String {
-            self.locationLabel.text = location
-        }
-        
-        checkBlocked()
-        checkFollow(self.followButton)
-    }
-    
-    func checkBlocked() {
-
-        guard let currentUser = PFUser.currentUser() else { return }
-        guard let userObject = self.user?.userObject else { return }
-        
-        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] where users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
-            self.isCurrentUserBlocked = true
-            self.shouldShowProfileAnyway = false
-            self.tableView.reloadEmptyDataSet()
-            return
-        }
-        
-        if let blocked_users = currentUser["blocked_users"] as? [PFUser] where blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
-            self.isUserBlocked = true
-            self.tableView.reloadEmptyDataSet()
-            return
+        if let username = user.userObject.username  {
+            self.usernameLabel.text = "@\(username)"
         }
     }
-    
     func getUserTradeIdeas() {
         
         guard !isCurrentUserBlocked else { return }
@@ -445,11 +512,16 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         if let users_blocked_users = userObject["blocked_users"] as? [PFUser] where users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
             sender.buttonState = FollowButton.state.Disabled
+            self.isCurrentUserBlocked = true
+            self.shouldShowProfileAnyway = false
+            self.tableView.reloadEmptyDataSet()
             return
         }
         
         if let blocked_users = currentUser["blocked_users"] as? [PFUser] where blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
             sender.buttonState = FollowButton.state.Blocked
+            self.isUserBlocked = true
+            self.tableView.reloadEmptyDataSet()
             return
         }
         
@@ -519,6 +591,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         
                         if success {
                             sender.buttonState = FollowButton.state.Following
+                            
+                            // Send push
+                            PFCloud.callFunctionInBackground("pushNotificationToUser", withParameters: ["userObjectId":userObject.objectId!, "checkSetting": "follower_notification", "title": "Follower Notification", "message": "@\(currentUser.username!) is now following you"]) { (results, error) -> Void in
+                            }
+                            
                         } else {
                             sender.buttonState = FollowButton.state.NotFollowing
                         }
@@ -554,6 +631,166 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         let attributedTitle: NSAttributedString = NSAttributedString(string: title, attributes: attrsDictionary)
         self.refreshControl?.attributedTitle = attributedTitle
     }
+    
+    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+        
+        let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
+        if offset >= 0 && offset <= 5 {
+            // This is the last cell so get more data
+            self.loadMoreTradeIdeas(skip: tradeIdeas.count)
+        }
+    }
+    
+    func blockAction(user: PFUser) -> UIAlertAction {
+        
+        let currentUser = PFUser.currentUser()
+        
+        if let blocked_users = currentUser!["blocked_users"] as? [PFUser], let blockedUser = blocked_users .find({ $0.objectId == user.objectId }) {
+            
+            let unblockUser = UIAlertAction(title: "Unblock", style: .Default) { action in
+                
+                currentUser!.removeObject(blockedUser, forKey: "blocked_users")
+                
+                currentUser!.saveEventually()
+            }
+            
+            return unblockUser
+            
+        } else {
+            
+            let blockUser = UIAlertAction(title: "Block", style: .Default) { action in
+                
+                SweetAlert().showAlert("Block @\(user.username!)?", subTitle: "@\(user.username!) will not be able to follow or view your ideas, and you will not see anything from @\(user.username!)", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.stockSwipeGreenColor, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+                    
+                    if isOtherButton {
+                        self.handleBlock(user, postAlert: true)
+                    }
+                }
+            }
+            
+            return blockUser
+        }
+    }
+    
+    func handleBlock(user: PFUser, postAlert: Bool) {
+        
+        guard let currentUser = PFUser.currentUser() else { return }
+        
+        if currentUser.objectForKey("blocked_users") != nil {
+            
+            currentUser.addUniqueObject(user, forKey: "blocked_users")
+            
+        } else {
+            
+            currentUser.setObject([user], forKey: "blocked_users")
+        }
+        
+        currentUser.saveEventually { (success, error) in
+            
+            if success {
+                
+                if postAlert == true {
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.Success)
+                    })
+                }
+                
+                QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: user) { (result) in
+                    
+                    do {
+                        
+                        let userActivityObject = try result()
+                        
+                        userActivityObject?.first?.deleteEventually()
+                        
+                    } catch {
+                        
+                        // TO-DO: handle error
+                        
+                    }
+                }
+                
+                QueryHelper.sharedInstance.queryUserActivityFor(user, toUser: currentUser) { (result) in
+                    
+                    do {
+                        
+                        let userActivityObject = try result()
+                        
+                        userActivityObject?.first?.deleteEventually()
+                        
+                    } catch {
+                        
+                        // TO-DO: handle error
+                        
+                    }
+                }
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                })
+            }
+        }
+    }
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        let segueIdentifier = segueIdentifierForSegue(segue)
+        
+        switch segueIdentifier {
+            
+        case .TradeIdeaDetailSegueIdentifier:
+            
+            let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
+            destinationViewController.delegate = self
+            
+            guard let cell = sender as? IdeaCell else { return }
+            destinationViewController.tradeIdea = cell.tradeIdea
+            
+        case .ProfileDetailSegueIdentifier:
+            let profileContainerController = segue.destinationViewController as! ProfileContainerController
+            profileContainerController.navigationItem.rightBarButtonItem = nil
+            
+            guard let cell = sender as? UserCell  else { return }
+            profileContainerController.user = User(userObject: cell.user)
+        case .SettingsSegueIdentifier:
+            break
+        }
+    }
+}
+
+extension ProfileTableViewController: IdeaPostDelegate {
+    
+    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
+        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+        self.tradeIdeas.insert(tradeIdea, atIndex: 0)
+        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        
+        self.tableView.reloadEmptyDataSet()
+    }
+    
+    func ideaDeleted(with parseObject: PFObject) {
+        
+        if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
+            
+            if let reshareOf = tradeIdea.parseObject.objectForKey("reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == reshareOf.objectId })  {
+                
+                let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(reshareTradeIdea)!, inSection: 0)
+                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            }
+            
+            let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(tradeIdea)!, inSection: 0)
+            self.tradeIdeas.removeObject(tradeIdea)
+            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        }
+        
+        if tradeIdeas.count == 0 {
+            self.tableView.reloadEmptyDataSet()
+        }
+    }
+}
+
+extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // MARK: - Table view data source
     
@@ -599,75 +836,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return cell
         }
     }
-    
-    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
-        
-        if user?.userObject.objectId == PFUser.currentUser()?.objectId {
-            return true
-        }
-        
-        return false
-    }
-    
-    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
-        
-        let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
-        if offset >= 0 && offset <= 5 {
-            // This is the last cell so get more data
-            self.loadMoreTradeIdeas(skip: tradeIdeas.count)
-        }
-    }
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        let segueIdentifier = segueIdentifierForSegue(segue)
-        
-        switch segueIdentifier {
-            
-        case .TradeIdeaDetailSegueIdentifier:
-            
-            let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
-            destinationViewController.delegate = self
-            
-            guard let cell = sender as? IdeaCell else { return }
-            destinationViewController.tradeIdea = cell.tradeIdea
-            
-        case .ProfileDetailSegueIdentifier:
-            let profileContainerController = segue.destinationViewController as! ProfileContainerController
-            profileContainerController.navigationItem.rightBarButtonItem = nil
-            
-            guard let cell = sender as? UserCell  else { return }
-            profileContainerController.user = User(userObject: cell.user)
-
-        }
-    }
-}
-
-extension ProfileTableViewController: IdeaPostDelegate {
-    
-    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
-        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        self.tradeIdeas.insert(tradeIdea, atIndex: 0)
-        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-        
-        self.tableView.reloadEmptyDataSet()
-    }
-    
-    func ideaDeleted(with parseObject: PFObject) {
-        
-        if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
-            let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(tradeIdea)!, inSection: 0)
-            self.tradeIdeas.removeObject(tradeIdea)
-            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-        }
-        
-        if tradeIdeas.count == 0 {
-            self.tableView.reloadEmptyDataSet()
-        }
-    }
-}
-
-extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     // DZNEmptyDataSet delegate functions
     

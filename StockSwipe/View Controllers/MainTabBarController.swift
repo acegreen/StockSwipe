@@ -24,14 +24,14 @@ class MainTabBarController: UITabBarController {
         
         super.viewDidAppear(true)
         
-        if PFUser.currentUser() == nil && Settings.userDefaults.boolForKey("TUTORIAL_SHOWN") == false {
+        if PFUser.currentUser() == nil && Constants.userDefaults.boolForKey("TUTORIAL_SHOWN") == false {
             
             let logInViewcontroller = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
             self.presentViewController(logInViewcontroller, animated: true, completion: {
-                Settings.userDefaults.setBool(true, forKey: "TUTORIAL_SHOWN")
+                Constants.userDefaults.setBool(true, forKey: "TUTORIAL_SHOWN")
             })
             
-        } else if SARate.sharedInstance().eventCount >= SARate.sharedInstance().eventsUntilPrompt && Settings.userDefaults.boolForKey("FEEDBACK_GIVEN") == false {
+        } else if SARate.sharedInstance().eventCount >= SARate.sharedInstance().eventsUntilPrompt && Constants.userDefaults.boolForKey("FEEDBACK_GIVEN") == false {
             
             self.performSegueWithIdentifier("FeedbackSegueIdentifier", sender: self)
             SARate.sharedInstance().eventCount = 0

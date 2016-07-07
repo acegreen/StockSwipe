@@ -489,8 +489,8 @@ public class Functions {
     
     class func markFeedbackGiven() {
         
-        Settings.userDefaults.setBool(true, forKey: "FEEDBACK_GIVEN")
-        Settings.userDefaults.synchronize()
+        Constants.userDefaults.setBool(true, forKey: "FEEDBACK_GIVEN")
+        Constants.userDefaults.synchronize()
         
     }
     

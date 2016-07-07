@@ -198,9 +198,11 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         self.tradeIdea = tradeIdea
     
-        if let nestedTradeIdeaObject = self.tradeIdea.parseObject.objectForKey("reshare_of") as? PFObject {
+        if let nestedTradeIdeaObject = tradeIdea.parseObject.objectForKey("reshare_of") as? PFObject {
             
             self.nestedTradeIdea = TradeIdea(user: nestedTradeIdeaObject["user"] as! PFUser, stock: nestedTradeIdeaObject["stock"] as! PFObject, description: nestedTradeIdeaObject["description"] as! String, likeCount: nestedTradeIdeaObject["liked_by"]?.count, reshareCount: nestedTradeIdeaObject["reshared_by"]?.count, publishedDate: nestedTradeIdeaObject.createdAt, parseObject: nestedTradeIdeaObject)
+        } else {
+            self.nestedTradeIdea = nil
         }
         
         configureMainTradeIdea(self.tradeIdea)
@@ -248,7 +250,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     // TODO: Handle error
                 }
             })
-            
         })
     }
     

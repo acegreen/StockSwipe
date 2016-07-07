@@ -733,9 +733,9 @@
 				23E7F69A1BCB57A0009A016D /* Sources */,
 				23E7F69B1BCB57A0009A016D /* Frameworks */,
 				23E7F69C1BCB57A0009A016D /* Resources */,
-				773D38C05ADA2DAD6FDEBBFE /* [CP] Copy Pods Resources */,
 				23B999891D122B0300E9BFE6 /* ShellScript */,
 				236DB51F1D0264F000CE9869 /* ShellScript */,
+				773D38C05ADA2DAD6FDEBBFE /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);

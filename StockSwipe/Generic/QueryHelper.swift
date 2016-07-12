@@ -219,7 +219,6 @@ public class QueryHelper {
         
         let stockQuery = PFQuery(className:"Stocks")
         stockQuery.cancel()
-        //stockQuery.includeKeys(["Shorted_By", "Longed_By"])
         stockQuery.whereKey("Symbol", containedIn: mappedSymbols)
         
         stockQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -321,7 +320,7 @@ public class QueryHelper {
         }
     }
     
-    public func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: PFObject?, activityType: String? , skip: Int?, limit: Int?, includeKeys: [String]?, completion: (result: () throws -> ([PFObject])) -> Void) {
+    public func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: String? , skip: Int?, limit: Int?, includeKeys: [String]?, completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
@@ -356,7 +355,7 @@ public class QueryHelper {
         }
         
         if let stock = stock {
-            activityQuery.whereKey("stock", equalTo: stock)
+            activityQuery.whereKey("stock", containedIn: stock)
         }
         
         if let activityType = activityType {

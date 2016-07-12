@@ -160,8 +160,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                     
                     guard let stockObject = try result().first else { return }
                     let companyName = stockObject["Company"] as! String
-                    let shorts = stockObject["Shorted_By"]
-                    let longs = stockObject["Longed_By"]
+                    let shortCount = stockObject.objectForKey("shortCount") as? Int
+                    let longCount = stockObject.objectForKey("longCount") as? Int
                     
                     let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
                     let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
@@ -172,7 +172,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                         
                     }
                     
-                    let chart = Chart(symbol: symbolDict["symbol"] as! String, companyName: companyName, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
+                    let chart = Chart(symbol: symbolDict["symbol"] as! String, companyName: companyName, image: nil, shortCount: shortCount, longCount: longCount, parseObject: stockObject)
                     
                     chartDetailTabBarController.chart = chart
                         
@@ -228,8 +228,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                 
                 guard let stockObject = try result().first else { return }
                 let companyName = stockObject["Company"] as! String
-                let shorts = stockObject["Shorted_By"]
-                let longs = stockObject["Longed_By"]
+                let shortCount = stockObject.objectForKey("shortCount") as? Int
+                let longCount = stockObject.objectForKey("longCount") as? Int
                 
                 let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
                 let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
@@ -240,7 +240,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                     
                 }
                 
-                let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
+                let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: shortCount, longCount: longCount, parseObject: stockObject)
                 
                 chartDetailTabBarController.chart = chart
                 

@@ -148,7 +148,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             
             // Make it possible to select & deselect multiple cells
             self.CollectionView.allowsMultipleSelection = true
-        
+            
             self.SelectAllButton.enabled = true
             
             // reload view
@@ -181,7 +181,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             cellWidth = (self.view.bounds.width - 30) / numberOfCellsHorizontally
             
             cellHeight = (cellWidth * 0.60) + Constants.chartImageTopPadding + Constants.informationViewHeight
-
+            
         } else {
             
             cellWidth = chartWidth / numberOfCellsHorizontally
@@ -235,8 +235,8 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let cell: ChartCollectionViewCell = CollectionView.dequeueReusableCellWithReuseIdentifier("chartCollectionCellIdentifier", forIndexPath: indexPath) as! ChartCollectionViewCell
-
-        let chartData = swippeChartsdArray[indexPath.row] 
+        
+        let chartData = swippeChartsdArray[indexPath.row]
         cell.configure(withDataSource: chartData)
         
         return cell
@@ -276,10 +276,10 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
                         
                         let symbol = stockObject["Symbol"] as? String
                         let companyName = stockObject["Company"] as? String
-                        let shorts: AnyObject? = stockObject["Shorted_By"]
-                        let longs: AnyObject? = stockObject["Longed_By"]
+                        let shortCount = stockObject.objectForKey("shortCount") as? Int
+                        let longCount = stockObject.objectForKey("longCount") as? Int
                         
-                        let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
+                        let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: shortCount, longCount: longCount, parseObject: stockObject)
                         self.selectedChart = chart
                         
                         self.performSegueWithIdentifier("showChartDetail", sender: self)
@@ -359,79 +359,98 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
     func deleteUserFromParseObjectLongedShortedColumn(selectedObjects: [ChartModel]) {
         
         guard Functions.isUserLoggedIn(self) else { return }
+        guard let currentUser = PFUser.currentUser() else { return }
         
         let symbolStringArray: [String] = extractSymbolNames(selectedObjects)
-    
-        let parseLocalQuery = PFQuery(className:"Stocks")
-        //parseLocalQuery.fromLocalDatastore()
-        parseLocalQuery.whereKey("Symbol", containedIn: symbolStringArray)
-        parseLocalQuery.findObjectsInBackgroundWithBlock({ (objects, error) -> Void in
+        
+        QueryHelper.sharedInstance.queryStockObjectsFor(symbolStringArray) { (result) in
             
-            if error == nil {
+            do {
                 
-                guard objects != nil else { return }
+                let stockObjects = try result()
                 
-                print("Successfully retrieved \(objects!.count) object")
+                print("Successfully retrieved \(stockObjects.count) object")
                 
-                for object in objects! {
+                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: stockObjects, activityType: nil, skip: 0, limit: 0, includeKeys: nil, completion: { (result) in
                     
-                    object.removeObject(PFUser.currentUser()!, forKey: "Shorted_By")
-                    object.removeObject(PFUser.currentUser()!, forKey: "Longed_By")
-                    
-                    object.saveEventually({ (success, error) -> Void in
-//                        object.unpinInBackgroundWithBlock({ (success, error) -> Void in
-//                          
-//                            if success {
-//                            }
-//                            
-//                        })
-                        print("User removed object: \(object)")
-                    })
-                }
-                
-                // Delete from CoreData
-                self.deleteFromCoreData(selectedObjects)
-                
-                // Remove from datasource and collectionView
-                self.CollectionView.performBatchUpdates({ () -> Void in
-                    
-                    // Delete from Data Source & CollectionView
-                    self.deleteItemsFromDataSource(selectedObjects)
-                    
-                    }, completion: { (finished: Bool) -> Void in
+                    do {
                         
-                        if finished == true {
+                        let activityObjects = try result()
+                        
+                        PFObject.deleteAllInBackground(activityObjects, block: { (success, error) in
                             
-                            // reload view
-                            self.CollectionView.reloadData()
-                            
-                            if self.CollectionView.indexPathsForSelectedItems()!.count == 0  {
+                            if success {
                                 
-                                self.TrashButton.enabled = false
+                                for stockObject: PFObject in stockObjects {
+                                    
+                                    let symbol = stockObject.objectForKey("Symbol") as! String
+                                    
+                                    if let selectedObjectModel = selectedObjects.find({ $0.symbol == symbol }), let userChoice = Constants.UserChoices(rawValue: selectedObjectModel.userChoice) {
+                                        
+                                        switch userChoice {
+                                            
+                                        case .LONG:
+                                            
+                                            stockObject.incrementKey("longCount", byAmount: -1)
+                                            
+                                        case .SHORT:
+                                            
+                                            stockObject.incrementKey("shortCount", byAmount: -1)
+                                            
+                                        default:
+                                            break
+                                        }
+                                        
+                                        stockObject.saveEventually()
+                                    }
+                                }
                                 
+                                // Delete from CoreData
+                                self.deleteFromCoreData(selectedObjects)
+                                
+                                // Remove from datasource and collectionView
+                                self.CollectionView.performBatchUpdates({ () -> Void in
+                                    
+                                    // Delete from Data Source & CollectionView
+                                    self.deleteItemsFromDataSource(selectedObjects)
+                                    
+                                    }, completion: { (finished: Bool) -> Void in
+                                        
+                                        if finished == true {
+                                            
+                                            // reload view
+                                            self.CollectionView.reloadData()
+                                            
+                                            if self.CollectionView.indexPathsForSelectedItems()!.count == 0  {
+                                                
+                                                self.TrashButton.enabled = false
+                                                
+                                            }
+                                            
+                                            if self.swippeChartsdArray.count == 0 {
+                                                
+                                                self.EditButtonPressed(self)
+                                                self.EditButton.enabled = false
+                                                
+                                                self.CollectionView.reloadEmptyDataSet()
+                                                
+                                            }
+                                            
+                                        }
+                                })
+
                             }
-                            
-                            if self.swippeChartsdArray.count == 0 {
-                                
-                                self.EditButtonPressed(self)
-                                self.EditButton.enabled = false
-                                
-                                self.CollectionView.reloadEmptyDataSet()
-                                
-                            }
-                            
-                        }
+                        })
+                    } catch {
+                        
+                    }
                 })
-                
-            } else {
-                
-                // Log details of the failure
-                print("Error: \(error) \(error!.userInfo)")
+            } catch {
                 
             }
-        })
+        }
     }
-
+    
     func extractSymbolNames (coreDataObjects: [ChartModel]) -> [String] {
         
         if coreDataObjects.isEmpty {
@@ -478,7 +497,7 @@ extension ChartCollectionViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         if segue.identifier == "showChartDetail" {
-
+            
             let destinationView = segue.destinationViewController as! ChartDetailTabBarController
             destinationView.chart = selectedChart
         }

@@ -80,7 +80,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         
         guard let stockObject = self.stockObject else { return }
         
-        QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: stockObject, activityType: nil, skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: nil, skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
             
             do {
                 
@@ -134,7 +134,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             self.footerActivityIndicator.startAnimating()
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: stockObject, activityType: nil, skip: skip, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: nil, skip: skip, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
             
             do {
                 

@@ -21,15 +21,25 @@ public class Chart: NSObject {
         }
     }
     
-    var shorts: Int?
-    var longs: Int?
+    var shortCount: Int = 0 {
+        didSet {
+            self.parseObject?.setObject(self.shortCount, forKey: "shortCount")
+            self.parseObject?.saveEventually()
+        }
+    }
+    var longCount: Int = 0 {
+        didSet {
+            self.parseObject?.setObject(self.longCount, forKey: "longCount")
+            self.parseObject?.saveEventually()
+        }
+    }
     var parseObject: PFObject?
     
     var searchDescription: String {
         
-        if self.longs != nil && self.shorts != nil {
+        if self.shortCount > 0 || self.shortCount > 0 {
             
-            return "\(companyName)\nLongs: \(longs)\nShorts: \(shorts)"
+            return "\(companyName)\nLongs: \(longCount)\nShorts: \(shortCount)"
             
         } else {
             
@@ -37,15 +47,15 @@ public class Chart: NSObject {
         }
     }
     
-    init(symbol: String!, companyName: String!, image: UIImage!, shorts: Int?, longs: Int?, parseObject: PFObject?) {
+    init(symbol: String!, companyName: String!, image: UIImage!, shortCount: Int!, longCount: Int!, parseObject: PFObject?) {
         
         super.init()
         
-        self.symbol = symbol ?? ""
-        self.companyName = companyName!
+        self.symbol = symbol
+        self.companyName = companyName
         ({  self.image = image })()
-        self.shorts = shorts
-        self.longs = longs
+        self.shortCount = shortCount ?? 0
+        self.longCount = longCount ?? 0
         self.parseObject = parseObject
     }
 }

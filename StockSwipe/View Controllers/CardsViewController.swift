@@ -85,8 +85,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     @IBOutlet var searchImage: UIImageView!
     
-    @IBOutlet var mainViewNavigationBar: UINavigationBar!
-    
     @IBAction func returnToMainviewController (segue:UIStoryboardSegue) {
         
     }
@@ -287,8 +285,8 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             
             let symbol = object.objectForKey("Symbol") as! String
             let company = object.objectForKey("Company") as! String
-            let shortedObject: AnyObject? = object.objectForKey("Shorted_By")
-            let longedObject: AnyObject? = object.objectForKey("Longed_By")
+            let shortCount = object.objectForKey("shortCount") as? Int
+            let longCount = object.objectForKey("longCount") as? Int
             
             guard let chartImageURL: NSURL = Functions.setImageURL(symbol) else {
                 
@@ -310,7 +308,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                     
                     if let chartImage = UIImage(data: chartImagedata!) {
                         
-                        let chart = Chart(symbol: symbol, companyName: company, image: chartImage, shorts: shortedObject?.count, longs: longedObject?.count, parseObject: object)
+                        let chart = Chart(symbol: symbol, companyName: company, image: chartImage, shortCount: shortCount, longCount: longCount, parseObject: object)
                         
                         if !self.charts.contains(chart) {
                             
@@ -319,7 +317,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                         }
                         
                         // Index to Spotlight
-                        Functions.addToSpotlight(chart, uniqueIdentifier: chart.symbol, domainIdentifier: "com.stockswipe.stocksQueried")
+                        Functions.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
                     }
                 }
                 
@@ -386,7 +384,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             // Display First Card
             if self.firstCardView == nil {
                 
-                self.firstCardView = self.popChartViewWithFrame(CardType.firstCard  , frame: CGRectMake(self.view.bounds.width + self.frontCardViewFrame().width, self.mainViewNavigationBar.frame.height + 50, chartWidth, chartHeight))
+                self.firstCardView = self.popChartViewWithFrame(CardType.firstCard , frame: CGRectMake(self.view.bounds.width + self.frontCardViewFrame().width, self.navigationController!.navigationBar.frame.height + 50, chartWidth, chartHeight))
                 
                 if self.firstCardView != nil {
                     
@@ -583,7 +581,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         }
         
         // Create NSUserActivity
-        Functions.createNSUserActivity(chartChoosen, uniqueIdentifier: chartChoosen.symbol, domainIdentifier: "com.stockswipe.stocksSwiped")
+        Functions.createNSUserActivity(chartChoosen, domainIdentifier: "com.stockswipe.stocksSwiped")
         
         print("charts.count after swipe", self.charts.count)
         

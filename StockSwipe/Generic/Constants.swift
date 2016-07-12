@@ -171,20 +171,9 @@ public class Constants {
     }
     
     public enum UserChoices: String {
-        case LONG, SHORT, SKIP
-        
-        public func key() -> String {
-            switch self {
-            case .LONG:
-                return "Longed_By"
-            case .SHORT:
-                return "Shorted_By"
-            case .SKIP:
-                return "Skipped_By"
-            }
-        }
-        
-        static let allChoices = [LONG, SHORT, SKIP]
+        case LONG = "LONG"
+        case SHORT = "SHORT"
+        case SKIP = "SKIP"
     }
     
     enum ActivityType: String {

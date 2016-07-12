@@ -30,19 +30,25 @@ class ChartCollectionViewCell: UICollectionViewCell {
         self.longLabel.text = Int(dataSource.longs).suffixNumber()
         self.shortLabel.text = Int(dataSource.shorts).suffixNumber()
         
-        if dataSource.userChoice == Constants.UserChoices.SHORT.key() {
+        guard let userChoice = Constants.UserChoices(rawValue: dataSource.userChoice) else { return }
+        
+        switch userChoice {
+        
+        case .SHORT:
             
             self.overlayLabel.layer.borderColor = UIColor.redColor().CGColor
-            self.overlayLabel.text = "\(Constants.UserChoices.SHORT)"
+            self.overlayLabel.text = "\(Constants.UserChoices.SHORT.rawValue)"
             self.overlayLabel.textColor = UIColor.redColor()
             self.overlayLabel.transform = CGAffineTransformRotate(CGAffineTransformIdentity, CGFloat(Functions.degreesToRadians(15)))
             
-        } else if dataSource.userChoice == Constants.UserChoices.LONG.key() {
+        case .LONG:
             
             self.overlayLabel.layer.borderColor = Constants.stockSwipeGreenColor.CGColor
-            self.overlayLabel.text = "\(Constants.UserChoices.LONG)"
+            self.overlayLabel.text = "\(Constants.UserChoices.LONG.rawValue)"
             self.overlayLabel.textColor = Constants.stockSwipeGreenColor
             self.overlayLabel.transform = CGAffineTransformRotate(CGAffineTransformIdentity, CGFloat(Functions.degreesToRadians(-15)))
+        case .SKIP:
+            break
         }
         
         self.overlayLabel.layer.borderWidth = 3.0

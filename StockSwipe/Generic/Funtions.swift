@@ -208,10 +208,10 @@ public class Functions {
                         
                         let chartImage = try result()
                         let companyName = stockObject["Company"] as? String
-                        let shorts: AnyObject? = stockObject["Shorted_By"]
-                        let longs: AnyObject? = stockObject["Longed_By"]
+                        let shortCount = stockObject.objectForKey("shortCount") as? Int
+                        let longCount = stockObject.objectForKey("longCount") as? Int
                         
-                        let chart = Chart(symbol: symbol, companyName: companyName, image: chartImage, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
+                        let chart = Chart(symbol: symbol, companyName: companyName, image: chartImage, shortCount: shortCount, longCount: longCount, parseObject: stockObject)
                         completion(result: { (object: stockObject, chart: chart)})
                         
                     } catch {
@@ -243,12 +243,12 @@ public class Functions {
         case .LONG:
             
             activityObject["activityType"] = Constants.ActivityType.StockLong.rawValue
-            chart.longs = (chart.longs ?? 0) + 1
+            chart.longCount += 1
             
         case .SHORT:
             
             activityObject["activityType"] = Constants.ActivityType.StockShort.rawValue
-            chart.shorts = (chart.shorts ?? 0) + 1
+            chart.shortCount += 1
             
         default:
             break
@@ -283,9 +283,9 @@ public class Functions {
                     newChart.image = UIImagePNGRepresentation(chart.image)
                 }
             
-                newChart.shorts = Int32(chart.shorts ?? 0)
-                newChart.longs = Int32(chart.longs ?? 0)
-                newChart.userChoice = userChoice.key()
+                newChart.shorts = Int32(chart.shortCount)
+                newChart.longs = Int32(chart.longCount)
+                newChart.userChoice = userChoice.rawValue
                 newChart.dateChoosen = NSDate()
                 
             } else if fetchedObjectArray.count > 0 {
@@ -300,9 +300,9 @@ public class Functions {
                     fetchedObject.setValue(UIImagePNGRepresentation(chart.image), forKey: "image")
                 }
                 
-                fetchedObject.setValue(chart.shorts, forKey: "shorts")
-                fetchedObject.setValue(chart.longs, forKey: "longs")
-                fetchedObject.setValue(userChoice.key(), forKey: "userChoice")
+                fetchedObject.setValue(chart.shortCount, forKey: "shorts")
+                fetchedObject.setValue(chart.longCount, forKey: "longs")
+                fetchedObject.setValue(userChoice.rawValue, forKey: "userChoice")
                 fetchedObject.setValue(NSDate(), forKey: "dateChoosen")
             }
             
@@ -359,12 +359,12 @@ public class Functions {
     }
     
     @available(iOS 9.0, *)
-    class func createNSUserActivity(chart: Chart, uniqueIdentifier: String, domainIdentifier: String) {
+    class func createNSUserActivity(chart: Chart, domainIdentifier: String) {
         
         let attributeSet:CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeImage as String)
         attributeSet.contentDescription = chart.searchDescription
         //    attributeSet.thumbnailData = image
-        //    attributeSet.relatedUniqueIdentifier = title
+        attributeSet.relatedUniqueIdentifier = chart.symbol
         
         let activity = NSUserActivity(activityType: domainIdentifier)
         activity.title = chart.symbol
@@ -382,7 +382,7 @@ public class Functions {
     }
     
     @available(iOS 9.0, *)
-    class func addToSpotlight(chart: Chart, uniqueIdentifier: String, domainIdentifier: String) {
+    class func addToSpotlight(chart: Chart, domainIdentifier: String) {
         
         let attributeSet:CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeImage as String)
         attributeSet.title = chart.symbol
@@ -390,7 +390,7 @@ public class Functions {
         attributeSet.thumbnailData = nil
         attributeSet.keywords = [chart.symbol, chart.companyName, chart.searchDescription, "Stocks", "Markets"]
         
-        let searchableItem = CSSearchableItem(uniqueIdentifier: uniqueIdentifier, domainIdentifier: domainIdentifier, attributeSet: attributeSet)
+        let searchableItem = CSSearchableItem(uniqueIdentifier: chart.symbol, domainIdentifier: domainIdentifier, attributeSet: attributeSet)
         
         CSSearchableIndex.defaultSearchableIndex().indexSearchableItems([searchableItem]) { (error) -> Void in
             

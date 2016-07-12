@@ -141,7 +141,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                         
                         let ticker = Ticker(symbol: symbol, companyName: companyName, exchange: exchange, currentPrice: currentPrice, changeInDollar: changeInDollar, changeInPercent: changeInPercent)
                         
-                        let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shorts: nil, longs: nil, parseObject: nil)
+                        let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: 0, longCount: 0, parseObject: nil)
                         
                         self.tickers.append(ticker)
                         self.charts.append(chart)
@@ -301,7 +301,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                 })
                 
                 // Index to Spotlight
-                Functions.addToSpotlight(chart, uniqueIdentifier: chart.symbol, domainIdentifier: "com.stockswipe.stocksQueried")
+                Functions.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
             })
         }
     }
@@ -393,17 +393,17 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                             
                             let parseObject = stockObjects.find{ $0["Symbol"] as! String == subJson["symbol"].string!}
                             
-                            let shorts = parseObject?["Shorted_By"]
-                            let longs = parseObject?["Longed_By"]
+                            let shortCount = parseObject?.objectForKey("shortCount") as? Int
+                            let longCount = parseObject?.objectForKey("longCount") as? Int
                             
                             let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: self.trendingStocksJSON.count - Int(index)!, wordTappable: true)
                             self.cloudWords.append(cloudWord)
                             
-                            let chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: parseObject)
+                            let chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: nil, shortCount: shortCount, longCount: longCount, parseObject: parseObject)
                             self.charts.append(chart)
                             
                             //Index to Spotlight
-                            Functions.addToSpotlight(chart, uniqueIdentifier: chart.symbol, domainIdentifier: "com.stockswipe.stocksQueried")
+                            Functions.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
                         }
                         
                         NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in

@@ -42,10 +42,10 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                         
                     let symbol = stockObject["Symbol"] as? String
                     let companyName = stockObject["Company"] as? String
-                    let shorts: AnyObject? = stockObject["Shorted_By"]
-                    let longs: AnyObject? = stockObject["Longed_By"]
+                    let shortCount = stockObject.objectForKey("shortCount") as? Int
+                    let longCount = stockObject.objectForKey("longCount") as? Int
                     
-                    let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shorts: shorts?.count, longs: longs?.count, parseObject: stockObject)
+                    let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: shortCount, longCount: longCount, parseObject: stockObject)
                     
                     chartDetailTabBarController.chart = chart
                     UIApplication.topViewController()?.presentViewController(chartDetailTabBarController, animated: true, completion: nil)

@@ -287,8 +287,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         
+        print(userInfo)
+        
         // Handle received remote notification
-        PFPush.handlePush(userInfo)
+        if let notificationTitle = userInfo["title"] as? String {
+            if notificationTitle != "Follower Notification" && notificationTitle != "Trade Idea New Notification" && notificationTitle != "Trade Idea Reply Notification" && notificationTitle != "Trade Idea Like Notification" && notificationTitle != "Trade Idea Reshare Notification" {
+                PFPush.handlePush(userInfo)
+            }
+        }
+        
         if application.applicationState == UIApplicationState.Inactive {
             PFAnalytics.trackAppOpenedWithRemoteNotificationPayload(userInfo)
         }

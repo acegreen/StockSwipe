@@ -18,8 +18,8 @@ protocol IdeaPostDelegate {
 class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     var originalSize: CGSize!
-    var prefillText: String!
-    var textToPost: String!
+    var prefillText = String()
+    var textToPost = String()
     
     var tradeIdeaPostCharacterLimit = 199 {
         didSet{
@@ -28,8 +28,8 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     }
     
     var stockObject: PFObject!
-    var replyTradeIdea: TradeIdea!
-    var reshareTradeIdea: TradeIdea!
+    var tradeIdea: TradeIdea!
+    var tradeIdeaType: Constants.TradeIdeaType = .New
     
     var delegate: IdeaPostDelegate!
     
@@ -39,7 +39,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    @IBOutlet var ideaTextView: UITextView!
+    @IBOutlet var ideaTextView: IdeaPostUITextView!
     
     @IBOutlet var textCountLabel: UILabel!
     
@@ -56,41 +56,48 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             return
         }
         
-        guard self.textToPost != nil && (self.ideaTextView.text.characters.filter{ $0 != " " }.count <= self.tradeIdeaPostCharacterLimit) else {
+        guard (self.ideaTextView.text.characters.filter{ $0 != " " }.count <= self.tradeIdeaPostCharacterLimit) else {
             return
         }
+        
+        let (cashtags, mentions) = self.ideaTextView.detectTags()
         
         let tradeIdeaObject = PFObject(className: "TradeIdea")
         tradeIdeaObject["user"] = currentUser
         tradeIdeaObject["description"] = self.textToPost
         
-        var tradeIdeaType: Constants.TradeIdeaType = .New
+        let activityObject = PFObject(className: "Activity")
+        activityObject["fromUser"] = currentUser
+        activityObject["tradeIdea"] = tradeIdeaObject
         
-        if let tradeIdea = self.stockObject {
-            tradeIdeaObject["stock"] = tradeIdea
-            tradeIdeaType = .New
-        } else if let tradeIdea = self.replyTradeIdea {
-            tradeIdeaObject["stock"] = tradeIdea.stock
+        if tradeIdeaType == .Reply && tradeIdea != nil {
+            activityObject["activityType"] = Constants.ActivityType.TradeIdeaReply.rawValue
+            activityObject["toUser"] = tradeIdea.user
+            activityObject["originalTradeIdea"] = tradeIdea.parseObject
             tradeIdeaObject["reply_to"] = tradeIdea.parseObject
-            tradeIdeaType = .Reply
-        } else if let tradeIdea = self.reshareTradeIdea {
-            tradeIdeaObject["stock"] = tradeIdea.stock
+        } else if tradeIdeaType == .Reshare && tradeIdea != nil {
+            activityObject["activityType"] = Constants.ActivityType.TradeIdeaReshare.rawValue
+            activityObject["toUser"] = tradeIdea.user
+            activityObject["originalTradeIdea"] = tradeIdea.parseObject
             tradeIdeaObject["reshare_of"] = tradeIdea.parseObject
-            tradeIdeaType = .Reshare
+        } else {
+            activityObject["activityType"] = Constants.ActivityType.TradeIdeaNew.rawValue
         }
+        
+        activityObject.saveEventually()
         
         tradeIdeaObject.saveEventually({ (success, error) in
             
             if success {
                 
-                let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                let newtradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                 
-                self.delegate.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaType)
+                self.delegate.ideaPosted(with: newtradeIdea, tradeIdeaTyp: self.tradeIdeaType)
                 
-                switch tradeIdeaType {
+                switch self.tradeIdeaType {
                 case .New:
                     
-                    PFCloud.callFunctionInBackground("pushNotificationToFollowers", withParameters: ["userObjectId":currentUser.objectId!, "checkSetting": "newTradeIdea_notification", "title": "New Trade Idea", "message": "@\(currentUser.username!) just posted a trade idea for $\(tradeIdea.stock["Symbol"])"]) { (results, error) -> Void in
+                    PFCloud.callFunctionInBackground("pushNotificationToFollowers", withParameters: ["userObjectId":currentUser.objectId!, "tradeIdeaObjectId":newtradeIdea.parseObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n\(newtradeIdea.description)"]) { (results, error) -> Void in
                     }
                     
                 case .Reply, .Reshare: break   
@@ -98,6 +105,53 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 
                 // log trade idea
                 Answers.logCustomEventWithName("Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.currentUser()?.username ?? "N/A","Description": self.ideaTextView.text,"Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])
+                
+                // query all the Stocks mentioned & add them to tradIdeaObject
+                QueryHelper.sharedInstance.queryStockObjectsFor(cashtags, completion: { (result) in
+                    
+                    do {
+                        
+                        let stockObjects = try result()
+                        
+                        for stockObject in stockObjects {
+                            let activityObject = PFObject(className: "Activity")
+                            activityObject["fromUser"] = currentUser
+                            activityObject["tradeIdea"] = tradeIdeaObject
+                            activityObject["stock"] = stockObject
+                            activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
+                            activityObject.saveEventually()
+                        }
+                        
+                    } catch {
+                        
+                    }
+                    
+                })
+                
+                // query all the users mentioned & add them to tradIdeaObject
+                QueryHelper.sharedInstance.queryUserObjectsFor(mentions, completion: { (result) in
+                    
+                    do {
+                        
+                        let userObjects = try result()
+                        
+                        for userObject in userObjects {
+                            
+                            if userObject.objectId != self.tradeIdea.user.objectId {
+                                let activityObject = PFObject(className: "Activity")
+                                activityObject["fromUser"] = currentUser
+                                activityObject["tradeIdea"] = tradeIdeaObject
+                                activityObject["toUser"] = userObject
+                                activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
+                                activityObject.saveEventually()
+                            }
+                        }
+                        
+                    } catch {
+                        
+                    }
+                    
+                })
                 
             } else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -133,12 +187,12 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         }
         
         // prefill text
-        if let tradeIdea = self.stockObject {
-            self.prefillText = "$" + (tradeIdea.objectForKey("Symbol") as! String)
-        } else if let tradeIdea = self.replyTradeIdea {
+        if tradeIdeaType == .New && self.stockObject != nil {
+            self.prefillText = "$" + (stockObject.objectForKey("Symbol") as! String)
+        } else if tradeIdeaType == .Reply && self.tradeIdea != nil {
             self.prefillText = "@" + (tradeIdea.user.objectForKey("username") as! String)
-        } else if let tradeIdea = self.reshareTradeIdea {
-            self.prefillText = "$" + (tradeIdea.stock.objectForKey("Symbol") as! String)
+        } else if tradeIdeaType == .Reshare && self.tradeIdea != nil {
+            
         }
     }
     

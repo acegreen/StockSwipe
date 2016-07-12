@@ -27,8 +27,8 @@ class ChartCollectionViewCell: UICollectionViewCell {
         }
         
         self.nameLabel.text = "\(dataSource.symbol)"
-        self.longLabel.text = "\(dataSource.longs)"
-        self.shortLabel.text = "\(dataSource.shorts)"
+        self.longLabel.text = Int(dataSource.longs).suffixNumber()
+        self.shortLabel.text = Int(dataSource.shorts).suffixNumber()
         
         if dataSource.userChoice == Constants.UserChoices.SHORT.key() {
             

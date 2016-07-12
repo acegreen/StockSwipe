@@ -39,6 +39,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     var followingUsers = [PFUser]()
     var followersUsers = [PFUser]()
     var likedTradeIdeas = [TradeIdea]()
+    var tradeIdeaQueryLimit = 25
     
     var selectedSegmentIndex: ProfileContainerController.SegmentIndex = ProfileContainerController.SegmentIndex(rawValue: 0)!
     
@@ -145,7 +146,10 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         switch selectedSegmentIndex {
         case .Zero, .Three:
-            self.getUserTradeIdeas()
+            Functions.setupConfigParameter("TRADEIDEAQUERYLIMIT") { (parameterValue) -> Void in
+                self.tradeIdeaQueryLimit = parameterValue as? Int ?? 25
+                self.getUserTradeIdeas()
+            }
         case .One:
             getUsersFollowing()
         case .Two:
@@ -204,6 +208,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func getProfile() {
         
+        print(PFUser.currentUser())
+        
         guard let user = user else { return }
         
         checkFollow(self.followButton)
@@ -245,7 +251,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         switch selectedSegmentIndex {
         case .Zero:
             
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: userObject, skip: 0, limit: 15) { (result) in
+            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: userObject, skip: 0, limit: self.tradeIdeaQueryLimit) { (result) in
                 
                 do {
                     
@@ -254,7 +260,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     self.tradeIdeas = []
                     for tradeIdeaObject: PFObject in tradeIdeasObjects {
                         
-                        let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                        let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                         
                         self.tradeIdeas.append(tradeIdea)
                     }
@@ -287,18 +293,22 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         case .Two:
             return
         case .Three:
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("liked_by", object: userObject, skip: 0, limit: 15) { (result) in
+            
+            QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
                 
                 do {
                     
-                    let tradeIdeasObjects = try result()
+                    let activityObjects = try result()
                     
                     self.likedTradeIdeas = []
-                    for tradeIdeaObject: PFObject in tradeIdeasObjects {
+                    for activityObject: PFObject in activityObjects {
                         
-                        let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                        if let tradeIdeaObject = activityObject.objectForKey("tradeIdea") as? PFObject {
                         
-                        self.likedTradeIdeas.append(tradeIdea)
+                            let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                            
+                            self.likedTradeIdeas.append(tradeIdea)
+                        }
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -322,14 +332,14 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         }
                     })
                 }
-            }
+            })
         }
     }
     
     func loadMoreTradeIdeas(skip skip: Int) {
         
         guard !isCurrentUserBlocked else { return }
-        guard let user = user else { return }
+        guard let userObject = self.user?.userObject else { return }
         
         if self.refreshControl?.refreshing == false && !self.footerActivityIndicator.isAnimating() {
             self.footerActivityIndicator.startAnimating()
@@ -337,7 +347,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         switch selectedSegmentIndex {
         case .Zero:
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: user.userObject, skip: skip, limit: 15) { (result) in
+            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: userObject, skip: skip, limit: self.tradeIdeaQueryLimit) { (result) in
                 
                 do {
                     
@@ -347,7 +357,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         
                         for tradeIdeaObject: PFObject in tradeIdeasObjects {
                             
-                            let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                            let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                             
                             //add datasource object here for tableview
                             self.tradeIdeas.append(tradeIdea)
@@ -379,23 +389,26 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         case .Three:
             
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("liked_by", object: user.userObject, skip: skip, limit: 15) { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, skip: skip, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
                 
                 do {
                     
-                    let tradeIdeasObjects = try result()
+                    let activityObjects = try result()
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         
-                        for tradeIdeaObject: PFObject in tradeIdeasObjects {
+                        for activityObject: PFObject in activityObjects {
                             
-                            let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
-                            
-                            //add datasource object here for tableview
-                            self.likedTradeIdeas.append(tradeIdea)
-                            
-                            //now insert cell in tableview
-                            self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.likedTradeIdeas.count - 1, inSection: 0)], withRowAnimation: .None)
+                            if let tradeIdeaObject = activityObject.objectForKey("tradeIdea") as? PFObject {
+                                
+                                let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                                
+                                //add datasource object here for tableview
+                                self.likedTradeIdeas.append(tradeIdea)
+                                
+                                //now insert cell in tableview
+                                self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.likedTradeIdeas.count - 1, inSection: 0)], withRowAnimation: .None)
+                            }
                         }
                         
                         if self.footerActivityIndicator?.isAnimating() == true {
@@ -414,7 +427,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         }
                     })
                 }
-            }
+            })
         }
     }
     
@@ -423,24 +436,22 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard !isCurrentUserBlocked else { return }
         guard let user = user else { return }
         
-        QueryHelper.sharedInstance.queryUserActivityFor(user.userObject, toUser: nil) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(user.userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
-                let userActivityObjects = try result()
+                let activityObjects = try result()
                 
                 self.followingUsers = []
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
-                    if let userActivityObjects = userActivityObjects {
-                        for userActivity in userActivityObjects {
-                            let toUser = userActivity["toUser"] as! PFUser
-                            self.followingUsers.append(toUser)
-                        }
-                        self.tableView.reloadData()
+                    for activityObject in activityObjects {
+                        let toUser = activityObject["toUser"] as! PFUser
+                        self.followingUsers.append(toUser)
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.tableView.reloadData()
                         if self.refreshControl?.refreshing == true {
                             self.refreshControl?.endRefreshing()
                             self.updateRefreshDate()
@@ -456,7 +467,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     }
                 })
             }
-        }
+        })
     }
     
     func getUsersFollowers() {
@@ -464,24 +475,22 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard !isCurrentUserBlocked else { return }
         guard let user = user else { return }
         
-        QueryHelper.sharedInstance.queryUserActivityFor(nil, toUser: user.userObject) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(nil, toUser: user.userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
-                let userActivityObjects = try result()
+                let activityObjects = try result()
                 
                 self.followersUsers = []
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
-                    if let userActivityObjects = userActivityObjects {
-                        for userActivity in userActivityObjects {
-                            let fromUser = userActivity["fromUser"] as! PFUser
-                            self.followersUsers.append(fromUser)
-                        }
-                        self.tableView.reloadData()
+                    for activityObject in activityObjects {
+                        let fromUser = activityObject["fromUser"] as! PFUser
+                        self.followersUsers.append(fromUser)
                     }
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.tableView.reloadData()
                         if self.refreshControl?.refreshing == true {
                             self.refreshControl?.endRefreshing()
                             self.updateRefreshDate()
@@ -497,7 +506,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     }
                 })
             }
-        }
+        })
     }
     
     func checkFollow(sender: FollowButton) {
@@ -525,13 +534,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
-        QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: userObject) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
-                let userActivityObject = try result()
+                let activityObject = try result()
                 
-                if userActivityObject?.first != nil {
+                if activityObject.first != nil {
                     sender.buttonState = FollowButton.state.Following
                 } else {
                     sender.buttonState = FollowButton.state.NotFollowing
@@ -539,7 +548,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 
             } catch {
             }
-        }
+        })
     }
     
     func registerFollow(sender: FollowButton) {
@@ -575,19 +584,20 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
-        QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: userObject) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil) { (result) in
             
             do {
                 
-                let userActivityObject = try result()
+                let activityObject = try result()
                 
-                if userActivityObject?.first == nil {
+                if activityObject.first == nil {
                     
-                    let userActivityObject = PFObject(className: "UserActivity")
-                    userActivityObject["fromUser"] = currentUser
-                    userActivityObject["toUser"] = userObject
+                    let activityObject = PFObject(className: "Activity")
+                    activityObject["fromUser"] = currentUser
+                    activityObject["toUser"] = userObject
+                    activityObject["activityType"] = Constants.ActivityType.Follow.rawValue
                     
-                    userActivityObject.saveInBackgroundWithBlock({ (success, error) in
+                    activityObject.saveInBackgroundWithBlock({ (success, error) in
                         
                         if success {
                             sender.buttonState = FollowButton.state.Following
@@ -601,7 +611,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         }
                     })
                 } else {
-                    userActivityObject?.first?.deleteEventually()
+                    activityObject.first?.deleteEventually()
                     sender.buttonState = FollowButton.state.NotFollowing
                 }
                 
@@ -611,6 +621,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 
             }
         }
+        
     }
     
     func didLoginSuccessfully() {
@@ -696,35 +707,34 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     })
                 }
                 
-                QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: user) { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: nil, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
-                        let userActivityObject = try result()
-                        
-                        userActivityObject?.first?.deleteEventually()
+                        let activityObject = try result()
+                        activityObject.first?.deleteEventually()
                         
                     } catch {
                         
                         // TO-DO: handle error
                         
                     }
-                }
+                })
                 
-                QueryHelper.sharedInstance.queryUserActivityFor(user, toUser: currentUser) { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: nil, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
-                        let userActivityObject = try result()
-                        
-                        userActivityObject?.first?.deleteEventually()
+                        let activityObject = try result()
+                        activityObject.first?.deleteEventually()
                         
                     } catch {
                         
                         // TO-DO: handle error
                         
                     }
-                }
+                })
+                
             } else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
@@ -762,30 +772,36 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
 extension ProfileTableViewController: IdeaPostDelegate {
     
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
-        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        self.tradeIdeas.insert(tradeIdea, atIndex: 0)
-        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         
-        self.tableView.reloadEmptyDataSet()
+        self.tradeIdeas.insert(tradeIdea, atIndex: 0)
+        
+        if selectedSegmentIndex == .Zero && self.user?.userObject.objectId == PFUser.currentUser()?.objectId {
+            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            
+            self.tableView.reloadEmptyDataSet()
+        }
     }
     
     func ideaDeleted(with parseObject: PFObject) {
         
         if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
             
-            if let reshareOf = tradeIdea.parseObject.objectForKey("reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == reshareOf.objectId })  {
+            if selectedSegmentIndex == .Zero && self.user?.userObject.objectId == PFUser.currentUser()?.objectId {
+                if let reshareOf = tradeIdea.parseObject.objectForKey("reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == reshareOf.objectId })  {
+                    
+                    let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(reshareTradeIdea)!, inSection: 0)
+                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                }
                 
-                let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(reshareTradeIdea)!, inSection: 0)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(tradeIdea)!, inSection: 0)
+                self.tradeIdeas.removeObject(tradeIdea)
+                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                
+                if tradeIdeas.count == 0 {
+                    self.tableView.reloadEmptyDataSet()
+                }
             }
-            
-            let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(tradeIdea)!, inSection: 0)
-            self.tradeIdeas.removeObject(tradeIdea)
-            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
-        }
-        
-        if tradeIdeas.count == 0 {
-            self.tableView.reloadEmptyDataSet()
         }
     }
 }
@@ -818,7 +834,7 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
         switch selectedSegmentIndex {
         case .Zero:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            cell.configureCell(tradeIdeas[indexPath.row])
+            cell.configureCell(tradeIdeas[indexPath.row], timeFormat: .Short)
             cell.delegate = self
             return cell
         case .One:
@@ -831,7 +847,7 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
             return cell
         case .Three:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            cell.configureCell(likedTradeIdeas[indexPath.row])
+            cell.configureCell(likedTradeIdeas[indexPath.row], timeFormat: .Short)
             cell.delegate = self
             return cell
         }
@@ -839,12 +855,12 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
     
     // DZNEmptyDataSet delegate functions
     
-//    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
-//        
-//        guard !isCurrentUserBlocked else {
-//            return UIImage(assetIdentifier: .UserBlockedBig)
-//        }
-//    }
+    //    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+    //
+    //        guard !isCurrentUserBlocked else {
+    //            return UIImage(assetIdentifier: .UserBlockedBig)
+    //        }
+    //    }
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         
@@ -895,8 +911,8 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
         return (self.tableView.frame.midY - self.headerView.frame.midY) / 2
     }
     
-//    func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
-//        shouldShowProfile = true
-//        self.refreshControlAction(self.refreshControl!)
-//    }
+    //    func emptyDataSetDidTapButton(scrollView: UIScrollView!) {
+    //        shouldShowProfile = true
+    //        self.refreshControlAction(self.refreshControl!)
+    //    }
 }

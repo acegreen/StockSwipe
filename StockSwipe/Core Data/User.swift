@@ -13,11 +13,10 @@ public struct User {
     
     let userObject: PFUser!
     
-    var ideasCount: Int = 0
-    var followingCount: Int = 0
-    
-    var followersCount: Int = 0
-    var likedIdeasCount: Int = 0
+    private var ideasCount: Int = 0
+    private var followingCount: Int = 0
+    private var followersCount: Int = 0
+    private var likedIdeasCount: Int = 0
     
     mutating func getIdeasCount(completionHandler: (countString: String) -> Void) {
         
@@ -32,13 +31,13 @@ public struct User {
                 self.ideasCount =  0
             }
             
-            completionHandler(countString: Double(self.ideasCount).formatPoints())
+            completionHandler(countString: self.ideasCount.suffixNumber())
         }
     }
     
     mutating func getFollowingCount(completionHandler: (countString: String) -> Void) {
         
-        QueryHelper.sharedInstance.countUserActivityFor(userObject, toUser: nil) { (result) in
+        QueryHelper.sharedInstance.countActivityFor(userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
             
             do {
                 
@@ -49,30 +48,30 @@ public struct User {
                 self.followingCount =  0
             }
             
-            completionHandler(countString: Double(self.followingCount).formatPoints())
+            completionHandler(countString: self.followingCount.suffixNumber())
         }
     }
     
     mutating func getFollowersCount(completionHandler: (countString: String) -> Void) {
         
-        QueryHelper.sharedInstance.countUserActivityFor(nil, toUser: userObject) { (result) in
+        QueryHelper.sharedInstance.countActivityFor(nil, toUser: userObject, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
             
             do {
                 
                 let count = try result()
-                self.followersCount = count
+                self.followingCount = count
                 
             } catch {
-                self.followersCount =  0
+                self.followingCount =  0
             }
             
-           completionHandler(countString: Double(self.followersCount).formatPoints())
+            completionHandler(countString: self.followingCount.suffixNumber())
         }
     }
     
     mutating func getLikedIdeasCount(completionHandler: (countString: String) -> Void) {
         
-        QueryHelper.sharedInstance.countTradeIdeasFor("liked_by", object: userObject) { (result) in
+        QueryHelper.sharedInstance.countActivityFor(userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, completion: { (result) in
             
             do {
                 
@@ -83,8 +82,8 @@ public struct User {
                 self.likedIdeasCount =  0
             }
             
-            completionHandler(countString: Double(self.likedIdeasCount).formatPoints())
-        }
+            completionHandler(countString: self.likedIdeasCount.suffixNumber())
+        })
     }
     
     init(userObject: PFUser!) {

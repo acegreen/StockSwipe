@@ -74,4 +74,10 @@
  */
 - (NSString *)formattedAsTimeAgo;
 
+/*
+ Formatted As Time Ago
+ Returns the time formatted as Time Ago (in the style of Twitter mobile date formatting)
+ */
+- (NSString *)formattedAsTimeAgoShort;
+
 @end

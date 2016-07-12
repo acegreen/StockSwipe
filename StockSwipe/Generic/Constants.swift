@@ -187,10 +187,27 @@ public class Constants {
         static let allChoices = [LONG, SHORT, SKIP]
     }
     
+    enum ActivityType: String {
+        case Follow = "follow"
+        case TradeIdeaNew = "tradeIdeaNew"
+        case TradeIdeaReply = "tradeIdeaReply"
+        case TradeIdeaLike = "tradeIdeaLike"
+        case TradeIdeaReshare = "tradeIdeaReshare"
+        case StockLong = "stockLong"
+        case StockShort = "stockShort"
+        case Block = "block"
+        case Mention = "mention"
+    }
+    
     enum TradeIdeaType {
         case New
         case Reply
         case Reshare
+    }
+    
+    enum TimeFormat {
+        case Short
+        case Long
     }
     
     public struct Symbol {

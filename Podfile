@@ -5,17 +5,21 @@ def shared_pods
     pod 'SwiftyJSON'
 end
 
+def shared_With_Tests_pods
+    pod 'Parse'
+    pod 'ParseFacebookUtilsV4'
+    pod 'ParseTwitterUtils'
+    pod 'ParseUI'
+end
+
 target 'StockSwipe' do
     pod 'MDCSwipeToChoose', :git => 'https://github.com/acegreen/MDCSwipeToChoose.git'
     pod 'SDVersion'
     pod 'DZNEmptyDataSet', '1.7.2'
     pod 'PulsingHalo', :git => 'https://github.com/shu223/PulsingHalo.git'
-    pod 'Parse'
-    pod 'ParseFacebookUtilsV4'
-    pod 'ParseTwitterUtils'
-    pod 'ParseUI'
     pod 'Charts'
     pod 'Crashlytics'
+    shared_With_Tests_pods
     pod 'TwitterKit'
     pod 'Appsee'
     pod 'LaunchKit'
@@ -38,4 +42,8 @@ end
 
 target 'StockSwipeWidget' do
     shared_pods
+end
+
+target 'StockSwipeTests' do
+    shared_With_Tests_pods
 end

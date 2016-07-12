@@ -25,7 +25,7 @@ extension Array {
             return nil
         }
     }
-
+    
     func reduceWithIndex<T>(initial: T, @noescape combine: (T, Int, Array.Generator.Element) throws -> T) rethrows -> T {
         var result = initial
         for (index, element) in self.enumerate() {
@@ -50,36 +50,26 @@ extension Array where Element: Equatable {
     }
 }
 
-extension Double {
-
-    /// Rounds the double to decimal places value
-    func roundToPlaces(places:Int) -> Double {
-        let divisor = pow(10.0, Double(places))
-        return round(self * divisor) / divisor
-    }
+extension Int {
     
-    func formatPoints() -> String {
-        let thousandNum = self/1000
-        let millionNum = self/1000000
-        if self >= 1000 && self < 1000000{
-            if(floor(thousandNum) == thousandNum){
-                return("\(Int(thousandNum))k")
-            }
-            return("\(thousandNum.roundToPlaces(1))k")
-        }
-        if self > 1000000{
-            if(floor(millionNum) == millionNum){
-                return("\(Int(thousandNum))k")
-            }
-            return ("\(millionNum.roundToPlaces(1))M")
-        }
-        else{
-            if(floor(self) == self){
-                return ("\(Int(self))")
-            }
-            return ("\(self)")
+    func suffixNumber() -> String {
+        
+        var num: Double = Double(self)
+        let sign = ((num < 0) ? "-" : "" )
+        
+        num = fabs(num)
+        
+        if (num < 1000.0) {
+            return "\(sign)\(Int(num))"
         }
         
+        let exp:Int = Int(log10(num) / 3.0 ) //log10(1000));
+        
+        let units:[String] = ["K","M","G","T","P","E"]
+        
+        let roundedNum:Int = Int(round(10 * num / pow(1000.0,Double(exp))) / 10)
+        
+        return "\(sign)\(roundedNum)\(units[exp-1])"
     }
 }
 
@@ -117,7 +107,7 @@ extension String {
         
         return self.stringByReplacingOccurrencesOfString(target, withString: withString, options: NSStringCompareOptions.LiteralSearch, range: nil)
     }
-        
+    
     public var camelCase: String {
         get {
             return self.deburr().words().reduceWithIndex("") { (result, index, word) -> String in
@@ -181,7 +171,7 @@ extension String {
         let to16 = from16.advancedBy(nsRange.length, limit: utf16.endIndex)
         if let from = String.Index(from16, within: self),
             let to = String.Index(to16, within: self) {
-                return from ..< to
+            return from ..< to
         } else {
             return nil
         }
@@ -311,7 +301,7 @@ extension NSURL {
             let elements: NSArray = pair.componentsSeparatedByString(secondSeperator)
             
             guard let key = elements.objectAtIndex(0).stringByRemovingPercentEncoding,
-                  let value = elements.objectAtIndex(1).stringByRemovingPercentEncoding
+                let value = elements.objectAtIndex(1).stringByRemovingPercentEncoding
                 else { return dict }
             
             dict.setObject(value!, forKey: key!)
@@ -374,27 +364,34 @@ extension UIImage {
 
 extension DetectTags where Self: UITextView {
     
-//    func detectTags(inout updatedText: String) {
+//    func detectTags(range: NSRange, text: String) {
+//        
+//        print("text", text)
+//        print("range", range)
 //        
 //        // turn string in to NSString
-//        let nsText:NSString = updatedText
+//        let currentText: NSString = self.text
 //        
-//        // this needs to be an array of NSString.  String does not work.
-//        let words:[NSString] = nsText.componentsSeparatedByString(" ")
+//        let words:[NSString] = currentText.componentsSeparatedByCharactersInSet(.whitespaceAndNewlineCharacterSet())
+//        
+//        // use storyboard attributes
+//        var attributes: [String: AnyObject]?
+//        if let name = self.font?.familyName, let size = self.font?.pointSize {
+//            attributes = [
+//                NSFontAttributeName : UIFont(name: name, size: size) as! AnyObject,
+//                NSForegroundColorAttributeName : (self.textColor ?? UIColor.blackColor())
+//            ]
+//        }
 //        
 //        // you can staple URLs onto attributed strings
-//        let attrString = NSMutableAttributedString(string: nsText as String, attributes:nil)
+//        let attrString = NSMutableAttributedString(string: currentText as String, attributes: attributes)
 //        
-//        // tag each word if it has a hashtag
 //        for word in words {
 //            
-//            // found a word that is prepended by a hashtag!
-//            // homework for you: implement @mentions here too.
-//            if word.hasPrefix("$") || word.hasPrefix("@") {
-//                
-//                // a range is the character position, followed by how many characters are in the word.
-//                // we need this because we staple the "href" to this range.
-//                let matchRange:NSRange = nsText.rangeOfString(word as String)
+//            // we need this because we staple the "href" to this range.
+//            let matchRange:NSRange = currentText.rangeOfString(word as String)
+//            
+//            if word.hasPrefix("$") || word.hasPrefix("@") || word == "@" || word == "$" {
 //                
 //                // set a link for when the user clicks on this word.
 //                attrString.addAttribute(NSForegroundColorAttributeName, value: Constants.stockSwipeGreenColor, range: matchRange)
@@ -402,8 +399,34 @@ extension DetectTags where Self: UITextView {
 //            }
 //        }
 //        
-//        updatedText = String(attrString)
+//        self.attributedText = attrString
 //    }
+    
+    func detectTags() -> (cashtags: [String], mentions: [String]) {
+        
+        var cashtags = [String]()
+        var mentions = [String]()
+        
+        // turn string in to NSString
+        let currentText = self.text
+        
+        let words:[String] = currentText.componentsSeparatedByCharactersInSet(.whitespaceAndNewlineCharacterSet())
+        
+        for word in words {
+            
+            if word.hasPrefix("$") {
+                
+                cashtags.append(String(word.characters.dropFirst()))
+            
+            } else if word.hasPrefix("@") {
+                
+                mentions.append(String(word.characters.dropFirst()))
+
+            }
+        }
+        
+        return (cashtags, mentions)
+    }
     
     func resolveTags() {
         
@@ -411,16 +434,19 @@ extension DetectTags where Self: UITextView {
         let nsText:NSString = self.text
         
         // this needs to be an array of NSString.  String does not work.
-        let words:[NSString] = nsText.componentsSeparatedByString(" ")
+        let words:[NSString] = nsText.componentsSeparatedByCharactersInSet(.whitespaceAndNewlineCharacterSet())
         
-        // you can't set the font size in the storyboard anymore, since it gets overridden here.
-        let attrs = [
-            NSFontAttributeName : UIFont(name: self.font!.familyName, size: self.font!.pointSize) as! AnyObject,
-            NSForegroundColorAttributeName : (self.textColor ?? UIColor.blackColor()) as AnyObject
-        ]
+        // use storyboard attributes
+        var attributes: [String: AnyObject]?
+        if let name = self.font?.familyName, let size = self.font?.pointSize {
+            attributes = [
+                NSFontAttributeName : UIFont(name: name, size: size) as! AnyObject,
+                NSForegroundColorAttributeName : (self.textColor ?? UIColor.blackColor())
+            ]
+        }
         
         // you can staple URLs onto attributed strings
-        let attrString = NSMutableAttributedString(string: nsText as String, attributes:attrs)
+        let attrString = NSMutableAttributedString(string: nsText as String, attributes: attributes)
         
         // tag each word if it has a hashtag
         for word in words {
@@ -520,7 +546,7 @@ extension SegueHandlerType where Self: UIViewController, SegueIdentifier.RawValu
     
     func segueIdentifierForSegue(segue: UIStoryboardSegue) -> SegueIdentifier {
         guard let identifier = segue.identifier,
-                segueIdentifier = SegueIdentifier(rawValue: identifier)
+            segueIdentifier = SegueIdentifier(rawValue: identifier)
             else { fatalError("Invalid segue identifier \(segue.identifier)") }
         
         return segueIdentifier
@@ -555,7 +581,7 @@ extension CellType where Self: UIViewController, CellIdentifier.RawValue == Stri
         return cellIdentifier
     }
     
-//    func dequeueReusableCellWithIdentifier(cellIdentifier: CellIdentifier, forIndexPath: NSIndexPath) {
-//         dequeueReusableCellWithIdentifier(cellIdentifier.rawValue, forIndexPath: forIndexPath)
-//    }
+    //    func dequeueReusableCellWithIdentifier(cellIdentifier: CellIdentifier, forIndexPath: NSIndexPath) {
+    //         dequeueReusableCellWithIdentifier(cellIdentifier.rawValue, forIndexPath: forIndexPath)
+    //    }
 }

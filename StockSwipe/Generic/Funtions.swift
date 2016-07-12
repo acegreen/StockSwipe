@@ -232,60 +232,32 @@ public class Functions {
     
     class func registerUserChoice(chart: Chart, with choice: Constants.UserChoices) {
         
-        guard (PFUser.currentUser() != nil) else { return }
+        guard let currentUser = PFUser.currentUser() else { return }
         
-        var removeFromKey: String!
-        var addToKey: String!
-        
+        let activityObject = PFObject(className: "Activity")
+        activityObject["fromUser"] = currentUser
+        activityObject["stock"] = chart.parseObject
+  
         switch choice {
             
         case .LONG:
             
-            removeFromKey = Constants.UserChoices.SHORT.key()
-            addToKey = Constants.UserChoices.LONG.key()
+            activityObject["activityType"] = Constants.ActivityType.StockLong.rawValue
+            chart.longs = (chart.longs ?? 0) + 1
+            
         case .SHORT:
             
-            removeFromKey = Constants.UserChoices.LONG.key()
-            addToKey = Constants.UserChoices.SHORT.key()
+            activityObject["activityType"] = Constants.ActivityType.StockShort.rawValue
+            chart.shorts = (chart.shorts ?? 0) + 1
+            
         default:
             break
         }
         
-        if let object = chart.parseObject {
-            
-            object.removeObject(PFUser.currentUser()!, forKey: removeFromKey)
-            
-            if object.objectForKey(addToKey) != nil {
-                
-                object.addUniqueObject(PFUser.currentUser()!, forKey: addToKey)
-                
-            } else {
-                
-                object.setObject([PFUser.currentUser()!], forKey: addToKey)
-            }
-            
-            object.saveEventually({ (success, error) -> Void in
-                
-                switch choice {
-                    
-                case .LONG:
-                    
-                    chart.longs = (chart.longs ?? 0) + 1
-
-                case .SHORT:
-                    
-                    chart.shorts = (chart.shorts ?? 0) + 1
-                    
-                default:
-                    break
-                }
-                
-                print("\(choice)", chart)
-                
-                saveIntoCoreData(chart, userChoice: choice)
-                
-            })
-        }
+        print("\(choice)", chart)
+        
+        activityObject.saveEventually()
+        saveIntoCoreData(chart, userChoice: choice)
     }
     
     class func saveIntoCoreData(chart: Chart, userChoice: Constants.UserChoices) {

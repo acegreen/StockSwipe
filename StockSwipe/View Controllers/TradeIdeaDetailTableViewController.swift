@@ -60,7 +60,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                 self.replyTradeIdeas = []
                 for tradeIdeaObject: PFObject in tradeIdeasObjects {
                     
-                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, stock: tradeIdeaObject["stock"] as! PFObject, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["liked_by"]?.count, reshareCount: tradeIdeaObject["reshared_by"]?.count, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                     
                     self.replyTradeIdeas.append(tradeIdea)
                     
@@ -126,11 +126,11 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         
         if indexPath.section == 0 {
             cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            cell.configureCell(tradeIdea)
+            cell.configureCell(tradeIdea, timeFormat: .Long)
             cell.delegate = self
         } else {
             cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.ReplyIdeaCell.rawValue, forIndexPath: indexPath) as! IdeaCell
-            cell.configureCell(replyTradeIdeas[indexPath.row])
+            cell.configureCell(replyTradeIdeas[indexPath.row], timeFormat: .Short)
             cell.delegate = self
         }
         

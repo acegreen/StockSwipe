@@ -105,7 +105,7 @@ class SwipeChartView: MDCSwipeToChooseView {
     func constructLongImageLabelView() -> Void {
         
         let image: UIImage = UIImage(named: "long")!
-        self.likedImageLabelView = self.buildImageLabelViewLeftOf(CGRectGetWidth(self.informationView.bounds) - rightPadding, image: image, text: String(chart.longs ?? 0))
+        self.likedImageLabelView = self.buildImageLabelViewLeftOf(CGRectGetWidth(self.informationView.bounds) - rightPadding, image: image, text: chart.longs?.suffixNumber() ?? String(0))
         likedImageLabelView.imageView.image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         likedImageLabelView.imageView.tintColor = UIColor.blackColor()
         
@@ -120,7 +120,7 @@ class SwipeChartView: MDCSwipeToChooseView {
         guard likedImageLabelView.isDescendantOfView(self) else { return }
         
         let image:UIImage = UIImage(named:"short")!
-        self.nopeImageLabelView = buildImageLabelViewLeftOf(CGRectGetMinX(self.likedImageLabelView.frame), image:image, text: String(chart.shorts ?? 0))
+        self.nopeImageLabelView = buildImageLabelViewLeftOf(CGRectGetMinX(self.likedImageLabelView.frame), image:image, text: chart.shorts?.suffixNumber() ?? String(0))
         nopeImageLabelView.imageView.image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
         nopeImageLabelView.imageView.tintColor = UIColor.blackColor()
         

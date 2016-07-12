@@ -64,11 +64,11 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
             
         case "mention" :
             
-            QueryHelper.sharedInstance.queryUserObjectFor(URL.resourceSpecifier, completion: { (result) in
+            QueryHelper.sharedInstance.queryUserObjectsFor([URL.resourceSpecifier], completion: { (result) in
                 
                 do {
                     
-                    let userObject = try result()
+                    let userObject = try result().first
                     
                     let profileNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileNavigationController") as! UINavigationController
                     let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController

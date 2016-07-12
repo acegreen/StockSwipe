@@ -130,35 +130,34 @@ class UserCell: UITableViewCell {
                 
                 sender.buttonState = .Blocked
                 
-                QueryHelper.sharedInstance.queryUserActivityFor(currentUser, toUser: self.user) { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: self.user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: nil, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
-                        let userActivityObject = try result()
-                        
-                        userActivityObject?.first?.deleteEventually()
+                        let activityObject = try result()
+                        activityObject.first?.deleteEventually()
                         
                     } catch {
                         
                         // TO-DO: handle error
                         
                     }
-                }
+                })
                 
-                QueryHelper.sharedInstance.queryUserActivityFor(self.user, toUser: currentUser) { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(self.user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: nil, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
-                        let userActivityObject = try result()
-                        
-                        userActivityObject?.first?.deleteEventually()
+                        let activityObject = try result()
+                        activityObject.first?.deleteEventually()
                         
                     } catch {
                         
                         // TO-DO: handle error
                         
                     }
-                }
+                })
+                
             } else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)

@@ -91,6 +91,48 @@
     
 }
 
+/*
+ Formatted As Time Ago
+ Returns the date formatted as Time Ago (in the style of the mobile time ago date formatting for Twitter)
+ */
+- (NSString *)formattedAsTimeAgoShort
+{
+    //Now
+    NSDate *now = [NSDate date];
+    NSTimeInterval secondsSince = -(int)[self timeIntervalSinceDate:now];
+    
+    //Should never hit this but handle the future case
+    if(secondsSince < 0)
+        return @"In The Future";
+    
+    // < 1 minute = "xs"
+    if(secondsSince < MINUTE)
+        return [self formatSecondsShort:secondsSince];
+    
+    // < 1 hour = "xm"
+    if(secondsSince < HOUR)
+        return [self formatMinutesShort:secondsSince];
+    
+    // Today or Yesterday = "xh"
+    if([self isSameDayAs:now] || [self isYesterday:now])
+        return [self formatinHoursShort:secondsSince];
+    
+    // < Last 7 days = "xd"
+    if([self isLastWeek:secondsSince])
+        return [self formatAsDaysShort:secondsSince];
+    
+    // < Last 30 days = xw"
+    if([self isLastMonth:secondsSince])
+        return [self formatAsWeeksShort:secondsSince];
+    
+    // < 1 year = "Sep 15"
+    if([self isLastYear:secondsSince])
+        return [self formatAsLastYearShort];
+    
+    // Anything else = "Sep 9, 2011"
+    return [self formatAsOtherShort];
+    
+}
 
 
 /*
@@ -182,6 +224,21 @@
    ========================== Formatting Methods ==========================
  */
 
+// < 1 hour = "x seconds ago"
+- (NSString *)formatSecondssAgo:(NSTimeInterval)secondsSince
+{
+    //Handle Plural
+    if(secondsSince == 1)
+        return @"1 second ago";
+    else
+        return [NSString stringWithFormat:@"%d seconds ago", (int)secondsSince];
+}
+
+- (NSString *)formatSecondsShort:(NSTimeInterval)secondsSince
+{
+    return [NSString stringWithFormat:@"%ds", (int)secondsSince];
+}
+
 
 // < 1 hour = "x minutes ago"
 - (NSString *)formatMinutesAgo:(NSTimeInterval)secondsSince
@@ -196,6 +253,14 @@
         return [NSString stringWithFormat:@"%d minutes ago", minutesSince];
 }
 
+- (NSString *)formatMinutesShort:(NSTimeInterval)secondsSince
+{
+    //Convert to minutes
+    int minutesSince = (int)secondsSince / MINUTE;
+    
+    return [NSString stringWithFormat:@"%dm", minutesSince];
+}
+
 
 // Today = "x hours ago"
 - (NSString *)formatAsToday:(NSTimeInterval)secondsSince
@@ -208,6 +273,14 @@
         return @"1 hour ago";
     else
         return [NSString stringWithFormat:@"%d hours ago", hoursSince];
+}
+
+- (NSString *)formatinHoursShort:(NSTimeInterval)secondsSince
+{
+    //Convert to hours
+    int hoursSince = (int)secondsSince / HOUR;
+    
+    return [NSString stringWithFormat:@"%dh", hoursSince];
 }
 
 
@@ -234,6 +307,14 @@
     return [dateFormatter stringFromDate:self];
 }
 
+- (NSString *)formatAsDaysShort:(NSTimeInterval)secondsSince
+{
+    //Convert to days
+    int daysSince = (int)secondsSince / DAY;
+    
+    return [NSString stringWithFormat:@"%dd", daysSince];
+}
+
 
 // < Last 30 days = "March 30 at 1:14 PM"
 - (NSString *)formatAsLastMonth
@@ -244,6 +325,14 @@
     //Format
     [dateFormatter setDateFormat:@"MMMM d 'at' h:mm a"];
     return [dateFormatter stringFromDate:self];
+}
+
+- (NSString *)formatAsWeeksShort:(NSTimeInterval)secondsSince
+{
+    //Convert to days
+    int weeksSince = (int)secondsSince / WEEK;
+    
+    return [NSString stringWithFormat:@"%dw", weeksSince];
 }
 
 
@@ -258,6 +347,15 @@
     return [dateFormatter stringFromDate:self];
 }
 
+- (NSString *)formatAsLastYearShort
+{
+    //Create date formatter
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    //Format
+    [dateFormatter setDateFormat:@"MMM d"];
+    return [dateFormatter stringFromDate:self];
+}
 
 // Anything else = "September 9, 2011"
 - (NSString *)formatAsOther
@@ -267,6 +365,16 @@
     
     //Format
     [dateFormatter setDateFormat:@"LLLL d, yyyy"];
+    return [dateFormatter stringFromDate:self];
+}
+
+- (NSString *)formatAsOtherShort
+{
+    //Create date formatter
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    
+    //Format
+    [dateFormatter setDateFormat:@"LLL d, yyyy"];
     return [dateFormatter stringFromDate:self];
 }
 

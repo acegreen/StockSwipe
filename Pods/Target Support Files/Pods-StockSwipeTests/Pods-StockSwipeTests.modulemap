@@ -1,0 +1,6 @@
+framework module Pods_StockSwipeTests {
+  umbrella header "Pods-StockSwipeTests-umbrella.h"
+
+  export *
+  module * { export * }
+}

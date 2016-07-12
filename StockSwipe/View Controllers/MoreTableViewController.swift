@@ -79,6 +79,8 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     
     func didLoginSuccessfully() {
         self.updateProfile()
+        
+        print(PFUser.currentUser())
     }
     
     func didLogoutSuccessfully() {

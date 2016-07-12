@@ -29,7 +29,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     var charts = [Chart]()
     
-    var numberOfCardsToQuery: Int = 50
+    var numberOfCardsToQuery: Int = 25
     var numberofCardsInStack: Int = 3
     
     var firstCardView:SwipeChartView!
@@ -56,9 +56,11 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     var halo: PulsingHaloLayer!
     
-    enum CardType {
-        
-        case firstCard, secondCard, thirdCard, fourthCard
+    enum CardPosition: Int {
+        case FirstCard = 0
+        case SecondCard = 1
+        case ThirdCard = 2
+        case FourthCard = 3
         
     }
     
@@ -171,7 +173,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         // Setup config parameters
         Functions.setupConfigParameter("NUMBEROFCARDSTOQUERY") { (parameterValue) -> Void in
             
-            self.numberOfCardsToQuery = parameterValue as? Int ?? 50
+            self.numberOfCardsToQuery = parameterValue as? Int ?? 25
             
             self.getObjects({ (result) -> Void in
                 
@@ -384,7 +386,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             // Display First Card
             if self.firstCardView == nil {
                 
-                self.firstCardView = self.popChartViewWithFrame(CardType.firstCard , frame: CGRectMake(self.view.bounds.width + self.frontCardViewFrame().width, self.navigationController!.navigationBar.frame.height + 50, chartWidth, chartHeight))
+                self.firstCardView = self.popChartViewWithFrame(CardPosition.FirstCard , frame: CGRectMake(self.view.bounds.width + self.frontCardViewFrame().width, self.navigationController!.navigationBar.frame.height + 50, chartWidth, chartHeight))
                 
                 if self.firstCardView != nil {
                     
@@ -415,7 +417,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             // Display Second Card
             if self.secondCardView == nil {
                 
-                self.secondCardView = self.popChartViewWithFrame(CardType.secondCard, frame: CGRectMake(0 - self.frontCardViewFrame().width, self.frontCardViewFrame().origin.y + self.chartOffsetsY, CGRectGetWidth(self.frontCardViewFrame()) - (self.chartOffsetsX * 2), CGRectGetHeight(self.frontCardViewFrame())))
+                self.secondCardView = self.popChartViewWithFrame(CardPosition.SecondCard, frame: CGRectMake(0 - self.frontCardViewFrame().width, self.frontCardViewFrame().origin.y + self.chartOffsetsY, CGRectGetWidth(self.frontCardViewFrame()) - (self.chartOffsetsX * 2), CGRectGetHeight(self.frontCardViewFrame())))
                 
                 if self.secondCardView != nil {
                     
@@ -439,7 +441,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             // Display Third Card
             if self.thirdCardView == nil {
             
-                self.thirdCardView = self.popChartViewWithFrame(CardType.thirdCard, frame: CGRectMake(self.middleCardViewFrame().origin.x + self.chartOffsetsX, self.view.bounds.height + CGRectGetHeight(self.middleCardViewFrame()), CGRectGetWidth(self.middleCardViewFrame()) - (self.chartOffsetsX * 2), CGRectGetHeight(self.middleCardViewFrame())))
+                self.thirdCardView = self.popChartViewWithFrame(CardPosition.ThirdCard, frame: CGRectMake(self.middleCardViewFrame().origin.x + self.chartOffsetsX, self.view.bounds.height + CGRectGetHeight(self.middleCardViewFrame()), CGRectGetWidth(self.middleCardViewFrame()) - (self.chartOffsetsX * 2), CGRectGetHeight(self.middleCardViewFrame())))
                 
                 if self.thirdCardView != nil {
                     
@@ -455,7 +457,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                             
                             if self.fourthCardView == nil  {
                                 
-                                self.fourthCardView = self.popChartViewWithFrame(CardType.fourthCard, frame: self.fourthCardViewFrame())
+                                self.fourthCardView = self.popChartViewWithFrame(CardPosition.FourthCard, frame: self.fourthCardViewFrame())
                                 
                                 if self.thirdCardView != nil && self.fourthCardView != nil {
                                     
@@ -547,7 +549,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         // make card views
         if self.fourthCardView == nil  {
             
-            self.fourthCardView = self.popChartViewWithFrame(CardType.fourthCard, frame: self.fourthCardViewFrame())
+            self.fourthCardView = self.popChartViewWithFrame(CardPosition.FourthCard, frame: self.fourthCardViewFrame())
             
             if self.thirdCardView != nil && self.fourthCardView != nil {
                 
@@ -634,9 +636,9 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         self.resizeCardViews()
     }
     
-    func popChartViewWithFrame(cardType: CardType, frame:CGRect) -> SwipeChartView? {
+    func popChartViewWithFrame(cardPosition: CardPosition, frame:CGRect) -> SwipeChartView? {
         
-        if let chartAtIndex = self.charts.get(cardLocation(cardType)) {
+        if let chartAtIndex = self.charts.get(cardPosition.rawValue) {
             
             return SwipeChartView(frame: frame, chart: chartAtIndex, options: options)
             
@@ -647,21 +649,9 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
     }
     
-    func cardLocation(input: CardType) -> Int {
-        
-        switch input {
-            
-        case .firstCard: return 0
-        case .secondCard: return 1
-        case .thirdCard: return 2
-        case .fourthCard: return 3
-            
-        }
-    }
-    
     func frontCardViewFrame() -> CGRect {
         
-        return CGRect(x: CGRectGetMidX(self.view.bounds) - (chartWidth / 2), y: CGRectGetMidY(self.view.bounds) - (chartHeight / 2) + frontCardOffsetFromCenter, width: chartWidth, height: chartHeight)
+        return CGRect(x: CGRectGetMidX(self.view.bounds) - (chartWidth / 2), y: CGRectGetMidY(self.view.bounds) - (chartHeight / 2) + verticalPadding, width: chartWidth, height: chartHeight)
         
     }
     

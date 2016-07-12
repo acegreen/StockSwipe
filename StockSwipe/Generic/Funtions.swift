@@ -99,7 +99,7 @@ public class Functions {
             frontCardOffsetFromCenter = 20
             
             horizontalPadding = 50.0
-            verticalPadding = 50.0
+            verticalPadding = -10.0
             
             numberOfCellsHorizontally = 2
             numberOfCellsVertically = 2
@@ -116,6 +116,8 @@ public class Functions {
                 numberOfCellsVertically = 3
                 frontCardOffsetFromCenter = -10
                 
+                verticalPadding = -25.0
+                
             case .Screen4Dot7inch:
                 
                 chartWidth = 350
@@ -125,6 +127,8 @@ public class Functions {
                 
                 frontCardOffsetFromCenter = -10
                 
+                verticalPadding = -20.0
+                
             case .Screen4inch:
                 
                 chartWidth = 300
@@ -132,6 +136,8 @@ public class Functions {
                 
                 numberOfCellsVertically = 2
                 frontCardOffsetFromCenter = 0
+                
+                verticalPadding = -10.0
                 
             case .Screen3Dot5inch:
                 
@@ -141,6 +147,8 @@ public class Functions {
                 numberOfCellsVertically = 2
                 frontCardOffsetFromCenter = 0
                 
+                verticalPadding = 0.0
+                
             default:
                 
                 chartWidth = 300
@@ -148,12 +156,11 @@ public class Functions {
                 
                 numberOfCellsVertically = 2
                 frontCardOffsetFromCenter = 0
-
                 
+                verticalPadding = 0.0
             }
             
             horizontalPadding = 10.0
-            verticalPadding = 25.0
             
             numberOfCellsHorizontally = 1
         }

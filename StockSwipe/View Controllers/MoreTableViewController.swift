@@ -227,11 +227,11 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         switch segueIdentifier {
         case .ProfileSegueIdentifier:
             
-            let destinationViewController = segue.destinationViewController as! ProfileContainerController
-            destinationViewController.user = User(userObject: PFUser.currentUser())
+            let profileViewController = segue.destinationViewController as! ProfileContainerController
+            profileViewController.user = User(userObject: PFUser.currentUser())
             
             // Just a workaround.. There should be a cleaner way to sort this out
-            destinationViewController.navigationItem.rightBarButtonItem = nil
+            profileViewController.navigationItem.rightBarButtonItem = nil
             
         case .FAQSegueIdentifier:
             break

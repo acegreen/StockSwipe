@@ -210,6 +210,9 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             guard let cell = sender as? NotificationCell else { return }
             
             profileViewController.user = User(userObject: cell.activity.objectForKey("fromUser") as! PFUser)
+            
+            // Just a workaround.. There should be a cleaner way to sort this out
+            profileViewController.navigationItem.rightBarButtonItem = nil
         }
     }
 }

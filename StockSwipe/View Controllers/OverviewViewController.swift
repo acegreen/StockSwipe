@@ -51,12 +51,15 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
     
     @IBOutlet var emptyLabel2: UILabel!
     
+    override func preferredStatusBarStyle() -> UIStatusBarStyle {
+        return UIStatusBarStyle.LightContent
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     
         // Add splash
         //initializerSplash()
-        loadViewData()
         
         carousel.autoscroll = -0.3
         carousel.type = .Linear
@@ -72,12 +75,9 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         self.latestNewsTableView.addSubview(refreshControl)
     }
     
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
-    }
-    
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(true)
+        loadViewData()
     }
     
     //    deinit {

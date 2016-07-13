@@ -194,6 +194,11 @@ public class Constants {
         case Reshare
     }
     
+    enum PushType: String {
+        case ToUser = "pushNotificationToUser"
+        case ToFollowers = "pushNotificationToFollowers"
+    }
+    
     enum TimeFormat {
         case Short
         case Long

@@ -81,7 +81,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             UIApplication.topViewController()?.presentViewController(tradeIdeaPostNavigationController, animated: true, completion: nil)
             
         } else {
-            registerReshare(sender: sender)
+            registerUnshare(sender: sender)
         }
     }
     
@@ -329,13 +329,11 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
         case .Reply:
             
-            PFCloud.callFunctionInBackground("pushNotificationToUser", withParameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":tradeIdea.parseObject.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": "@\(currentUser.username!) replied:\n\(tradeIdea.description)"]) { (results, error) -> Void in
-            }
+            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":tradeIdea.parseObject.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": "@\(currentUser.username!) replied:\n\(tradeIdea.description)"])
             
         case .Reshare:
             
-            PFCloud.callFunctionInBackground("pushNotificationToUser", withParameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n\(self.tradeIdea.description)"]) { (results, error) -> Void in
-            }
+            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n\(self.tradeIdea.description)"])
         }
     }
     
@@ -420,11 +418,10 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         
                         // Send push
                         if currentUser.objectId != self.tradeIdea.user.objectId {
-                            PFCloud.callFunctionInBackground("pushNotificationToUser", withParameters: ["userObjectId":self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": "@\(currentUser.username!) liked:\n\(self.tradeIdea.description)"]) { (results, error) -> Void in
-                            }
+                            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": "@\(currentUser.username!) liked:\n\(self.tradeIdea.description)"])
                         }
                     }
-                
+                    
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         if let likeCount = self.tradeIdea?.likeCount where likeCount > 0 {
                             self.likeCountLabel.text = String(likeCount)
@@ -446,15 +443,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         guard let sender = sender else { return }
         guard let currentUser = PFUser.currentUser() else { return }
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if let reshareCount = self.tradeIdea?.reshareCount where reshareCount > 0 {
-                self.reshareCountLabel.text = String(reshareCount)
-                self.reshareCountLabel.hidden = false
-            } else {
-                self.reshareCountLabel.hidden = true
-            }
-        })
-            
         QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: tradeIdea.parseObject, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaReshare.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
@@ -471,9 +459,35 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                 
             }
         })
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            if let reshareCount = self.tradeIdea?.reshareCount where reshareCount > 0 {
+                self.reshareCountLabel.text = String(reshareCount)
+                self.reshareCountLabel.hidden = false
+            } else {
+                self.reshareCountLabel.hidden = true
+            }
+        })
     }
     
     func registerReshare(sender sender: UIButton) {
+        
+        guard self.tradeIdea != nil else { return }
+        
+        self.tradeIdea.reshareCount += 1
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            sender.selected = true
+            if let reshareCount = self.tradeIdea?.reshareCount where reshareCount > 0 {
+                self.reshareCountLabel.text = String(reshareCount)
+                self.reshareCountLabel.hidden = false
+            } else {
+                self.reshareCountLabel.hidden = true
+            }
+        })
+    }
+    
+    func registerUnshare(sender sender: UIButton) {
         
         guard let currentUser = PFUser.currentUser() else {
             Functions.isUserLoggedIn(UIApplication.topViewController()!)
@@ -482,9 +496,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard self.tradeIdea != nil else { return }
         
-        if let tradeIdeaObject = tradeIdea.parseObject, let tradeIdeaReshareOf = tradeIdeaObject.objectForKey("reshare_of") as? PFObject  {
+        if let tradeIdeaObject = tradeIdea.parseObject {
             
-            QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: tradeIdeaReshareOf, tradeIdea: tradeIdeaObject, stock: nil, activityType: Constants.ActivityType.TradeIdeaReshare.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: self.tradeIdea.user, originalTradeIdea: self.tradeIdea.parseObject, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaReshare.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                 
                 do {
                     
@@ -515,35 +529,18 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         }
                         
                         self.tradeIdea.reshareCount -= 1
-                        sender.selected = false
                         
-                    } else {
-                        
-                        let activityObject = PFObject(className: "Activity")
-                        activityObject["fromUser"] = currentUser
-                        activityObject["toUser"] = self.tradeIdea.user
-                        activityObject["tradeIdea"] = tradeIdeaObject
-                        activityObject["activityType"] = Constants.ActivityType.TradeIdeaReshare.rawValue
-                        activityObject.saveEventually()
-                        
-                        self.tradeIdea.reshareCount += 1
-                        sender.selected = true
-                        
-                        // Send push
-                        if currentUser.objectId != self.tradeIdea.user.objectId {
-                            PFCloud.callFunctionInBackground("pushNotificationToUser", withParameters: ["userObjectId":self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n\(self.tradeIdea.description)"]) { (results, error) -> Void in
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            sender.selected = false
+                            if let reshareCount = self.tradeIdea?.reshareCount where reshareCount > 0 {
+                                self.reshareCountLabel.text = String(reshareCount)
+                                self.reshareCountLabel.hidden = false
+                            } else {
+                                self.reshareCountLabel.hidden = true
                             }
-                        }
+                        })
+                        
                     }
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if let reshareCount = self.tradeIdea?.reshareCount where reshareCount > 0 {
-                            self.reshareCountLabel.text = String(reshareCount)
-                            self.reshareCountLabel.hidden = false
-                        } else {
-                            self.reshareCountLabel.hidden = true
-                        }
-                    })
                     
                 } catch {
                     
@@ -606,7 +603,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     })
                 }
                 
-                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: nil, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -620,7 +617,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     }
                 })
                 
-                QueryHelper.sharedInstance.queryActivityFor(user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: nil, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         

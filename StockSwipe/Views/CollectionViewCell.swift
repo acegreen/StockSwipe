@@ -35,14 +35,12 @@ class ChartCollectionViewCell: UICollectionViewCell {
         switch userChoice {
         
         case .SHORT:
-            
             self.overlayLabel.layer.borderColor = UIColor.redColor().CGColor
             self.overlayLabel.text = "\(Constants.UserChoices.SHORT.rawValue)"
             self.overlayLabel.textColor = UIColor.redColor()
             self.overlayLabel.transform = CGAffineTransformRotate(CGAffineTransformIdentity, CGFloat(Functions.degreesToRadians(15)))
             
         case .LONG:
-            
             self.overlayLabel.layer.borderColor = Constants.stockSwipeGreenColor.CGColor
             self.overlayLabel.text = "\(Constants.UserChoices.LONG.rawValue)"
             self.overlayLabel.textColor = Constants.stockSwipeGreenColor

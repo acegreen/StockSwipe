@@ -447,6 +447,10 @@ public class QueryHelper {
         activityQuery.includeKeys(["fromUser", "toUser", "tradeIdea", "stock"])
         activityQuery.orderByDescending("createdAt")
         
+        if let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
+            activityQuery.whereKey("fromUser", notContainedIn: blockedUsers)
+        }
+        
         activityQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
             
             guard error == nil else {

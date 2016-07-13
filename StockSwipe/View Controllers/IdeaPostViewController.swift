@@ -97,8 +97,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 switch self.tradeIdeaType {
                 case .New:
                     
-                    PFCloud.callFunctionInBackground("pushNotificationToFollowers", withParameters: ["userObjectId":currentUser.objectId!, "tradeIdeaObjectId":newtradeIdea.parseObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n\(newtradeIdea.description)"]) { (results, error) -> Void in
-                    }
+                    Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId":currentUser.objectId!, "tradeIdeaObjectId":newtradeIdea.parseObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n\(newtradeIdea.description)"])
                     
                 case .Reply, .Reshare: break   
                 }

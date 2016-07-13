@@ -208,8 +208,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func getProfile() {
         
-        print(PFUser.currentUser())
-        
         guard let user = user else { return }
         
         checkFollow(self.followButton)
@@ -603,8 +601,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                             sender.buttonState = FollowButton.state.Following
                             
                             // Send push
-                            PFCloud.callFunctionInBackground("pushNotificationToUser", withParameters: ["userObjectId":userObject.objectId!, "checkSetting": "follower_notification", "title": "Follower Notification", "message": "@\(currentUser.username!) is now following you"]) { (results, error) -> Void in
-                            }
+                            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":userObject.objectId!, "checkSetting": "follower_notification", "title": "Follower Notification", "message": "@\(currentUser.username!) is now following you"])
                             
                         } else {
                             sender.buttonState = FollowButton.state.NotFollowing
@@ -707,7 +704,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     })
                 }
                 
-                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: nil, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -721,7 +718,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     }
                 })
                 
-                QueryHelper.sharedInstance.queryActivityFor(user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: nil, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         

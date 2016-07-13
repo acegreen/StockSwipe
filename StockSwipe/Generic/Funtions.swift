@@ -473,6 +473,11 @@ public class Functions {
         
     }
     
+    class func sendPush(pushType: Constants.PushType, parameters: [String:String]) {
+        PFCloud.callFunctionInBackground(pushType.rawValue, withParameters: parameters) { (results, error) -> Void in
+        }
+    }
+    
     class func getCenterOfView(view: UIView) -> CGPoint {
         
         let bounds:CGRect = view.bounds

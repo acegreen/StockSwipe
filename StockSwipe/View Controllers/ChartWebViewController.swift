@@ -82,7 +82,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                                 contentName: "\(self.symbol) chart shared",
                                 contentType: "chart share",
                                 contentId: nil,
-                                customAttributes: ["Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])
+                                customAttributes: ["App Version": Constants.AppVersion])
                             
                         } else if error != nil {
                             

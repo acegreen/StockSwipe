@@ -64,6 +64,8 @@ class NotificationCell: UITableViewCell {
     func stringForActivityType(activityType: String) -> String? {
         if (activityType == Constants.ActivityType.Follow.rawValue) {
             return "started following you"
+        } else if (activityType == Constants.ActivityType.TradeIdeaNew.rawValue) {
+            return "shared a new trade idea"
         } else if (activityType == Constants.ActivityType.TradeIdeaLike.rawValue) {
             return "liked your trade idea"
         } else if (activityType == Constants.ActivityType.TradeIdeaReply.rawValue) {

@@ -199,7 +199,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                         contentName: "StockSwipe shared",
                         contentType: "share",
                         contentId: nil,
-                        customAttributes: ["Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])
+                        customAttributes: ["App Version": Constants.AppVersion])
                     
                 } else if error != nil {
                     

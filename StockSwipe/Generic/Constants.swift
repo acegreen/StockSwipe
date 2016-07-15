@@ -69,13 +69,12 @@ public class Constants {
     
     public static let stockSwipeFont: UIFont? = UIFont(name: "HelveticaNeue", size: 20)
     public static let stockSwipeFontColor: UIColor = UIColor(red: 111/255, green: 113/255, blue: 121/255, alpha: 1.0)
-    public static let stockSwipeGreenColor: UIColor = UIColor(red: 25/255, green: 215/255, blue: 25/255, alpha: 1.0)
+    public static let stockSwipeGreenColor: UIColor = UIColor(red: 25/255, green: 200/255, blue: 25/255, alpha: 1.0)
+    public static let stockSwipeGoldColor: UIColor = UIColor(red: 245, green: 192, blue: 24)
     public static let okAlertAction = UIAlertAction(title: "Ok", style: .Default, handler:{ (ACTION :UIAlertAction!)in })
     
     public static let settingsAlertAction: UIAlertAction = UIAlertAction(title: "Settings", style: .Default, handler: { (action: UIAlertAction!) in
-        
         UIApplication.sharedApplication().openURL(settingsURL!)
-        
     })
     
     public static let cancelAlertAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel, handler:{ (ACTION :UIAlertAction!) in })

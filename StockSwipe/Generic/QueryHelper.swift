@@ -464,4 +464,43 @@ public class QueryHelper {
             
         }
     }
+    
+    public func queryActivityForFollowing(fromUser: PFUser, completion: (result: () throws -> ([PFObject])) -> Void) {
+        
+        guard Functions.isConnectedToNetwork() else {
+            return completion(result: {throw Constants.Errors.NoInternetConnection})
+        }
+        
+        let followActivityQuery = PFQuery(className:"Activity")
+        followActivityQuery.cancel()
+        followActivityQuery.whereKey("fromUser", equalTo: fromUser)
+        followActivityQuery.whereKeyExists("toUser")
+        followActivityQuery.whereKey("activityType", equalTo: Constants.ActivityType.Follow.rawValue)
+        
+        
+        let activityQuery = PFQuery(className:"Activity")
+        activityQuery.cancel()
+        
+        activityQuery.whereKey("fromUser", notEqualTo: fromUser)
+        activityQuery.whereKey("fromUser", matchesKey: "fromUser", inQuery: followActivityQuery)
+        activityQuery.includeKeys(["fromUser", "toUser", "tradeIdea", "stock"])
+        activityQuery.orderByDescending("createdAt")
+        
+        if let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
+            activityQuery.whereKey("fromUser", notContainedIn: blockedUsers)
+        }
+        
+        activityQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+            
+            guard error == nil else {
+                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+            }
+            
+            // The find succeeded.
+            print("Successfully retrieved \(objects?.count) activities")
+            
+            completion(result: {return (objects: objects!)})
+            
+        }
+    }
 }

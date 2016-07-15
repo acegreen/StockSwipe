@@ -44,6 +44,8 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
     
     @IBOutlet var TrashButton: UIBarButtonItem!
     
+    @IBOutlet var searchButton: UIBarButtonItem!
+    
     @IBOutlet var SelectAllButton: UIBarButtonItem!
     
     @IBOutlet var CollectionView: UICollectionView!

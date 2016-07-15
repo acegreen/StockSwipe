@@ -1,8 +1,0 @@
-FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/Bolts" "$PODS_CONFIGURATION_BUILD_DIR/FBSDKCoreKit" "$PODS_CONFIGURATION_BUILD_DIR/FBSDKLoginKit" "$PODS_CONFIGURATION_BUILD_DIR/Parse" "$PODS_CONFIGURATION_BUILD_DIR/ParseFacebookUtilsV4" "$PODS_CONFIGURATION_BUILD_DIR/ParseTwitterUtils" "$PODS_CONFIGURATION_BUILD_DIR/ParseUI"
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
-OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/Bolts/Bolts.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/FBSDKCoreKit/FBSDKCoreKit.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/FBSDKLoginKit/FBSDKLoginKit.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/Parse/Parse.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/ParseFacebookUtilsV4/ParseFacebookUtilsV4.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/ParseTwitterUtils/ParseTwitterUtils.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/ParseUI/ParseUI.framework/Headers"
-OTHER_LDFLAGS = $(inherited) -framework "Bolts" -framework "FBSDKCoreKit" -framework "FBSDKLoginKit" -framework "Parse" -framework "ParseFacebookUtilsV4" -framework "ParseTwitterUtils" -framework "ParseUI"
-PODS_BUILD_DIR = $BUILD_DIR
-PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
-PODS_ROOT = ${SRCROOT}/Pods

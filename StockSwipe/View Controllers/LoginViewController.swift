@@ -303,7 +303,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     if success {
                         
                         // register current installation
-                        let currentInstallation: PFInstallation = PFInstallation.currentInstallation()
+                        guard let currentInstallation = PFInstallation.currentInstallation() else { return }
                         currentInstallation["user"] = user
                         currentInstallation.saveInBackground()
                         
@@ -404,7 +404,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         
                         if success {
                             // register current installation
-                            let currentInstallation: PFInstallation = PFInstallation.currentInstallation()
+                            guard let currentInstallation = PFInstallation.currentInstallation() else { return }
                             currentInstallation["user"] = user
                             currentInstallation.saveInBackground()
                             

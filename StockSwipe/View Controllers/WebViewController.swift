@@ -43,7 +43,9 @@ class WebViewController: UIViewController {
                     contentName: "\(self.url.path) shared",
                     contentType: "top stories share",
                     contentId: nil,
-                    customAttributes: ["Installation ID":PFInstallation.currentInstallation().installationId, "App Version": Constants.AppVersion])
+                    customAttributes: ["App Version": Constants.AppVersion])
+                
+                //"Installation ID":PFInstallation.currentInstallation()!.installationId,
                 
             } else if error != nil {
                 

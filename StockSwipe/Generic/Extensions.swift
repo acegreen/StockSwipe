@@ -26,6 +26,10 @@ extension Array {
         }
     }
     
+    mutating func moveItem(fromIndex oldIndex: Index, toIndex newIndex: Index) {
+        insert(removeAtIndex(oldIndex), atIndex: newIndex)
+    }
+    
     func reduceWithIndex<T>(initial: T, @noescape combine: (T, Int, Array.Generator.Element) throws -> T) rethrows -> T {
         var result = initial
         for (index, element) in self.enumerate() {
@@ -261,10 +265,6 @@ extension UIColor {
         let newBlue = CGFloat(blue)/255
         
         self.init(red: newRed, green: newGreen, blue: newBlue, alpha: 1.0)
-    }
-    
-    class func goldColor() -> UIColor {
-        return UIColor(red: 245, green: 192, blue: 24)
     }
     
     class func colorFromRGB(rgbValue: UInt) -> UIColor {

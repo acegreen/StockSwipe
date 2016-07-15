@@ -44,6 +44,13 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         self.getActivities()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+    
+        // Set badge to nil when user goes to view
+        self.tabBarController?.tabBar.items?[3].badgeValue = nil
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.

@@ -11,13 +11,20 @@ import Parse
 import LaunchKit
 import BubbleTransition
 
-class MainTabBarController: UITabBarController {
+protocol PushNotificationDelegate {
+    func didReceivePushNotification(userInfo: [NSObject:AnyObject])
+}
+
+class MainTabBarController: UITabBarController, PushNotificationDelegate {
     
     let transition = BubbleTransition()
     
     override func viewDidLoad() {
         
         super.viewDidLoad()
+        
+        // Become AppDelegate push delegate
+        Constants.appDel.pushDelegate = self
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -56,6 +63,16 @@ class MainTabBarController: UITabBarController {
             controller.modalPresentationStyle = .Custom
         }
     }
+    
+    func didReceivePushNotification(userInfo: [NSObject : AnyObject]) {
+        
+        // Handle received remote notification
+        if let notificationTitle = userInfo["title"] as? String {
+            if notificationTitle == "Follower Notification" || notificationTitle == "Trade Idea New Notification" || notificationTitle == "Trade Idea Reply Notification" || notificationTitle == "Trade Idea Like Notification" || notificationTitle == "Trade Idea Reshare Notification" {
+                self.tabBar.items?[3].badgeValue = "1"
+            }
+        }
+    }
 }
 
 // MARK: - UIViewControllerTransitioningDelegate
@@ -65,7 +82,7 @@ extension MainTabBarController: UIViewControllerTransitioningDelegate {
         transition.transitionMode = .Present
         let center = self.view.center
         transition.startingPoint = center
-        transition.bubbleColor = UIColor.goldColor()
+        transition.bubbleColor = Constants.stockSwipeGoldColor
         return transition
     }
     

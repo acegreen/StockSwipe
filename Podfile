@@ -5,13 +5,6 @@ def shared_pods
     pod 'SwiftyJSON'
 end
 
-def shared_With_Tests_pods
-    pod 'Parse'
-    pod 'ParseFacebookUtilsV4'
-    pod 'ParseTwitterUtils'
-    pod 'ParseUI'
-end
-
 target 'StockSwipe' do
     pod 'MDCSwipeToChoose', :git => 'https://github.com/acegreen/MDCSwipeToChoose.git'
     pod 'SDVersion'
@@ -19,7 +12,6 @@ target 'StockSwipe' do
     pod 'PulsingHalo', :git => 'https://github.com/shu223/PulsingHalo.git'
     pod 'Charts'
     pod 'Crashlytics'
-    shared_With_Tests_pods
     pod 'TwitterKit'
     pod 'Appsee'
     pod 'LaunchKit'
@@ -30,7 +22,13 @@ target 'StockSwipe' do
     pod 'ChimpKit'
     pod 'SWXMLHash'
     pod 'SKSplashView', :git =>'https://github.com/acegreen/SKSplashView.git', :branch => 'supporting-nsoperationqueue'
+    pod 'DataCache', :git => 'https://github.com/huynguyencong/DataCache.git'
     
+    pod 'Parse'
+    pod 'ParseFacebookUtilsV4'
+    pod 'ParseTwitterUtils'
+    pod 'ParseUI'
+
     shared_pods
     
     #pod 'ChameleonFramework/Swift'
@@ -42,8 +40,4 @@ end
 
 target 'StockSwipeWidget' do
     shared_pods
-end
-
-target 'StockSwipeTests' do
-    shared_With_Tests_pods
 end

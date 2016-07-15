@@ -13,22 +13,22 @@ import TwitterKit
 import LaunchKit
 import SWXMLHash
 import SwiftyJSON
+import DataCache
 import SafariServices
 import DZNEmptyDataSet
 import SKSplashView
 
-class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
+class OverviewViewController: UIViewController {
     
     var iCarouselTickers = ["^IXIC","^GSPC","^RUT","^VIX","^GDAXI","^FTSE","^FCHI","^N225","^HSI","^GSPTSE","CAD=X"]
     var tickers = [Ticker]()
     var cloudWords = [CloudWord]()
-    var trendingStocksJSON = JSON.null
     var news = [News]()
     var charts = [Chart]()
     
     var cloudColors:[UIColor] = [UIColor.grayColor()]
     var cloudFontName = "HelveticaNeue"
-
+    
     var stockTwitsLastQueriedDate: NSDate!
     var carouselLastQueriedDate: NSDate!
     var topStoriesLastQueriedDate: NSDate!
@@ -46,7 +46,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
     @IBOutlet var latestNewsTableView: UITableView!
     
     @IBOutlet var cloudLockedImage: UIImageView!
-
+    
     @IBOutlet var emptyLabel1: UILabel!
     
     @IBOutlet var emptyLabel2: UILabel!
@@ -57,7 +57,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+        
         // Add splash
         //initializerSplash()
         
@@ -87,6 +87,98 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func loadViewData() {
+        
+        overviewVCOperationQueue.cancelAllOperations()
+        
+        let trendingCloudOperation = NSBlockOperation { () -> Void in
+            self.queryStockTwitsTrendingStocks()
+        }
+        trendingCloudOperation.queuePriority = .High
+        
+        let marketCarouselOperation = NSBlockOperation { () -> Void in
+            self.queryICarouselTickers()
+        }
+        marketCarouselOperation.queuePriority = .Normal
+        
+        let topStoriesOperation = NSBlockOperation { () -> Void in
+            self.queryTopStories()
+        }
+        topStoriesOperation.queuePriority = .Normal
+        
+        overviewVCOperationQueue.addOperations([trendingCloudOperation, marketCarouselOperation, topStoriesOperation], waitUntilFinished: false)
+        
+        //        let animationOperation = NSBlockOperation { () -> Void in
+        //            self.splashView.startAnimation()
+        //        }
+        //        animationOperation.queuePriority = .Low
+        //
+        //        overviewVCOperationQueue.addOperation(animationOperation)
+        
+    }
+    
+    func queryStockTwitsTrendingStocks() {
+        
+        // Layout dummy words until later
+        //        if cloudWords.count == 0 && stockTwitsLastQueriedDate == nil, let trendingStocksCacheData = DataCache.defaultCache.readDataForKey("TRENDINGSTOCKSCACHEDATA"), let trendingStockObjectsCacheData = DataCache.defaultCache.readArrayForKey("TRENDINGSTOCKOBJECTSCACHEDATA") {
+        //
+        //
+        //                let trendingStocksJSON =  JSON(data: trendingStocksCacheData)
+        //                self.createCloudWords(trendingStocksJSON, stockObjects: trendingStockObjectsCacheData as! [PFObject])
+        //
+        //        }
+        
+        guard Functions.isConnectedToNetwork() else { return }
+        
+        if stockTwitsLastQueriedDate != nil && self.cloudWords.count > 0 {
+            
+            let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(stockTwitsLastQueriedDate)
+            
+            guard timeSinceLastRefresh / 60 > 5 else {
+                return
+            }
+        }
+        
+        NSLog("refreshing cloud on %@", NSThread.isMainThread() ? "main thread" : "other thread")
+        
+        QueryHelper.sharedInstance.queryStockTwitsTrendingStocks { (trendingStocksData) in
+            
+            do {
+                
+                let trendingStocksData = try trendingStocksData()
+                
+                let trendingStocksJSON = JSON(data: trendingStocksData)["symbols"]
+                guard trendingStocksJSON.error == nil else { return }
+                
+                //DataCache.defaultCache.writeData(trendingStocksData, forKey: "TRENDINGSTOCKSCACHEDATA")
+                QueryHelper.sharedInstance.queryStockObjectsFor(trendingStocksJSON.map { $0.1 }.map{ $0["symbol"].string! }, completion: { (result) in
+                    
+                    do {
+                        
+                        let stockObjects = try result()
+                        
+                        //DataCache.defaultCache.writeObject(stockObjects, forKey: "TRENDINGSTOCKOBJECTSCACHEDATA")
+                        self.createCloudWords(trendingStocksJSON, stockObjects: stockObjects)
+                        
+                        self.stockTwitsLastQueriedDate = NSDate()
+                        
+                    } catch {
+                        
+                        if let error = error as? Constants.Errors {
+                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                                SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                            })
+                        }
+                    }
+                    
+                })
+                
+            } catch {
+                
+            }
+        }
     }
     
     func queryICarouselTickers() {
@@ -145,13 +237,9 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
                         
                         self.tickers.append(ticker)
                         self.charts.append(chart)
-                        
-                        
                     }
                     
-                    NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
-                        // Main thread work (UI usually)
-                        
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         self.carousel.reloadData()
                         self.carouselLastQueriedDate = NSDate()
                         
@@ -162,10 +250,201 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         }
     }
     
+    func queryTopStories() {
+        
+//        if let topStoriesCacheData = DataCache.defaultCache.readDataForKey("TOPSTORIESCACHEDATA") {
+//            self.updateTopStories(topStoriesCacheData)
+//        }
+        
+        if cloudWords.count == 0 && stockTwitsLastQueriedDate == nil {
+            
+            let noInternetSentence = "The cloud is empty we ran out of words or are still trying to find some Weird indeed"
+            let breakupSentence = noInternetSentence.componentsSeparatedByString(" ")
+            
+            for (index, word) in breakupSentence.enumerate() {
+                let cloudWord = CloudWord(word: word, wordCount: breakupSentence.count - Int(index), wordTappable: false)
+                self.cloudWords.append(cloudWord)
+            }
+            
+            NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+                self.layoutCloudWords()
+                self.cloudWords = []
+                
+            })
+        }
+        
+        guard Functions.isConnectedToNetwork() else { return }
+        
+        if topStoriesLastQueriedDate != nil {
+            
+            let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(topStoriesLastQueriedDate)
+            
+            guard timeSinceLastRefresh / 60 > 1 else {
+                self.refreshControl.endRefreshing()
+                return
+            }
+        }
+        
+        NSLog("refreshing top stories on %@", NSThread.isMainThread() ? "main thread" : "other thread")
+        
+        let queryString = "http://feeds.reuters.com/reuters/businessNews?format=xml"
+        
+        QueryHelper.sharedInstance.queryWith(queryString) { (result) -> Void in
+            
+            do {
+                
+                let result = try result()
+                
+                //DataCache.defaultCache.writeData(result, forKey: "TOPSTORIESCACHEDATA")
+                self.updateTopStories(result)
+                
+            } catch {
+                
+                if error is Constants.Errors {
+                    print(error)
+                }
+            }
+        }
+    }
+    
+    func createCloudWords(trendingStocksJSON: JSON, stockObjects: [PFObject]) {
+        
+        self.cloudWords = []
+        for (index, subJson) in trendingStocksJSON {
+            
+            if let chart = (self.charts.find{ $0.symbol == subJson["symbol"].string }) {
+                self.charts.removeObject(chart)
+                print("chart removed")
+            }
+            
+            let parseObject = stockObjects.find{ $0["Symbol"] as? String == subJson["symbol"].string }
+            print(parseObject)
+            
+            let shortCount = parseObject?.objectForKey("shortCount") as? Int
+            let longCount = parseObject?.objectForKey("longCount") as? Int
+            
+            let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: trendingStocksJSON.count - Int(index)!, wordTappable: true)
+            self.cloudWords.append(cloudWord)
+            
+            let chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: nil, shortCount: shortCount, longCount: longCount, parseObject: parseObject)
+            self.charts.append(chart)
+            
+            //Index to Spotlight
+            Functions.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.layoutCloudWords()
+        })
+    }
+    
+    func updateTopStories(result: NSData) {
+        
+        let xml = SWXMLHash.parse(result)
+        
+        let items = xml["rss"]["channel"]["item"]
+        
+        self.news = []
+        
+        for item in items {
+            
+            var newsDecodedTitle: String?
+            var newsUrl: String?
+            var newsDetails: String?
+            var newsPublishedDate: String?
+            
+            // Get title
+            if let title = item["title"].element?.text {
+                newsDecodedTitle = title.decodeEncodedString()
+            }
+            
+            // Get URL
+            if let link = item["link"].element?.text {
+                newsUrl = link.decodeEncodedString()
+            }
+            
+            // Get details
+            if let description = item["description"].element?.text {
+                newsDetails = description.decodeEncodedString()
+            }
+            
+            // Get Published Date
+            if let pubDate = item["pubDate"].element?.text {
+                let publishedDateFormatter = NSDateFormatter()
+                publishedDateFormatter.dateFormat = "EEE, dd MMM yy HH:mm:ss z"
+                
+                if let formattedDate = publishedDateFormatter.dateFromString(pubDate) {
+                    newsPublishedDate = formattedDate.formattedAsTimeAgo()
+                }
+            }
+            
+            let newNews = News(image: nil, title: newsDecodedTitle, details: newsDetails,url: newsUrl, publisher: nil, publishedDate: newsPublishedDate)
+            self.news.append(newNews)
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+    
+            self.latestNewsTableView.reloadData()
+            self.refreshControl.endRefreshing()
+            self.topStoriesLastQueriedDate = NSDate()
+            
+            NSLog("top stories completed on %@", NSThread.isMainThread() ? "main thread" : "other thread")
+        })
+    }
+    
+    func refreshTopStories(refreshControl: UIRefreshControl) {
+        let topStoriesOperation = NSBlockOperation { () -> Void in
+            self.queryTopStories()
+        }
+        topStoriesOperation.queuePriority = .Normal
+        overviewVCOperationQueue.addOperation(topStoriesOperation)
+    }
+    
+    // MARK: - Segue Method
+    
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
+        if segue.identifier == "showChartDetail" {
+            
+            var symbol: String!
+            
+            switch sender {
+                
+            case is UIButton:
+                
+                symbol = sender?.currentTitle
+                
+                let destinationView = segue.destinationViewController as! ChartDetailTabBarController
+                destinationView.chart = self.charts.find{ $0.symbol == symbol }
+                
+            case is UIView:
+                
+                print(carousel.indexOfItemView(sender as! UIView))
+                
+                if tickers.get(carousel.indexOfItemView(sender as! UIView)) != nil {
+                    
+                    let tickerAtIndex = tickers[carousel.indexOfItemView(sender as! UIView)]
+                    
+                    symbol = tickerAtIndex.symbol
+                    
+                }
+                
+                let destinationView = segue.destinationViewController as! ChartDetailTabBarController
+                destinationView.chart = self.charts.find{ $0.symbol == symbol }
+                
+            default:
+                break
+            }
+        }
+    }
+}
+
+extension OverviewViewController: CloudLayoutOperationDelegate {
+    
     // MARK: - CloudLayoutOperationDelegate
     
     func insertWord(word: String, pointSize: CGFloat,color: Int, center: CGPoint, vertical isVertical: Bool, tappable: Bool) {
-            
+        
         let wordButton: UIButton = UIButton(type: UIButtonType.System)
         wordButton.setTitle(word, forState: UIControlState.Normal)
         wordButton.titleLabel?.textAlignment = NSTextAlignment.Center
@@ -179,7 +458,7 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
         wordButton.center = center
         
         if tappable {
-        
+            
             let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(OverviewViewController.wordTapped(_:)))
             wordButton.addGestureRecognizer(tapGestureRecognizer)
             
@@ -305,255 +584,6 @@ class OverviewViewController: UIViewController, CloudLayoutOperationDelegate {
             })
         }
     }
-    
-    func loadViewData() {
-        
-        overviewVCOperationQueue.cancelAllOperations()
-        
-        let trendingCloudOperation = NSBlockOperation { () -> Void in
-            self.requestStockTwitsTrendingStocks()
-        }
-        trendingCloudOperation.queuePriority = .High
-        
-        let marketCarouselOperation = NSBlockOperation { () -> Void in
-            self.queryICarouselTickers()
-        }
-        marketCarouselOperation.queuePriority = .Normal
-        
-        let topStoriesOperation = NSBlockOperation { () -> Void in
-            self.grabTopStories()
-        }
-        topStoriesOperation.queuePriority = .Normal
-        
-        overviewVCOperationQueue.addOperations([trendingCloudOperation, marketCarouselOperation, topStoriesOperation], waitUntilFinished: false)
-        
-//        let animationOperation = NSBlockOperation { () -> Void in
-//            self.splashView.startAnimation()
-//        }
-//        animationOperation.queuePriority = .Low
-//        
-//        overviewVCOperationQueue.addOperation(animationOperation)
-        
-    }
-    
-    func requestStockTwitsTrendingStocks() {
-        
-        // Layout dummy words until later
-        if cloudWords.count == 0 && stockTwitsLastQueriedDate == nil {
-            
-            let noInternetSentence = "The cloud is empty we ran out of words or are still trying to find some Weird indeed"
-            let breakupSentence = noInternetSentence.componentsSeparatedByString(" ")
-            
-            for (index, word) in breakupSentence.enumerate() {
-                let cloudWord = CloudWord(word: word, wordCount: breakupSentence.count - Int(index), wordTappable: false)
-                self.cloudWords.append(cloudWord)
-            }
-            
-            NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
-                self.layoutCloudWords()
-                self.cloudWords = []
-                
-            })
-        }
-        
-        guard Functions.isConnectedToNetwork() else { return }
-        
-        if stockTwitsLastQueriedDate != nil && self.cloudWords.count > 0 {
-            
-            let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(stockTwitsLastQueriedDate)
-            
-            guard timeSinceLastRefresh / 60 > 5 else {
-                return
-            }
-        }
-        
-        NSLog("refreshing cloud on %@", NSThread.isMainThread() ? "main thread" : "other thread")
-        
-        QueryHelper.sharedInstance.queryStockTwitsTrendingStocks { (trendingStocksData) in
-        
-            do {
-                
-                let trendingStocksData = try trendingStocksData()
-                
-                self.trendingStocksJSON = JSON(data: trendingStocksData)["symbols"]
-                guard self.trendingStocksJSON.error == nil else { return }
-                
-                QueryHelper.sharedInstance.queryStockObjectsFor(self.trendingStocksJSON.map { $0.1 }.map{ $0["symbol"].string! }, completion: { (result) in
-                    
-                    do {
-                        
-                        let stockObjects = try result()
-                        self.cloudWords = []
-                        
-                        for (index, subJson) in self.trendingStocksJSON {
-                            
-                            if let chart = (self.charts.find{ $0.symbol == subJson["symbol"].string!}) {
-                                self.charts.removeObject(chart)
-                            }
-                            
-                            let parseObject = stockObjects.find{ $0["Symbol"] as! String == subJson["symbol"].string!}
-                            
-                            let shortCount = parseObject?.objectForKey("shortCount") as? Int
-                            let longCount = parseObject?.objectForKey("longCount") as? Int
-                            
-                            let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: self.trendingStocksJSON.count - Int(index)!, wordTappable: true)
-                            self.cloudWords.append(cloudWord)
-                            
-                            let chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: nil, shortCount: shortCount, longCount: longCount, parseObject: parseObject)
-                            self.charts.append(chart)
-                            
-                            //Index to Spotlight
-                            Functions.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
-                        }
-                        
-                        NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
-                            self.layoutCloudWords()
-                        })
-                        
-                        self.stockTwitsLastQueriedDate = NSDate()
-                        
-                    } catch {
-                        
-                        if let error = error as? Constants.Errors {
-                            NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
-                                SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
-                            })
-                        }
-                    }
-                    
-                })
-                
-            } catch {
-                
-            }
-        }
-    }
-    
-    func refreshTopStories(refreshControl: UIRefreshControl) {
-        let topStoriesOperation = NSBlockOperation { () -> Void in
-            self.grabTopStories()
-        }
-        topStoriesOperation.queuePriority = .Normal
-        overviewVCOperationQueue.addOperation(topStoriesOperation)
-    }
-    
-    func grabTopStories() {
-        
-        if topStoriesLastQueriedDate != nil {
-            
-            let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(topStoriesLastQueriedDate)
-            
-            guard timeSinceLastRefresh / 60 > 1 else {
-                self.refreshControl.endRefreshing()
-                return
-            }
-        }
-        
-        NSLog("refreshing top stories on %@", NSThread.isMainThread() ? "main thread" : "other thread")
-        
-        let queryString = "http://feeds.reuters.com/reuters/businessNews?format=xml"
-        
-        QueryHelper.sharedInstance.queryWith(queryString) { (result) -> Void in
-            
-            do {
-            
-                let result = try result()
-                let xml = SWXMLHash.parse(result)
-                
-                let items = xml["rss"]["channel"]["item"]
-                
-                self.news = []
-                
-                for item in items {
-                    
-                    var newsDecodedTitle: String?
-                    var newsUrl: String?
-                    var newsDetails: String?
-                    var newsPublishedDate: String?
-                    
-                    // Get title
-                    if let title = item["title"].element?.text {
-                        newsDecodedTitle = title.decodeEncodedString()
-                    }
-                    
-                    // Get URL
-                    if let link = item["link"].element?.text {
-                        newsUrl = link.decodeEncodedString()
-                    }
-                    
-                    // Get details
-                    if let description = item["description"].element?.text {
-                        newsDetails = description.decodeEncodedString()
-                    }
-                    
-                    // Get Published Date
-                    if let pubDate = item["pubDate"].element?.text {
-                        let publishedDateFormatter = NSDateFormatter()
-                        publishedDateFormatter.dateFormat = "EEE, dd MMM yy HH:mm:ss z"
-                        
-                        if let formattedDate = publishedDateFormatter.dateFromString(pubDate) {
-                            newsPublishedDate = formattedDate.formattedAsTimeAgo()
-                        }
-                    }
-                    
-                    let newNews = News(image: nil, title: newsDecodedTitle, details: newsDetails,url: newsUrl, publisher: nil, publishedDate: newsPublishedDate)
-                    self.news.append(newNews)
-                }
-                
-                NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
-                    
-                    self.latestNewsTableView.reloadData()
-                    self.refreshControl.endRefreshing()
-                    self.topStoriesLastQueriedDate = NSDate()
-                    
-                    NSLog("top stories completed on %@", NSThread.isMainThread() ? "main thread" : "other thread")
-                })
-            } catch {
-                
-                if error is Constants.Errors {
-                        print(error)
-                }
-            }
-        }
-    }
-    
-    // MARK: - Segue Method
-    
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        if segue.identifier == "showChartDetail" {
-            
-            var symbol: String!
-            
-            switch sender {
-                
-            case is UIButton:
-        
-                symbol = sender?.currentTitle
-                
-                let destinationView = segue.destinationViewController as! ChartDetailTabBarController
-                destinationView.chart = self.charts.find{ $0.symbol == symbol }
-                
-            case is UIView:
-                
-                print(carousel.indexOfItemView(sender as! UIView))
-                
-                if tickers.get(carousel.indexOfItemView(sender as! UIView)) != nil {
-                    
-                    let tickerAtIndex = tickers[carousel.indexOfItemView(sender as! UIView)]
-                    
-                    symbol = tickerAtIndex.symbol
-                    
-                }
-                
-                let destinationView = segue.destinationViewController as! ChartDetailTabBarController
-                destinationView.chart = self.charts.find{ $0.symbol == symbol }
-                
-            default:
-                break
-            }
-        }
-    }
 }
 
 extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
@@ -655,7 +685,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
     enum CellIdentifier: String {
         case TopNewsCell = "TopNewsCell"
     }
-
+    
     // MARK: - TableView data source
     
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -701,7 +731,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         if let newsurl = newsAtIndex.url {
             
             Functions.presentSafariBrowser(NSURL(string: newsurl))
-
+            
         }
         
         tableView.deselectRowAtIndexPath(indexPath, animated: false)

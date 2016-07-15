@@ -1,12 +1,12 @@
 PODS:
-  - AMPopTip (1.0.3)
+  - AMPopTip (1.1.2)
   - Appsee (2.2)
-  - Bolts (1.7.0):
-    - Bolts/AppLinks (= 1.7.0)
-    - Bolts/Tasks (= 1.7.0)
-  - Bolts/AppLinks (1.7.0):
+  - Bolts (1.8.4):
+    - Bolts/AppLinks (= 1.8.4)
+    - Bolts/Tasks (= 1.8.4)
+  - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
-  - Bolts/Tasks (1.7.0)
+  - Bolts/Tasks (1.8.4)
   - BubbleTransition (1.0.3)
   - Charts (2.2.5):
     - Charts/Core (= 2.2.5)
@@ -14,37 +14,38 @@ PODS:
   - ChimpKit (3.1.1)
   - Crashlytics (3.7.2):
     - Fabric (~> 1.6.3)
+  - DataCache (1.0)
   - DZNEmptyDataSet (1.7.2)
   - Fabric (1.6.7)
-  - FBSDKCoreKit (4.13.1):
+  - FBSDKCoreKit (4.14.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.13.1):
+  - FBSDKLoginKit (4.14.0):
     - FBSDKCoreKit
   - LaunchKit (2.1.4):
     - LaunchKit/LaunchKit (= 2.1.4)
   - LaunchKit/LaunchKit (2.1.4)
   - MDCSwipeToChoose (0.2.4)
-  - Parse (1.13.0):
-    - Bolts/Tasks (~> 1.6)
+  - Parse (1.14.0):
+    - Bolts/Tasks (~> 1.8)
   - ParseFacebookUtilsV4 (1.11.1):
     - Bolts/Tasks (>= 1.6)
     - FBSDKCoreKit (~> 4.10)
     - FBSDKLoginKit (~> 4.10)
     - FBSDKTVOSKit (~> 4.10)
     - Parse (~> 1.12)
-  - ParseTwitterUtils (1.10.0):
-    - Bolts/Tasks (~> 1.5)
-    - Parse (~> 1.9)
+  - ParseTwitterUtils (1.11.0):
+    - Bolts/Tasks (~> 1.7)
+    - Parse (~> 1.13)
   - ParseUI (1.2.0):
     - Bolts/Tasks (~> 1.3)
     - Parse (~> 1.9)
   - PulsingHalo (0.1.0)
   - Rollout.io (0.14.5)
-  - SDVersion (3.0.1)
+  - SDVersion (3.1)
   - SKSplashView (0.1.2)
   - Spring (1.0.3)
   - SwiftyJSON (2.3.2)
-  - SWXMLHash (2.3.2)
+  - SWXMLHash (2.4.0)
   - TwitterCore (2.3.0):
     - Fabric
   - TwitterKit (2.3.0):
@@ -57,6 +58,7 @@ DEPENDENCIES:
   - Charts
   - ChimpKit
   - Crashlytics
+  - DataCache (from `https://github.com/huynguyencong/DataCache.git`)
   - DZNEmptyDataSet (= 1.7.2)
   - LaunchKit
   - MDCSwipeToChoose (from `https://github.com/acegreen/MDCSwipeToChoose.git`)
@@ -74,6 +76,8 @@ DEPENDENCIES:
   - TwitterKit
 
 EXTERNAL SOURCES:
+  DataCache:
+    :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
   PulsingHalo:
@@ -86,6 +90,9 @@ EXTERNAL SOURCES:
     :git: https://github.com/MengTo/Spring.git
 
 CHECKOUT OPTIONS:
+  DataCache:
+    :commit: cb45a04794db954b7d13c995b829674f73b18848
+    :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
     :commit: 030edd038e96a52ce8614a762fad83755a942d3a
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
@@ -100,33 +107,34 @@ CHECKOUT OPTIONS:
     :git: https://github.com/MengTo/Spring.git
 
 SPEC CHECKSUMS:
-  AMPopTip: 42ab801c5d4519093908d14134c8c9d7ffc435b4
+  AMPopTip: b31859b2e313f61318c676686493b1508c9a7221
   Appsee: c95173e65acaab0ffc8a082c70633c9f5f45d5f0
-  Bolts: a0058fa3b331c5a1e4402d534f2dae36dbff31e4
+  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   BubbleTransition: a7ae6678721406d60f604cbbea1ace505563119d
   Charts: b48fcc8d7190de910ff9e9748f5360c8ea7856e5
   ChimpKit: d020126089544daa349397a91f1489a3f271b791
   Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
+  DataCache: d9dc2b3f77dca0067c93bd481a1a10b9d60d0b1d
   DZNEmptyDataSet: 0ec00bfc230d7450997b60c127afdd0b9f24f3b6
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
-  FBSDKCoreKit: 2807fe0da2ddb49a1469da6d6ff597f99912980f
-  FBSDKLoginKit: 6d350cb6a22d6956e9d078885de6ee8a0ebc51b4
+  FBSDKCoreKit: 6e020b5db0b5bd1e01f5fb0902131befd129a502
+  FBSDKLoginKit: da563567a108050ef83739c8c8c001ee9e25fa13
   LaunchKit: 95ad4fb171a0f8ea1c80aa26d4fb7bd637788f9c
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
-  Parse: f51c24d2feb412e4b2d6cc73d37cb24e8d0089bc
+  Parse: 82a56536191a259454c2906d5e7fe3fade519446
   ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
-  ParseTwitterUtils: 8856ac80da50bbb0f0bcf251def20b62e1ae6bc4
+  ParseTwitterUtils: 0dde9689565e7012d83f892c64aed2ebe69f2ea9
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   PulsingHalo: d2684152281a3f7398b9554734b9a4f8feb9129a
   Rollout.io: e5b35636dba2e110536d54d561d7d95ed5fdc953
-  SDVersion: 99fc7a356ed89db3d41f17af49e0310c42248190
+  SDVersion: 1eb1509995f353302094612ea3a77df289157687
   SKSplashView: c65333b6707be6f237d09e7c8977941114b0a70d
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
-  SWXMLHash: 2f8c49af765718ad56020c4f875ec3ff22612f06
+  SWXMLHash: 507397103325f140863d09040c04ae14a49a16cb
   TwitterCore: 817eae3e291fa4125b47789e26a4f6f024115c1f
   TwitterKit: 8a383da8d9c21b0423716381ea8bbfce20622d91
 
-PODFILE CHECKSUM: 4337f5e8ae04e272ed84aa490c72ecc38be32260
+PODFILE CHECKSUM: 9af7c9a8d6c1d530271af537c0c288170d6bf0f9
 
 COCOAPODS: 1.0.1

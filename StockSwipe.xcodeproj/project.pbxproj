@@ -7,14 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		11E5461AC3798E4BC7723BDC /* Pods_StockSwipeTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88C8817E07F719AC9372FB54 /* Pods_StockSwipeTests.framework */; };
 		230428D41CA2E419009DDC21 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23332BA11CA08404006E4863 /* MainInterface.storyboard */; };
 		230428D51CA2E46C009DDC21 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23332BA41CA08416006E4863 /* TodayViewController.swift */; };
 		230EE2721D3007F600F2DDDB /* NotificationCenterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230EE2711D3007F600F2DDDB /* NotificationCenterTableViewController.swift */; };
 		230FBB2B1D1F0505000394AD /* TintableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230FBB2A1D1F0505000394AD /* TintableButton.swift */; };
 		230FBB2D1D1F05B2000394AD /* TintableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230FBB2C1D1F05B2000394AD /* TintableLabel.swift */; };
-		231016111D3684750061FADB /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 231016101D3684750061FADB /* WordCloud.framework */; };
-		231016121D3684750061FADB /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 231016101D3684750061FADB /* WordCloud.framework */; };
+		231016181D36E6B30061FADB /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231016171D36E6B30061FADB /* SearchTableViewCell.swift */; };
+		2310161D1D36F4160061FADB /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2310161B1D36F13E0061FADB /* SearchTableViewController.swift */; };
+		2310162B1D37D1950061FADB /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2310162A1D37D1950061FADB /* WordCloud.framework */; };
+		2310162C1D37D1950061FADB /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2310162A1D37D1950061FADB /* WordCloud.framework */; };
 		23157AF41BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23157AF31BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift */; };
 		231643031C1A00F000C92C03 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231643021C1A00F000C92C03 /* FeedbackViewController.swift */; };
 		231E09941B3DABC100A2EFC2 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */; };
@@ -179,7 +180,9 @@
 		230EE2711D3007F600F2DDDB /* NotificationCenterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCenterTableViewController.swift; sourceTree = "<group>"; };
 		230FBB2A1D1F0505000394AD /* TintableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TintableButton.swift; sourceTree = "<group>"; };
 		230FBB2C1D1F05B2000394AD /* TintableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TintableLabel.swift; sourceTree = "<group>"; };
-		231016101D3684750061FADB /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WordCloud.framework; sourceTree = "<group>"; };
+		231016171D36E6B30061FADB /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		2310161B1D36F13E0061FADB /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
+		2310162A1D37D1950061FADB /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WordCloud.framework; sourceTree = "<group>"; };
 		23157AF31BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudInfoPopoverViewController.swift; sourceTree = "<group>"; };
 		231643021C1A00F000C92C03 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
@@ -308,13 +311,11 @@
 		302A57B5A56184CF31B8BD67 /* Pods-StockSwipeWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipeWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipeWidget/Pods-StockSwipeWidget.release.xcconfig"; sourceTree = "<group>"; };
 		379EE7BADF3F956ACE9B3CF1 /* Pods-StockSwipe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipe/Pods-StockSwipe.debug.xcconfig"; sourceTree = "<group>"; };
 		422C898FA876840C7EB3FDD1 /* Pods-StockSwipeWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipeWidget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipeWidget/Pods-StockSwipeWidget.debug.xcconfig"; sourceTree = "<group>"; };
-		4CD8D324E936AAA98CFEE6FE /* Pods-StockSwipeTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipeTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipeTests/Pods-StockSwipeTests.release.xcconfig"; sourceTree = "<group>"; };
 		7830F84A5696F175B212B1F6 /* Pods_StockSwipe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockSwipe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7888E1091B66D5880087C255 /* CustomUnwindSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUnwindSegue.swift; sourceTree = "<group>"; };
 		88C8817E07F719AC9372FB54 /* Pods_StockSwipeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockSwipeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC17DA01AC7366A004E6D2D /* StockSwipe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockSwipe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEDDC51E64E945056DDC5558 /* Pods-StockSwipe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipe.release.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipe/Pods-StockSwipe.release.xcconfig"; sourceTree = "<group>"; };
-		F9A823B7A2956296471A9B42 /* Pods-StockSwipeTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipeTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipeTests/Pods-StockSwipeTests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -322,7 +323,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11E5461AC3798E4BC7723BDC /* Pods_StockSwipeTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,7 +330,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				231016121D3684750061FADB /* WordCloud.framework in Frameworks */,
+				2310162C1D37D1950061FADB /* WordCloud.framework in Frameworks */,
 				23E7F6A01BCB57A0009A016D /* NotificationCenter.framework in Frameworks */,
 				A9A3E6D544B258A12E459335 /* Pods_StockSwipeWidget.framework in Frameworks */,
 			);
@@ -352,7 +352,7 @@
 				23EA70241B119854008F6C12 /* libsqlite3.dylib in Frameworks */,
 				23EA70221B11984C008F6C12 /* libz.dylib in Frameworks */,
 				23EA70201B119839008F6C12 /* SystemConfiguration.framework in Frameworks */,
-				231016111D3684750061FADB /* WordCloud.framework in Frameworks */,
+				2310162B1D37D1950061FADB /* WordCloud.framework in Frameworks */,
 				23EA701E1B119831008F6C12 /* StoreKit.framework in Frameworks */,
 				23EA701C1B11982D008F6C12 /* Security.framework in Frameworks */,
 				23EA701A1B119827008F6C12 /* QuartzCore.framework in Frameworks */,
@@ -432,7 +432,7 @@
 		2343B6111C8361CF008BF2CA /* WordCloud */ = {
 			isa = PBXGroup;
 			children = (
-				231016101D3684750061FADB /* WordCloud.framework */,
+				2310162A1D37D1950061FADB /* WordCloud.framework */,
 			);
 			path = WordCloud;
 			sourceTree = "<group>";
@@ -564,8 +564,6 @@
 				CEDDC51E64E945056DDC5558 /* Pods-StockSwipe.release.xcconfig */,
 				422C898FA876840C7EB3FDD1 /* Pods-StockSwipeWidget.debug.xcconfig */,
 				302A57B5A56184CF31B8BD67 /* Pods-StockSwipeWidget.release.xcconfig */,
-				F9A823B7A2956296471A9B42 /* Pods-StockSwipeTests.debug.xcconfig */,
-				4CD8D324E936AAA98CFEE6FE /* Pods-StockSwipeTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -670,6 +668,7 @@
 				23D92A791D2030920091C356 /* ReplyIdeaCell.swift */,
 				233C7D5B1CB33E8B006A014A /* UserCell.swift */,
 				23DD55041D34A4DC00D8FE3B /* NotificationCell.swift */,
+				231016171D36E6B30061FADB /* SearchTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -702,6 +701,7 @@
 				231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */,
 				236C49361B4E5D7700E82416 /* WebViewController.swift */,
 				23157AF31BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift */,
+				2310161B1D36F13E0061FADB /* SearchTableViewController.swift */,
 				23ECED0D1B9B566300688768 /* NewsTableViewController.swift */,
 				236DB5201D048D6400CE9869 /* LaunchScreenViewController.swift */,
 			);
@@ -730,12 +730,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 2378B58D1B115FB3002ACFDC /* Build configuration list for PBXNativeTarget "StockSwipeTests" */;
 			buildPhases = (
-				17A359D47023AD31A175B9F0 /* [CP] Check Pods Manifest.lock */,
 				2378B5811B115FB3002ACFDC /* Sources */,
 				2378B5821B115FB3002ACFDC /* Frameworks */,
 				2378B5831B115FB3002ACFDC /* Resources */,
-				004D13CF3D7B41856EB29611 /* [CP] Embed Pods Frameworks */,
-				D83D449CF73095972DA569D3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -758,6 +755,7 @@
 				23B999891D122B0300E9BFE6 /* ShellScript */,
 				236DB51F1D0264F000CE9869 /* ShellScript */,
 				773D38C05ADA2DAD6FDEBBFE /* [CP] Copy Pods Resources */,
+				B2D25BDDC5B931BB8EFAFE0F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -885,37 +883,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		004D13CF3D7B41856EB29611 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StockSwipeTests/Pods-StockSwipeTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		0A788CCCA35E28DD51AF80BF /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		17A359D47023AD31A175B9F0 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1044,19 +1012,19 @@
 			shellPath = /bin/sh;
 			shellScript = "ROLLOUT_lastXcodeprojConfiguration=5 \"${SRCROOT}/Pods/Rollout.io/lib/upload_dsym_phase\" -k 568730c9045462554abcb4cc";
 		};
-		D83D449CF73095972DA569D3 /* [CP] Copy Pods Resources */ = {
+		B2D25BDDC5B931BB8EFAFE0F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "[CP] Copy Pods Resources";
+			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StockSwipeTests/Pods-StockSwipeTests-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StockSwipeWidget/Pods-StockSwipeWidget-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1130,10 +1098,12 @@
 				236280C41CB41A290022A129 /* IdeaPostViewController.swift in Sources */,
 				231E09941B3DABC100A2EFC2 /* FilterTableViewController.swift in Sources */,
 				233378501D1FFAA80003694A /* TradeIdeaDetailTableViewController.swift in Sources */,
+				231016181D36E6B30061FADB /* SearchTableViewCell.swift in Sources */,
 				2339B0A61B41A697009CE3EB /* iRate.m in Sources */,
 				23C925661B1AA8B300D17B70 /* ChartCollectionViewController.swift in Sources */,
 				23505C4D1BA8717100E5887B /* News.swift in Sources */,
 				236DB5211D048D6400CE9869 /* LaunchScreenViewController.swift in Sources */,
+				2310161D1D36F4160061FADB /* SearchTableViewController.swift in Sources */,
 				23B70D5B1B115BEF00FF2C04 /* ChartModel.swift in Sources */,
 				233C7D541CB210B6006A014A /* Protocols.swift in Sources */,
 				23B378841C668CE300B498AC /* ChartWebViewController.swift in Sources */,
@@ -1206,7 +1176,6 @@
 /* Begin XCBuildConfiguration section */
 		2378B58E1B115FB3002ACFDC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F9A823B7A2956296471A9B42 /* Pods-StockSwipeTests.debug.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
@@ -1229,7 +1198,6 @@
 		};
 		2378B58F1B115FB3002ACFDC /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4CD8D324E936AAA98CFEE6FE /* Pods-StockSwipeTests.release.xcconfig */;
 			buildSettings = {
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (

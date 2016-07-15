@@ -23,6 +23,7 @@ import ChimpKit
 class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
     
     var window: UIWindow?
+    var pushDelegate: PushNotificationDelegate?
     
     override class func initialize() {
         
@@ -268,7 +269,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         
-        let currentInstallation: PFInstallation = PFInstallation.currentInstallation()
+        guard let currentInstallation = PFInstallation.currentInstallation() else { return }
         currentInstallation.setDeviceTokenFromData(deviceToken)
         currentInstallation.saveInBackground()
     }
@@ -287,14 +288,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
     
     func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
         
-        print(userInfo)
+        self.pushDelegate?.didReceivePushNotification(userInfo)
         
-        // Handle received remote notification
-        if let notificationTitle = userInfo["title"] as? String {
-            if notificationTitle != "Follower Notification" && notificationTitle != "Trade Idea New Notification" && notificationTitle != "Trade Idea Reply Notification" && notificationTitle != "Trade Idea Like Notification" && notificationTitle != "Trade Idea Reshare Notification" {
-                PFPush.handlePush(userInfo)
-            }
-        }
+        //PFPush.handlePush(userInfo)
         
         if application.applicationState == UIApplicationState.Inactive {
             PFAnalytics.trackAppOpenedWithRemoteNotificationPayload(userInfo)
@@ -316,7 +312,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
             application.registerForRemoteNotifications()
             
         } else {
-            
             application.registerForRemoteNotifications()
         }
     }
@@ -333,7 +328,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         
         // Clear Parse Push badges
         if application.isRegisteredForRemoteNotifications() {
-            let currentInstallation = PFInstallation.currentInstallation()
+            guard let currentInstallation = PFInstallation.currentInstallation() else { return }
             currentInstallation.badge = 0
             currentInstallation.saveEventually()
         }
@@ -418,7 +413,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                           contentName: "StockSwipe rated",
                           contentType: "rate",
                           contentId: nil,
-                          customAttributes: ["Installation ID":PFInstallation.currentInstallation().installationId, "Country Code": Constants.countryCode, "App Version": Constants.AppVersion])
+                          customAttributes: ["Country Code": Constants.countryCode, "App Version": Constants.AppVersion])
     }
     
     func iRateDidDetectAppUpdate() {

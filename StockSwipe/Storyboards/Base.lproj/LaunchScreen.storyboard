@@ -20,7 +20,7 @@
                                 <rect key="frame" x="225" y="225" width="150" height="150"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.098039215686274508" green="0.84313725490196079" blue="0.098039215686274508" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" red="0.098039215690000001" green="0.7843137255" blue="0.098039215690000001" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Wh5-um-u60" firstAttribute="centerX" secondItem="hhu-pZ-40L" secondAttribute="centerX" id="YMa-Kl-G7F"/>

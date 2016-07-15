@@ -8,7 +8,7 @@
 
 import UIKit
 import XCTest
-import Parse
+//import Parse
 
 class LoginViewControllerTests: XCTestCase {
     

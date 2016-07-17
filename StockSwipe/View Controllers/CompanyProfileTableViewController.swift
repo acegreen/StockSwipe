@@ -217,27 +217,27 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                         
                         let companyAnalystRatingJsonBuySellHoldTable = companyAnalystRatingJSON["table"][3]["tbody"]["tr"]["td"]["table"]["tbody"]
                         
-                        if let companyAnalystRatingNumberOfBuys = companyAnalystRatingJsonBuySellHoldTable["tr"][1]["td"][0]["content"].string {
+                        if let companyAnalystRatingNumberOfBuys = companyAnalystRatingJsonBuySellHoldTable["tr"][1]["td"][1]["content"].string {
                             
                             self.ratings[0] = Double(companyAnalystRatingNumberOfBuys)!
                         }
                         
-                        if let companyAnalystRatingNumberOfOutperform = companyAnalystRatingJsonBuySellHoldTable["tr"][2]["td"][0]["content"].string {
+                        if let companyAnalystRatingNumberOfOutperform = companyAnalystRatingJsonBuySellHoldTable["tr"][2]["td"][1]["content"].string {
                             
                             self.ratings[1] = Double(companyAnalystRatingNumberOfOutperform)!
                         }
                         
-                        if let companyAnalystRatingNumberOfHolds = companyAnalystRatingJsonBuySellHoldTable["tr"][3]["td"][0]["content"].string {
+                        if let companyAnalystRatingNumberOfHolds = companyAnalystRatingJsonBuySellHoldTable["tr"][3]["td"][1]["content"].string {
                             
                             self.ratings[2] = Double(companyAnalystRatingNumberOfHolds)!
                         }
                         
-                        if let companyAnalystRatingNumberOfUnderPerform = companyAnalystRatingJsonBuySellHoldTable["tr"][4]["td"][0]["content"].string {
+                        if let companyAnalystRatingNumberOfUnderPerform = companyAnalystRatingJsonBuySellHoldTable["tr"][4]["td"][1]["content"].string {
                             
                             self.ratings[3] = Double(companyAnalystRatingNumberOfUnderPerform)!
                         }
                         
-                        if let companyAnalystRatingNumberOfSells = companyAnalystRatingJsonBuySellHoldTable["tr"][5]["td"][0]["content"].string {
+                        if let companyAnalystRatingNumberOfSells = companyAnalystRatingJsonBuySellHoldTable["tr"][5]["td"][1]["content"].string {
                             
                             self.ratings[4] = Double(companyAnalystRatingNumberOfSells)!
                         }
@@ -294,14 +294,11 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                     
                     dispatch_async(dispatch_get_main_queue(), { () -> Void in
                         
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        if let companySummaryJsonResults = JSON(data: companySummaryData!)["query"]["results"]["p"][1].string {
                             
-                            if let companySummaryJsonResults = JSON(data: companySummaryData!)["query"]["results"]["p"][1].string {
-                                
-                                self.companySummary.text = companySummaryJsonResults
-                                self.companySummary.flashScrollIndicators()
-                            }
-                        })
+                            self.companySummary.text = companySummaryJsonResults
+                            self.companySummary.flashScrollIndicators()
+                        }
                     })
                 }
             }

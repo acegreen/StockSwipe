@@ -16,14 +16,20 @@ import SwiftyJSON
 import DataCache
 import SafariServices
 import DZNEmptyDataSet
-import SKSplashView
+import NVActivityIndicatorView
+
+protocol SplashAnimationDelegate {
+    func didFinishLoading()
+}
 
 class OverviewViewController: UIViewController {
+    
+    var animationDelegate: SplashAnimationDelegate?
     
     var iCarouselTickers = ["^IXIC","^GSPC","^RUT","^VIX","^GDAXI","^FTSE","^FCHI","^N225","^HSI","^GSPTSE","CAD=X"]
     var tickers = [Ticker]()
     var cloudWords = [CloudWord]()
-    var news = [News]()
+    var topStories = [News]()
     var charts = [Chart]()
     
     var cloudColors:[UIColor] = [UIColor.grayColor()]
@@ -33,8 +39,14 @@ class OverviewViewController: UIViewController {
     var carouselLastQueriedDate: NSDate!
     var topStoriesLastQueriedDate: NSDate!
     
+    var isQueryingForTrendingStocks = false
+    var isQueryingForiCarousel = false
+    var isQueryingForTopStories = false
+    
     var refreshControl = UIRefreshControl()
-    var splashView: SKSplashView!
+    var TrendingStocksHalo: NVActivityIndicatorView!
+    var iCarouselHalo: NVActivityIndicatorView!
+    var topStoriesHalo: NVActivityIndicatorView!
     
     var overviewVCOperationQueue: NSOperationQueue = NSOperationQueue()
     var cloudLayoutOperationQueue: NSOperationQueue = NSOperationQueue()
@@ -57,9 +69,6 @@ class OverviewViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Add splash
-        //initializerSplash()
         
         carousel.autoscroll = -0.3
         carousel.type = .Linear
@@ -91,8 +100,6 @@ class OverviewViewController: UIViewController {
     
     func loadViewData() {
         
-        overviewVCOperationQueue.cancelAllOperations()
-        
         let trendingCloudOperation = NSBlockOperation { () -> Void in
             self.queryStockTwitsTrendingStocks()
         }
@@ -108,27 +115,34 @@ class OverviewViewController: UIViewController {
         }
         topStoriesOperation.queuePriority = .Normal
         
-        overviewVCOperationQueue.addOperations([trendingCloudOperation, marketCarouselOperation, topStoriesOperation], waitUntilFinished: false)
+        overviewVCOperationQueue.addOperations([trendingCloudOperation, marketCarouselOperation, topStoriesOperation], waitUntilFinished: true)
         
-        //        let animationOperation = NSBlockOperation { () -> Void in
-        //            self.splashView.startAnimation()
-        //        }
-        //        animationOperation.queuePriority = .Low
-        //
-        //        overviewVCOperationQueue.addOperation(animationOperation)
+        let animationOperation = NSBlockOperation { () -> Void in
+            self.animationDelegate?.didFinishLoading()
+        }
+        animationOperation.queuePriority = .Normal
         
+        overviewVCOperationQueue.addOperation(animationOperation)
     }
     
     func queryStockTwitsTrendingStocks() {
         
-        // Layout dummy words until later
-        //        if cloudWords.count == 0 && stockTwitsLastQueriedDate == nil, let trendingStocksCacheData = DataCache.defaultCache.readDataForKey("TRENDINGSTOCKSCACHEDATA"), let trendingStockObjectsCacheData = DataCache.defaultCache.readArrayForKey("TRENDINGSTOCKOBJECTSCACHEDATA") {
-        //
-        //
-        //                let trendingStocksJSON =  JSON(data: trendingStocksCacheData)
-        //                self.createCloudWords(trendingStocksJSON, stockObjects: trendingStockObjectsCacheData as! [PFObject])
-        //
-        //        }
+        if cloudWords.count == 0 && stockTwitsLastQueriedDate == nil {
+            
+            let noInternetSentence = "The cloud is empty weird indeed could not grab Any Trending Stocks"
+            let breakupSentence = noInternetSentence.componentsSeparatedByString(" ")
+            
+            for (index, word) in breakupSentence.enumerate() {
+                let cloudWord = CloudWord(word: word, wordCount: breakupSentence.count - Int(index), wordTappable: false)
+                self.cloudWords.append(cloudWord)
+            }
+            
+            NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+                self.layoutCloudWords()
+                self.cloudWords = []
+                
+            })
+        }
         
         guard Functions.isConnectedToNetwork() else { return }
         
@@ -143,6 +157,8 @@ class OverviewViewController: UIViewController {
         
         NSLog("refreshing cloud on %@", NSThread.isMainThread() ? "main thread" : "other thread")
         
+        isQueryingForTrendingStocks = true
+        
         QueryHelper.sharedInstance.queryStockTwitsTrendingStocks { (trendingStocksData) in
             
             do {
@@ -150,29 +166,21 @@ class OverviewViewController: UIViewController {
                 let trendingStocksData = try trendingStocksData()
                 
                 let trendingStocksJSON = JSON(data: trendingStocksData)["symbols"]
-                guard trendingStocksJSON.error == nil else { return }
                 
-                //DataCache.defaultCache.writeData(trendingStocksData, forKey: "TRENDINGSTOCKSCACHEDATA")
+                DataCache.defaultCache.writeData(trendingStocksData, forKey: "TRENDINGSTOCKSCACHEDATA")
                 QueryHelper.sharedInstance.queryStockObjectsFor(trendingStocksJSON.map { $0.1 }.map{ $0["symbol"].string! }, completion: { (result) in
+                    
+                    self.isQueryingForTrendingStocks = false
                     
                     do {
                         
                         let stockObjects = try result()
-                        
-                        //DataCache.defaultCache.writeObject(stockObjects, forKey: "TRENDINGSTOCKOBJECTSCACHEDATA")
                         self.createCloudWords(trendingStocksJSON, stockObjects: stockObjects)
                         
                         self.stockTwitsLastQueriedDate = NSDate()
                         
                     } catch {
-                        
-                        if let error = error as? Constants.Errors {
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
-                            })
-                        }
                     }
-                    
                 })
                 
             } catch {
@@ -183,7 +191,11 @@ class OverviewViewController: UIViewController {
     
     func queryICarouselTickers() {
         
-        if carouselLastQueriedDate != nil {
+        if carouselLastQueriedDate == nil || !Functions.isConnectedToNetwork() {
+            if let carouselCacheData = DataCache.defaultCache.readDataForKey("CAROUSELCACHEDATA") {
+                updateCarousel(carouselCacheData)
+            }
+        } else if carouselLastQueriedDate != nil {
             
             let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(carouselLastQueriedDate)
             
@@ -201,50 +213,20 @@ class OverviewViewController: UIViewController {
                 self.iCarouselTickers = parameterValue as! [String]
             }
             
+            self.isQueryingForiCarousel = true
+            
             QueryHelper.sharedInstance.queryYahooSymbolQuote(self.iCarouselTickers, completionHandler: { (symbolQuote, response, error) -> Void in
+                
+                self.isQueryingForiCarousel = false
                 
                 if error != nil {
                     
                     print("error: \(error!.localizedDescription): \(error!.userInfo)")
                     
-                } else if symbolQuote != nil {
+                } else if let symbolQuote = symbolQuote {
                     
-                    guard let carsouelJson:JSON? = JSON(data: symbolQuote!) else { return }
-                    guard carsouelJson != nil else { return }
-                    guard let carsouelJsonResults:JSON? = carsouelJson!["query"]["results"] else { return }
-                    guard let quoteJsonResultsQuote = carsouelJsonResults!["quote"].array else { return }
-                    
-                    for quote in quoteJsonResultsQuote {
-                        
-                        let symbol = quote["Symbol"].string
-                        let companyName = quote["Name"].string
-                        let exchange = quote["StockExchange"].string
-                        let currentPrice = quote["LastTradePriceOnly"].string
-                        let changeInDollar = quote["Change"].string
-                        let changeInPercent = quote["ChangeinPercent"].string
-                        
-                        if let ticker = (self.tickers.find{ $0.symbol == symbol}) {
-                            self.tickers.removeObject(ticker)
-                        }
-                        
-                        if let chart = (self.charts.find{ $0.symbol == symbol}) {
-                            self.charts.removeObject(chart)
-                        }
-                        
-                        let ticker = Ticker(symbol: symbol, companyName: companyName, exchange: exchange, currentPrice: currentPrice, changeInDollar: changeInDollar, changeInPercent: changeInPercent)
-                        
-                        let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: 0, longCount: 0, parseObject: nil)
-                        
-                        self.tickers.append(ticker)
-                        self.charts.append(chart)
-                    }
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.carousel.reloadData()
-                        self.carouselLastQueriedDate = NSDate()
-                        
-                        NSLog("carousel completed on %@", NSThread.isMainThread() ? "main thread" : "other thread")
-                    })
+                    DataCache.defaultCache.writeData(symbolQuote, forKey: "CAROUSELCACHEDATA")
+                    self.updateCarousel(symbolQuote)
                 }
             })
         }
@@ -252,30 +234,11 @@ class OverviewViewController: UIViewController {
     
     func queryTopStories() {
         
-//        if let topStoriesCacheData = DataCache.defaultCache.readDataForKey("TOPSTORIESCACHEDATA") {
-//            self.updateTopStories(topStoriesCacheData)
-//        }
-        
-        if cloudWords.count == 0 && stockTwitsLastQueriedDate == nil {
-            
-            let noInternetSentence = "The cloud is empty we ran out of words or are still trying to find some Weird indeed"
-            let breakupSentence = noInternetSentence.componentsSeparatedByString(" ")
-            
-            for (index, word) in breakupSentence.enumerate() {
-                let cloudWord = CloudWord(word: word, wordCount: breakupSentence.count - Int(index), wordTappable: false)
-                self.cloudWords.append(cloudWord)
+        if topStoriesLastQueriedDate == nil || !Functions.isConnectedToNetwork() {
+            if let topStoriesCacheData = DataCache.defaultCache.readDataForKey("TOPSTORIESCACHEDATA") {
+                self.updateTopStories(topStoriesCacheData)
             }
-            
-            NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
-                self.layoutCloudWords()
-                self.cloudWords = []
-                
-            })
-        }
-        
-        guard Functions.isConnectedToNetwork() else { return }
-        
-        if topStoriesLastQueriedDate != nil {
+        } else if topStoriesLastQueriedDate != nil {
             
             let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(topStoriesLastQueriedDate)
             
@@ -287,15 +250,19 @@ class OverviewViewController: UIViewController {
         
         NSLog("refreshing top stories on %@", NSThread.isMainThread() ? "main thread" : "other thread")
         
+        isQueryingForTopStories = true
+        
         let queryString = "http://feeds.reuters.com/reuters/businessNews?format=xml"
         
         QueryHelper.sharedInstance.queryWith(queryString) { (result) -> Void in
+            
+            self.isQueryingForTopStories = false
             
             do {
                 
                 let result = try result()
                 
-                //DataCache.defaultCache.writeData(result, forKey: "TOPSTORIESCACHEDATA")
+                DataCache.defaultCache.writeData(result, forKey: "TOPSTORIESCACHEDATA")
                 self.updateTopStories(result)
                 
             } catch {
@@ -314,11 +281,9 @@ class OverviewViewController: UIViewController {
             
             if let chart = (self.charts.find{ $0.symbol == subJson["symbol"].string }) {
                 self.charts.removeObject(chart)
-                print("chart removed")
             }
             
             let parseObject = stockObjects.find{ $0["Symbol"] as? String == subJson["symbol"].string }
-            print(parseObject)
             
             let shortCount = parseObject?.objectForKey("shortCount") as? Int
             let longCount = parseObject?.objectForKey("longCount") as? Int
@@ -338,13 +303,57 @@ class OverviewViewController: UIViewController {
         })
     }
     
+    func updateCarousel(symbolQuote: NSData) {
+        
+        guard let carsouelJson:JSON? = JSON(data: symbolQuote) else { return }
+        guard carsouelJson != nil else { return }
+        guard let carsouelJsonResults:JSON? = carsouelJson!["query"]["results"] else { return }
+        guard let quoteJsonResultsQuote = carsouelJsonResults!["quote"].array else { return }
+        
+        for quote in quoteJsonResultsQuote {
+            
+            let symbol = quote["Symbol"].string
+            let companyName = quote["Name"].string
+            let exchange = quote["StockExchange"].string
+            let currentPrice = quote["LastTradePriceOnly"].string
+            let changeInDollar = quote["Change"].string
+            let changeInPercent = quote["ChangeinPercent"].string
+            
+            if let ticker = (self.tickers.find{ $0.symbol == symbol}) {
+                self.tickers.removeObject(ticker)
+            }
+            
+            if let chart = (self.charts.find{ $0.symbol == symbol}) {
+                self.charts.removeObject(chart)
+            }
+            
+            let ticker = Ticker(symbol: symbol, companyName: companyName, exchange: exchange, currentPrice: currentPrice, changeInDollar: changeInDollar, changeInPercent: changeInPercent)
+            
+            let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: 0, longCount: 0, parseObject: nil)
+            
+            self.tickers.append(ticker)
+            self.charts.append(chart)
+            
+            //Index to Spotlight
+            //Functions.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.carousel.reloadData()
+            self.carouselLastQueriedDate = NSDate()
+            
+            NSLog("carousel completed on %@", NSThread.isMainThread() ? "main thread" : "other thread")
+        })
+        
+    }
+    
     func updateTopStories(result: NSData) {
         
         let xml = SWXMLHash.parse(result)
         
         let items = xml["rss"]["channel"]["item"]
         
-        self.news = []
+        self.topStories = []
         
         for item in items {
             
@@ -355,17 +364,17 @@ class OverviewViewController: UIViewController {
             
             // Get title
             if let title = item["title"].element?.text {
-                newsDecodedTitle = title.decodeEncodedString()
+                newsDecodedTitle = title
             }
             
             // Get URL
             if let link = item["link"].element?.text {
-                newsUrl = link.decodeEncodedString()
+                newsUrl = link
             }
             
             // Get details
             if let description = item["description"].element?.text {
-                newsDetails = description.decodeEncodedString()
+                newsDetails = description
             }
             
             // Get Published Date
@@ -379,11 +388,11 @@ class OverviewViewController: UIViewController {
             }
             
             let newNews = News(image: nil, title: newsDecodedTitle, details: newsDetails,url: newsUrl, publisher: nil, publishedDate: newsPublishedDate)
-            self.news.append(newNews)
+            self.topStories.append(newNews)
         }
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
-    
+            
             self.latestNewsTableView.reloadData()
             self.refreshControl.endRefreshing()
             self.topStoriesLastQueriedDate = NSDate()
@@ -539,49 +548,9 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
         if sender.state == UIGestureRecognizerState.Began {
             print("UIGestureRecognizerState Began")
             
-            guard Functions.isConnectedToNetwork() else {
-                
-                SweetAlert().showAlert("Can't Add To Watchlist!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.Warning)
-                return
-            }
-            
             guard let chart = (self.charts.find{ $0.symbol == (sender.view as! UIButton).currentTitle }) else { return }
             
-            QueryHelper.sharedInstance.queryChartImage(chart.symbol, completion: { (result) in
-                
-                do {
-                    
-                    let chartImage = try result()
-                    
-                    chart.image = chartImage
-                    
-                    
-                } catch {
-                    
-                    print(error)
-                }
-                
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    
-                    SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.CustomImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.redColor() , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
-                        
-                        guard Functions.isUserLoggedIn(self) else { return }
-                        
-                        if !isOtherButton {
-                            
-                            Functions.registerUserChoice(chart, with: .LONG)
-                            
-                        } else if isOtherButton {
-                            
-                            Functions.registerUserChoice(chart, with: .SHORT)
-                        }
-                    }
-                    
-                })
-                
-                // Index to Spotlight
-                Functions.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
-            })
+            Functions.addToWatchlist(chart)
         }
     }
 }
@@ -667,17 +636,6 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
         
         return value
     }
-    
-    func initializerSplash() {
-        //Twitter style splash
-        let stockswipeLaunchScreenLogoSize = UIImage(named: "stockswipe_logo")!.size
-        let splashIcon: SKSplashIcon = SKSplashIcon(image: UIImage(named: "stockswipe_logo_large"), initialSize: stockswipeLaunchScreenLogoSize, preAnimationType: .Bounce, postAnimationType: .Bounce)
-        let backgroundColor: UIColor = Constants.stockSwipeGreenColor
-        self.splashView = SKSplashView(splashIcon: splashIcon, backgroundColor: backgroundColor, animationType: .None)
-        //self.splashView.delegate = self
-        splashView.animationDuration = 0.50
-        self.tabBarController?.view.addSubview(splashView)
-    }
 }
 
 extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, CellType {
@@ -695,16 +653,16 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return news.count
+        return topStories.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as TopNewsCell
         
-        guard news.get(indexPath.row) != nil else { return cell }
+        guard topStories.get(indexPath.row) != nil else { return cell }
         
-        let newsAtIndex = self.news[indexPath.row]
+        let newsAtIndex = self.topStories[indexPath.row]
         
         if let newsTitleAtIndex = newsAtIndex.title {
             
@@ -721,12 +679,12 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        guard news.get(indexPath.row) != nil else {
+        guard topStories.get(indexPath.row) != nil else {
             tableView.deselectRowAtIndexPath(indexPath, animated: true)
             return
         }
         
-        let newsAtIndex = self.news[indexPath.row]
+        let newsAtIndex = self.topStories[indexPath.row]
         
         if let newsurl = newsAtIndex.url {
             
@@ -739,28 +697,19 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
     
     // MARK: - DZNEmptyDataSet Delegates
     
-    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
-        
-        return UIImage(assetIdentifier: .newsBigImage)
+    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+        if !isQueryingForTopStories && topStories.count == 0 {
+            return true
+        }
+        return false
     }
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle: NSAttributedString!
         
-        attributedTitle = NSAttributedString(string: "No News?", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        attributedTitle = NSAttributedString(string: "No News", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
         
         return attributedTitle
-    }
-}
-
-extension OverviewViewController {
-    
-    // MARK: - SKSplashView Delegates
-    
-    func splashView(splashView: SKSplashView, didBeginAnimatingWithDuration duration: Float) {
-    }
-    
-    func splashViewDidEndAnimating(splashView: SKSplashView) {
     }
 }

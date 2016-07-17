@@ -41,6 +41,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     var likedTradeIdeas = [TradeIdea]()
     var tradeIdeaQueryLimit = 25
     
+    var isQueryingForTradeIdeas = true
+    var isQueryingForFollowing = true
+    var isQueryingForFollowers = true
+    var isQueryingForLikedTradeIdeas = true
+    
     var selectedSegmentIndex: ProfileContainerController.SegmentIndex = ProfileContainerController.SegmentIndex(rawValue: 0)!
     
     @IBOutlet var headerView: UIView!
@@ -76,7 +81,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     
                     if !isOtherButton {
                         
-                        self.handleBlock(user.userObject, postAlert: false)
+                        Functions.blockUser(user.userObject, postAlert: false)
                         
                         let spamObject = PFObject(className: "Spam")
                         spamObject["reported_user"] = user.userObject
@@ -249,7 +254,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         switch selectedSegmentIndex {
         case .Zero:
             
+            isQueryingForTradeIdeas = true
+            
             QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: userObject, skip: 0, limit: self.tradeIdeaQueryLimit) { (result) in
+                
+                self.isQueryingForTradeIdeas = false
                 
                 do {
                     
@@ -292,8 +301,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         case .Three:
             
+            isQueryingForLikedTradeIdeas = true
+            
             QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
                 
+                self.isQueryingForLikedTradeIdeas = false
+
                 do {
                     
                     let activityObjects = try result()
@@ -334,7 +347,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         }
     }
     
-    func loadMoreTradeIdeas(skip skip: Int) {
+    func loadMoreTradeIdeas() {
         
         guard !isCurrentUserBlocked else { return }
         guard let userObject = self.user?.userObject else { return }
@@ -345,7 +358,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         switch selectedSegmentIndex {
         case .Zero:
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: userObject, skip: skip, limit: self.tradeIdeaQueryLimit) { (result) in
+            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: userObject, skip: tradeIdeas.count, limit: self.tradeIdeaQueryLimit) { (result) in
                 
                 do {
                     
@@ -387,7 +400,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         case .Three:
             
-            QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, skip: skip, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, skip: likedTradeIdeas.count, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
                 
                 do {
                     
@@ -434,7 +447,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard !isCurrentUserBlocked else { return }
         guard let user = user else { return }
         
+        isQueryingForFollowing = true
+
         QueryHelper.sharedInstance.queryActivityFor(user.userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            
+            self.isQueryingForFollowing = false
             
             do {
                 
@@ -473,8 +490,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard !isCurrentUserBlocked else { return }
         guard let user = user else { return }
         
+        isQueryingForFollowers = true
+
         QueryHelper.sharedInstance.queryActivityFor(nil, toUser: user.userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
+            self.isQueryingForFollowers = false
+
             do {
                 
                 let activityObjects = try result()
@@ -645,7 +666,16 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
         if offset >= 0 && offset <= 5 {
             // This is the last cell so get more data
-            self.loadMoreTradeIdeas(skip: tradeIdeas.count)
+            switch selectedSegmentIndex {
+            case .Zero:
+                self.loadMoreTradeIdeas()
+            case .One:
+                getUsersFollowing()
+            case .Two:
+                getUsersFollowers()
+            case .Three:
+                self.loadMoreTradeIdeas()
+            }
         }
     }
     
@@ -671,72 +701,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 SweetAlert().showAlert("Block @\(user.username!)?", subTitle: "@\(user.username!) will not be able to follow or view your ideas, and you will not see anything from @\(user.username!)", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.stockSwipeGreenColor, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                     
                     if isOtherButton {
-                        self.handleBlock(user, postAlert: true)
+                        Functions.blockUser(user, postAlert: true)
                     }
                 }
             }
             
             return blockUser
-        }
-    }
-    
-    func handleBlock(user: PFUser, postAlert: Bool) {
-        
-        guard let currentUser = PFUser.currentUser() else { return }
-        
-        if currentUser.objectForKey("blocked_users") != nil {
-            
-            currentUser.addUniqueObject(user, forKey: "blocked_users")
-            
-        } else {
-            
-            currentUser.setObject([user], forKey: "blocked_users")
-        }
-        
-        currentUser.saveEventually { (success, error) in
-            
-            if success {
-                
-                if postAlert == true {
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.Success)
-                    })
-                }
-                
-                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
-                    
-                    do {
-                        
-                        let activityObject = try result()
-                        activityObject.first?.deleteEventually()
-                        
-                    } catch {
-                        
-                        // TO-DO: handle error
-                        
-                    }
-                })
-                
-                QueryHelper.sharedInstance.queryActivityFor(user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
-                    
-                    do {
-                        
-                        let activityObject = try result()
-                        activityObject.first?.deleteEventually()
-                        
-                    } catch {
-                        
-                        // TO-DO: handle error
-                        
-                    }
-                })
-                
-            } else {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
-                })
-            }
         }
     }
     
@@ -851,6 +821,29 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
     }
     
     // DZNEmptyDataSet delegate functions
+    
+    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+        
+        switch selectedSegmentIndex {
+        case .Zero:
+            if !isQueryingForTradeIdeas && tradeIdeas.count == 0 {
+                return true
+            }
+        case .One:
+            if !isQueryingForFollowing && followingUsers.count == 0 {
+                return true
+            }
+        case .Two:
+            if !isQueryingForFollowers && followersUsers.count == 0 {
+                return true
+            }
+        case .Three:
+            if !isQueryingForLikedTradeIdeas && likedTradeIdeas.count == 0 {
+                return true
+            }
+        }
+        return false
+    }
     
     //    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
     //

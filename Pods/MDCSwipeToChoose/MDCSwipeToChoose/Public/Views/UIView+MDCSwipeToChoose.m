@@ -40,22 +40,23 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
     self.mdc_viewState = [MDCViewState new];
     self.mdc_viewState.originalCenter = self.center;
     self.mdc_viewState.originalTransform = self.layer.transform;
-
+    
     if (options.swipeEnabled) {
         [self mdc_setupPanGestureRecognizer];
         [self mdc_setupTapGestureRecognizer];
+        [self mdc_setupLongPressGestureRecognizer];
     }
 }
 
 - (void)mdc_swipe:(MDCSwipeDirection)direction {
     [self mdc_swipeToChooseSetupIfNecessary];
-
+    
     // A swipe in no particular direction "finalizes" the swipe.
     if (direction == MDCSwipeDirectionNone) {
         [self mdc_finalizePosition];
         return;
     }
-
+    
     // Moves the view to the minimum point exceeding the threshold.
     // Transforms and executes pan callbacks as well.
     void (^animations)(void) = ^{
@@ -66,12 +67,12 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
                      rotationDirection:MDCRotationAwayFromCenter];
         [self mdc_executeOnPanBlockForTranslation:translation];
     };
-
+    
     // Finalize upon completion of the animations.
     void (^completion)(BOOL) = ^(BOOL finished) {
         if (finished) { [self mdc_finalizePositionForDirection:direction]; }
     };
-
+    
     [UIView animateWithDuration:self.mdc_options.swipeAnimationDuration
                           delay:0.0
                         options:self.mdc_options.swipeAnimationOptions
@@ -121,6 +122,14 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
     [self addGestureRecognizer:tapGestureRecognizer];
 }
 
+- (void)mdc_setupLongPressGestureRecognizer {
+    SEL action = @selector(mdc_onSwipeToChooseLongPressGestureRecognizer:);
+    UILongPressGestureRecognizer *longPressGestureRecognizer =
+    [[UILongPressGestureRecognizer alloc] initWithTarget:self
+                                                  action:action];
+    [self addGestureRecognizer:longPressGestureRecognizer];
+}
+
 #pragma mark Translation
 
 - (void)mdc_finalizePosition {
@@ -130,20 +139,20 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
 
 - (void)mdc_finalizePositionForDirection:(MDCSwipeDirection)direction {
     switch (direction) {
-        case MDCSwipeDirectionUp:
-        case MDCSwipeDirectionDown:
-        case MDCSwipeDirectionRight:
-        case MDCSwipeDirectionLeft: {
-            CGPoint translation = MDCCGPointSubtract(self.center,
-                                                     self.mdc_viewState.originalCenter);
-            [self mdc_exitSuperviewFromTranslation:translation];
-            break;
-        }
-        case MDCSwipeDirectionNone: {
-            [self mdc_returnToOriginalCenter];
-            [self mdc_executeOnPanBlockForTranslation:CGPointZero];
-            break;
-        }
+            case MDCSwipeDirectionUp:
+            case MDCSwipeDirectionDown:
+            case MDCSwipeDirectionRight:
+            case MDCSwipeDirectionLeft: {
+                CGPoint translation = MDCCGPointSubtract(self.center,
+                                                         self.mdc_viewState.originalCenter);
+                [self mdc_exitSuperviewFromTranslation:translation];
+                break;
+            }
+            case MDCSwipeDirectionNone: {
+                [self mdc_returnToOriginalCenter];
+                [self mdc_executeOnPanBlockForTranslation:CGPointZero];
+                break;
+            }
     }
 }
 
@@ -190,7 +199,7 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
     if (self.mdc_options.onPan) {
         
         CGFloat thresholdRatio;
-
+        
         MDCSwipeDirection direction = MDCSwipeDirectionNone;
         
         if (ABS(translation.y) > ABS(translation.x)) {
@@ -220,7 +229,7 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
                 
             }
         }
-
+        
         MDCPanState *state = [MDCPanState new];
         state.view = self;
         state.direction = direction;
@@ -242,16 +251,16 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
 - (CGPoint)mdc_translationExceedingThreshold:(CGFloat)threshold
                                    direction:(MDCSwipeDirection)direction {
     NSParameterAssert(direction != MDCSwipeDirectionNone);
-
+    
     CGFloat offset = threshold + 1.f;
     switch (direction) {
-        case MDCSwipeDirectionLeft:
+            case MDCSwipeDirectionLeft:
             return CGPointMake(-offset, 0);
-        case MDCSwipeDirectionRight:
+            case MDCSwipeDirectionRight:
             return CGPointMake(offset, 0);
-        case MDCSwipeDirectionUp:
+            case MDCSwipeDirectionUp:
             return CGPointMake(0, -offset);
-        case MDCSwipeDirectionDown:
+            case MDCSwipeDirectionDown:
             return CGPointMake(0, offset);
         default:
             [NSException raise:NSInternalInconsistencyException
@@ -278,11 +287,11 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
 
 - (void)mdc_onSwipeToChoosePanGestureRecognizer:(UIPanGestureRecognizer *)panGestureRecognizer {
     UIView *view = panGestureRecognizer.view;
-
+    
     if (panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
         self.mdc_viewState.originalCenter = view.center;
         self.mdc_viewState.originalTransform = view.layer.transform;
-
+        
         // If the pan gesture originated at the top half of the view, rotate the view
         // away from the center. Otherwise, rotate towards the center.
         if ([panGestureRecognizer locationInView:view].y < view.center.y) {
@@ -311,6 +320,16 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
     id<MDCSwipeToChooseDelegate> delegate = self.mdc_options.delegate;
     if ([delegate respondsToSelector:@selector(viewDidGetTapped:)]) {
         [delegate viewDidGetTapped:self];
+    }
+}
+
+- (void)mdc_onSwipeToChooseLongPressGestureRecognizer:(UILongPressGestureRecognizer *)longPressGestureRecognizer {
+    
+    if (longPressGestureRecognizer.state == UIGestureRecognizerStateBegan) {
+        id<MDCSwipeToChooseDelegate> delegate = self.mdc_options.delegate;
+        if ([delegate respondsToSelector:@selector(viewDidGetTapped:)]) {
+            [delegate viewDidGetLongPressed:self];
+        }
     }
 }
 

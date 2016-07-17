@@ -16,6 +16,8 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
     var symbol: String!
     var companyName: String!
     
+    var isQueryingForTweets = false
+    
     @IBAction func xButtonPressed(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
@@ -80,11 +82,19 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
 // DZNEmptyDataSet delegate functions
 extension StreamTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-//        func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
-//    
-//            return UIImage(named: "twitter_big")
+//    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+//        if !isQueryingForTradeIdeas && tradeIdeas.count == 0 {
+//            return true
 //        }
-    
+//        return false
+//    }
+//
+//    
+//    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+//        
+//        return UIImage(named: "twitter_big")
+//    }
+//    
 //    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
 //        
 //        let attributedTitle: NSAttributedString!

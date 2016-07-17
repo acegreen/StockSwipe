@@ -23,6 +23,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     }
     
     var activities = [PFObject]()
+    var isQueryingForActivities = true
     
     @IBAction func xButtonPressed(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -60,8 +61,12 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         
         guard let currentUser = PFUser.currentUser() else { return }
         
+        isQueryingForActivities = true
+        
         QueryHelper.sharedInstance.queryActivityForUser(currentUser) { (result) in
         
+            self.isQueryingForActivities = false
+            
             do {
                 
                 let activityObjects = try result()
@@ -224,9 +229,16 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     }
 }
 
+// MARK: - DZNEmptyDataSet Delegates
+
 extension NotificationCenterTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    // DZNEmptyDataSet delegate functions
+    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+        if !isQueryingForActivities && activities.count == 0 {
+            return true
+        }
+        return false
+    }
     
 //    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
 //        

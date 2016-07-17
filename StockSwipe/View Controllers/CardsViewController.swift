@@ -10,8 +10,7 @@ import CoreData
 import CoreSpotlight
 import MDCSwipeToChoose
 import Parse
-import PulsingHalo
-import Spring
+import NVActivityIndicatorView
 
 class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
@@ -54,7 +53,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     let options:MDCSwipeToChooseViewOptions = MDCSwipeToChooseViewOptions()
     
-    var halo: PulsingHaloLayer!
+    var halo: NVActivityIndicatorView!
     
     enum CardPosition: Int {
         case FirstCard = 0
@@ -84,8 +83,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             }
         }
     }
-    
-    @IBOutlet var searchImage: UIImageView!
     
     @IBAction func returnToMainviewController (segue:UIStoryboardSegue) {
         
@@ -167,8 +164,10 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         // Disable buttons and enable activity indicator
         self.reloadFilterButtonsEnabled(false)
-        self.activityIndicatorSearchImageOnOff("Off")
-        self.activityIndicatorSearchImageOnOff("On")
+        
+        if firstCardView == nil {
+            Functions.activityIndicator(self.view, halo: &halo, state: true)
+        }
         
         // Setup config parameters
         Functions.setupConfigParameter("NUMBEROFCARDSTOQUERY") { (parameterValue) -> Void in
@@ -342,7 +341,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             
-            self.activityIndicatorSearchImageOnOff("Off")
+            Functions.activityIndicator(self.view, halo: &self.halo, state: false)
 
             self.options.delegate = self
             Functions.setupConfigParameter("THRESHOLDX", completion: { (parameterValue) -> Void in
@@ -394,11 +393,11 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                     
                     self.firstCardView.userInteractionEnabled = true
                     
-                    self.firstCardView.transform = CGAffineTransformMakeRotation(CGFloat(degreesToRadians(30)))
+                    self.firstCardView.transform = CGAffineTransformMakeRotation(CGFloat(Functions.degreesToRadians(30)))
                     
                     UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
                         
-                        self.firstCardView.transform = CGAffineTransformMakeRotation(CGFloat(degreesToRadians(0)))
+                        self.firstCardView.transform = CGAffineTransformMakeRotation(CGFloat(Functions.degreesToRadians(0)))
                         
                         self.firstCardView.frame = self.frontCardViewFrame()
                         
@@ -424,11 +423,11 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                     self.view.insertSubview(self.secondCardView, belowSubview: self.firstCardView)
                     self.secondCardView.userInteractionEnabled = false
                     
-                    self.secondCardView.transform = CGAffineTransformMakeRotation(CGFloat(degreesToRadians(-30)))
+                    self.secondCardView.transform = CGAffineTransformMakeRotation(CGFloat(Functions.degreesToRadians(-30)))
                     
                     UIView.animateWithDuration(0.5, delay: 0.0, options: .CurveEaseInOut, animations: { () -> Void in
                         
-                        self.secondCardView.transform = CGAffineTransformMakeRotation(CGFloat(degreesToRadians(0)))
+                        self.secondCardView.transform = CGAffineTransformMakeRotation(CGFloat(Functions.degreesToRadians(0)))
                         
                         self.secondCardView.frame = self.middleCardViewFrame()
                         
@@ -476,7 +475,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             
-            self.activityIndicatorSearchImageOnOff("Off")
+            Functions.activityIndicator(self.view, halo: &self.halo, state: false)
             
             guard self.informationCardView == nil else { return }
             
@@ -525,20 +524,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         // and "LONG" on swipes to the right.
         
         guard let chartChoosen: Chart = self.charts.find({$0.symbol == self.firstCardView.chart.symbol}) else { return }
-        
-        if wasChosenWithDirection == MDCSwipeDirection.Left {
-            
-            Functions.registerUserChoice(chartChoosen, with: .SHORT)
-            
-        } else if wasChosenWithDirection == MDCSwipeDirection.Right {
-            
-            Functions.registerUserChoice(chartChoosen, with: .LONG)
-            
-        } else if wasChosenWithDirection == MDCSwipeDirection.Up {
-            
-            print("swiped up")
-            
-        }
         
         self.parseObjects.removeObject(chartChoosen.parseObject!)
         self.charts.removeObject(chartChoosen)
@@ -617,6 +602,15 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             self.performCustomSegue(self)
             
         })
+    }
+    
+    func viewDidGetLongPressed(view: UIView!) {
+        
+        print("View did get long pressed")
+        
+        guard let chart: Chart = self.charts.find({ $0.symbol == self.firstCardView.chart.symbol }) else { return }
+        
+        Functions.addToWatchlist(chart)
     }
     
     func swapAndResizeCardView(CardView: SwipeChartView?) -> Void {
@@ -745,38 +739,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     //        }
     //
     //    }
-    
-    func activityIndicatorSearchImageOnOff (state: String) {
-        
-        if state == "On" {
-            
-            if firstCardView == nil && secondCardView == nil && thirdCardView == nil {
-                
-                // Create loading animation
-                self.halo = PulsingHaloLayer()
-                self.halo.position = Functions.getCenterOfView(self.view)
-                self.halo.radius = self.view.bounds.height / 2
-                self.halo.backgroundColor = UIColor.grayColor().CGColor
-                self.halo.useTimingFunction = false
-                halo.haloLayerNumber = 3
-                self.view.layer.addSublayer(self.halo)
-                self.halo.start()
-                
-                self.searchImage.hidden = false
-                self.searchImage.tintColor = UIColor.grayColor()
-                self.view.bringSubviewToFront(self.searchImage)
-                
-            }
-            
-        } else if state == "Off" {
-            
-            if self.halo !=  nil {
-                
-                self.halo.removeFromSuperlayer()
-                self.searchImage.hidden = true
-            }
-        }
-    }
     
     func reloadFilterButtonsEnabled (state: Bool) {
         

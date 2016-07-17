@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import NVActivityIndicatorView
 
 extension CollectionType {
     func find(@noescape predicate: (Self.Generator.Element) throws -> Bool) rethrows -> Self.Generator.Element? {
@@ -86,7 +87,7 @@ extension String {
     
     func decodeEncodedString() -> String? {
         
-        let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding)!
+        guard let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding) else { return self }
         let attributedOptions : [String: AnyObject] = [
             NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
             NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
@@ -102,7 +103,7 @@ extension String {
             // failure
             print("Fetch failed: \(error.localizedDescription)")
             
-            return nil
+            return self
             
         }
     }
@@ -316,7 +317,7 @@ extension UIImage {
     enum AssetIdentifier: String  {
         
         case ideaGuyImage = "idea_guy"
-        case ideaBulbBigImage = "idea_bulb_big"
+        case noIdeaBulbImage = "no_idea"
         case newsBigImage = "news_big"
         case xButton = "x"
         case comingSoonImage = "coming_soon"

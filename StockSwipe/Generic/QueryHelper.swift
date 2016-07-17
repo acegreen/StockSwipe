@@ -183,7 +183,7 @@ public class QueryHelper {
         task.resume()
     }
     
-    public func queryUserObjectsFor(usernames: [String], completion: (result: () throws -> ([PFUser])) -> Void) {
+    public func queryUserObjectsFor(usernames: [String], cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFUser])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
@@ -192,6 +192,7 @@ public class QueryHelper {
         let usernamesLowercase = usernames.map { ($0.lowercaseString) }
         
         let userQuery = PFUser.query()
+        userQuery?.cachePolicy = cachePolicy
         userQuery?.whereKey("username_lowercase", containedIn: usernamesLowercase)
         
         userQuery?.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -209,7 +210,7 @@ public class QueryHelper {
         }
     }
     
-    public func queryStockObjectsFor(symbols: [String], completion: (result: () throws -> ([PFObject])) -> Void) {
+    public func queryStockObjectsFor(symbols: [String], cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
@@ -218,7 +219,7 @@ public class QueryHelper {
         let mappedSymbols = symbols.map ({ $0.uppercaseString })
         
         let stockQuery = PFQuery(className:"Stocks")
-        stockQuery.cancel()
+        stockQuery.cachePolicy = cachePolicy
         stockQuery.whereKey("Symbol", containedIn: mappedSymbols)
         
         stockQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
@@ -236,14 +237,14 @@ public class QueryHelper {
         }
     }
     
-    public func queryTradeIdeaObjectsFor(key: String, object: PFObject, skip: Int, limit: Int?, completion: (result: () throws -> ([PFObject])) -> Void) {
+    public func queryTradeIdeaObjectsFor(key: String, object: PFObject, skip: Int, limit: Int?, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
         }
         
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
-        tradeIdeaQuery.cancel()
+        tradeIdeaQuery.cachePolicy = cachePolicy
         tradeIdeaQuery.includeKeys(["user", "reshare_of"])
 
         tradeIdeaQuery.whereKey(key, equalTo: object)
@@ -284,14 +285,15 @@ public class QueryHelper {
         }
     }
     
-    public func countTradeIdeasFor(key: String, object: PFObject, completion: (result: () throws -> (Int)) -> Void) {
+    public func countTradeIdeasFor(key: String, object: PFObject, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> (Int)) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
         }
         
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
-        tradeIdeaQuery.cancel()
+        tradeIdeaQuery.cachePolicy = cachePolicy
+        
         tradeIdeaQuery.whereKey(key, equalTo: object)
         
         if key != "user", let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
@@ -320,14 +322,14 @@ public class QueryHelper {
         }
     }
     
-    public func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: String? , skip: Int?, limit: Int?, includeKeys: [String]?, completion: (result: () throws -> ([PFObject])) -> Void) {
+    public func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: String? , skip: Int?, limit: Int?, includeKeys: [String]?, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
         }
         
         let activityQuery = PFQuery(className:"Activity")
-        activityQuery.cancel()
+        activityQuery.cachePolicy = cachePolicy
         activityQuery.orderByDescending("createdAt")
         
         if let includeKeys = includeKeys {
@@ -376,22 +378,26 @@ public class QueryHelper {
                 return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
             }
             
-            // The find succeeded.
-            print("Successfully retrieved \(objects?.count) objects")
+            guard let objects = objects else {
+                return completion(result: {throw Constants.Errors.ParseTradeIdeaObjectNotFound})
+            }
             
-            completion(result: {return (objects: objects!)})
+            // The find succeeded.
+            print("Successfully retrieved \(objects.count) objects")
+            
+            completion(result: {return (objects: objects)})
             
         }
     }
     
-    public func countActivityFor(fromUser: PFUser?, toUser: PFUser?, tradeIdea: PFObject?, stock: PFObject?, activityType: String?, completion: (result: () throws -> (Int)) -> Void) {
+    public func countActivityFor(fromUser: PFUser?, toUser: PFUser?, tradeIdea: PFObject?, stock: PFObject?, activityType: String?, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> (Int)) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
         }
         
         let activityQuery = PFQuery(className:"Activity")
-        activityQuery.cancel()
+        activityQuery.cachePolicy = cachePolicy
         activityQuery.orderByDescending("createdAt")
         
         if let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
@@ -432,14 +438,14 @@ public class QueryHelper {
         }
     }
     
-    public func queryActivityForUser(toUser: PFUser, completion: (result: () throws -> ([PFObject])) -> Void) {
+    public func queryActivityForUser(toUser: PFUser, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
         }
         
         let activityQuery = PFQuery(className:"Activity")
-        activityQuery.cancel()
+        activityQuery.cachePolicy = cachePolicy
         
         activityQuery.whereKey("fromUser", notEqualTo: toUser)
         activityQuery.whereKey("toUser", equalTo: toUser)
@@ -457,29 +463,33 @@ public class QueryHelper {
                 return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
             }
             
-            // The find succeeded.
-            print("Successfully retrieved \(objects?.count) activities")
+            guard objects?.isEmpty == false, let objects = objects else {
+                return completion(result: {throw Constants.Errors.ParseTradeIdeaObjectNotFound})
+            }
             
-            completion(result: {return (objects: objects!)})
+            // The find succeeded.
+            print("Successfully retrieved \(objects.count) activities")
+            
+            completion(result: {return (objects: objects)})
             
         }
     }
     
-    public func queryActivityForFollowing(fromUser: PFUser, completion: (result: () throws -> ([PFObject])) -> Void) {
+    public func queryActivityForFollowing(fromUser: PFUser, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
         }
         
         let followActivityQuery = PFQuery(className:"Activity")
-        followActivityQuery.cancel()
+        followActivityQuery.cachePolicy = cachePolicy
+        
         followActivityQuery.whereKey("fromUser", equalTo: fromUser)
         followActivityQuery.whereKeyExists("toUser")
         followActivityQuery.whereKey("activityType", equalTo: Constants.ActivityType.Follow.rawValue)
         
-        
         let activityQuery = PFQuery(className:"Activity")
-        activityQuery.cancel()
+        activityQuery.cachePolicy = cachePolicy
         
         activityQuery.whereKey("fromUser", notEqualTo: fromUser)
         activityQuery.whereKey("fromUser", matchesKey: "fromUser", inQuery: followActivityQuery)
@@ -496,10 +506,14 @@ public class QueryHelper {
                 return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
             }
             
-            // The find succeeded.
-            print("Successfully retrieved \(objects?.count) activities")
+            guard objects?.isEmpty == false, let objects = objects else {
+                return completion(result: {throw Constants.Errors.ParseTradeIdeaObjectNotFound})
+            }
             
-            completion(result: {return (objects: objects!)})
+            // The find succeeded.
+            print("Successfully retrieved \(objects.count) activities")
+            
+            completion(result: {return (objects: objects)})
             
         }
     }

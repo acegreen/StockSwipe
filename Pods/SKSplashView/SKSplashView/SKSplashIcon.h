@@ -25,19 +25,13 @@ typedef NS_ENUM(NSInteger, SKIconAnimationType)
 
 @property (strong, nonatomic) UIColor *iconColor; //Default: white
 @property (nonatomic, assign) CGSize iconSize;
-@property (readonly, assign) SKIconAnimationType preAnimationType;
-@property (readonly, assign) SKIconAnimationType postAnimationType;
 
 - (instancetype) initWithImage: (UIImage *) iconImage;
 - (instancetype) initWithImage: (UIImage *) iconImage animationType: (SKIconAnimationType) animationType;
-- (instancetype) initWithImage:(UIImage *)iconImage initialSize:(CGSize)initialSize preAnimationType:(SKIconAnimationType)preAnimationType postAnimationType:(SKIconAnimationType)postAnimationType;
+- (instancetype) initWithImage: (UIImage *) iconImage initialSize:(CGSize)initialSize animationType: (SKIconAnimationType) animationType;
 
 
-- (void) setIconAnimationType: (SKIconAnimationType) preAnimationType;
-- (void) setIconPostAnimationType: (SKIconAnimationType) postAnimationType;
+- (void) setIconAnimationType: (SKIconAnimationType) animationType;
 - (void) setCustomAnimation: (CAAnimation *) animation;
-
-- (void) startAnimation: (SKIconAnimationType *) animationType;
-- (void) startAnimationWithDuration: (SKIconAnimationType *) animationType: (CGFloat) animationDuration;
 
 @end

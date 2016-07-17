@@ -45,4 +45,9 @@
  */
 - (void)viewDidGetTapped:(UIView *)view;
 
+/*!
+* Sent after a long press is made.
+*/
+- (void)viewDidGetLongPressed:(UIView *)view;
+
 @end

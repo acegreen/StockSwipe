@@ -28,6 +28,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     
     var tradeIdeas = [TradeIdea]()
     var tradeIdeaQueryLimit = 25
+    var isQueryingForTradeIdeas = true
     
     @IBAction func xButtonPressed(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
@@ -80,7 +81,10 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         
         guard let stockObject = self.stockObject else { return }
         
+        isQueryingForTradeIdeas = true
         QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: nil, skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
+            
+            self.isQueryingForTradeIdeas = false
             
             do {
                 
@@ -98,17 +102,18 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                             
                             self.tradeIdeas.append(tradeIdea)
                         }
-                        
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.tableView.reloadData()
-                            
-                            if self.refreshControl?.refreshing == true {
-                                self.refreshControl?.endRefreshing()
-                                self.updateRefreshDate()
-                            }
-                        })
                     })
                 }
+                
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    
+                    self.tableView.reloadData()
+                    
+                    if self.refreshControl?.refreshing == true {
+                        self.refreshControl?.endRefreshing()
+                        self.updateRefreshDate()
+                    }
+                })
                 
             } catch {
                 
@@ -279,20 +284,27 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
     }
 }
 
+// DZNEmptyDataSet delegate functions
+
 extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    // DZNEmptyDataSet delegate functions
+    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+        if !isQueryingForTradeIdeas && tradeIdeas.count == 0 {
+            return true
+        }
+        return false
+    }
     
     func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
         
-        return UIImage(assetIdentifier: .ideaBulbBigImage)
+        return UIImage(assetIdentifier: .noIdeaBulbImage)
     }
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle: NSAttributedString!
         
-        attributedTitle = NSAttributedString(string: "No Ideas?", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        attributedTitle = NSAttributedString(string: "No Ideas", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
         
         return attributedTitle
     }

@@ -207,6 +207,12 @@ NS_REQUIRES_PROPERTY_DEFINITIONS
  */
 - (void)revertObjectForKey:(NSString *)key;
 
+// Add these two method declarations to the Parse.framework/Headers/PFObject.h header file in your Xcode project:
+
+- (void)serializeToDataFile:(NSString *)filename;
+
++ (id)objectFromDataFile:(NSString *)filename;
+
 ///--------------------------------------
 #pragma mark - Array Accessors
 ///--------------------------------------

@@ -12,10 +12,8 @@
 @interface SKSplashView()
 
 @property (nonatomic, assign) SKSplashAnimationType animationType;
-@property (nonatomic, assign) SKSplashAnimationType postAnimationType;
 @property (nonatomic, assign) SKSplashIcon *splashIcon;
 @property (strong, nonatomic) CAAnimation *customAnimation;
-@property (strong, nonatomic) NSOperationQueue *queue;
 
 @end
 
@@ -119,7 +117,8 @@
 - (void)startAnimationWithCompletion:(void(^)())completionHandler
 {
     if(_splashIcon) {
-        [_splashIcon startAnimationWithDuration:_splashIcon.preAnimationType: self.animationDuration];
+        NSDictionary *dic = [NSDictionary dictionaryWithObject:[NSString stringWithFormat:@"%f",self.animationDuration] forKey:@"animationDuration"];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"startAnimation" object:self userInfo:dic];
     }
     
     if([self.delegate respondsToSelector:@selector(splashView:didBeginAnimatingWithDuration:)]) {
@@ -149,12 +148,20 @@
         default:NSLog(@"No animation type selected");
             break;
     }
+    
+    [[NSNotificationCenter defaultCenter] addObserverForName:@"stopAnimation" object:self queue:[NSOperationQueue mainQueue] usingBlock:^(NSNotification *notif)
+    {
+        if(completionHandler) {
+            completionHandler();
+        }
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }];
 }
 
 - (void) startAnimationWhileExecuting:(NSURLRequest *)request withCompletion:(void (^)(NSData *, NSURLResponse *, NSError *))completion
 {
     if(_splashIcon) { //trigger splash icon animation
-        [_splashIcon startAnimation:_splashIcon.preAnimationType];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"startAnimation" object:self userInfo:nil];
     }
     
     if([self.delegate respondsToSelector:@selector(splashView:didBeginAnimatingWithDuration:)]) {
@@ -166,22 +173,6 @@
          [self removeSplashView];
          completion(data, response, error);
      }];
-}
-
-- (void) startAnimationWhenFinished:(NSOperationQueue *)queue
-{
-    self.queue = queue;
-    //[self.queue addObserver:self forKeyPath:@"operationCount" options:0 context:NULL];
-
-    // Stat animation when queue has completed
-    if(_splashIcon) { //trigger splash icon animation
-        [_splashIcon startAnimation:_splashIcon.preAnimationType];
-    }
-    
-    if([self.delegate respondsToSelector:@selector(splashView:didBeginAnimatingWithDuration:)])
-    {
-        [self.delegate splashView:self didBeginAnimatingWithDuration:self.animationDuration];
-    }
 }
 
 - (void) setCustomAnimationType:(CAAnimation *)animation
@@ -310,34 +301,10 @@
 - (void) removeSplashView
 {
     [self removeFromSuperview];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"stopAnimation" object:self userInfo:nil];
     if([self.delegate respondsToSelector:@selector(splashViewDidEndAnimating:)]) {
         [self.delegate splashViewDidEndAnimating:self];
     }
-}
-
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object
-                         change:(NSDictionary *)change context:(void *)context
-{
-    if (object == self.queue && [keyPath isEqualToString:@"operationCount"]) {
-        printf("operationCount: %i", self.queue.operationCount);
-        if (self.queue.operationCount == 0) {
-            if(_splashIcon) { //trigger splash icon animation
-                [_splashIcon startAnimationWithDuration:_splashIcon.postAnimationType:self.animationDuration];
-            }
-            [self removeSplashView];
-        } else {
-            [super observeValueForKeyPath:keyPath ofObject:object
-                                   change:change context:context];
-        }
-    }
-    else {
-        [super observeValueForKeyPath:keyPath ofObject:object
-                               change:change context:context];
-    }
-}
-
-- (void) dealloc {
-    [self.queue removeObserver:self forKeyPath:@"operationCount"];
 }
 
 @end

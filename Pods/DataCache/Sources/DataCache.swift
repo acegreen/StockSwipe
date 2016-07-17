@@ -23,7 +23,7 @@ public class DataCache {
     
     let memCache = NSCache()
     let ioQueue: dispatch_queue_t
-    let fileManager: NSFileManager! = nil
+    let fileManager: NSFileManager? = NSFileManager()
     
     /// Name of cache
     public var name: String = ""
@@ -70,16 +70,16 @@ extension DataCache {
     
     func writeDataToDisk(data: NSData, key: String) {
         dispatch_async(ioQueue) { 
-            if self.fileManager.fileExistsAtPath(self.cachePath) == false {
+            if self.fileManager?.fileExistsAtPath(self.cachePath) == false {
                 do {
-                    try self.fileManager.createDirectoryAtPath(self.cachePath, withIntermediateDirectories: true, attributes: nil)
+                    try self.fileManager?.createDirectoryAtPath(self.cachePath, withIntermediateDirectories: true, attributes: nil)
                 }
                 catch {
                     print("Error while creating cache folder")
                 }
             }
             
-            self.fileManager.createFileAtPath(self.cachePathForKey(key), contents: data, attributes: nil)
+            self.fileManager?.createFileAtPath(self.cachePathForKey(key), contents: data, attributes: nil)
         }
     }
     
@@ -99,7 +99,7 @@ extension DataCache {
     
     /// Read data from disk for key
     public func readDataFromDiskForKey(key: String) -> NSData? {
-        return self.fileManager.contentsAtPath(cachePathForKey(key))
+        return self.fileManager?.contentsAtPath(cachePathForKey(key))
     }
     
     
@@ -175,7 +175,8 @@ extension DataCache {
     
     /// Check if has data on disk
     public func hasDataOnDiskForKey(key: String) -> Bool {
-        return self.fileManager.fileExistsAtPath(self.cachePathForKey(key))
+        guard self.fileManager?.fileExistsAtPath(self.cachePathForKey(key)) != nil else { return false }
+        return true
     }
     
     /// Check if has data on mem
@@ -200,7 +201,7 @@ extension DataCache {
         
         dispatch_async(ioQueue) { 
             do {
-                try self.fileManager.removeItemAtPath(self.cachePathForKey(key))
+                try self.fileManager?.removeItemAtPath(self.cachePathForKey(key))
             } catch {}
         }
     }
@@ -212,7 +213,7 @@ extension DataCache {
     func cleanDiskCache() {
         dispatch_async(ioQueue) {
             do {
-                try self.fileManager.removeItemAtPath(self.cachePath)
+                try self.fileManager?.removeItemAtPath(self.cachePath)
             } catch {}
         }
     }
@@ -237,7 +238,7 @@ extension DataCache {
             
             for fileURL in URLsToDelete {
                 do {
-                    try self.fileManager.removeItemAtURL(fileURL)
+                    try self.fileManager?.removeItemAtURL(fileURL)
                 } catch {}
             }
             
@@ -259,7 +260,7 @@ extension DataCache {
                 for fileURL in sortedFiles {
                     
                     do {
-                        try self.fileManager.removeItemAtURL(fileURL)
+                        try self.fileManager?.removeItemAtURL(fileURL)
                     } catch {}
                     
                     URLsToDelete.append(fileURL)
@@ -296,7 +297,7 @@ extension DataCache {
         var URLsToDelete = [NSURL]()
         var diskCacheSize: UInt = 0
         
-        if let fileEnumerator = self.fileManager.enumeratorAtURL(diskCacheURL, includingPropertiesForKeys: resourceKeys, options: NSDirectoryEnumerationOptions.SkipsHiddenFiles, errorHandler: nil),
+        if let fileEnumerator = self.fileManager?.enumeratorAtURL(diskCacheURL, includingPropertiesForKeys: resourceKeys, options: NSDirectoryEnumerationOptions.SkipsHiddenFiles, errorHandler: nil),
             urls = fileEnumerator.allObjects as? [NSURL] {
             for fileURL in urls {
                 

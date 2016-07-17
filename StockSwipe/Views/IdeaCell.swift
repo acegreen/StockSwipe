@@ -103,7 +103,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     
                     if !isOtherButton {
                         
-                        self.handleBlock(self.tradeIdea.user, postAlert: false)
+                        Functions.blockUser(self.tradeIdea.user, postAlert: false)
                         
                         let spamObject = PFObject(className: "Spam")
                         spamObject["reported_idea"] = self.tradeIdea.parseObject
@@ -376,7 +376,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                 }
                 
             } catch {
-                
             }
         })
     }
@@ -571,71 +570,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                 SweetAlert().showAlert("Block @\(self.tradeIdea.user.username!)?", subTitle: "@\(self.tradeIdea.user.username!) will not be able to follow or view your ideas, and you will not see anything from @\(self.tradeIdea.user.username!)", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.stockSwipeGreenColor, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                     
                     if isOtherButton {
-                        self.handleBlock(user, postAlert: true)
+                        Functions.blockUser(user, postAlert: true)
                     }
                 }
             }
             
             return blockUser
-        }
-    }
-    
-    func handleBlock(user: PFUser, postAlert: Bool) {
-        
-        guard let currentUser = PFUser.currentUser() else { return }
-        
-        if currentUser.objectForKey("blocked_users") != nil {
-            
-            currentUser.addUniqueObject(user, forKey: "blocked_users")
-            
-        } else {
-            
-            currentUser.setObject([user], forKey: "blocked_users")
-        }
-        
-        currentUser.saveEventually { (success, error) in
-            
-            if success {
-                
-                if postAlert == true {
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.Success)
-                    })
-                }
-                
-                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
-                    
-                    do {
-                        
-                        let activityObject = try result()
-                        activityObject.first?.deleteEventually()
-                        
-                    } catch {
-                        
-                        // TO-DO: handle error
-                        
-                    }
-                })
-                
-                QueryHelper.sharedInstance.queryActivityFor(user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
-                    
-                    do {
-                        
-                        let activityObject = try result()
-                        activityObject.first?.deleteEventually()
-                        
-                    } catch {
-                        
-                        // TO-DO: handle error
-                        
-                    }
-                })
-                
-            } else {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
-                })
-            }
         }
     }
 }

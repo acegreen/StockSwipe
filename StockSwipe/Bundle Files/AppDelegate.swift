@@ -19,6 +19,10 @@ import Appsee
 import LaunchKit
 import ChimpKit
 
+protocol PushNotificationDelegate {
+    func didReceivePushNotification(userInfo: [NSObject:AnyObject])
+}
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
     

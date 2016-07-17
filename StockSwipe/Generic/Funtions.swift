@@ -12,9 +12,10 @@ import CoreSpotlight
 import MobileCoreServices
 import SystemConfiguration
 import SDVersion
-import AMPopTip
 import Parse
 import SafariServices
+import AMPopTip
+import NVActivityIndicatorView
 
 public class Functions {
     
@@ -77,6 +78,66 @@ public class Functions {
         })
         
         return false
+    }
+    
+    class func blockUser(user: PFUser, postAlert: Bool) {
+        
+        guard let currentUser = PFUser.currentUser() else { return }
+        
+        if currentUser.objectForKey("blocked_users") != nil {
+            
+            currentUser.addUniqueObject(user, forKey: "blocked_users")
+            
+        } else {
+            
+            currentUser.setObject([user], forKey: "blocked_users")
+        }
+        
+        currentUser.saveEventually { (success, error) in
+            
+            if success {
+                
+                if postAlert == true {
+                    
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.Success)
+                    })
+                }
+                
+                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                    
+                    do {
+                        
+                        let activityObject = try result()
+                        activityObject.first?.deleteEventually()
+                        
+                    } catch {
+                        
+                        // TO-DO: handle error
+                        
+                    }
+                })
+                
+                QueryHelper.sharedInstance.queryActivityFor(user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                    
+                    do {
+                        
+                        let activityObject = try result()
+                        activityObject.first?.deleteEventually()
+                        
+                    } catch {
+                        
+                        // TO-DO: handle error
+                        
+                    }
+                })
+                
+            } else {
+                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                })
+            }
+        }
     }
     
     class func checkDevice() {
@@ -164,7 +225,6 @@ public class Functions {
             
             numberOfCellsHorizontally = 1
         }
-        
     }
     
     class func setImageURL(symbol: String) -> NSURL? {
@@ -240,10 +300,14 @@ public class Functions {
     class func registerUserChoice(chart: Chart, with choice: Constants.UserChoices) {
         
         guard let currentUser = PFUser.currentUser() else { return }
+        guard let parseObject = chart.parseObject else {
+            SweetAlert().showAlert("Stock Unknown", subTitle: "We couldn't find this symbol in our database", style: AlertStyle.Warning)
+            return
+        }
         
         let activityObject = PFObject(className: "Activity")
         activityObject["fromUser"] = currentUser
-        activityObject["stock"] = chart.parseObject
+        activityObject["stock"] = parseObject
   
         switch choice {
             
@@ -423,6 +487,48 @@ public class Functions {
         }
     }
     
+    class func addToWatchlist(chart: Chart) {
+        
+        guard Functions.isConnectedToNetwork() else {
+            
+            SweetAlert().showAlert("Can't Add To Watchlist!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.Warning)
+            return
+        }
+        
+        QueryHelper.sharedInstance.queryChartImage(chart.symbol, completion: { (result) in
+            
+            do {
+                
+                let chartImage = try result()
+                
+                chart.image = chartImage
+                
+                
+            } catch {
+                
+                print(error)
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                
+                SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.CustomImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.redColor() , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+                    
+                    guard let topVC = UIApplication.topViewController() where Functions.isUserLoggedIn(topVC) else { return }
+                    
+                    if !isOtherButton {
+                        
+                        Functions.registerUserChoice(chart, with: .LONG)
+                        
+                    } else if isOtherButton {
+                        
+                        Functions.registerUserChoice(chart, with: .SHORT)
+                    }
+                }
+                
+            })
+        })
+    }
+    
     class func showPopTipOnceForKey(key: String, userDefaults: NSUserDefaults, popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: AMPopTipDirection = .Down, color: UIColor = .darkGrayColor()) -> AMPopTip? {
         if (!userDefaults.boolForKey(key)) {
             userDefaults.setBool(true, forKey: key)
@@ -464,6 +570,25 @@ public class Functions {
         }
         
         return alert
+    }
+    
+    class func activityIndicator(view: UIView, inout halo: NVActivityIndicatorView!, state: Bool) {
+        
+        if state {
+            
+            // Create loading animation
+            let frame = CGRect(x: CGRectGetMidX(view.bounds) - view.bounds.height / 4 , y: CGRectGetMidY(view.bounds) - view.bounds.height / 4, width: view.bounds.height / 2, height: view.bounds.height / 2)
+            halo = NVActivityIndicatorView(frame: frame, type: .BallScaleMultiple, color: UIColor.lightGrayColor())
+            halo.hidesWhenStopped = true
+            view.addSubview(halo)
+            halo.startAnimation()
+            
+        } else {
+            
+            if halo !=  nil {
+                halo.stopAnimation()
+            }
+        }
     }
     
     class func markFeedbackGiven() {

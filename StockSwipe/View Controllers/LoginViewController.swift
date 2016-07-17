@@ -220,7 +220,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         
         guard Functions.isConnectedToNetwork() else {
             
-            SweetAlert().showAlert("Can't Login!", subTitle: "Make sure your device is connected to the internet.", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet.", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
             

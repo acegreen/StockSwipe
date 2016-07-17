@@ -25,6 +25,7 @@ PODS:
     - LaunchKit/LaunchKit (= 2.1.4)
   - LaunchKit/LaunchKit (2.1.4)
   - MDCSwipeToChoose (0.2.4)
+  - NVActivityIndicatorView (2.9)
   - Parse (1.14.0):
     - Bolts/Tasks (~> 1.8)
   - ParseFacebookUtilsV4 (1.11.1):
@@ -43,7 +44,6 @@ PODS:
   - Rollout.io (0.14.5)
   - SDVersion (3.1)
   - SKSplashView (0.1.2)
-  - Spring (1.0.3)
   - SwiftyJSON (2.3.2)
   - SWXMLHash (2.4.0)
   - TwitterCore (2.3.0):
@@ -62,6 +62,7 @@ DEPENDENCIES:
   - DZNEmptyDataSet (= 1.7.2)
   - LaunchKit
   - MDCSwipeToChoose (from `https://github.com/acegreen/MDCSwipeToChoose.git`)
+  - NVActivityIndicatorView
   - Parse
   - ParseFacebookUtilsV4
   - ParseTwitterUtils
@@ -69,8 +70,7 @@ DEPENDENCIES:
   - PulsingHalo (from `https://github.com/shu223/PulsingHalo.git`)
   - Rollout.io (~> 0.14.4)
   - SDVersion
-  - SKSplashView (from `https://github.com/acegreen/SKSplashView.git`, branch `supporting-nsoperationqueue`)
-  - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift2`)
+  - SKSplashView (from `https://github.com/acegreen/SKSplashView.git`, branch `ag-improvements`)
   - SwiftyJSON
   - SWXMLHash
   - TwitterKit
@@ -83,28 +83,22 @@ EXTERNAL SOURCES:
   PulsingHalo:
     :git: https://github.com/shu223/PulsingHalo.git
   SKSplashView:
-    :branch: supporting-nsoperationqueue
+    :branch: ag-improvements
     :git: https://github.com/acegreen/SKSplashView.git
-  Spring:
-    :branch: swift2
-    :git: https://github.com/MengTo/Spring.git
 
 CHECKOUT OPTIONS:
   DataCache:
     :commit: cb45a04794db954b7d13c995b829674f73b18848
     :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
-    :commit: 030edd038e96a52ce8614a762fad83755a942d3a
+    :commit: b2ac629b9f3798b28ec8fddd82af450dbf38333f
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
   PulsingHalo:
     :commit: 0799f509e146605e20cb8d6391b1fb86e3985b1f
     :git: https://github.com/shu223/PulsingHalo.git
   SKSplashView:
-    :commit: 1016435db7e5fecf3f4b44d289c412c7d31c5e61
+    :commit: c56a7cee52f75473117eb2597b1b160dd9915f22
     :git: https://github.com/acegreen/SKSplashView.git
-  Spring:
-    :commit: 18d5c7b74489de8044e34767f856d1e574f0820e
-    :git: https://github.com/MengTo/Spring.git
 
 SPEC CHECKSUMS:
   AMPopTip: b31859b2e313f61318c676686493b1508c9a7221
@@ -121,6 +115,7 @@ SPEC CHECKSUMS:
   FBSDKLoginKit: da563567a108050ef83739c8c8c001ee9e25fa13
   LaunchKit: 95ad4fb171a0f8ea1c80aa26d4fb7bd637788f9c
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
+  NVActivityIndicatorView: 0084f6be71bdf4735b5424ebfb530b1e3db3276c
   Parse: 82a56536191a259454c2906d5e7fe3fade519446
   ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
   ParseTwitterUtils: 0dde9689565e7012d83f892c64aed2ebe69f2ea9
@@ -129,12 +124,11 @@ SPEC CHECKSUMS:
   Rollout.io: e5b35636dba2e110536d54d561d7d95ed5fdc953
   SDVersion: 1eb1509995f353302094612ea3a77df289157687
   SKSplashView: c65333b6707be6f237d09e7c8977941114b0a70d
-  Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   SWXMLHash: 507397103325f140863d09040c04ae14a49a16cb
   TwitterCore: 817eae3e291fa4125b47789e26a4f6f024115c1f
   TwitterKit: 8a383da8d9c21b0423716381ea8bbfce20622d91
 
-PODFILE CHECKSUM: 9af7c9a8d6c1d530271af537c0c288170d6bf0f9
+PODFILE CHECKSUM: f8d659c8763ae8c7988ea5621be9d70bc49c718a
 
 COCOAPODS: 1.0.1

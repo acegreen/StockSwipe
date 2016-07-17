@@ -64,6 +64,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>NVActivityIndicatorView.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Parse.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -114,11 +119,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Spring.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>SwiftyJSON.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -152,27 +152,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>24B70E7CD374EFBEC6AA21FB84CBF1CA</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>2C8AA1BAF35413BDB954A1DF93576ED1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>468E43A78B3F756C0A8C56B33CD58BA3</key>
+		<key>3E7383ED816B428A057961A1571032B0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>56709C9B6466E1AFE192F79777255BAF</key>
+		<key>418ACA067FC484F26F8EA552A8E67103</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>586E40C0BEBAB01A075A5E60359FA09D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>5A324D49377A387CDBF7FE5B28BAF979</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -202,12 +202,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8978C7FB7007A28B676AB1EA004C3923</key>
+		<key>80AE5C5F1EA9F2AC1C6C7580C4D3E78B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>97E28AB5C5B5ABC1FC9A3E55CC6C11A2</key>
+		<key>8698C4558AE758AD92477EC134E714F7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>8978C7FB7007A28B676AB1EA004C3923</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -217,12 +222,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A29BBD93406033FAEC11F1BE3E227D59</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>AD59382A1E6FCF611AEB9F569E1CC5BF</key>
+		<key>ADE0BCED866F12ABFB473642A0AB6B9D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -242,7 +242,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E63B6D1957BE9DD012B67ED0B1E55492</key>
+		<key>ED8FCFFFABDE0DADDAAB06F576F5B19B</key>
 		<dict>
 			<key>primary</key>
 			<true/>

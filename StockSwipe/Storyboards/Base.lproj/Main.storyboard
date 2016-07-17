@@ -87,6 +87,7 @@
             <string>HelveticaNeue</string>
             <string>HelveticaNeue-Bold</string>
             <string>HelveticaNeue</string>
+            <string>HelveticaNeue</string>
         </mutableArray>
         <mutableArray key="HelveticaNeueExtras.ttc">
             <string>HelveticaNeue-CondensedBold</string>
@@ -1448,10 +1449,10 @@
                                                         <stackView hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="kJh-4y-Zsu">
                                                             <rect key="frame" x="0.0" y="82" width="500" height="0.0"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="t6M-xm-xjR">
+                                                                <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="t6M-xm-xjR">
                                                                     <rect key="frame" x="0.0" y="0.0" width="208" height="0.0"/>
                                                                     <subviews>
-                                                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="dummy_profile_male_big" translatesAutoresizingMaskIntoConstraints="NO" id="W33-LR-bzF">
+                                                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="dummy_profile_male_big" translatesAutoresizingMaskIntoConstraints="NO" id="W33-LR-bzF">
                                                                             <rect key="frame" x="0.0" y="-40" width="40" height="40"/>
                                                                             <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="calibratedRGB"/>
                                                                             <constraints>
@@ -2612,24 +2613,20 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="8C8-5j-Pg8">
-                                    <rect key="frame" x="410" y="48" width="160" height="40"/>
+                                    <rect key="frame" x="460" y="52" width="110" height="31"/>
                                     <userGuides>
-                                        <userLayoutGuide location="21" affinity="minY"/>
+                                        <userLayoutGuide location="20" affinity="minY"/>
                                     </userGuides>
                                     <subviews>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fm6-q6-kRG">
-                                            <rect key="frame" x="0.0" y="0.0" width="22" height="40"/>
+                                        <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fm6-q6-kRG">
+                                            <rect key="frame" x="0.0" y="0.0" width="22" height="31"/>
                                             <state key="normal" image="settings"/>
                                             <connections>
                                                 <action selector="settingsButton:" destination="eDN-Sc-NCM" eventType="touchUpInside" id="Lab-Zq-g2y"/>
                                             </connections>
                                         </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I9G-iB-fyA" customClass="FollowButton" customModule="StockSwipe" customModuleProvider="target">
-                                            <rect key="frame" x="32" y="0.0" width="128" height="40"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="40" id="E59-RJ-2cO"/>
-                                                <constraint firstAttribute="width" secondItem="I9G-iB-fyA" secondAttribute="height" multiplier="3.2:1" id="WgU-9S-s7c"/>
-                                            </constraints>
+                                            <rect key="frame" x="32" y="0.0" width="78" height="31"/>
                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
                                             <inset key="titleEdgeInsets" minX="10" minY="0.0" maxX="0.0" maxY="0.0"/>
                                             <state key="normal" title="Follow" image="user_add">
@@ -2648,6 +2645,29 @@
                                             </userDefinedRuntimeAttributes>
                                             <connections>
                                                 <action selector="followButtonPressed:" destination="eDN-Sc-NCM" eventType="touchUpInside" id="Wd9-7j-bSE"/>
+                                            </connections>
+                                        </button>
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QQm-n8-Pwm">
+                                            <rect key="frame" x="110" y="0.0" width="0.0" height="31"/>
+                                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                            <inset key="contentEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                            <state key="normal" title="Edit Profile">
+                                                <color key="titleColor" red="0.098039217289999994" green="0.84313726430000002" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
+                                            </state>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                    <real key="value" value="9"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                    <real key="value" value="1"/>
+                                                </userDefinedRuntimeAttribute>
+                                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                    <color key="value" red="0.098039217289999994" green="0.84313726430000002" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                            <connections>
+                                                <action selector="editProfileButtonPressed:" destination="eDN-Sc-NCM" eventType="touchUpInside" id="kzx-5S-bAA"/>
+                                                <action selector="followButtonPressed:" destination="eDN-Sc-NCM" eventType="touchUpInside" id="PER-if-M0L"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -3018,10 +3038,12 @@
                     </refreshControl>
                     <connections>
                         <outlet property="avatarImage" destination="yR8-KQ-gl1" id="38J-HE-iSM"/>
+                        <outlet property="editProfileButton" destination="QQm-n8-Pwm" id="4TY-sD-HYS"/>
                         <outlet property="followButton" destination="I9G-iB-fyA" id="AgU-bh-bOR"/>
                         <outlet property="footerActivityIndicator" destination="GNC-a4-Kcy" id="jkf-Th-AZr"/>
                         <outlet property="fullNameLabel" destination="Yau-Wk-age" id="HKt-7w-FDZ"/>
                         <outlet property="headerView" destination="aRf-7p-R4R" id="9pF-ea-W7M"/>
+                        <outlet property="profileButtonsStack" destination="8C8-5j-Pg8" id="Atb-1m-KSN"/>
                         <outlet property="segmentedControl" destination="ZbD-uc-JhG" id="TJX-5Y-mep"/>
                         <outlet property="settingsButton" destination="fm6-q6-kRG" id="4bc-hb-nIw"/>
                         <outlet property="usernameLabel" destination="kre-p4-MTd" id="1pw-pT-lLv"/>
@@ -3259,7 +3281,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="TradeIdeaDetailTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5qt-w7-t0G" customClass="TradeIdeaDetailTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" dataMode="prototypes" style="plain" separatorStyle="default" showsSelectionImmediatelyOnTouchBegin="NO" rowHeight="111" sectionHeaderHeight="28" sectionFooterHeight="28" id="LuP-Gx-rBc">
-                        <rect key="frame" x="0.0" y="64" width="600" height="487"/>
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -4501,9 +4523,9 @@
         <image name="x" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="0hg-QI-Zcz"/>
         <segue reference="TrH-G2-UNU"/>
-        <segue reference="0B4-tA-Tow"/>
+        <segue reference="gXk-aV-G4m"/>
+        <segue reference="RSU-eq-W9K"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.098039215690000001" green="0.7843137255" blue="0.098039215690000001" alpha="1" colorSpace="calibratedRGB"/>
 </document>

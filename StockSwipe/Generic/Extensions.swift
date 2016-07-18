@@ -258,6 +258,20 @@ extension UISegmentedControl {
     }
 }
 
+extension UIButton {
+    
+    public override func intrinsicContentSize() -> CGSize {
+        
+        let intrinsicContentSize = super.intrinsicContentSize()
+        
+        let adjustedWidth = intrinsicContentSize.width + titleEdgeInsets.left + titleEdgeInsets.right
+        let adjustedHeight = intrinsicContentSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom
+        
+        return CGSize(width: adjustedWidth, height: adjustedHeight)
+        
+    }
+}
+
 extension UIColor {
     
     convenience init(red: Int, green: Int, blue: Int) {

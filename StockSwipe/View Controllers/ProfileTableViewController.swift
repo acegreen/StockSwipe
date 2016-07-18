@@ -24,8 +24,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     enum SegueIdentifier: String {
         case TradeIdeaDetailSegueIdentifier = "TradeIdeaDetailSegueIdentifier"
-        case ProfileDetailSegueIdentifier = "ProfileDetailSegueIdentifier"
+        case ProfileSegueIdentifier = "ProfileSegueIdentifier"
         case SettingsSegueIdentifier = "SettingsSegueIdentifier"
+        case EditProfileSegueIdentifier = "EditProfileSegueIdentifier"
     }
     
     var delegate: ProfileTableVieDelegate!
@@ -52,8 +53,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     @IBOutlet var avatarImage:UIImageView!
     @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
-    @IBOutlet var followButton: FollowButton!
+    
+    @IBOutlet var profileButtonsStack: UIStackView!
     @IBOutlet var settingsButton: UIButton!
+    @IBOutlet var followButton: FollowButton!
+    @IBOutlet var editProfileButton: UIButton!
     
     @IBAction func settingsButton(sender: AnyObject) {
         
@@ -170,11 +174,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         super.viewDidLoad()
         
         // set tableView properties
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 200.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 200.0
         
-        self.getProfile()
-        self.getUserTradeIdeas()
+        checkProfileSettings()
+        getProfile()
+        getUserTradeIdeas()
         
     }
     
@@ -209,6 +214,14 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         self.delegate.subScrollViewDidScroll(scrollView)
+    }
+    
+    func checkProfileSettings() {
+        if user?.userObject.objectId == PFUser.currentUser()?.objectId {
+            followButton.hidden = true
+            editProfileButton.hidden = false
+        }
+        profileButtonsStack.sizeToFit()
     }
     
     func getProfile() {
@@ -246,6 +259,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             self.usernameLabel.text = "@\(username)"
         }
     }
+    
     func getUserTradeIdeas() {
         
         guard !isCurrentUserBlocked else { return }
@@ -530,10 +544,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func checkFollow(sender: FollowButton) {
         
-        guard user?.userObject.objectId != PFUser.currentUser()?.objectId else {
-            followButton.hidden = true
-            return
-        }
+        guard user?.userObject.objectId != PFUser.currentUser()?.objectId else { return }
         
         guard let currentUser = PFUser.currentUser() else { return }
         guard let userObject = self.user?.userObject else { return }
@@ -724,12 +735,20 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             guard let cell = sender as? IdeaCell else { return }
             destinationViewController.tradeIdea = cell.tradeIdea
             
-        case .ProfileDetailSegueIdentifier:
+        case .ProfileSegueIdentifier:
             let profileContainerController = segue.destinationViewController as! ProfileContainerController
             profileContainerController.navigationItem.rightBarButtonItem = nil
             
             guard let cell = sender as? UserCell  else { return }
             profileContainerController.user = User(userObject: cell.user)
+        case .EditProfileSegueIdentifier:
+            
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let profileDetailViewController = navigationController.viewControllers.first as! ProfileDetailTableViewController
+            
+            profileDetailViewController.user = self.user
+            
+            break
         case .SettingsSegueIdentifier:
             break
         }

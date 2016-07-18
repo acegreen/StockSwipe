@@ -66,6 +66,8 @@
 		23761CE01D21B5B900FA66C1 /* WordCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CDC1D21B57200FA66C1 /* WordCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2376E41F1C2B0D7A00B85656 /* QueryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2376E41E1C2B0D7A00B85656 /* QueryHelper.swift */; };
 		2378B58A1B115FB3002ACFDC /* StockSwipeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378B5891B115FB3002ACFDC /* StockSwipeTests.swift */; };
+		23813DEC1D3C73B4008F6540 /* ProfileDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23813DEB1D3C73B4008F6540 /* ProfileDetailTableViewController.swift */; };
+		23813DEE1D3C8C90008F6540 /* CustomImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23813DED1D3C8C90008F6540 /* CustomImagePickerController.swift */; };
 		23875DEE1B11745A00966012 /* SwipeChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23875DED1B11745A00966012 /* SwipeChartView.swift */; };
 		23875DF81B11752600966012 /* Funtions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23875DF71B11752600966012 /* Funtions.swift */; };
 		2389CB181B417D7C00CCE26A /* MoreTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2389CB171B417D7C00CCE26A /* MoreTableViewController.swift */; };
@@ -243,6 +245,8 @@
 		2378B5851B115FB3002ACFDC /* StockSwipeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StockSwipeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2378B5881B115FB3002ACFDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2378B5891B115FB3002ACFDC /* StockSwipeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSwipeTests.swift; sourceTree = "<group>"; };
+		23813DEB1D3C73B4008F6540 /* ProfileDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDetailTableViewController.swift; sourceTree = "<group>"; };
+		23813DED1D3C8C90008F6540 /* CustomImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImagePickerController.swift; sourceTree = "<group>"; };
 		23875DED1B11745A00966012 /* SwipeChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwipeChartView.swift; sourceTree = "<group>"; };
 		23875DF71B11752600966012 /* Funtions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Funtions.swift; sourceTree = "<group>"; };
 		2389CB171B417D7C00CCE26A /* MoreTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreTableViewController.swift; sourceTree = "<group>"; };
@@ -669,6 +673,7 @@
 				233C7D5B1CB33E8B006A014A /* UserCell.swift */,
 				23DD55041D34A4DC00D8FE3B /* NotificationCell.swift */,
 				231016171D36E6B30061FADB /* SearchTableViewCell.swift */,
+				23813DED1D3C8C90008F6540 /* CustomImagePickerController.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -693,6 +698,7 @@
 				2389CB171B417D7C00CCE26A /* MoreTableViewController.swift */,
 				233C7D551CB2AC7E006A014A /* ProfileContainerController.swift */,
 				23356F001CAE2EF600E1A0F7 /* ProfileTableViewController.swift */,
+				23813DEB1D3C73B4008F6540 /* ProfileDetailTableViewController.swift */,
 				231E89C31D2A1A6200CD009A /* SettingsTableViewController.swift */,
 				231E89C51D2A1C8000CD009A /* BlockedAccountsTableViewController.swift */,
 				235534BF1D2D39FB00821E25 /* NotificationsTableViewController.swift */,
@@ -1041,6 +1047,7 @@
 				239EDA6D1BB0258B001CC63C /* Extensions.swift in Sources */,
 				2394DFAC1C8CAE230018A5A9 /* FAQTableViewController.swift in Sources */,
 				2347E61A1BD7FEEE0036EA65 /* iCarouselTickerView.swift in Sources */,
+				23813DEE1D3C8C90008F6540 /* CustomImagePickerController.swift in Sources */,
 				231E89C41D2A1A6200CD009A /* SettingsTableViewController.swift in Sources */,
 				23875DF81B11752600966012 /* Funtions.swift in Sources */,
 				23CAE26D1C2CB41300D15819 /* Settings.swift in Sources */,
@@ -1077,6 +1084,7 @@
 				2394DFAE1C8CAE610018A5A9 /* ExpandingCell.swift in Sources */,
 				23E09E851B97E1E400A9C9B3 /* StreamTableViewController.swift in Sources */,
 				2347E6151BD7C4A20036EA65 /* iCarousel.m in Sources */,
+				23813DEC1D3C73B4008F6540 /* ProfileDetailTableViewController.swift in Sources */,
 				231E89C21D28729000CD009A /* IdeaPostUITextView.swift in Sources */,
 				233C7D5A1CB33E78006A014A /* IdeaCell.swift in Sources */,
 				236280C41CB41A290022A129 /* IdeaPostViewController.swift in Sources */,

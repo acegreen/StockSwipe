@@ -26,7 +26,6 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         case WriteReviewCell = "WriteReviewCell"
         case GiveFeedbackCell =  "GiveFeedbackCell"
         case ShareCell = "ShareCell"
-        case LogInOutCell = "LogInOutCell"
     }
     
     @IBOutlet var profileAvatarImage: UIImageView!
@@ -205,17 +204,6 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                     
                     SweetAlert().showAlert("Error!", subTitle: "That didn't go through", style: AlertStyle.Error)
                 }
-            }
-            
-        case .LogInOutCell:
-            
-            let logInViewcontroller = LoginViewController.sharedInstance
-            logInViewcontroller.loginDelegate = self
-            
-            if PFUser.currentUser() != nil {
-                logInViewcontroller.logOut()
-            } else {
-                logInViewcontroller.logIn(self)
             }
         }
     }

@@ -68,14 +68,28 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let currentUser = PFUser.currentUser() else { return }
         guard let user = self.user else { return }
         
-        if user.userObject.objectId == currentUser.objectId  {
-            self.performSegueWithIdentifier(.SettingsSegueIdentifier, sender: self)
-            return
-        }
-        
         let settingsAlert = UIAlertController()
         settingsAlert.modalPresentationStyle = .Popover
-        if user.userObject.objectId != currentUser.objectId  {
+        if user.userObject.objectId == currentUser.objectId  {
+            
+            let settingsAction = UIAlertAction(title: "Settings", style: .Default) { action in
+                self.performSegueWithIdentifier(.SettingsSegueIdentifier, sender: self)
+            }
+            settingsAlert.addAction(settingsAction)
+            
+            if PFUser.currentUser() != nil {
+                let logInOutAction = UIAlertAction(title: "Log Out", style: .Default) { action in
+                    let logInViewcontroller = LoginViewController.sharedInstance
+                    logInViewcontroller.loginDelegate = self
+                    
+                    if PFUser.currentUser() != nil {
+                        logInViewcontroller.logOut()
+                    }
+                }
+                settingsAlert.addAction(logInOutAction)
+            }
+            
+        } else {
             
             settingsAlert.addAction(blockAction(user.userObject))
             
@@ -142,7 +156,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         UIApplication.topViewController()?.presentViewController(settingsAlert, animated: true, completion: nil)
         settingsAlert.view.tintColor = Constants.stockSwipeGreenColor
-        
     }
     
     @IBAction func followButtonPressed(sender: FollowButton) {
@@ -320,7 +333,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
                 
                 self.isQueryingForLikedTradeIdeas = false
-
+                
                 do {
                     
                     let activityObjects = try result()
@@ -329,7 +342,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     for activityObject: PFObject in activityObjects {
                         
                         if let tradeIdeaObject = activityObject.objectForKey("tradeIdea") as? PFObject {
-                        
+                            
                             let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                             
                             self.likedTradeIdeas.append(tradeIdea)
@@ -462,7 +475,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let user = user else { return }
         
         isQueryingForFollowing = true
-
+        
         QueryHelper.sharedInstance.queryActivityFor(user.userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             self.isQueryingForFollowing = false
@@ -505,11 +518,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let user = user else { return }
         
         isQueryingForFollowers = true
-
+        
         QueryHelper.sharedInstance.queryActivityFor(nil, toUser: user.userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             self.isQueryingForFollowers = false
-
+            
             do {
                 
                 let activityObjects = try result()

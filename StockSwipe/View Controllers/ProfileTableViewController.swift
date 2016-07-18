@@ -24,8 +24,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     enum SegueIdentifier: String {
         case TradeIdeaDetailSegueIdentifier = "TradeIdeaDetailSegueIdentifier"
-        case ProfileDetailSegueIdentifier = "ProfileDetailSegueIdentifier"
+        case ProfileSegueIdentifier = "ProfileSegueIdentifier"
         case SettingsSegueIdentifier = "SettingsSegueIdentifier"
+        case EditProfileSegueIdentifier = "EditProfileSegueIdentifier"
     }
     
     var delegate: ProfileTableVieDelegate!
@@ -52,8 +53,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     @IBOutlet var avatarImage:UIImageView!
     @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
-    @IBOutlet var followButton: FollowButton!
+    
+    @IBOutlet var profileButtonsStack: UIStackView!
     @IBOutlet var settingsButton: UIButton!
+    @IBOutlet var followButton: FollowButton!
+    @IBOutlet var editProfileButton: UIButton!
     
     @IBAction func settingsButton(sender: AnyObject) {
         
@@ -64,14 +68,28 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let currentUser = PFUser.currentUser() else { return }
         guard let user = self.user else { return }
         
-        if user.userObject.objectId == currentUser.objectId  {
-            self.performSegueWithIdentifier(.SettingsSegueIdentifier, sender: self)
-            return
-        }
-        
         let settingsAlert = UIAlertController()
         settingsAlert.modalPresentationStyle = .Popover
-        if user.userObject.objectId != currentUser.objectId  {
+        if user.userObject.objectId == currentUser.objectId  {
+            
+            let settingsAction = UIAlertAction(title: "Settings", style: .Default) { action in
+                self.performSegueWithIdentifier(.SettingsSegueIdentifier, sender: self)
+            }
+            settingsAlert.addAction(settingsAction)
+            
+            if PFUser.currentUser() != nil {
+                let logInOutAction = UIAlertAction(title: "Log Out", style: .Default) { action in
+                    let logInViewcontroller = LoginViewController.sharedInstance
+                    logInViewcontroller.loginDelegate = self
+                    
+                    if PFUser.currentUser() != nil {
+                        logInViewcontroller.logOut()
+                    }
+                }
+                settingsAlert.addAction(logInOutAction)
+            }
+            
+        } else {
             
             settingsAlert.addAction(blockAction(user.userObject))
             
@@ -138,7 +156,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         UIApplication.topViewController()?.presentViewController(settingsAlert, animated: true, completion: nil)
         settingsAlert.view.tintColor = Constants.stockSwipeGreenColor
-        
     }
     
     @IBAction func followButtonPressed(sender: FollowButton) {
@@ -170,11 +187,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         super.viewDidLoad()
         
         // set tableView properties
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 200.0
+        tableView.rowHeight = UITableViewAutomaticDimension
+        tableView.estimatedRowHeight = 200.0
         
-        self.getProfile()
-        self.getUserTradeIdeas()
+        checkProfileSettings()
+        getProfile()
+        getUserTradeIdeas()
         
     }
     
@@ -209,6 +227,14 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
         self.delegate.subScrollViewDidScroll(scrollView)
+    }
+    
+    func checkProfileSettings() {
+        if user?.userObject.objectId == PFUser.currentUser()?.objectId {
+            followButton.hidden = true
+            editProfileButton.hidden = false
+        }
+        profileButtonsStack.sizeToFit()
     }
     
     func getProfile() {
@@ -246,6 +272,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             self.usernameLabel.text = "@\(username)"
         }
     }
+    
     func getUserTradeIdeas() {
         
         guard !isCurrentUserBlocked else { return }
@@ -306,7 +333,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
                 
                 self.isQueryingForLikedTradeIdeas = false
-
+                
                 do {
                     
                     let activityObjects = try result()
@@ -315,7 +342,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     for activityObject: PFObject in activityObjects {
                         
                         if let tradeIdeaObject = activityObject.objectForKey("tradeIdea") as? PFObject {
-                        
+                            
                             let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                             
                             self.likedTradeIdeas.append(tradeIdea)
@@ -448,7 +475,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let user = user else { return }
         
         isQueryingForFollowing = true
-
+        
         QueryHelper.sharedInstance.queryActivityFor(user.userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             self.isQueryingForFollowing = false
@@ -491,11 +518,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let user = user else { return }
         
         isQueryingForFollowers = true
-
+        
         QueryHelper.sharedInstance.queryActivityFor(nil, toUser: user.userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             self.isQueryingForFollowers = false
-
+            
             do {
                 
                 let activityObjects = try result()
@@ -530,10 +557,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func checkFollow(sender: FollowButton) {
         
-        guard user?.userObject.objectId != PFUser.currentUser()?.objectId else {
-            followButton.hidden = true
-            return
-        }
+        guard user?.userObject.objectId != PFUser.currentUser()?.objectId else { return }
         
         guard let currentUser = PFUser.currentUser() else { return }
         guard let userObject = self.user?.userObject else { return }
@@ -724,12 +748,20 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             guard let cell = sender as? IdeaCell else { return }
             destinationViewController.tradeIdea = cell.tradeIdea
             
-        case .ProfileDetailSegueIdentifier:
+        case .ProfileSegueIdentifier:
             let profileContainerController = segue.destinationViewController as! ProfileContainerController
             profileContainerController.navigationItem.rightBarButtonItem = nil
             
             guard let cell = sender as? UserCell  else { return }
             profileContainerController.user = User(userObject: cell.user)
+        case .EditProfileSegueIdentifier:
+            
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let profileDetailViewController = navigationController.viewControllers.first as! ProfileDetailTableViewController
+            
+            profileDetailViewController.user = self.user
+            
+            break
         case .SettingsSegueIdentifier:
             break
         }

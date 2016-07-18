@@ -59,6 +59,7 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
     
     // Moves the view to the minimum point exceeding the threshold.
     // Transforms and executes pan callbacks as well.
+    self.mdc_viewState.originalCenter = self.center;
     void (^animations)(void) = ^{
         CGPoint translation = [self mdc_translationExceedingThreshold:self.mdc_options.threshold
                                                             direction:direction];
@@ -196,6 +197,7 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
 }
 
 - (void)mdc_executeOnPanBlockForTranslation:(CGPoint)translation {
+    
     if (self.mdc_options.onPan) {
         
         CGFloat thresholdRatio;

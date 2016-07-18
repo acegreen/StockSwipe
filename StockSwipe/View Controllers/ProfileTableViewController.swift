@@ -303,7 +303,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
             isQueryingForLikedTradeIdeas = true
             
-            QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
                 
                 self.isQueryingForLikedTradeIdeas = false
 
@@ -400,7 +400,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         case .Three:
             
-            QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, skip: likedTradeIdeas.count, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: likedTradeIdeas.count, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
                 
                 do {
                     
@@ -449,7 +449,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         isQueryingForFollowing = true
 
-        QueryHelper.sharedInstance.queryActivityFor(user.userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(user.userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             self.isQueryingForFollowing = false
             
@@ -492,7 +492,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         isQueryingForFollowers = true
 
-        QueryHelper.sharedInstance.queryActivityFor(nil, toUser: user.userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(nil, toUser: user.userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             self.isQueryingForFollowers = false
 
@@ -553,7 +553,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -603,7 +603,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
             
             do {
                 

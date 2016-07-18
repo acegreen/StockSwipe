@@ -104,8 +104,47 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         // Get Parse Objects and Make Charts
         if self.charts.count <= 10 && !self.isGettingObjects {
             
-            // GetObjects and make charts
-            reloadCardViews()
+            // Initial config
+            self.options.delegate = self
+            self.options.onPan = { state -> Void in
+                
+                if self.secondCardView != nil {
+                    
+                    let frame:CGRect = self.middleCardViewFrame()
+                    self.secondCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio * 10), CGRectGetWidth(frame), CGRectGetHeight(frame))
+                }
+                
+                if self.thirdCardView != nil {
+                    
+                    let frame:CGRect = self.backCardViewFrame()
+                    self.thirdCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio * 8), CGRectGetWidth(frame), CGRectGetHeight(frame))
+                }
+                
+                if self.fourthCardView != nil {
+                    
+                    let frame:CGRect = self.backCardViewFrame()
+                    self.fourthCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio), CGRectGetWidth(frame), CGRectGetHeight(frame))
+                }
+                
+                if self.informationCardView != nil {
+                    
+                    let frame:CGRect = self.backCardViewFrame()
+                    self.informationCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio), CGRectGetWidth(frame), CGRectGetHeight(frame))
+                }
+            }
+            
+            Functions.setupConfigParameter("THRESHOLDX", completion: { (parameterValue) -> Void in
+                
+                if parameterValue != nil {
+                    self.thresholdX = parameterValue as! CGFloat
+                }
+                
+                self.options.threshold = (self.view.bounds.width / 2) * self.thresholdX
+                print("threshold:",self.options.threshold)
+                
+                // GetObjects and make charts
+                self.reloadCardViews()
+            })
         }
     }
     
@@ -342,45 +381,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             
             Functions.activityIndicator(self.view, halo: &self.halo, state: false)
-
-            self.options.delegate = self
-            Functions.setupConfigParameter("THRESHOLDX", completion: { (parameterValue) -> Void in
-                
-                if parameterValue != nil {
-                    self.thresholdX = parameterValue as! CGFloat
-                }
-                
-                self.options.threshold = (self.view.bounds.width / 2) * self.thresholdX
-                print("threshold:",self.options.threshold)
-                
-                self.options.onPan = { state -> Void in
-                    
-                    if self.secondCardView != nil {
-                        
-                        let frame:CGRect = self.middleCardViewFrame()
-                        self.secondCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio * 10), CGRectGetWidth(frame), CGRectGetHeight(frame))
-                    }
-                    
-                    if self.thirdCardView != nil {
-                        
-                        let frame:CGRect = self.backCardViewFrame()
-                        self.thirdCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio * 8), CGRectGetWidth(frame), CGRectGetHeight(frame))
-                    }
-                    
-                    if self.fourthCardView != nil {
-                        
-                        let frame:CGRect = self.backCardViewFrame()
-                        self.fourthCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio), CGRectGetWidth(frame), CGRectGetHeight(frame))
-                    }
-                    
-                    if self.informationCardView != nil {
-                        
-                        let frame:CGRect = self.backCardViewFrame()
-                        self.informationCardView.frame = CGRectMake(frame.origin.x, frame.origin.y-(state.thresholdRatio), CGRectGetWidth(frame), CGRectGetHeight(frame))
-                    }
-                }
-                
-            })
             
             // Display First Card
             if self.firstCardView == nil {
@@ -520,10 +520,20 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     // This is called when a user swipes the view in a direction.
     func view(view: UIView, wasChosenWithDirection: MDCSwipeDirection) -> Void {
         
-        // MDCSwipeToChooseView shows "SHORT" on swipes to the left,
-        // and "LONG" on swipes to the right.
-        
         guard let chartChoosen: Chart = self.charts.find({$0.symbol == self.firstCardView.chart.symbol}) else { return }
+       
+        // Register choice
+        if wasChosenWithDirection == MDCSwipeDirection.Left {
+            
+            Functions.registerUserChoice(chartChoosen, with: .SHORT)
+            
+        } else if wasChosenWithDirection == MDCSwipeDirection.Right {
+            
+            Functions.registerUserChoice(chartChoosen, with: .LONG)
+        }
+        
+        // Create NSUserActivity
+        Functions.createNSUserActivity(chartChoosen, domainIdentifier: "com.stockswipe.stocksSwiped")
         
         self.parseObjects.removeObject(chartChoosen.parseObject!)
         self.charts.removeObject(chartChoosen)
@@ -564,15 +574,9 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                     })
                 }
             }
-            
         }
         
-        // Create NSUserActivity
-        Functions.createNSUserActivity(chartChoosen, domainIdentifier: "com.stockswipe.stocksSwiped")
-        
         print("charts.count after swipe", self.charts.count)
-        
-        //        self.enableDisableButtons("On")
     }
     
     // This is called when a user didn't fully swipe left or right.
@@ -610,7 +614,16 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         guard let chart: Chart = self.charts.find({ $0.symbol == self.firstCardView.chart.symbol }) else { return }
         
-        Functions.addToWatchlist(chart)
+        Functions.addToWatchlist(chart) { (choice) in
+            switch choice {
+            case .LONG:
+                self.longCardView()
+            case .SHORT:
+                self.shortCardView()
+            case .SKIP:
+                self.skipCardView()
+            }
+        }
     }
     
     func swapAndResizeCardView(CardView: SwipeChartView?) -> Void {
@@ -670,25 +683,16 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
     }
     
-    func nopefirstCardView() {
-        
+    func shortCardView() {
         self.firstCardView.mdc_swipe(MDCSwipeDirection.Left)
-        //self.enableDisableButtons("Off")
-        
     }
     
-    func likefirstCardView() {
-        
+    func longCardView() {
         self.firstCardView.mdc_swipe(MDCSwipeDirection.Right)
-        //self.enableDisableButtons("Off")
-        
     }
     
-    func skipfirstCardView() {
-        
+    func skipCardView() {
         self.firstCardView.mdc_swipe(MDCSwipeDirection.Up)
-        //self.enableDisableButtons("Off")
-        
     }
     
     func setupFilters() {

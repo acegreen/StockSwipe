@@ -363,7 +363,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.likeCountLabel.hidden = true
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: tradeIdea.parseObject, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: tradeIdea.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -391,7 +391,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         if let tradeIdeaObject = tradeIdea.parseObject {
             
-            QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: tradeIdeaObject, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: tradeIdeaObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                 
                 do {
                     
@@ -442,7 +442,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         guard let sender = sender else { return }
         guard let currentUser = PFUser.currentUser() else { return }
         
-        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: tradeIdea.parseObject, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaReshare.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: tradeIdea.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -497,7 +497,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         if let tradeIdeaObject = tradeIdea.parseObject {
             
-            QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: self.tradeIdea.user, originalTradeIdea: self.tradeIdea.parseObject, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaReshare.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: self.tradeIdea.user, originalTradeIdea: self.tradeIdea.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                 
                 do {
                     

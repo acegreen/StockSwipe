@@ -550,7 +550,9 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
             
             guard let chart = (self.charts.find{ $0.symbol == (sender.view as! UIButton).currentTitle }) else { return }
             
-            Functions.addToWatchlist(chart)
+            Functions.addToWatchlist(chart) { (choice) in
+                Functions.registerUserChoice(chart, with: choice)
+            }
         }
     }
 }

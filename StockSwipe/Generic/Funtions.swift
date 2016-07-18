@@ -104,7 +104,7 @@ public class Functions {
                     })
                 }
                 
-                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -118,7 +118,7 @@ public class Functions {
                     }
                 })
                 
-                QueryHelper.sharedInstance.queryActivityFor(user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue, skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -305,30 +305,74 @@ public class Functions {
             return
         }
         
-        let activityObject = PFObject(className: "Activity")
-        activityObject["fromUser"] = currentUser
-        activityObject["stock"] = parseObject
-  
-        switch choice {
+        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [parseObject], activityType: nil, skip: nil, limit: nil, includeKeys: nil) { (result) in
             
-        case .LONG:
+            do {
+                
+                let activityObjects = try result()
+                
+                if let firstActivityObject = activityObjects.first {
+                    
+                    let firstActivityObjectActivityType = firstActivityObject["activityType"] as! String
+                    
+                    if (firstActivityObjectActivityType == Constants.ActivityType.StockLong.rawValue &&  choice == .LONG) || (firstActivityObjectActivityType == Constants.ActivityType.StockShort.rawValue &&  choice == .SHORT) {
+                        
+                        firstActivityObject.saveEventually()
+                    } else {
+                        
+                        switch choice {
+                            
+                        case .LONG:
+                            
+                            firstActivityObject["activityType"] = Constants.ActivityType.StockLong.rawValue
+                            chart.shortCount -= 1
+                            chart.longCount += 1
+                            
+                        case .SHORT:
+                            
+                            firstActivityObject["activityType"] = Constants.ActivityType.StockShort.rawValue
+                            chart.shortCount += 1
+                            chart.longCount -= 1
+                            
+                        default:
+                            break
+                        }
+                        firstActivityObject.saveEventually()
+                    }
+                    
+                } else if activityObjects.isEmpty {
+                    
+                    let activityObject = PFObject(className: "Activity")
+                    activityObject["fromUser"] = currentUser
+                    activityObject["stock"] = parseObject
+                    
+                    switch choice {
+                        
+                    case .LONG:
+                        
+                        activityObject["activityType"] = Constants.ActivityType.StockLong.rawValue
+                        chart.longCount += 1
+                        
+                    case .SHORT:
+                        
+                        activityObject["activityType"] = Constants.ActivityType.StockShort.rawValue
+                        chart.shortCount += 1
+                        
+                    default:
+                        break
+                    }
+                    
+                    activityObject.saveEventually()
+                }
+                
+            } catch {
+                
+            }
             
-            activityObject["activityType"] = Constants.ActivityType.StockLong.rawValue
-            chart.longCount += 1
+            print("\(choice)", chart)
             
-        case .SHORT:
-            
-            activityObject["activityType"] = Constants.ActivityType.StockShort.rawValue
-            chart.shortCount += 1
-            
-        default:
-            break
+            saveIntoCoreData(chart, userChoice: choice)
         }
-        
-        print("\(choice)", chart)
-        
-        activityObject.saveEventually()
-        saveIntoCoreData(chart, userChoice: choice)
     }
     
     class func saveIntoCoreData(chart: Chart, userChoice: Constants.UserChoices) {
@@ -353,7 +397,7 @@ public class Functions {
                 if chart.image != nil {
                     newChart.image = UIImagePNGRepresentation(chart.image)
                 }
-            
+                
                 newChart.shorts = Int32(chart.shortCount)
                 newChart.longs = Int32(chart.longCount)
                 newChart.userChoice = userChoice.rawValue
@@ -423,7 +467,7 @@ public class Functions {
         
         PFConfig.getConfigInBackgroundWithBlock {
             (config: PFConfig?, error: NSError?) -> Void in
-
+            
             let configParameter = config?[parameter]
             completion(parameterValue: configParameter)
         }
@@ -487,7 +531,7 @@ public class Functions {
         }
     }
     
-    class func addToWatchlist(chart: Chart) {
+    class func addToWatchlist(chart: Chart, completion: (Constants.UserChoices) -> Void)  {
         
         guard Functions.isConnectedToNetwork() else {
             
@@ -516,15 +560,11 @@ public class Functions {
                     guard let topVC = UIApplication.topViewController() where Functions.isUserLoggedIn(topVC) else { return }
                     
                     if !isOtherButton {
-                        
-                        Functions.registerUserChoice(chart, with: .LONG)
-                        
+                        completion(.LONG)
                     } else if isOtherButton {
-                        
-                        Functions.registerUserChoice(chart, with: .SHORT)
+                        completion(.SHORT)
                     }
                 }
-                
             })
         })
     }
@@ -641,7 +681,7 @@ public class Functions {
             UIActivityTypePostToWeibo,
             UIActivityTypeAssignToContact,
             UIActivityTypeAirDrop,
-        ]
+            ]
         
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
         activityVC.excludedActivityTypes = excludedActivityTypesArray as? [String]
@@ -675,14 +715,14 @@ public class Functions {
     }
     
     // Random number between low and high range
-//    class func randomInRange (low: Int, high: Int) -> Int {
-//        
-//        var RandomNumber = Int(arc4random_uniform(UInt32(high)))
-//        RandomNumber = max(RandomNumber, low)
-//        RandomNumber = min(RandomNumber, high - low)
-//        
-//        return RandomNumber
-//    }
+    //    class func randomInRange (low: Int, high: Int) -> Int {
+    //
+    //        var RandomNumber = Int(arc4random_uniform(UInt32(high)))
+    //        RandomNumber = max(RandomNumber, low)
+    //        RandomNumber = min(RandomNumber, high - low)
+    //
+    //        return RandomNumber
+    //    }
     
     class func degreesToRadians(degrees: Double) -> Double {
         return degrees * (M_PI/180.0)

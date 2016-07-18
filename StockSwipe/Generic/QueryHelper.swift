@@ -322,7 +322,7 @@ public class QueryHelper {
         }
     }
     
-    public func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: String? , skip: Int?, limit: Int?, includeKeys: [String]?, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
+    public func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
@@ -361,7 +361,7 @@ public class QueryHelper {
         }
         
         if let activityType = activityType {
-            activityQuery.whereKey("activityType", equalTo: activityType)
+            activityQuery.whereKey("activityType", containedIn: activityType)
         }
         
         if let skip = skip  where skip > 0 {

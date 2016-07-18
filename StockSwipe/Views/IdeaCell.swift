@@ -182,7 +182,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         UIApplication.topViewController()?.presentViewController(threeDotsAlert, animated: true, completion: nil)
         threeDotsAlert.view.tintColor = Constants.stockSwipeGreenColor
-        
     }
     
     func handleGestureRecognizer(tapGestureRecognizer: UITapGestureRecognizer) {

@@ -24,8 +24,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     enum SegueIdentifier: String {
         case TradeIdeaDetailSegueIdentifier = "TradeIdeaDetailSegueIdentifier"
-        case ProfileDetailSegueIdentifier = "ProfileDetailSegueIdentifier"
+        case ProfileSegueIdentifier = "ProfileSegueIdentifier"
         case SettingsSegueIdentifier = "SettingsSegueIdentifier"
+        case EditProfileSegueIdentifier = "EditProfileSegueIdentifier"
     }
     
     var delegate: ProfileTableVieDelegate!
@@ -148,10 +149,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         self.registerFollow(sender)
     }
     
-    @IBAction func editProfileButtonPressed(sender: AnyObject) {
-        
-    }
-    
     @IBAction func refreshControlAction(sender: UIRefreshControl) {
         
         getProfile()
@@ -262,6 +259,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             self.usernameLabel.text = "@\(username)"
         }
     }
+    
     func getUserTradeIdeas() {
         
         guard !isCurrentUserBlocked else { return }
@@ -737,12 +735,20 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             guard let cell = sender as? IdeaCell else { return }
             destinationViewController.tradeIdea = cell.tradeIdea
             
-        case .ProfileDetailSegueIdentifier:
+        case .ProfileSegueIdentifier:
             let profileContainerController = segue.destinationViewController as! ProfileContainerController
             profileContainerController.navigationItem.rightBarButtonItem = nil
             
             guard let cell = sender as? UserCell  else { return }
             profileContainerController.user = User(userObject: cell.user)
+        case .EditProfileSegueIdentifier:
+            
+            let navigationController = segue.destinationViewController as! UINavigationController
+            let profileDetailViewController = navigationController.viewControllers.first as! ProfileDetailTableViewController
+            
+            profileDetailViewController.user = self.user
+            
+            break
         case .SettingsSegueIdentifier:
             break
         }

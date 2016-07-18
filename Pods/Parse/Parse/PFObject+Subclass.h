@@ -69,16 +69,9 @@ NS_ASSUME_NONNULL_BEGIN
  For example, `[PFUser object]` will return a `MyUser` object if `MyUser` is a registered subclass of `PFUser`.
  For this reason, `[MyClass object]` is preferred to `[[MyClass alloc] init]`.
  This method can only be called on subclasses which conform to `PFSubclassing`.
+ A default implementation is provided by `PFObject` which should always be sufficient.
  */
 + (instancetype)object;
-
-/**
- The following ignore statement is required, as otherwise, every time this is compiled - it produces an `swift_name` unused warning.
- This appears to be a clang itself or ClangImporter issue when imported into Swift.
- */
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wignored-attributes"
 
 /**
  Creates a reference to an existing `PFObject` for use in creating associations between `PFObjects`.
@@ -92,9 +85,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  @return An instance of `PFObject` without data.
  */
-+ (instancetype)objectWithoutDataWithObjectId:(nullable NSString *)objectId NS_SWIFT_NAME(init(withoutDataWithObjectId:));
-
-#pragma clang diagnostic pop
++ (instancetype)objectWithoutDataWithObjectId:(nullable NSString *)objectId;
 
 /**
  Registers an Objective-C class for Parse to use for representing a given Parse class.
@@ -111,7 +102,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  This method can only be called on subclasses which conform to `PFSubclassing`.
  A default implementation is provided by `PFObject` which should always be sufficient.
-
+ 
  @see `PFQuery`
  */
 + (nullable PFQuery *)query;
@@ -129,17 +120,6 @@ NS_ASSUME_NONNULL_BEGIN
  @see `PFQuery.+queryWithClassName:predicate:`
  */
 + (nullable PFQuery *)queryWithPredicate:(nullable NSPredicate *)predicate;
-
-@end
-
-/*!
- This protocol exists ONLY so that, if you absolutely need it, you can perform manual subclass registration
- via `[Subclass registerSubclass]`. Note that any calls to `registerSubclass` must happen after parse has been
- initialized already. This should only ever be needed in the scenario where you may be dynamically creation new 
- Objective-C classes for parse objects, or you are doing conditional subclass registration (e.g. only register class A 
- if config setting 'foo' is defined, otherwise register B).
- */
-@protocol PFSubclassingSkipAutomaticRegistration <PFSubclassing>
 
 @end
 

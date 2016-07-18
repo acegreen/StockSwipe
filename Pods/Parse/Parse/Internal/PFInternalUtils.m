@@ -152,7 +152,8 @@ static NSString *parseServer_;
     } else if ([object isKindOfClass:[NSNull class]]) {
         [self appendNullToString:string];
     } else {
-        PFParameterAssertionFailure(@"Couldn't create cache key from %@", object);
+        [NSException raise:NSInvalidArgumentException
+                    format:@"Couldn't create cache key from %@", object];
     }
 }
 

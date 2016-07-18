@@ -126,7 +126,7 @@ typedef BOOL (^PFSubQueryMatcherBlock)(id object, NSArray *results);
                     return [self valueForContainer:restFormat key:rest depth:depth + 1];
                 }
             }
-            PFParameterAssertionFailure(@"Key %@ is invalid.", key);
+            [NSException raise:NSInvalidArgumentException format:@"Key %@ is invalid", key];
         }
         return [self valueForContainer:value key:rest depth:depth + 1];
     }
@@ -152,7 +152,7 @@ typedef BOOL (^PFSubQueryMatcherBlock)(id object, NSArray *results);
     } else if (container == nil) {
         return nil;
     } else {
-        PFParameterAssertionFailure(@"Bad key %@", key);
+        [NSException raise:NSInvalidArgumentException format:@"Bad key %@", key];
         // Shouldn't reach here.
         return nil;
     }
@@ -457,7 +457,9 @@ greaterThanOrEqualTo:(id)constraint {
     } else if ([operator isEqualToString:PFQueryKeyWithin]) {
         return [self matchesValue:value within:constraint];
     }
-    PFParameterAssertionFailure(@"Local Datastore does not yet support %@ operator.", operator);
+
+    [NSException raise:NSInvalidArgumentException
+                format:@"The offline store does not yet support %@ operator.", operator];
     // Shouldn't reach here
     return YES;
 }
@@ -708,9 +710,10 @@ greaterThanOrEqualTo:(id)constraint {
             // throwing an exception.
             return nil;
         }
-        NSError *error = [PFErrorUtilities errorWithCode:kPFErrorInvalidNestedKey
-                                                 message:@"include is invalid"];
-        return [BFTask taskWithError:error];
+        NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException
+                                                         reason:@"include is invalid"
+                                                       userInfo:nil];
+        return [BFTask taskWithException:exception];
     }] continueWithSuccessBlock:^id(BFTask *task) {
         return [self fetchIncludeAsync:rest container:task.result database:database];
     }];

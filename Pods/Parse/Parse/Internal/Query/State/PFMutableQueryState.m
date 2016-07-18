@@ -11,13 +11,12 @@
 #import "PFQueryConstants.h"
 
 #import "PFQueryState_Private.h"
-#import "PFMacros.h"
 
 @interface PFMutableQueryState () {
-    NSMutableDictionary<NSString *, id> *_conditions;
-    NSMutableArray<NSString *> *_sortKeys;
-    NSMutableSet<NSString *> *_includedKeys;
-    NSMutableDictionary<NSString *, NSString *> *_extraOptions;
+    NSMutableDictionary *_conditions;
+    NSMutableArray *_sortKeys;
+    NSMutableSet *_includedKeys;
+    NSMutableDictionary *_extraOptions;
 }
 
 @end
@@ -48,10 +47,10 @@
 + (NSDictionary *)propertyAttributes {
     NSMutableDictionary *attributes = [[super propertyAttributes] mutableCopy];
 
-    attributes[PFQueryStatePropertyName(conditions)] = [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeMutableCopy];
-    attributes[PFQueryStatePropertyName(sortKeys)] = [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeMutableCopy];
-    attributes[PFQueryStatePropertyName(includedKeys)] = [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeMutableCopy];
-    attributes[PFQueryStatePropertyName(extraOptions)] = [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeMutableCopy];
+    attributes[@"conditions"] = [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeMutableCopy];
+    attributes[@"sortKeys"] = [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeMutableCopy];
+    attributes[@"includedKeys"] = [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeMutableCopy];
+    attributes[@"extraOptions"] = [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeMutableCopy];
 
     return attributes;
 }
@@ -134,7 +133,7 @@
     }
 }
 
-- (void)addSortKeysFromSortDescriptors:(NSArray<NSSortDescriptor *> *)sortDescriptors {
+- (void)addSortKeysFromSortDescriptors:(NSArray *)sortDescriptors {
     [_sortKeys removeAllObjects];
     for (NSSortDescriptor *sortDescriptor in sortDescriptors) {
         [self addSortKey:sortDescriptor.key ascending:sortDescriptor.ascending];
@@ -165,7 +164,7 @@
 #pragma mark - Selected Keys
 ///--------------------------------------
 
-- (void)selectKeys:(NSArray<NSString *> *)keys {
+- (void)selectKeys:(NSArray *)keys {
     if (keys) {
         _selectedKeys = (_selectedKeys ? [_selectedKeys setByAddingObjectsFromArray:keys] : [NSSet setWithArray:keys]);
     } else {

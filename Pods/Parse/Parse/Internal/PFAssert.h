@@ -25,24 +25,15 @@
     } while(0)
 
 /**
- Raises an `NSInvalidArgumentException`. Use `description` to supply the way to fix the exception.
- */
-#define PFParameterAssertionFailure(description, ...) \
-do {\
-    [NSException raise:NSInvalidArgumentException \
-                format:description, ##__VA_ARGS__]; \
-} while(0)
-
-/**
  Raises an `NSRangeException` if the `condition` does not pass.
  Use `description` to supply the way to fix the exception.
  */
 #define PFRangeAssert(condition, description, ...) \
-do {\
-    if (!(condition)) { \
-        [NSException raise:NSRangeException \
-                    format:description, ##__VA_ARGS__]; \
-} \
+    do {\
+        if (!(condition)) { \
+            [NSException raise:NSRangeException \
+                        format:description, ##__VA_ARGS__]; \
+    } \
 } while(0)
 
 /**
@@ -50,21 +41,12 @@ do {\
  Use `description` to supply the way to fix the exception.
  */
 #define PFConsistencyAssert(condition, description, ...) \
-do { \
-    if (!(condition)) { \
-        [NSException raise:NSInternalInconsistencyException \
-                    format:description, ##__VA_ARGS__]; \
-    } \
-} while(0)
-
-/**
- Raises an `NSInternalInconsistencyException`. Use `description` to supply the way to fix the exception.
- */
-#define PFConsistencyAssertionFailure(description, ...) \
-do {\
-    [NSException raise:NSInternalInconsistencyException \
-                format:description, ##__VA_ARGS__]; \
-} while(0)
+    do { \
+        if (!(condition)) { \
+            [NSException raise:NSInternalInconsistencyException \
+                        format:description, ##__VA_ARGS__]; \
+        } \
+    } while(0)
 
 /**
  Always raises `NSInternalInconsistencyException` with details
@@ -72,9 +54,10 @@ do {\
  */
 #define PFNotDesignatedInitializer() \
 do { \
-    PFConsistencyAssertionFailure(@"%@ is not the designated initializer for instances of %@.", \
-                                  NSStringFromSelector(_cmd), \
-                                  NSStringFromClass([self class])); \
+    PFConsistencyAssert(NO, \
+                        @"%@ is not the designated initializer for instances of %@.", \
+                        NSStringFromSelector(_cmd), \
+                        NSStringFromClass([self class])); \
     return nil; \
 } while (0)
 

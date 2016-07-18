@@ -53,7 +53,7 @@ static void PFQueryAssertValidEqualityClauseClass(id object) {
         }
     }
 
-    PFParameterAssertionFailure(@"Cannot do a comparison query for type: %@", [object class]);
+    PFParameterAssert(NO, @"Cannot do a comparison query for type: %@", [object class]);
 }
 
 /**
@@ -72,7 +72,7 @@ static void PFQueryAssertValidOrderingClauseClass(id object) {
         }
     }
 
-    PFParameterAssertionFailure(@"Cannot do a query that requires ordering for type: %@", [object class]);
+    PFParameterAssert(NO, @"Cannot do a query that requires ordering for type: %@", [object class]);
 }
 
 @interface PFQuery () {
@@ -467,13 +467,15 @@ static void PFQueryAssertValidOrderingClauseClass(id object) {
                 // Like "value IN SELF"
                 [self whereKeyExists:left.keyPath];
             } else {
-                PFConsistencyAssertionFailure(@"An IN predicate must have a key path and a constant.");
+                [NSException raise:NSInternalInconsistencyException
+                            format:@"An IN predicate must have a key path and a constant."];
             }
             return;
         }
         case NSCustomSelectorPredicateOperatorType: {
             if (predicate.customSelector != NSSelectorFromString(@"notContainedIn:")) {
-                PFConsistencyAssertionFailure(@"Predicates with custom selectors are not supported.");
+                [NSException raise:NSInternalInconsistencyException
+                            format:@"Predicates with custom selectors are not supported."];
             }
 
             if (right.expressionType == NSConstantValueExpressionType &&
@@ -500,7 +502,8 @@ static void PFQueryAssertValidOrderingClauseClass(id object) {
                 // Like "NOT (value IN SELF)"
                 [self whereKeyDoesNotExist:left.keyPath];
             } else {
-                PFConsistencyAssertionFailure(@"A NOT IN predicate must have a key path and a constant array.");
+                [NSException raise:NSInternalInconsistencyException
+                            format:@"A NOT IN predicate must have a key path and a constant array."];
             }
             return;
         }
@@ -509,19 +512,32 @@ static void PFQueryAssertValidOrderingClauseClass(id object) {
             [self whereKey:left.keyPath hasPrefix:right.constantValue];
             return;
         }
-        case NSContainsPredicateOperatorType:
-        case NSEndsWithPredicateOperatorType:
+        case NSContainsPredicateOperatorType: {
+            [NSException raise:NSInternalInconsistencyException
+                        format:@"Regex queries are not supported with "
+             "[PFQuery queryWithClassName:predicate:]. Please try to structure your "
+             "data so that you can use an equalTo or containedIn query."];
+        }
+        case NSEndsWithPredicateOperatorType: {
+            [NSException raise:NSInternalInconsistencyException
+                        format:@"Regex queries are not supported with "
+             "[PFQuery queryWithClassName:predicate:]. Please try to structure your "
+             "data so that you can use an equalTo or containedIn query."];
+        }
         case NSMatchesPredicateOperatorType: {
-            PFConsistencyAssertionFailure(@"Regex queries are not supported with "
-                                          "[PFQuery queryWithClassName:predicate:]. Please try to structure your "
-                                          "data so that you can use an equalTo or containedIn query.");
+            [NSException raise:NSInternalInconsistencyException
+                        format:@"Regex queries are not supported with "
+             "[PFQuery queryWithClassName:predicate:]. Please try to structure your "
+             "data so that you can use an equalTo or containedIn query."];
         }
         case NSLikePredicateOperatorType: {
-            PFConsistencyAssertionFailure(@"LIKE is not supported by PFQuery.");
+            [NSException raise:NSInternalInconsistencyException
+                        format:@"LIKE is not supported by PFQuery."];
         }
         case NSBetweenPredicateOperatorType:
         default: {
-            PFConsistencyAssertionFailure(@"This comparison predicate is not supported. (%zd)", predicate.predicateOperatorType);
+            [NSException raise:NSInternalInconsistencyException
+                        format:@"This comparison predicate is not supported. (%zd)", predicate.predicateOperatorType];
         }
     }
 }
@@ -546,7 +562,9 @@ static void PFQueryAssertValidOrderingClauseClass(id object) {
                     if ([subpredicate isKindOfClass:[NSCompoundPredicate class]] &&
                         ((NSCompoundPredicate *)subpredicate).compoundPredicateType == NSOrPredicateType) {
                         if (query) {
-                            PFConsistencyAssertionFailure(@"A query had 2 ORs in an AND after normalization. %@", predicate);
+                            [NSException raise:NSInternalInconsistencyException
+                                        format:@"A query had 2 ORs in an AND after normalization. %@",
+                             predicate];
                         }
                         query = [self queryWithClassName:className normalizedPredicate:subpredicate];
                     } else {
@@ -560,8 +578,9 @@ static void PFQueryAssertValidOrderingClauseClass(id object) {
                 for (NSPredicate *subpredicate in subpredicates) {
                     if (![subpredicate isKindOfClass:[NSComparisonPredicate class]]) {
                         // This should never happen.
-                        PFConsistencyAssertionFailure(@"A predicate had a non-comparison predicate inside an AND after normalization. %@",
-                                                      predicate);
+                        [NSException raise:NSInternalInconsistencyException
+                                    format:@"A predicate had a non-comparison predicate inside an AND "
+                         "after normalization. %@", predicate];
                     }
                     NSComparisonPredicate *comparison = (NSComparisonPredicate *)subpredicate;
                     [query whereComparisonPredicate:comparison];
@@ -571,7 +590,9 @@ static void PFQueryAssertValidOrderingClauseClass(id object) {
             case NSOrPredicateType: {
                 NSMutableArray *subqueries = [NSMutableArray arrayWithCapacity:compound.subpredicates.count];
                 if (compound.subpredicates.count > 4) {
-                    PFConsistencyAssertionFailure(@"This query is too complex. It had an OR with >4 subpredicates after normalization.");
+                    [NSException raise:NSInternalInconsistencyException
+                                format:@"This query is too complex. It had an OR with >4 subpredicates "
+                     "after normalization."];
                 }
                 for (NSPredicate *subpredicate in compound.subpredicates) {
                     [subqueries addObject:[self queryWithClassName:className normalizedPredicate:subpredicate]];
@@ -581,12 +602,13 @@ static void PFQueryAssertValidOrderingClauseClass(id object) {
             case NSNotPredicateType:
             default: {
                 // This should never happen.
-                PFConsistencyAssertionFailure(@"A predicate had a NOT after normalization. %@", predicate);
+                [NSException raise:NSInternalInconsistencyException
+                            format:@"A predicate had a NOT after normalization. %@", predicate];
                 return nil;
             }
         }
     } else {
-        PFConsistencyAssertionFailure(@"Unknown predicate type.");
+        [NSException raise:NSInternalInconsistencyException format:@"Unknown predicate type."];
         return nil;
     }
 }
@@ -598,7 +620,8 @@ static void PFQueryAssertValidOrderingClauseClass(id object) {
 - (void)checkIfCommandIsRunning {
     @synchronized(self) {
         if (_cancellationTokenSource) {
-            PFConsistencyAssertionFailure(@"This query has an outstanding network connection. You have to wait until it's done.");
+            [NSException raise:NSInternalInconsistencyException
+                        format:@"This query has an outstanding network connection. You have to wait until it's done."];
         }
     }
 }

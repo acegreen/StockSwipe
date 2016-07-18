@@ -26,8 +26,8 @@ PODS:
   - LaunchKit/LaunchKit (2.1.4)
   - MDCSwipeToChoose (0.2.4)
   - NVActivityIndicatorView (2.9)
-  - Parse (1.14.1):
-    - Bolts/Tasks (~> 1.8)
+  - Parse (1.13.0):
+    - Bolts/Tasks (~> 1.6)
   - ParseFacebookUtilsV4 (1.11.1):
     - Bolts/Tasks (>= 1.6)
     - FBSDKCoreKit (~> 4.10)
@@ -63,7 +63,7 @@ DEPENDENCIES:
   - LaunchKit
   - MDCSwipeToChoose (from `https://github.com/acegreen/MDCSwipeToChoose.git`)
   - NVActivityIndicatorView
-  - Parse
+  - Parse (= 1.13.0)
   - ParseFacebookUtilsV4
   - ParseTwitterUtils
   - ParseUI
@@ -116,7 +116,7 @@ SPEC CHECKSUMS:
   LaunchKit: 95ad4fb171a0f8ea1c80aa26d4fb7bd637788f9c
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
   NVActivityIndicatorView: 0084f6be71bdf4735b5424ebfb530b1e3db3276c
-  Parse: 4f72b1c01b3fc9038bea045681b6cc1b070c081e
+  Parse: f51c24d2feb412e4b2d6cc73d37cb24e8d0089bc
   ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
   ParseTwitterUtils: 0dde9689565e7012d83f892c64aed2ebe69f2ea9
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
@@ -129,6 +129,6 @@ SPEC CHECKSUMS:
   TwitterCore: 817eae3e291fa4125b47789e26a4f6f024115c1f
   TwitterKit: 8a383da8d9c21b0423716381ea8bbfce20622d91
 
-PODFILE CHECKSUM: f8d659c8763ae8c7988ea5621be9d70bc49c718a
+PODFILE CHECKSUM: 8bc4f70db887ea7ad4722256b645b8e76a9277d6
 
 COCOAPODS: 1.0.1

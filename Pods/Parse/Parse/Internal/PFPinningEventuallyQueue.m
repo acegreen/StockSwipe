@@ -212,7 +212,7 @@
             [_eventuallyPinUUIDQueue removeObject:identifier];
         });
 
-        if (resultTask.cancelled || resultTask.faulted) {
+        if (resultTask.cancelled || resultTask.exception || resultTask.error) {
             return resultTask;
         }
 
@@ -281,10 +281,10 @@
         }
     });
     if (uuid == nil) {
-        NSError *error = [PFErrorUtilities errorWithCode:kPFErrorIncorrectType
-                                                 message:@"Either operationSet or eventuallyPin must be set"
-                                               shouldLog:NO];
-        return [BFTask taskWithError:error];
+        NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException
+                                                         reason:@"Either operationSet or eventuallyPin must be set"
+                                                       userInfo:nil];
+        return [BFTask taskWithException:exception];
     }
     return [BFTask taskWithResult:nil];
 }

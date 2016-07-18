@@ -54,6 +54,8 @@
                 NSError *error = task.error;
                 if (error) {
                     [taskCompletionSource trySetError:error];
+                } else {
+                    [taskCompletionSource trySetException:task.exception];
                 }
             } else if (task.cancelled) {
                 [taskCompletionSource trySetCancelled];

@@ -22,7 +22,7 @@
 
 - (instancetype)init {
     self = [super init];
-    if (!self) return self;
+    if (!self) return nil;
 
     _permissions = [NSMutableDictionary dictionary];
 

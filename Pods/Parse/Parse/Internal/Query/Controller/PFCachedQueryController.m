@@ -68,7 +68,8 @@
             } cancellationToken:cancellationToken];
         }
             break;
-        case kPFCachePolicyCacheOnly: {
+        case kPFCachePolicyCacheOnly:
+        {
             return [self _runNetworkCommandAsyncFromCache:command
                                     withCancellationToken:cancellationToken
                                             forQueryState:queryState];
@@ -82,9 +83,9 @@
             @weakify(self);
             return [networkTask continueWithBlock:^id(BFTask *task) {
                 @strongify(self);
-                if (task.cancelled) {
+                if (task.cancelled || task.exception) {
                     return task;
-                } else if (task.faulted) {
+                } else if (task.error) {
                     return [self _runNetworkCommandAsyncFromCache:command
                                             withCancellationToken:cancellationToken
                                                     forQueryState:queryState];
@@ -110,17 +111,11 @@
             } cancellationToken:cancellationToken];
         }
             break;
-        case kPFCachePolicyCacheThenNetwork: {
-            NSError *error = [PFErrorUtilities errorWithCode:kPFErrorInvalidQuery
-                                                     message:@"Cache then network is not supported directly in PFCachedQueryController."];
-            return [BFTask taskWithError:error];
-        }
+        case kPFCachePolicyCacheThenNetwork:
+            PFConsistencyAssert(NO, @"kPFCachePolicyCacheThenNetwork is not implemented as a runner.");
             break;
-        default: {
-            NSString *message = [NSString stringWithFormat:@"Unrecognized cache policy: %d", queryState.cachePolicy];
-            NSError *error = [PFErrorUtilities errorWithCode:kPFErrorInvalidQuery message:message];
-            return [BFTask taskWithError:error];
-        }
+        default:
+            PFConsistencyAssert(NO, @"Unrecognized cache policy: %d", queryState.cachePolicy);
             break;
     }
     return nil;

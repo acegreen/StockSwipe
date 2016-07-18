@@ -106,10 +106,12 @@ NSTimeInterval const PFEventuallyQueueDefaultTimeoutRetryInterval = 600.0f;
             return [[[self _enqueueCommandInBackground:command
                                                 object:object
                                             identifier:identifier] continueWithBlock:^id(BFTask *task) {
-                if (task.faulted || task.cancelled) {
+                if (task.error || task.exception || task.cancelled) {
                     [self.testHelper notify:PFEventuallyQueueEventCommandNotEnqueued];
                     if (task.error) {
                         taskCompletionSource.error = task.error;
+                    } else if (task.exception) {
+                        taskCompletionSource.exception = task.exception;
                     } else if (task.cancelled) {
                         [taskCompletionSource cancel];
                     }
@@ -303,6 +305,8 @@ NSTimeInterval const PFEventuallyQueueDefaultTimeoutRetryInterval = 600.0f;
         // Notify anyone waiting that the operation is completed.
         if (resultTask.error) {
             taskCompletionSource.error = resultTask.error;
+        } else if (resultTask.exception) {
+            taskCompletionSource.exception = resultTask.exception;
         } else if (resultTask.cancelled) {
             [taskCompletionSource cancel];
         } else {
@@ -321,10 +325,11 @@ NSTimeInterval const PFEventuallyQueueDefaultTimeoutRetryInterval = 600.0f;
         return [self.dataSource.commandRunner runCommandAsync:(PFRESTCommand *)command withOptions:0];
     }
 
-    NSError *error = [PFErrorUtilities errorWithCode:kPFErrorInternalServer
-                                             message:[NSString stringWithFormat:@"Can't find a compatible runner for command %@.", command]
-                                           shouldLog:NO];
-    return [BFTask taskWithError:error];
+    NSString *reason = [NSString stringWithFormat:@"Can't find a compatible runner for command %@.", command];
+    NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException
+                                                     reason:reason
+                                                   userInfo:nil];
+    return [BFTask taskWithException:exception];
 }
 
 - (BFTask *)_didFinishRunningCommand:(id<PFNetworkCommand>)command
@@ -336,7 +341,7 @@ NSTimeInterval const PFEventuallyQueueDefaultTimeoutRetryInterval = 600.0f;
         [_taskCompletionSources removeObjectForKey:identifier];
     });
 
-    if (resultTask.faulted || resultTask.cancelled) {
+    if (resultTask.exception || resultTask.error || resultTask.cancelled) {
         [self.testHelper notify:PFEventuallyQueueEventCommandFailed];
     } else {
         [self.testHelper notify:PFEventuallyQueueEventCommandSucceded];

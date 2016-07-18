@@ -12,7 +12,6 @@
 
 #import "PFMutableQueryState.h"
 #import "PFPropertyInfo.h"
-#import "PFMacros.h"
 
 @implementation PFQueryState
 
@@ -22,24 +21,24 @@
 
 + (NSDictionary *)propertyAttributes {
     return @{
-        PFQueryStatePropertyName(parseClassName): [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
-        PFQueryStatePropertyName(conditions): [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
-        PFQueryStatePropertyName(sortKeys): [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
-        PFQueryStatePropertyName(includedKeys): [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
-        PFQueryStatePropertyName(selectedKeys): [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
-        PFQueryStatePropertyName(extraOptions): [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
+        @"parseClassName": [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
+        @"conditions": [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
+        @"sortKeys": [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
+        @"includedKeys": [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
+        @"selectedKeys": [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
+        @"extraOptions": [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy],
 
-        PFQueryStatePropertyName(limit): [PFPropertyAttributes attributes],
-        PFQueryStatePropertyName(skip): [PFPropertyAttributes attributes],
-        PFQueryStatePropertyName(cachePolicy): [PFPropertyAttributes attributes],
-        PFQueryStatePropertyName(maxCacheAge): [PFPropertyAttributes attributes],
+        @"limit": [PFPropertyAttributes attributes],
+        @"skip": [PFPropertyAttributes attributes],
+        @"cachePolicy": [PFPropertyAttributes attributes],
+        @"maxCacheAge": [PFPropertyAttributes attributes],
 
-        PFQueryStatePropertyName(trace): [PFPropertyAttributes attributes],
-        PFQueryStatePropertyName(shouldIgnoreACLs): [PFPropertyAttributes attributes],
-        PFQueryStatePropertyName(shouldIncludeDeletingEventually): [PFPropertyAttributes attributes],
-        PFQueryStatePropertyName(queriesLocalDatastore): [PFPropertyAttributes attributes],
+        @"trace": [PFPropertyAttributes attributes],
+        @"shouldIgnoreACLs": [PFPropertyAttributes attributes],
+        @"shouldIncludeDeletingEventually": [PFPropertyAttributes attributes],
+        @"queriesLocalDatastore": [PFPropertyAttributes attributes],
 
-        PFQueryStatePropertyName(localDatastorePinName): [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy]
+        @"localDatastorePinName": [PFPropertyAttributes attributesWithAssociationType:PFPropertyInfoAssociationTypeCopy]
     };
 }
 

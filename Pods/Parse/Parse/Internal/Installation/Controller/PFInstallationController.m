@@ -83,12 +83,12 @@
 ///--------------------------------------
 
 - (BFTask *)deleteObjectAsync:(PFObject *)object withSessionToken:(nullable NSString *)sessionToken {
-    PFConsistencyAssertionFailure(@"Installations cannot be deleted.");
+    PFConsistencyAssert(NO, @"Installations cannot be deleted.");
     return nil;
 }
 
 - (BFTask *)processDeleteResultAsync:(nullable NSDictionary *)result forObject:(PFObject *)object {
-    PFConsistencyAssertionFailure(@"Installations cannot be deleted.");
+    PFConsistencyAssert(NO, @"Installations cannot be deleted.");
     return nil;
 }
 

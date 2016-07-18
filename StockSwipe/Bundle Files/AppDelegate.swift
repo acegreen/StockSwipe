@@ -273,7 +273,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         
-        guard let currentInstallation = PFInstallation.currentInstallation() else { return }
+        let currentInstallation = PFInstallation.currentInstallation()
         currentInstallation.setDeviceTokenFromData(deviceToken)
         currentInstallation.saveInBackground()
     }
@@ -332,7 +332,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         
         // Clear Parse Push badges
         if application.isRegisteredForRemoteNotifications() {
-            guard let currentInstallation = PFInstallation.currentInstallation() else { return }
+            let currentInstallation = PFInstallation.currentInstallation()
             currentInstallation.badge = 0
             currentInstallation.saveEventually()
         }

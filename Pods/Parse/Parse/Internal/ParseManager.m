@@ -427,15 +427,12 @@ static NSString *const _ParseApplicationIdFileName = @"applicationId";
     @weakify(self);
     return [BFTask taskFromExecutor:[BFExecutor executorWithDispatchQueue:_preloadQueue] withBlock:^id{
         @strongify(self);
-
-        NSArray *tasks = @[
-                           [PFUser getCurrentUserInBackground],
-                           [PFConfig getCurrentConfigInBackground],
+        [PFUser currentUser];
+        [PFConfig currentConfig];
 #if !TARGET_OS_WATCH && !TARGET_OS_TV
-                           [PFInstallation getCurrentInstallationInBackground],
+        [PFInstallation currentInstallation];
 #endif
-                           ];
-        [[BFTask taskForCompletionOfAllTasks:tasks] waitUntilFinished]; // Wait synchronously to make sure we are blocking preload queue.
+        
         [self eventuallyQueue];
 
         return nil;

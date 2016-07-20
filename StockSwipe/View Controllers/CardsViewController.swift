@@ -309,7 +309,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             print("extraSetOfObjects count", self.extraSetOfObjects.count)
             
             completion(result: {return true})
-            
         }
     }
     

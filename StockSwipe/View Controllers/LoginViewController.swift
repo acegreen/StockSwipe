@@ -276,6 +276,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 } else {
                     user["full_name"] = PFTwitterUtils.twitter()?.screenName
                 }
+                user["fullname_lowercase"] = user["full_name"].lowercaseString
                 
                 if let twitterEmail = result["email"].string {
                     user.email = twitterEmail
@@ -303,7 +304,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     if success {
                         
                         // register current installation
-                        let currentInstallation = PFInstallation.currentInstallation()
+                        guard let currentInstallation = PFInstallation.currentInstallation() else { return }
                         currentInstallation["user"] = user
                         currentInstallation.saveInBackground()
                         
@@ -367,6 +368,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                             user["username_lowercase"] = user.username!.lowercaseString
                             
                             user["full_name"] = facebookNameFromName
+                            user["fullname_lowercase"] = user["full_name"].lowercaseString
                             
                             firstName = facebookNameFromName.componentsSeparatedByString(" ").first
                             lastName = facebookNameFromName.componentsSeparatedByString(" ").last
@@ -404,7 +406,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         
                         if success {
                             // register current installation
-                            let currentInstallation = PFInstallation.currentInstallation()
+                            guard let currentInstallation = PFInstallation.currentInstallation() else { return }
                             currentInstallation["user"] = user
                             currentInstallation.saveInBackground()
                             

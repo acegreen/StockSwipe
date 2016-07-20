@@ -27,7 +27,8 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
         Constants.appDel.pushDelegate = self
         
         // Become OverviewViewcontroller AnimationDelegate
-        let overviewVC = self.viewControllers!.first as! OverviewViewController
+        let navigationVC = self.viewControllers!.first as! UINavigationController
+        let overviewVC = navigationVC.viewControllers.first as! OverviewViewController
         overviewVC.animationDelegate = self
     }
     
@@ -48,7 +49,7 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
         
         // Handle received remote notification
         if let notificationTitle = userInfo["title"] as? String {
-            if notificationTitle == "Follower Notification" || notificationTitle == "Trade Idea New Notification" || notificationTitle == "Trade Idea Reply Notification" || notificationTitle == "Trade Idea Like Notification" || notificationTitle == "Trade Idea Reshare Notification" {
+            if notificationTitle == "Follower Notification" || notificationTitle == "Trade Idea Reply Notification" || notificationTitle == "Trade Idea Like Notification" || notificationTitle == "Trade Idea Reshare Notification" {
                 self.tabBar.items?[3].badgeValue = "1"
             }
         }

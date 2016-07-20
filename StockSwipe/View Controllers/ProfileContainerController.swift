@@ -28,7 +28,7 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
     
     @IBAction func segmentedControlAction(sender: UISegmentedControl) {
         selectedSegmentIndex = SegmentIndex(rawValue: sender.selectedSegmentIndex)!
-        self.delegate.subDidSelectSegment(sender)
+        self.delegate?.subDidSelectSegment(sender)
     }
     
     @IBOutlet var barOffset: NSLayoutConstraint!

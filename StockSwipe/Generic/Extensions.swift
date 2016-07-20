@@ -80,6 +80,21 @@ extension Int {
 
 extension String {
     
+    func NSRangeFromRange(range: Range<String.Index>) -> NSRange {
+        let utf16view = self.utf16
+        let from = String.UTF16View.Index(range.startIndex, within: utf16view)
+        let to = String.UTF16View.Index(range.endIndex, within: utf16view)
+        return NSMakeRange(utf16view.startIndex.distanceTo(from), from.distanceTo(to))
+    }
+    
+    mutating func dropTrailingCharacters(dropCharacterSet: NSCharacterSet) {
+        let nonCharacters = dropCharacterSet
+        let characterArray = componentsSeparatedByCharactersInSet(nonCharacters)
+        if let first = characterArray.first {
+            self = first
+        }
+    }
+    
     func URLEncodedString() -> String? {
         let escapedString = self.stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())
         return escapedString
@@ -379,48 +394,11 @@ extension UIImage {
 
 extension DetectTags where Self: UITextView {
     
-//    func detectTags(range: NSRange, text: String) {
-//        
-//        print("text", text)
-//        print("range", range)
-//        
-//        // turn string in to NSString
-//        let currentText: NSString = self.text
-//        
-//        let words:[NSString] = currentText.componentsSeparatedByCharactersInSet(.whitespaceAndNewlineCharacterSet())
-//        
-//        // use storyboard attributes
-//        var attributes: [String: AnyObject]?
-//        if let name = self.font?.familyName, let size = self.font?.pointSize {
-//            attributes = [
-//                NSFontAttributeName : UIFont(name: name, size: size) as! AnyObject,
-//                NSForegroundColorAttributeName : (self.textColor ?? UIColor.blackColor())
-//            ]
-//        }
-//        
-//        // you can staple URLs onto attributed strings
-//        let attrString = NSMutableAttributedString(string: currentText as String, attributes: attributes)
-//        
-//        for word in words {
-//            
-//            // we need this because we staple the "href" to this range.
-//            let matchRange:NSRange = currentText.rangeOfString(word as String)
-//            
-//            if word.hasPrefix("$") || word.hasPrefix("@") || word == "@" || word == "$" {
-//                
-//                // set a link for when the user clicks on this word.
-//                attrString.addAttribute(NSForegroundColorAttributeName, value: Constants.stockSwipeGreenColor, range: matchRange)
-//                
-//            }
-//        }
-//        
-//        self.attributedText = attrString
-//    }
-    
-    func detectTags() -> (cashtags: [String], mentions: [String]) {
+    func detectTags() -> (cashtags: [String], mentions: [String], hashtags: [String]) {
         
         var cashtags = [String]()
         var mentions = [String]()
+        var hashtags = [String]()
         
         // turn string in to NSString
         let currentText = self.text
@@ -429,27 +407,44 @@ extension DetectTags where Self: UITextView {
         
         for word in words {
             
+            var wordWithTagRemoved = String(word.characters.dropFirst())
+            
             if word.hasPrefix("$") {
                 
-                cashtags.append(String(word.characters.dropFirst()))
-            
+                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                
+                // check to see if the hashtag has numbers.
+                // ribl is "#1" shouldn't be considered a hashtag.
+                let digits = NSCharacterSet.decimalDigitCharacterSet()
+                if wordWithTagRemoved.rangeOfCharacterFromSet(digits) == nil {
+                    cashtags.append(wordWithTagRemoved)
+                }
+                
             } else if word.hasPrefix("@") {
                 
-                mentions.append(String(word.characters.dropFirst()))
-
+                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                mentions.append(wordWithTagRemoved)
+            } else if word.hasPrefix("#") {
+                
+                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                
+                // check to see if the hashtag has numbers.
+                // ribl is "#1" shouldn't be considered a hashtag.
+                let digits = NSCharacterSet.decimalDigitCharacterSet()
+                if wordWithTagRemoved.rangeOfCharacterFromSet(digits) == nil {
+                    hashtags.append(wordWithTagRemoved)
+                }
+                
             }
         }
         
-        return (cashtags, mentions)
+        return (cashtags, mentions, hashtags)
     }
     
     func resolveTags() {
         
-        // turn string in to NSString
-        let nsText:NSString = self.text
-        
         // this needs to be an array of NSString.  String does not work.
-        let words:[NSString] = nsText.componentsSeparatedByCharactersInSet(.whitespaceAndNewlineCharacterSet())
+        let words = self.text.componentsSeparatedByCharactersInSet(.whitespaceAndNewlineCharacterSet())
         
         // use storyboard attributes
         var attributes: [String: AnyObject]?
@@ -461,58 +456,73 @@ extension DetectTags where Self: UITextView {
         }
         
         // you can staple URLs onto attributed strings
-        let attrString = NSMutableAttributedString(string: nsText as String, attributes: attributes)
+        let attributedString = NSMutableAttributedString(string: self.text, attributes: attributes)
+        
+        // keep track of where we are as we interate through the string.
+        // otherwise, a string like "#test #test" will only highlight the first one.
+        var bookmark = text.startIndex
         
         // tag each word if it has a hashtag
         for word in words {
+            
+            // convert the word from NSString to String
+            // this allows us to call "dropFirst" to remove the hashtag
+            var stringifiedWord:String = word as String
+            
+            // drop the hashtag
+            stringifiedWord = String(stringifiedWord.characters.dropFirst())
             
             // found a word that is prepended by a hashtag!
             // homework for you: implement @mentions here too.
             if word.hasPrefix("$") {
                 
-                // a range is the character position, followed by how many characters are in the word.
-                // we need this because we staple the "href" to this range.
-                let matchRange:NSRange = nsText.rangeOfString(word as String)
+                // drop unwanted characters
+                stringifiedWord.dropTrailingCharacters(NSCharacterSet.letterCharacterSet().invertedSet)
                 
-                // convert the word from NSString to String
-                // this allows us to call "dropFirst" to remove the hashtag
-                var stringifiedWord:String = word as String
-                
-                // drop the hashtag
-                stringifiedWord = String(stringifiedWord.characters.dropFirst())
+                let remainingRange = Range(bookmark..<text.endIndex)
                 
                 // check to see if the hashtag has numbers.
                 // ribl is "#1" shouldn't be considered a hashtag.
                 let digits = NSCharacterSet.decimalDigitCharacterSet()
                 
                 if stringifiedWord.rangeOfCharacterFromSet(digits) != nil {
-                    // hashtag contains a number, like "#1"
+                    // hashtag contains a number, like "$1"
                     // so not clickable
-                } else {
-                    // set a link for when the user clicks on this word.
-                    // url scheme syntax "cash://"
-                    attrString.addAttribute(NSLinkAttributeName, value: "cash:\(stringifiedWord)", range: matchRange)
+                } else if let matchRange = text.rangeOfString(word as String, options: .LiteralSearch, range:remainingRange),
+                    let escapedString = stringifiedWord.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
+                    attributedString.addAttribute(NSLinkAttributeName, value: "cash:\(escapedString)", range: text.NSRangeFromRange(matchRange))
                 }
                 
             } else if word.hasPrefix("@") {
-                // a range is the character position, followed by how many characters are in the word.
-                // we need this because we staple the "href" to this range.
-                let matchRange:NSRange = nsText.rangeOfString(word as String)
+                // drop unwanted characters
+                stringifiedWord.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
                 
-                // convert the word from NSString to String
-                // this allows us to call "dropFirst" to remove the hashtag
-                var stringifiedWord:String = word as String
-                
-                // drop the hashtag
-                stringifiedWord = String(stringifiedWord.characters.dropFirst())
+                let remainingRange = Range(bookmark..<text.endIndex)
                 
                 // set a link for when the user clicks on this word.
-                // url scheme syntax "mention://"
-                attrString.addAttribute(NSLinkAttributeName, value: "mention:\(stringifiedWord)", range: matchRange)
+                // url scheme syntax "mention://" or "hash://"
+                if let matchRange = text.rangeOfString(word, options: .LiteralSearch, range:remainingRange),
+                    let escapedString = stringifiedWord.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
+                    attributedString.addAttribute(NSLinkAttributeName, value: "mention:\(escapedString)", range: text.NSRangeFromRange(matchRange))
+                }
+            } else if  word.hasPrefix("#") {
+                // drop unwanted characters
+                stringifiedWord.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                
+                let remainingRange = Range(bookmark..<text.endIndex)
+                
+                // set a link for when the user clicks on this word.
+                // url scheme syntax "mention://" or "hash://"
+                if let matchRange = text.rangeOfString(word, options: .LiteralSearch, range:remainingRange),
+                    let escapedString = stringifiedWord.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
+                    attributedString.addAttribute(NSLinkAttributeName, value: "hash:\(escapedString)", range: text.NSRangeFromRange(matchRange))
+                }
             }
+            
+            bookmark = bookmark.advancedBy(word.characters.count)
         }
         
-        self.attributedText = attrString
+        self.attributedText = attributedString
     }
 }
 
@@ -521,6 +531,26 @@ extension UIViewController {
         if let presentingViewController = presentingViewController {
             return traitCollection.horizontalSizeClass == .Compact && presentingViewController.traitCollection.horizontalSizeClass == .Regular
         }
+        return false
+    }
+    
+    func isModal() -> Bool {
+        if self.presentingViewController != nil {
+            return true
+        }
+        
+        if self.presentingViewController?.presentedViewController == self {
+            return true
+        }
+        
+        if self.navigationController?.presentingViewController?.presentedViewController == self.navigationController  {
+            return true
+        }
+        
+        if self.tabBarController?.presentingViewController is UITabBarController {
+            return true
+        }
+        
         return false
     }
 }

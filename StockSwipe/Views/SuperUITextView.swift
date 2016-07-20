@@ -30,7 +30,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
     func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
         
         switch URL.scheme {
-        case "cash" :
+        case "cash":
             
             let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
             
@@ -62,7 +62,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                 }
             }
             
-        case "mention" :
+        case "mention":
             
             QueryHelper.sharedInstance.queryUserObjectsFor([URL.resourceSpecifier], completion: { (result) in
                 
@@ -86,6 +86,9 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     }
                 }
             })
+            
+        case "hash":
+            SweetAlert().showAlert("Coming Soon!", subTitle: "hashtags will be supported soon", style: AlertStyle.Warning)
             
         default:
             Functions.presentSafariBrowser(URL)

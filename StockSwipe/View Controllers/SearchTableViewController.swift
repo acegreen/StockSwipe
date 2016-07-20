@@ -12,7 +12,7 @@ import Parse
 class SearchTableViewController: UITableViewController {
     
     var recentSearches = [PFObject]()
-    var searchArray = [PFObject]()
+    var searchResults = [PFObject]()
     
     var searchController: UISearchController = {
         let controller = UISearchController(searchResultsController: nil)
@@ -62,43 +62,83 @@ class SearchTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch searchController.active {
         case true:
-            return searchArray.count
+            return searchResults.count
         case false:
             return recentSearches.count
         }
     }
-
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("SearchCell", forIndexPath: indexPath)
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         
-        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SearchTableViewController.longPress(_:)))
-        cell.addGestureRecognizer(longPressRecognizer)
-        
+        let objectAtIndex: PFObject
         switch searchController.active {
         case true:
-            
-            let parseObject = searchArray[indexPath.row]
-            cell.textLabel?.text = parseObject.objectForKey("Symbol") as? String
-            return cell
+            objectAtIndex = searchResults[indexPath.row]
         case false:
-            let parseObject = recentSearches[indexPath.row]
-            cell.textLabel?.text = parseObject.objectForKey("Symbol") as? String
+            objectAtIndex = recentSearches[indexPath.row]
+        }
+        
+        if objectAtIndex.isKindOfClass(PFUser) {
+            return 150
+        } else {
+            return 45
+        }
+    }
+
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let objectAtIndex: PFObject
+        switch searchController.active {
+        case true:
+            objectAtIndex = searchResults[indexPath.row]
+        case false:
+            objectAtIndex = recentSearches[indexPath.row]
+        }
+        
+        if objectAtIndex.isKindOfClass(PFUser) {
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("UserCell", forIndexPath: indexPath) as! UserCell
+            cell.configureCell(objectAtIndex as? PFUser)
+            
+            return cell
+            
+        } else {
+            
+            let cell = tableView.dequeueReusableCellWithIdentifier("SearchCell", forIndexPath: indexPath)
+            
+            let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SearchTableViewController.longPress(_:)))
+            cell.addGestureRecognizer(longPressRecognizer)
+            cell.textLabel?.text = objectAtIndex.objectForKey("Symbol") as? String
+            
             return cell
         }
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
-        if searchController.active {
+        let objectAtIndex: PFObject
+        switch searchController.active {
+        case true:
             searchController.active = false
-            presentChartDetail(self.searchArray[indexPath.row])
-            
+            objectAtIndex = searchResults[indexPath.row]
+        case false:
+            objectAtIndex = recentSearches[indexPath.row]
+        }
+        
+        self.updateUserRecentSearch(objectAtIndex)
+        
+        if objectAtIndex.isKindOfClass(PFUser) {
+            presentProfile(objectAtIndex as! PFUser)
         } else {
-            presentChartDetail(self.recentSearches[indexPath.row])
+            presentChartDetail(objectAtIndex)
         }
     }
     
-    func search(searchText: String?) {
+    func searchStocks(searchText: String?) {
         let query = PFQuery(className: "Stocks")
         query.cancel()
         if let searchText = searchText where !searchText.isEmpty {
@@ -111,9 +151,25 @@ class SearchTableViewController: UITableViewController {
         query.findObjectsInBackgroundWithBlock { (results, error) -> Void in
             
             if let results = results {
-                self.searchArray = results
+                self.searchResults = results
             }
             self.tableView.reloadData()
+        }
+    }
+    
+    func searchStocksAndUsers(searchText: String?) {
+    
+        guard let search = searchText else { return }
+        
+        PFCloud.callFunctionInBackground("searchStocksAndUsersFor", withParameters: ["search": search]) { (results, error) -> Void in
+            
+            guard error == nil else { return }
+            
+            guard let results = results as? [PFObject] else { return }
+            
+            self.searchResults = results
+            self.tableView.reloadData()
+            
         }
     }
     
@@ -154,8 +210,6 @@ class SearchTableViewController: UITableViewController {
         
         self.dismissViewControllerAnimated(true) {
             
-            self.updateUserRecentSearch(stockObject)
-            
             let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
             
             let symbol = stockObject["Symbol"] as? String
@@ -167,6 +221,18 @@ class SearchTableViewController: UITableViewController {
             
             chartDetailTabBarController.chart = chart
             UIApplication.topViewController()?.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
+        }
+    }
+    
+    func presentProfile(user: PFUser) {
+        
+        self.dismissViewControllerAnimated(true) {
+            
+            let profileNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileNavigationController") as! UINavigationController
+            let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
+            profileContainerController.user = User(userObject: user)
+            
+            UIApplication.topViewController()?.presentViewController(profileNavigationController, animated: true, completion: nil)
         }
     }
     
@@ -187,7 +253,7 @@ class SearchTableViewController: UITableViewController {
                 let cellIndex = self.tableView.indexPathForCell(cell)!
                 switch searchController.active {
                 case true:
-                    stockObjectAtIndex = searchArray[cellIndex.row]
+                    stockObjectAtIndex = searchResults[cellIndex.row]
                     
                 case false:
                     stockObjectAtIndex = recentSearches[cellIndex.row]
@@ -242,7 +308,7 @@ class SearchTableViewController: UITableViewController {
 
 extension SearchTableViewController: UISearchResultsUpdating, UISearchControllerDelegate {
     func updateSearchResultsForSearchController(searchController: UISearchController) {
-        search(searchController.searchBar.text)
+        searchStocksAndUsers(searchController.searchBar.text)
     }
     
     func didPresentSearchController(searchController: UISearchController) {

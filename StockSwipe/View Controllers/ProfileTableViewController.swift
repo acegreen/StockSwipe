@@ -65,7 +65,10 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.currentUser() else {
+            Functions.isUserLoggedIn(self)
+            return
+        }
         guard let user = self.user else { return }
         
         let settingsAlert = UIAlertController()
@@ -190,7 +193,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 200.0
         
-        checkProfileSettings()
         getProfile()
         getUserTradeIdeas()
         
@@ -226,21 +228,23 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     }
     
     override func scrollViewDidScroll(scrollView: UIScrollView) {
-        self.delegate.subScrollViewDidScroll(scrollView)
+        self.delegate?.subScrollViewDidScroll(scrollView)
     }
     
-    func checkProfileSettings() {
+    func checkProfileButtonSettings() {
         if user?.userObject.objectId == PFUser.currentUser()?.objectId {
             followButton.hidden = true
-            editProfileButton.hidden = false
+            //editProfileButton.hidden = false
+        } else {
+            //editProfileButton.hidden = true
         }
-        profileButtonsStack.sizeToFit()
     }
     
     func getProfile() {
         
         guard let user = user else { return }
         
+        checkProfileButtonSettings()
         checkFollow(self.followButton)
         
         if let profileImageURL = user.userObject.objectForKey("profile_image_url") as? String {
@@ -671,7 +675,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     }
     
     func didLogoutSuccessfully() {
-        self.getProfile()
+        if isModal() {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        } else {
+            navigationController?.popViewControllerAnimated(true)
+        }
     }
     
     func updateRefreshDate() {

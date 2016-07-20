@@ -58,7 +58,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         let tradeIdeaPostNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("TradeIdeaPostNavigationController") as! UINavigationController
         let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
         
-        ideaPostViewController.tradeIdea = self.tradeIdea
+        ideaPostViewController.originalTradeIdea = self.tradeIdea
         ideaPostViewController.tradeIdeaType = .Reply
         ideaPostViewController.delegate =  self
         
@@ -73,7 +73,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             let tradeIdeaPostNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("TradeIdeaPostNavigationController") as! UINavigationController
             let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
             
-            ideaPostViewController.tradeIdea = self.tradeIdea
+            ideaPostViewController.originalTradeIdea = self.tradeIdea
             ideaPostViewController.tradeIdeaType = .Reshare
             ideaPostViewController.delegate =  self
             
@@ -151,7 +151,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         if let user = PFUser.currentUser() where self.tradeIdea.user.objectId == user.objectId  {
             let deleteIdea = UIAlertAction(title: "Delete Idea", style: .Default) { action in
                 
-                QueryHelper.sharedInstance.queryActivityFor(user, toUser: nil, originalTradeIdea: nil, tradeIdea: self.tradeIdea.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.tradeIdea.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue, Constants.ActivityType.TradeIdeaLike.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.Mention.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -216,13 +216,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         checkLike(tradeIdea, sender: self.likeButton)
         checkReshare(tradeIdea, sender: self.reshareButton)
         checkMore()
-        
-        // Add Gesture Recognizers
-        let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
-        
-        let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
     }
     
     func configureMainTradeIdea(tradeIdea: TradeIdea!, timeFormat: Constants.TimeFormat) {
@@ -233,8 +226,23 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             guard let user = user as? PFUser else { return }
             
-            self.userName.text = user["full_name"] as? String
-            self.userTag.text = "@\(user.username!)"
+            if let fullname = user["full_name"] as? String {
+                self.userName.text = fullname
+                
+                let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+                self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
+                
+            } else {
+                self.userName.text = "John Doe"
+            }
+            
+            if self.userTag != nil {
+                if let username = user.username {
+                    self.userTag.text = "@\(username)"
+                } else {
+                    self.userTag.text = "@johnDoe"
+                }
+            }
             
             self.ideaDescription.text = tradeIdea.description
             
@@ -245,22 +253,27 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                 self.ideaTime.text = tradeIdea.publishedDate.formattedAsTimeAgo()
             }
             
-            guard let avatarURL = user.objectForKey("profile_image_url") as? String else { return }
-            
-            QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
-                
-                do {
+            if let avatarURL = user.objectForKey("profile_image_url") as? String {
+                QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
                     
-                    let avatarData  = try result()
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.userAvatar.image = UIImage(data: avatarData)
-                    })
-                    
-                } catch {
-                    // TODO: Handle error
-                }
-            })
+                    do {
+                        
+                        let avatarData  = try result()
+                        
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.userAvatar.image = UIImage(data: avatarData)
+                        })
+                        
+                    } catch {
+                        // TODO: Handle error
+                    }
+                })
+                // Add Gesture Recognizers
+                let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+                self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
+            } else {
+                self.userAvatar.image = UIImage(named: "dummy_profile_male_big")
+            }
         })
     }
     
@@ -280,8 +293,19 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             guard let user = user as? PFUser else { return }
             
-            self.nestedUsername.text = user["full_name"] as? String
-            self.nestedUserTag.text = "@\(user.username!)"
+            if let fullname = user["full_name"] as? String {
+                self.nestedUsername.text = fullname
+            } else {
+                self.nestedUsername.text = "John Doe"
+            }
+            
+            if self.nestedUserTag != nil {
+                if let username = user.username {
+                    self.nestedUserTag.text = "@\(username)"
+                } else {
+                    self.nestedUserTag.text = "@johnDoe"
+                }
+            }
             
             if let avatarURL = user.objectForKey("profile_image_url") as? String  {
                 
@@ -299,13 +323,14 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         // TODO: Handle error
                     }
                 })
+                let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+                self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
+            } else {
+                self.userAvatar.image = UIImage(named: "dummy_profile_male_big")
             }
         })
         
         self.nestedIdeaDescription.text = nestedTradeIdea.description
-        
-        let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
         
         let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
         self.nestedUsername.addGestureRecognizer(tapGestureRecognizerNestedUsername)
@@ -317,7 +342,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.registerReshare(sender: self.reshareButton)
         }
         
-        self.delegate.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaTyp)
+        self.delegate?.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaTyp)
         
         guard let currentUser = PFUser.currentUser() where currentUser.objectId != self.tradeIdea.user.objectId else { return }
         

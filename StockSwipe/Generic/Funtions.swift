@@ -73,6 +73,7 @@ public class Functions {
                     
                     let logInViewcontroller = LoginViewController.sharedInstance
                     logInViewcontroller.logIn(viewController)
+                    logInViewcontroller.loginDelegate = viewController as? LoginDelegate
                 }
             }
         })
@@ -318,6 +319,7 @@ public class Functions {
                     if (firstActivityObjectActivityType == Constants.ActivityType.StockLong.rawValue &&  choice == .LONG) || (firstActivityObjectActivityType == Constants.ActivityType.StockShort.rawValue &&  choice == .SHORT) {
                         
                         firstActivityObject.saveEventually()
+                    
                     } else {
                         
                         switch choice {
@@ -325,14 +327,20 @@ public class Functions {
                         case .LONG:
                             
                             firstActivityObject["activityType"] = Constants.ActivityType.StockLong.rawValue
-                            chart.shortCount -= 1
+                            
+                            if chart.shortCount > 1 {
+                                chart.shortCount -= 1
+                            }
                             chart.longCount += 1
                             
                         case .SHORT:
                             
                             firstActivityObject["activityType"] = Constants.ActivityType.StockShort.rawValue
+                            
                             chart.shortCount += 1
-                            chart.longCount -= 1
+                            if chart.longCount > 1 {
+                                chart.longCount -= 1
+                            }
                             
                         default:
                             break

@@ -237,7 +237,7 @@ public class QueryHelper {
         }
     }
     
-    public func queryTradeIdeaObjectsFor(key: String, object: PFObject, skip: Int, limit: Int?, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
+    public func queryTradeIdeaObjectsFor(key: String?, object: PFObject?, skip: Int, limit: Int?, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion(result: {throw Constants.Errors.NoInternetConnection})
@@ -247,7 +247,9 @@ public class QueryHelper {
         tradeIdeaQuery.cachePolicy = cachePolicy
         tradeIdeaQuery.includeKeys(["user", "reshare_of"])
 
-        tradeIdeaQuery.whereKey(key, equalTo: object)
+        if let key = key, let object = object {
+            tradeIdeaQuery.whereKey(key, equalTo: object)
+        }
         
         if key != "user", let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             tradeIdeaQuery.whereKey("user", notContainedIn: blockedUsers)

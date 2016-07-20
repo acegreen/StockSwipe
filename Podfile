@@ -23,7 +23,7 @@ target 'StockSwipe' do
     pod 'ChimpKit'
     
     # Parse
-    pod 'Parse', '1.13.0'
+    pod 'Parse'
     pod 'ParseFacebookUtilsV4'
     pod 'ParseTwitterUtils'
     pod 'ParseUI'

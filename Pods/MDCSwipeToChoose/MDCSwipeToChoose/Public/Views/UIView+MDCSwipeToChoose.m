@@ -50,6 +50,7 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
 
 - (void)mdc_swipe:(MDCSwipeDirection)direction {
     [self mdc_swipeToChooseSetupIfNecessary];
+    self.mdc_viewState.originalCenter = self.center;
     
     // A swipe in no particular direction "finalizes" the swipe.
     if (direction == MDCSwipeDirectionNone) {
@@ -59,7 +60,6 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
     
     // Moves the view to the minimum point exceeding the threshold.
     // Transforms and executes pan callbacks as well.
-    self.mdc_viewState.originalCenter = self.center;
     void (^animations)(void) = ^{
         CGPoint translation = [self mdc_translationExceedingThreshold:self.mdc_options.threshold
                                                             direction:direction];
@@ -189,6 +189,7 @@ const void * const MDCViewStateKey = &MDCViewStateKey;
             self.mdc_options.onChosen(state);
         } no:^{
             [self mdc_returnToOriginalCenter];
+            [self mdc_executeOnPanBlockForTranslation:CGPointZero];
             if (self.mdc_options.onCancel != nil){
                 self.mdc_options.onCancel(self);
             }

@@ -36,35 +36,43 @@ class UserCell: UITableViewCell {
             
             if let fullname = user["full_name"] as? String {
                 self.fullname.text = fullname
+                
+                let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
+                self.fullname.addGestureRecognizer(tapGestureRecognizerMainUsername)
+                
+            } else {
+                self.fullname.text = "John Doe"
             }
             
             if let username = user.username {
                  self.username.text = "@\(username)"
+            } else {
+                self.username.text = "@johnDoe"
             }
             
-            guard let avatarURL = user.objectForKey("profile_image_url") as? String else { return }
-            
-            QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
+            if let avatarURL = user.objectForKey("profile_image_url") as? String {
                 
-                do {
+                QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
                     
-                    let avatarData  = try result()
-                    
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        self.userAvatar.image = UIImage(data: avatarData)
-                    })
-                    
-                } catch {
-                    // TODO: Handle error
-                }
-            })
-            
-            // Add Gesture Recognizers
-            let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
-            self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
-            
-            let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
-            self.username.addGestureRecognizer(tapGestureRecognizerMainUsername)
+                    do {
+                        
+                        let avatarData  = try result()
+                        
+                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                            self.userAvatar.image = UIImage(data: avatarData)
+                        })
+                        
+                    } catch {
+                        // TODO: Handle error
+                    }
+                })
+                
+                // Add Gesture Recognizers
+                let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
+                self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
+            } else  {
+                self.userAvatar.image = UIImage(named: "dummy_profile_male_big")
+            }
             
             self.checkBlock(self.blockButton)
         })
@@ -111,58 +119,7 @@ class UserCell: UITableViewCell {
             })
             return
         }
-        
-        if currentUser.objectForKey("blocked_users") != nil {
-            
-            currentUser.addUniqueObject(user, forKey: "blocked_users")
-            
-        } else {
-            
-            currentUser.setObject([user], forKey: "blocked_users")
-        }
-        
-        currentUser.saveEventually { (success, error) in
-            
-            if success {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.Success)
-                })
-                
-                sender.buttonState = .Blocked
-                
-                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: self.user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
-                    
-                    do {
-                        
-                        let activityObject = try result()
-                        activityObject.first?.deleteEventually()
-                        
-                    } catch {
-                        
-                        // TO-DO: handle error
-                        
-                    }
-                })
-                
-                QueryHelper.sharedInstance.queryActivityFor(self.user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
-                    
-                    do {
-                        
-                        let activityObject = try result()
-                        activityObject.first?.deleteEventually()
-                        
-                    } catch {
-                        
-                        // TO-DO: handle error
-                        
-                    }
-                })
-                
-            } else {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
-                })
-            }
-        }
+    
+        Functions.blockUser(self.user, postAlert: true)
     }
 }

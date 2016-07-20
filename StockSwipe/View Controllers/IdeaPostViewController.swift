@@ -27,8 +27,8 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    var stockObject: PFObject!
-    var tradeIdea: TradeIdea!
+    var stockObject: PFObject?
+    var originalTradeIdea: TradeIdea?
     var tradeIdeaType: Constants.TradeIdeaType = .New
     
     var delegate: IdeaPostDelegate!
@@ -60,7 +60,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             return
         }
         
-        let (cashtags, mentions) = self.ideaTextView.detectTags()
+        let (cashtags, mentions, hashtags) = self.ideaTextView.detectTags()
         
         let tradeIdeaObject = PFObject(className: "TradeIdea")
         tradeIdeaObject["user"] = currentUser
@@ -70,16 +70,16 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         activityObject["fromUser"] = currentUser
         activityObject["tradeIdea"] = tradeIdeaObject
         
-        if tradeIdeaType == .Reply && tradeIdea != nil {
+        if tradeIdeaType == .Reply, let originalTradeIdea = self.originalTradeIdea {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaReply.rawValue
-            activityObject["toUser"] = tradeIdea.user
-            activityObject["originalTradeIdea"] = tradeIdea.parseObject
-            tradeIdeaObject["reply_to"] = tradeIdea.parseObject
-        } else if tradeIdeaType == .Reshare && tradeIdea != nil {
+            activityObject["toUser"] = originalTradeIdea.user
+            activityObject["originalTradeIdea"] = originalTradeIdea.parseObject
+            tradeIdeaObject["reply_to"] = originalTradeIdea.parseObject
+        } else if tradeIdeaType == .Reshare, let originalTradeIdea = self.originalTradeIdea {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaReshare.rawValue
-            activityObject["toUser"] = tradeIdea.user
-            activityObject["originalTradeIdea"] = tradeIdea.parseObject
-            tradeIdeaObject["reshare_of"] = tradeIdea.parseObject
+            activityObject["toUser"] = originalTradeIdea.user
+            activityObject["originalTradeIdea"] = originalTradeIdea.parseObject
+            tradeIdeaObject["reshare_of"] = originalTradeIdea.parseObject
         } else {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaNew.rawValue
         }
@@ -92,7 +92,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 
                 let newtradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                 
-                self.delegate.ideaPosted(with: newtradeIdea, tradeIdeaTyp: self.tradeIdeaType)
+                self.delegate?.ideaPosted(with: newtradeIdea, tradeIdeaTyp: self.tradeIdeaType)
                 
                 switch self.tradeIdeaType {
                 case .New:
@@ -136,14 +136,16 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                         
                         for userObject in userObjects {
                             
-                            if userObject.objectId != self.tradeIdea.user.objectId {
-                                let activityObject = PFObject(className: "Activity")
-                                activityObject["fromUser"] = currentUser
-                                activityObject["tradeIdea"] = tradeIdeaObject
-                                activityObject["toUser"] = userObject
-                                activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
-                                activityObject.saveEventually()
+                            guard userObject.objectId != self.originalTradeIdea?.user.objectId else {
+                                continue
                             }
+                            
+                            let activityObject = PFObject(className: "Activity")
+                            activityObject["fromUser"] = currentUser
+                            activityObject["tradeIdea"] = tradeIdeaObject
+                            activityObject["toUser"] = userObject
+                            activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
+                            activityObject.saveEventually()
                         }
                         
                     } catch {
@@ -151,6 +153,17 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                     }
                     
                 })
+                
+                // record all hashtag
+                for hashtag in hashtags {
+                    
+                    let activityObject = PFObject(className: "Activity")
+                    activityObject["fromUser"] = currentUser
+                    activityObject["tradeIdea"] = tradeIdeaObject
+                    activityObject["hashtag"] = hashtag
+                    activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
+                    activityObject.saveEventually()
+                }
                 
             } else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -186,11 +199,11 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         }
         
         // prefill text
-        if tradeIdeaType == .New && self.stockObject != nil {
+        if tradeIdeaType == .New, let stockObject = self.stockObject {
             self.prefillText = "$" + (stockObject.objectForKey("Symbol") as! String)
-        } else if tradeIdeaType == .Reply && self.tradeIdea != nil {
-            self.prefillText = "@" + (tradeIdea.user.objectForKey("username") as! String)
-        } else if tradeIdeaType == .Reshare && self.tradeIdea != nil {
+        } else if tradeIdeaType == .Reply, let originalTradeIdea = self.originalTradeIdea {
+            self.prefillText = "@" + (originalTradeIdea.user.objectForKey("username") as! String)
+        } else if tradeIdeaType == .Reshare && self.originalTradeIdea != nil {
             
         }
     }

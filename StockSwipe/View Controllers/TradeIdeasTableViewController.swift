@@ -92,17 +92,13 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 self.tradeIdeas = []
                 
                 for activityObject: PFObject in activityObjects {
-                    
-                    let tradeIdeaObject = activityObject.objectForKey("tradeIdea") as? PFObject
-                    tradeIdeaObject?.fetchIfNeededInBackgroundWithBlock({ (tradeIdeaObject, error) in
+                
+                    if let tradeIdeaObject = activityObject.objectForKey("tradeIdea") as? PFObject {
                         
-                        if let tradeIdeaObject = tradeIdeaObject {
-                            
-                            let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
-                            
-                            self.tradeIdeas.append(tradeIdea)
-                        }
-                    })
+                        let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
+                        
+                        self.tradeIdeas.append(tradeIdea)
+                    }
                 }
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -149,29 +145,21 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                     
                     for activityObject: PFObject in activityObjects {
                         
-                        let tradeIdeaObject = activityObject.objectForKey("tradeIdea") as? PFObject
-                        tradeIdeaObject?.fetchIfNeededInBackgroundWithBlock({ (tradeIdeaObject, error) in
+                        if let tradeIdeaObject = activityObject.objectForKey("tradeIdea") as? PFObject {
                             
-                            if let tradeIdeaObject = tradeIdeaObject {
-                                
-                                let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
-                                
-                                //add datasource object here for tableview
-                                self.tradeIdeas.append(tradeIdea)
-                                
-                                //now insert cell in tableview
-                                self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.tradeIdeas.count - 1, inSection: 0)], withRowAnimation: .None)
-                            }
+                            let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
                             
-                            dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                self.tableView.reloadData()
-                                
-                                if self.refreshControl?.refreshing == true {
-                                    self.refreshControl?.endRefreshing()
-                                    self.updateRefreshDate()
-                                }
-                            })
-                        })
+                            //add datasource object here for tableview
+                            self.tradeIdeas.append(tradeIdea)
+                            
+                            //now insert cell in tableview
+                            self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.tradeIdeas.count - 1, inSection: 0)], withRowAnimation: .None)
+                        }
+                    }
+                    
+                    if self.footerActivityIndicator?.isAnimating() == true {
+                        self.footerActivityIndicator.stopAnimating()
+                        self.updateRefreshDate()
                     }
                 })
                 
@@ -200,12 +188,10 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     // MARK: - Table view data source
     
     override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return tradeIdeas.count
     }
     

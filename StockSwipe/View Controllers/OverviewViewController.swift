@@ -53,7 +53,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     var isQueryingForTradeIdeas = false
     var isQueryingForTopStories = false
     
-    let  tradeIdeaQueryLimit = 15
+    let  tradeIdeaQueryLimit = 10
     
     var tradeIdeasRefreshControl = UIRefreshControl()
     var topStoriesRefreshControl = UIRefreshControl()
@@ -78,10 +78,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     @IBOutlet var emptyLabel1: UILabel!
     
     @IBOutlet var emptyLabel2: UILabel!
-    
-    override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
-    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

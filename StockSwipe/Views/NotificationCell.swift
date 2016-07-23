@@ -26,16 +26,18 @@ class NotificationCell: UITableViewCell {
         self.notificationDesc.text = stringForActivityType(activity.objectForKey("activityType") as! String)
         self.notificationTime.text = activity.createdAt?.formattedAsTimeAgoShort()
         
-        let user = activity.objectForKey("fromUser") as! PFUser
-        user.fetchIfNeededInBackgroundWithBlock({ (user, error) in
+        guard let user = activity.objectForKey("fromUser") as? PFUser else { return }
+        
+        if let fullname = user["full_name"] as? String {
+            self.fullname.text = fullname
             
-            guard let user = user as? PFUser else { return }
-            
-            if let fullname = user["full_name"] as? String {
-                self.fullname.text = fullname
-            }
-            
-            guard let avatarURL = user.objectForKey("profile_image_url") as? String else { return }
+            let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(NotificationCell.handleGestureRecognizer))
+            self.fullname.addGestureRecognizer(tapGestureRecognizerMainUsername)
+        } else {
+            self.fullname.text = "John Doe"
+        }
+        
+        if let avatarURL = user.objectForKey("profile_image_url") as? String {
             
             QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
                 
@@ -50,15 +52,16 @@ class NotificationCell: UITableViewCell {
                 } catch {
                     // TODO: Handle error
                 }
+                
+                // Add Gesture Recognizers
+                let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(NotificationCell.handleGestureRecognizer))
+                self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
+                
             })
-            
-            // Add Gesture Recognizers
-            let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
-            self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
-            
-            let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
-            self.fullname.addGestureRecognizer(tapGestureRecognizerMainUsername)
-        })
+        } else {
+            self.userAvatar.image = UIImage(named: "")
+        }
+
     }
     
     func stringForActivityType(activityType: String) -> String? {

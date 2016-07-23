@@ -132,11 +132,8 @@ static NSSet *protectedKeys;
 ///--------------------------------------
 
 + (instancetype)currentInstallation {
-    return [[self getCurrentInstallationInBackground] waitForResult:nil withMainThreadWarning:NO];
-}
-
-+ (BFTask<__kindof PFInstallation *> *)getCurrentInstallationInBackground {
-    return [[self _currentInstallationController] getCurrentObjectAsync];
+    BFTask *task = [[self _currentInstallationController] getCurrentObjectAsync];
+    return [task waitForResult:nil withMainThreadWarning:NO];
 }
 
 ///--------------------------------------

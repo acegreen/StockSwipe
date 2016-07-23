@@ -175,6 +175,9 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
             self.logInViewController.fields = [PFLogInFields.Twitter, PFLogInFields.Facebook, PFLogInFields.DismissButton]
             
+            let facebookPermission = ["public_profile", "user_about_me", "user_website"]
+            self.logInViewController.facebookPermissions = facebookPermission
+            
             self.logInViewController.logInView?.logo = logInLogoLabel
             //            self.signUpViewController.signUpView?.logo = signUpLogoLabel
             
@@ -246,7 +249,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         
         if PFTwitterUtils.isLinkedWithUser(user) {
             
-            let verify = NSURL(string: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&skip_status=true&include_entities=false")
+            let verify = NSURL(string: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&skip_status=true")
             let request = NSMutableURLRequest(URL: verify!)
             PFTwitterUtils.twitter()!.signRequest(request)
             var response: NSURLResponse?
@@ -282,6 +285,10 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     user.email = twitterEmail
                 }
                 
+//                if let twitterID = result["id_str"].string {
+//                    user["twitter_id"] = twitterID
+//                }
+                
                 if let location = result["location"].string {
                     user["location"] = location
                 }
@@ -294,6 +301,22 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     user["profile_banner_url"] = profileBannerURL
                 }
                 
+                if let website = result["entities"]["url"]["urls"][0]["expanded_url"].URL?.absoluteString {
+                    user["website"] = website
+                }
+                
+                if let website_raw = result["url"].string {
+                    user["website_raw"] = [website_raw]
+                }
+                
+                if let bio = result["description"].string {
+                    user["bio"] = bio
+                }
+                
+                if let socialmedia_verified = result["verified"].bool {
+                    user["socialmedia_verified"] = socialmedia_verified
+                }
+                
                 user["follower_notification"] = true
                 user["newTradeIdea_notification"] = true
                 user["replyTradeIdea_notification"] = true
@@ -301,10 +324,11 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 user["reshareTradeIdea_notification"] = true
                 
                 user.saveInBackgroundWithBlock({ (success, error) in
+                    
                     if success {
                         
                         // register current installation
-                        guard let currentInstallation = PFInstallation.currentInstallation() else { return }
+                        let currentInstallation = PFInstallation.currentInstallation()
                         currentInstallation["user"] = user
                         currentInstallation.saveInBackground()
                         
@@ -337,7 +361,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 
                 // failure
                 print("Fetch failed: \(error.localizedDescription)")
-                
             }
             
         } else if PFFacebookUtils.isLinkedWithUser(user) {
@@ -347,7 +370,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
             if accessToken != nil {
                 
-                let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,name,location,picture.type(large),cover"], tokenString: accessToken.tokenString, version: nil, HTTPMethod: "GET")
+                let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,name,about,bio,location,picture.type(large),cover,website,verified"], tokenString: accessToken.tokenString, version: nil, HTTPMethod: "GET")
                 
                 req.startWithCompletionHandler({ (connection, object, error) in
                     
@@ -383,9 +406,14 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                             user.email = facebookEmail
                         }
                         
+//                        if let facebookID = result["id"].string {
+//                            user["facebook_id"] = facebookID
+//                        }
+                        
                         if let location = result["location"]["name"].string {
                             user["location"] = location
-                        }
+                            user["location_id"] = result["location"]["id"].string
+                        } 
                         
                         if let pictureURL = result["picture"]["data"]["url"].URL?.absoluteString {
                             user["profile_image_url"] = pictureURL
@@ -394,40 +422,57 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         if let profileBannerURL = result["cover"]["source"].URL?.absoluteString {
                             user["profile_banner_url"] = profileBannerURL
                         }
-                    }
-                    
-                    user["follower_notification"] = true
-                    user["newTradeIdea_notification"] = true
-                    user["replyTradeIdea_notification"] = true
-                    user["likeTradeIdea_notification"] = true
-                    user["reshareTradeIdea_notification"] = true
-                    
-                    user.saveInBackgroundWithBlock({ (success, error) in
                         
-                        if success {
-                            // register current installation
-                            guard let currentInstallation = PFInstallation.currentInstallation() else { return }
-                            currentInstallation["user"] = user
-                            currentInstallation.saveInBackground()
-                            
-                            // register to LaunchKit
-                            LaunchKit.sharedInstance().setUserIdentifier(user.objectId, email: user.email, name: user.username)
-                            
-                            // register to MailChimp
-                            self.registerUserMailChimp("4266807125", firstName: firstName, lastName: lastName, username: user.username, email: user.email)
-                            
-                            // send delegate info
-                            self.loginDelegate?.didLoginSuccessfully()
-                            
+                        if let website = result["website"].string {
+                            user["website"] = website.componentsSeparatedByString("\n").first
+                            user["website_raw"] = website.componentsSeparatedByString("\n")
                         }
                         
-                        self.logInViewController.dismissViewControllerAnimated(true, completion: { () -> Void in
+                        if let bio = result["bio"].string {
+                            user["bio"] = bio
+                        }
+                        
+                        if let socialmedia_verified = result["verified"].bool {
+                            user["socialmedia_verified"] = socialmedia_verified
+                        }
+                        
+                        user["follower_notification"] = true
+                        user["newTradeIdea_notification"] = true
+                        user["replyTradeIdea_notification"] = true
+                        user["likeTradeIdea_notification"] = true
+                        user["reshareTradeIdea_notification"] = true
+                        
+                        user.saveInBackgroundWithBlock({ (success, error) in
                             
-                            self.dismissViewControllerAnimated(true, completion: nil)
+                            if success {
+                                // register current installation
+                                let currentInstallation = PFInstallation.currentInstallation()
+                                currentInstallation["user"] = user
+                                currentInstallation.saveInBackground()
+                                
+                                // register to LaunchKit
+                                LaunchKit.sharedInstance().setUserIdentifier(user.objectId, email: user.email, name: user.username)
+                                
+                                // register to MailChimp
+                                self.registerUserMailChimp("4266807125", firstName: firstName, lastName: lastName, username: user.username, email: user.email)
+                                
+                                // send delegate info
+                                self.loginDelegate?.didLoginSuccessfully()
+                                
+                            }
                             
-                            SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.Success)
+                            self.logInViewController.dismissViewControllerAnimated(true, completion: { () -> Void in
+                                
+                                self.dismissViewControllerAnimated(true, completion: nil)
+                                
+                                SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.Success)
+                            })
                         })
-                    })
+                        
+                    } else {
+                        // failure
+                        print("Fetch failed: \(error.localizedDescription)")
+                    }
                 })
             }
             

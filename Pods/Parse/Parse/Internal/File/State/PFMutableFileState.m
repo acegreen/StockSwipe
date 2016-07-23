@@ -9,8 +9,6 @@
 
 #import "PFMutableFileState.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @implementation PFMutableFileState
 
 @dynamic name;
@@ -18,5 +16,3 @@ NS_ASSUME_NONNULL_BEGIN
 @dynamic mimeType;
 
 @end
-
-NS_ASSUME_NONNULL_END

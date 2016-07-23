@@ -91,9 +91,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Add Observers
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(CardsViewController.setupFilters),name:"FilterSettingsChanged", object: nil)
-        
         print("CardsViewController loaded")
         
     }

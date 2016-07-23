@@ -16,17 +16,23 @@ target 'StockSwipe' do
     
     # Analytics
     pod 'Crashlytics'
-    pod 'TwitterKit'
     pod 'Appsee'
     pod 'LaunchKit'
     pod 'Rollout.io', '~> 0.14.4'
     pod 'ChimpKit'
     
     # Parse
-    pod 'Parse'
+    pod 'Parse', '1.13.0'
     pod 'ParseFacebookUtilsV4'
     pod 'ParseTwitterUtils'
     pod 'ParseUI'
+    
+    # Facebook
+    pod 'FacebookCore'
+    pod 'FacebookShare'
+    
+    # Twitter
+    pod 'TwitterKit'
 
     # Animation
     pod 'PulsingHalo', :git => 'https://github.com/shu223/PulsingHalo.git'

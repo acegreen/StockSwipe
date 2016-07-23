@@ -58,7 +58,7 @@
 
 - (void)sortByKey:(NSString *)key ascending:(BOOL)ascending;
 - (void)addSortKey:(NSString *)key ascending:(BOOL)ascending;
-- (void)addSortKeysFromSortDescriptors:(NSArray<NSSortDescriptor *> *)sortDescriptors;
+- (void)addSortKeysFromSortDescriptors:(NSArray *)sortDescriptors;
 
 ///--------------------------------------
 #pragma mark - Includes
@@ -71,7 +71,7 @@
 #pragma mark - Selected Keys
 ///--------------------------------------
 
-- (void)selectKeys:(NSArray<NSString *> *)keys;
+- (void)selectKeys:(NSArray *)keys;
 
 ///--------------------------------------
 #pragma mark - Redirect

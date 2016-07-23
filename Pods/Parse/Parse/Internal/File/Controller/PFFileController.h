@@ -94,8 +94,7 @@
 #pragma mark - Cache
 ///--------------------------------------
 
-- (BFTask<PFVoid> *)clearFileCacheAsyncForFileWithState:(PFFileState *)fileState;
-- (BFTask<PFVoid> *)clearAllFileCacheAsync;
+- (BFTask<PFVoid> *)clearFileCacheAsync;
 
 - (NSString *)cachedFilePathForFileState:(PFFileState *)fileState;
 

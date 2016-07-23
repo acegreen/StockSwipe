@@ -9,24 +9,13 @@
 
 #import "PFACLState.h"
 
-#import "PFMacros.h"
-
-/**
- Returns NSString representation of a property on PFACLState
-
- @param NAME The name of the property.
-
- @return NSString representaiton of a given property.
- */
-#define PFACLStatePropertyName(NAME) @keypath(PFACLState, NAME)
-
 @interface PFACLState () {
 @protected
-    NSDictionary<NSString *, id> *_permissions;
+    NSDictionary *_permissions;
     BOOL _shared;
 }
 
-@property (nonatomic, copy, readwrite) NSDictionary<NSString *, id> *permissions;
+@property (nonatomic, copy, readwrite) NSDictionary *permissions;
 @property (nonatomic, assign, readwrite, getter=isShared) BOOL shared;
 
 @end

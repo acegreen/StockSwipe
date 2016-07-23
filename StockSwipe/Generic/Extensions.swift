@@ -411,7 +411,10 @@ extension DetectTags where Self: UITextView {
             
             if word.hasPrefix("$") {
                 
-                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.letterCharacterSet().invertedSet)
+                
+                guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
+                    else { continue }
                 
                 // check to see if the hashtag has numbers.
                 // ribl is "#1" shouldn't be considered a hashtag.
@@ -423,10 +426,17 @@ extension DetectTags where Self: UITextView {
             } else if word.hasPrefix("@") {
                 
                 wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                
+                guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
+                    else { continue }
+                
                 mentions.append(wordWithTagRemoved)
             } else if word.hasPrefix("#") {
                 
                 wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                
+                guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
+                    else { continue }
                 
                 // check to see if the hashtag has numbers.
                 // ribl is "#1" shouldn't be considered a hashtag.
@@ -467,54 +477,56 @@ extension DetectTags where Self: UITextView {
             
             // convert the word from NSString to String
             // this allows us to call "dropFirst" to remove the hashtag
-            var stringifiedWord:String = word as String
+            var wordWithTagRemoved:String = word as String
             
             // drop the hashtag
-            stringifiedWord = String(stringifiedWord.characters.dropFirst())
+            wordWithTagRemoved = String(wordWithTagRemoved.characters.dropFirst())
             
             // found a word that is prepended by a hashtag!
             // homework for you: implement @mentions here too.
             if word.hasPrefix("$") {
                 
                 // drop unwanted characters
-                stringifiedWord.dropTrailingCharacters(NSCharacterSet.letterCharacterSet().invertedSet)
+                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.letterCharacterSet().invertedSet)
                 
                 let remainingRange = Range(bookmark..<text.endIndex)
                 
-                // check to see if the hashtag has numbers.
-                // ribl is "#1" shouldn't be considered a hashtag.
-                let digits = NSCharacterSet.decimalDigitCharacterSet()
+                guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
+                    else { continue }
                 
-                if stringifiedWord.rangeOfCharacterFromSet(digits) != nil {
-                    // hashtag contains a number, like "$1"
-                    // so not clickable
-                } else if let matchRange = text.rangeOfString(word as String, options: .LiteralSearch, range:remainingRange),
-                    let escapedString = stringifiedWord.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
+                if let matchRange = text.rangeOfString(word as String, options: .LiteralSearch, range:remainingRange),
+                    let escapedString = wordWithTagRemoved.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
                     attributedString.addAttribute(NSLinkAttributeName, value: "cash:\(escapedString)", range: text.NSRangeFromRange(matchRange))
                 }
                 
             } else if word.hasPrefix("@") {
                 // drop unwanted characters
-                stringifiedWord.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                
+                guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
+                    else { continue }
                 
                 let remainingRange = Range(bookmark..<text.endIndex)
                 
                 // set a link for when the user clicks on this word.
                 // url scheme syntax "mention://" or "hash://"
                 if let matchRange = text.rangeOfString(word, options: .LiteralSearch, range:remainingRange),
-                    let escapedString = stringifiedWord.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
+                    let escapedString = wordWithTagRemoved.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
                     attributedString.addAttribute(NSLinkAttributeName, value: "mention:\(escapedString)", range: text.NSRangeFromRange(matchRange))
                 }
             } else if  word.hasPrefix("#") {
                 // drop unwanted characters
-                stringifiedWord.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                
+                guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
+                    else { continue }
                 
                 let remainingRange = Range(bookmark..<text.endIndex)
                 
                 // set a link for when the user clicks on this word.
                 // url scheme syntax "mention://" or "hash://"
                 if let matchRange = text.rangeOfString(word, options: .LiteralSearch, range:remainingRange),
-                    let escapedString = stringifiedWord.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
+                    let escapedString = wordWithTagRemoved.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
                     attributedString.addAttribute(NSLinkAttributeName, value: "hash:\(escapedString)", range: text.NSRangeFromRange(matchRange))
                 }
             }

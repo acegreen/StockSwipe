@@ -178,7 +178,8 @@ static int const PFOfflineStoreMaximumSQLVariablesCount = 999;
                                    PFOfflineStoreKeyOfJSON, PFOfflineStoreTableOfObjects, PFOfflineStoreKeyOfUUID];
                 return [database executeQueryAsync:query withArgumentsInArray:@[ uuid ] block:^id(PFSQLiteDatabaseResult *_Nonnull result) {
                     if (![result next]) {
-                        PFConsistencyAssertionFailure(@"Attempted to find non-existent uuid %@. Please report this issue with stack traces and logs.", uuid);
+                        [NSException raise:NSInternalInconsistencyException
+                                    format:@"Attempted to find non-existent uuid %@.", uuid];
                     }
                     return [result stringForColumnIndex:0];
                 }];
@@ -188,10 +189,10 @@ static int const PFOfflineStoreMaximumSQLVariablesCount = 999;
         if (uuidTask && !(self.options & PFOfflineStoreOptionAlwaysFetchFromSQLite)) {
             // This object is an existing ParseObject, and we must've already pulled its data
             // out of the offline store, or else we wouldn't know its UUID. This should never happen.
-            NSError *error = [PFErrorUtilities errorWithCode:kPFErrorObjectNotFound
-                                                     message:@"Object must have already been fetched but isn't marked as fetched."
-                                                   shouldLog:NO];
-            [tcs setError:error];
+            NSString *message = @"Object must have already been fetched but isn't marked as fetched.";
+            [tcs setException:[NSException exceptionWithName:NSInternalInconsistencyException
+                                                      reason:message
+                                                    userInfo:nil]];
 
             @synchronized(self.lock) {
                 [self.fetchedObjects removeObjectForKey:object];
@@ -214,8 +215,9 @@ static int const PFOfflineStoreMaximumSQLVariablesCount = 999;
         __block NSString *newUUID = nil;
         jsonStringTask = [[database executeQueryAsync:query withArgumentsInArray:@[ className, objectId ] block:^id(PFSQLiteDatabaseResult *_Nonnull result) {
             if (![result next]) {
+                NSString *errorMessage = @"This object is not available in the offline cache.";
                 NSError *error = [PFErrorUtilities errorWithCode:kPFErrorCacheMiss
-                                                         message:@"This object is not available in the offline cache."
+                                                         message:errorMessage
                                                        shouldLog:NO];
                 return [BFTask taskWithError:error];
             }
@@ -272,6 +274,8 @@ static int const PFOfflineStoreMaximumSQLVariablesCount = 999;
             [tcs cancel];
         } else if (task.error != nil) {
             [tcs setError:task.error];
+        } else if (task.exception != nil) {
+            [tcs setException:task.exception];
         } else {
             [tcs setResult:object];
         }
@@ -429,7 +433,7 @@ static int const PFOfflineStoreMaximumSQLVariablesCount = 999;
                                     user:user
                                      pin:pin
                                  isCount:YES] continueWithSuccessBlock:^id(BFTask *task) {
-        if (!task.cancelled && !task.faulted) {
+        if (!task.cancelled && !task.error && !task.exception) {
             NSArray *result = task.result;
             return @(result.count);
         }
@@ -577,10 +581,10 @@ static int const PFOfflineStoreMaximumSQLVariablesCount = 999;
     @synchronized(self.lock) {
         fetchTask = [self.fetchedObjects objectForKey:object];
         if (!fetchTask) {
-            NSError *error = [PFErrorUtilities errorWithCode:kPFErrorObjectNotFound
-                                                     message:@"An object cannot be updated if it wasn't fetched"
-                                                   shouldLog:NO];
-            return [BFTask taskWithError:error];
+            NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException
+                                                             reason:@"An object cannot be updated if it wasn't fetched"
+                                                           userInfo:nil];
+            return [BFTask taskWithException:exception];
         }
     }
     return [fetchTask continueWithBlock:^id(BFTask *task) {
@@ -905,7 +909,8 @@ static int const PFOfflineStoreMaximumSQLVariablesCount = 999;
     __block NSString *objectId = nil;
     return [[database executeQueryAsync:query withArgumentsInArray:@[ uuid ] block:^id(PFSQLiteDatabaseResult *result) {
         if (![result next]) {
-            PFConsistencyAssertionFailure(@"Attempted to find non-existent uuid %@. Please report this issue with stack traces and logs.", uuid);
+            [NSException raise:NSInternalInconsistencyException
+                        format:@"Attempted to find non-existent uuid %@", uuid]; // TODO: (nlutsenko) Convert to errors.
         }
 
         className = [result stringForColumnIndex:0];

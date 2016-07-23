@@ -256,7 +256,7 @@ static BOOL revocableSessionEnabled_;
         BFTask *signUpTask = task;
 
         // Bail-out early, but still make sure that super class handled the result
-        if (task.faulted || task.cancelled) {
+        if (task.error || task.cancelled || task.exception) {
             return [[super handleSaveResultAsync:nil] continueWithBlock:^id(BFTask *task) {
                 return signUpTask;
             }];
@@ -520,7 +520,7 @@ static BOOL revocableSessionEnabled_;
                     [currentUser rebuildEstimatedData];
 
                     return [[[[currentUser saveInBackground] continueWithBlock:^id(BFTask *task) {
-                        if (task.faulted || task.cancelled) {
+                        if (task.error || task.cancelled || task.exception) {
                             @synchronized ([currentUser lock]) {
                                 if (oldUsername) {
                                     currentUser.username = oldUsername;
@@ -780,11 +780,8 @@ static BOOL revocableSessionEnabled_;
 }
 
 + (instancetype)currentUser {
-    return [[self getCurrentUserInBackground] waitForResult:nil withMainThreadWarning:NO];
-}
-
-+ (BFTask<__kindof PFUser *> *)getCurrentUserInBackground {
-    return [[[self class] currentUserController] getCurrentObjectAsync];
+    PFCurrentUserController *controller = [[self class] currentUserController];
+    return [[controller getCurrentObjectAsync] waitForResult:nil withMainThreadWarning:NO];
 }
 
 - (BOOL)_current {

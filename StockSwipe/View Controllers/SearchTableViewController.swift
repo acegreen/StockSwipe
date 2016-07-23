@@ -36,6 +36,7 @@ class SearchTableViewController: UITableViewController {
         
         // Assign delegate
         self.searchController.delegate = self
+        self.searchController.searchBar.delegate = self
 
         // Configure table
         self.tableView.tableHeaderView = searchController.searchBar
@@ -68,6 +69,20 @@ class SearchTableViewController: UITableViewController {
         }
     }
     
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        switch searchController.active {
+        case true:
+            if searchController.searchBar.text?.isEmpty == true {
+                return "Top Searches"
+            }
+        case false:
+            if recentSearches.count > 0 {
+                return "Recent Searches"
+            }
+        }
+        return nil
+    }
+    
     override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
@@ -85,13 +100,13 @@ class SearchTableViewController: UITableViewController {
         if objectAtIndex.isKindOfClass(PFUser) {
             return 150
         } else {
-            return 45
+            return 60
         }
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let objectAtIndex: PFObject
+        var objectAtIndex: PFObject
         switch searchController.active {
         case true:
             objectAtIndex = searchResults[indexPath.row]
@@ -109,10 +124,11 @@ class SearchTableViewController: UITableViewController {
         } else {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("SearchCell", forIndexPath: indexPath)
+            cell.textLabel?.text = objectAtIndex.objectForKey("Symbol") as? String
+            cell.detailTextLabel?.text = objectAtIndex.objectForKey("Company") as? String
             
             let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SearchTableViewController.longPress(_:)))
             cell.addGestureRecognizer(longPressRecognizer)
-            cell.textLabel?.text = objectAtIndex.objectForKey("Symbol") as? String
             
             return cell
         }
@@ -138,25 +154,6 @@ class SearchTableViewController: UITableViewController {
         }
     }
     
-    func searchStocks(searchText: String?) {
-        let query = PFQuery(className: "Stocks")
-        query.cancel()
-        if let searchText = searchText where !searchText.isEmpty {
-            query.whereKey("Symbol", containsString: searchText.uppercaseString)
-        }
-        query.orderByDescending("longCount")
-        query.addDescendingOrder("shortCount")
-        query.limit = 10
-        
-        query.findObjectsInBackgroundWithBlock { (results, error) -> Void in
-            
-            if let results = results {
-                self.searchResults = results
-            }
-            self.tableView.reloadData()
-        }
-    }
-    
     func searchStocksAndUsers(searchText: String?) {
     
         guard let search = searchText else { return }
@@ -174,6 +171,7 @@ class SearchTableViewController: UITableViewController {
     }
     
     func getUserRecentSearches() {
+        
         guard let currentUser = PFUser.currentUser() else { return }
 
         if let currentUserRecentSearches = currentUser["recentSearches"] as? [PFObject] {
@@ -182,13 +180,16 @@ class SearchTableViewController: UITableViewController {
                 
                 if let currentUserRecentSearches = currentUserRecentSearches as? [PFObject] {
                     self.recentSearches = currentUserRecentSearches
-                    self.tableView.reloadData()
+                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        self.tableView.reloadData()
+                    })
                 }
             }
         }
     }
     
     func updateUserRecentSearch(object: PFObject) {
+        
         guard let currentUser = PFUser.currentUser() else { return }
         
         if let existingObject = recentSearches.find( { $0.objectId == object.objectId } ) {
@@ -201,7 +202,7 @@ class SearchTableViewController: UITableViewController {
                 recentSearches.insert(object, atIndex: 0)
             }
         }
-        self.tableView.reloadData()
+        
         currentUser["recentSearches"] = recentSearches
         currentUser.saveEventually()
     }
@@ -306,9 +307,14 @@ class SearchTableViewController: UITableViewController {
     }
 }
 
-extension SearchTableViewController: UISearchResultsUpdating, UISearchControllerDelegate {
+extension SearchTableViewController: UISearchResultsUpdating, UISearchControllerDelegate, UISearchBarDelegate {
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         searchStocksAndUsers(searchController.searchBar.text)
+    }
+    
+    func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+        //searchController.active = false
+        //self.tableView.reloadData()
     }
     
     func didPresentSearchController(searchController: UISearchController) {

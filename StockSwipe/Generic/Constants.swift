@@ -48,6 +48,7 @@ public class Constants {
     
     public static let appLink: String = "https://itunes.apple.com/us/app/stockswipe-probably-funnest/id1009599685?ls=1&mt=8"
     public static let appLinkURL = NSURL(string: appLink)
+    public static let facebookAppLink = NSURL(string: "https://fb.me/1156458804442388")
     public static let appURL = NSURL(string: "itms-apps://itunes.apple.com/app/id1009599685")
     public static let appReviewURL = NSURL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1009599685")
     public static let settingsURL = NSURL(string: UIApplicationOpenSettingsURLString)

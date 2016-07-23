@@ -470,10 +470,10 @@ extension ChartCollectionViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
     
     // DZNEmptyDataSet delegate functions
     
-    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
-        
-        return UIImage(assetIdentifier: .ideaGuyImage)
-    }
+//    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+//        
+//        return UIImage(assetIdentifier: .ideaGuyImage)
+//    }
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         

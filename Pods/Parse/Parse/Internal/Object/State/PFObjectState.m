@@ -28,7 +28,7 @@
 
     _serverData = [NSMutableDictionary dictionary];
 
-    return self;
+    return [super init];
 }
 
 - (instancetype)initWithState:(PFObjectState *)state {

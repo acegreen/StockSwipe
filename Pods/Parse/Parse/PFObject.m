@@ -78,7 +78,7 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
         }
     }
 
-    PFParameterAssertionFailure(@"PFObject values may not have class: %@", [object class]);
+    PFParameterAssert(NO, @"PFObject values may not have class: %@", [object class]);
 }
 
 @interface PFObject () <PFObjectPrivateSubclass> {
@@ -252,7 +252,8 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
                 seenNew = [NSSet set];
             } else {
                 if ([seenNew containsObject:object]) {
-                    PFConsistencyAssertionFailure(@"Found a circular dependency when saving.");
+                    [NSException raise:NSInternalInconsistencyException
+                                format:@"Found a circular dependency when saving."];
                 }
                 seenNew = [seenNew setByAddingObject:object];
             }
@@ -424,7 +425,8 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
             // We do cycle-detection when building the list of objects passed to this
             // function, so this should never get called.  But we should check for it
             // anyway, so that we get an exception instead of an infinite loop.
-            PFConsistencyAssertionFailure(@"Unable to save a PFObject with a relation to a cycle.");
+            [NSException raise:NSInternalInconsistencyException
+                        format:@"Unable to save a PFObject with a relation to a cycle."];
         }
 
         // If a lazy user is one of the objects in the array, resolve its laziness now and
@@ -505,13 +507,13 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
                             }];
 
                             return [[BFTask taskForCompletionOfAllTasks:handleSaveTasks] continueAsyncWithBlock:^id(BFTask *task) {
-                                if (commandRunnerTask.faulted || commandRunnerTask.cancelled) {
+                                if (commandRunnerTask.error || commandRunnerTask.cancelled || commandRunnerTask.exception) {
                                     return commandRunnerTask;
                                 }
 
                                 // Reiterate saveAll tasks, return first error.
                                 for (BFTask *handleSaveTask in handleSaveTasks) {
-                                    if (handleSaveTask.faulted) {
+                                    if (handleSaveTask.error || handleSaveTask.exception) {
                                         return handleSaveTask;
                                     }
                                 }
@@ -525,9 +527,20 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
             }
 
             return [[BFTask taskForCompletionOfAllTasks:tasks] continueWithBlock:^id(BFTask *task) {
-                if (task.cancelled || task.faulted) {
+                // Return the first exception, instead of the aggregated one
+                // for the sake of compatability with old versions
+
+                if ([task.exception.name isEqualToString:BFTaskMultipleExceptionsException]) {
+                    NSException *firstException = [task.exception.userInfo[@"exceptions"] firstObject];
+                    if (firstException) {
+                        return [BFTask taskWithException:firstException];
+                    }
+                }
+
+                if (task.error || task.cancelled || task.exception) {
                     return task;
                 }
+
                 return @YES;
             }];
         }];
@@ -541,16 +554,18 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
 // Just like deepSaveAsync, but uses saveEventually instead of saveAsync.
 // Because you shouldn't wait for saveEventually calls to complete, this
 // does not return any operation.
-+ (BFTask *)_enqueueSaveEventuallyChildrenOfObject:(PFObject *)object currentUser:(PFUser *)currentUser {
++ (BFTask *)_enqueueSaveEventuallyChildrenOfObject:(PFObject *)object
+                                       currentUser:(PFUser *)currentUser {
     return [BFTask taskFromExecutor:[BFExecutor defaultExecutor] withBlock:^id{
         NSMutableSet *uniqueObjects = [NSMutableSet set];
         NSMutableSet *uniqueFiles = [NSMutableSet set];
         [self collectDirtyChildren:object children:uniqueObjects files:uniqueFiles currentUser:currentUser];
         for (PFFile *file in uniqueFiles) {
             if (!file.url) {
-                NSError *error = [PFErrorUtilities errorWithCode:kPFErrorUnsavedFile
-                                                         message:@"Unable to saveEventually a PFObject with a relation to a new, unsaved PFFile."];
-                return [BFTask taskWithError:error];
+                NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException
+                                                                 reason:@"Unable to saveEventually a PFObject with a relation to a new, unsaved PFFile."
+                                                               userInfo:nil];
+                return [BFTask taskWithException:exception];
             }
         }
 
@@ -578,7 +593,8 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
                 // We do cycle-detection when building the list of objects passed to this
                 // function, so this should never get called.  But we should check for it
                 // anyway, so that we get an exception instead of an infinite loop.
-                PFConsistencyAssertionFailure(@"Unable to save a PFObject with a relation to a cycle.");
+                [NSException raise:NSInternalInconsistencyException
+                            format:@"Unable to save a PFObject with a relation to a cycle."];
             }
 
             // If a lazy user is one of the objects in the array, resolve its laziness now and
@@ -746,7 +762,8 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
         // But if it has local ids that haven't been resolved yet, then that's not going to
         // be possible.
         if (!newObjectId) {
-            PFConsistencyAssertionFailure(@"Tried to save an object with a pointer to a new, unsaved object.");
+            [NSException raise:NSInternalInconsistencyException
+                        format:@"Tried to save an object with a pointer to a new, unsaved object."];
         }
 
         // Nil out the localId so that the new objectId won't be saved back to the PFObjectLocalIdStore.
@@ -845,7 +862,7 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
             BFTask *resultTask = [BFTask taskWithResult:object];
 
             // Only delete if we successfully pin it so that it retries the migration next time.
-            if (!task.faulted && !task.cancelled) {
+            if (!task.error && !task.exception && !task.cancelled) {
                 NSString *path = [[Parse _currentManager].fileManager parseDataItemPathForPathComponent:fileName];
                 return [[PFFileManager removeItemAtPathAsync:path] continueWithBlock:^id(BFTask *task) {
                     // We don't care if it fails to delete the file, so return the
@@ -1087,7 +1104,7 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
                 }
                 saveTask = [saveTask continueWithBlock:^id(BFTask *task) {
                     @try {
-                        if (!task.isCancelled && !task.faulted) {
+                        if (!task.isCancelled && !task.exception && !task.error) {
                             PFCommandResult *result = task.result;
                             // PFPinningEventuallyQueue handle save result directly.
                             if (![Parse _currentManager].offlineStoreLoaded) {
@@ -1111,9 +1128,11 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
  */
 - (BFTask *)_enqueueSaveEventuallyOperationAsync:(PFOperationSet *)operationSet {
     if (!operationSet.isSaveEventually) {
-        NSError *error = [PFErrorUtilities errorWithCode:kPFErrorOperationForbidden
-                                                 message:@"Unable to enqueue non-saveEventually operation set."];
-        return [BFTask taskWithError:error];
+        NSString *message = @"This should only be used to enqueue saveEventually operation sets";
+        NSException *exception = [NSException exceptionWithName:NSInternalInconsistencyException
+                                                         reason:message
+                                                       userInfo:nil];
+        return [BFTask taskWithException:exception];
     }
 
     return [self.taskQueue enqueue:^BFTask *(BFTask *toAwait) {
@@ -1394,7 +1413,7 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
                     return [[Parse _currentManager].commandRunner runCommandAsync:command
                                                                       withOptions:PFCommandRunningOptionRetryIfFailed];
                 }] continueAsyncWithBlock:^id(BFTask *task) {
-                    if (task.cancelled || task.faulted) {
+                    if (task.isCancelled || task.exception || task.error) {
                         // If there was an error, we want to roll forward the save changes before rethrowing.
                         BFTask *commandRunnerTask = task;
                         return [[self handleSaveResultAsync:nil] continueWithBlock:^id(BFTask *task) {
@@ -1623,9 +1642,8 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
 
 + (instancetype)objectWithClassName:(NSString *)className dictionary:(NSDictionary *)dictionary {
     PFObject *object = [self objectWithClassName:className];
-    PFDecoder *objectDecoder = [PFDecoder objectDecoder];
     [dictionary enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
-        object[key] = [objectDecoder decodeObject:obj];
+        object[key] = obj;
     }];
     return object;
 }
@@ -2454,7 +2472,7 @@ static void PFObjectAssertValueIsKindOfValidClass(id object) {
 }
 
 + (PFObjectSubclassingController *)subclassingController {
-    return [Parse _currentManager].coreManager.objectSubclassingController;
+    return [PFObjectSubclassingController defaultController];
 }
 
 @end

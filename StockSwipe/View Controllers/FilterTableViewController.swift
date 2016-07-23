@@ -117,8 +117,6 @@ class FilterTableViewController: UITableViewController, CellType {
                 
             }
         }
-        
-        //NSNotificationCenter.defaultCenter().postNotificationName("FilterSettingsChanged", object: nil)
     }
     
     override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
@@ -139,8 +137,6 @@ class FilterTableViewController: UITableViewController, CellType {
                 
             }
         }
-        
-        //NSNotificationCenter.defaultCenter().postNotificationName("FilterSettingsChanged", object: nil)
     }
     
     func saveUserDefaults(value: Bool, cell: UITableViewCell) {

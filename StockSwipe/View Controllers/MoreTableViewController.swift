@@ -10,6 +10,7 @@ import UIKit
 import MessageUI
 import Crashlytics
 import Parse
+import FBSDKShareKit
 
 class MoreTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, SegueHandlerType, CellType, LoginDelegate {
     
@@ -25,6 +26,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         case TutorialCell = "TutorialCell"
         case WriteReviewCell = "WriteReviewCell"
         case GiveFeedbackCell =  "GiveFeedbackCell"
+        case InviteFacebookCell = "InviteFacebookCell"
         case ShareCell = "ShareCell"
     }
     
@@ -74,6 +76,16 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                 
             })
         }
+    }
+    
+    func presentFacebookInvite() {
+        let content = FBSDKAppInviteContent()
+        content.appLinkURL = Constants.facebookAppLink
+        //optionally set previewImageURL
+        //content.appInvitePreviewImageURL = NSURL(string: "https://www.mydomain.com/my_invite_image.jpg")!
+        // Present the dialog. Assumes self is a view controller
+        // which implements the protocol `FBSDKAppInviteDialogDelegate`.
+        FBSDKAppInviteDialog.showFromViewController(self, withContent: content, delegate: self)
     }
     
     func didLoginSuccessfully() {
@@ -154,6 +166,15 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                 SweetAlert().showAlert("No email account found", subTitle: "Please add an email acount in your mail app", style: AlertStyle.Warning)
                 
             }
+            
+        case .InviteFacebookCell:
+            
+            guard Functions.isConnectedToNetwork() else {
+                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
+                return
+            }
+            
+            presentFacebookInvite()
             
         case .ShareCell:
             
@@ -257,9 +278,14 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         self.dismissViewControllerAnimated(true, completion: nil)
         
     }
-    
-    @IBAction func dismissSettings(sender: UIBarButtonItem)
-    {
-        self.dismissViewControllerAnimated(true, completion: nil)
+}
+
+extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
+    //MARK: FBSDKAppInviteDialogDelegate
+    func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [NSObject : AnyObject]!) {
+        print("invitation made")
+    }
+    func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: NSError!) {
+        print("error made")
     }
 }

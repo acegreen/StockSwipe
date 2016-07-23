@@ -14,11 +14,19 @@ public class QueryHelper {
     
     static let sharedInstance = QueryHelper()
     
-    public func queryWith(queryString: String, completionHandler: (result: () throws -> NSData) -> Void) -> Void {
+    public func queryWith(queryString: String, useCacheIfPossible: Bool = true, completionHandler: (result: () throws -> NSData) -> Void) -> Void {
         
         if let queryUrl: NSURL = NSURL(string: queryString) {
             
-            let session = NSURLSession.sharedSession()
+            var session: NSURLSession!
+            if useCacheIfPossible {
+                let config = NSURLSessionConfiguration.defaultSessionConfiguration()
+                config.URLCache = NSURLCache.sharedURLCache()
+                config.requestCachePolicy = NSURLRequestCachePolicy.ReturnCacheDataElseLoad
+                session = NSURLSession(configuration: config)
+            } else {
+                session = NSURLSession.sharedSession()
+            }
             
             let task = session.dataTaskWithURL(queryUrl, completionHandler: { (queryData, response, error) -> Void in
                 
@@ -246,7 +254,7 @@ public class QueryHelper {
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
         tradeIdeaQuery.cachePolicy = cachePolicy
         tradeIdeaQuery.includeKeys(["user", "reshare_of"])
-
+        
         if let key = key, let object = object {
             tradeIdeaQuery.whereKey(key, equalTo: object)
         }

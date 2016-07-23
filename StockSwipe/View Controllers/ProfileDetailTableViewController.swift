@@ -35,7 +35,7 @@ class ProfileDetailTableViewController: UITableViewController {
         tableView.tableFooterView = UIView()
         
         // Fill in profile info
-        getProfile()
+        getProfileDetails()
         
         // Add Gesture Recognizers
         let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(ProfileDetailTableViewController.handleGestureRecognizer))
@@ -47,7 +47,7 @@ class ProfileDetailTableViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    func getProfile() {
+    func getProfileDetails() {
         
         guard let user = user else { return }
         

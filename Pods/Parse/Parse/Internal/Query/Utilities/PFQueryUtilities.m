@@ -47,6 +47,7 @@
             return [[NSCompoundPredicate alloc] initWithType:type subpredicates:newSubpredicates];
         }
     }
+
     if ([predicate isKindOfClass:[NSComparisonPredicate class]]) {
         if (comparisonBlock) {
             return comparisonBlock((NSComparisonPredicate *)predicate);
@@ -54,7 +55,8 @@
             return predicate;
         }
     }
-    PFConsistencyAssertionFailure(@"NSExpression predicates are not supported.");
+
+    [NSException raise:NSInternalInconsistencyException format:@"NSExpression predicates are not supported."];
     return nil;
 }
 
@@ -85,8 +87,9 @@
                              return [NSCompoundPredicate andPredicateWithSubpredicates:newSubpredicates];
                          }
                          default: {
-                             PFConsistencyAssertionFailure(@"This compound predicate cannot be negated. (%zd)",
-                                                           compound.compoundPredicateType);
+                             [NSException raise:NSInternalInconsistencyException
+                                         format:@"This compound predicate cannot be negated. (%zd)",
+                              compound.compoundPredicateType];
                              return nil;
                          }
                      }
@@ -126,7 +129,8 @@
                              break;
                          }
                          case NSBetweenPredicateOperatorType: {
-                             PFConsistencyAssertionFailure(@"A BETWEEN predicate was found after they should have been removed.");
+                             [NSException raise:NSInternalInconsistencyException
+                                         format:@"A BETWEEN predicate was found after they should have been removed."];
                          }
                          case NSMatchesPredicateOperatorType:
                          case NSLikePredicateOperatorType:
@@ -135,7 +139,8 @@
                          case NSContainsPredicateOperatorType:
                          case NSCustomSelectorPredicateOperatorType:
                          default: {
-                             PFConsistencyAssertionFailure(@"This comparison predicate cannot be negated. (%@)", comparison);
+                             [NSException raise:NSInternalInconsistencyException
+                                         format:@"This comparison predicate cannot be negated. (%@)", comparison];
                              return nil;
                          }
                      }
@@ -353,7 +358,8 @@
                     }
 
                 } else {
-                    PFConsistencyAssertionFailure(@"[PFQuery asOrOfAnds:] found a compound query that wasn't OR or AND.");
+                    [NSException raise:NSInternalInconsistencyException
+                                format:@"[PFQuery asOrOfAnds:] found a compound query that wasn't OR or AND."];
                 }
             } else {
                 // Just add this condition to all the conjunctions in progress.
@@ -382,7 +388,10 @@
             return [NSCompoundPredicate orPredicateWithSubpredicates:andPredicates];
         }
     }
-    PFConsistencyAssertionFailure(@"[PFQuery asOrOfAnds:] was passed a compound query that wasn't OR or AND.");
+
+    [NSException raise:NSInternalInconsistencyException
+                format:@"[PFQuery asOrOfAnds:] was passed a compound query that wasn't OR or AND."];
+
     return nil;
 }
 

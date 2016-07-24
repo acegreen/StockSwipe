@@ -37,7 +37,7 @@ class SearchTableViewController: UITableViewController {
         // Assign delegate
         self.searchController.delegate = self
         self.searchController.searchBar.delegate = self
-
+        
         // Configure table
         self.tableView.tableHeaderView = searchController.searchBar
         searchController.searchResultsUpdater = self
@@ -52,14 +52,14 @@ class SearchTableViewController: UITableViewController {
         // Make search bar becomefirstresponder
         //self.searchController.searchBar.becomeFirstResponder()
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
+    
     // MARK: - Table view data source
-
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch searchController.active {
         case true:
@@ -103,7 +103,7 @@ class SearchTableViewController: UITableViewController {
             return 60
         }
     }
-
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         var objectAtIndex: PFObject
@@ -155,7 +155,7 @@ class SearchTableViewController: UITableViewController {
     }
     
     func searchStocksAndUsers(searchText: String?) {
-    
+        
         guard let search = searchText else { return }
         
         PFCloud.callFunctionInBackground("searchStocksAndUsersFor", withParameters: ["search": search]) { (results, error) -> Void in
@@ -173,7 +173,7 @@ class SearchTableViewController: UITableViewController {
     func getUserRecentSearches() {
         
         guard let currentUser = PFUser.currentUser() else { return }
-
+        
         if let currentUserRecentSearches = currentUser["recentSearches"] as? [PFObject] {
             
             PFObject.fetchAllIfNeededInBackground(currentUserRecentSearches) { (currentUserRecentSearches, error) in
@@ -248,17 +248,15 @@ class SearchTableViewController: UITableViewController {
                 return
             }
             
-            var stockObjectAtIndex: PFObject!
+            guard let cell = sender.view as? UITableViewCell, let cellIndex = self.tableView.indexPathForCell(cell) else { return }
             
-            if let cell = sender.view as? UITableViewCell {
-                let cellIndex = self.tableView.indexPathForCell(cell)!
-                switch searchController.active {
-                case true:
-                    stockObjectAtIndex = searchResults[cellIndex.row]
-                    
-                case false:
-                    stockObjectAtIndex = recentSearches[cellIndex.row]
-                }
+            var stockObjectAtIndex: PFObject!
+            switch searchController.active {
+            case true:
+                stockObjectAtIndex = searchResults[cellIndex.row]
+                
+            case false:
+                stockObjectAtIndex = recentSearches[cellIndex.row]
             }
             
             let symbol = stockObjectAtIndex["Symbol"] as? String

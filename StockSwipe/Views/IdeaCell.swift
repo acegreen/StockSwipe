@@ -199,8 +199,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         UIApplication.topViewController()?.showViewController(profileContainerController, sender: self)
     }
     
-    func configureCell(tradeIdea: TradeIdea, timeFormat: Constants.TimeFormat) {
+    func configureCell(tradeIdea: TradeIdea?, timeFormat: Constants.TimeFormat) {
         
+        guard let tradeIdea = tradeIdea else { return }
         self.tradeIdea = tradeIdea
         
         if let nestedTradeIdeaObject = tradeIdea.parseObject.objectForKey("reshare_of") as? PFObject {

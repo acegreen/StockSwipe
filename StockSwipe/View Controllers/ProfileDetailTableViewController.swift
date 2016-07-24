@@ -91,6 +91,7 @@ class ProfileDetailTableViewController: UITableViewController {
         imagePicker.allowsEditing = false
         imagePicker.sourceType = .PhotoLibrary
         imagePicker.delegate = self
+        imagePicker.modalPresentationStyle = .CurrentContext
         
         presentViewController(imagePicker, animated: true, completion: nil)
     }

@@ -67,6 +67,9 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         
             self.isQueryingForActivities = false
             
+            // Set badge to nil when user goes to view
+            self.tabBarController?.tabBar.items?[3].badgeValue = nil
+            
             do {
                 
                 let activityObjects = try result()
@@ -179,8 +182,10 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         
         switch activityType {
         case .Follow, .Mention:
+            guard activityAtIndexPath.objectForKey("fromUser") != nil else { return }
             self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: tableView.cellForRowAtIndexPath(indexPath))
         case .TradeIdeaNew, .TradeIdeaLike, .TradeIdeaReply, .TradeIdeaReshare:
+            guard activityAtIndexPath.objectForKey("tradeIdea") != nil else { return }
             self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tableView.cellForRowAtIndexPath(indexPath))
         case .Block, .StockLong, .StockShort:
             break

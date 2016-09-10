@@ -11,12 +11,65 @@ import Parse
 
 public struct User {
     
-    let userObject: PFUser!
+    var userObject: PFUser!
+    
+    var objectId: String!
+    var fullname: String! = "John Doe"
+    var username: String! = "@JohnDoe"
+    var avtar: UIImage!
+    
+    var profile_image_url: String?
     
     private var ideasCount: Int = 0
     private var followingCount: Int = 0
     private var followersCount: Int = 0
     private var likedIdeasCount: Int = 0
+    
+    init(userObject: PFUser, completion: ((User?) -> Void)? = nil) {
+        
+        userObject.fetchIfNeededInBackgroundWithBlock { (userObject, error) in
+            
+            guard let userObject = userObject else {
+                if let completion = completion {
+                    completion(nil)
+                }
+                return
+            }
+            
+            self.userObject = userObject as! PFUser
+            self.objectId = userObject.objectId
+            self.fullname = userObject.objectForKey("full_name") as? String
+            self.username = "@\(self.userObject.username!)"
+            self.profile_image_url = userObject.objectForKey("profile_image_url") as? String
+            
+            self.getAvatar({ (UIImage) in
+                if let completion = completion {
+                    completion(self)
+                }
+            })
+        }
+    }
+    
+    mutating func getAvatar(completionHandler: (UIImage) -> Void) {
+        
+        if let profileImageURL = self.profile_image_url {
+            QueryHelper.sharedInstance.queryWith(profileImageURL, completionHandler: { (result) in
+                
+                do {
+                    
+                    let avatarData  = try result()
+                    self.avtar = UIImage(data: avatarData)
+                    
+                    completionHandler(self.avtar)
+                    
+                } catch {
+                    completionHandler(UIImage(named: "dummy_profile_male_big")!)
+                }
+            })
+        } else {
+            completionHandler(UIImage(named: "dummy_profile_male_big")!)
+        }
+    }
     
     mutating func getIdeasCount(completionHandler: (countString: String) -> Void) {
         
@@ -84,10 +137,6 @@ public struct User {
             
             completionHandler(countString: self.likedIdeasCount.suffixNumber())
         })
-    }
-    
-    init(userObject: PFUser!) {
-        self.userObject = userObject
     }
 }
 

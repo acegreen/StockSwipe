@@ -2,15 +2,16 @@
 
 LIB_DIR=$(dirname "$0")
 ROLLOUT_DIR=$(dirname "$LIB_DIR")
-CACHE_DIR="${ROLLOUT_DIR}/.cache"
-dynamic_files_path="${ROLLOUT_DIR}/../../Rollout-ios-SDK/auto_generated_code"
 
-echo "Cleaning the cache dir, and emptying the dynamic files"
-rm -vfr "$CACHE_DIR"
-mkdir -p "$dynamic_files_path"
-for i in `seq -f %02g 1 20`; do
-  cat /dev/null > "$dynamic_files_path/RolloutDynamic_$i.m"
-done
-cat /dev/null > "$dynamic_files_path/RolloutDynamic_structs.h"
+xcodeproj_configuration=`(. "$LIB_DIR"/versions; echo $xcodeproj_configuration)`
+[ 0$ROLLOUT_lastXcodeprojConfiguration -ge $xcodeproj_configuration ] || {
+  cat << end_of_error_msg
+Rollout.io SDK version was not reconfigured, aborting...
+Our guess is that you changed Rollout.io version in your podfile, but have not reconfigured it yet.
+If this is correct, please run the following command:
+    "$ROLLOUT_DIR"/install/configure_pod.sh -k $app_key
 
-touch "$ROLLOUT_DIR"/Rollout/RolloutDynamic.m
+If our guess is incorrect or if the above didn't help, please contact us at support@rollout.io
+end_of_error_msg
+  exit 3
+} #' (sublime goes crazy on unpaired single quote...)

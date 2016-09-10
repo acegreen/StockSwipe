@@ -14,6 +14,7 @@
 		230FBB2D1D1F05B2000394AD /* TintableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230FBB2C1D1F05B2000394AD /* TintableLabel.swift */; };
 		231016181D36E6B30061FADB /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231016171D36E6B30061FADB /* SearchTableViewCell.swift */; };
 		2310161D1D36F4160061FADB /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2310161B1D36F13E0061FADB /* SearchTableViewController.swift */; };
+		23142DC61D4FAF3A00F11531 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23142DC51D4FAF3A00F11531 /* News.swift */; };
 		23157AF41BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23157AF31BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift */; };
 		231643031C1A00F000C92C03 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231643021C1A00F000C92C03 /* FeedbackViewController.swift */; };
 		231E09941B3DABC100A2EFC2 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */; };
@@ -50,7 +51,6 @@
 		2347E6151BD7C4A20036EA65 /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2347E6141BD7C4A20036EA65 /* iCarousel.m */; };
 		2347E61A1BD7FEEE0036EA65 /* iCarouselTickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2347E6191BD7FEEE0036EA65 /* iCarouselTickerView.swift */; };
 		2347E61C1BD7FFD90036EA65 /* Ticker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2347E61B1BD7FFD80036EA65 /* Ticker.swift */; };
-		23505C4D1BA8717100E5887B /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23505C4C1BA8717100E5887B /* News.swift */; };
 		235534BE1D2D38D300821E25 /* NotificationPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 235534BD1D2D38D300821E25 /* NotificationPreferences.plist */; };
 		235534C01D2D39FB00821E25 /* NotificationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235534BF1D2D39FB00821E25 /* NotificationsTableViewController.swift */; };
 		235EFFF61D33E3A90082B888 /* LoginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235EFFF51D33E3A90082B888 /* LoginViewControllerTests.swift */; };
@@ -60,7 +60,6 @@
 		236875B21B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 236875B11B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m */; };
 		236C49371B4E5D7700E82416 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236C49361B4E5D7700E82416 /* WebViewController.swift */; };
 		236D28241BCC2750001D757F /* MainTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236D28231BCC2750001D757F /* MainTabBarController.swift */; };
-		236DB5211D048D6400CE9869 /* LaunchScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236DB5201D048D6400CE9869 /* LaunchScreenViewController.swift */; };
 		236DB5231D048D8800CE9869 /* GradientAnimationImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236DB5221D048D8800CE9869 /* GradientAnimationImage.swift */; };
 		237537F71B1617FB00F05984 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 237537F61B1617FB00F05984 /* LoginViewController.swift */; };
 		23761CE01D21B5B900FA66C1 /* WordCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CDC1D21B57200FA66C1 /* WordCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
@@ -99,6 +98,8 @@
 		23CE716D1C1215C800E87420 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE716C1C1215C800E87420 /* AdSupport.framework */; };
 		23CF54A51D19BF3B004A01DC /* SuperUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF54A41D19BF3B004A01DC /* SuperUITextView.swift */; };
 		23CF60461B1CA8310087B9D5 /* BorderedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF60451B1CA8310087B9D5 /* BorderedLabel.swift */; };
+		23D055FE1D4E4E9C0079EF9D /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D055FD1D4E4E9C0079EF9D /* WordCloud.framework */; };
+		23D055FF1D4E4E9C0079EF9D /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D055FD1D4E4E9C0079EF9D /* WordCloud.framework */; };
 		23D4FFE81C317ECE00A1102D /* FiltersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D4FFE71C317ECE00A1102D /* FiltersCell.swift */; };
 		23D6D8F51B7E597900902B3E /* CardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D6D8F41B7E597900902B3E /* CardsViewController.swift */; };
 		23D7602A1B629831009777E1 /* CustomSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D760291B629831009777E1 /* CustomSegue.swift */; };
@@ -110,8 +111,6 @@
 		23E6D6E41D221ED1005DB3F7 /* IdeaPostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E6D6E31D221ED1005DB3F7 /* IdeaPostButton.swift */; };
 		23E7F6A01BCB57A0009A016D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7F69F1BCB57A0009A016D /* NotificationCenter.framework */; };
 		23E7F6AA1BCB57A0009A016D /* StockSwipeWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 23E7F69E1BCB57A0009A016D /* StockSwipeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		23E85E881D452F5B00233900 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E85E871D452F5B00233900 /* WordCloud.framework */; };
-		23E85E891D452F5B00233900 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E85E871D452F5B00233900 /* WordCloud.framework */; };
 		23EA70101B119803008F6C12 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA700F1B119803008F6C12 /* AudioToolbox.framework */; };
 		23EA70121B11980A008F6C12 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA70111B11980A008F6C12 /* CFNetwork.framework */; };
 		23EA70141B119812008F6C12 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA70131B119812008F6C12 /* CoreGraphics.framework */; };
@@ -125,7 +124,6 @@
 		23EA70241B119854008F6C12 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA70231B119854008F6C12 /* libsqlite3.dylib */; };
 		23EA70261B11985A008F6C12 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA70251B11985A008F6C12 /* Accounts.framework */; };
 		23EA70281B119861008F6C12 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA70271B119861008F6C12 /* Social.framework */; };
-		23ECED0E1B9B566300688768 /* NewsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ECED0D1B9B566300688768 /* NewsTableViewController.swift */; };
 		23ECED261B9B60B200688768 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ECED251B9B60B200688768 /* NewsCell.swift */; };
 		23F5B3E51B9D004200C74FED /* CompanyProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23F5B3E41B9D004200C74FED /* CompanyProfileTableViewController.swift */; };
 		7888E1041B669C780087C255 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7602B1B62AC5B009777E1 /* CoreSpotlight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -183,6 +181,7 @@
 		230FBB2C1D1F05B2000394AD /* TintableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TintableLabel.swift; sourceTree = "<group>"; };
 		231016171D36E6B30061FADB /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		2310161B1D36F13E0061FADB /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
+		23142DC51D4FAF3A00F11531 /* News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		23157AF31BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CloudInfoPopoverViewController.swift; sourceTree = "<group>"; };
 		231643021C1A00F000C92C03 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		231E09931B3DABC100A2EFC2 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
@@ -225,7 +224,6 @@
 		2347E6141BD7C4A20036EA65 /* iCarousel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iCarousel.m; sourceTree = "<group>"; };
 		2347E6191BD7FEEE0036EA65 /* iCarouselTickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iCarouselTickerView.swift; sourceTree = "<group>"; };
 		2347E61B1BD7FFD80036EA65 /* Ticker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ticker.swift; sourceTree = "<group>"; };
-		23505C4C1BA8717100E5887B /* News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		235534BD1D2D38D300821E25 /* NotificationPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NotificationPreferences.plist; sourceTree = "<group>"; };
 		235534BF1D2D39FB00821E25 /* NotificationsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationsTableViewController.swift; sourceTree = "<group>"; };
 		235EFFF51D33E3A90082B888 /* LoginViewControllerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewControllerTests.swift; sourceTree = "<group>"; };
@@ -236,7 +234,6 @@
 		236875B11B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+NVTimeAgo.m"; sourceTree = "<group>"; };
 		236C49361B4E5D7700E82416 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		236D28231BCC2750001D757F /* MainTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainTabBarController.swift; sourceTree = "<group>"; };
-		236DB5201D048D6400CE9869 /* LaunchScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LaunchScreenViewController.swift; sourceTree = "<group>"; };
 		236DB5221D048D8800CE9869 /* GradientAnimationImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientAnimationImage.swift; sourceTree = "<group>"; };
 		237537F61B1617FB00F05984 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		23761CDC1D21B57200FA66C1 /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WordCloud.framework; path = /Users/AceGreen/iOS/BitBucket/StockSwipe/Frameworks/WordCloud/WordCloud.framework; sourceTree = "<absolute>"; };
@@ -280,6 +277,7 @@
 		23CE716C1C1215C800E87420 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		23CF54A41D19BF3B004A01DC /* SuperUITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SuperUITextView.swift; sourceTree = "<group>"; };
 		23CF60451B1CA8310087B9D5 /* BorderedLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BorderedLabel.swift; sourceTree = "<group>"; };
+		23D055FD1D4E4E9C0079EF9D /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WordCloud.framework; sourceTree = "<group>"; };
 		23D4FFE71C317ECE00A1102D /* FiltersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersCell.swift; sourceTree = "<group>"; };
 		23D6D8F41B7E597900902B3E /* CardsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardsViewController.swift; sourceTree = "<group>"; };
 		23D760291B629831009777E1 /* CustomSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegue.swift; sourceTree = "<group>"; };
@@ -293,7 +291,6 @@
 		23E7F69E1BCB57A0009A016D /* StockSwipeWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StockSwipeWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E7F69F1BCB57A0009A016D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		23E7F6A71BCB57A0009A016D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = StockSwipeWidget/Info.plist; sourceTree = "<group>"; };
-		23E85E871D452F5B00233900 /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WordCloud.framework; sourceTree = "<group>"; };
 		23EA700F1B119803008F6C12 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		23EA70111B11980A008F6C12 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
 		23EA70131B119812008F6C12 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -307,7 +304,6 @@
 		23EA70231B119854008F6C12 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = usr/lib/libsqlite3.dylib; sourceTree = SDKROOT; };
 		23EA70251B11985A008F6C12 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		23EA70271B119861008F6C12 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
-		23ECED0D1B9B566300688768 /* NewsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsTableViewController.swift; sourceTree = "<group>"; };
 		23ECED251B9B60B200688768 /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		23F5B3E41B9D004200C74FED /* CompanyProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyProfileTableViewController.swift; sourceTree = "<group>"; };
 		302A57B5A56184CF31B8BD67 /* Pods-StockSwipeWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipeWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipeWidget/Pods-StockSwipeWidget.release.xcconfig"; sourceTree = "<group>"; };
@@ -332,7 +328,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				23E85E891D452F5B00233900 /* WordCloud.framework in Frameworks */,
+				23D055FF1D4E4E9C0079EF9D /* WordCloud.framework in Frameworks */,
 				23E7F6A01BCB57A0009A016D /* NotificationCenter.framework in Frameworks */,
 				A9A3E6D544B258A12E459335 /* Pods_StockSwipeWidget.framework in Frameworks */,
 			);
@@ -354,7 +350,7 @@
 				23EA70241B119854008F6C12 /* libsqlite3.dylib in Frameworks */,
 				23EA70221B11984C008F6C12 /* libz.dylib in Frameworks */,
 				23EA70201B119839008F6C12 /* SystemConfiguration.framework in Frameworks */,
-				23E85E881D452F5B00233900 /* WordCloud.framework in Frameworks */,
+				23D055FE1D4E4E9C0079EF9D /* WordCloud.framework in Frameworks */,
 				23EA701E1B119831008F6C12 /* StoreKit.framework in Frameworks */,
 				23EA701C1B11982D008F6C12 /* Security.framework in Frameworks */,
 				23EA701A1B119827008F6C12 /* QuartzCore.framework in Frameworks */,
@@ -434,7 +430,7 @@
 		2343B6111C8361CF008BF2CA /* WordCloud */ = {
 			isa = PBXGroup;
 			children = (
-				23E85E871D452F5B00233900 /* WordCloud.framework */,
+				23D055FD1D4E4E9C0079EF9D /* WordCloud.framework */,
 			);
 			path = WordCloud;
 			sourceTree = "<group>";
@@ -705,8 +701,6 @@
 				236C49361B4E5D7700E82416 /* WebViewController.swift */,
 				23157AF31BC0CCCD00F0D147 /* CloudInfoPopoverViewController.swift */,
 				2310161B1D36F13E0061FADB /* SearchTableViewController.swift */,
-				23ECED0D1B9B566300688768 /* NewsTableViewController.swift */,
-				236DB5201D048D6400CE9869 /* LaunchScreenViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -716,10 +710,10 @@
 			children = (
 				232EDE311C1A1804007D0103 /* Resources */,
 				23C9255F1B1A7D9400D17B70 /* Chart.swift */,
-				231E89BF1D28055C00CD009A /* User.swift */,
-				23505C4C1BA8717100E5887B /* News.swift */,
 				236280C11CB3FABF0022A129 /* TradeIdea.swift */,
+				231E89BF1D28055C00CD009A /* User.swift */,
 				2347E61B1BD7FFD80036EA65 /* Ticker.swift */,
+				23142DC51D4FAF3A00F11531 /* News.swift */,
 				23B70D5A1B115BEF00FF2C04 /* ChartModel.swift */,
 				23E0FFD91B1B6AE000251BC6 /* StockSwipe.xcdatamodeld */,
 			);
@@ -772,16 +766,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AC17DC21AC7366A004E6D2D /* Build configuration list for PBXNativeTarget "StockSwipe" */;
 			buildPhases = (
+				87072B184AF3EBA76AFF04FF /* Rollout.io pre-build */,
 				58B6642F3B6926F22922ACFF /* [CP] Check Pods Manifest.lock */,
 				8AC17D9C1AC7366A004E6D2D /* Sources */,
 				8AC17D9D1AC7366A004E6D2D /* Frameworks */,
 				8AC17D9E1AC7366A004E6D2D /* Resources */,
 				234F8EB41B14A48600A0E706 /* Run Script */,
-				98EB0D74F4064484A649AE33 /* Rollout.io dsym upload */,
 				23B8A9BD1B9E75DA0065D65E /* Embed Frameworks */,
 				23E7F6AE1BCB57A0009A016D /* Embed App Extensions */,
 				816270F03CFA12797FF94487 /* [CP] Embed Pods Frameworks */,
 				1A12D03F3D98D4DD994CBE82 /* [CP] Copy Pods Resources */,
+				E55DE24CF77C74A97428EF60 /* Rollout.io post-build */,
 			);
 			buildRules = (
 			);
@@ -897,7 +892,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		1A12D03F3D98D4DD994CBE82 /* [CP] Copy Pods Resources */ = {
@@ -967,7 +962,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 		773D38C05ADA2DAD6FDEBBFE /* [CP] Copy Pods Resources */ = {
@@ -1000,19 +995,33 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StockSwipe/Pods-StockSwipe-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		98EB0D74F4064484A649AE33 /* Rollout.io dsym upload */ = {
+		87072B184AF3EBA76AFF04FF /* Rollout.io pre-build */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Rollout.io dsym upload";
+			name = "Rollout.io pre-build";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ROLLOUT_lastXcodeprojConfiguration=5 \"${SRCROOT}/Pods/Rollout.io/lib/upload_dsym_phase\" -k 568730c9045462554abcb4cc";
+			shellScript = "ROLLOUT_lastXcodeprojConfiguration=7 \"${SRCROOT}/Pods/Rollout.io/lib/pre-build_xcode_phase\"";
+		};
+		E55DE24CF77C74A97428EF60 /* Rollout.io post-build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Rollout.io post-build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ROLLOUT_lastXcodeprojConfiguration=7 \"${SRCROOT}/Pods/Rollout.io/lib/post-build_xcode_phase\" -k 568730c9045462554abcb4cc";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1044,6 +1053,7 @@
 				239EDA6D1BB0258B001CC63C /* Extensions.swift in Sources */,
 				2394DFAC1C8CAE230018A5A9 /* FAQTableViewController.swift in Sources */,
 				2347E61A1BD7FEEE0036EA65 /* iCarouselTickerView.swift in Sources */,
+				23142DC61D4FAF3A00F11531 /* News.swift in Sources */,
 				23813DEE1D3C8C90008F6540 /* CustomImagePickerController.swift in Sources */,
 				231E89C41D2A1A6200CD009A /* SettingsTableViewController.swift in Sources */,
 				23875DF81B11752600966012 /* Funtions.swift in Sources */,
@@ -1089,8 +1099,6 @@
 				231016181D36E6B30061FADB /* SearchTableViewCell.swift in Sources */,
 				2339B0A61B41A697009CE3EB /* iRate.m in Sources */,
 				23C925661B1AA8B300D17B70 /* ChartCollectionViewController.swift in Sources */,
-				23505C4D1BA8717100E5887B /* News.swift in Sources */,
-				236DB5211D048D6400CE9869 /* LaunchScreenViewController.swift in Sources */,
 				2310161D1D36F4160061FADB /* SearchTableViewController.swift in Sources */,
 				23B70D5B1B115BEF00FF2C04 /* ChartModel.swift in Sources */,
 				233C7D541CB210B6006A014A /* Protocols.swift in Sources */,
@@ -1107,7 +1115,6 @@
 				238A112A1C834A00002C1A73 /* ConcurrentOperation.swift in Sources */,
 				233C7D5C1CB33E8B006A014A /* UserCell.swift in Sources */,
 				23E0FFDA1B1B6AE000251BC6 /* StockSwipe.xcdatamodeld in Sources */,
-				23ECED0E1B9B566300688768 /* NewsTableViewController.swift in Sources */,
 				233C22011BBB4717004B3C41 /* OverviewViewController.swift in Sources */,
 				230FBB2B1D1F0505000394AD /* TintableButton.swift in Sources */,
 				236280C01CB3F7D40022A129 /* TradeIdeasTableViewController.swift in Sources */,

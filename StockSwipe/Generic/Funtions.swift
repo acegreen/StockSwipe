@@ -262,6 +262,23 @@ public class Functions {
         return URL
     }
     
+    class func getImage(imageURL: NSURL?, completion: (UIImage?) -> Void) {
+        
+        guard let imageURL = imageURL else { return completion(nil) }
+        
+        QueryHelper.sharedInstance.queryWith(imageURL.absoluteString, completionHandler: { (result) in
+            
+            do {
+                
+                let avatarData  = try result()
+                completion(UIImage(data: avatarData))
+                
+            } catch {
+                // TODO: Handle error
+            }
+        })
+    }
+    
     class func getStockObjectAndChart(symbol: String, completion: (result: () throws -> (object: PFObject, chart: Chart)) -> Void) {
         
         QueryHelper.sharedInstance.queryStockObjectsFor([symbol]) { (result) in
@@ -274,12 +291,7 @@ public class Functions {
                     
                     do {
                         
-                        let chartImage = try result()
-                        let companyName = stockObject["Company"] as? String
-                        let shortCount = stockObject.objectForKey("shortCount") as? Int
-                        let longCount = stockObject.objectForKey("longCount") as? Int
-                        
-                        let chart = Chart(symbol: symbol, companyName: companyName, image: chartImage, shortCount: shortCount, longCount: longCount, parseObject: stockObject)
+                        let chart = Chart(parseObject: stockObject)
                         completion(result: { (object: stockObject, chart: chart)})
                         
                     } catch {
@@ -401,11 +413,7 @@ public class Functions {
                 let newChart = ChartModel(entity: Constants.entity!, insertIntoManagedObjectContext: Constants.context)
                 newChart.symbol = chart.symbol
                 newChart.companyName = chart.companyName
-                
-                if chart.image != nil {
-                    newChart.image = UIImagePNGRepresentation(chart.image)
-                }
-                
+                newChart.image = UIImagePNGRepresentation(chart.image)
                 newChart.shorts = Int32(chart.shortCount)
                 newChart.longs = Int32(chart.longCount)
                 newChart.userChoice = userChoice.rawValue
@@ -418,11 +426,7 @@ public class Functions {
                 let fetchedObject:NSManagedObject = fetchedObjectArray.first!
                 
                 fetchedObject.setValue(chart.symbol, forKey: "symbol")
-                
-                if chart.image != nil {
-                    fetchedObject.setValue(UIImagePNGRepresentation(chart.image), forKey: "image")
-                }
-                
+                fetchedObject.setValue(UIImagePNGRepresentation(chart.image), forKey: "image")
                 fetchedObject.setValue(chart.shortCount, forKey: "shorts")
                 fetchedObject.setValue(chart.longCount, forKey: "longs")
                 fetchedObject.setValue(userChoice.rawValue, forKey: "userChoice")

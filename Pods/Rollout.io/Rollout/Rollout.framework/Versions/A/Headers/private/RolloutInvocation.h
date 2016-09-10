@@ -11,20 +11,17 @@
 @class RolloutTweakId;
 @class RolloutDeviceProperties;
 @class RolloutInvocationContext;
+@class RolloutClientOptions;
 
 @protocol RolloutInvocation
 
 - (RolloutTypeWrapper *)invokeWithContext:(RolloutInvocationContext *)context originalMethodWrapper:(RolloutTypeWrapper *(^)(NSArray *))originalMethodWrapper;
-
--(BOOL)rolloutDisabled;
--(void)setRolloutDisabled:(BOOL)value;
 
 @end
 
 
 @interface RolloutInvocation : NSObject <RolloutInvocation>
 
-- (instancetype)initWithConfiguration:(RolloutConfiguration *)configuration listsFactory:(RolloutInvocationsListFactory *)listsFactory deviceProperties:(RolloutDeviceProperties *)deviceProperties;
-@property (nonatomic) BOOL rolloutDisabled;
+- (instancetype)initWithConfiguration:(RolloutConfiguration *)configuration listsFactory:(RolloutInvocationsListFactory *)listsFactory deviceProperties:(RolloutDeviceProperties *)deviceProperties rolloutClientOptions:(RolloutClientOptions*)rolloutClientOptions;
 
 @end

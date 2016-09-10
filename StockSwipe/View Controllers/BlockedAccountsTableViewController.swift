@@ -23,8 +23,6 @@ class BlockedAccountsTableViewController: UITableViewController, SegueHandlerTyp
         
         // set tableView properties
         tableView.tableFooterView = UIView()
-        tableView.rowHeight = UITableViewAutomaticDimension
-        tableView.estimatedRowHeight = 120
 
         setupAccounts()
     }
@@ -54,11 +52,21 @@ class BlockedAccountsTableViewController: UITableViewController, SegueHandlerTyp
         // #warning Incomplete implementation, return the number of rows
         return blocked_users.count
     }
-
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 100
+    }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as UserCell
+        
+        
+        
         cell.configureCell(blocked_users[indexPath.row])
 
         return cell
@@ -76,7 +84,7 @@ class BlockedAccountsTableViewController: UITableViewController, SegueHandlerTyp
             let destinationViewController = segue.destinationViewController as! ProfileContainerController
         
             guard let cell = sender as? UserCell else { return }
-            destinationViewController.user = User(userObject: cell.user)
+            destinationViewController.user = cell.user
             
             // Just a workaround.. There should be a cleaner way to sort this out
             destinationViewController.navigationItem.rightBarButtonItem = nil

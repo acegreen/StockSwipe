@@ -30,9 +30,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
     var pushDelegate: PushNotificationDelegate?
     
     override class func initialize() {
-        
         setupSARate()
-        
     }
     
     class func setupSARate() {
@@ -86,11 +84,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         //LaunchKit.sharedInstance().debugAlwaysPresentAppReleaseNotes = true
         
         // Initialize Rollout
-        #if DEBUG
-            Rollout.setupWithKey(Constants.APIKeys.Rollout.key(), developmentDevice: true)
-        #else
-            Rollout.setupWithKey(Constants.APIKeys.Rollout.key(), developmentDevice: false)
-        #endif
+        Rollout.setupWithKey(Constants.APIKeys.Rollout.key())
         
         // Intialize ChimpKit
         ChimpKit.sharedKit().apiKey = Constants.APIKeys.ChimpKit.key()
@@ -164,9 +158,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                 do {
                     
                     guard let stockObject = try result().first else { return }
-                    let companyName = stockObject["Company"] as! String
-                    let shortCount = stockObject.objectForKey("shortCount") as? Int
-                    let longCount = stockObject.objectForKey("longCount") as? Int
                     
                     let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
                     let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
@@ -177,7 +168,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                         
                     }
                     
-                    let chart = Chart(symbol: symbolDict["symbol"] as! String, companyName: companyName, image: nil, shortCount: shortCount, longCount: longCount, parseObject: stockObject)
+                    let chart = Chart(parseObject: stockObject)
                     
                     chartDetailTabBarController.chart = chart
                         
@@ -232,9 +223,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
             do {
                 
                 guard let stockObject = try result().first else { return }
-                let companyName = stockObject["Company"] as! String
-                let shortCount = stockObject.objectForKey("shortCount") as? Int
-                let longCount = stockObject.objectForKey("longCount") as? Int
                 
                 let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
                 let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
@@ -245,7 +233,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                     
                 }
                 
-                let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: shortCount, longCount: longCount, parseObject: stockObject)
+                let chart = Chart(parseObject: stockObject)
                 
                 chartDetailTabBarController.chart = chart
                 
@@ -273,9 +261,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
     
     func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
         
-        let currentInstallation = PFInstallation.currentInstallation()
-        currentInstallation.setDeviceTokenFromData(deviceToken)
-        currentInstallation.saveInBackground()
+        if let currentInstallation = PFInstallation.currentInstallation() {
+            currentInstallation.setDeviceTokenFromData(deviceToken)
+            currentInstallation.saveInBackground()
+        }
     }
     
     func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
@@ -331,8 +320,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         FBSDKAppEvents.activateApp()
         
         // Clear Parse Push badges
-        if application.isRegisteredForRemoteNotifications() {
-            let currentInstallation = PFInstallation.currentInstallation()
+        if application.isRegisteredForRemoteNotifications(), let currentInstallation = PFInstallation.currentInstallation() {
             currentInstallation.badge = 0
             currentInstallation.saveEventually()
         }
@@ -414,10 +402,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         
         // log rating event
         Answers.logRating(nil,
-                          contentName: "StockSwipe rated",
-                          contentType: "rate",
+                          contentName: "StockSwipe Rated",
+                          contentType: "Rate",
                           contentId: nil,
-                          customAttributes: ["Country Code": Constants.countryCode, "App Version": Constants.AppVersion])
+                          customAttributes: ["User": PFUser.currentUser()?.username ?? "N/A", "Country Code": Constants.countryCode, "App Version": Constants.AppVersion])
     }
     
     func iRateDidDetectAppUpdate() {

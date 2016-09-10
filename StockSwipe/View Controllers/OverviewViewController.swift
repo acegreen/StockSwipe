@@ -36,7 +36,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     var iCarouselTickers = ["^IXIC","^GSPC","^RUT","^VIX","^GDAXI","^FTSE","^FCHI","^N225","^HSI","^GSPTSE","CAD=X"]
     var tickers = [Ticker]()
     var cloudWords = [CloudWord]()
-    var tradeIdeas = [TradeIdea]()
+    var tradeIdeaObjects = [PFObject]()
     var topStories = [News]()
     var charts = [Chart]()
     
@@ -53,14 +53,14 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     var isQueryingForTradeIdeas = false
     var isQueryingForTopStories = false
     
-    let  tradeIdeaQueryLimit = 10
+    let  tradeIdeaQueryLimit = 15
     
     var tradeIdeasRefreshControl = UIRefreshControl()
     var topStoriesRefreshControl = UIRefreshControl()
     
-    var TrendingStocksHalo: NVActivityIndicatorView!
-    var iCarouselHalo: NVActivityIndicatorView!
-    var topStoriesHalo: NVActivityIndicatorView!
+//    var TrendingStocksHalo: NVActivityIndicatorView!
+//    var iCarouselHalo: NVActivityIndicatorView!
+//    var topStoriesHalo: NVActivityIndicatorView!
     
     var overviewVCOperationQueue: NSOperationQueue = NSOperationQueue()
     var cloudLayoutOperationQueue: NSOperationQueue = NSOperationQueue()
@@ -85,12 +85,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         carousel.autoscroll = -0.3
         carousel.type = .Linear
         carousel.contentOffset = CGSize(width: 0, height: 10)
-        
-        // set tableView properties
-        self.latestTradeIdeasTableView.rowHeight = UITableViewAutomaticDimension
-        self.latestTradeIdeasTableView.estimatedRowHeight = 100.0
-        self.latestNewsTableView.rowHeight = UITableViewAutomaticDimension
-        self.latestNewsTableView.estimatedRowHeight = 100.0
         
         // Add refresh control to top stories tableView
         self.latestTradeIdeasTableView.tableFooterView = UIView(frame: CGRectZero)
@@ -162,7 +156,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             
             NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
                 self.layoutCloudWords()
-                self.cloudWords = []
+                self.cloudWords.removeAll()
                 
             })
         }
@@ -261,7 +255,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         guard Functions.isConnectedToNetwork() else { return }
         
-        if tradeIdeasLastQueriedDate != nil && self.tradeIdeas.count > 0 {
+        if tradeIdeasLastQueriedDate != nil && self.tradeIdeaObjects.count > 0 {
             
             let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(tradeIdeasLastQueriedDate)
             
@@ -274,14 +268,15 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         }
         
         isQueryingForTradeIdeas = true
-        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(nil, object: nil, skip: 0, limit: self.tradeIdeaQueryLimit) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
             
             self.isQueryingForTradeIdeas = false
             
             do {
                 
                 let activityObjects = try result()
-                self.updateTradeIdeas(activityObjects)
+                
+                self.updateTradeIdeas(activityObjects.lazy.map { $0["tradeIdea"] as! PFObject })
                 
                 self.tradeIdeasLastQueriedDate = NSDate()
                 
@@ -295,6 +290,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                     }
                 })
             }
+            
         }
     }
     
@@ -347,26 +343,26 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func createCloudWords(trendingStocksJSON: JSON, stockObjects: [PFObject]) {
         
-        self.cloudWords = []
+        self.cloudWords.removeAll()
         for (index, subJson) in trendingStocksJSON {
             
             if let chart = (self.charts.find{ $0.symbol == subJson["symbol"].string }) {
                 self.charts.removeObject(chart)
             }
             
-            let parseObject = stockObjects.find{ $0["Symbol"] as? String == subJson["symbol"].string }
+            guard let symbol = subJson["symbol"].string else { continue }
             
-            let shortCount = parseObject?.objectForKey("shortCount") as? Int
-            let longCount = parseObject?.objectForKey("longCount") as? Int
-            
-            let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: trendingStocksJSON.count - Int(index)!, wordTappable: true)
+            let cloudWord = CloudWord(word: symbol , wordCount: trendingStocksJSON.count - Int(index)!, wordTappable: true)
             self.cloudWords.append(cloudWord)
             
-            let chart = Chart(symbol: subJson["symbol"].string!, companyName: subJson["title"].string!, image: nil, shortCount: shortCount, longCount: longCount, parseObject: parseObject)
-            self.charts.append(chart)
+            var chart: Chart!
+            if let parseObject = (stockObjects.find{ $0["Symbol"] as? String == subJson["symbol"].string }) {
+                chart = Chart(parseObject: parseObject)
+            } else {
+                chart = Chart(symbol: symbol, companyName: subJson["title"].string)
+            }
             
-            //Index to Spotlight
-            Functions.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
+            self.charts.append(chart)
         }
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -400,13 +396,10 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             
             let ticker = Ticker(symbol: symbol, companyName: companyName, exchange: exchange, currentPrice: currentPrice, changeInDollar: changeInDollar, changeInPercent: changeInPercent)
             
-            let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: 0, longCount: 0, parseObject: nil)
+            let chart = Chart(symbol: symbol, companyName: companyName)
             
             self.tickers.append(ticker)
             self.charts.append(chart)
-            
-            //Index to Spotlight
-            //Functions.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
         }
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -418,14 +411,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func updateTradeIdeas(tradeIdeaObjects: [PFObject]) {
         
-        self.tradeIdeas = []
-        
-        for tradeIdeaObject: PFObject in tradeIdeaObjects {
-                
-            let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
-            
-            self.tradeIdeas.append(tradeIdea)
-        }
+        self.tradeIdeaObjects = tradeIdeaObjects
         
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             
@@ -779,9 +765,17 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         if tableView == latestNewsTableView {
             return topStories.count
         } else if tableView == latestTradeIdeasTableView {
-            return tradeIdeas.count
+            return tradeIdeaObjects.count
         }
         return 0
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 150
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -810,11 +804,8 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
             
-            guard tradeIdeas.get(indexPath.row) != nil else { return cell }
-            
-            let tradeIdea = self.tradeIdeas[indexPath.row]
-            
-            cell.configureCell(tradeIdea, timeFormat: .Short)
+            guard tradeIdeaObjects.get(indexPath.row) != nil else { return cell }
+            cell.configureCell(self.tradeIdeaObjects[indexPath.row], timeFormat: .Short)
             
             return cell
         } else {
@@ -849,7 +840,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         
         if scrollView == latestNewsTableView && !isQueryingForTopStories && topStories.count == 0 {
             return true
-        } else if scrollView == latestTradeIdeasTableView && !isQueryingForTradeIdeas && tradeIdeas.count == 0 {
+        } else if scrollView == latestTradeIdeasTableView && !isQueryingForTradeIdeas && tradeIdeaObjects.count == 0 {
             return true
         }
         
@@ -873,29 +864,33 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
 extension OverviewViewController: IdeaPostDelegate {
         
         func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
-            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-            self.tradeIdeas.insert(tradeIdea, atIndex: 0)
-            self.latestTradeIdeasTableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             
-            self.latestTradeIdeasTableView.reloadEmptyDataSet()
+            if tradeIdeaTyp == .New {
+                
+                let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+                self.tradeIdeaObjects.insert(tradeIdea.parseObject, atIndex: 0)
+                self.latestTradeIdeasTableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                
+                self.latestTradeIdeasTableView.reloadEmptyDataSet()
+            }
         }
         
         func ideaDeleted(with parseObject: PFObject) {
             
-            if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
+            if let tradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == parseObject.objectId }) {
                 
-                if let reshareOf = tradeIdea.parseObject.objectForKey("reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == reshareOf.objectId })  {
+                if let reshareOf = tradeIdea.objectForKey("reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == reshareOf.objectId })  {
                     
-                    let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(reshareTradeIdea)!, inSection: 0)
+                    let indexPath = NSIndexPath(forRow: self.tradeIdeaObjects.indexOf(reshareTradeIdea)!, inSection: 0)
                     self.latestTradeIdeasTableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
                 }
                 
-                let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(tradeIdea)!, inSection: 0)
-                self.tradeIdeas.removeObject(tradeIdea)
+                let indexPath = NSIndexPath(forRow: self.tradeIdeaObjects.indexOf(tradeIdea)!, inSection: 0)
+                self.tradeIdeaObjects.removeObject(tradeIdea)
                 self.latestTradeIdeasTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             }
             
-            if tradeIdeas.count == 0 {
+            if tradeIdeaObjects.count == 0 {
                 self.latestTradeIdeasTableView.reloadEmptyDataSet()
             }
         }

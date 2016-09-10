@@ -79,10 +79,10 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                             
                             // log shared successfully
                             Answers.logShareWithMethod("\(activity!)",
-                                contentName: "\(self.symbol) chart shared",
-                                contentType: "chart share",
+                                contentName: "\(self.symbol) Chart Shared",
+                                contentType: "Share",
                                 contentId: nil,
-                                customAttributes: ["App Version": Constants.AppVersion])
+                                customAttributes: ["User": PFUser.currentUser()?.username ?? "N/A", "App Version": Constants.AppVersion])
                             
                         } else if error != nil {
                             

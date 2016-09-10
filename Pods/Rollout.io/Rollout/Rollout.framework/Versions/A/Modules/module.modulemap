@@ -1,0 +1,16 @@
+framework module Rollout {
+    umbrella header "Rollout.h"
+
+    header "private/RolloutConfiguration.h"
+    header "private/RolloutEnum.h"
+    header "private/RolloutErrors.h"
+    header "private/RolloutInvocation.h"
+    header "private/RolloutInvocationContext.h"
+    header "private/RolloutInvocationsListFactory.h"
+    header "private/RolloutMethodId.h"
+    header "private/RolloutTweakId.h"
+    header "private/RolloutTypeWrapper.h"
+    
+    link framework "JavaScriptCore"
+    link "stdc++"
+}

@@ -11,7 +11,7 @@ import Parse
 
 class UserCell: UITableViewCell {
     
-    var user: PFUser!
+    var user: User!
     
     @IBOutlet private weak var userAvatar: UIImageView!
     
@@ -25,54 +25,19 @@ class UserCell: UITableViewCell {
         registerBlock(sender)
     }
 
-    func configureCell(user: PFUser?) {
+    func configureCell(userObject: PFUser) {
         
-        guard let user = user else { return }
-        self.user = user
-        
-        user.fetchIfNeededInBackgroundWithBlock({ (user, error) in
+        self.user = User(userObject: userObject, completion: { (user) in
+            self.fullname.text = self.user.fullname
             
-            guard let user = user as? PFUser else { return }
+            //                let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
+            //                self.fullname.addGestureRecognizer(tapGestureRecognizerMainUsername)
             
-            if let fullname = user["full_name"] as? String {
-                self.fullname.text = fullname
-                
-//                let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
-//                self.fullname.addGestureRecognizer(tapGestureRecognizerMainUsername)
-                
-            } else {
-                self.fullname.text = "John Doe"
-            }
+            self.username.text = self.user.username
             
-            if let username = user.username {
-                 self.username.text = "@\(username)"
-            } else {
-                self.username.text = "@johnDoe"
-            }
-            
-            if let avatarURL = user.objectForKey("profile_image_url") as? String {
-                
-                QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
-                    
-                    do {
-                        
-                        let avatarData  = try result()
-                        
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.userAvatar.image = UIImage(data: avatarData)
-                        })
-                        
-                    } catch {
-                        // TODO: Handle error
-                    }
-                })
-                
-                // Add Gesture Recognizers
-//                let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
-//                self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
-            } else  {
-                self.userAvatar.image = UIImage(named: "dummy_profile_male_big")
-            }
+            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                self.userAvatar.image = self.user.avtar
+            })
             
             self.checkBlock(self.blockButton)
         })
@@ -83,7 +48,7 @@ class UserCell: UITableViewCell {
         let profileContainerController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileContainerController") as! ProfileContainerController
         
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == username) {
-            profileContainerController.user = User(userObject: self.user)
+            profileContainerController.user = self.user
         }
         
         profileContainerController.navigationItem.rightBarButtonItem = nil
@@ -120,6 +85,6 @@ class UserCell: UITableViewCell {
             return
         }
     
-        Functions.blockUser(self.user, postAlert: true)
+        Functions.blockUser(self.user.userObject, postAlert: true)
     }
 }

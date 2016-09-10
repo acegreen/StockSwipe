@@ -26,7 +26,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     var companyName: String!
     var stockObject: PFObject?
     
-    var tradeIdeas = [TradeIdea]()
+    var tradeIdeaObjects = [PFObject]()
     var tradeIdeaQueryLimit = 25
     var isQueryingForTradeIdeas = true
     
@@ -49,10 +49,6 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         symbol = parentTabBarController.symbol
         companyName = parentTabBarController.companyName
         stockObject = parentTabBarController.chart.parseObject
-        
-        // set tableView properties
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 200.0
         
         // title
         if companyName != nil {
@@ -89,17 +85,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             do {
                 
                 let activityObjects = try result()
-                self.tradeIdeas = []
-                
-                for activityObject: PFObject in activityObjects {
-                
-                    if let tradeIdeaObject = activityObject.objectForKey("tradeIdea") as? PFObject {
-                        
-                        let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
-                        
-                        self.tradeIdeas.append(tradeIdea)
-                    }
-                }
+                self.tradeIdeaObjects = activityObjects.lazy.map { $0["tradeIdea"] as! PFObject }
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
@@ -141,21 +127,17 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 
                 let activityObjects = try result()
                 
+                self.tradeIdeaObjects += activityObjects.lazy.map { $0["tradeIdea"] as! PFObject }
+                
+                var indexPaths = [NSIndexPath]()
+                for i in 0..<activityObjects.count {
+                    indexPaths.append(NSIndexPath(forRow: self.tableView.numberOfRowsInSection(0) + i, inSection: 0))
+                }
+                
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
-                    for activityObject: PFObject in activityObjects {
-                        
-                        if let tradeIdeaObject = activityObject.objectForKey("tradeIdea") as? PFObject {
-                            
-                            let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
-                            
-                            //add datasource object here for tableview
-                            self.tradeIdeas.append(tradeIdea)
-                            
-                            //now insert cell in tableview
-                            self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.tradeIdeas.count - 1, inSection: 0)], withRowAnimation: .None)
-                        }
-                    }
+                    //now insert cell in tableview
+                    self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
                     
                     if self.footerActivityIndicator?.isAnimating() == true {
                         self.footerActivityIndicator.stopAnimating()
@@ -192,13 +174,21 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tradeIdeas.count
+        return tradeIdeaObjects.count
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 150
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-        cell.configureCell(tradeIdeas[indexPath.row], timeFormat: .Short)
+        cell.configureCell(tradeIdeaObjects[indexPath.row], timeFormat: .Short)
         cell.delegate = self
         
         return cell
@@ -209,7 +199,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
         if offset >= 0 && offset <= 5 {
             // This is the last cell so get more data
-            self.loadMoreTradeIdeas(skip: tradeIdeas.count)
+            self.loadMoreTradeIdeas(skip: tradeIdeaObjects.count)
         }
     }
     
@@ -242,29 +232,32 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
 extension TradeIdeasTableViewController: IdeaPostDelegate {
     
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
-        let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-        self.tradeIdeas.insert(tradeIdea, atIndex: 0)
-        self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         
-        self.tableView.reloadEmptyDataSet()
+        if tradeIdeaTyp == .New {
+            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
+            self.tradeIdeaObjects.insert(tradeIdea.parseObject, atIndex: 0)
+            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            
+            self.tableView.reloadEmptyDataSet()
+        }
     }
     
     func ideaDeleted(with parseObject: PFObject) {
         
-        if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
+        if let tradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == parseObject.objectId }) {
             
-            if let reshareOf = tradeIdea.parseObject.objectForKey("reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == reshareOf.objectId })  {
+            if let reshareOf = tradeIdea.objectForKey("reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == reshareOf.objectId })  {
                 
-                let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(reshareTradeIdea)!, inSection: 0)
+                let indexPath = NSIndexPath(forRow: self.tradeIdeaObjects.indexOf(reshareTradeIdea)!, inSection: 0)
                 self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             }
             
-            let indexPath = NSIndexPath(forRow: self.tradeIdeas.indexOf(tradeIdea)!, inSection: 0)
-            self.tradeIdeas.removeObject(tradeIdea)
+            let indexPath = NSIndexPath(forRow: self.tradeIdeaObjects.indexOf(tradeIdea)!, inSection: 0)
+            self.tradeIdeaObjects.removeObject(tradeIdea)
             self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         }
         
-        if tradeIdeas.count == 0 {
+        if tradeIdeaObjects.count == 0 {
             self.tableView.reloadEmptyDataSet()
         }
     }
@@ -275,7 +268,7 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
 extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
-        if !isQueryingForTradeIdeas && tradeIdeas.count == 0 {
+        if !isQueryingForTradeIdeas && tradeIdeaObjects.count == 0 {
             return true
         }
         return false

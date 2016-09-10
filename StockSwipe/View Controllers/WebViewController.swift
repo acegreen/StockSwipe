@@ -41,9 +41,9 @@ class WebViewController: UIViewController {
                 // log shared successfully
                 Answers.logShareWithMethod("\(activity!)",
                     contentName: "\(self.url.path) shared",
-                    contentType: "top stories share",
+                    contentType: "Share",
                     contentId: nil,
-                    customAttributes: ["App Version": Constants.AppVersion])
+                    customAttributes: ["User": PFUser.currentUser()?.username ?? "N/A", "App Version": Constants.AppVersion])
                 
                 //"Installation ID":PFInstallation.currentInstallation()!.installationId,
                 

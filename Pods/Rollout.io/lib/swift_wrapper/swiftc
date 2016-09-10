@@ -1,0 +1,32 @@
+#!/bin/bash
+
+set -e
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+
+Temp_Files=()
+for i in "$@"
+do
+    [[ $i =~ RolloutGenerated\.swift$ ]] && {
+        Rollout_Generated=`mktemp "$i".XXXX`
+        cp $i $Rollout_Generated
+        Rollout_Replacements="$Rollout_Replacements,$i,$Rollout_Generated"
+        continue;
+    }
+    [[ $i =~ \.swift$ ]] && {
+        TEMP_FILE=`mktemp "$i".XXXX`
+        cp $i $TEMP_FILE
+        Temp_Files+=($TEMP_FILE)
+        Rollout_Replacements="$Rollout_Replacements,$i,$TEMP_FILE"
+    }
+done
+
+Rollout_Replacements="${Rollout_Replacements:1}"
+
+"$DIR"/../../Oyster/Build/Products/Debug/Oyster "$Rollout_Generated" "${Temp_Files[@]}" 
+
+swift_path=`/usr/bin/xcrun -f swiftc`
+
+ROLLOUT_REPLACEMENTS=$Rollout_Replacements DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES=$DIR/../../Oyster/lib_overrides.dylib "$swift_path" "$@"
+
+rm $Rollout_Generated "${Temp_Files[@]}"  

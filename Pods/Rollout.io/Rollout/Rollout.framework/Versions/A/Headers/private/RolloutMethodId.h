@@ -6,21 +6,12 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-    RolloutMethodId_methodType_class,
-    RolloutMethodId_methodType_instance
-} RolloutMethodId_methodType;
+    RolloutMethodId_language_objC,
+    RolloutMethodId_language_swift
+} RolloutMethodId_language;
 
-@interface RolloutMethodId : NSObject <NSCopying>
-
-@property(readonly, nonatomic) NSString* clazz;
-@property(readonly, nonatomic) NSString* selector;
-@property(readonly, nonatomic) RolloutMethodId_methodType methodType;
-@property(readonly, nonatomic) NSString *signature;
-
-- (instancetype)initWithClass:(NSString *)clazz selector:(NSString *)selector methodType:(RolloutMethodId_methodType)methodType signature:(NSString *)signature;
-
-- (instancetype)initFromJsonConfiguration:(NSDictionary *)json;
-
-- (NSString *)dynamicCodeSelectorString;
+@protocol RolloutMethodId <NSObject, NSCopying>
+- (RolloutMethodId_language)language;
+- (NSDictionary *)methodIdDescriptionForErrorReporting;
 @end
 

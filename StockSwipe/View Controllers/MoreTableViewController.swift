@@ -216,10 +216,10 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                     
                     // log shared successfully
                     Answers.logShareWithMethod("\(activity!)",
-                        contentName: "StockSwipe shared",
-                        contentType: "share",
+                        contentName: "StockSwipe Shared",
+                        contentType: "Share",
                         contentId: nil,
-                        customAttributes: ["App Version": Constants.AppVersion])
+                        customAttributes: ["User": PFUser.currentUser()?.username ?? "N/A", "App Version": Constants.AppVersion])
                     
                 } else if error != nil {
                     
@@ -236,11 +236,13 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         switch segueIdentifier {
         case .ProfileSegueIdentifier:
             
-            let profileViewController = segue.destinationViewController as! ProfileContainerController
-            profileViewController.user = User(userObject: PFUser.currentUser())
-            
-            // Just a workaround.. There should be a cleaner way to sort this out
-            profileViewController.navigationItem.rightBarButtonItem = nil
+            if let currentUser = PFUser.currentUser() {
+                let profileViewController = segue.destinationViewController as! ProfileContainerController
+                profileViewController.user = User(userObject: currentUser)
+                
+                // Just a workaround.. There should be a cleaner way to sort this out
+                profileViewController.navigationItem.rightBarButtonItem = nil
+            }
             
         case .FAQSegueIdentifier:
             break
@@ -284,6 +286,14 @@ extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
     //MARK: FBSDKAppInviteDialogDelegate
     func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [NSObject : AnyObject]!) {
         print("invitation made")
+        
+        // log shared successfully
+        Answers.logShareWithMethod("\("Facebook Invite")",
+                                   contentName: "Facebook Invite Friends",
+                                   contentType: "Share",
+                                   contentId: nil,
+                                   customAttributes: ["User": PFUser.currentUser()?.username ?? "N/A", "App Version": Constants.AppVersion])
+        
     }
     func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: NSError!) {
         print("error made")

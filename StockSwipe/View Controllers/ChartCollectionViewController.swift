@@ -276,12 +276,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
                     
                     for stockObject in stockObjects {
                         
-                        let symbol = stockObject["Symbol"] as? String
-                        let companyName = stockObject["Company"] as? String
-                        let shortCount = stockObject.objectForKey("shortCount") as? Int
-                        let longCount = stockObject.objectForKey("longCount") as? Int
-                        
-                        let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: shortCount, longCount: longCount, parseObject: stockObject)
+                        let chart = Chart(parseObject: stockObject)
                         self.selectedChart = chart
                         
                         self.performSegueWithIdentifier("showChartDetail", sender: self)
@@ -477,7 +472,7 @@ extension ChartCollectionViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
     
     func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
         
-        let attributedTitle: NSAttributedString = NSAttributedString(string: "No Charts!", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        let attributedTitle: NSAttributedString = NSAttributedString(string: "No Charts", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
         
         return attributedTitle
     }

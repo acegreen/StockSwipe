@@ -20,9 +20,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     var isGettingObjects: Bool = false
     
     var parseObjects = [PFObject]()
-    var extraSetOfObjects = [PFObject]()
-    var randomIndexes = [Int]()
-    var excludedIndexes = [Int]()
     var includedExchanges = [AnyObject]()
     var includedSectors = [AnyObject]()
     
@@ -74,7 +71,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             return
         }
         
-        SweetAlert().showAlert("Reload?", subTitle: "Reloading with no internet will cause you to lose your loaded cards", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: "Reload", otherButtonColor: UIColor.colorFromRGB(0xAEDEF4)) { (isOtherButton) -> Void in
+        SweetAlert().showAlert("Reload?", subTitle: "Reloading with no internet will cause you to lose your loaded cards", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: "Reload", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
             
             if !isOtherButton {
                 
@@ -153,7 +150,11 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         //self.enableDisableButtons("Off")
         
         // Check and remove subviews
-        self.removalAllCardViews()
+        self.removalAllCards()
+        
+        // Empty Data sources
+        self.charts.removeAll()
+        self.parseObjects.removeAll()
         
         // GetObjects and make charts
         do {
@@ -214,13 +215,10 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 
                 do {
                     
-                    try result()
+                    guard let results = try result() else { return }
+                    self.parseObjects += results
                     
-                    self.randomIndexes = []
-                    self.excludedIndexes = []
-                    self.parseObjects += self.extraSetOfObjects
-                    
-                    self.getCharts({ (result) -> Void in
+                    self.getCharts(results, completion: { (result) -> Void in
                         
                         do {
                             
@@ -276,7 +274,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     // Mark - Get Symbols
     
-    func getObjects(completion: (result: () throws -> Bool) -> Void) -> Void {
+    func getObjects(completion: (result: () throws -> [PFObject]?) -> Void) -> Void {
         
         PFCloud.callFunctionInBackground("getRandomStockObjects", withParameters: ["numberOfCardsToQuery":numberOfCardsToQuery, "includedExchanges": includedExchanges, "includedSectors": includedSectors]) { (results, error) -> Void in
             
@@ -288,87 +286,40 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 return completion(result: {throw Constants.Errors.RanOutOfChartCards})
             }
         
-            self.extraSetOfObjects = []
+            let extraSetOfObjects = results as! [PFObject]
             
             // The find succeeded.
             print("Successfully retrieved \(results?.count) objects")
             
-            // Do something with the found objects
-            for object: PFObject in results as! [PFObject] {
-                
-                if !self.extraSetOfObjects.contains(object) {
-                    
-                    self.extraSetOfObjects.append(object)
-                }
-                
-            }
+            print("extraSetOfObjects count", extraSetOfObjects.count)
             
-            print("extraSetOfObjects count", self.extraSetOfObjects.count)
-            
-            completion(result: {return true})
+            completion(result: { return extraSetOfObjects })
         }
     }
     
     // Mark - Get Charts
     
-    func getCharts(completion: (result: () throws -> Bool) -> Void) -> Void {
+    func getCharts(objects: [PFObject], completion: (result: () throws -> Bool) -> Void) -> Void {
         
-        guard extraSetOfObjects.count != 0  else {
+        guard objects.count != 0  else {
            return completion(result: {throw Constants.Errors.RanOutOfChartCards})
         }
+        
+        for object in objects {
             
-        for (index,object) in extraSetOfObjects.enumerate() {
+            let chart = Chart(parseObject: object)
             
-            let symbol = object.objectForKey("Symbol") as! String
-            let company = object.objectForKey("Company") as! String
-            let shortCount = object.objectForKey("shortCount") as? Int
-            let longCount = object.objectForKey("longCount") as? Int
-            
-            guard let chartImageURL: NSURL = Functions.setImageURL(symbol) else {
+            chart.getChartImage(completion: { (image) in
                 
-                print("image URL is nil")
-                
-                SweetAlert().showAlert("Couldn't load image", subTitle: "Please try again", style: AlertStyle.Warning)
-                
-                continue
-            }
-            
-            let chartImageSession = NSURLSession.sharedSession()
-            let task = chartImageSession.dataTaskWithURL(chartImageURL, completionHandler: { (chartImagedata, response, error) -> Void in
-                
-                guard error == nil else {
-                    return completion(result: {throw Constants.Errors.ErrorAccessingServer})
+                if let image = image {
+                    chart.image = image
+                    self.charts.append(chart)
                 }
                 
-                if chartImagedata != nil {
-                    
-                    if let chartImage = UIImage(data: chartImagedata!) {
-                        
-                        let chart = Chart(symbol: symbol, companyName: company, image: chartImage, shortCount: shortCount, longCount: longCount, parseObject: object)
-                        
-                        if !self.charts.contains(chart) {
-                            
-                            self.charts.append(chart)
-                            
-                        }
-                        
-                        // Index to Spotlight
-                        Functions.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
-                    }
-                }
-                
-                // only if all charts are loaded then complete as true
-                if index == self.extraSetOfObjects.count - 1 && self.charts.count != 0 {
-                    
-                    print("charts count:", self.charts.count)
-                    completion(result: {return true})
-                    
-                } else if index == self.extraSetOfObjects.count - 1 && self.charts.count == 0 {
-                    completion(result: {throw Constants.Errors.RanOutOfChartCards})
+                if self.charts.count > 4 {
+                    completion(result: { return true })
                 }
             })
-            
-            task.resume()
         }
     }
     
@@ -405,7 +356,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                                 fromFrame: self.frontCardViewFrame(), direction: .Up, color: Constants.stockSwipeGreenColor)
                             
                     })
-                    
                 }
             }
             
@@ -795,7 +745,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         }
     }
     
-    func removalAllCardViews() {
+    func removalAllCards() {
         
         if (self.fourthCardView != nil) {
             
@@ -829,7 +779,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             self.informationCardView = nil
             
         }
-        
     }
     
     // MARK: - Segue

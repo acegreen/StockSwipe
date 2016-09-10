@@ -114,11 +114,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>PulsingHalo.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>SDVersion.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -142,6 +137,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>03672FD9867CD679DB62CDFA2BAF4324</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>05BDF5172C4807B0D1D1AC84D5FB2659</key>
 		<dict>
 			<key>primary</key>
@@ -157,6 +157,16 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>1264EEC301827703BE80A16FA5BD0CF9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>14891954DB91DE11A6523CF3BC4D610A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>16FB872D0D2D4BA0F378AB34D47CF95F</key>
 		<dict>
 			<key>primary</key>
@@ -167,22 +177,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>3A646CB629F4BC5236C01F3C73AEF5C3</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>3D1C0FD0D748514D3BC13B27C5D8541C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>586E40C0BEBAB01A075A5E60359FA09D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>60D35E8835323779BEAAE03C5F8638DB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -212,17 +212,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7E80D56DD4D5880C517A7D0B7F967EA6</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>8698C4558AE758AD92477EC134E714F7</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>874B942D273C1A91A506023DAA5FEA14</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -247,12 +237,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C0BC92678157DD3FB6B408F74A4E442C</key>
+		<key>C6828C2508515BC0428D6BDAA1292DC9</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C6828C2508515BC0428D6BDAA1292DC9</key>
+		<key>CA94737775F544955F5737AB44DD825F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -272,7 +262,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E90175FFE95411BCFE6C1903E1D7F128</key>
+		<key>E51EB203A4D8C1ADAFEC02761EB7BB59</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -63,6 +63,14 @@ _RE(RolloutDynamicMethodCaller_unexpectedEncoding)
 
 _RE(RolloutJSBoxFactory_couldNotCreateJSBoxFromEncodedValue)
 
+_RE(RolloutSwiftDevModeDataProvider_couldNotInitialize)
+
+_RE(RolloutSwiftTweakCreator_couldNotGetSelector)
+
+_RE(RolloutSwiftFFITypeFactory_couldNotResolveFFIType)
+_RE(RolloutSwiftFFIPrimitiveType_couldNotReplaceType)
+
+
 @protocol RolloutDeviceProperties;
 
 #ifdef DEBUG

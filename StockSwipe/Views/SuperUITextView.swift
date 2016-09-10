@@ -39,13 +39,8 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                 do {
                     
                     let stockObject = try result().first!
-                        
-                    let symbol = stockObject["Symbol"] as? String
-                    let companyName = stockObject["Company"] as? String
-                    let shortCount = stockObject.objectForKey("shortCount") as? Int
-                    let longCount = stockObject.objectForKey("longCount") as? Int
                     
-                    let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: shortCount, longCount: longCount, parseObject: stockObject)
+                    let chart = Chart(parseObject: stockObject)
                     
                     chartDetailTabBarController.chart = chart
                     UIApplication.topViewController()?.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
@@ -70,11 +65,14 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     
                     let userObject = try result().first
                     
-                    let profileNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileNavigationController") as! UINavigationController
-                    let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
-                    profileContainerController.user = User(userObject: userObject)
-                    
-                    UIApplication.topViewController()?.presentViewController(profileNavigationController, animated: true, completion: nil)
+                    if let userObject = userObject {
+                        
+                        let profileNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileNavigationController") as! UINavigationController
+                        let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
+                        profileContainerController.user = User(userObject: userObject)
+                        
+                        UIApplication.topViewController()?.presentViewController(profileNavigationController, animated: true, completion: nil)
+                    }
                     
                 } catch {
                     

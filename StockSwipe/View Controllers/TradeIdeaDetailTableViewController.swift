@@ -23,9 +23,14 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     
     var delegate: IdeaPostDelegate!
     
-    var tradeIdea: TradeIdea!
+    var tradeIdea: TradeIdea! {
+        didSet {
+            let indexSet = NSIndexSet(index: 0)
+            self.tableView.reloadSections(indexSet, withRowAnimation: .Automatic)
+        }
+    }
     
-    var replyTradeIdeas = [TradeIdea]()
+    var replyTradeIdeaObjects = [PFObject]()
     
     @IBAction func refreshControlAction(sender: UIRefreshControl) {
         self.getReplyTradeIdeas()
@@ -33,10 +38,6 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // set tableView properties
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 200.0
         
         self.getReplyTradeIdeas()
     }
@@ -56,14 +57,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                 
                 let tradeIdeasObjects = try result()
                 
-                self.replyTradeIdeas = []
-                for tradeIdeaObject: PFObject in tradeIdeasObjects {
-                    
-                    let tradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
-                    
-                    self.replyTradeIdeas.append(tradeIdea)
-                    
-                }
+                self.replyTradeIdeaObjects = tradeIdeasObjects
                 
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
                     
@@ -116,7 +110,15 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             return 1
         }
         
-        return replyTradeIdeas.count
+        return replyTradeIdeaObjects.count
+    }
+    
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 150
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
@@ -125,11 +127,11 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         
         if indexPath.section == 0 {
             cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            cell.configureCell(tradeIdea, timeFormat: .Long)
+            cell.configureCell(self.tradeIdea, timeFormat: .Long)
             cell.delegate = self
         } else {
             cell = tableView.dequeueReusableCellWithIdentifier(CellIdentifier.ReplyIdeaCell.rawValue, forIndexPath: indexPath) as! IdeaCell
-            cell.configureCell(replyTradeIdeas[indexPath.row], timeFormat: .Short)
+            cell.configureCell(replyTradeIdeaObjects[indexPath.row], timeFormat: .Short)
             cell.delegate = self
         }
         
@@ -163,9 +165,9 @@ extension TradeIdeaDetailTableViewController: IdeaPostDelegate {
         if parseObject == self.tradeIdea.parseObject {
             self.tradeIdea = nil
             self.navigationController?.popViewControllerAnimated(true)
-        } else if let tradeIdea = self.replyTradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
-            let indexPath = NSIndexPath(forRow: self.replyTradeIdeas.indexOf(tradeIdea)!, inSection: 0)
-            self.replyTradeIdeas.removeObject(tradeIdea)
+        } else if let tradeIdea = self.replyTradeIdeaObjects.find ({ $0.objectId == parseObject.objectId }) {
+            let indexPath = NSIndexPath(forRow: self.replyTradeIdeaObjects.indexOf(tradeIdea)!, inSection: 0)
+            self.replyTradeIdeaObjects.removeObject(tradeIdea)
             self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
         }
         

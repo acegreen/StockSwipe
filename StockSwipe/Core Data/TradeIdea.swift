@@ -11,8 +11,8 @@ import Parse
 
 public struct TradeIdea {
     
-    let user: PFUser!
-    let description: String!
+    var user: User!
+    var description: String!
     
     var likeCount: Int = 0 {
         didSet {
@@ -27,18 +27,103 @@ public struct TradeIdea {
         }
     }
     
-    let publishedDate: NSDate!
-    let parseObject: PFObject!
+    var isLikedByCurrentUser: Bool! = false
+    var isResharedByCurrentUser: Bool! = false
+    
+    var nestedTradeIdeaObject: PFObject?
+    
+    var publishedDate: NSDate!
+    var parseObject: PFObject!
+    
+    init(parseObject: PFObject, completion: ((TradeIdea?) -> Void)? = nil) {
+        
+        parseObject.fetchIfNeededInBackgroundWithBlock { (parseObject, error) in
+            guard let parseObject = parseObject else  {
+                if let completion = completion {
+                    completion(nil)
+                }
+                return
+            }
+            self.parseObject = parseObject
+            self.description = parseObject.objectForKey("description") as? String ?? ""
+            self.likeCount = parseObject.objectForKey("likeCount") as? Int ?? 0
+            self.reshareCount = parseObject.objectForKey("reshareCount") as? Int ?? 0
+            self.nestedTradeIdeaObject = parseObject.objectForKey("reshare_of") as? PFObject
+            self.publishedDate = parseObject.createdAt
+            
+            self.checkIfLikedByCurrentUser(completion: { (isLikedByCurrentUser) in
+                self.isLikedByCurrentUser = isLikedByCurrentUser
+                
+                self.checkIfResharedByCurrentUser(completion: { (isResharedByCurrentUser) in
+                    self.isResharedByCurrentUser = isResharedByCurrentUser
+                    
+                    User(userObject: parseObject.objectForKey("user") as! PFUser, completion: { (user) in
+                        self.user = user
+                        if let completion = completion {
+                            completion(self)
+                        }
+                    })
+                })
+            })
+        }
+    }
+    
+   mutating func checkIfLikedByCurrentUser(completion completion: ((Bool) -> Void)?) {
+        
+        guard let currentUser = PFUser.currentUser() else { return }
+        
+        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
+            
+            do {
+                
+                let activityObject = try result().first
+                
+                if activityObject != nil {
+                    self.isLikedByCurrentUser = true
+                } else {
+                    self.isLikedByCurrentUser = false
+                }
+                
+                if let completion = completion {
+                    completion(self.isLikedByCurrentUser)
+                }
+                
+            } catch {
+            }
+        })
+    }
+    
+    mutating func checkIfResharedByCurrentUser(completion completion: ((Bool) -> Void)?) {
+        
+        guard let currentUser = PFUser.currentUser() else { return }
+    
+        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: self.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
+            
+            do {
+                
+                let activityObject = try result().first
+                
+                if activityObject != nil {
+                    self.isResharedByCurrentUser = true
+                } else {
+                    self.isResharedByCurrentUser = false
+                }
+                
+                if let completion = completion {
+                    completion(self.isResharedByCurrentUser)
+                }
+    
+            } catch {
+                
+            }
+        })
+    }
 }
 
 extension TradeIdea: Equatable {}
 
 public func ==(lhs: TradeIdea, rhs: TradeIdea) -> Bool {
-    let areEqual = lhs.user == rhs.user &&
-        lhs.description == rhs.description &&
-        lhs.likeCount == rhs.likeCount &&
-        lhs.reshareCount == rhs.reshareCount &&
-        lhs.parseObject == rhs.parseObject
+    let areEqual = lhs.parseObject == rhs.parseObject
     
     return areEqual
 }

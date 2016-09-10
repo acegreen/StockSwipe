@@ -72,12 +72,12 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         
         if tradeIdeaType == .Reply, let originalTradeIdea = self.originalTradeIdea {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaReply.rawValue
-            activityObject["toUser"] = originalTradeIdea.user
+            activityObject["toUser"] = originalTradeIdea.user.userObject
             activityObject["originalTradeIdea"] = originalTradeIdea.parseObject
             tradeIdeaObject["reply_to"] = originalTradeIdea.parseObject
         } else if tradeIdeaType == .Reshare, let originalTradeIdea = self.originalTradeIdea {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaReshare.rawValue
-            activityObject["toUser"] = originalTradeIdea.user
+            activityObject["toUser"] = originalTradeIdea.user.userObject
             activityObject["originalTradeIdea"] = originalTradeIdea.parseObject
             tradeIdeaObject["reshare_of"] = originalTradeIdea.parseObject
         } else {
@@ -90,9 +90,11 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             
             if success {
                 
-                let newtradeIdea = TradeIdea(user: tradeIdeaObject["user"] as! PFUser, description: tradeIdeaObject["description"] as! String, likeCount: tradeIdeaObject["likeCount"] as? Int ?? 0, reshareCount: tradeIdeaObject["reshareCount"] as? Int ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
-                
-                self.delegate?.ideaPosted(with: newtradeIdea, tradeIdeaTyp: self.tradeIdeaType)
+                let newtradeIdea = TradeIdea(parseObject: tradeIdeaObject, completion: { (newtradeIdea) in
+                    if let newtradeIdea = newtradeIdea {
+                        self.delegate?.ideaPosted(with: newtradeIdea, tradeIdeaTyp: self.tradeIdeaType)
+                    }
+                })
                 
                 switch self.tradeIdeaType {
                 case .New:
@@ -111,6 +113,8 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                     do {
                         
                         let stockObjects = try result()
+                        
+                        tradeIdeaObject["stocks"] = stockObjects
                         
                         for stockObject in stockObjects {
                             let activityObject = PFObject(className: "Activity")
@@ -134,6 +138,8 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                         
                         let userObjects = try result()
                         
+                        tradeIdeaObject["users"] = userObjects
+                        
                         for userObject in userObjects {
                             
                             guard userObject.objectId != self.originalTradeIdea?.user.objectId else {
@@ -151,7 +157,6 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                     } catch {
                         
                     }
-                    
                 })
                 
                 // record all hashtag
@@ -164,6 +169,8 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                     activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
                     activityObject.saveEventually()
                 }
+                
+                tradeIdeaObject["hashtags"] = hashtags
                 
             } else {
                 dispatch_async(dispatch_get_main_queue(), { () -> Void in
@@ -202,7 +209,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         if tradeIdeaType == .New, let stockObject = self.stockObject {
             self.prefillText = "$" + (stockObject.objectForKey("Symbol") as! String)
         } else if tradeIdeaType == .Reply, let originalTradeIdea = self.originalTradeIdea {
-            self.prefillText = "@" + (originalTradeIdea.user.objectForKey("username") as! String)
+            self.prefillText = "@" + (originalTradeIdea.user.username)
         } else if tradeIdeaType == .Reshare && self.originalTradeIdea != nil {
             
         }

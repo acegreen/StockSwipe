@@ -9,7 +9,7 @@ target 'StockSwipe' do
     
     pod 'MDCSwipeToChoose', :git => 'https://github.com/acegreen/MDCSwipeToChoose.git'
     pod 'SDVersion'
-    pod 'DZNEmptyDataSet', '1.7.2'
+    pod 'DZNEmptyDataSet'
     pod 'Charts'
     pod 'SWXMLHash'
     pod 'DataCache', :git => 'https://github.com/huynguyencong/DataCache.git'
@@ -18,11 +18,11 @@ target 'StockSwipe' do
     pod 'Crashlytics'
     pod 'Appsee'
     pod 'LaunchKit'
-    pod 'Rollout.io', '~> 0.14.4'
+    pod 'Rollout.io'
     pod 'ChimpKit'
     
     # Parse
-    pod 'Parse', '1.13.0'
+    pod 'Parse'
     pod 'ParseFacebookUtilsV4'
     pod 'ParseTwitterUtils'
     pod 'ParseUI'
@@ -35,7 +35,6 @@ target 'StockSwipe' do
     pod 'TwitterKit'
 
     # Animation
-    pod 'PulsingHalo', :git => 'https://github.com/shu223/PulsingHalo.git'
     pod 'BubbleTransition'
     pod 'AMPopTip'
     pod 'SKSplashView', :git =>'https://github.com/acegreen/SKSplashView.git', :branch => 'ag-improvements'
@@ -43,6 +42,8 @@ target 'StockSwipe' do
 
     shared_pods
     
+    # Retired
+    #pod 'PulsingHalo', :git => 'https://github.com/shu223/PulsingHalo.git'
     #pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift2'
     #pod 'ChameleonFramework/Swift'
     #pod 'SwiftSpinner'

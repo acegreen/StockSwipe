@@ -117,7 +117,7 @@ class SearchTableViewController: UITableViewController {
         if objectAtIndex.isKindOfClass(PFUser) {
             
             let cell = tableView.dequeueReusableCellWithIdentifier("UserCell", forIndexPath: indexPath) as! UserCell
-            cell.configureCell(objectAtIndex as? PFUser)
+            cell.configureCell(objectAtIndex as! PFUser)
             
             return cell
             
@@ -213,12 +213,7 @@ class SearchTableViewController: UITableViewController {
             
             let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
             
-            let symbol = stockObject["Symbol"] as? String
-            let companyName = stockObject["Company"] as? String
-            let shortCount = stockObject.objectForKey("shortCount") as? Int
-            let longCount = stockObject.objectForKey("longCount") as? Int
-            
-            let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: shortCount, longCount: longCount, parseObject: stockObject)
+            let chart = Chart(parseObject: stockObject)
             
             chartDetailTabBarController.chart = chart
             UIApplication.topViewController()?.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
@@ -259,12 +254,7 @@ class SearchTableViewController: UITableViewController {
                 stockObjectAtIndex = recentSearches[cellIndex.row]
             }
             
-            let symbol = stockObjectAtIndex["Symbol"] as? String
-            let companyName = stockObjectAtIndex["Company"] as? String
-            let shortCount = stockObjectAtIndex.objectForKey("shortCount") as? Int
-            let longCount = stockObjectAtIndex.objectForKey("longCount") as? Int
-            
-            let chart = Chart(symbol: symbol, companyName: companyName, image: nil, shortCount: shortCount, longCount: longCount, parseObject: stockObjectAtIndex)
+            let chart = Chart(parseObject: stockObjectAtIndex)
             
             QueryHelper.sharedInstance.queryChartImage(chart.symbol, completion: { (result) in
                 
@@ -297,9 +287,6 @@ class SearchTableViewController: UITableViewController {
                     }
                     
                 })
-                
-                // Index to Spotlight
-                Functions.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
             })
         }
     }

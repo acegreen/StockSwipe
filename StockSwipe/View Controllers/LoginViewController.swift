@@ -328,9 +328,11 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     if success {
                         
                         // register current installation
-                        let currentInstallation = PFInstallation.currentInstallation()
-                        currentInstallation["user"] = user
-                        currentInstallation.saveInBackground()
+                    
+                        if let currentInstallation = PFInstallation.currentInstallation() {
+                            currentInstallation["user"] = user
+                            currentInstallation.saveInBackground()
+                        }
                         
                         // register to LaunchKit
                         LaunchKit.sharedInstance().setUserIdentifier(user.objectId, email: user.email, name: user.username)
@@ -446,9 +448,10 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                             
                             if success {
                                 // register current installation
-                                let currentInstallation = PFInstallation.currentInstallation()
-                                currentInstallation["user"] = user
-                                currentInstallation.saveInBackground()
+                                if let currentInstallation = PFInstallation.currentInstallation() {
+                                    currentInstallation["user"] = user
+                                    currentInstallation.saveInBackground()
+                                }
                                 
                                 // register to LaunchKit
                                 LaunchKit.sharedInstance().setUserIdentifier(user.objectId, email: user.email, name: user.username)

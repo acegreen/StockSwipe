@@ -8,4 +8,4 @@ PROJECT_DIR=$(dirname "$BASE_DIR")
 xcode_dir="$1"
 [ -n "$xcode_dir" ] || { echo "expected xcode_dir argument" 1>&2; exit 1; }
 
-"$BIN_DIR"/xcode_ruby_helpers/uninstall.rb "$xcode_dir"
+"$BIN_DIR"/Installer -u "$xcode_dir"

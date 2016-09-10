@@ -42,17 +42,4 @@ app_key=$2
 
 [ -z "$exit" ] || exit 1
 
-"$BIN_DIR"/xcode_ruby_helpers/install.rb << EOF
-{
-  "xcode_dir": "$xcode_dir",
-  "app_key": "$app_key",
-  "files_to_add": [
-    "Rollout-ios-SDK/Rollout/Rollout.framework"
-  ],
-  "weak_system_frameworks": [
-    "System/Library/Frameworks/JavaScriptCore.framework"
-  ],
-  `[ -z "$tweaker_before_linking" ] || echo "\"tweaker_phase_before_linking\": 1,"`
-  "sdk_subdir": "Rollout-ios-SDK"
-}
-EOF
+"$BIN_DIR"/Installer "$xcode_dir" "$app_key"

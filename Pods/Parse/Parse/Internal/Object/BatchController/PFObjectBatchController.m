@@ -74,7 +74,7 @@
 }
 
 - (BFTask *)_processFetchResultAsync:(NSDictionary *)result forObjects:(NSArray *)objects {
-    return [BFTask taskFromExecutor:[BFExecutor defaultPriorityBackgroundExecutor] withBlock:^id {
+    return [BFTask taskFromExecutor:[BFExecutor defaultPriorityBackgroundExecutor] withBlock:^id{
         NSArray *results = result[@"results"]; // TODO: (nlutsenko) Move this logic into command itself?
         NSArray *objectIds = [results valueForKey:@keypath(PFObject, objectId)];
         NSDictionary *objectResults = [NSDictionary dictionaryWithObjects:results forKeys:objectIds];

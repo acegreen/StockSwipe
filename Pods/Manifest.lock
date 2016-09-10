@@ -1,5 +1,5 @@
 PODS:
-  - AMPopTip (1.1.2)
+  - AMPopTip (1.2.0)
   - Appsee (2.2)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
@@ -15,7 +15,7 @@ PODS:
   - Crashlytics (3.7.2):
     - Fabric (~> 1.6.3)
   - DataCache (1.0)
-  - DZNEmptyDataSet (1.7.2)
+  - DZNEmptyDataSet (1.8.1)
   - Fabric (1.6.7)
   - FacebookCore (0.1.1):
     - Bolts (~> 1.8)
@@ -36,8 +36,8 @@ PODS:
   - LaunchKit/LaunchKit (2.1.4)
   - MDCSwipeToChoose (0.2.4)
   - NVActivityIndicatorView (2.9)
-  - Parse (1.13.0):
-    - Bolts/Tasks (~> 1.6)
+  - Parse (1.14.2):
+    - Bolts/Tasks (~> 1.8)
   - ParseFacebookUtilsV4 (1.11.1):
     - Bolts/Tasks (>= 1.6)
     - FBSDKCoreKit (~> 4.10)
@@ -50,9 +50,8 @@ PODS:
   - ParseUI (1.2.0):
     - Bolts/Tasks (~> 1.3)
     - Parse (~> 1.9)
-  - PulsingHalo (0.1.0)
-  - Rollout.io (0.14.5)
-  - SDVersion (3.1)
+  - Rollout.io (1.2.0)
+  - SDVersion (3.2)
   - SKSplashView (0.1.2)
   - SwiftyJSON (2.3.2)
   - SWXMLHash (2.4.0)
@@ -69,18 +68,17 @@ DEPENDENCIES:
   - ChimpKit
   - Crashlytics
   - DataCache (from `https://github.com/huynguyencong/DataCache.git`)
-  - DZNEmptyDataSet (= 1.7.2)
+  - DZNEmptyDataSet
   - FacebookCore
   - FacebookShare
   - LaunchKit
   - MDCSwipeToChoose (from `https://github.com/acegreen/MDCSwipeToChoose.git`)
   - NVActivityIndicatorView
-  - Parse (= 1.13.0)
+  - Parse
   - ParseFacebookUtilsV4
   - ParseTwitterUtils
   - ParseUI
-  - PulsingHalo (from `https://github.com/shu223/PulsingHalo.git`)
-  - Rollout.io (~> 0.14.4)
+  - Rollout.io
   - SDVersion
   - SKSplashView (from `https://github.com/acegreen/SKSplashView.git`, branch `ag-improvements`)
   - SwiftyJSON
@@ -92,8 +90,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
-  PulsingHalo:
-    :git: https://github.com/shu223/PulsingHalo.git
   SKSplashView:
     :branch: ag-improvements
     :git: https://github.com/acegreen/SKSplashView.git
@@ -103,17 +99,14 @@ CHECKOUT OPTIONS:
     :commit: cb45a04794db954b7d13c995b829674f73b18848
     :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
-    :commit: b2ac629b9f3798b28ec8fddd82af450dbf38333f
+    :commit: 759f5060c350d533e046ef53f88515552278a706
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
-  PulsingHalo:
-    :commit: 0799f509e146605e20cb8d6391b1fb86e3985b1f
-    :git: https://github.com/shu223/PulsingHalo.git
   SKSplashView:
     :commit: c56a7cee52f75473117eb2597b1b160dd9915f22
     :git: https://github.com/acegreen/SKSplashView.git
 
 SPEC CHECKSUMS:
-  AMPopTip: b31859b2e313f61318c676686493b1508c9a7221
+  AMPopTip: 853bcb307ecc6f71742cccdbc5b594bea097f188
   Appsee: c95173e65acaab0ffc8a082c70633c9f5f45d5f0
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   BubbleTransition: a7ae6678721406d60f604cbbea1ace505563119d
@@ -121,7 +114,7 @@ SPEC CHECKSUMS:
   ChimpKit: d020126089544daa349397a91f1489a3f271b791
   Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
   DataCache: d9dc2b3f77dca0067c93bd481a1a10b9d60d0b1d
-  DZNEmptyDataSet: 0ec00bfc230d7450997b60c127afdd0b9f24f3b6
+  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   FacebookCore: 14f27add6888c27470d42a100374e6361f4e0f79
   FacebookShare: ea0370ca0b914eccc42a753abcd937265c17b030
@@ -131,19 +124,18 @@ SPEC CHECKSUMS:
   LaunchKit: 95ad4fb171a0f8ea1c80aa26d4fb7bd637788f9c
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
   NVActivityIndicatorView: 0084f6be71bdf4735b5424ebfb530b1e3db3276c
-  Parse: f51c24d2feb412e4b2d6cc73d37cb24e8d0089bc
+  Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
   ParseTwitterUtils: 0dde9689565e7012d83f892c64aed2ebe69f2ea9
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
-  PulsingHalo: d2684152281a3f7398b9554734b9a4f8feb9129a
-  Rollout.io: e5b35636dba2e110536d54d561d7d95ed5fdc953
-  SDVersion: 1eb1509995f353302094612ea3a77df289157687
+  Rollout.io: 8ea8b9711a4a0f033236fecde67756197585dd66
+  SDVersion: e8bf034813e40fdd31c002942f78182f46468ee1
   SKSplashView: c65333b6707be6f237d09e7c8977941114b0a70d
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   SWXMLHash: 507397103325f140863d09040c04ae14a49a16cb
   TwitterCore: 817eae3e291fa4125b47789e26a4f6f024115c1f
   TwitterKit: 8a383da8d9c21b0423716381ea8bbfce20622d91
 
-PODFILE CHECKSUM: 79c5b48fcfcf87e79ca38124f08dbf6452bcadc6
+PODFILE CHECKSUM: 4ab6617b39b868d95314519eca42ded016a7541c
 
-COCOAPODS: 1.0.1
+COCOAPODS: 1.1.0.beta.1

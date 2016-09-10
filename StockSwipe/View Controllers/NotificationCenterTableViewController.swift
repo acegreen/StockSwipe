@@ -38,10 +38,6 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // set tableView properties
-        self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 200.0
-        
         self.getActivities()
     }
     
@@ -167,6 +163,14 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         return activities.count
     }
     
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 150
+    }
+    
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as NotificationCell
@@ -204,6 +208,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         
         let segueIdentifier = segueIdentifierForSegue(segue)
+        guard let cell = sender as? NotificationCell else { return }
         
         switch segueIdentifier {
             
@@ -211,20 +216,16 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             
             let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
             
-            guard let cell = sender as? NotificationCell else { return }
-            
             if let tradeIdeaObject = cell.activity.objectForKey("tradeIdea") as? PFObject {
                 
-                let tradeIdea = TradeIdea(user: tradeIdeaObject.objectForKey("user") as! PFUser, description: tradeIdeaObject.objectForKey("description") as! String, likeCount: (tradeIdeaObject.objectForKey("likeCount") as? Int) ?? 0, reshareCount: (tradeIdeaObject.objectForKey("reshareCount") as? Int) ?? 0, publishedDate: tradeIdeaObject.createdAt, parseObject: tradeIdeaObject)
-                
-                destinationViewController.tradeIdea = tradeIdea
+                TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
+                    destinationViewController.tradeIdea = tradeIdea
+                })
             }
             
         case .ProfileSegueIdentifier:
             
             let profileViewController = segue.destinationViewController as! ProfileContainerController
-            
-            guard let cell = sender as? NotificationCell else { return }
             
             profileViewController.user = User(userObject: cell.activity.objectForKey("fromUser") as! PFUser)
             

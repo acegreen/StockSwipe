@@ -11,12 +11,12 @@ import UIKit
 @IBDesignable
 class IdeaPostButton: UIButton {
 
-    override var enabled: Bool {
+    override var isEnabled: Bool {
         didSet {
-            if enabled {
+            if isEnabled {
                 backgroundColor = Constants.stockSwipeGreenColor
             } else {
-                backgroundColor = UIColor.whiteColor()
+                backgroundColor = UIColor.white
             }
         }
     }

@@ -24,8 +24,8 @@ class ProfileDetailTableViewController: UITableViewController {
     
     @IBOutlet var userWebsiteTextField: UITextField!
     
-    @IBAction func xButtonPressed(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func xButtonPressed(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
 
     override func viewDidLoad() {
@@ -51,7 +51,7 @@ class ProfileDetailTableViewController: UITableViewController {
         
         guard let user = user else { return }
         
-        if let profileImageURL = user.userObject.objectForKey("profile_image_url") as? String {
+        if let profileImageURL = user.userObject.object(forKey: "profile_image_url") as? String {
             
             QueryHelper.sharedInstance.queryWith(profileImageURL, completionHandler: { (result) in
                 
@@ -59,7 +59,7 @@ class ProfileDetailTableViewController: UITableViewController {
                     
                     let imageData = try result()
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         let profileImage = UIImage(data: imageData)
                         self.userAvatarImageView.image = profileImage
                     })
@@ -69,11 +69,11 @@ class ProfileDetailTableViewController: UITableViewController {
             })
         }
         
-        if let fullName = user.userObject.objectForKey("full_name") as? String {
+        if let fullName = user.userObject.object(forKey: "full_name") as? String {
             self.fullnameTextField.text = fullName
         }
         
-        if let bio = user.userObject.objectForKey("bio") as? String {
+        if let bio = user.userObject.object(forKey: "bio") as? String {
             self.userBioTextView.text = bio
         }
         
@@ -81,34 +81,34 @@ class ProfileDetailTableViewController: UITableViewController {
             self.userLocationTextField.text = location
         }
         
-        if let website = user.userObject.objectForKey("website") as? String {
+        if let website = user.userObject.object(forKey: "website") as? String {
             self.userWebsiteTextField.text = website
         }
     }
     
-    func handleGestureRecognizer(tapGestureRecognizer: UITapGestureRecognizer) {
+    func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
         imagePicker.allowsEditing = false
-        imagePicker.sourceType = .PhotoLibrary
+        imagePicker.sourceType = .photoLibrary
         imagePicker.delegate = self
-        imagePicker.modalPresentationStyle = .CurrentContext
+        imagePicker.modalPresentationStyle = .currentContext
         
-        presentViewController(imagePicker, animated: true, completion: nil)
+        present(imagePicker, animated: true, completion: nil)
     }
 }
 
 // MARK: - UIImagePickerControllerDelegate Methods
 extension ProfileDetailTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            userAvatarImageView.contentMode = .ScaleAspectFit
+            userAvatarImageView.contentMode = .scaleAspectFit
             userAvatarImageView.image = pickedImage
         }
-        dismissViewControllerAnimated(true, completion: nil)
+        dismiss(animated: true, completion: nil)
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        dismissViewControllerAnimated(true, completion: nil)
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
     }
 }

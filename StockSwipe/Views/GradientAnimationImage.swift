@@ -20,11 +20,11 @@ class GradientAnimationImage: UIImageView {
         gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.5)
         gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.5)
         
-        let colors = [UIColor.grayColor().CGColor, UIColor.whiteColor().CGColor, UIColor.grayColor().CGColor]
+        let colors = [UIColor.gray.cgColor, UIColor.white.cgColor, UIColor.gray.cgColor]
         gradientLayer.colors = colors
         
         let locations = [0.25, 0.5, 0.75]
-        gradientLayer.locations = locations
+        gradientLayer.locations = locations as [NSNumber]?
         
         return gradientLayer
     }()
@@ -46,17 +46,17 @@ class GradientAnimationImage: UIImageView {
         gradientAnimation.toValue = [0.75, 1.0, 1.0]
         gradientAnimation.duration = 1.7
         gradientAnimation.repeatCount = Float.infinity
-        gradientAnimation.removedOnCompletion = false
+        gradientAnimation.isRemovedOnCompletion = false
         gradientAnimation.fillMode = kCAFillModeForwards
         
         // Use image to create a mask on the gradient layer.
         let maskLayer = CALayer()
-        maskLayer.backgroundColor = UIColor.clearColor().CGColor
-        maskLayer.frame = CGRectOffset(bounds, bounds.size.width, 0)
-        maskLayer.contents = self.image!.CGImage
+        maskLayer.backgroundColor = UIColor.clear.cgColor
+        maskLayer.frame = bounds.offsetBy(dx: bounds.size.width, dy: 0)
+        maskLayer.contents = self.image!.cgImage
         
         gradientLayer.mask = maskLayer
-        gradientLayer.addAnimation(gradientAnimation, forKey: nil)
+        gradientLayer.add(gradientAnimation, forKey: nil)
         
     }
     
@@ -71,17 +71,17 @@ class GradientAnimationImage: UIImageView {
         gradientAnimation.toValue = [0.75, 1.0, 1.0]
         gradientAnimation.duration = 1.7
         gradientAnimation.repeatCount = Float.infinity
-        gradientAnimation.removedOnCompletion = false
+        gradientAnimation.isRemovedOnCompletion = false
         gradientAnimation.fillMode = kCAFillModeForwards
         
         // Use image to create a mask on the gradient layer.
         let maskLayer = CALayer()
-        maskLayer.backgroundColor = UIColor.clearColor().CGColor
-        maskLayer.frame = CGRectOffset(bounds, bounds.size.width, 0)
-        maskLayer.contents = self.image!.CGImage
+        maskLayer.backgroundColor = UIColor.clear.cgColor
+        maskLayer.frame = bounds.offsetBy(dx: bounds.size.width, dy: 0)
+        maskLayer.contents = self.image!.cgImage
         
         gradientLayer.mask = maskLayer
-        gradientLayer.addAnimation(gradientAnimation, forKey: nil)
+        gradientLayer.add(gradientAnimation, forKey: nil)
         
     }
 }

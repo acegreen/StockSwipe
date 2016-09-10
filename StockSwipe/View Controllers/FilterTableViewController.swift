@@ -18,10 +18,10 @@ class FilterTableViewController: UITableViewController, CellType {
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             
             self.navigationItem.leftBarButtonItem = nil
         }
@@ -29,12 +29,12 @@ class FilterTableViewController: UITableViewController, CellType {
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
 
         return 2
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
         switch section {
@@ -49,7 +49,7 @@ class FilterTableViewController: UITableViewController, CellType {
         }
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
         switch section {
         case 0:
@@ -64,54 +64,54 @@ class FilterTableViewController: UITableViewController, CellType {
         
     }
     
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         if let view = view as? UITableViewHeaderFooterView {
             
-            view.textLabel!.textColor = UIColor.grayColor()
+            view.textLabel!.textColor = UIColor.gray
         }
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as FiltersCell
         
-        switch indexPath.section {
+        switch (indexPath as NSIndexPath).section {
         case 0:
-            let exchange = Constants.Symbol.Exchange.allExchanges[indexPath.row]
+            let exchange = Constants.Symbol.Exchange.allExchanges[(indexPath as NSIndexPath).row]
             cell.filtersCellLeftLabel.text = exchange.key()
         case 1:
-            let sector = Constants.Symbol.Sector.allSectors[indexPath.row]
+            let sector = Constants.Symbol.Sector.allSectors[(indexPath as NSIndexPath).row]
             cell.filtersCellLeftLabel.text = sector.key()
         default:
             break
         }
         
-        if Constants.userDefaults.boolForKey("\(cell.textLabel!.text!)".uppercaseString) == true {
+        if Constants.userDefaults.bool(forKey: "\(cell.textLabel!.text!)".uppercased()) == true {
             
-            cell.accessoryType = .Checkmark
+            cell.accessoryType = .checkmark
             
         } else {
             
-            cell.accessoryType = .None
+            cell.accessoryType = .none
         }
         
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) {
             
-            if cell.accessoryType == .Checkmark {
+            if cell.accessoryType == .checkmark {
                 
-                cell.accessoryType = .None
+                cell.accessoryType = .none
                 
                 saveUserDefaults(false, cell: cell)
                 
             } else {
                 
-                cell.accessoryType = .Checkmark
+                cell.accessoryType = .checkmark
                 
                 saveUserDefaults(true, cell: cell)
                 
@@ -119,19 +119,19 @@ class FilterTableViewController: UITableViewController, CellType {
         }
     }
     
-    override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) {
+        if let cell = tableView.cellForRow(at: indexPath) {
             
-            if cell.accessoryType == .Checkmark {
+            if cell.accessoryType == .checkmark {
                 
-                cell.accessoryType = .None
+                cell.accessoryType = .none
                 
                 saveUserDefaults(false, cell: cell)
                 
             } else {
                 
-                cell.accessoryType = .Checkmark
+                cell.accessoryType = .checkmark
                 
                 saveUserDefaults(true, cell: cell)
                 
@@ -139,10 +139,10 @@ class FilterTableViewController: UITableViewController, CellType {
         }
     }
     
-    func saveUserDefaults(value: Bool, cell: UITableViewCell) {
+    func saveUserDefaults(_ value: Bool, cell: UITableViewCell) {
         
-        Constants.userDefaults.setBool(value, forKey: "\(cell.textLabel!.text!)".uppercaseString)
-        print("value for \(cell.textLabel!.text!)", Constants.userDefaults.boolForKey("\(cell.textLabel!.text)") as Bool)
+        Constants.userDefaults.set(value, forKey: "\(cell.textLabel!.text!)".uppercased())
+        print("value for \(cell.textLabel!.text!)", Constants.userDefaults.bool(forKey: "\(cell.textLabel!.text)") as Bool)
         
     }
 }

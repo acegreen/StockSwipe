@@ -12,17 +12,17 @@ class CustomUnwindSegue: UIStoryboardSegue {
     
     override func perform() {
         
-        let sourceViewController: WebViewController = self.sourceViewController as! WebViewController
+        let sourceViewController: WebViewController = self.source as! WebViewController
         
-        let destinationViewController: CardsViewController = self.destinationViewController as! CardsViewController
+        let destinationViewController: CardsViewController = self.destination as! CardsViewController
 
         let frontView = destinationViewController.firstCardView
         
-        sourceViewController.dismissViewControllerAnimated(true, completion: nil)
+        sourceViewController.dismiss(animated: true, completion: nil)
         
-        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
             
-            frontView.transform = CGAffineTransformMakeScale(1.0, 1.0)
+            frontView?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             
             }) { (finished) -> Void in
         }

@@ -9,9 +9,9 @@
 import Foundation
 import NVActivityIndicatorView
 
-extension CollectionType {
-    func find(@noescape predicate: (Self.Generator.Element) throws -> Bool) rethrows -> Self.Generator.Element? {
-        return try indexOf(predicate).map({self[$0]})
+extension Collection {
+    func find(_ predicate: (Self.Iterator.Element) throws -> Bool) rethrows -> Self.Iterator.Element? {
+        return try index(where: predicate).map({self[$0]})
     }
 }
 
@@ -19,7 +19,7 @@ extension Array {
     
     // Safely lookup an index that might be out of bounds,
     // returning nil if it does not exist
-    func get(index: Int) -> Element? {
+    func get(_ index: Int) -> Element? {
         if 0 <= index && index < count {
             return self[index]
         } else {
@@ -28,12 +28,12 @@ extension Array {
     }
     
     mutating func moveItem(fromIndex oldIndex: Index, toIndex newIndex: Index) {
-        insert(removeAtIndex(oldIndex), atIndex: newIndex)
+        insert(remove(at: oldIndex), at: newIndex)
     }
     
-    func reduceWithIndex<T>(initial: T, @noescape combine: (T, Int, Array.Generator.Element) throws -> T) rethrows -> T {
+    func reduceWithIndex<T>(_ initial: T, combine: (T, Int, Array.Iterator.Element) throws -> T) rethrows -> T {
         var result = initial
-        for (index, element) in self.enumerate() {
+        for (index, element) in self.enumerated() {
             result = try combine(result, index, element)
         }
         return result
@@ -42,13 +42,13 @@ extension Array {
 
 extension Array where Element: Equatable {
     
-    mutating func removeObject(object: Element) {
-        if let index = self.indexOf(object) {
-            self.removeAtIndex(index)
+    mutating func removeObject(_ object: Element) {
+        if let index = self.index(of: object) {
+            self.remove(at: index)
         }
     }
     
-    mutating func removeObjectsInArray(array: [Element]) {
+    mutating func removeObjectsInArray(_ array: [Element]) {
         for object in array {
             self.removeObject(object)
         }
@@ -80,32 +80,32 @@ extension Int {
 
 extension String {
     
-    func NSRangeFromRange(range: Range<String.Index>) -> NSRange {
+    func NSRangeFromRange(_ range: Range<String.Index>) -> NSRange {
         let utf16view = self.utf16
-        let from = String.UTF16View.Index(range.startIndex, within: utf16view)
-        let to = String.UTF16View.Index(range.endIndex, within: utf16view)
+        let from = String.UTF16View.Index(range.lowerBound, within: utf16view)
+        let to = String.UTF16View.Index(range.upperBound, within: utf16view)
         return NSMakeRange(utf16view.startIndex.distanceTo(from), from.distanceTo(to))
     }
     
-    mutating func dropTrailingCharacters(dropCharacterSet: NSCharacterSet) {
+    mutating func dropTrailingCharacters(_ dropCharacterSet: CharacterSet) {
         let nonCharacters = dropCharacterSet
-        let characterArray = componentsSeparatedByCharactersInSet(nonCharacters)
+        let characterArray = components(separatedBy: nonCharacters)
         if let first = characterArray.first {
             self = first
         }
     }
     
     func URLEncodedString() -> String? {
-        let escapedString = self.stringByAddingPercentEncodingWithAllowedCharacters(.URLQueryAllowedCharacterSet())
+        let escapedString = self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed())
         return escapedString
     }
     
     func decodeEncodedString() -> String? {
         
-        guard let encodedData = self.dataUsingEncoding(NSUTF8StringEncoding) else { return self }
+        guard let encodedData = self.data(using: String.Encoding.utf8) else { return self }
         let attributedOptions : [String: AnyObject] = [
-            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-            NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
+            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType as AnyObject,
+            NSCharacterEncodingDocumentAttribute: String.Encoding.utf8 as AnyObject
         ]
         
         do {
@@ -123,16 +123,16 @@ extension String {
         }
     }
     
-    func replace(target: String, withString: String) -> String {
+    func replace(_ target: String, withString: String) -> String {
         
-        return self.stringByReplacingOccurrencesOfString(target, withString: withString, options: NSStringCompareOptions.LiteralSearch, range: nil)
+        return self.replacingOccurrences(of: target, with: withString, options: NSString.CompareOptions.literal, range: nil)
     }
     
     public var camelCase: String {
         get {
             return self.deburr().words().reduceWithIndex("") { (result, index, word) -> String in
-                let lowered = word.lowercaseString
-                return result + (index > 0 ? lowered.capitalizedString : lowered)
+                let lowered = word.lowercased()
+                return result + (index > 0 ? lowered.capitalized : lowered)
             }
         }
     }
@@ -140,7 +140,7 @@ extension String {
     public var kebabCase: String {
         get {
             return self.deburr().words().reduceWithIndex("", combine: { (result, index, word) -> String in
-                return result + (index > 0 ? "-" : "") + word.lowercaseString
+                return result + (index > 0 ? "-" : "") + word.lowercased()
             })
         }
     }
@@ -148,7 +148,7 @@ extension String {
     public var snakeCase: String {
         get {
             return self.deburr().words().reduceWithIndex("", combine: { (result, index, word) -> String in
-                return result + (index > 0 ? "_" : "") + word.lowercaseString
+                return result + (index > 0 ? "_" : "") + word.lowercased()
             })
         }
     }
@@ -156,7 +156,7 @@ extension String {
     public var startCase: String {
         get {
             return self.deburr().words().reduceWithIndex("", combine: { (result, index, word) -> String in
-                return result + (index > 0 ? " " : "") + word.capitalizedString
+                return result + (index > 0 ? " " : "") + word.capitalized
             })
         }
     }
@@ -172,13 +172,13 @@ extension String {
     func words() -> [String] {
         let hasComplexWordRegex = try! NSRegularExpression(pattern: Constants.RegexHelper.hasComplexWord, options: [])
         let wordRange = NSMakeRange(0, self.characters.count)
-        let hasComplexWord = hasComplexWordRegex.rangeOfFirstMatchInString(self, options: [], range: wordRange)
+        let hasComplexWord = hasComplexWordRegex.rangeOfFirstMatch(in: self, options: [], range: wordRange)
         let wordPattern = hasComplexWord.length > 0 ? Constants.RegexHelper.complexWord : Constants.RegexHelper.basicWord
         let wordRegex = try! NSRegularExpression(pattern: wordPattern, options: [])
-        let matches = wordRegex.matchesInString(self, options: [], range: wordRange)
+        let matches = wordRegex.matches(in: self, options: [], range: wordRange)
         let words = matches.map { (result: NSTextCheckingResult) -> String in
             if let range = self.rangeFromNSRange(result.range) {
-                return self.substringWithRange(range)
+                return self.substring(with: range)
             } else {
                 return ""
             }
@@ -186,7 +186,7 @@ extension String {
         return words
     }
     
-    func rangeFromNSRange(nsRange : NSRange) -> Range<String.Index>? {
+    func rangeFromNSRange(_ nsRange : NSRange) -> Range<String.Index>? {
         let from16 = utf16.startIndex.advancedBy(nsRange.location, limit: utf16.endIndex)
         let to16 = from16.advancedBy(nsRange.length, limit: utf16.endIndex)
         if let from = String.Index(from16, within: self),
@@ -197,8 +197,8 @@ extension String {
         }
     }
     
-    func format(f: String) -> String {
-        return NSString(format: "%\(f)f", self) as String
+    func format(_ f: String) -> String {
+        return NSString(format: "%\(f)f" as NSString, self) as String
     }
 }
 
@@ -228,14 +228,14 @@ extension UIView {
             return self.borderColor
         }
         set {
-            layer.borderColor = newValue?.CGColor
+            layer.borderColor = newValue?.cgColor
         }
     }
     
     func imageFromLayer() -> UIImage {
         UIGraphicsBeginImageContextWithOptions(self.bounds.size, false, 0)
-        self.layer.renderInContext(UIGraphicsGetCurrentContext()!)
-        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()
+        self.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image: UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return image
     }
@@ -243,41 +243,41 @@ extension UIView {
 
 extension UISegmentedControl {
     
-    func insertSegmentWithMultilineTitle(title: String, atIndex segment: Int, animated: Bool) {
+    func insertSegmentWithMultilineTitle(_ title: String, atIndex segment: Int, animated: Bool) {
         let label: UILabel = UILabel()
         label.text = title
         label.textColor = self.tintColor
-        label.backgroundColor = UIColor.clearColor()
-        label.textAlignment = .Center
-        label.lineBreakMode = .ByWordWrapping
+        label.backgroundColor = UIColor.clear
+        label.textAlignment = .center
+        label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
         label.sizeToFit()
-        self.insertSegmentWithImage(label.imageFromLayer(), atIndex: segment, animated: animated)
+        self.insertSegment(with: label.imageFromLayer(), at: segment, animated: animated)
     }
     
-    func insertSegmentWithMultilineAttributedTitle(attributedTitle: NSAttributedString, atIndex segment: Int, animated: Bool) {
+    func insertSegmentWithMultilineAttributedTitle(_ attributedTitle: NSAttributedString, atIndex segment: Int, animated: Bool) {
         let label: UILabel = UILabel()
         label.attributedText = attributedTitle
         label.numberOfLines = 0
         label.sizeToFit()
-        self.insertSegmentWithImage(label.imageFromLayer(), atIndex: segment, animated: animated)
+        self.insertSegment(with: label.imageFromLayer(), at: segment, animated: animated)
     }
     
-    func segmentWithMultilineAttributedTitle(attributedTitle: NSAttributedString, atIndex segment: Int, animated: Bool) {
+    func segmentWithMultilineAttributedTitle(_ attributedTitle: NSAttributedString, atIndex segment: Int, animated: Bool) {
         let label: UILabel = UILabel()
         label.attributedText = attributedTitle
         label.numberOfLines = 0
         label.sizeToFit()
         
-        self.setImage(label.imageFromLayer(), forSegmentAtIndex: segment)
+        self.setImage(label.imageFromLayer(), forSegmentAt: segment)
     }
 }
 
 extension UIButton {
     
-    public override func intrinsicContentSize() -> CGSize {
+    open override var intrinsicContentSize : CGSize {
         
-        let intrinsicContentSize = super.intrinsicContentSize()
+        let intrinsicContentSize = super.intrinsicContentSize
         
         let adjustedWidth = intrinsicContentSize.width + titleEdgeInsets.left + titleEdgeInsets.right
         let adjustedHeight = intrinsicContentSize.height + titleEdgeInsets.top + titleEdgeInsets.bottom
@@ -297,7 +297,7 @@ extension UIColor {
         self.init(red: newRed, green: newGreen, blue: newBlue, alpha: 1.0)
     }
     
-    class func colorFromRGB(rgbValue: UInt) -> UIColor {
+    class func colorFromRGB(_ rgbValue: UInt) -> UIColor {
         return UIColor(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
@@ -307,12 +307,12 @@ extension UIColor {
     }
 }
 
-extension NSURL {
+extension URL {
     var fragments: [String: String] {
         var results = [String: String]()
-        if let pairs = self.fragment?.componentsSeparatedByString("&") where pairs.count > 0 {
+        if let pairs = self.fragment?.components(separatedBy: "&") , pairs.count > 0 {
             for pair: String in pairs {
-                if let keyValue = pair.componentsSeparatedByString("=") as [String]? {
+                if let keyValue = pair.components(separatedBy: "=") as [String]? {
                     results.updateValue(keyValue[1], forKey: keyValue[0])
                 }
             }
@@ -320,21 +320,21 @@ extension NSURL {
         return results
     }
     
-    func parseQueryString (urlQuery: String, firstSeperator: String, secondSeperator: String) -> NSDictionary? {
+    func parseQueryString (_ urlQuery: String, firstSeperator: String, secondSeperator: String) -> NSDictionary? {
         
         let dict: NSMutableDictionary = NSMutableDictionary()
         
-        let pairs = urlQuery.componentsSeparatedByString(firstSeperator)
+        let pairs = urlQuery.components(separatedBy: firstSeperator)
         
         for pair in pairs {
             
-            let elements: NSArray = pair.componentsSeparatedByString(secondSeperator)
+            let elements: NSArray = pair.components(separatedBy: secondSeperator)
             
-            guard let key = elements.objectAtIndex(0).stringByRemovingPercentEncoding,
-                let value = elements.objectAtIndex(1).stringByRemovingPercentEncoding
+            guard let key = (elements.object(at: 0) as AnyObject).removingPercentEncoding,
+                let value = (elements.object(at: 1) as AnyObject).removingPercentEncoding
                 else { return dict }
             
-            dict.setObject(value!, forKey: key!)
+            dict.setObject(value!, forKey: key! as NSCopying)
         }
         
         return dict
@@ -360,10 +360,10 @@ extension UIImage {
     
     convenience init(view: UIView) {
         UIGraphicsBeginImageContext(view.frame.size)
-        view.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        view.layer.render(in: UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        self.init(CGImage: image.CGImage!)
+        self.init(cgImage: (image?.cgImage!)!)
     }
     
     var rounded: UIImage {
@@ -371,24 +371,24 @@ extension UIImage {
         imageView.layer.cornerRadius = size.height < size.width ? size.height/2 : size.width/2
         imageView.layer.masksToBounds = true
         UIGraphicsBeginImageContext(imageView.bounds.size)
-        imageView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        imageView.layer.render(in: UIGraphicsGetCurrentContext()!)
         let result = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return result
+        return result!
     }
     
     var circle: UIImage {
         let square = size.width < size.height ? CGSize(width: size.width, height: size.width) : CGSize(width: size.height, height: size.height)
         let imageView = UIImageView(frame: CGRect(origin: CGPoint(x: 0, y: 0), size: square))
-        imageView.contentMode = UIViewContentMode.ScaleAspectFill
+        imageView.contentMode = UIViewContentMode.scaleAspectFill
         imageView.image = self
         imageView.layer.cornerRadius = square.width/2
         imageView.layer.masksToBounds = true
         UIGraphicsBeginImageContext(imageView.bounds.size)
-        imageView.layer.renderInContext(UIGraphicsGetCurrentContext()!)
+        imageView.layer.render(in: UIGraphicsGetCurrentContext()!)
         let result = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return result
+        return result!
     }
 }
 
@@ -403,7 +403,7 @@ extension DetectTags where Self: UITextView {
         // turn string in to NSString
         let currentText = self.text
         
-        let words:[String] = currentText.componentsSeparatedByCharactersInSet(.whitespaceAndNewlineCharacterSet())
+        let words:[String] = currentText.components(separatedBy: .whitespacesAndNewlines())
         
         for word in words {
             
@@ -411,21 +411,21 @@ extension DetectTags where Self: UITextView {
             
             if word.hasPrefix("$") {
                 
-                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.letterCharacterSet().invertedSet)
+                wordWithTagRemoved.dropTrailingCharacters(CharacterSet.letters.inverted)
                 
                 guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
                     else { continue }
                 
                 // check to see if the hashtag has numbers.
                 // ribl is "#1" shouldn't be considered a hashtag.
-                let digits = NSCharacterSet.decimalDigitCharacterSet()
-                if wordWithTagRemoved.rangeOfCharacterFromSet(digits) == nil {
+                let digits = CharacterSet.decimalDigits
+                if wordWithTagRemoved.rangeOfCharacter(from: digits) == nil {
                     cashtags.append(wordWithTagRemoved)
                 }
                 
             } else if word.hasPrefix("@") {
                 
-                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                wordWithTagRemoved.dropTrailingCharacters(CharacterSet.alphanumerics.inverted)
                 
                 guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
                     else { continue }
@@ -433,15 +433,15 @@ extension DetectTags where Self: UITextView {
                 mentions.append(wordWithTagRemoved)
             } else if word.hasPrefix("#") {
                 
-                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                wordWithTagRemoved.dropTrailingCharacters(CharacterSet.alphanumerics.inverted)
                 
                 guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
                     else { continue }
                 
                 // check to see if the hashtag has numbers.
                 // ribl is "#1" shouldn't be considered a hashtag.
-                let digits = NSCharacterSet.decimalDigitCharacterSet()
-                if wordWithTagRemoved.rangeOfCharacterFromSet(digits) == nil {
+                let digits = CharacterSet.decimalDigits
+                if wordWithTagRemoved.rangeOfCharacter(from: digits) == nil {
                     hashtags.append(wordWithTagRemoved)
                 }
                 
@@ -454,14 +454,14 @@ extension DetectTags where Self: UITextView {
     func resolveTags() {
         
         // this needs to be an array of NSString.  String does not work.
-        let words = self.text.componentsSeparatedByCharactersInSet(.whitespaceAndNewlineCharacterSet())
+        let words = self.text.components(separatedBy: .whitespacesAndNewlines())
         
         // use storyboard attributes
         var attributes: [String: AnyObject]?
         if let name = self.font?.familyName, let size = self.font?.pointSize {
             attributes = [
-                NSFontAttributeName : UIFont(name: name, size: size) as! AnyObject,
-                NSForegroundColorAttributeName : (self.textColor ?? UIColor.blackColor())
+                NSFontAttributeName : UIFont(name: name, size: size) as AnyObject,
+                NSForegroundColorAttributeName : (self.textColor ?? UIColor.black)
             ]
         }
         
@@ -487,51 +487,51 @@ extension DetectTags where Self: UITextView {
             if word.hasPrefix("$") {
                 
                 // drop unwanted characters
-                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.letterCharacterSet().invertedSet)
+                wordWithTagRemoved.dropTrailingCharacters(CharacterSet.letters.inverted)
                 
-                let remainingRange = Range(bookmark..<text.endIndex)
+                let remainingRange = Range(text.indices.suffix(from: bookmark))
                 
                 guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
                     else { continue }
                 
-                if let matchRange = text.rangeOfString(word as String, options: .LiteralSearch, range:remainingRange),
-                    let escapedString = wordWithTagRemoved.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
+                if let matchRange = text.range(of: word as String, options: .literal, range:remainingRange),
+                    let escapedString = wordWithTagRemoved.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed()) {
                     attributedString.addAttribute(NSLinkAttributeName, value: "cash:\(escapedString)", range: text.NSRangeFromRange(matchRange))
                 }
                 
             } else if word.hasPrefix("@") {
                 // drop unwanted characters
-                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                wordWithTagRemoved.dropTrailingCharacters(CharacterSet.alphanumerics.inverted)
                 
                 guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
                     else { continue }
                 
-                let remainingRange = Range(bookmark..<text.endIndex)
+                let remainingRange = Range(text.indices.suffix(from: bookmark))
                 
                 // set a link for when the user clicks on this word.
                 // url scheme syntax "mention://" or "hash://"
-                if let matchRange = text.rangeOfString(word, options: .LiteralSearch, range:remainingRange),
-                    let escapedString = wordWithTagRemoved.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
+                if let matchRange = text.range(of: word, options: .literal, range:remainingRange),
+                    let escapedString = wordWithTagRemoved.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed()) {
                     attributedString.addAttribute(NSLinkAttributeName, value: "mention:\(escapedString)", range: text.NSRangeFromRange(matchRange))
                 }
             } else if  word.hasPrefix("#") {
                 // drop unwanted characters
-                wordWithTagRemoved.dropTrailingCharacters(NSCharacterSet.alphanumericCharacterSet().invertedSet)
+                wordWithTagRemoved.dropTrailingCharacters(CharacterSet.alphanumerics.inverted)
                 
                 guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
                     else { continue }
                 
-                let remainingRange = Range(bookmark..<text.endIndex)
+                let remainingRange = Range(text.indices.suffix(from: bookmark))
                 
                 // set a link for when the user clicks on this word.
                 // url scheme syntax "mention://" or "hash://"
-                if let matchRange = text.rangeOfString(word, options: .LiteralSearch, range:remainingRange),
-                    let escapedString = wordWithTagRemoved.stringByAddingPercentEncodingWithAllowedCharacters(.URLHostAllowedCharacterSet()) {
+                if let matchRange = text.range(of: word, options: .literal, range:remainingRange),
+                    let escapedString = wordWithTagRemoved.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed()) {
                     attributedString.addAttribute(NSLinkAttributeName, value: "hash:\(escapedString)", range: text.NSRangeFromRange(matchRange))
                 }
             }
             
-            bookmark = bookmark.advancedBy(word.characters.count)
+            bookmark = <#T##Collection corresponding to `bookmark`##Collection#>.index(bookmark, offsetBy: word.characters.count)
         }
         
         self.attributedText = attributedString
@@ -541,7 +541,7 @@ extension DetectTags where Self: UITextView {
 extension UIViewController {
     func isBeingPresentedInFormSheet() -> Bool {
         if let presentingViewController = presentingViewController {
-            return traitCollection.horizontalSizeClass == .Compact && presentingViewController.traitCollection.horizontalSizeClass == .Regular
+            return traitCollection.horizontalSizeClass == .compact && presentingViewController.traitCollection.horizontalSizeClass == .regular
         }
         return false
     }
@@ -568,7 +568,7 @@ extension UIViewController {
 }
 
 extension UIApplication {
-    class func topViewController(base: UIViewController? = UIApplication.sharedApplication().keyWindow?.rootViewController) -> UIViewController? {
+    class func topViewController(_ base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
             return topViewController(nav.visibleViewController)
         }
@@ -586,8 +586,8 @@ extension UIApplication {
 
 extension UITableView {
     
-    func dequeueReusableCell<T: UITableViewCell where T: ReusableView>(forIndexPath indexPath: NSIndexPath) -> T {
-        guard let cell = dequeueReusableCellWithIdentifier(T.reuseIdentifier, forIndexPath: indexPath) as? T else {
+    func dequeueReusableCell<T: UITableViewCell>(forIndexPath indexPath: IndexPath) -> T where T: ReusableView {
+        guard let cell = self.dequeueReusableCell(withIdentifier: T.reuseIdentifier, for: indexPath) as? T else {
             fatalError("Could not dequeue cell with identifier: \(T.reuseIdentifier)")
         }
         return cell
@@ -597,13 +597,13 @@ extension UITableView {
 extension UITableViewCell: ReusableView { }
 
 extension SegueHandlerType where Self: UIViewController, SegueIdentifier.RawValue == String {
-    func performSegueWithIdentifier(segueIdentifier: SegueIdentifier, sender: AnyObject?) {
-        performSegueWithIdentifier(segueIdentifier.rawValue, sender: sender)
+    func performSegueWithIdentifier(_ segueIdentifier: SegueIdentifier, sender: AnyObject?) {
+        performSegue(withIdentifier: segueIdentifier.rawValue, sender: sender)
     }
     
-    func segueIdentifierForSegue(segue: UIStoryboardSegue) -> SegueIdentifier {
+    func segueIdentifierForSegue(_ segue: UIStoryboardSegue) -> SegueIdentifier {
         guard let identifier = segue.identifier,
-            segueIdentifier = SegueIdentifier(rawValue: identifier)
+            let segueIdentifier = SegueIdentifier(rawValue: identifier)
             else { fatalError("Invalid segue identifier \(segue.identifier)") }
         
         return segueIdentifier
@@ -613,27 +613,27 @@ extension SegueHandlerType where Self: UIViewController, SegueIdentifier.RawValu
 extension ReusableView where Self: UIView {
     
     static var reuseIdentifier: String {
-        return String(self)
+        return String(describing: self)
     }
 }
 
 extension Tintable where Self: UIView {
     
-    func tint(bool: Bool) {
+    func tint(_ bool: Bool) {
         if bool {
             self.tintColor = Constants.stockSwipeGreenColor
         } else {
-            self.tintColor = UIColor.lightGrayColor()
+            self.tintColor = UIColor.lightGray
         }
     }
 }
 
 extension CellType where Self: UIViewController, CellIdentifier.RawValue == String {
     
-    func reuseIdentifierForCell(tableView: UITableView, indexPath: NSIndexPath) -> CellIdentifier {
-        guard let reuseIdentifier = tableView.cellForRowAtIndexPath(indexPath)?.reuseIdentifier,
-            cellIdentifier = CellIdentifier(rawValue: reuseIdentifier)
-            else { fatalError("Invalid reuseidentifier for \(tableView.cellForRowAtIndexPath(indexPath)?.reuseIdentifier)") }
+    func reuseIdentifierForCell(_ tableView: UITableView, indexPath: IndexPath) -> CellIdentifier {
+        guard let reuseIdentifier = tableView.cellForRow(at: indexPath)?.reuseIdentifier,
+            let cellIdentifier = CellIdentifier(rawValue: reuseIdentifier)
+            else { fatalError("Invalid reuseidentifier for \(tableView.cellForRow(at: indexPath)?.reuseIdentifier)") }
         
         return cellIdentifier
     }

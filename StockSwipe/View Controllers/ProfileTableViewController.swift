@@ -11,7 +11,7 @@ import Parse
 import DZNEmptyDataSet
 
 protocol ProfileTableVieDelegate {
-    func subScrollViewDidScroll(scrollView: UIScrollView)
+    func subScrollViewDidScroll(_ scrollView: UIScrollView)
     func didReloadProfileTableView()
 }
 
@@ -59,33 +59,33 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     @IBOutlet var followButton: FollowButton!
     @IBOutlet var editProfileButton: UIButton!
     
-    @IBAction func settingsButton(sender: AnyObject) {
+    @IBAction func settingsButton(_ sender: AnyObject) {
         
         guard let viewRect = sender as? UIView else {
             return
         }
         
-        guard let currentUser = PFUser.currentUser() else {
+        guard let currentUser = PFUser.current() else {
             Functions.isUserLoggedIn(self)
             return
         }
         guard let user = self.user else { return }
         
         let settingsAlert = UIAlertController()
-        settingsAlert.modalPresentationStyle = .Popover
+        settingsAlert.modalPresentationStyle = .popover
         if user.userObject.objectId == currentUser.objectId  {
             
-            let settingsAction = UIAlertAction(title: "Settings", style: .Default) { action in
+            let settingsAction = UIAlertAction(title: "Settings", style: .default) { action in
                 self.performSegueWithIdentifier(.SettingsSegueIdentifier, sender: self)
             }
             settingsAlert.addAction(settingsAction)
             
-            if PFUser.currentUser() != nil {
-                let logInOutAction = UIAlertAction(title: "Log Out", style: .Default) { action in
+            if PFUser.current() != nil {
+                let logInOutAction = UIAlertAction(title: "Log Out", style: .default) { action in
                     let logInViewcontroller = LoginViewController.sharedInstance
                     logInViewcontroller.loginDelegate = self
                     
-                    if PFUser.currentUser() != nil {
+                    if PFUser.current() != nil {
                         logInViewcontroller.logOut()
                     }
                 }
@@ -96,9 +96,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
             settingsAlert.addAction(blockAction(user.userObject))
             
-            let reportIdea = UIAlertAction(title: "Report", style: .Default) { action in
+            let reportIdea = UIAlertAction(title: "Report", style: .default) { action in
                 
-                SweetAlert().showAlert("Report \(user.userObject.username!)?", subTitle: "", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor.colorFromRGB(0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Report \(user.userObject.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor.colorFromRGB(0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
                     
                     if !isOtherButton {
                         
@@ -111,13 +111,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         spamObject.saveEventually ({ (success, error) in
                             
                             if success {
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.Success)
+                                DispatchQueue.main.async(execute: { () -> Void in
+                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.success)
                                 })
                                 
                             } else {
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                                DispatchQueue.main.async(execute: { () -> Void in
+                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
                                 })
                             }
                         })
@@ -131,13 +131,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         spamObject.saveEventually ({ (success, error) in
                             
                             if success {
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.Success)
+                                DispatchQueue.main.async(execute: { () -> Void in
+                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.success)
                                 })
                                 
                             } else {
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                                DispatchQueue.main.async(execute: { () -> Void in
+                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
                                 })
                             }
                         })
@@ -147,7 +147,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             settingsAlert.addAction(reportIdea)
         }
         
-        let cancel = UIAlertAction(title: "Cancel", style: .Cancel) { action in
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
         }
         
         settingsAlert.addAction(cancel)
@@ -157,27 +157,27 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             presenter.sourceRect = viewRect.bounds;
         }
         
-        UIApplication.topViewController()?.presentViewController(settingsAlert, animated: true, completion: nil)
+        UIApplication.topViewController()?.present(settingsAlert, animated: true, completion: nil)
         settingsAlert.view.tintColor = Constants.stockSwipeGreenColor
     }
     
-    @IBAction func followButtonPressed(sender: FollowButton) {
+    @IBAction func followButtonPressed(_ sender: FollowButton) {
         self.registerFollow(sender)
     }
     
-    @IBAction func refreshControlAction(sender: UIRefreshControl) {
+    @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
         
         getProfile()
         
         switch selectedSegmentIndex {
-        case .Zero, .Three:
+        case .zero, .three:
             Functions.setupConfigParameter("TRADEIDEAQUERYLIMIT") { (parameterValue) -> Void in
                 self.tradeIdeaQueryLimit = parameterValue as? Int ?? 25
                 self.getUserTradeIdeas()
             }
-        case .One:
+        case .one:
             getUsersFollowing()
-        case .Two:
+        case .two:
             getUsersFollowers()
         }
         
@@ -194,28 +194,28 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
     }
     
-    func subDidSelectSegment(segmentedControl: UISegmentedControl) {
+    func subDidSelectSegment(_ segmentedControl: UISegmentedControl) {
         
         selectedSegmentIndex = ProfileContainerController.SegmentIndex(rawValue: segmentedControl.selectedSegmentIndex)!
         
         switch selectedSegmentIndex {
-        case .Zero:
+        case .zero:
             if tradeIdeaObjects.count == 0 {
                 self.getUserTradeIdeas()
             }
-        case .One:
+        case .one:
             if followingUsers.count == 0 {
                 getUsersFollowing()
             }
-        case .Two:
+        case .two:
             if followersUsers.count == 0 {
                 getUsersFollowers()
             }
-        case .Three:
+        case .three:
             if likedTradeIdeaObjects.count == 0 {
                 self.getUserTradeIdeas()
             }
@@ -223,13 +223,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         self.tableView.reloadData()
     }
     
-    override func scrollViewDidScroll(scrollView: UIScrollView) {
+    override func scrollViewDidScroll(_ scrollView: UIScrollView) {
         self.delegate?.subScrollViewDidScroll(scrollView)
     }
     
     func checkProfileButtonSettings() {
-        if user?.objectId == PFUser.currentUser()?.objectId {
-            followButton.hidden = true
+        if user?.objectId == PFUser.current()?.objectId {
+            followButton.isHidden = true
             //editProfileButton.hidden = false
         } else {
             //editProfileButton.hidden = true
@@ -243,7 +243,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         checkProfileButtonSettings()
         checkFollow(self.followButton)
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             self.avatarImage.image = user.avtar
         })
         
@@ -257,7 +257,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let userObject = self.user?.userObject else { return }
         
         switch selectedSegmentIndex {
-        case .Zero:
+        case .zero:
             
             isQueryingForTradeIdeas = true
             
@@ -271,10 +271,10 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     
                     self.tradeIdeaObjects = tradeIdeasObjects
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         self.tableView.reloadData()
                         
-                        if self.refreshControl?.refreshing == true {
+                        if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
                             self.updateRefreshDate()
                         }
@@ -283,10 +283,10 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 } catch {
                     
                     // TO-DO: Show sweet alert with Error.message()
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         self.tableView.reloadData()
                         
-                        if self.refreshControl?.refreshing == true {
+                        if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
                             self.updateRefreshDate()
                         }
@@ -294,11 +294,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 }
             }
             
-        case .One:
+        case .one:
             return
-        case .Two:
+        case .two:
             return
-        case .Three:
+        case .three:
             
             isQueryingForLikedTradeIdeas = true
             
@@ -312,10 +312,10 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     
                     self.likedTradeIdeaObjects = activityObjects
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         self.tableView.reloadData()
                         
-                        if self.refreshControl?.refreshing == true {
+                        if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
                             self.updateRefreshDate()
                         }
@@ -324,10 +324,10 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 } catch {
                     
                     // TO-DO: Show sweet alert with Error.message()
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         self.tableView.reloadData()
                         
-                        if self.refreshControl?.refreshing == true {
+                        if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
                             self.updateRefreshDate()
                         }
@@ -342,12 +342,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard !isCurrentUserBlocked else { return }
         guard let userObject = self.user?.userObject else { return }
         
-        if self.refreshControl?.refreshing == false && !self.footerActivityIndicator.isAnimating() {
+        if self.refreshControl?.isRefreshing == false && !self.footerActivityIndicator.isAnimating {
             self.footerActivityIndicator.startAnimating()
         }
         
         switch selectedSegmentIndex {
-        case .Zero:
+        case .zero:
             QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("user", object: userObject, skip: tradeIdeaObjects.count, limit: self.tradeIdeaQueryLimit) { (result) in
                 
                 do {
@@ -357,17 +357,17 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     //add datasource object here for tableview
                     self.tradeIdeaObjects += tradeIdeasObjects
                     
-                    var indexPaths = [NSIndexPath]()
+                    var indexPaths = [IndexPath]()
                     for i in 0..<tradeIdeasObjects.count {
-                        indexPaths.append(NSIndexPath(forRow: self.tableView.numberOfRowsInSection(0) + i, inSection: 0))
+                        indexPaths.append(IndexPath(row: self.tableView.numberOfRows(inSection: 0) + i, section: 0))
                     }
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         
                         //now insert cell in tableview
-                        self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+                        self.tableView.insertRows(at: indexPaths, with: .none)
                         
-                        if self.footerActivityIndicator?.isAnimating() == true {
+                        if self.footerActivityIndicator?.isAnimating == true {
                             self.footerActivityIndicator.stopAnimating()
                             self.updateRefreshDate()
                         }
@@ -376,19 +376,19 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 } catch {
                     
                     // TO-DO: Show sweet alert with Error.message()
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if self.footerActivityIndicator?.isAnimating() == true {
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        if self.footerActivityIndicator?.isAnimating == true {
                             self.footerActivityIndicator.stopAnimating()
                             self.updateRefreshDate()
                         }
                     })
                 }
             }
-        case .One:
+        case .one:
             return
-        case .Two:
+        case .two:
             return
-        case .Three:
+        case .three:
             
             QueryHelper.sharedInstance.queryActivityFor(userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: likedTradeIdeaObjects.count, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
                 
@@ -400,17 +400,17 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     //add datasource object here for tableview
                     self.likedTradeIdeaObjects += activityObjects.lazy.map { $0["tradeIdea"] as! PFObject }
                     
-                    var indexPaths = [NSIndexPath]()
+                    var indexPaths = [IndexPath]()
                     for i in 0..<activityObjects.count {
-                        indexPaths.append(NSIndexPath(forRow: self.tableView.numberOfRowsInSection(0) + i, inSection: 0))
+                        indexPaths.append(IndexPath(row: self.tableView.numberOfRows(inSection: 0) + i, section: 0))
                     }
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         
                         //now insert cell in tableview
-                        self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+                        self.tableView.insertRows(at: indexPaths, with: .none)
                         
-                        if self.footerActivityIndicator?.isAnimating() == true {
+                        if self.footerActivityIndicator?.isAnimating == true {
                             self.footerActivityIndicator.stopAnimating()
                             self.updateRefreshDate()
                         }
@@ -419,8 +419,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 } catch {
                     
                     // TO-DO: Show sweet alert with Error.message()
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if self.footerActivityIndicator?.isAnimating() == true {
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        if self.footerActivityIndicator?.isAnimating == true {
                             self.footerActivityIndicator.stopAnimating()
                             self.updateRefreshDate()
                         }
@@ -444,22 +444,22 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             do {
                 
                 let activityObjects = try result()
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     
                     // add users to data source
                     self.followingUsers = activityObjects.lazy.map { $0["toUser"] as! PFUser }
                     
                     // reload table to reflect data
                     self.tableView.reloadData()
-                    if self.refreshControl?.refreshing == true {
+                    if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
                         self.updateRefreshDate()
                     }
                 })
                 
             } catch {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    if self.refreshControl?.refreshing == true {
+                DispatchQueue.main.async(execute: { () -> Void in
+                    if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
                         self.updateRefreshDate()
                     }
@@ -484,22 +484,22 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 let activityObjects = try result()
                 
                 self.followersUsers = []
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     
                     // add users to data source
                     self.followersUsers = activityObjects.lazy.map { $0["toUser"] as! PFUser }
                     
                     // reload table to reflect data
                     self.tableView.reloadData()
-                    if self.refreshControl?.refreshing == true {
+                    if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
                         self.updateRefreshDate()
                     }
                 })
                 
             } catch {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    if self.refreshControl?.refreshing == true {
+                DispatchQueue.main.async(execute: { () -> Void in
+                    if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
                         self.updateRefreshDate()
                     }
@@ -508,23 +508,23 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         })
     }
     
-    func checkFollow(sender: FollowButton) {
+    func checkFollow(_ sender: FollowButton) {
         
-        guard user?.objectId != PFUser.currentUser()?.objectId else { return }
+        guard user?.objectId != PFUser.current()?.objectId else { return }
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         guard let userObject = self.user?.userObject else { return }
         
-        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] where users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
-            sender.buttonState = FollowButton.state.Disabled
+        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] , users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
+            sender.buttonState = FollowButton.state.disabled
             self.isCurrentUserBlocked = true
             self.shouldShowProfileAnyway = false
             self.tableView.reloadEmptyDataSet()
             return
         }
         
-        if let blocked_users = currentUser["blocked_users"] as? [PFUser] where blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
-            sender.buttonState = FollowButton.state.Blocked
+        if let blocked_users = currentUser["blocked_users"] as? [PFUser] , blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
+            sender.buttonState = FollowButton.state.blocked
             self.isUserBlocked = true
             self.tableView.reloadEmptyDataSet()
             return
@@ -537,9 +537,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 let activityObject = try result()
                 
                 if activityObject.first != nil {
-                    sender.buttonState = FollowButton.state.Following
+                    sender.buttonState = FollowButton.state.following
                 } else {
-                    sender.buttonState = FollowButton.state.NotFollowing
+                    sender.buttonState = FollowButton.state.notFollowing
                 }
                 
             } catch {
@@ -547,14 +547,14 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         })
     }
     
-    func registerFollow(sender: FollowButton) {
+    func registerFollow(_ sender: FollowButton) {
         
-        guard user?.userObject.objectId != PFUser.currentUser()?.objectId else {
-            followButton.hidden = true
+        guard user?.userObject.objectId != PFUser.current()?.objectId else {
+            followButton.isHidden = true
             return
         }
         
-        guard let currentUser = PFUser.currentUser() else {
+        guard let currentUser = PFUser.current() else {
             let logInViewcontroller = LoginViewController.sharedInstance
             logInViewcontroller.loginDelegate = self
             Functions.isUserLoggedIn(UIApplication.topViewController()!)
@@ -563,18 +563,18 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         guard let userObject = self.user?.userObject else { return }
         
-        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] where users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
-            sender.buttonState = FollowButton.state.Disabled
+        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] , users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
+            sender.buttonState = FollowButton.state.disabled
             return
         }
         
         if let blocked_users = currentUser["blocked_users"] as? [PFUser], let blockedUser = blocked_users .find({ $0.objectId == userObject.objectId }) {
             
-            currentUser.removeObject(blockedUser, forKey: "blocked_users")
+            currentUser.remove(blockedUser, forKey: "blocked_users")
             
             currentUser.saveEventually({ (success, error) in
                 if success {
-                    sender.buttonState = FollowButton.state.NotFollowing
+                    sender.buttonState = FollowButton.state.notFollowing
                 }
             })
             return
@@ -593,21 +593,21 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     activityObject["toUser"] = userObject
                     activityObject["activityType"] = Constants.ActivityType.Follow.rawValue
                     
-                    activityObject.saveInBackgroundWithBlock({ (success, error) in
+                    activityObject.saveInBackground(block: { (success, error) in
                         
                         if success {
-                            sender.buttonState = FollowButton.state.Following
+                            sender.buttonState = FollowButton.state.following
                             
                             // Send push
                             Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":userObject.objectId!, "checkSetting": "follower_notification", "title": "Follower Notification", "message": "@\(currentUser.username!) is now following you"])
                             
                         } else {
-                            sender.buttonState = FollowButton.state.NotFollowing
+                            sender.buttonState = FollowButton.state.notFollowing
                         }
                     })
                 } else {
                     activityObject.first?.deleteEventually()
-                    sender.buttonState = FollowButton.state.NotFollowing
+                    sender.buttonState = FollowButton.state.notFollowing
                 }
                 
             } catch {
@@ -626,50 +626,50 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     func didLogoutSuccessfully() {
         
         if isModal() {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         } else {
-            navigationController?.popViewControllerAnimated(true)
+            navigationController?.popViewController(animated: true)
         }
     }
     
     func updateRefreshDate() {
         
-        let title: String = "Last Update: \(NSDate().formattedAsTimeAgo())"
+        let title: String = "Last Update: \((Date() as NSDate).formattedAsTimeAgo())"
         let attrsDictionary = [
-            NSForegroundColorAttributeName : UIColor.whiteColor()
+            NSForegroundColorAttributeName : UIColor.white
         ]
         
         let attributedTitle: NSAttributedString = NSAttributedString(string: title, attributes: attrsDictionary)
         self.refreshControl?.attributedTitle = attributedTitle
     }
     
-    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
         if offset >= 0 && offset <= 5 {
             // This is the last cell so get more data
             switch selectedSegmentIndex {
-            case .Zero:
+            case .zero:
                 self.loadMoreTradeIdeas()
-            case .One:
+            case .one:
                 getUsersFollowing()
-            case .Two:
+            case .two:
                 getUsersFollowers()
-            case .Three:
+            case .three:
                 self.loadMoreTradeIdeas()
             }
         }
     }
     
-    func blockAction(user: PFUser) -> UIAlertAction {
+    func blockAction(_ user: PFUser) -> UIAlertAction {
         
-        let currentUser = PFUser.currentUser()
+        let currentUser = PFUser.current()
         
         if let blocked_users = currentUser!["blocked_users"] as? [PFUser], let blockedUser = blocked_users .find({ $0.objectId == user.objectId }) {
             
-            let unblockUser = UIAlertAction(title: "Unblock", style: .Default) { action in
+            let unblockUser = UIAlertAction(title: "Unblock", style: .default) { action in
                 
-                currentUser!.removeObject(blockedUser, forKey: "blocked_users")
+                currentUser!.remove(blockedUser, forKey: "blocked_users")
                 
                 currentUser!.saveEventually()
             }
@@ -678,9 +678,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
         } else {
             
-            let blockUser = UIAlertAction(title: "Block", style: .Default) { action in
+            let blockUser = UIAlertAction(title: "Block", style: .default) { action in
                 
-                SweetAlert().showAlert("Block @\(user.username!)?", subTitle: "@\(user.username!) will not be able to follow or view your ideas, and you will not see anything from @\(user.username!)", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.stockSwipeGreenColor, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Block @\(user.username!)?", subTitle: "@\(user.username!) will not be able to follow or view your ideas, and you will not see anything from @\(user.username!)", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.stockSwipeGreenColor, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                     
                     if isOtherButton {
                         Functions.blockUser(user, postAlert: true)
@@ -692,7 +692,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let segueIdentifier = segueIdentifierForSegue(segue)
         
@@ -700,21 +700,21 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
         case .TradeIdeaDetailSegueIdentifier:
             
-            let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
+            let destinationViewController = segue.destination as! TradeIdeaDetailTableViewController
             destinationViewController.delegate = self
             
             guard let cell = sender as? IdeaCell else { return }
             destinationViewController.tradeIdea = cell.tradeIdea
             
         case .ProfileSegueIdentifier:
-            let profileContainerController = segue.destinationViewController as! ProfileContainerController
+            let profileContainerController = segue.destination as! ProfileContainerController
             profileContainerController.navigationItem.rightBarButtonItem = nil
             
             guard let cell = sender as? UserCell  else { return }
             profileContainerController.user = cell.user
         case .EditProfileSegueIdentifier:
             
-            let navigationController = segue.destinationViewController as! UINavigationController
+            let navigationController = segue.destination as! UINavigationController
             let profileDetailViewController = navigationController.viewControllers.first as! ProfileDetailTableViewController
             
             profileDetailViewController.user = self.user
@@ -730,12 +730,12 @@ extension ProfileTableViewController: IdeaPostDelegate {
     
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
         
-        if selectedSegmentIndex == .Zero && self.user?.userObject.objectId == PFUser.currentUser()?.objectId {
+        if selectedSegmentIndex == .zero && self.user?.userObject.objectId == PFUser.current()?.objectId {
             
-            self.tradeIdeaObjects.insert(tradeIdea.parseObject, atIndex: 0)
+            self.tradeIdeaObjects.insert(tradeIdea.parseObject, at: 0)
             
-            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            let indexPath = IndexPath(row: 0, section: 0)
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
             
             self.tableView.reloadEmptyDataSet()
         }
@@ -745,16 +745,16 @@ extension ProfileTableViewController: IdeaPostDelegate {
         
         if let tradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == parseObject.objectId }) {
             
-            if selectedSegmentIndex == .Zero && self.user?.userObject.objectId == PFUser.currentUser()?.objectId {
-                if let reshareOf = tradeIdea.objectForKey("reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == reshareOf.objectId })  {
+            if selectedSegmentIndex == .zero && self.user?.userObject.objectId == PFUser.current()?.objectId {
+                if let reshareOf = tradeIdea.object(forKey: "reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == reshareOf.objectId })  {
                     
-                    let indexPath = NSIndexPath(forRow: self.tradeIdeaObjects.indexOf(reshareTradeIdea)!, inSection: 0)
-                    self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                    let indexPath = IndexPath(row: self.tradeIdeaObjects.index(of: reshareTradeIdea)!, section: 0)
+                    self.tableView.reloadRows(at: [indexPath], with: .automatic)
                 }
                 
-                let indexPath = NSIndexPath(forRow: self.tradeIdeaObjects.indexOf(tradeIdea)!, inSection: 0)
+                let indexPath = IndexPath(row: self.tradeIdeaObjects.index(of: tradeIdea)!, section: 0)
                 self.tradeIdeaObjects.removeObject(tradeIdea)
-                self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
                 
                 if tradeIdeaObjects.count == 0 {
                     self.tableView.reloadEmptyDataSet()
@@ -768,52 +768,52 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch selectedSegmentIndex {
-        case .Zero:
+        case .zero:
             return tradeIdeaObjects.count
-        case .One:
+        case .one:
             return followingUsers.count
-        case .Two:
+        case .two:
             return followersUsers.count
-        case .Three:
+        case .three:
             return likedTradeIdeaObjects.count
         }
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         switch selectedSegmentIndex {
-        case .Zero:
+        case .zero:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            cell.configureCell(tradeIdeaObjects[indexPath.row], timeFormat: .Short)
+            cell.configureCell(tradeIdeaObjects[(indexPath as NSIndexPath).row], timeFormat: .short)
             cell.delegate = self
             return cell
-        case .One:
+        case .one:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as UserCell
-            cell.configureCell(followingUsers[indexPath.row])
+            cell.configureCell(followingUsers[(indexPath as NSIndexPath).row])
             return cell
-        case .Two:
+        case .two:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as UserCell
-            cell.configureCell(followersUsers[indexPath.row])
+            cell.configureCell(followersUsers[(indexPath as NSIndexPath).row])
             return cell
-        case .Three:
+        case .three:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            cell.configureCell(likedTradeIdeaObjects[indexPath.row], timeFormat: .Short)
+            cell.configureCell(likedTradeIdeaObjects[(indexPath as NSIndexPath).row], timeFormat: .short)
             cell.delegate = self
             return cell
         }
@@ -821,22 +821,22 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
     
     // DZNEmptyDataSet delegate functions
     
-    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         
         switch selectedSegmentIndex {
-        case .Zero:
+        case .zero:
             if !isQueryingForTradeIdeas && tradeIdeaObjects.count == 0 {
                 return true
             }
-        case .One:
+        case .one:
             if !isQueryingForFollowing && followingUsers.count == 0 {
                 return true
             }
-        case .Two:
+        case .two:
             if !isQueryingForFollowers && followersUsers.count == 0 {
                 return true
             }
-        case .Three:
+        case .three:
             if !isQueryingForLikedTradeIdeas && likedTradeIdeaObjects.count == 0 {
                 return true
             }
@@ -851,52 +851,52 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
     //        }
     //    }
     
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle: NSAttributedString!
         
         guard !isCurrentUserBlocked else {
-            attributedTitle = NSAttributedString(string: "", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+            attributedTitle = NSAttributedString(string: "", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
             return attributedTitle
         }
         
         if isUserBlocked  && !shouldShowProfileAnyway {
-            attributedTitle = NSAttributedString(string: "@\(self.user!.userObject.username!) is blocked", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+            attributedTitle = NSAttributedString(string: "@\(self.user!.userObject.username!) is blocked", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
             return attributedTitle
         }
         
         switch selectedSegmentIndex {
-        case .Zero:
-            attributedTitle = NSAttributedString(string: "No Trade Ideas", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
-        case .One:
-            attributedTitle = NSAttributedString(string: "Not Following Anyone", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
-        case .Two:
-            attributedTitle = NSAttributedString(string: "No Followers Yet", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
-        case .Three:
-            attributedTitle = NSAttributedString(string: "No Trade Ideas Liked", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        case .zero:
+            attributedTitle = NSAttributedString(string: "No Trade Ideas", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
+        case .one:
+            attributedTitle = NSAttributedString(string: "Not Following Anyone", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
+        case .two:
+            attributedTitle = NSAttributedString(string: "No Followers Yet", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
+        case .three:
+            attributedTitle = NSAttributedString(string: "No Trade Ideas Liked", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
         }
         
         return attributedTitle
     }
     
-    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle: NSAttributedString!
         
         guard !isCurrentUserBlocked else {
-            attributedTitle = NSAttributedString(string: "You are blocked from following @\(self.user!.userObject.username!) and viewing their profile", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+            attributedTitle = NSAttributedString(string: "You are blocked from following @\(self.user!.userObject.username!) and viewing their profile", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
             return attributedTitle
         }
         
         if isUserBlocked  && !shouldShowProfileAnyway {
-            attributedTitle = NSAttributedString(string: "Are you sure you want to view this profile? Viewing this profile won't unblock @\(self.user!.userObject.username!)", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+            attributedTitle = NSAttributedString(string: "Are you sure you want to view this profile? Viewing this profile won't unblock @\(self.user!.userObject.username!)", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
             return attributedTitle
         }
         
-        return NSAttributedString(string: "", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        return NSAttributedString(string: "", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
     }
     
-    func verticalOffsetForEmptyDataSet(scrollView: UIScrollView!) -> CGFloat {
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView!) -> CGFloat {
         return (self.tableView.frame.midY - self.headerView.frame.midY) / 2
     }
     

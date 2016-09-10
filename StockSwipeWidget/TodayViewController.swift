@@ -13,48 +13,48 @@ import SwiftyJSON
 
 class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOperationDelegate {
     
-    enum Errors: ErrorType {
-        case TimeOut
-        case ErrorQueryingForData
-        case QueryDataEmpty
-        case ErrorParsingData
-        case URLEmpty
+    enum Errors: Error {
+        case timeOut
+        case errorQueryingForData
+        case queryDataEmpty
+        case errorParsingData
+        case urlEmpty
         
         func message() -> String {
             switch self {
-            case .TimeOut:
+            case .timeOut:
                 return "We have to wait before requesting new data"
-            case .ErrorQueryingForData:
+            case .errorQueryingForData:
                 return  "Oops! We ran into an issue querying for data"
-            case .QueryDataEmpty:
+            case .queryDataEmpty:
                 return "Oops! We ran into an issue querying for data"
-            case .ErrorParsingData:
+            case .errorParsingData:
                 return "Oops! We ran into an issue querying for data"
-            case .URLEmpty:
+            case .urlEmpty:
                 return "Oops! We ran into an issue querying for data"
             }
         }
     }
     
-    var cloudColors:[UIColor] = [UIColor.whiteColor()]
+    var cloudColors:[UIColor] = [UIColor.white]
     var cloudFontName = "HelveticaNeue"
-    var cloudLayoutOperationQueue: NSOperationQueue!
+    var cloudLayoutOperationQueue: OperationQueue!
     var cloudWords = [CloudWord]()
  
     var trendingStocksJSON = JSON.null
-    var stockTwitsLastQueriedDate: NSDate!
+    var stockTwitsLastQueriedDate: Date!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.preferredContentSize = CGSizeMake(320, 300);
+        self.preferredContentSize = CGSize(width: 320, height: 300);
         
-        cloudLayoutOperationQueue = NSOperationQueue()
+        cloudLayoutOperationQueue = OperationQueue()
         cloudLayoutOperationQueue.name = "Cloud layout operation queue"
         cloudLayoutOperationQueue.maxConcurrentOperationCount = 1
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         
         requestStockTwitsTrendingStocks { (result) in
             
@@ -73,17 +73,17 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
     
     // MARK: - <CloudLayoutOperationDelegate>
     
-    func insertWord(word: String, pointSize: CGFloat,color: Int, center: CGPoint, vertical isVertical: Bool, tappable: Bool) {
+    func insertWord(_ word: String, pointSize: CGFloat,color: Int, center: CGPoint, vertical isVertical: Bool, tappable: Bool) {
         
-        let wordButton: UIButton = UIButton(type: UIButtonType.System)
-        wordButton.setTitle(word, forState: UIControlState.Normal)
-        wordButton.titleLabel?.textAlignment = NSTextAlignment.Center
-        wordButton.setTitleColor(self.cloudColors[color < self.cloudColors.count ? color : 0], forState: UIControlState.Normal)
+        let wordButton: UIButton = UIButton(type: UIButtonType.system)
+        wordButton.setTitle(word, for: UIControlState())
+        wordButton.titleLabel?.textAlignment = NSTextAlignment.center
+        wordButton.setTitleColor(self.cloudColors[color < self.cloudColors.count ? color : 0], for: UIControlState())
         wordButton.titleLabel?.font = UIFont(name: cloudFontName, size: pointSize)
         wordButton.sizeToFit()
         var wordButtonRect: CGRect = wordButton.frame
-        wordButtonRect.size.width = (((CGRectGetWidth(wordButtonRect) + 3) / 2)) * 2
-        wordButtonRect.size.height = (((CGRectGetHeight(wordButtonRect) + 3) / 2)) * 2
+        wordButtonRect.size.width = (((wordButtonRect.width + 3) / 2)) * 2
+        wordButtonRect.size.height = (((wordButtonRect.height + 3) / 2)) * 2
         wordButton.frame = wordButtonRect
         wordButton.center = center
         
@@ -93,7 +93,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         }
         
         if isVertical {
-            wordButton.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+            wordButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
         }
         
         self.view.addSubview(wordButton)
@@ -125,12 +125,12 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
     
     // MARK: - <UIStateRestoring>
     
-    override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        super.encodeRestorableStateWithCoder(coder)
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
     }
     
-    override func decodeRestorableStateWithCoder(coder: NSCoder) {
-        super.decodeRestorableStateWithCoder(coder)
+    override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
     }
     
     // MARK: - Notification handlers
@@ -138,7 +138,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
     /**
     Content size category has changed.  Layout cloud again, to account for new pointSize
     **/
-    func contentSizeCategoryDidChange(__unused: NSNotification) {
+    func contentSizeCategoryDidChange(_ __unused: Notification) {
         self.layoutCloudWords()
     }
     
@@ -148,14 +148,14 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         
         let removableObjects = NSMutableArray()
         for subview: AnyObject in self.view.subviews {
-            if subview.isKindOfClass(UIButton) {
-                removableObjects.addObject(subview)
+            if subview.isKind(of: UIButton) {
+                removableObjects.add(subview)
             }
         }
         
-        removableObjects.enumerateObjectsUsingBlock( { object, index, stop in
+        removableObjects.enumerateObjects( { object, index, stop in
             
-            object.removeFromSuperview()
+            (object as AnyObject).removeFromSuperview()
         })
         
         #if DEBUG
@@ -178,15 +178,15 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         self.cloudLayoutOperationQueue.cancelAllOperations()
         self.cloudLayoutOperationQueue.waitUntilAllOperationsAreFinished()
         self.removeCloudWords()
-        self.view.backgroundColor = UIColor.clearColor()
+        self.view.backgroundColor = UIColor.clear
         let cloudFrame = CGRect(x: 0.0, y: 0.0, width: self.view.bounds.width, height: self.view.bounds.height)
-        let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: cloudFrame, scale: UIScreen.mainScreen().scale, delegate: self)
+        let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: cloudFrame, scale: UIScreen.main.scale, delegate: self)
         self.cloudLayoutOperationQueue.addOperation(newCloudLayoutOperation)
         
         print("layoutCloudWords complete")
     }
     
-    func wordTapped(sender: UITapGestureRecognizer) {
+    func wordTapped(_ sender: UITapGestureRecognizer) {
         
         let buttonPressed = sender.view as! UIButton
         
@@ -203,18 +203,18 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         }
     }
     
-    func requestStockTwitsTrendingStocks(completion: (result: () throws -> ()) -> Void) {
+    func requestStockTwitsTrendingStocks(_ completion: @escaping (_ result: () throws -> ()) -> Void) {
         
-        if let trendingStocksUrl = NSURL(string: "https://api.stocktwits.com/api/2/trending/symbols/equities.json") {
+        if let trendingStocksUrl = URL(string: "https://api.stocktwits.com/api/2/trending/symbols/equities.json") {
             
-            let trendingStocksSession = NSURLSession.sharedSession()
+            let trendingStocksSession = URLSession.shared
             
-            let task = trendingStocksSession.dataTaskWithURL(trendingStocksUrl, completionHandler: { (trendingStocksData, response, error) -> Void in
+            let task = trendingStocksSession.dataTask(with: trendingStocksUrl, completionHandler: { (trendingStocksData, response, error) -> Void in
                 
-                guard error == nil else { return completion(result: {throw Errors.ErrorQueryingForData}) }
+                guard error == nil else { return completion({throw Errors.errorQueryingForData}) }
             
                 guard trendingStocksData != nil, let trendingStocksData = trendingStocksData else {
-                    return completion(result: {throw Errors.QueryDataEmpty})
+                    return completion({throw Errors.queryDataEmpty})
                 }
                 
                 self.cloudWords = []
@@ -227,25 +227,25 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
                     
                 }
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     self.layoutCloudWords()
                 })
                 
-                self.stockTwitsLastQueriedDate = NSDate()
+                self.stockTwitsLastQueriedDate = Date()
                 
-                completion(result: {})
+                completion({})
             })
             
             task.resume()
             
         } else {
-            completion(result: {throw Errors.URLEmpty})
+            completion({throw Errors.urlEmpty})
         }
         
         print("trending symbols requested")
     }
     
-    func widgetPerformUpdateWithCompletionHandler(completionHandler: ((NCUpdateResult) -> Void)) {
+    func widgetPerformUpdate(completionHandler: (@escaping (NCUpdateResult) -> Void)) {
         // Perform any setup necessary in order to update the view.
 
         // If an error is encountered, use NCUpdateResult.Failed
@@ -255,18 +255,18 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         requestStockTwitsTrendingStocks({ (result) in
             do {
                 try result()
-                completionHandler(NCUpdateResult.NewData)
+                completionHandler(NCUpdateResult.newData)
             } catch {
                 if error is Errors {
-                    completionHandler(NCUpdateResult.Failed)
+                    completionHandler(NCUpdateResult.failed)
                 }
             }
         })
     }
     
-    func widgetMarginInsetsForProposedMarginInsets(defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {
+    func widgetMarginInsets(forProposedMarginInsets defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {
         
-        return UIEdgeInsetsZero
+        return UIEdgeInsets.zero
     }
     
 }

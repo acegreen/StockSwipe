@@ -11,9 +11,9 @@ import UIKit
 @IBDesignable
 class TintableButton: UIButton, Tintable {
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            self.tint(selected)
+            self.tint(isSelected)
         }
     }
 }

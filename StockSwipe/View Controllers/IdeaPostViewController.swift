@@ -29,14 +29,14 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     var stockObject: PFObject?
     var originalTradeIdea: TradeIdea?
-    var tradeIdeaType: Constants.TradeIdeaType = .New
+    var tradeIdeaType: Constants.TradeIdeaType = .new
     
     var delegate: IdeaPostDelegate!
     
     @IBOutlet var textViewBottomConstraint: NSLayoutConstraint!
     
-    @IBAction func xButtonPressed(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func xButtonPressed(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     @IBOutlet var ideaTextView: IdeaPostUITextView!
@@ -45,13 +45,13 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     @IBOutlet var postButton: UIButton!
     
-    @IBAction func postButttonPressed(sender: AnyObject) {
+    @IBAction func postButttonPressed(_ sender: AnyObject) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
+            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
             return
         }
-        guard let currentUser = PFUser.currentUser() else {
+        guard let currentUser = PFUser.current() else {
             Functions.isUserLoggedIn(self)
             return
         }
@@ -70,12 +70,12 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         activityObject["fromUser"] = currentUser
         activityObject["tradeIdea"] = tradeIdeaObject
         
-        if tradeIdeaType == .Reply, let originalTradeIdea = self.originalTradeIdea {
+        if tradeIdeaType == .reply, let originalTradeIdea = self.originalTradeIdea {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaReply.rawValue
             activityObject["toUser"] = originalTradeIdea.user.userObject
             activityObject["originalTradeIdea"] = originalTradeIdea.parseObject
             tradeIdeaObject["reply_to"] = originalTradeIdea.parseObject
-        } else if tradeIdeaType == .Reshare, let originalTradeIdea = self.originalTradeIdea {
+        } else if tradeIdeaType == .reshare, let originalTradeIdea = self.originalTradeIdea {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaReshare.rawValue
             activityObject["toUser"] = originalTradeIdea.user.userObject
             activityObject["originalTradeIdea"] = originalTradeIdea.parseObject
@@ -97,15 +97,15 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 })
                 
                 switch self.tradeIdeaType {
-                case .New:
+                case .new:
                     
                     Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId":currentUser.objectId!, "tradeIdeaObjectId":newtradeIdea.parseObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n\(newtradeIdea.description)"])
                     
-                case .Reply, .Reshare: break   
+                case .reply, .reshare: break   
                 }
                 
                 // log trade idea
-                Answers.logCustomEventWithName("Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.currentUser()?.username ?? "N/A","Description": self.ideaTextView.text, "App Version": Constants.AppVersion])
+                Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.current()?.username ?? "N/A","Description": self.ideaTextView.text, "App Version": Constants.AppVersion])
                 
                 // query all the Stocks mentioned & add them to tradIdeaObject
                 QueryHelper.sharedInstance.queryStockObjectsFor(cashtags, completion: { (result) in
@@ -173,14 +173,14 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 tradeIdeaObject["hashtags"] = hashtags
                 
             } else {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                DispatchQueue.main.async(execute: { () -> Void in
+                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
                 })
             }
         })
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            self.dismissViewControllerAnimated(true, completion: nil)
+        DispatchQueue.main.async(execute: { () -> Void in
+            self.dismiss(animated: true, completion: nil)
         })
     }
     
@@ -198,7 +198,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         observeKeyboardNotifications()
         
         // flexible height
-        self.view.autoresizingMask = UIViewAutoresizing.FlexibleHeight
+        self.view.autoresizingMask = UIViewAutoresizing.flexibleHeight
         
         // Setup config parameters
         Functions.setupConfigParameter("TRADEIDEAPOSTCHARACTERLIMIT") { (parameterValue) -> Void in
@@ -206,16 +206,16 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         }
         
         // prefill text
-        if tradeIdeaType == .New, let stockObject = self.stockObject {
-            self.prefillText = "$" + (stockObject.objectForKey("Symbol") as! String)
-        } else if tradeIdeaType == .Reply, let originalTradeIdea = self.originalTradeIdea {
+        if tradeIdeaType == .new, let stockObject = self.stockObject {
+            self.prefillText = "$" + (stockObject.object(forKey: "Symbol") as! String)
+        } else if tradeIdeaType == .reply, let originalTradeIdea = self.originalTradeIdea {
             self.prefillText = "@" + (originalTradeIdea.user.username)
-        } else if tradeIdeaType == .Reshare && self.originalTradeIdea != nil {
+        } else if tradeIdeaType == .reshare && self.originalTradeIdea != nil {
             
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
         if !self.prefillText.isEmpty {
@@ -224,27 +224,27 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit - self.ideaTextView.text.characters.count)
         } else {
             self.ideaTextView.text = "Share an idea\n(use $ before ticker: e.g. $AAPL)"
-            self.ideaTextView.textColor = UIColor.lightGrayColor()
-            self.ideaTextView.selectedTextRange = self.ideaTextView.textRangeFromPosition(self.ideaTextView.beginningOfDocument, toPosition: self.ideaTextView.beginningOfDocument)
+            self.ideaTextView.textColor = UIColor.lightGray
+            self.ideaTextView.selectedTextRange = self.ideaTextView.textRange(from: self.ideaTextView.beginningOfDocument, to: self.ideaTextView.beginningOfDocument)
         }
         
         self.ideaTextView.becomeFirstResponder()
     }
     
     func observeKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdeaPostViewController.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(IdeaPostViewController.keyboardWillHide(_:)), name: UIKeyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(IdeaPostViewController.keyboardWillShow(_:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(IdeaPostViewController.keyboardWillHide(_:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
     }
     
     func stopObservingKeyboardNotifications() {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
     
-    func keyboardWillShow(n: NSNotification) {
+    func keyboardWillShow(_ n: Notification) {
         
-        if let keyboardRect = n.userInfo![UIKeyboardFrameEndUserInfoKey]?.CGRectValue() {
+        if let keyboardRect = ((n as NSNotification).userInfo![UIKeyboardFrameEndUserInfoKey] as AnyObject).cgRectValue {
 
-            let intersectionFrame = CGRectIntersection(self.view.frame, keyboardRect)
+            let intersectionFrame = self.view.frame.intersection(keyboardRect)
             
             print("self.view.frame: ", self.view.frame)
             print("keyboardRect: ", keyboardRect)
@@ -265,7 +265,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         }
     }
     
-    func keyboardWillHide(n: NSNotification) {
+    func keyboardWillHide(_ n: Notification) {
         
 //        if self.isBeingPresentedInFormSheet() {
 //            self.preferredContentSize = CGSize(width: self.originalSize.width, height: self.originalSize.height)
@@ -277,14 +277,14 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
 //        })
     }
     
-    func textView(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         
-        var currentText: NSString = textView.text
-        var updatedText = currentText.stringByReplacingCharactersInRange(range, withString:text)
+        var currentText: NSString = textView.text as NSString
+        var updatedText = currentText.replacingCharacters(in: range, with:text)
         
         if updatedText.isEmpty {
             
-            postButton.enabled = false            
+            postButton.isEnabled = false            
             
             // Set label to 0
             self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit)
@@ -294,36 +294,36 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             } else {
                 ideaTextView.text = "Share a idea\n(use $ before ticker: e.g. $AAPL)"
             }
-            textView.textColor = UIColor.lightGrayColor()
-            textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
+            textView.textColor = UIColor.lightGray
+            textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
             
             textToPost = ""
             
             return false
             
-        } else if textView.textColor == UIColor.lightGrayColor() && !text.isEmpty {
+        } else if textView.textColor == UIColor.lightGray && !text.isEmpty {
             
             textView.text = nil
-            textView.textColor = UIColor.blackColor()
+            textView.textColor = UIColor.black
             
         }
         
-        if textView.textColor != UIColor.lightGrayColor() {
+        if textView.textColor != UIColor.lightGray {
             
             // Keep track of character count and update label
-            currentText = textView.text
-            updatedText = currentText.stringByReplacingCharactersInRange(range, withString:text)
+            currentText = textView.text as NSString
+            updatedText = currentText.replacingCharacters(in: range, with:text)
             self.textCountLabel.text = String(tradeIdeaPostCharacterLimit - updatedText.characters.count)
             self.textToPost = updatedText
             
             if tradeIdeaPostCharacterLimit - updatedText.characters.count < 0 {
-                self.textCountLabel.textColor = UIColor.redColor()
-                postButton.enabled = false
+                self.textCountLabel.textColor = UIColor.red
+                postButton.isEnabled = false
             } else {
                 self.textCountLabel.textColor = Constants.stockSwipeFontColor
                 
                 if (updatedText.characters.filter{$0 != " "}.count > 0) {
-                    postButton.enabled = true
+                    postButton.isEnabled = true
                 }
             }
         }
@@ -331,9 +331,9 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         return true
     }
     
-    func textViewDidChangeSelection(textView: UITextView) {
-        if textView.textColor == UIColor.lightGrayColor() {
-            textView.selectedTextRange = textView.textRangeFromPosition(textView.beginningOfDocument, toPosition: textView.beginningOfDocument)
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.selectedTextRange = textView.textRange(from: textView.beginningOfDocument, to: textView.beginningOfDocument)
         }
     }
 }

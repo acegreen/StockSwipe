@@ -32,12 +32,12 @@ public struct TradeIdea {
     
     var nestedTradeIdeaObject: PFObject?
     
-    var publishedDate: NSDate!
+    var publishedDate: Date!
     var parseObject: PFObject!
     
     init(parseObject: PFObject, completion: ((TradeIdea?) -> Void)? = nil) {
         
-        parseObject.fetchIfNeededInBackgroundWithBlock { (parseObject, error) in
+        parseObject.fetchIfNeededInBackground { (parseObject, error) in
             guard let parseObject = parseObject else  {
                 if let completion = completion {
                     completion(nil)
@@ -45,10 +45,10 @@ public struct TradeIdea {
                 return
             }
             self.parseObject = parseObject
-            self.description = parseObject.objectForKey("description") as? String ?? ""
-            self.likeCount = parseObject.objectForKey("likeCount") as? Int ?? 0
-            self.reshareCount = parseObject.objectForKey("reshareCount") as? Int ?? 0
-            self.nestedTradeIdeaObject = parseObject.objectForKey("reshare_of") as? PFObject
+            self.description = parseObject.object(forKey: "description") as? String ?? ""
+            self.likeCount = parseObject.object(forKey: "likeCount") as? Int ?? 0
+            self.reshareCount = parseObject.object(forKey: "reshareCount") as? Int ?? 0
+            self.nestedTradeIdeaObject = parseObject.object(forKey: "reshare_of") as? PFObject
             self.publishedDate = parseObject.createdAt
             
             self.checkIfLikedByCurrentUser(completion: { (isLikedByCurrentUser) in
@@ -57,7 +57,7 @@ public struct TradeIdea {
                 self.checkIfResharedByCurrentUser(completion: { (isResharedByCurrentUser) in
                     self.isResharedByCurrentUser = isResharedByCurrentUser
                     
-                    User(userObject: parseObject.objectForKey("user") as! PFUser, completion: { (user) in
+                    User(userObject: parseObject.object(forKey: "user") as! PFUser, completion: { (user) in
                         self.user = user
                         if let completion = completion {
                             completion(self)
@@ -68,9 +68,9 @@ public struct TradeIdea {
         }
     }
     
-   mutating func checkIfLikedByCurrentUser(completion completion: ((Bool) -> Void)?) {
+   mutating func checkIfLikedByCurrentUser(completion: ((Bool) -> Void)?) {
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         
         QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
             
@@ -93,9 +93,9 @@ public struct TradeIdea {
         })
     }
     
-    mutating func checkIfResharedByCurrentUser(completion completion: ((Bool) -> Void)?) {
+    mutating func checkIfResharedByCurrentUser(completion: ((Bool) -> Void)?) {
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
     
         QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: self.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
             

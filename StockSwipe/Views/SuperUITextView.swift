@@ -27,12 +27,12 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
     }
     
     // TextView Delegates
-    func textView(textView: UITextView, shouldInteractWithURL URL: NSURL, inRange characterRange: NSRange) -> Bool {
+    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         
         switch URL.scheme {
-        case "cash":
+        case ?"cash":
             
-            let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
+            let chartDetailTabBarController  = Constants.storyboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
             
             QueryHelper.sharedInstance.queryStockObjectsFor([URL.resourceSpecifier]) { (result) in
                 
@@ -43,21 +43,21 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     let chart = Chart(parseObject: stockObject)
                     
                     chartDetailTabBarController.chart = chart
-                    UIApplication.topViewController()?.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
+                    UIApplication.topViewController()?.present(chartDetailTabBarController, animated: true, completion: nil)
                     
                 } catch {
                     
                     if let error = error as? Constants.Errors {
                         
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        DispatchQueue.main.async(execute: { () -> Void in
                             
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
                         })
                     }
                 }
             }
             
-        case "mention":
+        case ?"mention":
             
             QueryHelper.sharedInstance.queryUserObjectsFor([URL.resourceSpecifier], completion: { (result) in
                 
@@ -67,26 +67,26 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     
                     if let userObject = userObject {
                         
-                        let profileNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileNavigationController") as! UINavigationController
+                        let profileNavigationController = Constants.storyboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
                         let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
                         profileContainerController.user = User(userObject: userObject)
                         
-                        UIApplication.topViewController()?.presentViewController(profileNavigationController, animated: true, completion: nil)
+                        UIApplication.topViewController()?.present(profileNavigationController, animated: true, completion: nil)
                     }
                     
                 } catch {
                     
                     if let error = error as? Constants.Errors {
                         
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                        DispatchQueue.main.async(execute: { () -> Void in
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
                         })
                     }
                 }
             })
             
-        case "hash":
-            SweetAlert().showAlert("Coming Soon!", subTitle: "hashtags will be supported soon", style: AlertStyle.Warning)
+        case ?"hash":
+            SweetAlert().showAlert("Coming Soon!", subTitle: "hashtags will be supported soon", style: AlertStyle.warning)
             
         default:
             Functions.presentSafariBrowser(URL)

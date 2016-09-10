@@ -22,7 +22,7 @@ protocol ChartCollectionCellDataSource {
 
 protocol ChartCollectionCellDelegate {
     
-    func onSwitchToggleOn(on: Bool)
+    func onSwitchToggleOn(_ on: Bool)
     
     var switchColor: UIColor { get }
     var textColor: UIColor { get }
@@ -54,7 +54,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
     
     @IBOutlet var EditButton: UIBarButtonItem!
     
-    @IBAction func EditButtonPressed(sender: AnyObject) {
+    @IBAction func EditButtonPressed(_ sender: AnyObject) {
         
         if self.EditButton.image == UIImage(named: "edit_pen") {
             
@@ -66,13 +66,13 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             
             setEditing(false, animated: false)
             
-            if self.CollectionView.indexPathsForSelectedItems()!.count != 0 {
+            if self.CollectionView.indexPathsForSelectedItems!.count != 0 {
                 
-                self.TrashButton.enabled = false
+                self.TrashButton.isEnabled = false
                 
-                for indexPath in self.CollectionView.indexPathsForSelectedItems()! {
+                for indexPath in self.CollectionView.indexPathsForSelectedItems! {
                     
-                    self.CollectionView.deselectItemAtIndexPath((indexPath), animated: false)
+                    self.CollectionView.deselectItem(at: (indexPath), animated: false)
                     
                 }
                 
@@ -85,20 +85,20 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         }
     }
     
-    @IBAction func TrashButtonPressed(sender: AnyObject) {
+    @IBAction func TrashButtonPressed(_ sender: AnyObject) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Delete!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.Warning)
+            SweetAlert().showAlert("Can't Delete!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
             return
         }
         
-        let selectedCoreDataObjects = (self.CollectionView.indexPathsForSelectedItems()?.map{swippeChartsdArray[$0.row]})!
+        let selectedCoreDataObjects = (self.CollectionView.indexPathsForSelectedItems?.map{swippeChartsdArray[($0 as NSIndexPath).row]})!
         
         // Delete user from Parse (for the object were the user has Longed/Shorted)
         performDeletionOfObjects(selectedCoreDataObjects)
     }
     
-    @IBAction func SelectAllButtonPressed(sender: AnyObject) {
+    @IBAction func SelectAllButtonPressed(_ sender: AnyObject) {
         
         if self.SelectAllButton.title == "Select All" {
             
@@ -106,18 +106,18 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             
             print("Select All button pressed")
             
-            for row in 0 ..< self.CollectionView.numberOfItemsInSection(0) {
+            for row in 0 ..< self.CollectionView.numberOfItems(inSection: 0) {
                 
-                let indexPathForRow: NSIndexPath = NSIndexPath(forRow: row, inSection: 0)
+                let indexPathForRow: IndexPath = IndexPath(row: row, section: 0)
                 
-                self.CollectionView.selectItemAtIndexPath(indexPathForRow, animated: true, scrollPosition: UICollectionViewScrollPosition.None)
+                self.CollectionView.selectItem(at: indexPathForRow, animated: true, scrollPosition: UICollectionViewScrollPosition())
                 
             }
             
             // Check if selection count is greater than 0, then enable trash button
-            if self.CollectionView.indexPathsForSelectedItems()!.count != 0 {
+            if self.CollectionView.indexPathsForSelectedItems!.count != 0 {
                 
-                self.TrashButton.enabled = true
+                self.TrashButton.isEnabled = true
                 
             }
             
@@ -127,22 +127,22 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             
             print("Deselect All button pressed")
             
-            for indexPath in self.CollectionView.indexPathsForSelectedItems()! {
+            for indexPath in self.CollectionView.indexPathsForSelectedItems! {
                 
-                self.CollectionView.deselectItemAtIndexPath((indexPath), animated: false)
+                self.CollectionView.deselectItem(at: (indexPath), animated: false)
                 
             }
             
             // Check if selection count is greater than 0, then enable trash button
-            if self.CollectionView.indexPathsForSelectedItems()!.count == 0 {
+            if self.CollectionView.indexPathsForSelectedItems!.count == 0 {
                 
-                self.TrashButton.enabled = false
+                self.TrashButton.isEnabled = false
                 
             }
         }
     }
     
-    override func setEditing(editing: Bool, animated: Bool) {
+    override func setEditing(_ editing: Bool, animated: Bool) {
         
         super.setEditing(editing, animated: animated)
         
@@ -151,7 +151,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             // Make it possible to select & deselect multiple cells
             self.CollectionView.allowsMultipleSelection = true
             
-            self.SelectAllButton.enabled = true
+            self.SelectAllButton.isEnabled = true
             
             // reload view
             self.CollectionView.reloadData()
@@ -162,8 +162,8 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             self.CollectionView.allowsMultipleSelection = false
             
             self.SelectAllButton.title = "Select All"
-            self.SelectAllButton.enabled = false
-            self.TrashButton.enabled = false
+            self.SelectAllButton.isEnabled = false
+            self.TrashButton.isEnabled = false
             
             // reload view
             self.CollectionView.reloadData()
@@ -178,7 +178,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         CollectionViewFlowLayout.minimumLineSpacing = 10
         CollectionViewFlowLayout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             
             cellWidth = (self.view.bounds.width - 30) / numberOfCellsHorizontally
             
@@ -191,10 +191,10 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
             cellHeight = cellWidth
         }
         
-        CollectionViewFlowLayout.itemSize = CGSizeMake(cellWidth, cellHeight)
+        CollectionViewFlowLayout.itemSize = CGSize(width: cellWidth, height: cellHeight)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         reloadViewData()
     }
     
@@ -207,7 +207,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         if self.swippeChartsdArray.count != 0 {
             
             self.CollectionView.reloadData()
-            self.EditButton.enabled = true
+            self.EditButton.isEnabled = true
             
         } else if self.swippeChartsdArray.count == 0 {
             
@@ -222,49 +222,49 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
     
     // MARK: - Collection View Methods
     
-    func numberOfSectionsInCollectionView(collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         
         return 1
         
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return swippeChartsdArray.count
         
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell: ChartCollectionViewCell = CollectionView.dequeueReusableCellWithReuseIdentifier("chartCollectionCellIdentifier", forIndexPath: indexPath) as! ChartCollectionViewCell
+        let cell: ChartCollectionViewCell = CollectionView.dequeueReusableCell(withReuseIdentifier: "chartCollectionCellIdentifier", for: indexPath) as! ChartCollectionViewCell
         
-        let chartData = swippeChartsdArray[indexPath.row]
+        let chartData = swippeChartsdArray[(indexPath as NSIndexPath).row]
         cell.configure(withDataSource: chartData)
         
         return cell
         
     }
     
-    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         print("cell selected")
         
-        if self.editing {
+        if self.isEditing {
             
             // Check if selection count is greater than 0, then enable trash button
-            if self.CollectionView.indexPathsForSelectedItems()!.count != 0 {
+            if self.CollectionView.indexPathsForSelectedItems!.count != 0 {
                 
-                self.TrashButton.enabled = true
+                self.TrashButton.isEnabled = true
                 
             }
             
         } else {
             
-            let selectedObject = swippeChartsdArray[self.CollectionView.indexPathsForSelectedItems()!.first!.row]
-            self.CollectionView.deselectItemAtIndexPath(indexPath, animated: false)
+            let selectedObject = swippeChartsdArray[(self.CollectionView.indexPathsForSelectedItems!.first! as NSIndexPath).row]
+            self.CollectionView.deselectItem(at: indexPath, animated: false)
             
             guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("Can't Access Chart!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.Warning)
+                SweetAlert().showAlert("Can't Access Chart!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
                 return
             }
             
@@ -279,16 +279,16 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
                         let chart = Chart(parseObject: stockObject)
                         self.selectedChart = chart
                         
-                        self.performSegueWithIdentifier("showChartDetail", sender: self)
+                        self.performSegue(withIdentifier: "showChartDetail", sender: self)
                     }
                     
                 } catch {
                     
                     if let error = error as? Constants.Errors {
                         
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        DispatchQueue.main.async(execute: { () -> Void in
                             
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
                         })
                     }
                 }
@@ -296,22 +296,22 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         }
     }
     
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
         print("cell de-selected")
         
-        if self.editing  {
+        if self.isEditing  {
             
             // Check if selection count is greater than 0, then enable trash button
-            if self.CollectionView.indexPathsForSelectedItems()!.count == 0  {
+            if self.CollectionView.indexPathsForSelectedItems!.count == 0  {
                 
-                self.TrashButton.enabled = false
+                self.TrashButton.isEnabled = false
                 
             }
         }
     }
     
-    func performDeletionOfObjects(selectedObjects: [ChartModel]) {
+    func performDeletionOfObjects(_ selectedObjects: [ChartModel]) {
         
         //Delete Objects From Parse, CoreData and DataSource(and collectionView)
         deleteUserFromParseObjectLongedShortedColumn(selectedObjects)
@@ -319,25 +319,25 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         /// TODO: Need to breka down deleteUserFromParseObjectLongedShortedColumn
     }
     
-    func deleteItemsFromDataSource(selectedObjects: [ChartModel]) {
+    func deleteItemsFromDataSource(_ selectedObjects: [ChartModel]) {
         
         // Delete from DataSource
         self.swippeChartsdArray.removeObjectsInArray(selectedObjects)
         
         // Delete from CollectionView
-        if let selectedIndexPaths = self.CollectionView.indexPathsForSelectedItems() where selectedIndexPaths.count != 0 {
-            self.CollectionView.deleteItemsAtIndexPaths(selectedIndexPaths)
+        if let selectedIndexPaths = self.CollectionView.indexPathsForSelectedItems , selectedIndexPaths.count != 0 {
+            self.CollectionView.deleteItems(at: selectedIndexPaths)
         }
         
     }
     
-    func deleteFromCoreData(selectedObjects: [ChartModel]) {
+    func deleteFromCoreData(_ selectedObjects: [ChartModel]) {
         
         // Delete from Core Data and save
-        for (_, object) in selectedObjects.enumerate() {
+        for (_, object) in selectedObjects.enumerated() {
             
             // Delete from Core Data
-            Constants.context.deleteObject(object)
+            Constants.context.delete(object)
             
         }
         
@@ -353,10 +353,10 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         }
     }
     
-    func deleteUserFromParseObjectLongedShortedColumn(selectedObjects: [ChartModel]) {
+    func deleteUserFromParseObjectLongedShortedColumn(_ selectedObjects: [ChartModel]) {
         
         guard Functions.isUserLoggedIn(self) else { return }
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         
         let symbolStringArray: [String] = extractSymbolNames(selectedObjects)
         
@@ -374,13 +374,13 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
                         
                         let activityObjects = try result()
                         
-                        PFObject.deleteAllInBackground(activityObjects, block: { (success, error) in
+                        PFObject.deleteAll(inBackground: activityObjects, block: { (success, error) in
                             
                             if success {
                                 
                                 for stockObject: PFObject in stockObjects {
                                     
-                                    let symbol = stockObject.objectForKey("Symbol") as! String
+                                    let symbol = stockObject.object(forKey: "Symbol") as! String
                                     
                                     if let selectedObjectModel = selectedObjects.find({ $0.symbol == symbol }), let userChoice = Constants.UserChoices(rawValue: selectedObjectModel.userChoice) {
                                         
@@ -418,16 +418,16 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
                                             // reload view
                                             self.CollectionView.reloadData()
                                             
-                                            if self.CollectionView.indexPathsForSelectedItems()!.count == 0  {
+                                            if self.CollectionView.indexPathsForSelectedItems!.count == 0  {
                                                 
-                                                self.TrashButton.enabled = false
+                                                self.TrashButton.isEnabled = false
                                                 
                                             }
                                             
                                             if self.swippeChartsdArray.count == 0 {
                                                 
                                                 self.EditButtonPressed(self)
-                                                self.EditButton.enabled = false
+                                                self.EditButton.isEnabled = false
                                                 
                                                 self.CollectionView.reloadEmptyDataSet()
                                                 
@@ -448,7 +448,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         }
     }
     
-    func extractSymbolNames (coreDataObjects: [ChartModel]) -> [String] {
+    func extractSymbolNames (_ coreDataObjects: [ChartModel]) -> [String] {
         
         if coreDataObjects.isEmpty {
             
@@ -470,20 +470,20 @@ extension ChartCollectionViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
 //        return UIImage(assetIdentifier: .ideaGuyImage)
 //    }
     
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
-        let attributedTitle: NSAttributedString = NSAttributedString(string: "No Charts", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        let attributedTitle: NSAttributedString = NSAttributedString(string: "No Charts", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
         
         return attributedTitle
     }
     
-    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
         let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        paragraphStyle.alignment = NSTextAlignment.Center
+        paragraphStyle.lineBreakMode = NSLineBreakMode.byWordWrapping
+        paragraphStyle.alignment = NSTextAlignment.center
         
-        let attributedDescription: NSAttributedString = NSAttributedString(string: "You can add charts by swiping the cards LEFT or RIGHT", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(18), NSParagraphStyleAttributeName: paragraphStyle])
+        let attributedDescription: NSAttributedString = NSAttributedString(string: "You can add charts by swiping the cards LEFT or RIGHT", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 18), NSParagraphStyleAttributeName: paragraphStyle])
         
         return attributedDescription
         
@@ -491,11 +491,11 @@ extension ChartCollectionViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
     
     // MARK: - Segue stuff
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "showChartDetail" {
             
-            let destinationView = segue.destinationViewController as! ChartDetailTabBarController
+            let destinationView = segue.destination as! ChartDetailTabBarController
             destinationView.chart = selectedChart
         }
     }

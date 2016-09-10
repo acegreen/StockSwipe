@@ -29,9 +29,9 @@ class FAQTableViewController: UITableViewController, CellType {
         tableView.rowHeight = UITableViewAutomaticDimension
 
         let faqQuery = PFQuery(className: "FAQ")
-        faqQuery.orderByAscending("index")
+        faqQuery.order(byAscending: "index")
         
-        faqQuery.findObjectsInBackgroundWithBlock { (questions, error) -> Void in
+        faqQuery.findObjectsInBackground { (questions, error) -> Void in
             
             guard error == nil else { return }
             guard questions != nil else { return }
@@ -48,18 +48,18 @@ class FAQTableViewController: UITableViewController, CellType {
 
     // MARK: - TableView Functions
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return self.questionObjects.count
     }
     
-    override func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         
-        if let selectedIndex = tableView.indexPathForSelectedRow where selectedIndex == indexPath {
+        if let selectedIndex = tableView.indexPathForSelectedRow , selectedIndex == indexPath {
             
-            if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ExpandingCell {
+            if let cell = tableView.cellForRow(at: indexPath) as? ExpandingCell {
                 tableView.beginUpdates()
-                tableView.deselectRowAtIndexPath(indexPath, animated: true)
+                tableView.deselectRow(at: indexPath, animated: true)
                 cell.changeCellStatus(false)
                 tableView.endUpdates()
             }
@@ -70,31 +70,31 @@ class FAQTableViewController: UITableViewController, CellType {
         return indexPath
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! ExpandingCell
+        let cell = tableView.cellForRow(at: indexPath) as! ExpandingCell
         cell.changeCellStatus(true)
         self.tableView.beginUpdates()
         self.tableView.endUpdates()
     }
     
-    override func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         
-        if let cell = tableView.cellForRowAtIndexPath(indexPath) as? ExpandingCell {
+        if let cell = tableView.cellForRow(at: indexPath) as? ExpandingCell {
             cell.changeCellStatus(false)
             self.tableView.beginUpdates()
             self.tableView.endUpdates()
         }
     }
 
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as ExpandingCell
         
-        let questionAtIndex = self.questionObjects[indexPath.row]
+        let questionAtIndex = self.questionObjects[(indexPath as NSIndexPath).row]
         
-        cell.title = questionAtIndex.objectForKey("question") as? String
-        cell.detail = questionAtIndex.objectForKey("answer") as? String
+        cell.title = questionAtIndex.object(forKey: "question") as? String
+        cell.detail = questionAtIndex.object(forKey: "answer") as? String
 
         return cell
     }

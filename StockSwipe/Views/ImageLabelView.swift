@@ -41,23 +41,23 @@ class ImagelabelView: UIView {
         super.init(coder: aDecoder)
     }
     
-    func constructImageView(image:UIImage) -> Void {
+    func constructImageView(_ image:UIImage) -> Void {
         
-        let framex = CGRectMake(floor((CGRectGetWidth(self.bounds) - image.size.width)/2),
-            CGRectGetMidY(self.frame) - (image.size.height / 2),
-            image.size.width,
-            image.size.height)
+        let framex = CGRect(x: floor((self.bounds.width - image.size.width)/2),
+            y: self.frame.midY - (image.size.height / 2),
+            width: image.size.width,
+            height: image.size.height)
         imageView = UIImageView(frame: framex)
         imageView.image = image
         addSubview(self.imageView)
     }
     
-    func constructLabel(text:String) -> Void {
+    func constructLabel(_ text:String) -> Void {
         
         let labelTextDistance: CGFloat = 15.0
         let height:CGFloat = 20.0
         
-        let frame2 = CGRectMake(self.imageView.frame.width + labelTextDistance, CGRectGetMidY(self.imageView.frame) - (height / 2), CGRectGetWidth(self.bounds), height);
+        let frame2 = CGRect(x: self.imageView.frame.width + labelTextDistance, y: self.imageView.frame.midY - (height / 2), width: self.bounds.width, height: height);
         self.label = UILabel(frame: frame2)
         label.text = text
         label.font = Constants.stockSwipeFont

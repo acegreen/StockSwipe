@@ -29,8 +29,8 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
     
     //    @IBOutlet var tradeItButton: UIBarButtonItem!
     
-    @IBAction func xButtonPressed(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func xButtonPressed(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     //    @IBAction func tradeButtonPressed(sender: AnyObject) {
@@ -50,11 +50,11 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
     //        #endif
     //    }
     
-    @IBAction func actionButtonPressed(sender: AnyObject) {
+    @IBAction func actionButtonPressed(_ sender: AnyObject) {
         
         let textToShare = "Discovered $\(self.symbol) #StockSwipe"
         
-        customAlert.showAlert("Hold On!", subTitle: "While we prepare the snapshot", style: AlertStyle.ActivityIndicator, dismissTime: nil)
+        customAlert.showAlert("Hold On!", subTitle: "While we prepare the snapshot", style: AlertStyle.activityIndicator, dismissTime: nil)
         
         QueryHelper.sharedInstance.queryChartImage(symbol, completion: { (result) in
             
@@ -63,11 +63,11 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                 let chartImageResult = try result()
                 self.chart.image = chartImageResult
                 
-                let view = SwipeChartView(frame: CGRectMake(0, 0, self.chart.image.size.width, self.chart.image.size.height + Constants.informationViewHeight + Constants.chartImageTopPadding), chart: self.chart, options: nil)
+                let view = SwipeChartView(frame: CGRect(x: 0, y: 0, width: self.chart.image.size.width, height: self.chart.image.size.height + Constants.informationViewHeight + Constants.chartImageTopPadding), chart: self.chart, options: nil)
                 
                 let chartImage = UIImage(view: view)
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                 
                     self.customAlert.closeAlertDismissButton()
                     
@@ -75,18 +75,18 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                         
                         if success {
                             
-                            SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.Success)
+                            SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
                             
                             // log shared successfully
-                            Answers.logShareWithMethod("\(activity!)",
+                            Answers.logShare(withMethod: "\(activity!)",
                                 contentName: "\(self.symbol) Chart Shared",
                                 contentType: "Share",
                                 contentId: nil,
-                                customAttributes: ["User": PFUser.currentUser()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                                customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
                             
                         } else if error != nil {
                             
-                            SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.Error)
+                            SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
                         }
                     })
                 })
@@ -95,11 +95,11 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                 
                 if let error = error as? Constants.Errors {
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                 
                         self.customAlert.closeAlertDismissButton()
                         
-                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
                     })
                 }
             }
@@ -118,7 +118,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
         self.view = self.webView!
         self.webView.navigationDelegate = self
         self.webView.scrollView.bounces = false
-        self.webView.scrollView.scrollEnabled = false
+        self.webView.scrollView.isScrollEnabled = false
         
         // title
         if companyName != nil {
@@ -129,11 +129,11 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
         
         guard symbol != nil else { return }
         
-        let urlString: NSURL = Functions.setChartURL(symbol)
+        let urlString: URL = Functions.setChartURL(symbol)
         
-        let urlrequest: NSURLRequest = NSURLRequest(URL: urlString)
+        let urlrequest: URLRequest = URLRequest(url: urlString)
         
-        self.webView.loadRequest(urlrequest)
+        self.webView.load(urlrequest)
         
     }
     
@@ -141,7 +141,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
         
         guard webView != nil else { return }
         
-        if webView.loading {
+        if webView.isLoading {
             
             webView.stopLoading()
         }
@@ -153,29 +153,29 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
 
 extension ChartWebViewController: WKNavigationDelegate {
     
-    func webView(webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
         
-        actionButton.enabled = false
+        actionButton.isEnabled = false
         //        tradeItButton.enabled = false
     }
     
-    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         
-        actionButton.enabled = true
+        actionButton.isEnabled = true
         //        tradeItButton.enabled = true
         
         Functions.showPopTip(popTipText: NSLocalizedString("Share this trade idea", comment: ""),
                              inView: view,
-                             fromFrame: CGRect(x: view.frame.width - 30, y: -10, width: 1, height: 1), direction: .Down, color: Constants.stockSwipeGreenColor)
+                             fromFrame: CGRect(x: view.frame.width - 30, y: -10, width: 1, height: 1), direction: .down, color: Constants.stockSwipeGreenColor)
     }
     
-    func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         
-        actionButton.enabled = false
+        actionButton.isEnabled = false
         //        tradeItButton.enabled = false
         
         print("error: \(error.localizedDescription): \(error.userInfo)")
         
-        SweetAlert().showAlert("Something went wrong while loading chart", subTitle: "Please try again", style: AlertStyle.Warning)
+        SweetAlert().showAlert("Something went wrong while loading chart", subTitle: "Please try again", style: AlertStyle.warning)
     }
 }

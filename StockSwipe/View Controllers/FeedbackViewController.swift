@@ -16,17 +16,17 @@ class FeedbackViewController: UIViewController, MFMailComposeViewControllerDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        negativeButton.layer.borderColor = UIColor.whiteColor().CGColor
+        negativeButton.layer.borderColor = UIColor.white.cgColor
     }
     
     @IBAction func reviewAction() {
-        self.dismissViewControllerAnimated(true) {
+        self.dismiss(animated: true) {
             iRate.sharedInstance().openRatingsPageInAppStore()
         }
     }
     
     @IBAction func negativeAction() {
-        self.dismissViewControllerAnimated(true) {}
+        self.dismiss(animated: true) {}
     }
 
     @IBAction func contactAction() {
@@ -40,30 +40,30 @@ class FeedbackViewController: UIViewController, MFMailComposeViewControllerDeleg
             mc.setMessageBody(Constants.messageBody, isHTML: true)
             mc.setToRecipients(Constants.toReceipients)
             
-            self.presentViewController(mc, animated: true, completion: nil)
+            self.present(mc, animated: true, completion: nil)
             
         } else {
             
-            SweetAlert().showAlert("No email account found", subTitle: "Please add an email acount in your mail app", style: AlertStyle.Warning)
+            SweetAlert().showAlert("No email account found", subTitle: "Please add an email acount in your mail app", style: AlertStyle.warning)
             
         }
     }
     
     // MARK: - Email Delegate
     
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         
         switch result.rawValue {
             
-        case MFMailComposeResultCancelled.rawValue:
+        case MFMailComposeResult.cancelled.rawValue:
             
             print("Mail Cancelled")
             
-        case MFMailComposeResultSaved.rawValue, MFMailComposeResultSent.rawValue:
+        case MFMailComposeResult.saved.rawValue, MFMailComposeResult.sent.rawValue:
         
             Functions.markFeedbackGiven()
             
-        case MFMailComposeResultFailed.rawValue:
+        case MFMailComposeResult.failed.rawValue:
             
             print("Mail Failed")
             
@@ -73,9 +73,9 @@ class FeedbackViewController: UIViewController, MFMailComposeViewControllerDeleg
             
         }
         
-        self.dismissViewControllerAnimated(true) { () -> Void in
+        self.dismiss(animated: true) { () -> Void in
             
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
             
         }
     }

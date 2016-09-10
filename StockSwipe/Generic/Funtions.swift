@@ -17,7 +17,7 @@ import SafariServices
 import AMPopTip
 import NVActivityIndicatorView
 
-public class Functions {
+open class Functions {
     
     //func isConnectedToNetwork() -> Bool {
     //
@@ -44,13 +44,13 @@ public class Functions {
     class func isConnectedToNetwork() -> Bool {
         
         var zeroAddress = sockaddr_in()
-        zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
+        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
         zeroAddress.sin_family = sa_family_t(AF_INET)
         
-        let defaultRouteReachability = withUnsafePointer(&zeroAddress) {
+        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
             SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
         }
-        var flags = SCNetworkReachabilityFlags.ConnectionAutomatic
+        var flags = SCNetworkReachabilityFlags.connectionAutomatic
         
         if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
             return false
@@ -61,13 +61,13 @@ public class Functions {
         return (isReachable && !needsConnection)
     }
     
-    class func isUserLoggedIn(viewController: UIViewController) -> Bool {
+    class func isUserLoggedIn(_ viewController: UIViewController) -> Bool {
         
-        guard PFUser.currentUser() == nil else { return true }
+        guard PFUser.current() == nil else { return true }
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             
-            SweetAlert().showAlert("Login Required!", subTitle: "Please login to continue", style: AlertStyle.Warning, dismissTime: nil, buttonTitle: "Ok", buttonColor: UIColor.colorFromRGB(0xD0D0D0)) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Login Required!", subTitle: "Please login to continue", style: AlertStyle.warning, dismissTime: nil, buttonTitle: "Ok", buttonColor: UIColor.colorFromRGB(0xD0D0D0)) { (isOtherButton) -> Void in
                 
                 if isOtherButton {
                     
@@ -81,11 +81,11 @@ public class Functions {
         return false
     }
     
-    class func blockUser(user: PFUser, postAlert: Bool) {
+    class func blockUser(_ user: PFUser, postAlert: Bool) {
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         
-        if currentUser.objectForKey("blocked_users") != nil {
+        if currentUser.object(forKey: "blocked_users") != nil {
             
             currentUser.addUniqueObject(user, forKey: "blocked_users")
             
@@ -100,8 +100,8 @@ public class Functions {
                 
                 if postAlert == true {
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.Success)
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.success)
                     })
                 }
                 
@@ -134,8 +134,8 @@ public class Functions {
                 })
                 
             } else {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                DispatchQueue.main.async(execute: { () -> Void in
+                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
                 })
             }
         }
@@ -143,9 +143,9 @@ public class Functions {
     
     class func checkDevice() {
         
-        switch UIDevice.currentDevice().userInterfaceIdiom {
+        switch UIDevice.current.userInterfaceIdiom {
             
-        case .Pad:
+        case .pad:
             
             if SDiOSVersion.deviceVersion() == .iPadPro12Dot9Inch || SDiOSVersion.deviceVersion() == .iPadPro9Dot7Inch {
                 
@@ -228,41 +228,41 @@ public class Functions {
         }
     }
     
-    class func setImageURL(symbol: String) -> NSURL? {
+    class func setImageURL(_ symbol: String) -> URL? {
         
-        let URL: NSURL?
+        let URL: Foundation.URL?
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             
-            URL = NSURL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D.png")
+            URL = Foundation.URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D.png")
             
         } else {
             
-            URL = NSURL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D_phone.png")
+            URL = Foundation.URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D_phone.png")
         }
         
         return URL
     }
     
-    class func setChartURL(symbol: String) -> NSURL {
+    class func setChartURL(_ symbol: String) -> URL {
         
         let formattedSymbol = symbol.URLEncodedString()!
         
-        let URL: NSURL!
+        let URL: Foundation.URL!
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             
-            URL = NSURL(string: "http://45.55.137.153/?symbol=\(formattedSymbol)&interval=D")
+            URL = Foundation.URL(string: "http://45.55.137.153/?symbol=\(formattedSymbol)&interval=D")
             
         } else {
             
-            URL = NSURL(string: "http://45.55.137.153/mobile_white.html?symbol=\(formattedSymbol)&interval=D")
+            URL = Foundation.URL(string: "http://45.55.137.153/mobile_white.html?symbol=\(formattedSymbol)&interval=D")
         }
         
         return URL
     }
     
-    class func getImage(imageURL: NSURL?, completion: (UIImage?) -> Void) {
+    class func getImage(_ imageURL: URL?, completion: @escaping (UIImage?) -> Void) {
         
         guard let imageURL = imageURL else { return completion(nil) }
         
@@ -279,7 +279,7 @@ public class Functions {
         })
     }
     
-    class func getStockObjectAndChart(symbol: String, completion: (result: () throws -> (object: PFObject, chart: Chart)) -> Void) {
+    class func getStockObjectAndChart(_ symbol: String, completion: @escaping (_ result: () throws -> (object: PFObject, chart: Chart)) -> Void) {
         
         QueryHelper.sharedInstance.queryStockObjectsFor([symbol]) { (result) in
             
@@ -310,11 +310,11 @@ public class Functions {
         }
     }
     
-    class func registerUserChoice(chart: Chart, with choice: Constants.UserChoices) {
+    class func registerUserChoice(_ chart: Chart, with choice: Constants.UserChoices) {
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         guard let parseObject = chart.parseObject else {
-            SweetAlert().showAlert("Stock Unknown", subTitle: "We couldn't find this symbol in our database", style: AlertStyle.Warning)
+            SweetAlert().showAlert("Stock Unknown", subTitle: "We couldn't find this symbol in our database", style: AlertStyle.warning)
             return
         }
         
@@ -395,7 +395,7 @@ public class Functions {
         }
     }
     
-    class func saveIntoCoreData(chart: Chart, userChoice: Constants.UserChoices) {
+    class func saveIntoCoreData(_ chart: Chart, userChoice: Constants.UserChoices) {
         
         let checkRequest: NSFetchRequest = NSFetchRequest(entityName: "Charts")
         checkRequest.predicate = NSPredicate(format: "symbol == %@", chart.symbol)
@@ -404,20 +404,20 @@ public class Functions {
         
         do {
             
-            let fetchedObjectArray:[ChartModel] = try Constants.context.executeFetchRequest(checkRequest) as! [ChartModel]
+            let fetchedObjectArray:[ChartModel] = try Constants.context.fetch(checkRequest) as! [ChartModel]
             
             if fetchedObjectArray.count == 0 {
                 
                 print("no object exists in core data")
                 
-                let newChart = ChartModel(entity: Constants.entity!, insertIntoManagedObjectContext: Constants.context)
+                let newChart = ChartModel(entity: Constants.entity!, insertInto: Constants.context)
                 newChart.symbol = chart.symbol
                 newChart.companyName = chart.companyName
                 newChart.image = UIImagePNGRepresentation(chart.image)
                 newChart.shorts = Int32(chart.shortCount)
                 newChart.longs = Int32(chart.longCount)
                 newChart.userChoice = userChoice.rawValue
-                newChart.dateChoosen = NSDate()
+                newChart.dateChoosen = Date()
                 
             } else if fetchedObjectArray.count > 0 {
                 
@@ -430,7 +430,7 @@ public class Functions {
                 fetchedObject.setValue(chart.shortCount, forKey: "shorts")
                 fetchedObject.setValue(chart.longCount, forKey: "longs")
                 fetchedObject.setValue(userChoice.rawValue, forKey: "userChoice")
-                fetchedObject.setValue(NSDate(), forKey: "dateChoosen")
+                fetchedObject.setValue(Date(), forKey: "dateChoosen")
             }
             
         } catch let error as NSError {
@@ -462,7 +462,7 @@ public class Functions {
         
         do {
             
-            let results = try Constants.context.executeFetchRequest(fetchRequest)
+            let results = try Constants.context.fetch(fetchRequest)
             
             //println(results)
             return results
@@ -475,9 +475,9 @@ public class Functions {
         return nil
     }
     
-    class func setupConfigParameter(parameter:String, completion: (parameterValue: AnyObject?) -> Void) {
+    class func setupConfigParameter(_ parameter:String, completion: @escaping (_ parameterValue: AnyObject?) -> Void) {
         
-        PFConfig.getConfigInBackgroundWithBlock {
+        PFConfig.getInBackground {
             (config: PFConfig?, error: NSError?) -> Void in
             
             let configParameter = config?[parameter]
@@ -486,7 +486,7 @@ public class Functions {
     }
     
     @available(iOS 9.0, *)
-    class func createNSUserActivity(chart: Chart, domainIdentifier: String) {
+    class func createNSUserActivity(_ chart: Chart, domainIdentifier: String) {
         
         let attributeSet:CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeImage as String)
         attributeSet.contentDescription = chart.searchDescription
@@ -500,8 +500,8 @@ public class Functions {
         activity.contentAttributeSet = attributeSet
         
         activity.requiredUserInfoKeys = NSSet(array: ["symbol", "companyName", "searchDescription"]) as! Set<String>
-        activity.eligibleForSearch = true
-        activity.eligibleForPublicIndexing = true
+        activity.isEligibleForSearch = true
+        activity.isEligibleForPublicIndexing = true
         nsUserActivityArray.append(activity)
         activity.becomeCurrent()
         
@@ -509,7 +509,7 @@ public class Functions {
     }
     
     @available(iOS 9.0, *)
-    class func addToSpotlight(chart: Chart, domainIdentifier: String) {
+    class func addToSpotlight(_ chart: Chart, domainIdentifier: String) {
         
         let attributeSet:CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeImage as String)
         attributeSet.title = chart.symbol
@@ -519,7 +519,7 @@ public class Functions {
         
         let searchableItem = CSSearchableItem(uniqueIdentifier: chart.symbol, domainIdentifier: domainIdentifier, attributeSet: attributeSet)
         
-        CSSearchableIndex.defaultSearchableIndex().indexSearchableItems([searchableItem]) { (error) -> Void in
+        CSSearchableIndex.default().indexSearchableItems([searchableItem]) { (error) -> Void in
             
             if let error = error {
                 print("Deindexing error: \(error.localizedDescription)")
@@ -531,9 +531,9 @@ public class Functions {
     }
     
     @available(iOS 9.0, *)
-    class func deleteFromSpotlight(uniqueIdentifier: String) {
+    class func deleteFromSpotlight(_ uniqueIdentifier: String) {
         
-        CSSearchableIndex.defaultSearchableIndex().deleteSearchableItemsWithIdentifiers([uniqueIdentifier]) { (error: NSError?) -> Void in
+        CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [uniqueIdentifier]) { (error: NSError?) -> Void in
             
             if let error = error {
                 print("Deindexing error: \(error.localizedDescription)")
@@ -543,11 +543,11 @@ public class Functions {
         }
     }
     
-    class func addToWatchlist(chart: Chart, completion: (Constants.UserChoices) -> Void)  {
+    class func addToWatchlist(_ chart: Chart, completion: @escaping (Constants.UserChoices) -> Void)  {
         
         guard Functions.isConnectedToNetwork() else {
             
-            SweetAlert().showAlert("Can't Add To Watchlist!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.Warning)
+            SweetAlert().showAlert("Can't Add To Watchlist!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
             return
         }
         
@@ -565,11 +565,11 @@ public class Functions {
                 print(error)
             }
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 
-                SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.CustomImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.redColor() , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
                     
-                    guard let topVC = UIApplication.topViewController() where Functions.isUserLoggedIn(topVC) else { return }
+                    guard let topVC = UIApplication.topViewController() , Functions.isUserLoggedIn(topVC) else { return }
                     
                     if !isOtherButton {
                         completion(.LONG)
@@ -581,9 +581,9 @@ public class Functions {
         })
     }
     
-    class func showPopTipOnceForKey(key: String, userDefaults: NSUserDefaults, popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: AMPopTipDirection = .Down, color: UIColor = .darkGrayColor()) -> AMPopTip? {
-        if (!userDefaults.boolForKey(key)) {
-            userDefaults.setBool(true, forKey: key)
+    class func showPopTipOnceForKey(_ key: String, userDefaults: UserDefaults, popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: AMPopTipDirection = .down, color: UIColor = .darkGray()) -> AMPopTip? {
+        if (!userDefaults.bool(forKey: key)) {
+            userDefaults.set(true, forKey: key)
             userDefaults.synchronize()
             showPopTip(popTipText: text, inView: view, fromFrame: frame, direction:  direction, color: color)
         }
@@ -594,22 +594,22 @@ public class Functions {
     class func showPopTip(popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: AMPopTipDirection, color: UIColor) -> AMPopTip? {
         
         AMPopTip.appearance().font = UIFont(name: "HelveticaNeue", size: 16)
-        AMPopTip.appearance().textColor = .whiteColor()
+        AMPopTip.appearance().textColor = .white()
         AMPopTip.appearance().popoverColor = color
         AMPopTip.appearance().offset = 10
         AMPopTip.appearance().edgeMargin = 5
         let popTip = AMPopTip()
-        popTip.showText(text, direction: direction, maxWidth: 300, inView: view, fromFrame: frame, duration: 3)
-        popTip.actionAnimation = AMPopTipActionAnimation.Bounce
+        popTip.showText(text, direction: direction, maxWidth: 300, in: view, fromFrame: frame, duration: 3)
+        popTip.actionAnimation = AMPopTipActionAnimation.bounce
         popTip.shouldDismissOnTapOutside = true
         popTip.shouldDismissOnTap = true
         
         return popTip
     }
     
-    class func displayAlert (title: String, message: String, Action1:UIAlertAction?, Action2:UIAlertAction?) -> UIAlertController {
+    class func displayAlert (_ title: String, message: String, Action1:UIAlertAction?, Action2:UIAlertAction?) -> UIAlertController {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         
         if Action1 != nil {
             
@@ -624,13 +624,13 @@ public class Functions {
         return alert
     }
     
-    class func activityIndicator(view: UIView, inout halo: NVActivityIndicatorView!, state: Bool) {
+    class func activityIndicator(_ view: UIView, halo: inout NVActivityIndicatorView!, state: Bool) {
         
         if state {
             
             // Create loading animation
-            let frame = CGRect(x: CGRectGetMidX(view.bounds) - view.bounds.height / 4 , y: CGRectGetMidY(view.bounds) - view.bounds.height / 4, width: view.bounds.height / 2, height: view.bounds.height / 2)
-            halo = NVActivityIndicatorView(frame: frame, type: .BallScaleMultiple, color: UIColor.lightGrayColor())
+            let frame = CGRect(x: view.bounds.midX - view.bounds.height / 4 , y: view.bounds.midY - view.bounds.height / 4, width: view.bounds.height / 2, height: view.bounds.height / 2)
+            halo = NVActivityIndicatorView(frame: frame, type: .ballScaleMultiple, color: UIColor.lightGray)
             halo.hidesWhenStopped = true
             view.addSubview(halo)
             halo.startAnimation()
@@ -645,31 +645,31 @@ public class Functions {
     
     class func markFeedbackGiven() {
         
-        Constants.userDefaults.setBool(true, forKey: "FEEDBACK_GIVEN")
+        Constants.userDefaults.set(true, forKey: "FEEDBACK_GIVEN")
         Constants.userDefaults.synchronize()
         
     }
     
-    class func sendPush(pushType: Constants.PushType, parameters: [String:String]) {
-        PFCloud.callFunctionInBackground(pushType.rawValue, withParameters: parameters) { (results, error) -> Void in
+    class func sendPush(_ pushType: Constants.PushType, parameters: [String:String]) {
+        PFCloud.callFunction(inBackground: pushType.rawValue, withParameters: parameters) { (results, error) -> Void in
         }
     }
     
-    class func getCenterOfView(view: UIView) -> CGPoint {
+    class func getCenterOfView(_ view: UIView) -> CGPoint {
         
         let bounds:CGRect = view.bounds
-        let centerOfView:CGPoint = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds))
+        let centerOfView:CGPoint = CGPoint(x: bounds.midX, y: bounds.midY)
         return centerOfView
         
     }
     
-    class func presentActivityVC(textToShare: String?, imageToShare: UIImage?, url: NSURL?, sender: AnyObject, vc: UIViewController, completion:(activity: String?, success:Bool, items:[AnyObject]?, error:NSError?) -> Void) {
+    class func presentActivityVC(_ textToShare: String?, imageToShare: UIImage?, url: URL?, sender: AnyObject, vc: UIViewController, completion:@escaping (_ activity: String?, _ success:Bool, _ items:[AnyObject]?, _ error:NSError?) -> Void) {
         
         var objectsToShare = [AnyObject]()
         
         if textToShare != nil {
             
-            objectsToShare.append(textToShare!)
+            objectsToShare.append(textToShare! as AnyObject)
         }
         
         if imageToShare != nil {
@@ -679,51 +679,51 @@ public class Functions {
         
         if url != nil {
             
-            objectsToShare.append(url!)
+            objectsToShare.append(url! as AnyObject)
         }
         
         guard objectsToShare.count != 0 else {
             
-            SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.Error)
+            SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
             
-            return completion(activity: nil, success: false, items: nil, error: nil)
+            return completion(nil, false, nil, nil)
         }
         
         let excludedActivityTypesArray: NSArray = [
-            UIActivityTypePostToWeibo,
-            UIActivityTypeAssignToContact,
-            UIActivityTypeAirDrop,
+            UIActivityType.postToWeibo,
+            UIActivityType.assignToContact,
+            UIActivityType.airDrop,
             ]
         
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-        activityVC.excludedActivityTypes = excludedActivityTypesArray as? [String]
+        activityVC.excludedActivityTypes = excludedActivityTypesArray as? [String] as! [UIActivityType]?
         
-        activityVC.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Up
+        activityVC.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
         activityVC.popoverPresentationController?.barButtonItem = sender as? UIBarButtonItem
         
-        vc.presentViewController(activityVC, animated: true, completion: nil)
+        vc.present(activityVC, animated: true, completion: nil)
         
         activityVC.completionWithItemsHandler = { (activity, success, items, error) in
             print("Activity: \(activity) Success: \(success) Items: \(items) Error: \(error)")
             
-            completion(activity: activity, success: success, items: items, error: error)
+            completion(activity.map { $0.rawValue }, success, items as [AnyObject]?, error as NSError?)
         }
     }
     
-    class func presentSafariBrowser(withURL: NSURL!) {
+    class func presentSafariBrowser(_ withURL: URL!) {
         
         guard Functions.isConnectedToNetwork() else {
             
-            SweetAlert().showAlert("Can't Open Url!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.Warning)
+            SweetAlert().showAlert("Can't Open Url!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
             return
         }
         
-        let svc = SFSafariViewController(URL: withURL, entersReaderIfAvailable: true)
-        svc.modalTransitionStyle = .CoverVertical
-        svc.modalPresentationStyle = .OverFullScreen
+        let svc = SFSafariViewController(url: withURL, entersReaderIfAvailable: true)
+        svc.modalTransitionStyle = .coverVertical
+        svc.modalPresentationStyle = .overFullScreen
         svc.view.tintColor = Constants.stockSwipeGreenColor
         
-        UIApplication.topViewController()?.presentViewController(svc, animated: true, completion: nil)
+        UIApplication.topViewController()?.present(svc, animated: true, completion: nil)
     }
     
     // Random number between low and high range
@@ -736,21 +736,21 @@ public class Functions {
     //        return RandomNumber
     //    }
     
-    class func degreesToRadians(degrees: Double) -> Double {
+    class func degreesToRadians(_ degrees: Double) -> Double {
         return degrees * (M_PI/180.0)
     }
     
-    class func formatTime(date: NSDate) -> String {
+    class func formatTime(_ date: Date) -> String {
         
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = NSDateFormatterStyle.LongStyle
-        formatter.timeStyle = .ShortStyle
+        let formatter = DateFormatter()
+        formatter.dateStyle = DateFormatter.Style.long
+        formatter.timeStyle = .short
         
-        return formatter.stringFromDate(date)
+        return formatter.string(from: date)
         
     }
     
-    class func dismissAllPopTips(allPopTips: [AMPopTip?]) {
+    class func dismissAllPopTips(_ allPopTips: [AMPopTip?]) {
         
         if !allPopTips.isEmpty {
             

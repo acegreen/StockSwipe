@@ -22,17 +22,17 @@ class NewsCell: UITableViewCell {
         super.awakeFromNib()
         // Initialization code
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             
-            newsReleaseDate.textAlignment = NSTextAlignment.Right
+            newsReleaseDate.textAlignment = NSTextAlignment.right
             
         } else {
             
-            newsReleaseDate.textAlignment = NSTextAlignment.Left
+            newsReleaseDate.textAlignment = NSTextAlignment.left
         }
     }
 
-    override func setSelected(selected: Bool, animated: Bool) {
+    override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
 

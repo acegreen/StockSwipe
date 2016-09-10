@@ -30,11 +30,11 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     var tradeIdeaQueryLimit = 25
     var isQueryingForTradeIdeas = true
     
-    @IBAction func xButtonPressed(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func xButtonPressed(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func refreshControlAction(sender: UIRefreshControl) {
+    @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
         self.getTradeIdeas()
     }
     
@@ -64,7 +64,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         
         // Hide post button if symbol is not available
         if self.stockObject == nil {
-            tradeIdeaPostButton.enabled = false
+            tradeIdeaPostButton.isEnabled = false
         }
     }
     
@@ -87,11 +87,11 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 let activityObjects = try result()
                 self.tradeIdeaObjects = activityObjects.lazy.map { $0["tradeIdea"] as! PFObject }
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     
                     self.tableView.reloadData()
                     
-                    if self.refreshControl?.refreshing == true {
+                    if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
                         self.updateRefreshDate()
                     }
@@ -100,10 +100,10 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             } catch {
                 
                 // TO-DO: Show sweet alert with Error.message()
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     self.tableView.reloadData()
                     
-                    if self.refreshControl?.refreshing == true {
+                    if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
                         self.updateRefreshDate()
                     }
@@ -112,11 +112,11 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         })
     }
     
-    func loadMoreTradeIdeas(skip skip: Int) {
+    func loadMoreTradeIdeas(skip: Int) {
         
         guard let stockObject = self.stockObject else { return }
         
-        if self.refreshControl?.refreshing == false {
+        if self.refreshControl?.isRefreshing == false {
             
             self.footerActivityIndicator.startAnimating()
         }
@@ -129,17 +129,17 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 
                 self.tradeIdeaObjects += activityObjects.lazy.map { $0["tradeIdea"] as! PFObject }
                 
-                var indexPaths = [NSIndexPath]()
+                var indexPaths = [IndexPath]()
                 for i in 0..<activityObjects.count {
-                    indexPaths.append(NSIndexPath(forRow: self.tableView.numberOfRowsInSection(0) + i, inSection: 0))
+                    indexPaths.append(IndexPath(row: self.tableView.numberOfRows(inSection: 0) + i, section: 0))
                 }
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     
                     //now insert cell in tableview
-                    self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: .None)
+                    self.tableView.insertRows(at: indexPaths, with: .none)
                     
-                    if self.footerActivityIndicator?.isAnimating() == true {
+                    if self.footerActivityIndicator?.isAnimating == true {
                         self.footerActivityIndicator.stopAnimating()
                         self.updateRefreshDate()
                     }
@@ -148,7 +148,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             } catch {
                 
                 // TO-DO: Show sweet alert with Error.message()
-                if self.footerActivityIndicator?.isAnimating() == true {
+                if self.footerActivityIndicator?.isAnimating == true {
                     self.footerActivityIndicator.stopAnimating()
                     self.updateRefreshDate()
                 }
@@ -158,9 +158,9 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     
     func updateRefreshDate() {
         
-        let title: String = "Last Update: \(NSDate().formattedAsTimeAgo())"
+        let title: String = "Last Update: \((Date() as NSDate).formattedAsTimeAgo())"
         let attrsDictionary = [
-            NSForegroundColorAttributeName : UIColor.whiteColor()
+            NSForegroundColorAttributeName : UIColor.white
         ]
         
         let attributedTitle: NSAttributedString = NSAttributedString(string: title, attributes: attrsDictionary)
@@ -169,32 +169,32 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tradeIdeaObjects.count
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-        cell.configureCell(tradeIdeaObjects[indexPath.row], timeFormat: .Short)
+        cell.configureCell(tradeIdeaObjects[(indexPath as NSIndexPath).row], timeFormat: .short)
         cell.delegate = self
         
         return cell
     }
     
-    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
         if offset >= 0 && offset <= 5 {
@@ -203,7 +203,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let segueIdentifier = segueIdentifierForSegue(segue)
         
@@ -211,7 +211,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             
         case .TradeIdeaDetailSegueIdentifier:
             
-            let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
+            let destinationViewController = segue.destination as! TradeIdeaDetailTableViewController
             destinationViewController.delegate = self
             
             guard let cell = sender as? IdeaCell else { return }
@@ -219,11 +219,11 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             
         case .PostIdeaSegueIdentifier:
             
-            let destinationViewController = segue.destinationViewController as! UINavigationController
+            let destinationViewController = segue.destination as! UINavigationController
             let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
             
             ideaPostViewController.stockObject = self.stockObject
-            ideaPostViewController.tradeIdeaType = .New
+            ideaPostViewController.tradeIdeaType = .new
             ideaPostViewController.delegate =  self
         }
     }
@@ -233,10 +233,10 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
     
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
         
-        if tradeIdeaTyp == .New {
-            let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-            self.tradeIdeaObjects.insert(tradeIdea.parseObject, atIndex: 0)
-            self.tableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+        if tradeIdeaTyp == .new {
+            let indexPath = IndexPath(row: 0, section: 0)
+            self.tradeIdeaObjects.insert(tradeIdea.parseObject, at: 0)
+            self.tableView.insertRows(at: [indexPath], with: .automatic)
             
             self.tableView.reloadEmptyDataSet()
         }
@@ -246,15 +246,15 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
         
         if let tradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == parseObject.objectId }) {
             
-            if let reshareOf = tradeIdea.objectForKey("reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == reshareOf.objectId })  {
+            if let reshareOf = tradeIdea.object(forKey: "reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == reshareOf.objectId })  {
                 
-                let indexPath = NSIndexPath(forRow: self.tradeIdeaObjects.indexOf(reshareTradeIdea)!, inSection: 0)
-                self.tableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                let indexPath = IndexPath(row: self.tradeIdeaObjects.index(of: reshareTradeIdea)!, section: 0)
+                self.tableView.reloadRows(at: [indexPath], with: .automatic)
             }
             
-            let indexPath = NSIndexPath(forRow: self.tradeIdeaObjects.indexOf(tradeIdea)!, inSection: 0)
+            let indexPath = IndexPath(row: self.tradeIdeaObjects.index(of: tradeIdea)!, section: 0)
             self.tradeIdeaObjects.removeObject(tradeIdea)
-            self.tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         
         if tradeIdeaObjects.count == 0 {
@@ -267,35 +267,35 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
 
 extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if !isQueryingForTradeIdeas && tradeIdeaObjects.count == 0 {
             return true
         }
         return false
     }
     
-    func imageForEmptyDataSet(scrollView: UIScrollView!) -> UIImage! {
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
         
         return UIImage(assetIdentifier: .noIdeaBulbImage)
     }
     
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle: NSAttributedString!
         
-        attributedTitle = NSAttributedString(string: "No Ideas", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        attributedTitle = NSAttributedString(string: "No Ideas", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
         
         return attributedTitle
     }
     
-    func descriptionForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func description(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
         let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = NSLineBreakMode.ByWordWrapping
-        paragraphStyle.alignment = NSTextAlignment.Center
+        paragraphStyle.lineBreakMode = NSLineBreakMode.byWordWrapping
+        paragraphStyle.alignment = NSTextAlignment.center
         
         let attributedDescription: NSAttributedString!
-        attributedDescription = NSAttributedString(string: "Be the first to post an idea for \(self.symbol)", attributes: [NSFontAttributeName: UIFont.systemFontOfSize(18), NSParagraphStyleAttributeName: paragraphStyle])
+        attributedDescription = NSAttributedString(string: "Be the first to post an idea for \(self.symbol)", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 18), NSParagraphStyleAttributeName: paragraphStyle])
         
         return attributedDescription
         

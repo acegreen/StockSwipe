@@ -20,14 +20,14 @@ public struct User {
     
     var profile_image_url: String?
     
-    private var ideasCount: Int = 0
-    private var followingCount: Int = 0
-    private var followersCount: Int = 0
-    private var likedIdeasCount: Int = 0
+    fileprivate var ideasCount: Int = 0
+    fileprivate var followingCount: Int = 0
+    fileprivate var followersCount: Int = 0
+    fileprivate var likedIdeasCount: Int = 0
     
     init(userObject: PFUser, completion: ((User?) -> Void)? = nil) {
         
-        userObject.fetchIfNeededInBackgroundWithBlock { (userObject, error) in
+        userObject.fetchIfNeededInBackground { (userObject, error) in
             
             guard let userObject = userObject else {
                 if let completion = completion {
@@ -38,9 +38,9 @@ public struct User {
             
             self.userObject = userObject as! PFUser
             self.objectId = userObject.objectId
-            self.fullname = userObject.objectForKey("full_name") as? String
+            self.fullname = userObject.object(forKey: "full_name") as? String
             self.username = "@\(self.userObject.username!)"
-            self.profile_image_url = userObject.objectForKey("profile_image_url") as? String
+            self.profile_image_url = userObject.object(forKey: "profile_image_url") as? String
             
             self.getAvatar({ (UIImage) in
                 if let completion = completion {
@@ -50,7 +50,7 @@ public struct User {
         }
     }
     
-    mutating func getAvatar(completionHandler: (UIImage) -> Void) {
+    mutating func getAvatar(_ completionHandler: @escaping (UIImage) -> Void) {
         
         if let profileImageURL = self.profile_image_url {
             QueryHelper.sharedInstance.queryWith(profileImageURL, completionHandler: { (result) in
@@ -71,7 +71,7 @@ public struct User {
         }
     }
     
-    mutating func getIdeasCount(completionHandler: (countString: String) -> Void) {
+    mutating func getIdeasCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
         
         QueryHelper.sharedInstance.countTradeIdeasFor("user", object: userObject) { (result) in
             
@@ -88,7 +88,7 @@ public struct User {
         }
     }
     
-    mutating func getFollowingCount(completionHandler: (countString: String) -> Void) {
+    mutating func getFollowingCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
         
         QueryHelper.sharedInstance.countActivityFor(userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
             
@@ -105,7 +105,7 @@ public struct User {
         }
     }
     
-    mutating func getFollowersCount(completionHandler: (countString: String) -> Void) {
+    mutating func getFollowersCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
         
         QueryHelper.sharedInstance.countActivityFor(nil, toUser: userObject, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
             
@@ -122,7 +122,7 @@ public struct User {
         }
     }
     
-    mutating func getLikedIdeasCount(completionHandler: (countString: String) -> Void) {
+    mutating func getLikedIdeasCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
         
         QueryHelper.sharedInstance.countActivityFor(userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, completion: { (result) in
             

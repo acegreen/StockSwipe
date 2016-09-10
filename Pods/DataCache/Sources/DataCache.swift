@@ -9,52 +9,52 @@
 import UIKit
 
 public enum ImageFormat {
-    case Unknown, PNG, JPEG
+    case unknown, png, jpeg
 }
 
-public class DataCache {
+open class DataCache {
     static let cacheDirectoryPrefix = "com.nch.cache."
     static let ioQueuePrefix = "com.nch.queue."
-    static let defaultMaxCachePeriodInSecond: NSTimeInterval = 60 * 60 * 24 * 7         // a week
+    static let defaultMaxCachePeriodInSecond: TimeInterval = 60 * 60 * 24 * 7         // a week
     
-    public static var defaultCache = DataCache(name: "default")
+    open static var defaultCache = DataCache(name: "default")
     
     var cachePath: String
     
     let memCache = NSCache()
-    let ioQueue: dispatch_queue_t
-    var fileManager = NSFileManager()
+    let ioQueue: DispatchQueue
+    var fileManager = FileManager()
     
     /// Name of cache
-    public var name: String = ""
+    open var name: String = ""
     
     /// Life time of disk cache, in second. Default is a week
-    public var maxCachePeriodInSecond = DataCache.defaultMaxCachePeriodInSecond
+    open var maxCachePeriodInSecond = DataCache.defaultMaxCachePeriodInSecond
     
     /// Size is allocated for disk cache, in byte. 0 mean no limit. Default is 0
-    public var maxDiskCacheSize: UInt = 0
+    open var maxDiskCacheSize: UInt = 0
     
     /// Specify distinc name param, it represents folder name for disk cache
     public init(name: String, path: String? = nil) {
         self.name = name
         
-        cachePath = path ?? NSSearchPathForDirectoriesInDomains(.CachesDirectory, NSSearchPathDomainMask.UserDomainMask, true).first!
-        cachePath = (cachePath as NSString).stringByAppendingPathComponent(DataCache.cacheDirectoryPrefix + name)
+        cachePath = path ?? NSSearchPathForDirectoriesInDomains(.cachesDirectory, FileManager.SearchPathDomainMask.userDomainMask, true).first!
+        cachePath = (cachePath as NSString).appendingPathComponent(DataCache.cacheDirectoryPrefix + name)
         
-        ioQueue = dispatch_queue_create(DataCache.ioQueuePrefix + name, DISPATCH_QUEUE_CONCURRENT)
+        ioQueue = DispatchQueue(label: DataCache.ioQueuePrefix + name, attributes: DispatchQueue.Attributes.concurrent)
         
-        dispatch_async(ioQueue) { 
-            self.fileManager = NSFileManager()
+        ioQueue.async { 
+            self.fileManager = FileManager()
         }
         
         #if !os(OSX) && !os(watchOS)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DataCache.cleanExpiredDiskCache), name: UIApplicationWillTerminateNotification, object: nil)
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(DataCache.cleanExpiredDiskCache), name: UIApplicationDidEnterBackgroundNotification, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(DataCache.cleanExpiredDiskCache), name: NSNotification.Name.UIApplicationWillTerminate, object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(DataCache.cleanExpiredDiskCache), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
         #endif
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -63,29 +63,29 @@ public class DataCache {
 extension DataCache {
     
     /// Write data for key. This is an async operation.
-    public func writeData(data: NSData, forKey key: String) {
+    public func writeData(_ data: Data, forKey key: String) {
         memCache.setObject(data, forKey: key)
         writeDataToDisk(data, key: key)
     }
     
-    func writeDataToDisk(data: NSData, key: String) {
-        dispatch_async(ioQueue) { 
-            if self.fileManager.fileExistsAtPath(self.cachePath) == false {
+    func writeDataToDisk(_ data: Data, key: String) {
+        ioQueue.async { 
+            if self.fileManager.fileExists(atPath: self.cachePath) == false {
                 do {
-                    try self.fileManager.createDirectoryAtPath(self.cachePath, withIntermediateDirectories: true, attributes: nil)
+                    try self.fileManager.createDirectory(atPath: self.cachePath, withIntermediateDirectories: true, attributes: nil)
                 }
                 catch {
                     print("Error while creating cache folder")
                 }
             }
             
-            self.fileManager.createFileAtPath(self.cachePathForKey(key), contents: data, attributes: nil)
+            self.fileManager.createFile(atPath: self.cachePathForKey(key), contents: data, attributes: nil)
         }
     }
     
     /// Read data for key
-    public func readDataForKey(key:String) -> NSData? {
-        var data = memCache.objectForKey(key) as? NSData
+    public func readDataForKey(_ key:String) -> Data? {
+        var data = memCache.object(forKey: key) as? Data
         
         if data == nil {
             if let dataFromDisk = readDataFromDiskForKey(key) {
@@ -98,8 +98,8 @@ extension DataCache {
     }
     
     /// Read data from disk for key
-    public func readDataFromDiskForKey(key: String) -> NSData? {
-        return self.fileManager.contentsAtPath(cachePathForKey(key))
+    public func readDataFromDiskForKey(_ key: String) -> Data? {
+        return self.fileManager.contents(atPath: cachePathForKey(key))
     }
     
     
@@ -109,44 +109,44 @@ extension DataCache {
     /// Write an object for key. This object must inherit from `NSObject` and implement `NSCoding` protocol. `String`, `Array`, `Dictionary` conform to this method.
     ///
     /// NOTE: Can't write `UIImage` with this method. Please use `writeImage(_:forKey:)` to write an image
-    public func writeObject(value: NSCoding, forKey key: String) {
-        let data = NSKeyedArchiver.archivedDataWithRootObject(value)
+    public func writeObject(_ value: NSCoding, forKey key: String) {
+        let data = NSKeyedArchiver.archivedData(withRootObject: value)
         writeData(data, forKey: key)
     }
     
     /// Read an object for key. This object must inherit from `NSObject` and implement NSCoding protocol. `String`, `Array`, `Dictionary` conform to this method
-    public func readObjectForKey(key: String) -> NSObject? {
+    public func readObjectForKey(_ key: String) -> NSObject? {
         let data = readDataForKey(key)
         
         if let data = data {
-            return NSKeyedUnarchiver.unarchiveObjectWithData(data) as? NSObject
+            return NSKeyedUnarchiver.unarchiveObject(with: data) as? NSObject
         }
         
         return nil
     }
     
     /// Read a string for key
-    public func readStringForKey(key: String) -> String? {
+    public func readStringForKey(_ key: String) -> String? {
         return readObjectForKey(key) as? String
     }
     
     /// Read an array for key
-    public func readArrayForKey(key: String) -> Array<AnyObject>? {
+    public func readArrayForKey(_ key: String) -> Array<AnyObject>? {
         return readObjectForKey(key) as? Array<AnyObject>
     }
     
     /// Read a dictionary for key
-    public func readDictionaryForKey(key: String) -> Dictionary<String, AnyObject>? {
+    public func readDictionaryForKey(_ key: String) -> Dictionary<String, AnyObject>? {
         return readObjectForKey(key) as? Dictionary<String, AnyObject>
     }
     
     // MARK: Read & write image
     
     /// Write image for key. Please use this method to write an image instead of `writeObject(_:forKey:)`
-    public func writeImage(image: UIImage, forKey key: String, format: ImageFormat? = nil) {
-        var data: NSData? = nil
+    public func writeImage(_ image: UIImage, forKey key: String, format: ImageFormat? = nil) {
+        var data: Data? = nil
         
-        if let format = format where format == .PNG {
+        if let format = format , format == .png {
             data = UIImagePNGRepresentation(image)
         }
         else {
@@ -159,7 +159,7 @@ extension DataCache {
     }
     
     /// Read image for key. Please use this method to write an image instead of `readObjectForKey(_:)`
-    public func readImageForKey(key: String) -> UIImage? {
+    public func readImageForKey(_ key: String) -> UIImage? {
         let data = readDataForKey(key)
         if let data = data {
             return UIImage(data: data, scale: 1.0)
@@ -174,13 +174,13 @@ extension DataCache {
 extension DataCache {
     
     /// Check if has data on disk
-    public func hasDataOnDiskForKey(key: String) -> Bool {
-        return self.fileManager.fileExistsAtPath(self.cachePathForKey(key))
+    public func hasDataOnDiskForKey(_ key: String) -> Bool {
+        return self.fileManager.fileExists(atPath: self.cachePathForKey(key))
     }
     
     /// Check if has data on mem
-    public func hasDataOnMemForKey(key: String) -> Bool {
-        return (memCache.objectForKey(key) != nil)
+    public func hasDataOnMemForKey(_ key: String) -> Bool {
+        return (memCache.object(forKey: key) != nil)
     }
 }
 
@@ -195,12 +195,12 @@ extension DataCache {
     }
     
     /// Clean cache by key. This is an async operation.
-    public func cleanByKey(key: String) {
-        memCache.removeObjectForKey(key)
+    public func cleanByKey(_ key: String) {
+        memCache.removeObject(forKey: key)
         
-        dispatch_async(ioQueue) { 
+        ioQueue.async { 
             do {
-                try self.fileManager.removeItemAtPath(self.cachePathForKey(key))
+                try self.fileManager.removeItem(atPath: self.cachePathForKey(key))
             } catch {}
         }
     }
@@ -210,9 +210,9 @@ extension DataCache {
     }
     
     func cleanDiskCache() {
-        dispatch_async(ioQueue) {
+        ioQueue.async {
             do {
-                try self.fileManager.removeItemAtPath(self.cachePath)
+                try self.fileManager.removeItem(atPath: self.cachePath)
             } catch {}
         }
     }
@@ -228,16 +228,16 @@ extension DataCache {
      
      - parameter completionHandler: Called after the operation completes.
      */
-    public func cleanExpiredDiskCacheWithCompletionHander(completionHandler: (()->())?) {
+    public func cleanExpiredDiskCacheWithCompletionHander(_ completionHandler: (()->())?) {
         
         // Do things in cocurrent io queue
-        dispatch_async(ioQueue, { () -> Void in
+        ioQueue.async(execute: { () -> Void in
             
             var (URLsToDelete, diskCacheSize, cachedFiles) = self.travelCachedFiles()
             
             for fileURL in URLsToDelete {
                 do {
-                    try self.fileManager.removeItemAtURL(fileURL)
+                    try self.fileManager.removeItem(at: fileURL)
                 } catch {}
             }
             
@@ -248,9 +248,9 @@ extension DataCache {
                 let sortedFiles = cachedFiles.keysSortedByValue {
                     resourceValue1, resourceValue2 -> Bool in
                     
-                    if let date1 = resourceValue1[NSURLContentModificationDateKey] as? NSDate,
-                        date2 = resourceValue2[NSURLContentModificationDateKey] as? NSDate {
-                        return date1.compare(date2) == .OrderedAscending
+                    if let date1 = resourceValue1[URLResourceKey.contentModificationDateKey] as? Date,
+                        let date2 = resourceValue2[URLResourceKey.contentModificationDateKey] as? Date {
+                        return date1.compare(date2) == .orderedAscending
                     }
                     // Not valid date information. This should not happen. Just in case.
                     return true
@@ -259,13 +259,13 @@ extension DataCache {
                 for fileURL in sortedFiles {
                     
                     do {
-                        try self.fileManager.removeItemAtURL(fileURL)
+                        try self.fileManager.removeItem(at: fileURL)
                     } catch {}
                     
                     URLsToDelete.append(fileURL)
                     
-                    if let fileSize = cachedFiles[fileURL]?[NSURLTotalFileAllocatedSizeKey] as? NSNumber {
-                        diskCacheSize -= fileSize.unsignedLongValue
+                    if let fileSize = cachedFiles[fileURL]?[URLResourceKey.totalFileAllocatedSizeKey] as? NSNumber {
+                        diskCacheSize -= fileSize.uintValue
                     }
                     
                     if diskCacheSize < targetSize {
@@ -274,7 +274,7 @@ extension DataCache {
                 }
             }
             
-            dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            DispatchQueue.main.async(execute: { () -> Void in
                 completionHandler?()
             })
         })
@@ -286,39 +286,39 @@ extension DataCache {
 extension DataCache {
     
     // This method is from Kingfisher
-    func travelCachedFiles() -> (URLsToDelete: [NSURL], diskCacheSize: UInt, cachedFiles: [NSURL: [NSObject: AnyObject]]) {
+    func travelCachedFiles() -> (URLsToDelete: [URL], diskCacheSize: UInt, cachedFiles: [URL: [AnyHashable: Any]]) {
         
-        let diskCacheURL = NSURL(fileURLWithPath: cachePath)
-        let resourceKeys = [NSURLIsDirectoryKey, NSURLContentModificationDateKey, NSURLTotalFileAllocatedSizeKey]
-        let expiredDate = NSDate(timeIntervalSinceNow: -self.maxCachePeriodInSecond)
+        let diskCacheURL = URL(fileURLWithPath: cachePath)
+        let resourceKeys = [URLResourceKey.isDirectoryKey, URLResourceKey.contentModificationDateKey, URLResourceKey.totalFileAllocatedSizeKey]
+        let expiredDate = Date(timeIntervalSinceNow: -self.maxCachePeriodInSecond)
         
-        var cachedFiles = [NSURL: [NSObject: AnyObject]]()
-        var URLsToDelete = [NSURL]()
+        var cachedFiles = [URL: [AnyHashable: Any]]()
+        var URLsToDelete = [URL]()
         var diskCacheSize: UInt = 0
         
-        if let fileEnumerator = self.fileManager.enumeratorAtURL(diskCacheURL, includingPropertiesForKeys: resourceKeys, options: NSDirectoryEnumerationOptions.SkipsHiddenFiles, errorHandler: nil),
-            urls = fileEnumerator.allObjects as? [NSURL] {
+        if let fileEnumerator = self.fileManager.enumerator(at: diskCacheURL, includingPropertiesForKeys: resourceKeys, options: FileManager.DirectoryEnumerationOptions.skipsHiddenFiles, errorHandler: nil),
+            let urls = fileEnumerator.allObjects as? [URL] {
             for fileURL in urls {
                 
                 do {
-                    let resourceValues = try fileURL.resourceValuesForKeys(resourceKeys)
+                    let resourceValues = try (fileURL as NSURL).resourceValues(forKeys: resourceKeys)
                     // If it is a Directory. Continue to next file URL.
-                    if let isDirectory = resourceValues[NSURLIsDirectoryKey] as? NSNumber {
+                    if let isDirectory = resourceValues[URLResourceKey.isDirectoryKey] as? NSNumber {
                         if isDirectory.boolValue {
                             continue
                         }
                     }
                     
                     // If this file is expired, add it to URLsToDelete
-                    if let modificationDate = resourceValues[NSURLContentModificationDateKey] as? NSDate {
-                        if modificationDate.laterDate(expiredDate) == expiredDate {
+                    if let modificationDate = resourceValues[URLResourceKey.contentModificationDateKey] as? Date {
+                        if (modificationDate as NSDate).laterDate(expiredDate) == expiredDate {
                             URLsToDelete.append(fileURL)
                             continue
                         }
                     }
                     
-                    if let fileSize = resourceValues[NSURLTotalFileAllocatedSizeKey] as? NSNumber {
-                        diskCacheSize += fileSize.unsignedLongValue
+                    if let fileSize = resourceValues[URLResourceKey.totalFileAllocatedSizeKey] as? NSNumber {
+                        diskCacheSize += fileSize.uintValue
                         cachedFiles[fileURL] = resourceValues
                     }
                 } catch _ {
@@ -329,8 +329,8 @@ extension DataCache {
         return (URLsToDelete, diskCacheSize, cachedFiles)
     }
     
-    func cachePathForKey(key: String) -> String {
+    func cachePathForKey(_ key: String) -> String {
         let fileName = key.kf_MD5
-        return (cachePath as NSString).stringByAppendingPathComponent(fileName)
+        return (cachePath as NSString).appendingPathComponent(fileName)
     }
 }

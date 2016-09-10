@@ -22,7 +22,7 @@ class ChartCollectionViewCell: UICollectionViewCell {
     
     func configure(withDataSource dataSource: ChartModel) {
         
-        if dataSource.image != nil, let image = UIImage(data: dataSource.image!) {
+        if dataSource.image != nil, let image = UIImage(data: dataSource.image! as Data) {
             self.imageView.image = image
         }
         
@@ -35,16 +35,16 @@ class ChartCollectionViewCell: UICollectionViewCell {
         switch userChoice {
         
         case .SHORT:
-            self.overlayLabel.layer.borderColor = UIColor.redColor().CGColor
+            self.overlayLabel.layer.borderColor = UIColor.red.cgColor
             self.overlayLabel.text = "\(Constants.UserChoices.SHORT.rawValue)"
-            self.overlayLabel.textColor = UIColor.redColor()
-            self.overlayLabel.transform = CGAffineTransformRotate(CGAffineTransformIdentity, CGFloat(Functions.degreesToRadians(15)))
+            self.overlayLabel.textColor = UIColor.red
+            self.overlayLabel.transform = CGAffineTransform.identity.rotated(by: CGFloat(Functions.degreesToRadians(15)))
             
         case .LONG:
-            self.overlayLabel.layer.borderColor = Constants.stockSwipeGreenColor.CGColor
+            self.overlayLabel.layer.borderColor = Constants.stockSwipeGreenColor.cgColor
             self.overlayLabel.text = "\(Constants.UserChoices.LONG.rawValue)"
             self.overlayLabel.textColor = Constants.stockSwipeGreenColor
-            self.overlayLabel.transform = CGAffineTransformRotate(CGAffineTransformIdentity, CGFloat(Functions.degreesToRadians(-15)))
+            self.overlayLabel.transform = CGAffineTransform.identity.rotated(by: CGFloat(Functions.degreesToRadians(-15)))
         case .SKIP:
             break
         }
@@ -53,21 +53,21 @@ class ChartCollectionViewCell: UICollectionViewCell {
         self.overlayLabel.layer.cornerRadius = 7.5
     }
     
-    override var selected: Bool {
+    override var isSelected: Bool {
         didSet {
-            if self.selected {
+            if self.isSelected {
                 
                 // Set self border to show selection
                 self.layer.cornerRadius = 7.5
                 self.layer.borderWidth = 1.5
-                self.layer.borderColor = Constants.stockSwipeFontColor.CGColor
+                self.layer.borderColor = Constants.stockSwipeFontColor.cgColor
                 
             } else {
                 
                 // Remove bold cell border
                 self.layer.cornerRadius = 7.5
                 self.layer.borderWidth = 0.5
-                self.layer.borderColor = Constants.stockSwipeFontColor.CGColor
+                self.layer.borderColor = Constants.stockSwipeFontColor.cgColor
                 
             }
         }

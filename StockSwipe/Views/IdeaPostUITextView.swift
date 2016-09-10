@@ -9,7 +9,7 @@
 import UIKit
 
 protocol IdeaPostTextViewDelegate {
-    func textViewDidChangeTextInRange(textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String, currentText: NSString, updatedText: String)
+    func textViewDidChangeTextInRange(_ textView: UITextView, shouldChangeTextInRange range: NSRange, replacementText text: String, currentText: NSString, updatedText: String)
 }
 
 class IdeaPostUITextView: UITextView, UITextViewDelegate, DetectTags {

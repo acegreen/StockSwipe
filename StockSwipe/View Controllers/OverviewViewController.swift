@@ -40,13 +40,13 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     var topStories = [News]()
     var charts = [Chart]()
     
-    var cloudColors:[UIColor] = [UIColor.grayColor()]
+    var cloudColors:[UIColor] = [UIColor.gray]
     var cloudFontName = "HelveticaNeue"
     
-    var stockTwitsLastQueriedDate: NSDate!
-    var carouselLastQueriedDate: NSDate!
-    var tradeIdeasLastQueriedDate: NSDate!
-    var topStoriesLastQueriedDate: NSDate!
+    var stockTwitsLastQueriedDate: Date!
+    var carouselLastQueriedDate: Date!
+    var tradeIdeasLastQueriedDate: Date!
+    var topStoriesLastQueriedDate: Date!
     
     var isQueryingForTrendingStocks = false
     var isQueryingForiCarousel = false
@@ -62,8 +62,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
 //    var iCarouselHalo: NVActivityIndicatorView!
 //    var topStoriesHalo: NVActivityIndicatorView!
     
-    var overviewVCOperationQueue: NSOperationQueue = NSOperationQueue()
-    var cloudLayoutOperationQueue: NSOperationQueue = NSOperationQueue()
+    var overviewVCOperationQueue: OperationQueue = OperationQueue()
+    var cloudLayoutOperationQueue: OperationQueue = OperationQueue()
     
     @IBOutlet var carousel : iCarousel!
     
@@ -83,20 +83,20 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         super.viewDidLoad()
         
         carousel.autoscroll = -0.3
-        carousel.type = .Linear
+        carousel.type = .linear
         carousel.contentOffset = CGSize(width: 0, height: 10)
         
         // Add refresh control to top stories tableView
-        self.latestTradeIdeasTableView.tableFooterView = UIView(frame: CGRectZero)
-        tradeIdeasRefreshControl.addTarget(self, action: #selector(OverviewViewController.refreshTradeIdeas(_:)), forControlEvents: .ValueChanged)
+        self.latestTradeIdeasTableView.tableFooterView = UIView(frame: CGRect.zero)
+        tradeIdeasRefreshControl.addTarget(self, action: #selector(OverviewViewController.refreshTradeIdeas(_:)), for: .valueChanged)
         self.latestTradeIdeasTableView.addSubview(tradeIdeasRefreshControl)
         
-        self.latestNewsTableView.tableFooterView = UIView(frame: CGRectZero)
-        topStoriesRefreshControl.addTarget(self, action: #selector(OverviewViewController.refreshTopStories(_:)), forControlEvents: .ValueChanged)
+        self.latestNewsTableView.tableFooterView = UIView(frame: CGRect.zero)
+        topStoriesRefreshControl.addTarget(self, action: #selector(OverviewViewController.refreshTopStories(_:)), for: .valueChanged)
         self.latestNewsTableView.addSubview(topStoriesRefreshControl)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         loadViewData()
     }
@@ -112,32 +112,32 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func loadViewData() {
         
-        let trendingCloudOperation = NSBlockOperation { () -> Void in
+        let trendingCloudOperation = BlockOperation { () -> Void in
             self.queryStockTwitsTrendingStocks()
         }
-        trendingCloudOperation.queuePriority = .High
+        trendingCloudOperation.queuePriority = .high
         
-        let marketCarouselOperation = NSBlockOperation { () -> Void in
+        let marketCarouselOperation = BlockOperation { () -> Void in
             self.queryICarouselTickers()
         }
-        marketCarouselOperation.queuePriority = .Normal
+        marketCarouselOperation.queuePriority = .normal
         
-        let tradeIdeasOperation = NSBlockOperation { () -> Void in
+        let tradeIdeasOperation = BlockOperation { () -> Void in
             self.queryTradeIdeas()
         }
-        tradeIdeasOperation.queuePriority = .Normal
+        tradeIdeasOperation.queuePriority = .normal
         
-        let topStoriesOperation = NSBlockOperation { () -> Void in
+        let topStoriesOperation = BlockOperation { () -> Void in
             self.queryTopStories()
         }
-        topStoriesOperation.queuePriority = .Normal
+        topStoriesOperation.queuePriority = .normal
         
         overviewVCOperationQueue.addOperations([trendingCloudOperation, marketCarouselOperation, tradeIdeasOperation, topStoriesOperation], waitUntilFinished: true)
         
-        let animationOperation = NSBlockOperation { () -> Void in
+        let animationOperation = BlockOperation { () -> Void in
             self.animationDelegate?.didFinishLoading()
         }
-        animationOperation.queuePriority = .Normal
+        animationOperation.queuePriority = .normal
         
         overviewVCOperationQueue.addOperation(animationOperation)
     }
@@ -147,14 +147,14 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         if cloudWords.count == 0 && stockTwitsLastQueriedDate == nil {
             
             let noInternetSentence = "The cloud is empty weird indeed could not grab Any Trending Stocks"
-            let breakupSentence = noInternetSentence.componentsSeparatedByString(" ")
+            let breakupSentence = noInternetSentence.components(separatedBy: " ")
             
-            for (index, word) in breakupSentence.enumerate() {
+            for (index, word) in breakupSentence.enumerated() {
                 let cloudWord = CloudWord(word: word, wordCount: breakupSentence.count - Int(index), wordTappable: false)
                 self.cloudWords.append(cloudWord)
             }
             
-            NSOperationQueue.mainQueue().addOperationWithBlock({() -> Void in
+            OperationQueue.main.addOperation({() -> Void in
                 self.layoutCloudWords()
                 self.cloudWords.removeAll()
                 
@@ -165,14 +165,14 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         if stockTwitsLastQueriedDate != nil && self.cloudWords.count > 0 {
             
-            let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(stockTwitsLastQueriedDate)
+            let timeSinceLastRefresh = Date().timeIntervalSince(stockTwitsLastQueriedDate)
             
             guard timeSinceLastRefresh / 60 > 5 else {
                 return
             }
         }
         
-        NSLog("refreshing cloud on %@", NSThread.isMainThread() ? "main thread" : "other thread")
+        NSLog("refreshing cloud on %@", Thread.isMainThread ? "main thread" : "other thread")
         
         isQueryingForTrendingStocks = true
         
@@ -214,14 +214,14 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             }
         } else if carouselLastQueriedDate != nil {
             
-            let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(carouselLastQueriedDate)
+            let timeSinceLastRefresh = Date().timeIntervalSince(carouselLastQueriedDate)
             
             guard timeSinceLastRefresh / 60 > 1 else {
                 return
             }
         }
         
-        NSLog("refreshing carousel on %@", NSThread.isMainThread() ? "main thread" : "other thread")
+        NSLog("refreshing carousel on %@", Thread.isMainThread ? "main thread" : "other thread")
         
         // Setup config parameters
         Functions.setupConfigParameter("CAROUSELTICKERARRAY") { (parameterValue) -> Void in
@@ -245,7 +245,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                     DataCache.defaultCache.writeData(symbolQuote, forKey: "CAROUSELCACHEDATA")
                     self.updateCarousel(symbolQuote)
                     
-                    self.carouselLastQueriedDate = NSDate()
+                    self.carouselLastQueriedDate = Date()
                 }
             })
         }
@@ -257,10 +257,10 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         if tradeIdeasLastQueriedDate != nil && self.tradeIdeaObjects.count > 0 {
             
-            let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(tradeIdeasLastQueriedDate)
+            let timeSinceLastRefresh = Date().timeIntervalSince(tradeIdeasLastQueriedDate)
             
             guard timeSinceLastRefresh / 60 > 5 else {
-                if self.tradeIdeasRefreshControl.refreshing == true {
+                if self.tradeIdeasRefreshControl.isRefreshing == true {
                     self.tradeIdeasRefreshControl.endRefreshing()
                 }
                 return
@@ -278,14 +278,14 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
                 self.updateTradeIdeas(activityObjects.lazy.map { $0["tradeIdea"] as! PFObject })
                 
-                self.tradeIdeasLastQueriedDate = NSDate()
+                self.tradeIdeasLastQueriedDate = Date()
                 
             } catch {
                 
                 // TO-DO: Show sweet alert with Error.message()
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     self.latestTradeIdeasTableView.reloadData()
-                    if self.tradeIdeasRefreshControl.refreshing == true {
+                    if self.tradeIdeasRefreshControl.isRefreshing == true {
                         self.tradeIdeasRefreshControl.endRefreshing()
                     }
                 })
@@ -302,11 +302,11 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             }
         } else if topStoriesLastQueriedDate != nil {
             
-            let timeSinceLastRefresh = NSDate().timeIntervalSinceDate(topStoriesLastQueriedDate)
+            let timeSinceLastRefresh = Date().timeIntervalSince(topStoriesLastQueriedDate)
             
             guard timeSinceLastRefresh / 60 > 1 else {
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                    if self.topStoriesRefreshControl.refreshing == true {
+                DispatchQueue.main.async(execute: { () -> Void in
+                    if self.topStoriesRefreshControl.isRefreshing == true {
                         self.topStoriesRefreshControl.endRefreshing()
                     }
                 })
@@ -314,7 +314,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             }
         }
         
-        NSLog("refreshing top stories on %@", NSThread.isMainThread() ? "main thread" : "other thread")
+        NSLog("refreshing top stories on %@", Thread.isMainThread ? "main thread" : "other thread")
         
         isQueryingForTopStories = true
         
@@ -330,7 +330,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
                 DataCache.defaultCache.writeData(result, forKey: "TOPSTORIESCACHEDATA")
                 self.updateTopStories(result)
-                self.topStoriesLastQueriedDate = NSDate()
+                self.topStoriesLastQueriedDate = Date()
                 
             } catch {
                 
@@ -341,7 +341,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         }
     }
     
-    func createCloudWords(trendingStocksJSON: JSON, stockObjects: [PFObject]) {
+    func createCloudWords(_ trendingStocksJSON: JSON, stockObjects: [PFObject]) {
         
         self.cloudWords.removeAll()
         for (index, subJson) in trendingStocksJSON {
@@ -365,12 +365,12 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             self.charts.append(chart)
         }
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             self.layoutCloudWords()
         })
     }
     
-    func updateCarousel(symbolQuote: NSData) {
+    func updateCarousel(_ symbolQuote: Data) {
         
         guard let carsouelJson:JSON? = JSON(data: symbolQuote) else { return }
         guard carsouelJson != nil else { return }
@@ -402,27 +402,27 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             self.charts.append(chart)
         }
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             self.carousel.reloadData()
-            NSLog("carousel completed on %@", NSThread.isMainThread() ? "main thread" : "other thread")
+            NSLog("carousel completed on %@", Thread.isMainThread ? "main thread" : "other thread")
         })
         
     }
     
-    func updateTradeIdeas(tradeIdeaObjects: [PFObject]) {
+    func updateTradeIdeas(_ tradeIdeaObjects: [PFObject]) {
         
         self.tradeIdeaObjects = tradeIdeaObjects
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             
             self.latestTradeIdeasTableView.reloadData()
-            if self.tradeIdeasRefreshControl.refreshing == true {
+            if self.tradeIdeasRefreshControl.isRefreshing == true {
                 self.tradeIdeasRefreshControl.endRefreshing()
             }
         })
     }
     
-    func updateTopStories(result: NSData) {
+    func updateTopStories(_ result: Data) {
         
         let xml = SWXMLHash.parse(result)
         
@@ -466,36 +466,36 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             self.topStories.append(newNews)
         }
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             
             self.latestNewsTableView.reloadData()
-            if self.topStoriesRefreshControl.refreshing == true {
+            if self.topStoriesRefreshControl.isRefreshing == true {
                 self.topStoriesRefreshControl.endRefreshing()
             }
             
-            NSLog("top stories completed on %@", NSThread.isMainThread() ? "main thread" : "other thread")
+            NSLog("top stories completed on %@", Thread.isMainThread ? "main thread" : "other thread")
         })
     }
     
-    func refreshTradeIdeas(refreshControl: UIRefreshControl) {
-        let tradeIdeasOperation = NSBlockOperation { () -> Void in
+    func refreshTradeIdeas(_ refreshControl: UIRefreshControl) {
+        let tradeIdeasOperation = BlockOperation { () -> Void in
             self.queryTradeIdeas()
         }
-        tradeIdeasOperation.queuePriority = .Normal
+        tradeIdeasOperation.queuePriority = .normal
         overviewVCOperationQueue.addOperation(tradeIdeasOperation)
     }
     
-    func refreshTopStories(refreshControl: UIRefreshControl) {
-        let topStoriesOperation = NSBlockOperation { () -> Void in
+    func refreshTopStories(_ refreshControl: UIRefreshControl) {
+        let topStoriesOperation = BlockOperation { () -> Void in
             self.queryTopStories()
         }
-        topStoriesOperation.queuePriority = .Normal
+        topStoriesOperation.queuePriority = .normal
         overviewVCOperationQueue.addOperation(topStoriesOperation)
     }
     
     // MARK: - Segue Method
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let segueIdentifier = segueIdentifierForSegue(segue)
         
@@ -509,24 +509,24 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
             case is UIButton:
                 
-                symbol = sender?.currentTitle
+                symbol = (sender as AnyObject).currentTitle
                 
-                let destinationView = segue.destinationViewController as! ChartDetailTabBarController
+                let destinationView = segue.destination as! ChartDetailTabBarController
                 destinationView.chart = self.charts.find{ $0.symbol == symbol }
                 
             case is UIView:
                 
-                print(carousel.indexOfItemView(sender as! UIView))
+                print(carousel.index(ofItemView: sender as! UIView))
                 
-                if tickers.get(carousel.indexOfItemView(sender as! UIView)) != nil {
+                if tickers.get(carousel.index(ofItemView: sender as! UIView)) != nil {
                     
-                    let tickerAtIndex = tickers[carousel.indexOfItemView(sender as! UIView)]
+                    let tickerAtIndex = tickers[carousel.index(ofItemView: sender as! UIView)]
                     
                     symbol = tickerAtIndex.symbol
                     
                 }
                 
-                let destinationView = segue.destinationViewController as! ChartDetailTabBarController
+                let destinationView = segue.destination as! ChartDetailTabBarController
                 destinationView.chart = self.charts.find{ $0.symbol == symbol }
                 
             default:
@@ -535,7 +535,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             
         case .TradeIdeaDetailSegueIdentifier:
             
-            let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
+            let destinationViewController = segue.destination as! TradeIdeaDetailTableViewController
             destinationViewController.delegate = self
             
             guard let cell = sender as? IdeaCell else { return }
@@ -546,10 +546,10 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             
         case .PostIdeaSegueIdentifier:
             
-            let destinationViewController = segue.destinationViewController as! UINavigationController
+            let destinationViewController = segue.destination as! UINavigationController
             let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
             
-            ideaPostViewController.tradeIdeaType = .New
+            ideaPostViewController.tradeIdeaType = .new
             ideaPostViewController.delegate =  self
         }
     }
@@ -559,17 +559,17 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
     
     // MARK: - CloudLayoutOperationDelegate
     
-    func insertWord(word: String, pointSize: CGFloat,color: Int, center: CGPoint, vertical isVertical: Bool, tappable: Bool) {
+    func insertWord(_ word: String, pointSize: CGFloat,color: Int, center: CGPoint, vertical isVertical: Bool, tappable: Bool) {
         
-        let wordButton: UIButton = UIButton(type: UIButtonType.System)
-        wordButton.setTitle(word, forState: UIControlState.Normal)
-        wordButton.titleLabel?.textAlignment = NSTextAlignment.Center
-        wordButton.setTitleColor(self.cloudColors[color < self.cloudColors.count ? color : 0], forState: UIControlState.Normal)
+        let wordButton: UIButton = UIButton(type: UIButtonType.system)
+        wordButton.setTitle(word, for: UIControlState())
+        wordButton.titleLabel?.textAlignment = NSTextAlignment.center
+        wordButton.setTitleColor(self.cloudColors[color < self.cloudColors.count ? color : 0], for: UIControlState())
         wordButton.titleLabel?.font = UIFont(name: self.cloudFontName, size: pointSize)
         wordButton.sizeToFit()
         var wordButtonRect: CGRect = wordButton.frame
-        wordButtonRect.size.width = (((CGRectGetWidth(wordButtonRect) + 3) / 2)) * 2
-        wordButtonRect.size.height = (((CGRectGetHeight(wordButtonRect) + 3) / 2)) * 2
+        wordButtonRect.size.width = (((wordButtonRect.width + 3) / 2)) * 2
+        wordButtonRect.size.height = (((wordButtonRect.height + 3) / 2)) * 2
         wordButton.frame = wordButtonRect
         wordButton.center = center
         
@@ -583,34 +583,34 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
         }
         
         if isVertical {
-            wordButton.transform = CGAffineTransformMakeRotation(CGFloat(M_PI_2))
+            wordButton.transform = CGAffineTransform(rotationAngle: CGFloat(M_PI_2))
         }
         
         self.cloudView.addSubview(wordButton)
     }
     
-    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
         
         weak var weakSelf = self
         
-        coordinator.animateAlongsideTransition({(context) -> Void in
+        coordinator.animate(alongsideTransition: {(context) -> Void in
             let strongSelf = weakSelf
             strongSelf!.layoutCloudWords()
             }, completion: nil)
         
     }
     
-    override func encodeRestorableStateWithCoder(coder: NSCoder) {
-        super.encodeRestorableStateWithCoder(coder)
+    override func encodeRestorableState(with coder: NSCoder) {
+        super.encodeRestorableState(with: coder)
     }
     
-    override func decodeRestorableStateWithCoder(coder: NSCoder) {
-        super.decodeRestorableStateWithCoder(coder)
+    override func decodeRestorableState(with coder: NSCoder) {
+        super.decodeRestorableState(with: coder)
     }
     
     // Content size category has changed.  Layout cloud again, to account for new pointSize
-    func contentSizeCategoryDidChange(__unused: NSNotification) {
+    func contentSizeCategoryDidChange(_ __unused: Notification) {
         self.layoutCloudWords()
     }
     
@@ -618,41 +618,41 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
         
         let removableObjects = NSMutableArray()
         for subview: AnyObject in self.cloudView.subviews {
-            if subview.isKindOfClass(UIButton) {
-                removableObjects.addObject(subview)
+            if subview.isKind(of: UIButton) {
+                removableObjects.add(subview)
             }
         }
         
-        removableObjects.enumerateObjectsUsingBlock( { object, index, stop in
-            object.removeFromSuperview()
+        removableObjects.enumerateObjects( { object, index, stop in
+            (object as AnyObject).removeFromSuperview()
         })
     }
     
     func layoutCloudWords() {
         
         self.removeCloudWords()
-        self.view.backgroundColor = UIColor.whiteColor()
-        let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: self.cloudView.bounds, scale: UIScreen.mainScreen().scale, delegate: self)
+        self.view.backgroundColor = UIColor.white
+        let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: self.cloudView.bounds, scale: UIScreen.main.scale, delegate: self)
         self.cloudLayoutOperationQueue.addOperation(newCloudLayoutOperation)
         
-        NSLog("cloud completed on %@", NSThread.isMainThread() ? "main thread" : "other thread")
+        NSLog("cloud completed on %@", Thread.isMainThread ? "main thread" : "other thread")
     }
     
-    func wordTapped(sender: UITapGestureRecognizer) {
+    func wordTapped(_ sender: UITapGestureRecognizer) {
         
         guard Functions.isConnectedToNetwork() else {
             
-            SweetAlert().showAlert("Can't Access Chart!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.Warning)
+            SweetAlert().showAlert("Can't Access Chart!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
             
             return
         }
         
-        performSegueWithIdentifier("ChartDetailSegueIdentifier", sender: sender.view)
+        performSegue(withIdentifier: "ChartDetailSegueIdentifier", sender: sender.view)
     }
     
-    func wordLongPressed(sender: UILongPressGestureRecognizer) {
+    func wordLongPressed(_ sender: UILongPressGestureRecognizer) {
         
-        if sender.state == UIGestureRecognizerState.Began {
+        if sender.state == UIGestureRecognizerState.began {
             print("UIGestureRecognizerState Began")
             
             guard let chart = (self.charts.find{ $0.symbol == (sender.view as! UIButton).currentTitle }) else { return }
@@ -666,11 +666,11 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
 
 extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
     
-    func numberOfItemsInCarousel(carousel: iCarousel) -> Int {
+    func numberOfItems(in carousel: iCarousel) -> Int {
         return tickers.count
     }
     
-    func carousel(carousel: iCarousel, viewForItemAtIndex index: Int, reusingView view: UIView?) -> UIView {
+    func carousel(_ carousel: iCarousel, viewForItemAt index: Int, reusing view: UIView?) -> UIView {
         
         var itemView: iCarouselTickerView
         
@@ -719,26 +719,26 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
         return itemView
     }
     
-    func carousel(carousel: iCarousel, didSelectItemAtIndex index: Int) {
+    func carousel(_ carousel: iCarousel, didSelectItemAt index: Int) {
         
         guard Functions.isConnectedToNetwork() else {
             
-            SweetAlert().showAlert("Can't Access Chart!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.Warning)
+            SweetAlert().showAlert("Can't Access Chart!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
             
             return
         }
         
-        performSegueWithIdentifier("ChartDetailSegueIdentifier", sender: carousel.itemViewAtIndex(index))
+        performSegue(withIdentifier: "ChartDetailSegueIdentifier", sender: carousel.itemView(at: index))
         
     }
     
-    func carousel(carousel: iCarousel, valueForOption option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {
+    func carousel(_ carousel: iCarousel, valueFor option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {
         
-        if option == .Spacing {
+        if option == .spacing {
             
             return value * 1.15
             
-        } else if option == .Wrap {
+        } else if option == .wrap {
             
             return 1.0
         }
@@ -755,12 +755,12 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
     
     // MARK: - TableView data source
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         if tableView == latestNewsTableView {
             return topStories.count
@@ -770,23 +770,23 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         return 0
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-    func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if tableView == latestNewsTableView {
             
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as TopNewsCell
             
-            guard topStories.get(indexPath.row) != nil else { return cell }
+            guard topStories.get((indexPath as NSIndexPath).row) != nil else { return cell }
             
-            let newsAtIndex = self.topStories[indexPath.row]
+            let newsAtIndex = self.topStories[(indexPath as NSIndexPath).row]
             
             if let newsTitleAtIndex = newsAtIndex.title {
                 
@@ -804,8 +804,8 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
             
-            guard tradeIdeaObjects.get(indexPath.row) != nil else { return cell }
-            cell.configureCell(self.tradeIdeaObjects[indexPath.row], timeFormat: .Short)
+            guard tradeIdeaObjects.get((indexPath as NSIndexPath).row) != nil else { return cell }
+            cell.configureCell(self.tradeIdeaObjects[(indexPath as NSIndexPath).row], timeFormat: .short)
             
             return cell
         } else {
@@ -814,29 +814,29 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         }
     }
     
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if tableView == latestNewsTableView {
             
-            guard topStories.get(indexPath.row) != nil else {
+            guard topStories.get((indexPath as NSIndexPath).row) != nil else {
                 return
             }
             
-            let newsAtIndex = self.topStories[indexPath.row]
+            let newsAtIndex = self.topStories[(indexPath as NSIndexPath).row]
             
             if let newsurl = newsAtIndex.url {
                 
-                Functions.presentSafariBrowser(NSURL(string: newsurl))
+                Functions.presentSafariBrowser(URL(string: newsurl))
                 
             }
         }
         
-        tableView.deselectRowAtIndexPath(indexPath, animated: false)
+        tableView.deselectRow(at: indexPath, animated: false)
     }
     
     // MARK: - DZNEmptyDataSet Delegates
     
-    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         
         if scrollView == latestNewsTableView && !isQueryingForTopStories && topStories.count == 0 {
             return true
@@ -847,14 +847,14 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         return false
     }
     
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
         var attributedTitle: NSAttributedString!
         
         if scrollView == latestNewsTableView {
-            attributedTitle = NSAttributedString(string: "No News", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+            attributedTitle = NSAttributedString(string: "No News", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
         } else if scrollView == latestTradeIdeasTableView {
-            attributedTitle = NSAttributedString(string: "No Trade Ideas", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+            attributedTitle = NSAttributedString(string: "No Trade Ideas", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
         }
         
         return attributedTitle
@@ -865,11 +865,11 @@ extension OverviewViewController: IdeaPostDelegate {
         
         func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
             
-            if tradeIdeaTyp == .New {
+            if tradeIdeaTyp == .new {
                 
-                let indexPath = NSIndexPath(forRow: 0, inSection: 0)
-                self.tradeIdeaObjects.insert(tradeIdea.parseObject, atIndex: 0)
-                self.latestTradeIdeasTableView.insertRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                let indexPath = IndexPath(row: 0, section: 0)
+                self.tradeIdeaObjects.insert(tradeIdea.parseObject, at: 0)
+                self.latestTradeIdeasTableView.insertRows(at: [indexPath], with: .automatic)
                 
                 self.latestTradeIdeasTableView.reloadEmptyDataSet()
             }
@@ -879,15 +879,15 @@ extension OverviewViewController: IdeaPostDelegate {
             
             if let tradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == parseObject.objectId }) {
                 
-                if let reshareOf = tradeIdea.objectForKey("reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == reshareOf.objectId })  {
+                if let reshareOf = tradeIdea.object(forKey: "reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == reshareOf.objectId })  {
                     
-                    let indexPath = NSIndexPath(forRow: self.tradeIdeaObjects.indexOf(reshareTradeIdea)!, inSection: 0)
-                    self.latestTradeIdeasTableView.reloadRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                    let indexPath = IndexPath(row: self.tradeIdeaObjects.index(of: reshareTradeIdea)!, section: 0)
+                    self.latestTradeIdeasTableView.reloadRows(at: [indexPath], with: .automatic)
                 }
                 
-                let indexPath = NSIndexPath(forRow: self.tradeIdeaObjects.indexOf(tradeIdea)!, inSection: 0)
+                let indexPath = IndexPath(row: self.tradeIdeaObjects.index(of: tradeIdea)!, section: 0)
                 self.tradeIdeaObjects.removeObject(tradeIdea)
-                self.latestTradeIdeasTableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+                self.latestTradeIdeasTableView.deleteRows(at: [indexPath], with: .automatic)
             }
             
             if tradeIdeaObjects.count == 0 {

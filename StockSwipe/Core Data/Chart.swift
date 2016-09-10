@@ -9,13 +9,13 @@ import UIKit
 import CoreData
 import Parse
 
-public class Chart: NSObject {
+open class Chart: NSObject {
     
     var symbol: String!
     var companyName: String!
     var image: UIImage = UIImage(named: "no_chart")!
     
-    private var chartImageURL: NSURL!
+    fileprivate var chartImageURL: URL!
     
     var shortCount: Int = 0 {
         didSet {
@@ -47,10 +47,10 @@ public class Chart: NSObject {
         
         super.init()
         
-        let symbol = parseObject.objectForKey("Symbol") as! String
-        let companyName = parseObject.objectForKey("Company") as! String
-        let shortCount = parseObject.objectForKey("shortCount") as? Int
-        let longCount = parseObject.objectForKey("longCount") as? Int
+        let symbol = parseObject.object(forKey: "Symbol") as! String
+        let companyName = parseObject.object(forKey: "Company") as! String
+        let shortCount = parseObject.object(forKey: "shortCount") as? Int
+        let longCount = parseObject.object(forKey: "longCount") as? Int
         
         self.symbol = symbol
         self.companyName = companyName
@@ -73,7 +73,7 @@ public class Chart: NSObject {
         Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
     }
     
-    func getChartImage(completion completion: ((UIImage?) -> Void)?) {
+    func getChartImage(completion: ((UIImage?) -> Void)?) {
         
         guard let chartImageURL = Functions.setImageURL(symbol) else { return }
         

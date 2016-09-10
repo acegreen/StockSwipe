@@ -37,7 +37,7 @@ class NoChartView: UIView {
         self.setupView()
         self.constructLabel(text)
         
-        self.addCenterMotionEffectsXYWithOffset(motionOffset)
+        self.addCenterMotionEffectsXY(withOffset: motionOffset)
     
     }
     
@@ -48,22 +48,22 @@ class NoChartView: UIView {
     
     func setupView() {
         
-        self.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor.white
         self.layer.masksToBounds = false;
         self.layer.cornerRadius = 15.0
         self.layer.borderWidth = 1.0
-        self.layer.borderColor = UIColor.grayColor().CGColor
+        self.layer.borderColor = UIColor.gray.cgColor
 
     }
     
-    func constructLabel(text: String) -> Void {
+    func constructLabel(_ text: String) -> Void {
 
         self.label = UILabel(frame: CGRect(x: 50, y: 0, width: self.bounds.width - 100, height: self.bounds.height))
-        self.label.textAlignment = NSTextAlignment.Center
+        self.label.textAlignment = NSTextAlignment.center
         self.label.numberOfLines = 0
         self.label.text = text
         self.label.font = UIFont(name: "HelveticaNeue", size: 35.0)
-        self.label.textColor = UIColor.grayColor()
+        self.label.textColor = UIColor.gray
         self.addSubview(self.label)
     }
 }

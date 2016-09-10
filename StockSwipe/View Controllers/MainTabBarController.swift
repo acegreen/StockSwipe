@@ -32,20 +32,20 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
         overviewVC.animationDelegate = self
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "FeedbackSegueIdentifier" {
-            let controller = segue.destinationViewController
+            let controller = segue.destination
             controller.transitioningDelegate = self
-            controller.modalPresentationStyle = .Custom
+            controller.modalPresentationStyle = .custom
         }
     }
     
-    func didReceivePushNotification(userInfo: [NSObject : AnyObject]) {
+    func didReceivePushNotification(_ userInfo: [AnyHashable: Any]) {
         
         // Handle received remote notification
         if let notificationTitle = userInfo["title"] as? String {
@@ -58,9 +58,9 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
     func initializerSplash() {
         //Twitter style splash
         let stockswipeLaunchScreenLogoSize = UIImage(named: "stockswipe_logo")!.size
-        let splashIcon: SKSplashIcon = SKSplashIcon(image: UIImage(named: "stockswipe_logo"), initialSize: stockswipeLaunchScreenLogoSize, animationType: .Bounce)
+        let splashIcon: SKSplashIcon = SKSplashIcon(image: UIImage(named: "stockswipe_logo"), initialSize: stockswipeLaunchScreenLogoSize, animationType: .bounce)
         let backgroundColor: UIColor = Constants.stockSwipeGreenColor
-        self.splashView = SKSplashView(splashIcon: splashIcon, backgroundColor: backgroundColor, animationType: .None)
+        self.splashView = SKSplashView(splashIcon: splashIcon, backgroundColor: backgroundColor, animationType: .none)
         //self.splashView.delegate = self
         splashView.animationDuration = 0.50
         self.view.addSubview(splashView)
@@ -68,25 +68,25 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
     
     func didFinishLoading() {
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             
-            self.splashView.startAnimationWithCompletion {
-                if PFUser.currentUser() == nil && Constants.userDefaults.boolForKey("TUTORIAL_SHOWN") == false {
+            self.splashView.startAnimation {
+                if PFUser.current() == nil && Constants.userDefaults.bool(forKey: "TUTORIAL_SHOWN") == false {
                     
-                    let logInViewcontroller = self.storyboard?.instantiateViewControllerWithIdentifier("LoginViewController") as! LoginViewController
-                    self.presentViewController(logInViewcontroller, animated: true, completion: {
-                        Constants.userDefaults.setBool(true, forKey: "TUTORIAL_SHOWN")
+                    let logInViewcontroller = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                    self.present(logInViewcontroller, animated: true, completion: {
+                        Constants.userDefaults.set(true, forKey: "TUTORIAL_SHOWN")
                     })
                     
-                } else if SARate.sharedInstance().eventCount >= SARate.sharedInstance().eventsUntilPrompt && Constants.userDefaults.boolForKey("FEEDBACK_GIVEN") == false {
+                } else if SARate.sharedInstance().eventCount >= SARate.sharedInstance().eventsUntilPrompt && Constants.userDefaults.bool(forKey: "FEEDBACK_GIVEN") == false {
                     
-                    self.performSegueWithIdentifier("FeedbackSegueIdentifier", sender: self)
+                    self.performSegue(withIdentifier: "FeedbackSegueIdentifier", sender: self)
                     SARate.sharedInstance().eventCount = 0
                     
                 } else {
                     
                     // Release notes on update
-                    LaunchKit.sharedInstance().presentAppReleaseNotesIfNeededFromViewController(self, completion: { (didPresent) -> Void in
+                    LaunchKit.sharedInstance().presentAppReleaseNotesIfNeeded(from: self, completion: { (didPresent) -> Void in
                         if didPresent {
                             print("Woohoo, we showed the release notes card!")
                         }
@@ -100,7 +100,7 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
 // MARK: - UIViewControllerTransitioningDelegate
 extension MainTabBarController: UIViewControllerTransitioningDelegate {
     
-    func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .Present
         let center = self.view.center
         transition.startingPoint = center
@@ -108,7 +108,7 @@ extension MainTabBarController: UIViewControllerTransitioningDelegate {
         return transition
     }
     
-    func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
         transition.transitionMode = .Dismiss
         let center = self.view.center
         transition.startingPoint = center
@@ -120,9 +120,9 @@ extension MainTabBarController: UIViewControllerTransitioningDelegate {
 // MARK: - SKSplashView Delegates
 extension MainTabBarController {
     
-    func splashView(splashView: SKSplashView, didBeginAnimatingWithDuration duration: Float) {
+    func splashView(_ splashView: SKSplashView, didBeginAnimatingWithDuration duration: Float) {
     }
     
-    func splashViewDidEndAnimating(splashView: SKSplashView) {
+    func splashViewDidEndAnimating(_ splashView: SKSplashView) {
     }
 }

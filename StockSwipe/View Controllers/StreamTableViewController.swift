@@ -18,8 +18,8 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
     
     var isQueryingForTweets = false
     
-    @IBAction func xButtonPressed(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func xButtonPressed(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -46,26 +46,26 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
             // Request Twitter Feed
             let client = TWTRAPIClient()
             
-            let querySymbol = self.symbol.stringByReplacingOccurrencesOfString("^", withString: "")
-            self.dataSource = TWTRSearchTimelineDataSource(searchQuery: "$\(querySymbol) OR \(companyName)", APIClient: client)
+            let querySymbol = self.symbol.replacingOccurrences(of: "^", with: "")
+            self.dataSource = TWTRSearchTimelineDataSource(searchQuery: "$\(querySymbol) OR \(companyName)", apiClient: client)
             self.showTweetActions = true
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
     }
     
     // TWTRTweetViewDelegate
-    func tweetView(tweetView: TWTRTweetView, shouldDisplayDetailViewController controller: TWTRTweetDetailViewController) -> Bool {
+    func tweetView(_ tweetView: TWTRTweetView, shouldDisplay controller: TWTRTweetDetailViewController) -> Bool {
         return false
     }
     
-    func tweetView(tweetView: TWTRTweetView, didTapURL url: NSURL) {
+    func tweetView(_ tweetView: TWTRTweetView, didTap url: URL) {
         Functions.presentSafariBrowser(url)
     }
     
-    func tweetView(tweetView: TWTRTweetView, didTapProfileImageForUser user: TWTRUser) {
+    func tweetView(_ tweetView: TWTRTweetView, didTapProfileImageFor user: TWTRUser) {
         Functions.presentSafariBrowser(user.profileURL)
     }
     

@@ -19,18 +19,18 @@ class CustomImagePickerController: UIImagePickerController {
         // Dispose of any resources that can be recreated.
     }
     
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         return false
     }
     
-    override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
+    override var supportedInterfaceOrientations : UIInterfaceOrientationMask {
         
-        switch UIDevice.currentDevice().userInterfaceIdiom {
+        switch UIDevice.current.userInterfaceIdiom {
             
-        case .Pad:
-            return .Landscape
+        case .pad:
+            return .landscape
         default:
-            return .Portrait
+            return .portrait
         }
     }
 }

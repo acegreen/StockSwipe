@@ -10,23 +10,23 @@ import UIKit
 import Parse
 
 protocol SubSegmentedControlDelegate {
-    func subDidSelectSegment(segmentedControl: UISegmentedControl)
+    func subDidSelectSegment(_ segmentedControl: UISegmentedControl)
 }
 
 class ProfileContainerController: UIViewController, UIScrollViewDelegate, ProfileTableVieDelegate {
     
     enum SegmentIndex: Int {
-        case Zero
-        case One
-        case Two
-        case Three
+        case zero
+        case one
+        case two
+        case three
     }
     
     @IBOutlet var containerView: UIView!
 
     @IBOutlet var segmentedControl: UISegmentedControl!
     
-    @IBAction func segmentedControlAction(sender: UISegmentedControl) {
+    @IBAction func segmentedControlAction(_ sender: UISegmentedControl) {
         selectedSegmentIndex = SegmentIndex(rawValue: sender.selectedSegmentIndex)!
         self.delegate?.subDidSelectSegment(sender)
     }
@@ -34,8 +34,8 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
     @IBOutlet var barOffset: NSLayoutConstraint!
     @IBOutlet var headerHeight: NSLayoutConstraint!
         
-    @IBAction func xButtonPressed(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func xButtonPressed(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     var selectedSegmentIndex: SegmentIndex = SegmentIndex(rawValue: 0)!
@@ -58,7 +58,7 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
         layoutSegementedControl()
     }
 
-    func subScrollViewDidScroll(scrollView: UIScrollView) {
+    func subScrollViewDidScroll(_ scrollView: UIScrollView) {
         let offset = scrollView.contentOffset.y
         
         var segmentedControlTransform = CATransform3DIdentity
@@ -72,16 +72,16 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
     
     func checkBlocked() {
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         guard let userObject = self.user?.userObject else { return }
         
-        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] where users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
+        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] , users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
             self.isCurrentUserBlocked = true
             self.shouldShowProfile = false
             return
         }
         
-        if let blocked_users = currentUser["blocked_users"] as? [PFUser] where blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
+        if let blocked_users = currentUser["blocked_users"] as? [PFUser] , blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
             self.isUserBlocked = true
             return
         }
@@ -93,19 +93,19 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
         guard var user = user else { return }
         
         let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = .ByWordWrapping
-        paragraphStyle.alignment = .Center
+        paragraphStyle.lineBreakMode = .byWordWrapping
+        paragraphStyle.alignment = .center
         
         var attributedTitle: NSAttributedString!
         var attributedSubtitle: NSAttributedString!
         
         let titleAttrsDictionary = [
-            NSFontAttributeName: UIFont.boldSystemFontOfSize(22),
+            NSFontAttributeName: UIFont.boldSystemFont(ofSize: 22),
             NSParagraphStyleAttributeName: paragraphStyle
         ]
         
         let subTitleAttrsDictionary = [
-            NSFontAttributeName: UIFont.systemFontOfSize(12),
+            NSFontAttributeName: UIFont.systemFont(ofSize: 12),
             NSParagraphStyleAttributeName: paragraphStyle
         ]
         
@@ -115,9 +115,9 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
             attributedSubtitle = NSAttributedString(string: "Ideas", attributes: subTitleAttrsDictionary)
             
             let mutableAttString = NSMutableAttributedString()
-            mutableAttString.appendAttributedString(attributedTitle)
-            mutableAttString.appendAttributedString(NSAttributedString(string: "\n", attributes: nil))
-            mutableAttString.appendAttributedString(attributedSubtitle)
+            mutableAttString.append(attributedTitle)
+            mutableAttString.append(NSAttributedString(string: "\n", attributes: nil))
+            mutableAttString.append(attributedSubtitle)
             
             self.segmentedControl.segmentWithMultilineAttributedTitle(mutableAttString, atIndex: 0, animated: true)
         })
@@ -127,9 +127,9 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
             attributedSubtitle = NSAttributedString(string: "Following", attributes: subTitleAttrsDictionary)
             
             let mutableAttString = NSMutableAttributedString()
-            mutableAttString.appendAttributedString(attributedTitle)
-            mutableAttString.appendAttributedString(NSAttributedString(string: "\n", attributes: nil))
-            mutableAttString.appendAttributedString(attributedSubtitle)
+            mutableAttString.append(attributedTitle)
+            mutableAttString.append(NSAttributedString(string: "\n", attributes: nil))
+            mutableAttString.append(attributedSubtitle)
             
             self.segmentedControl.segmentWithMultilineAttributedTitle(mutableAttString, atIndex: 1, animated: true)
         })
@@ -139,9 +139,9 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
             attributedSubtitle = NSAttributedString(string: "Followers", attributes: subTitleAttrsDictionary)
             
             let mutableAttString = NSMutableAttributedString()
-            mutableAttString.appendAttributedString(attributedTitle)
-            mutableAttString.appendAttributedString(NSAttributedString(string: "\n", attributes: nil))
-            mutableAttString.appendAttributedString(attributedSubtitle)
+            mutableAttString.append(attributedTitle)
+            mutableAttString.append(NSAttributedString(string: "\n", attributes: nil))
+            mutableAttString.append(attributedSubtitle)
             
             self.segmentedControl.segmentWithMultilineAttributedTitle(mutableAttString, atIndex: 2, animated: true)
         })
@@ -151,17 +151,17 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
             attributedSubtitle = NSAttributedString(string: "Liked", attributes: subTitleAttrsDictionary)
             
             let mutableAttString = NSMutableAttributedString()
-            mutableAttString.appendAttributedString(attributedTitle)
-            mutableAttString.appendAttributedString(NSAttributedString(string: "\n", attributes: nil))
-            mutableAttString.appendAttributedString(attributedSubtitle)
+            mutableAttString.append(attributedTitle)
+            mutableAttString.append(NSAttributedString(string: "\n", attributes: nil))
+            mutableAttString.append(attributedSubtitle)
             
             self.segmentedControl.segmentWithMultilineAttributedTitle(mutableAttString, atIndex: 3, animated: true)
         })
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "embedProfile" {
-            let profileVC = segue.destinationViewController as! ProfileTableViewController
+            let profileVC = segue.destination as! ProfileTableViewController
             self.delegate = profileVC
             profileVC.delegate = self
             profileVC.user = user

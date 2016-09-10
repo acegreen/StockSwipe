@@ -32,16 +32,16 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     var logInViewController: PFLogInViewController!
     var signUpViewController: PFSignUpViewController!
     
-    @IBAction func logInButtonPressed(sender: AnyObject) {
+    @IBAction func logInButtonPressed(_ sender: AnyObject) {
         self.logIn(self)
     }
     
-    @IBAction func notNowButtonPressed(sender: AnyObject) {
+    @IBAction func notNowButtonPressed(_ sender: AnyObject) {
         
-        self.dismissViewControllerAnimated(false, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
-    override func shouldAutorotate() -> Bool {
+    override var shouldAutorotate : Bool {
         
         return true
     }
@@ -50,29 +50,29 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         super.viewDidLoad()
         
         self.pageImages = NSArray(objects: "page1", "page2", "page3", "page4", "page5")
-        self.pageViewController = Constants.storyboard.instantiateViewControllerWithIdentifier("PageViewController") as! UIPageViewController
+        self.pageViewController = Constants.storyboard.instantiateViewController(withIdentifier: "PageViewController") as! UIPageViewController
         self.pageViewController.dataSource = self
         
         let startVC = self.viewControllerAtIndex(0) as PageContentViewController
         
         let viewControllers = NSArray(object: startVC)
-        self.pageViewController.setViewControllers(viewControllers as! [PageContentViewController], direction: .Forward, animated: true, completion: nil)
-        self.pageViewController.view.frame = CGRectMake(0, 30, self.view.frame.width, self.view.frame.size.height * 0.80)
+        self.pageViewController.setViewControllers(viewControllers as! [PageContentViewController], direction: .forward, animated: true, completion: nil)
+        self.pageViewController.view.frame = CGRect(x: 0, y: 30, width: self.view.frame.width, height: self.view.frame.size.height * 0.80)
         
         self.addChildViewController(self.pageViewController)
         
         self.view.addSubview(self.pageViewController.view)
         
-        self.pageViewController.didMoveToParentViewController(self)
+        self.pageViewController.didMove(toParentViewController: self)
         
-        if PFUser.currentUser() != nil {
+        if PFUser.current() != nil {
             
-            self.dismissViewControllerAnimated(false, completion: nil)
+            self.dismiss(animated: false, completion: nil)
             
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
         
         
@@ -85,7 +85,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     
     // Mark - UIPageViewController and delegate functions
     
-    func viewControllerAtIndex(index: Int) -> PageContentViewController {
+    func viewControllerAtIndex(_ index: Int) -> PageContentViewController {
         
         if ((self.pageImages.count == 0) || (index >= self.pageImages.count)) {
             
@@ -93,7 +93,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
         }
         
-        let vc: PageContentViewController = Constants.storyboard.instantiateViewControllerWithIdentifier("PageContentViewController") as! PageContentViewController
+        let vc: PageContentViewController = Constants.storyboard.instantiateViewController(withIdentifier: "PageContentViewController") as! PageContentViewController
         
         vc.imageFile = self.pageImages[index] as! String
         vc.pageIndex = index
@@ -101,7 +101,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         return vc
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerBeforeViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
         let vc = viewController as! PageContentViewController
         
@@ -118,7 +118,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         
     }
     
-    func pageViewController(pageViewController: UIPageViewController, viewControllerAfterViewController viewController: UIViewController) -> UIViewController? {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         
         let vc = viewController as! PageContentViewController
         
@@ -139,14 +139,14 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         
     }
     
-    func presentationCountForPageViewController(pageViewController: UIPageViewController) -> Int {
+    func presentationCount(for pageViewController: UIPageViewController) -> Int {
         
         return self.pageImages.count
         
     }
     
     
-    func presentationIndexForPageViewController(pageViewController: UIPageViewController) -> Int {
+    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
         
         return 0
         
@@ -154,14 +154,14 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     
     // Mark - Parse Login
     
-    func logIn(viewController: UIViewController) {
+    func logIn(_ viewController: UIViewController) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
+            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
             return
         }
         
-        if PFUser.currentUser() == nil {
+        if PFUser.current() == nil {
             
             self.logInViewController = PFLogInViewController()
             //self.signUpViewController = PFSignUpViewController()
@@ -173,7 +173,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
             // PFLogInFields.UsernameAndPassword, PFLogInFields.LogInButton, PFLogInFields.SignUpButton, PFLogInFields.PasswordForgotten
             
-            self.logInViewController.fields = [PFLogInFields.Twitter, PFLogInFields.Facebook, PFLogInFields.DismissButton]
+            self.logInViewController.fields = [PFLogInFields.twitter, PFLogInFields.facebook, PFLogInFields.dismissButton]
             
             let facebookPermission = ["public_profile", "user_about_me", "user_website"]
             self.logInViewController.facebookPermissions = facebookPermission
@@ -185,45 +185,45 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             //            self.signUpViewController.delegate = self
             //            self.logInViewController.signUpController = self.signUpViewController
             
-            viewController.presentViewController(self.logInViewController, animated: true, completion: nil)
+            viewController.present(self.logInViewController, animated: true, completion: nil)
             
         } else {
             
             LaunchKit.sharedInstance().setUserIdentifier(nil, email: nil, name: nil)
-            SweetAlert().showAlert("No Action!", subTitle: "You are already Logged in", style: AlertStyle.None)
+            SweetAlert().showAlert("No Action!", subTitle: "You are already Logged in", style: AlertStyle.none)
             
-            viewController.dismissViewControllerAnimated(false, completion: nil)
+            viewController.dismiss(animated: false, completion: nil)
         }
     }
     
     func logOut() {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
+            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
             return
         }
         
-        guard PFUser.currentUser() != nil else { return }
+        guard PFUser.current() != nil else { return }
         
-        PFUser.logOutInBackgroundWithBlock { (error) in
+        PFUser.logOutInBackground { (error) in
             
             if error == nil {
                 
                 // register to LaunchKit
                 LaunchKit.sharedInstance().setUserIdentifier(nil, email: nil, name: nil)
                 
-                SweetAlert().showAlert("Logged Out!", subTitle: "You are now logged out", style: AlertStyle.Success)
+                SweetAlert().showAlert("Logged Out!", subTitle: "You are now logged out", style: AlertStyle.success)
                 
                 self.loginDelegate?.didLogoutSuccessfully()
             }
         }
     }
     
-    func logInViewController(logInController: PFLogInViewController, shouldBeginLogInWithUsername username: String, password: String) -> Bool {
+    func log(_ logInController: PFLogInViewController, shouldBeginLogInWithUsername username: String, password: String) -> Bool {
         
         guard Functions.isConnectedToNetwork() else {
             
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet.", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet.", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
             
@@ -236,7 +236,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
         } else {
             
-            SweetAlert().showAlert("Missing Information", subTitle: "Please enter both your username & password", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Missing Information", subTitle: "Please enter both your username & password", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
             
@@ -245,18 +245,18 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         }
     }
     
-    func logInViewController(logInController: PFLogInViewController, didLogInUser user: PFUser) {
+    func log(_ logInController: PFLogInViewController, didLogIn user: PFUser) {
         
-        if PFTwitterUtils.isLinkedWithUser(user) {
+        if PFTwitterUtils.isLinked(with: user) {
             
-            let verify = NSURL(string: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&skip_status=true")
-            let request = NSMutableURLRequest(URL: verify!)
-            PFTwitterUtils.twitter()!.signRequest(request)
-            var response: NSURLResponse?
+            let verify = URL(string: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&skip_status=true")
+            let request = NSMutableURLRequest(url: verify!)
+            PFTwitterUtils.twitter()!.sign(request)
+            var response: URLResponse?
             
             do {
                 
-                let data = try NSURLConnection.sendSynchronousRequest(request, returningResponse: &response)
+                let data = try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning: &response)
                 
                 let result = JSON(data: data)
                 
@@ -267,7 +267,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 
                 if let twitterUsername = PFTwitterUtils.twitter()?.screenName {
                     user.username = twitterUsername
-                    user["username_lowercase"] = user.username!.lowercaseString
+                    user["username_lowercase"] = user.username!.lowercased()
                 }
                 
                 if let twitterName = result["name"].string {
@@ -279,7 +279,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 } else {
                     user["full_name"] = PFTwitterUtils.twitter()?.screenName
                 }
-                user["fullname_lowercase"] = user["full_name"].lowercaseString
+                user["fullname_lowercase"] = (user["full_name"] as AnyObject).lowercased
                 
                 if let twitterEmail = result["email"].string {
                     user.email = twitterEmail
@@ -323,13 +323,13 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 user["likeTradeIdea_notification"] = true
                 user["reshareTradeIdea_notification"] = true
                 
-                user.saveInBackgroundWithBlock({ (success, error) in
+                user.saveInBackground(block: { (success, error) in
                     
                     if success {
                         
                         // register current installation
                     
-                        if let currentInstallation = PFInstallation.currentInstallation() {
+                        if let currentInstallation = PFInstallation.current() {
                             currentInstallation["user"] = user
                             currentInstallation.saveInBackground()
                         }
@@ -351,11 +351,11 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         
                     }
                     
-                    self.logInViewController.dismissViewControllerAnimated(true, completion: { () -> Void in
+                    self.logInViewController.dismiss(animated: true, completion: { () -> Void in
                         
-                        self.dismissViewControllerAnimated(true, completion: nil)
+                        self.dismiss(animated: true, completion: nil)
                         
-                        SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.Success)
+                        SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.success)
                     })
                 })
                 
@@ -365,16 +365,16 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 print("Fetch failed: \(error.localizedDescription)")
             }
             
-        } else if PFFacebookUtils.isLinkedWithUser(user) {
+        } else if PFFacebookUtils.isLinked(with: user) {
             
             // Get user email
-            let accessToken = FBSDKAccessToken.currentAccessToken()
+            let accessToken = FBSDKAccessToken.current()
             
             if accessToken != nil {
                 
-                let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,name,about,bio,location,picture.type(large),cover,website,verified"], tokenString: accessToken.tokenString, version: nil, HTTPMethod: "GET")
+                let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,name,about,bio,location,picture.type(large),cover,website,verified"], tokenString: accessToken?.tokenString, version: nil, httpMethod: "GET")
                 
-                req.startWithCompletionHandler({ (connection, object, error) in
+                req?.start(completionHandler: { (connection, object, error) in
                     
                     var firstName: String?
                     var lastName: String?
@@ -390,10 +390,10 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         if let facebookNameFromName = result["name"].string {
                             
                             user.username = facebookNameFromName.stringByReplacingOccurrencesOfString(" ", withString: "")
-                            user["username_lowercase"] = user.username!.lowercaseString
+                            user["username_lowercase"] = user.username!.lowercased()
                             
                             user["full_name"] = facebookNameFromName
-                            user["fullname_lowercase"] = user["full_name"].lowercaseString
+                            user["fullname_lowercase"] = (user["full_name"] as AnyObject).lowercased
                             
                             firstName = facebookNameFromName.componentsSeparatedByString(" ").first
                             lastName = facebookNameFromName.componentsSeparatedByString(" ").last
@@ -401,7 +401,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         } else if let facebookNameFromEmail = result["email"].string {
                             
                             user.username = facebookNameFromEmail.componentsSeparatedByString("@").first?.stringByReplacingOccurrencesOfString(" ", withString: "")
-                            user["username_lowercase"] = user.username!.lowercaseString
+                            user["username_lowercase"] = user.username!.lowercased()
                         }
                         
                         if let facebookEmail = result["email"].string {
@@ -444,11 +444,11 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         user["likeTradeIdea_notification"] = true
                         user["reshareTradeIdea_notification"] = true
                         
-                        user.saveInBackgroundWithBlock({ (success, error) in
+                        user.saveInBackground(block: { (success, error) in
                             
                             if success {
                                 // register current installation
-                                if let currentInstallation = PFInstallation.currentInstallation() {
+                                if let currentInstallation = PFInstallation.current() {
                                     currentInstallation["user"] = user
                                     currentInstallation.saveInBackground()
                                 }
@@ -464,24 +464,24 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                                 
                             }
                             
-                            self.logInViewController.dismissViewControllerAnimated(true, completion: { () -> Void in
+                            self.logInViewController.dismiss(animated: true, completion: { () -> Void in
                                 
-                                self.dismissViewControllerAnimated(true, completion: nil)
+                                self.dismiss(animated: true, completion: nil)
                                 
-                                SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.Success)
+                                SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.success)
                             })
                         })
                         
                     } else {
                         // failure
-                        print("Fetch failed: \(error.localizedDescription)")
+                        print("Fetch failed: \(error?.localizedDescription)")
                     }
                 })
             }
             
         } else {
             
-            SweetAlert().showAlert("Email Verification Required", subTitle: "Please verify your email first using the email sent to you", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Email Verification Required", subTitle: "Please verify your email first using the email sent to you", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
             
@@ -499,38 +499,38 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         //        }
     }
     
-    func logInViewController(logInController: PFLogInViewController, didFailToLogInWithError error: NSError?) {
+    func log(_ logInController: PFLogInViewController, didFailToLogInWithError error: NSError?) {
         
         if !Functions.isConnectedToNetwork() {
             
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
             return
             
-        } else if !ACAccountStore().accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter).accessGranted {
+        } else if !ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter).accessGranted {
             
-            SweetAlert().showAlert("No Authorization", subTitle: "Go to Settings -> Twitter -> Allow These Apps To Use Your Account -> StockSwipe", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: "Settings", otherButtonColor: UIColor.colorFromRGB(0xAEDEF4)) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("No Authorization", subTitle: "Go to Settings -> Twitter -> Allow These Apps To Use Your Account -> StockSwipe", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: "Settings", otherButtonColor: UIColor.colorFromRGB(0xAEDEF4)) { (isOtherButton) -> Void in
                 
                 if !isOtherButton {
                     
-                    UIApplication.sharedApplication().openURL(Constants.settingsURL!)
+                    UIApplication.shared.openURL(Constants.settingsURL!)
                 }
             }
             
-        } else if !ACAccountStore().accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierFacebook).accessGranted {
+        } else if !ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierFacebook).accessGranted {
             
-            SweetAlert().showAlert("No Authorization", subTitle: "Go to Settings -> Facebook -> Allow These Apps To Use Your Account -> StockSwipe", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: "Settings", otherButtonColor: UIColor.colorFromRGB(0xAEDEF4)) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("No Authorization", subTitle: "Go to Settings -> Facebook -> Allow These Apps To Use Your Account -> StockSwipe", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: "Settings", otherButtonColor: UIColor.colorFromRGB(0xAEDEF4)) { (isOtherButton) -> Void in
                 
                 if !isOtherButton {
                     
-                    UIApplication.sharedApplication().openURL(Constants.settingsURL!)
+                    UIApplication.shared.openURL(Constants.settingsURL!)
                 }
             }
             
         } else {
             
-            SweetAlert().showAlert("Logged Failed!", subTitle: error?.localizedDescription, style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Logged Failed!", subTitle: error?.localizedDescription, style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
         }
@@ -594,14 +594,14 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     //        print("User dismissed sign up")
     //    }
     
-    func registerUserMailChimp(listID: String, firstName:String?, lastName:String?, username: String?, email: String?) {
+    func registerUserMailChimp(_ listID: String, firstName:String?, lastName:String?, username: String?, email: String?) {
         
         guard username != nil else { return }
         guard email != nil else { return }
         
-        let params:[NSObject : AnyObject] = ["id": listID, "email": ["email": email!], "merge_vars": ["FNAME": firstName ?? "", "LNAME": lastName ?? "","username": username!], "double_optin": false]
-        ChimpKit.sharedKit().callApiMethod("lists/subscribe", withParams: params, andCompletionHandler: {(response, data, error) -> Void in
-            if let httpResponse = response as? NSHTTPURLResponse {
+        let params:[AnyHashable: Any] = ["id": listID, "email": ["email": email!], "merge_vars": ["FNAME": firstName ?? "", "LNAME": lastName ?? "","username": username!], "double_optin": false]
+        ChimpKit.shared().callApiMethod("lists/subscribe", withParams: params, andCompletionHandler: {(response, data, error) -> Void in
+            if let httpResponse = response as? HTTPURLResponse {
                 print("ChimpKit response:", httpResponse)
             }
         })

@@ -12,9 +12,9 @@ import Foundation
 @IBDesignable
 class TransparentView: UIView {
     
-    override func hitTest(point: CGPoint, withEvent event: UIEvent?) -> UIView? {
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         
-        let hitView: UIView? = super.hitTest(point, withEvent: event)
+        let hitView: UIView? = super.hitTest(point, with: event)
         
         if hitView == self {
             return nil

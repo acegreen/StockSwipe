@@ -24,32 +24,32 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
         case BlockedAccountsCell = "BlockedAccountsCell"
     }
         
-    @IBAction func dismissSettings(sender: UIBarButtonItem)
+    @IBAction func dismissSettings(_ sender: UIBarButtonItem)
     {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
     }
     
     // MARK: - Table view data source
     
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         if let view = view as? UITableViewHeaderFooterView {
             
-            view.textLabel!.textColor = UIColor.grayColor()
+            view.textLabel!.textColor = UIColor.gray
             view.textLabel!.font = Constants.stockSwipeFont
         }
         
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let segueIdentifier = segueIdentifierForSegue(segue)
         

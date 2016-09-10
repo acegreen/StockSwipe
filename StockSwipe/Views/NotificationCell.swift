@@ -18,15 +18,15 @@ class NotificationCell: UITableViewCell {
     @IBOutlet var notificationDesc: SuperUITextView!
     @IBOutlet var notificationTime: UILabel!
     
-    func configureCell(activity: PFObject?) {
+    func configureCell(_ activity: PFObject?) {
         
         guard let activity = activity else { return }
         self.activity = activity
         
-        self.notificationDesc.text = stringForActivityType(activity.objectForKey("activityType") as! String)
-        self.notificationTime.text = activity.createdAt?.formattedAsTimeAgoShort()
+        self.notificationDesc.text = stringForActivityType(activity.object(forKey: "activityType") as! String)
+        self.notificationTime.text = (activity.createdAt as NSDate?)?.formattedAsTimeAgoShort()
         
-        guard let user = activity.objectForKey("fromUser") as? PFUser else { return }
+        guard let user = activity.object(forKey: "fromUser") as? PFUser else { return }
         
         if let fullname = user["full_name"] as? String {
             self.fullname.text = fullname
@@ -37,7 +37,7 @@ class NotificationCell: UITableViewCell {
             self.fullname.text = "John Doe"
         }
         
-        if let avatarURL = user.objectForKey("profile_image_url") as? String {
+        if let avatarURL = user.object(forKey: "profile_image_url") as? String {
             
             QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
                 
@@ -45,7 +45,7 @@ class NotificationCell: UITableViewCell {
                     
                     let avatarData  = try result()
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         self.userAvatar.image = UIImage(data: avatarData)
                     })
                     
@@ -64,7 +64,7 @@ class NotificationCell: UITableViewCell {
 
     }
     
-    func stringForActivityType(activityType: String) -> String? {
+    func stringForActivityType(_ activityType: String) -> String? {
         if (activityType == Constants.ActivityType.Follow.rawValue) {
             return "started following you"
         } else if (activityType == Constants.ActivityType.TradeIdeaNew.rawValue) {
@@ -82,16 +82,16 @@ class NotificationCell: UITableViewCell {
         }
     }
     
-    func handleGestureRecognizer(tapGestureRecognizer: UITapGestureRecognizer) {
+    func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
-        let profileContainerController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileContainerController") as! ProfileContainerController
+        let profileContainerController = Constants.storyboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
         
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == fullname) {
-            profileContainerController.user = User(userObject: self.activity.objectForKey("fromUser") as! PFUser)
+            profileContainerController.user = User(userObject: self.activity.object(forKey: "fromUser") as! PFUser)
         }
         
         profileContainerController.navigationItem.rightBarButtonItem = nil
         
-        UIApplication.topViewController()?.showViewController(profileContainerController, sender: self)
+        UIApplication.topViewController()?.show(profileContainerController, sender: self)
     }
 }

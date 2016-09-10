@@ -16,7 +16,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
     var companyName:String!
     
     var ratingsType: [String] = ["Buy", "Outperform", "Hold", "Underperform", "Sell"]
-    var ratings: [Double] = [Double](count: 5, repeatedValue: 0.0)
+    var ratings: [Double] = [Double](repeating: 0.0, count: 5)
     let ChartreuseWebColor = UIColor(red:0.50, green:1.00, blue:0.00, alpha:1.0)
     
     @IBOutlet var PELabel: UILabel!
@@ -38,12 +38,12 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
     @IBOutlet var companyIndustry: UILabel!
     @IBOutlet var companySummary: UITextView!
 
-    var companyProfileOperationQueue: NSOperationQueue = NSOperationQueue()
+    var companyProfileOperationQueue: OperationQueue = OperationQueue()
     
     @IBOutlet var ratingBarChartView: BarChartView!
     
-    @IBAction func xButtonPressed(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func xButtonPressed(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
@@ -67,20 +67,20 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         
-        if indexPath == NSIndexPath(forRow: 0, inSection: 1) {
+        if indexPath == IndexPath(row: 0, section: 1) {
             
-            if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+            if UIDevice.current.userInterfaceIdiom == .pad {
                 
                 return 300
                 
@@ -89,7 +89,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                 return 400
             }
             
-        } else if indexPath == NSIndexPath(forRow: 1, inSection: 2) {
+        } else if indexPath == IndexPath(row: 1, section: 2) {
             
             return 150
             
@@ -106,7 +106,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
         companyProfileOperationQueue.waitUntilAllOperationsAreFinished()
         
         // Company figures query
-        let companyFiguresOperation = NSBlockOperation { () -> Void in
+        let companyFiguresOperation = BlockOperation { () -> Void in
             
             QueryHelper.sharedInstance.queryYahooSymbolQuote([self.symbol]) { (quoteData, response, error) -> Void in
                 
@@ -119,7 +119,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                     let quoteJsonResults = JSON(data: quoteData!)["query"]["results"]
                     let quoteJsonResultsQuote = quoteJsonResults["quote"]
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         
                         if let PE = quoteJsonResultsQuote["PERatio"].string {
                             
@@ -184,10 +184,10 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                 }
             }
         }
-        companyFiguresOperation.queuePriority = .VeryHigh
+        companyFiguresOperation.queuePriority = .veryHigh
 
         // Company analysts rating query
-        let companyAnalystRatings = NSBlockOperation { () -> Void in
+        let companyAnalystRatings = BlockOperation { () -> Void in
             QueryHelper.sharedInstance.queryYahooCompanyAnalystRating(self.symbol) { (companyAnalystRatingData, response, error) -> Void in
                 
                 if error != nil {
@@ -196,7 +196,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                     
                 } else if companyAnalystRatingData != nil {
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         
                         let companyAnalystRatingJSON = JSON(data: companyAnalystRatingData!)["query"]["results"]
                         
@@ -248,10 +248,10 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                 }
             }
         }
-        companyAnalystRatings.queuePriority = .High
+        companyAnalystRatings.queuePriority = .high
     
         // Company Profile Query
-        let companyProfileQperation = NSBlockOperation { () -> Void in
+        let companyProfileQperation = BlockOperation { () -> Void in
             QueryHelper.sharedInstance.queryYahooCompanyProfile(self.symbol) { (companyProfileData, response, error) -> Void in
                 
                 if error != nil {
@@ -260,7 +260,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                     
                 } else if companyProfileData != nil {
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         
                         let companyProfileJsonResults = JSON(data: companyProfileData!)["query"]["results"]
                         
@@ -280,10 +280,10 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                 }
             }
         }
-        companyProfileQperation.queuePriority = .Normal
+        companyProfileQperation.queuePriority = .normal
             
         // Company Summary Query
-        let companySummaryOperation = NSBlockOperation { () -> Void in
+        let companySummaryOperation = BlockOperation { () -> Void in
             QueryHelper.sharedInstance.queryYahooCompanySummary(self.symbol) { (companySummaryData, response, error) -> Void in
                 
                 if error != nil {
@@ -292,7 +292,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                     
                 } else if companySummaryData != nil {
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         
                         if let companySummaryJsonResults = JSON(data: companySummaryData!)["query"]["results"]["p"][1].string {
                             
@@ -303,14 +303,14 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                 }
             }
         }
-        companySummaryOperation.queuePriority = .Normal
+        companySummaryOperation.queuePriority = .normal
         
         companyProfileOperationQueue.addOperations([companyFiguresOperation, companyAnalystRatings, companyProfileQperation, companySummaryOperation], waitUntilFinished: false)
     }
 
     // MARK: Analysts Rating Bar Chart Stuff
 
-    func setChart(dataPoints: [String], values: [Double]) {
+    func setChart(_ dataPoints: [String], values: [Double]) {
         
         if let _ = values.find ({ $0 > 1 }) {
             
@@ -326,8 +326,8 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
             chartDataSet.valueFont = UIFont(name: "HelveticaNeue", size: 15.0)!
             chartDataSet.valueTextColor = Constants.stockSwipeFontColor
             
-            let numberFormatter = NSNumberFormatter()
-            numberFormatter.numberStyle = .NoStyle
+            let numberFormatter = NumberFormatter()
+            numberFormatter.numberStyle = .none
             chartDataSet.valueFormatter = numberFormatter
             
             //        ratingBarChartView.noDataText = "Loading Analysts Data"
@@ -357,14 +357,14 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
         }
     }
     
-    func setOverallAnalystRating(input: Double) {
+    func setOverallAnalystRating(_ input: Double) {
         
         switch input {
             
         case input where input >= 1.0 && input <= 1.5:
             
             overallRating.text = "Buy"
-            overallRating.textColor = UIColor.greenColor()
+            overallRating.textColor = UIColor.green
             
         case input where input > 1.5 && input <= 2.5:
             
@@ -374,17 +374,17 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
         case input where input > 2.5 && input <= 3.5:
             
             overallRating.text = "Hold"
-            overallRating.textColor = UIColor.yellowColor()
+            overallRating.textColor = UIColor.yellow
             
         case input where input > 3.5 && input <= 4.5:
             
             overallRating.text = "Underperform"
-            overallRating.textColor = UIColor.orangeColor()
+            overallRating.textColor = UIColor.orange
             
         case input where input > 4.5 && input <= 5.0:
             
             overallRating.text = "Sell"
-            overallRating.textColor = UIColor.redColor()
+            overallRating.textColor = UIColor.red
             
         default:
             

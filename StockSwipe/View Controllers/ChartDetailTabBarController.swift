@@ -25,13 +25,13 @@ class ChartDetailTabBarController: UITabBarController {
     }
     
     // Will be set below
-    private(set) var symbol: String! {
+    fileprivate(set) var symbol: String! {
         didSet {
-            if symbol != symbol.uppercaseString {
-                symbol = symbol.uppercaseString
+            if symbol != symbol.uppercased() {
+                symbol = symbol.uppercased()
             }
         }
     }
     
-    private(set) var companyName: String!
+    fileprivate(set) var companyName: String!
 }

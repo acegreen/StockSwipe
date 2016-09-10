@@ -10,15 +10,15 @@ import UIKit
 
 class CloudInfoPopoverViewController: UIViewController {
 
-    @IBAction func xButtonPressed(sender: AnyObject) {
+    @IBAction func xButtonPressed(_ sender: AnyObject) {
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if UIDevice.currentDevice().userInterfaceIdiom == .Pad {
+        if UIDevice.current.userInterfaceIdiom == .pad {
             
             self.navigationController?.setNavigationBarHidden(true, animated: false)
         }

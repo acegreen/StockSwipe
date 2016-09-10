@@ -37,7 +37,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         updateProfile()
@@ -45,15 +45,15 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     
     func updateProfile() {
         
-        guard PFUser.currentUser() != nil else {
+        guard PFUser.current() != nil else {
             self.profileAvatarImage.image = UIImage(assetIdentifier: .UserDummyImage)
             self.profileLabel.text = "My Profile"
             return
         }
         
-        guard let currentUser = PFUser.currentUser() where currentUser.authenticated else { return }
+        guard let currentUser = PFUser.current() , currentUser.isAuthenticated else { return }
         
-        if let profileImageURL = currentUser.objectForKey("profile_image_url") as? String {
+        if let profileImageURL = currentUser.object(forKey: "profile_image_url") as? String {
             
             QueryHelper.sharedInstance.queryWith(profileImageURL, completionHandler: { (result) in
                 
@@ -61,11 +61,11 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                     
                     let imageData = try result()
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         let profileImage = UIImage(data: imageData)
                         self.profileAvatarImage.image = profileImage
                         
-                        if let fullName = currentUser.objectForKey("full_name") as? String {
+                        if let fullName = currentUser.object(forKey: "full_name") as? String {
                             self.profileLabel.text = fullName
                         }
                     })
@@ -80,12 +80,12 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     
     func presentFacebookInvite() {
         let content = FBSDKAppInviteContent()
-        content.appLinkURL = Constants.facebookAppLink
+        content.appLinkURL = Constants.facebookAppLink as URL!
         //optionally set previewImageURL
         //content.appInvitePreviewImageURL = NSURL(string: "https://www.mydomain.com/my_invite_image.jpg")!
         // Present the dialog. Assumes self is a view controller
         // which implements the protocol `FBSDKAppInviteDialogDelegate`.
-        FBSDKAppInviteDialog.showFromViewController(self, withContent: content, delegate: self)
+        FBSDKAppInviteDialog.show(from: self, with: content, delegate: self)
     }
     
     func didLoginSuccessfully() {
@@ -98,17 +98,17 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     
     // MARK: - Table view data source
     
-    override func tableView(tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         if let view = view as? UITableViewHeaderFooterView {
             
-            view.textLabel!.textColor = UIColor.grayColor()
+            view.textLabel!.textColor = UIColor.gray
             view.textLabel!.font = Constants.stockSwipeFont
         }
         
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let reuseIdentifier = reuseIdentifierForCell(tableView, indexPath: indexPath)
         
@@ -123,7 +123,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         case .FAQCell:
             
             guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
+                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
                 return
             }
             
@@ -132,12 +132,12 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         case .TutorialCell:
             
             let logInViewcontroller = LoginViewController.sharedInstance
-            self.showViewController(logInViewcontroller, sender: self)
+            self.show(logInViewcontroller, sender: self)
             
         case .WriteReviewCell:
             
             guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
+                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
                 return
             }
             
@@ -146,7 +146,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         case .GiveFeedbackCell:
             
             guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
+                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
                 return
             }
             
@@ -159,18 +159,18 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                 mc.setMessageBody(Constants.messageBody, isHTML: true)
                 mc.setToRecipients(Constants.toReceipients)
                 
-                self.presentViewController(mc, animated: true, completion: nil)
+                self.present(mc, animated: true, completion: nil)
                 
             } else {
                 
-                SweetAlert().showAlert("No email account found", subTitle: "Please add an email acount in your mail app", style: AlertStyle.Warning)
+                SweetAlert().showAlert("No email account found", subTitle: "Please add an email acount in your mail app", style: AlertStyle.warning)
                 
             }
             
         case .InviteFacebookCell:
             
             guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
+                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
                 return
             }
             
@@ -179,7 +179,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         case .ShareCell:
             
             guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.Warning)
+                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
                 return
             }
             
@@ -188,56 +188,56 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             let objectsToShare: NSArray = [textToShare, Constants.appLinkURL!]
             
             let excludedActivityTypesArray: NSArray = [
-                UIActivityTypePostToWeibo,
-                UIActivityTypeAddToReadingList,
-                UIActivityTypeAssignToContact,
-                UIActivityTypePrint,
-                UIActivityTypeSaveToCameraRoll,
-                UIActivityTypeAssignToContact,
-                UIActivityTypeAirDrop,
+                UIActivityType.postToWeibo,
+                UIActivityType.addToReadingList,
+                UIActivityType.assignToContact,
+                UIActivityType.print,
+                UIActivityType.saveToCameraRoll,
+                UIActivityType.assignToContact,
+                UIActivityType.airDrop,
             ]
             
             let activityVC = UIActivityViewController(activityItems: objectsToShare as [AnyObject], applicationActivities: nil)
-            activityVC.excludedActivityTypes = excludedActivityTypesArray as? [String]
+            activityVC.excludedActivityTypes = excludedActivityTypesArray as? [String] as! [UIActivityType]?
             
-            activityVC.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.Unknown
+            activityVC.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.unknown
             
             activityVC.popoverPresentationController?.sourceView = self.view
-            activityVC.popoverPresentationController?.sourceRect = CGRectMake(self.view.bounds.width / 2, self.view.bounds.height / 2,0,0)
+            activityVC.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2,width: 0,height: 0)
             
-            self.presentViewController(activityVC, animated: true, completion: nil)
+            self.present(activityVC, animated: true, completion: nil)
             
             activityVC.completionWithItemsHandler = { (activity, success, items, error) in
                 print("Activity: \(activity) Success: \(success) Items: \(items) Error: \(error)")
                 
                 if success {
                     
-                    SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.Success)
+                    SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
                     
                     // log shared successfully
-                    Answers.logShareWithMethod("\(activity!)",
+                    Answers.logShare(withMethod: "\(activity!)",
                         contentName: "StockSwipe Shared",
                         contentType: "Share",
                         contentId: nil,
-                        customAttributes: ["User": PFUser.currentUser()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                        customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
                     
                 } else if error != nil {
                     
-                    SweetAlert().showAlert("Error!", subTitle: "That didn't go through", style: AlertStyle.Error)
+                    SweetAlert().showAlert("Error!", subTitle: "That didn't go through", style: AlertStyle.error)
                 }
             }
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let segueIdentifier = segueIdentifierForSegue(segue)
         
         switch segueIdentifier {
         case .ProfileSegueIdentifier:
             
-            if let currentUser = PFUser.currentUser() {
-                let profileViewController = segue.destinationViewController as! ProfileContainerController
+            if let currentUser = PFUser.current() {
+                let profileViewController = segue.destination as! ProfileContainerController
                 profileViewController.user = User(userObject: currentUser)
                 
                 // Just a workaround.. There should be a cleaner way to sort this out
@@ -251,23 +251,23 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     
     // MARK: - Email Delegate
     
-    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
         
         switch result.rawValue {
             
-        case MFMailComposeResultCancelled.rawValue:
+        case MFMailComposeResult.cancelled.rawValue:
             
             print("Mail Cancelled")
             
-        case MFMailComposeResultSaved.rawValue:
+        case MFMailComposeResult.saved.rawValue:
             
             print("Mail Saved")
             
-        case MFMailComposeResultSent.rawValue:
+        case MFMailComposeResult.sent.rawValue:
             
             print("Mail Sent")
             
-        case MFMailComposeResultFailed.rawValue:
+        case MFMailComposeResult.failed.rawValue:
             
             print("Mail Failed")
             
@@ -277,25 +277,25 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             
         }
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         
     }
 }
 
 extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
     //MARK: FBSDKAppInviteDialogDelegate
-    func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [NSObject : AnyObject]!) {
+    func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [AnyHashable: Any]!) {
         print("invitation made")
         
         // log shared successfully
-        Answers.logShareWithMethod("\("Facebook Invite")",
+        Answers.logShare(withMethod: "\("Facebook Invite")",
                                    contentName: "Facebook Invite Friends",
                                    contentType: "Share",
                                    contentId: nil,
-                                   customAttributes: ["User": PFUser.currentUser()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                                   customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
         
     }
-    func appInviteDialog(appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: NSError!) {
+    func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: NSError!) {
         print("error made")
     }
 }

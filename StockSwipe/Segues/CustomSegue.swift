@@ -12,23 +12,23 @@ class CustomSegue: UIStoryboardSegue {
     
     override func perform() {
         
-        let sourceViewController: CardsViewController = self.sourceViewController as! CardsViewController
+        let sourceViewController: CardsViewController = self.source as! CardsViewController
         
         let frontView = sourceViewController.firstCardView
         
-        let destinationViewController: WebViewController = self.destinationViewController as! WebViewController
+        let destinationViewController: WebViewController = self.destination as! WebViewController
         
-        let scaleX = sourceViewController.view.frame.width / frontView.frame.width
+        let scaleX = sourceViewController.view.frame.width / (frontView?.frame.width)!
         
-        let scaleY = sourceViewController.view.frame.height / frontView.frame.height
+        let scaleY = sourceViewController.view.frame.height / (frontView?.frame.height)!
         
-        UIView.animateWithDuration(0.5, delay: 0.0, options: UIViewAnimationOptions.CurveEaseInOut, animations: { () -> Void in
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
             
-                frontView.transform = CGAffineTransformMakeScale(scaleX, scaleY)
+                frontView?.transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
             
             }) { (finished) -> Void in
                 
-                sourceViewController.presentViewController(destinationViewController as WebViewController, animated: false, completion: nil)
+                sourceViewController.present(destinationViewController as WebViewController, animated: false, completion: nil)
         }
     }
 }

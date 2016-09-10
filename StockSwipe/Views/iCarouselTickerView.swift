@@ -22,10 +22,10 @@ class iCarouselTickerView: UIView {
     let topPadding:CGFloat = 10.0
     
     let mainViewFont = UIFont(name: "HelveticaNeue", size: 18)
-    let mainViewFontColor: UIColor = UIColor.whiteColor()
+    let mainViewFontColor: UIColor = UIColor.white
     
     let priceViewFont = UIFont(name: "HelveticaNeue", size: 15)
-    let priceViewFontColor: UIColor = UIColor.whiteColor()
+    let priceViewFontColor: UIColor = UIColor.white
     
     override init(frame: CGRect) {
         
@@ -42,10 +42,10 @@ class iCarouselTickerView: UIView {
     
     func constructViews() -> Void {
         
-        let nameViewFrame:CGRect = CGRectMake(0, topPadding, CGRectGetWidth(self.bounds), viewHeight);
+        let nameViewFrame:CGRect = CGRect(x: 0, y: topPadding, width: self.bounds.width, height: viewHeight);
         self.nameLabel = UILabel(frame:nameViewFrame)
-        self.nameLabel.backgroundColor = UIColor.clearColor()
-        self.nameLabel.textAlignment = .Center
+        self.nameLabel.backgroundColor = UIColor.clear
+        self.nameLabel.textAlignment = .center
         self.nameLabel.font = mainViewFont
         self.nameLabel.text = "PlaceHolder"
         self.nameLabel.textColor = mainViewFontColor
@@ -53,15 +53,15 @@ class iCarouselTickerView: UIView {
         self.nameLabel.numberOfLines = 1
         self.nameLabel.adjustsFontSizeToFitWidth = true
         
-        if !nameLabel.isDescendantOfView(self) {
+        if !nameLabel.isDescendant(of: self) {
             
             self.addSubview(self.nameLabel)
         }
         
-        let priceViewFrame:CGRect = CGRectMake(0, self.nameLabel.frame.height + topPadding, CGRectGetWidth(self.bounds) * 0.40, viewHeight);
+        let priceViewFrame:CGRect = CGRect(x: 0, y: self.nameLabel.frame.height + topPadding, width: self.bounds.width * 0.40, height: viewHeight);
         self.priceLabel = UILabel(frame:priceViewFrame)
-        self.priceLabel.backgroundColor = UIColor.clearColor()
-        self.priceLabel.textAlignment = .Center
+        self.priceLabel.backgroundColor = UIColor.clear
+        self.priceLabel.textAlignment = .center
         self.priceLabel.font = priceViewFont
         self.priceLabel.text = "0.0"
         self.priceLabel.textColor = priceViewFontColor
@@ -69,15 +69,15 @@ class iCarouselTickerView: UIView {
         self.priceLabel.numberOfLines = 1
         self.priceLabel.adjustsFontSizeToFitWidth = true
         
-        if !priceLabel.isDescendantOfView(self) {
+        if !priceLabel.isDescendant(of: self) {
             
             self.addSubview(self.priceLabel)
         }
         
-        let priceChangeViewFrame:CGRect = CGRectMake(self.priceLabel.frame.width, self.nameLabel.frame.height + topPadding, CGRectGetWidth(self.bounds) * 0.60, viewHeight);
+        let priceChangeViewFrame:CGRect = CGRect(x: self.priceLabel.frame.width, y: self.nameLabel.frame.height + topPadding, width: self.bounds.width * 0.60, height: viewHeight);
         self.priceChangeLabel = UILabel(frame:priceChangeViewFrame)
-        self.priceChangeLabel.backgroundColor = UIColor.clearColor()
-        self.priceChangeLabel.textAlignment = .Center
+        self.priceChangeLabel.backgroundColor = UIColor.clear
+        self.priceChangeLabel.textAlignment = .center
         self.priceChangeLabel.font = priceViewFont
         self.priceChangeLabel.text = "+0.0 (0.0%)"
         self.priceChangeLabel.textColor = priceViewFontColor
@@ -85,7 +85,7 @@ class iCarouselTickerView: UIView {
         self.priceChangeLabel.numberOfLines = 1
         self.priceChangeLabel.adjustsFontSizeToFitWidth = true
         
-        if !priceChangeLabel.isDescendantOfView(self) {
+        if !priceChangeLabel.isDescendant(of: self) {
             
             self.addSubview(self.priceChangeLabel)
         }

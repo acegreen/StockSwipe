@@ -44,18 +44,18 @@ class BorderedLabel: UILabel {
         
     }
     
-    func constructLabel(text: NSString, color: UIColor, angle: Double) {
+    func constructLabel(_ text: NSString, color: UIColor, angle: Double) {
         
-        self.layer.borderColor = color.CGColor
+        self.layer.borderColor = color.cgColor
         self.layer.borderWidth = 3.0
         self.layer.cornerRadius = 7.5
     
-        self.text = text.uppercaseString
-        self.textAlignment = NSTextAlignment.Center
+        self.text = text.uppercased
+        self.textAlignment = NSTextAlignment.center
         self.font = UIFont (name: "HelveticaNeue-CondensedBlack", size: 25.0)
         self.textColor = color
         
-        self.transform = CGAffineTransformRotate(CGAffineTransformIdentity, CGFloat(Functions.degreesToRadians(angle)))
+        self.transform = CGAffineTransform.identity.rotated(by: CGFloat(Functions.degreesToRadians(angle)))
         
     }
 }

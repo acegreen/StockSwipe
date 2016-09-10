@@ -12,25 +12,25 @@ import UIKit
 class BlockButton: UIButton {
     
     enum state {
-        case Blocked
-        case Unblocked
+        case blocked
+        case unblocked
         
-        static let allStates = [Blocked, Unblocked]
+        static let allStates = [blocked, unblocked]
     }
     
-    var buttonState = state.Unblocked {
+    var buttonState = state.unblocked {
         didSet {
             switch buttonState {
-            case .Blocked:
-                backgroundColor = UIColor.redColor()
-                borderColor = UIColor.whiteColor()
-                tintColor = UIColor.whiteColor()
-                setImage(UIImage(named: "user_blocked"), forState: .Normal)
-            case .Unblocked:
-                backgroundColor = UIColor.whiteColor()
+            case .blocked:
+                backgroundColor = UIColor.red
+                borderColor = UIColor.white
+                tintColor = UIColor.white
+                setImage(UIImage(named: "user_blocked"), for: UIControlState())
+            case .unblocked:
+                backgroundColor = UIColor.white
                 borderColor = Constants.stockSwipeFontColor
                 tintColor = Constants.stockSwipeFontColor
-                setImage(UIImage(named: "user_blocked"), forState: .Normal)
+                setImage(UIImage(named: "user_blocked"), for: UIControlState())
             }
         }
     }

@@ -22,65 +22,65 @@ var nsUserActivityArray = [NSUserActivity]()
 
 let motionOffset: CGFloat = 20
 
-public class Constants {
+open class Constants {
     
-    public static var window: UIWindow? {
+    open static var window: UIWindow? {
         get {
-            return UIApplication.sharedApplication().keyWindow
+            return UIApplication.shared.keyWindow
         }
     }
     
-    public static let current = UIDevice.currentDevice()
-    public static let bundleIdentifier = NSBundle.mainBundle().bundleIdentifier
-    public static let infoDict = NSBundle.mainBundle().infoDictionary
-    public static let AppVersion = infoDict!["CFBundleShortVersionString"]!
-    public static let BundleVersion = infoDict!["CFBundleVersion"]!
+    open static let current = UIDevice.current
+    open static let bundleIdentifier = Bundle.main.bundleIdentifier
+    open static let infoDict = Bundle.main.infoDictionary
+    open static let AppVersion = infoDict!["CFBundleShortVersionString"]!
+    open static let BundleVersion = infoDict!["CFBundleVersion"]!
     
-    public static let userDefaults: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    open static let userDefaults: UserDefaults = UserDefaults.standard
     
-    public static let payloadShort = "Version: \(AppVersion) (\(BundleVersion)) \n Copyright © 2015"
-    public static let payload = [ "BundleID" : infoDict!["CFBundleIdentifier"]!,
+    open static let payloadShort = "Version: \(AppVersion) (\(BundleVersion)) \n Copyright © 2015"
+    open static let payload = [ "BundleID" : infoDict!["CFBundleIdentifier"]!,
         "AppVersion" : AppVersion,
         "BundleVersion" : BundleVersion,
         "DeviceModel" : current.model,
         "SystemName" : current.systemName,
         "SystemVersion" : current.systemVersion ]
     
-    public static let appLink: String = "https://itunes.apple.com/us/app/stockswipe-probably-funnest/id1009599685?ls=1&mt=8"
-    public static let appLinkURL = NSURL(string: appLink)
-    public static let facebookAppLink = NSURL(string: "https://fb.me/1156458804442388")
-    public static let appURL = NSURL(string: "itms-apps://itunes.apple.com/app/id1009599685")
-    public static let appReviewURL = NSURL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1009599685")
-    public static let settingsURL = NSURL(string: UIApplicationOpenSettingsURLString)
+    open static let appLink: String = "https://itunes.apple.com/us/app/stockswipe-probably-funnest/id1009599685?ls=1&mt=8"
+    open static let appLinkURL = URL(string: appLink)
+    open static let facebookAppLink = URL(string: "https://fb.me/1156458804442388")
+    open static let appURL = URL(string: "itms-apps://itunes.apple.com/app/id1009599685")
+    open static let appReviewURL = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1009599685")
+    open static let settingsURL = URL(string: UIApplicationOpenSettingsURLString)
     
-    public static let appEmail: String = "StockSwipe@gmail.com"
-    public static let emailTitle = "StockSwipe Feedback/Bug"
-    public static let messageBody = "Hello StockSwipe Team, </br> </br> </br> </br> </br> - - - - - - - - - - - - - - - - - - - - - </br>" + emailDiagnosticInfo
-    public static let toReceipients = [appEmail]
-    public static let emailDiagnosticInfo = Array(payload.keys).reduce("", combine: { (input, key) -> String in
+    open static let appEmail: String = "StockSwipe@gmail.com"
+    open static let emailTitle = "StockSwipe Feedback/Bug"
+    open static let messageBody = "Hello StockSwipe Team, </br> </br> </br> </br> </br> - - - - - - - - - - - - - - - - - - - - - </br>" + emailDiagnosticInfo
+    open static let toReceipients = [appEmail]
+    open static let emailDiagnosticInfo = Array(payload.keys).reduce("", { (input, key) -> String in
         return "\(input)\r\n\(key): \(payload[key]!)</br>"
     })
     
-    public static let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    public static let app = UIApplication.sharedApplication()
+    open static let storyboard = UIStoryboard(name: "Main", bundle: nil)
+    open static let app = UIApplication.shared
     static let appDel:AppDelegate = app.delegate as! AppDelegate
-    public static let context: NSManagedObjectContext = appDel.managedObjectContext
-    public static let entity = NSEntityDescription.entityForName("Charts", inManagedObjectContext: context)
-    public static let fetchRequest = NSFetchRequest(entityName: "Charts")
+    open static let context: NSManagedObjectContext = appDel.managedObjectContext
+    open static let entity = NSEntityDescription.entity(forEntityName: "Charts", in: context)
+    open static let fetchRequest = NSFetchRequest(entityName: "Charts")
     
-    public static let stockSwipeFont: UIFont? = UIFont(name: "HelveticaNeue", size: 20)
-    public static let stockSwipeFontColor: UIColor = UIColor(red: 111/255, green: 113/255, blue: 121/255, alpha: 1.0)
-    public static let stockSwipeGreenColor: UIColor = UIColor(red: 25/255, green: 200/255, blue: 25/255, alpha: 1.0)
-    public static let stockSwipeGoldColor: UIColor = UIColor(red: 245, green: 192, blue: 24)
-    public static let okAlertAction = UIAlertAction(title: "Ok", style: .Default, handler:{ (ACTION :UIAlertAction!)in })
+    open static let stockSwipeFont: UIFont? = UIFont(name: "HelveticaNeue", size: 20)
+    open static let stockSwipeFontColor: UIColor = UIColor(red: 111/255, green: 113/255, blue: 121/255, alpha: 1.0)
+    open static let stockSwipeGreenColor: UIColor = UIColor(red: 25/255, green: 200/255, blue: 25/255, alpha: 1.0)
+    open static let stockSwipeGoldColor: UIColor = UIColor(red: 245, green: 192, blue: 24)
+    open static let okAlertAction = UIAlertAction(title: "Ok", style: .default, handler:{ (ACTION :UIAlertAction!)in })
     
-    public static let settingsAlertAction: UIAlertAction = UIAlertAction(title: "Settings", style: .Default, handler: { (action: UIAlertAction!) in
-        UIApplication.sharedApplication().openURL(settingsURL!)
+    open static let settingsAlertAction: UIAlertAction = UIAlertAction(title: "Settings", style: .default, handler: { (action: UIAlertAction!) in
+        UIApplication.shared.openURL(settingsURL!)
     })
     
-    public static let cancelAlertAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .Cancel, handler:{ (ACTION :UIAlertAction!) in })
+    open static let cancelAlertAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel, handler:{ (ACTION :UIAlertAction!) in })
     
-    public static let countryCode = NSLocale.currentLocale().objectForKey(NSLocaleCountryCode) as! String
+    open static let countryCode = (Locale.current as NSLocale).object(forKey: NSLocale.Key.countryCode) as! String
     
     public enum APIKeys: String {
         case Parse
@@ -122,52 +122,52 @@ public class Constants {
         static let allAPIKeys = [Parse, TwitterKit, LaunchKit, Rollout, ChimpKit, TradeItDev, TradeItProd]
     }
     
-    public enum Errors: ErrorType {
-        case NoInternetConnection
-        case NoExchangesOrSectorsSelected
-        case RanOutOfChartCards
-        case ErrorAccessingParseDatabase
-        case ErrorAccessingServer
-        case ErrorQueryingForData
-        case QueryDataEmpty
-        case ErrorParsingData
-        case ParseUserObjectNotFound
-        case ParseStockObjectNotFound
-        case ParseTradeIdeaObjectNotFound
-        case ChartImageCorrupt
-        case URLEmpty
+    public enum Errors: Error {
+        case noInternetConnection
+        case noExchangesOrSectorsSelected
+        case ranOutOfChartCards
+        case errorAccessingParseDatabase
+        case errorAccessingServer
+        case errorQueryingForData
+        case queryDataEmpty
+        case errorParsingData
+        case parseUserObjectNotFound
+        case parseStockObjectNotFound
+        case parseTradeIdeaObjectNotFound
+        case chartImageCorrupt
+        case urlEmpty
         
         public func message() -> String {
             switch self {
-            case .NoInternetConnection:
+            case .noInternetConnection:
                 return "No internet connection!\nMake sure your device is connected"
-            case .NoExchangesOrSectorsSelected:
+            case .noExchangesOrSectorsSelected:
                 return "No Filters?\nYou must have at least one exchange and one sector selected"
-            case .RanOutOfChartCards:
+            case .ranOutOfChartCards:
                 return "Temporarily out of Stock \n Check back soon!"
-            case .ErrorAccessingParseDatabase:
+            case .errorAccessingParseDatabase:
                 return  "There was an error while accessing the database"
-            case .ErrorAccessingServer:
+            case .errorAccessingServer:
                 return  "There was an error while accessing the server"
-            case .ErrorQueryingForData:
+            case .errorQueryingForData:
                 return  "Oops! We ran into an issue querying for data"
-            case .QueryDataEmpty:
+            case .queryDataEmpty:
                 return "Oops! We ran into an issue querying for data"
-            case .ErrorParsingData:
+            case .errorParsingData:
                 return "Oops! We ran into an issue querying for data"
-            case .ParseUserObjectNotFound:
+            case .parseUserObjectNotFound:
                 return "We could not find this user in our database"
-            case .ParseStockObjectNotFound:
+            case .parseStockObjectNotFound:
                 return "We could not find this symbol in our database"
-            case .ParseTradeIdeaObjectNotFound:
+            case .parseTradeIdeaObjectNotFound:
                 return "We could not find this trade idea in our database"
-            case .ChartImageCorrupt:
+            case .chartImageCorrupt:
                 return "Oops! We ran into an issue querying for data"
-            case .URLEmpty:
+            case .urlEmpty:
                 return "Oops! We ran into an issue querying for data"
             }
         }
-        static let allErrors = [NoInternetConnection, NoExchangesOrSectorsSelected, RanOutOfChartCards, ErrorAccessingParseDatabase, ErrorAccessingServer, ErrorQueryingForData, QueryDataEmpty, ErrorParsingData, ParseUserObjectNotFound,ParseStockObjectNotFound,ParseTradeIdeaObjectNotFound, ChartImageCorrupt, URLEmpty]
+        static let allErrors = [noInternetConnection, noExchangesOrSectorsSelected, ranOutOfChartCards, errorAccessingParseDatabase, errorAccessingServer, errorQueryingForData, queryDataEmpty, errorParsingData, parseUserObjectNotFound,parseStockObjectNotFound,parseTradeIdeaObjectNotFound, chartImageCorrupt, urlEmpty]
     }
     
     public enum UserChoices: String {
@@ -189,9 +189,9 @@ public class Constants {
     }
     
     enum TradeIdeaType {
-        case New
-        case Reply
-        case Reshare
+        case new
+        case reply
+        case reshare
     }
     
     enum PushType: String {
@@ -200,8 +200,8 @@ public class Constants {
     }
     
     enum TimeFormat {
-        case Short
-        case Long
+        case short
+        case long
     }
     
     public struct Symbol {
@@ -212,7 +212,7 @@ public class Constants {
             public func key() -> String {
                 switch self {
                 default:
-                    return String(self)
+                    return String(describing: self)
                 }
             }
             
@@ -284,27 +284,27 @@ public class Constants {
         static let upperMisc = "(?:" + upper + "|" + misc + ")"
         static let optMod = modifier + "?"
         static let optVar = "[" + varRange + "]"
-        static let optJoin = "(?:" + ZWJ + "(?:" + [nonAstral, regional, surrPair].joinWithSeparator("|") + ")" + optVar + optMod + ")*"
+        static let optJoin = "(?:" + ZWJ + "(?:" + [nonAstral, regional, surrPair].joined(separator: "|") + ")" + optVar + optMod + ")*"
         static let seq = optVar + optMod + optJoin
-        static let emoji = "(?:" + [dingbat, regional, surrPair].joinWithSeparator("|") + ")" + seq
-        static let symbol = "(?:" + [nonAstral + combo + "?", combo, regional, surrPair, astral].joinWithSeparator("|") + ")"
+        static let emoji = "(?:" + [dingbat, regional, surrPair].joined(separator: "|") + ")" + seq
+        static let symbol = "(?:" + [nonAstral + combo + "?", combo, regional, surrPair, astral].joined(separator: "|") + ")"
         
         /// Match non-compound words composed of alphanumeric characters
         static let basicWord = "[a-zA-Z0-9]+"
         
         /// Match complex or compound words
         static let complexWord = [
-            upper + "?" + lower + "+(?=" + [breakGroup, upper, "$"].joinWithSeparator("|") + ")",
-            upperMisc + "+(?=" + [breakGroup, upper + lowerMisc, "$"].joinWithSeparator("|") + ")",
+            upper + "?" + lower + "+(?=" + [breakGroup, upper, "$"].joined(separator: "|") + ")",
+            upperMisc + "+(?=" + [breakGroup, upper + lowerMisc, "$"].joined(separator: "|") + ")",
             upper + "?" + lowerMisc + "+",
             digits + "(?:" + lowerMisc + "+)?",
             emoji
-            ].joinWithSeparator("|")
+            ].joined(separator: "|")
         
         /// Detect strings that need a more robust regexp to match words
         static let hasComplexWord = "[a-z][A-Z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]"
     }
     
-    public static let informationViewHeight:CGFloat = 50
-    public static let chartImageTopPadding:CGFloat = 10.0
+    open static let informationViewHeight:CGFloat = 50
+    open static let chartImageTopPadding:CGFloat = 10.0
 }

@@ -43,24 +43,24 @@ class SwipeChartView: MDCSwipeToChooseView {
         
         super.init(frame: frame, options: options)
         
-        self.backgroundColor = UIColor.whiteColor()
+        self.backgroundColor = UIColor.white
         self.chart = chart
         
-        self.imageView = UIImageView(frame: CGRectMake(0, Constants.chartImageTopPadding, CGRectGetWidth(self.bounds), CGRectGetHeight(self.bounds) - Constants.informationViewHeight - Constants.chartImageTopPadding))
+        self.imageView = UIImageView(frame: CGRect(x: 0, y: Constants.chartImageTopPadding, width: self.bounds.width, height: self.bounds.height - Constants.informationViewHeight - Constants.chartImageTopPadding))
         self.imageView.image = chart.image
         
-        if !imageView .isDescendantOfView(self) {
+        if !imageView .isDescendant(of: self) {
             
             self.addSubview(imageView)
-            self.sendSubviewToBack(imageView)
+            self.sendSubview(toBack: imageView)
             
         }
         
-        self.autoresizingMask = [UIViewAutoresizing.FlexibleHeight, UIViewAutoresizing.FlexibleWidth]
+        self.autoresizingMask = [UIViewAutoresizing.flexibleHeight, UIViewAutoresizing.flexibleWidth]
         self.imageView.autoresizingMask = self.autoresizingMask
         self.imageView.layer.masksToBounds = true
         
-        self.addCenterMotionEffectsXYWithOffset(motionOffset)
+        self.addCenterMotionEffectsXY(withOffset: motionOffset)
         
         constructInformationView()
         //constructNameLabel()
@@ -75,13 +75,13 @@ class SwipeChartView: MDCSwipeToChooseView {
     
     func constructInformationView() -> Void {
         
-        let informationViewFrame:CGRect = CGRectMake(0, CGRectGetHeight(self.imageView.bounds) + Constants.chartImageTopPadding, CGRectGetWidth(self.bounds), Constants.informationViewHeight);
+        let informationViewFrame:CGRect = CGRect(x: 0, y: self.imageView.bounds.height + Constants.chartImageTopPadding, width: self.bounds.width, height: Constants.informationViewHeight);
         self.informationView = UIView(frame:informationViewFrame)
-        self.informationView.backgroundColor = UIColor.whiteColor()
+        self.informationView.backgroundColor = UIColor.white
         self.informationView.clipsToBounds = true
         self.informationView.autoresizingMask = self.autoresizingMask
         
-        if !informationView .isDescendantOfView(self) {
+        if !informationView .isDescendant(of: self) {
             
             self.addSubview(self.informationView)
         }
@@ -105,11 +105,11 @@ class SwipeChartView: MDCSwipeToChooseView {
     func constructLongImageLabelView() -> Void {
         
         let image: UIImage = UIImage(named: "long")!
-        self.likedImageLabelView = self.buildImageLabelViewLeftOf(CGRectGetWidth(self.informationView.bounds) - rightPadding, image: image, text: chart.longCount.suffixNumber() ?? String(0))
-        likedImageLabelView.imageView.image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        likedImageLabelView.imageView.tintColor = UIColor.blackColor()
+        self.likedImageLabelView = self.buildImageLabelViewLeftOf(self.informationView.bounds.width - rightPadding, image: image, text: chart.longCount.suffixNumber() ?? String(0))
+        likedImageLabelView.imageView.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        likedImageLabelView.imageView.tintColor = UIColor.black
         
-        if !likedImageLabelView.isDescendantOfView(self) {
+        if !likedImageLabelView.isDescendant(of: self) {
             
             self.informationView.addSubview(self.likedImageLabelView)
         }
@@ -117,26 +117,26 @@ class SwipeChartView: MDCSwipeToChooseView {
     
     func constructShortImageLabelView() -> Void {
         
-        guard likedImageLabelView.isDescendantOfView(self) else { return }
+        guard likedImageLabelView.isDescendant(of: self) else { return }
         
         let image:UIImage = UIImage(named:"short")!
-        self.nopeImageLabelView = buildImageLabelViewLeftOf(CGRectGetMinX(self.likedImageLabelView.frame), image:image, text: chart.shortCount.suffixNumber() ?? String(0))
-        nopeImageLabelView.imageView.image?.imageWithRenderingMode(UIImageRenderingMode.AlwaysTemplate)
-        nopeImageLabelView.imageView.tintColor = UIColor.blackColor()
+        self.nopeImageLabelView = buildImageLabelViewLeftOf(self.likedImageLabelView.frame.minX, image:image, text: chart.shortCount.suffixNumber() ?? String(0))
+        nopeImageLabelView.imageView.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        nopeImageLabelView.imageView.tintColor = UIColor.black
         
-        if !nopeImageLabelView .isDescendantOfView(self) {
+        if !nopeImageLabelView .isDescendant(of: self) {
             
             self.informationView.addSubview(self.nopeImageLabelView)
         }
     }
     
-    func buildImageLabelViewLeftOf(x:CGFloat, image:UIImage, text:String) -> ImagelabelView {
+    func buildImageLabelViewLeftOf(_ x:CGFloat, image:UIImage, text:String) -> ImagelabelView {
         
         let frame:CGRect = CGRect(x:x-80, y: 0,
             width: image.size.width,
-            height: CGRectGetHeight(self.informationView.bounds))
+            height: self.informationView.bounds.height)
         let view:ImagelabelView = ImagelabelView(frame:frame, image:image, text:text)
-        view.autoresizingMask = UIViewAutoresizing.FlexibleLeftMargin
+        view.autoresizingMask = UIViewAutoresizing.flexibleLeftMargin
         return view
     }
 }

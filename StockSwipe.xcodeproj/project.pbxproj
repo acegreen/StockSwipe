@@ -800,15 +800,18 @@
 				TargetAttributes = {
 					2378B5841B115FB3002ACFDC = {
 						CreatedOnToolsVersion = 6.3.2;
+						LastSwiftMigration = 0800;
 						TestTargetID = 8AC17D9F1AC7366A004E6D2D;
 					};
 					23E7F69D1BCB57A0009A016D = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = 8T3W9YR268;
+						LastSwiftMigration = 0800;
 					};
 					8AC17D9F1AC7366A004E6D2D = {
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = 8T3W9YR268;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1187,6 +1190,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "AG.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = StockSwipeTests;
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StockSwipe.app/StockSwipe";
 			};
 			name = Debug;
@@ -1205,6 +1209,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "AG.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = StockSwipeTests;
+				SWIFT_VERSION = 3.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StockSwipe.app/StockSwipe";
 			};
 			name = Release;
@@ -1231,6 +1236,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -1256,6 +1262,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -1372,6 +1379,7 @@
 				PRODUCT_NAME = StockSwipe;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "StockSwipe/Bundle Files/BridgingHeader.h";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1407,6 +1415,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "StockSwipe/Bundle Files/BridgingHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

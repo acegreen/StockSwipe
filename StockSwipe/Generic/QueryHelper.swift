@@ -10,59 +10,59 @@ import UIKit
 import Parse
 import SwiftyJSON
 
-public class QueryHelper {
+open class QueryHelper {
     
     static let sharedInstance = QueryHelper()
     
-    public func queryWith(queryString: String, useCacheIfPossible: Bool = true, completionHandler: (result: () throws -> NSData) -> Void) -> Void {
+    open func queryWith(_ queryString: String, useCacheIfPossible: Bool = true, completionHandler: @escaping (_ result: () throws -> Data) -> Void) -> Void {
         
-        if let queryUrl: NSURL = NSURL(string: queryString) {
+        if let queryUrl: URL = URL(string: queryString) {
             
-            var session: NSURLSession!
+            var session: URLSession!
             if useCacheIfPossible {
-                let config = NSURLSessionConfiguration.defaultSessionConfiguration()
-                config.URLCache = NSURLCache.sharedURLCache()
-                config.requestCachePolicy = NSURLRequestCachePolicy.ReturnCacheDataElseLoad
-                session = NSURLSession(configuration: config)
+                let config = URLSessionConfiguration.default
+                config.urlCache = URLCache.shared
+                config.requestCachePolicy = NSURLRequest.CachePolicy.returnCacheDataElseLoad
+                session = URLSession(configuration: config)
             } else {
-                session = NSURLSession.sharedSession()
+                session = URLSession.shared
             }
             
-            let task = session.dataTaskWithURL(queryUrl, completionHandler: { (queryData, response, error) -> Void in
+            let task = session.dataTask(with: queryUrl, completionHandler: { (queryData, response, error) -> Void in
                 
-                guard error == nil else { return completionHandler(result: {throw Constants.Errors.ErrorQueryingForData}) }
+                guard error == nil else { return completionHandler({throw Constants.Errors.errorQueryingForData}) }
                 
                 guard queryData != nil, let queryData = queryData else {
-                    return completionHandler(result: {throw Constants.Errors.QueryDataEmpty})
+                    return completionHandler({throw Constants.Errors.queryDataEmpty})
                 }
                 
-                return completionHandler(result: { queryData })
+                return completionHandler({ queryData })
             })
             task.resume()
         }
     }
     
-    public func queryStockTwitsTrendingStocks(completionHandler: (trendingStocksData: () throws -> NSData) -> Void) -> Void {
+    open func queryStockTwitsTrendingStocks(_ completionHandler: @escaping (_ trendingStocksData: () throws -> Data) -> Void) -> Void {
         
-        if let trendingStocksUrl = NSURL(string: "https://api.stocktwits.com/api/2/trending/symbols/equities.json") {
+        if let trendingStocksUrl = URL(string: "https://api.stocktwits.com/api/2/trending/symbols/equities.json") {
             
-            let trendingStocksSession = NSURLSession.sharedSession()
+            let trendingStocksSession = URLSession.shared
             
-            let task = trendingStocksSession.dataTaskWithURL(trendingStocksUrl, completionHandler: { (trendingStocksData, response, error) -> Void in
+            let task = trendingStocksSession.dataTask(with: trendingStocksUrl, completionHandler: { (trendingStocksData, response, error) -> Void in
                 
-                guard error == nil else { return completionHandler(trendingStocksData: { throw Constants.Errors.ErrorQueryingForData }) }
+                guard error == nil else { return completionHandler({ throw Constants.Errors.errorQueryingForData }) }
                 
                 guard trendingStocksData != nil, let trendingStocksData = trendingStocksData else {
-                    return completionHandler(trendingStocksData: { throw Constants.Errors.QueryDataEmpty })
+                    return completionHandler({ throw Constants.Errors.queryDataEmpty })
                 }
                 
-                return completionHandler(trendingStocksData: { trendingStocksData })
+                return completionHandler({ trendingStocksData })
             })
             task.resume()
         }
     }
     
-    public func queryYahooSymbolQuote(tickers: [String], completionHandler:(symbolQuote: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+    open func queryYahooSymbolQuote(_ tickers: [String], completionHandler:@escaping (_ symbolQuote: Data?, _ response: URLResponse?, _ error: NSError?) -> Void) {
         
         let stringICarouselTickers = "(\(tickers))"
         
@@ -84,19 +84,19 @@ public class QueryHelper {
         
         guard let marketQueryString:String = (queryStringPart1 + queryStringPart2 + queryStringPart3 + queryStringPart4).URLEncodedString()! + queryStringPart5 else { return }
         
-        if let marketCarouselUrl: NSURL = NSURL(string: marketQueryString) {
+        if let marketCarouselUrl: URL = URL(string: marketQueryString) {
             
-            let session = NSURLSession.sharedSession()
+            let session = URLSession.shared
             
-            let task = session.dataTaskWithURL(marketCarouselUrl, completionHandler: { (marketData, response, error) -> Void in
+            let task = session.dataTask(with: marketCarouselUrl, completionHandler: { (marketData, response, error) -> Void in
                 
-                completionHandler(symbolQuote: marketData, response: response, error: error)
+                completionHandler(marketData, response, error)
             })
             task.resume()
         }
     }
     
-    public func queryYahooCompanyProfile(symbol: String, completionHandler:(queryData: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+    open func queryYahooCompanyProfile(_ symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: NSError?) -> Void) {
         
         let companyProfileurl1 = "http://finance.yahoo.com/q/pr?s=\(symbol)"
         let companyProfileurl2 = "\"\(companyProfileurl1)\""
@@ -105,20 +105,20 @@ public class QueryHelper {
         
         guard let companyProfileQueryString = (profileQueryPart1 + profileQueryPart2).URLEncodedString() else { return }
         
-        if let companyQuoteUrl: NSURL = NSURL(string: companyProfileQueryString) {
+        if let companyQuoteUrl: URL = URL(string: companyProfileQueryString) {
             
-            let session = NSURLSession.sharedSession()
+            let session = URLSession.shared
             
-            let task = session.dataTaskWithURL(companyQuoteUrl, completionHandler: { (quoteData, response, error) -> Void in
+            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) -> Void in
                 
-                completionHandler(queryData: quoteData, response: response, error: error)
+                completionHandler(quoteData, response, error)
                 
             })
             task.resume()
         }
     }
     
-    public func queryYahooCompanySummary(symbol: String, completionHandler:(queryData: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+    open func queryYahooCompanySummary(_ symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: NSError?) -> Void) {
         
         let companySummaryurl1 = "http://finance.yahoo.com/q/pr?s=\(symbol)"
         let companySummaryurl2 = "\"\(companySummaryurl1)\""
@@ -127,20 +127,20 @@ public class QueryHelper {
         
         guard let companySummaryQueryString = (summaryQueryPart1 + summaryQueryPart2).URLEncodedString() else { return }
         
-        if let companyQuoteUrl: NSURL = NSURL(string: companySummaryQueryString) {
+        if let companyQuoteUrl: URL = URL(string: companySummaryQueryString) {
             
-            let session = NSURLSession.sharedSession()
+            let session = URLSession.shared
             
-            let task = session.dataTaskWithURL(companyQuoteUrl, completionHandler: { (quoteData, response, error) -> Void in
+            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) -> Void in
                 
-                completionHandler(queryData: quoteData, response: response, error: error)
+                completionHandler(quoteData, response, error)
                 
             })
             task.resume()
         }
     }
     
-    public func queryYahooCompanyAnalystRating(symbol: String, completionHandler:(queryData: NSData?, response: NSURLResponse?, error: NSError?) -> Void) {
+    open func queryYahooCompanyAnalystRating(_ symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: NSError?) -> Void) {
         
         let companyAnalystRatingStringPart1 = "https://ca.finance.yahoo.com/q/ao?s=\(symbol)"
         let companyAnalystRatingStringPart2 = "\"\(companyAnalystRatingStringPart1)\""
@@ -149,106 +149,106 @@ public class QueryHelper {
         
         guard let companyAnalystQueryString = (companyAnalystRatingQueryPart1 + companyAnalystRatingQueryPart2).URLEncodedString() else { return }
         
-        if let companyQuoteUrl: NSURL = NSURL(string: companyAnalystQueryString) {
+        if let companyQuoteUrl: URL = URL(string: companyAnalystQueryString) {
             
-            let session = NSURLSession.sharedSession()
+            let session = URLSession.shared
             
-            let task = session.dataTaskWithURL(companyQuoteUrl, completionHandler: { (quoteData, response, error) -> Void in
+            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) -> Void in
                 
-                completionHandler(queryData: quoteData, response: response, error: error)
+                completionHandler(quoteData, response, error)
                 
             })
             task.resume()
         }
     }
     
-    public func queryChartImage(symbol: String, completion: (result: () throws -> (UIImage)) -> Void) {
+    open func queryChartImage(_ symbol: String, completion: @escaping (_ result: () throws -> (UIImage)) -> Void) {
         
-        guard let chartImageURL: NSURL = Functions.setImageURL(symbol) else {
+        guard let chartImageURL: URL = Functions.setImageURL(symbol) else {
             
             print("image URL is nil")
-            return completion(result: {throw Constants.Errors.URLEmpty})
+            return completion({throw Constants.Errors.urlEmpty})
         }
         
-        let chartImageSession = NSURLSession.sharedSession()
-        let task = chartImageSession.dataTaskWithURL(chartImageURL, completionHandler: { (chartImagedata, response, error) -> Void in
+        let chartImageSession = URLSession.shared
+        let task = chartImageSession.dataTask(with: chartImageURL, completionHandler: { (chartImagedata, response, error) -> Void in
             
             guard error == nil else {
-                return completion(result: {throw Constants.Errors.ErrorAccessingServer})
+                return completion({throw Constants.Errors.errorAccessingServer})
             }
             guard chartImagedata != nil else {
-                return completion(result: {throw Constants.Errors.QueryDataEmpty})
+                return completion({throw Constants.Errors.queryDataEmpty})
             }
             
             guard let chartImage = UIImage(data: chartImagedata!) else {
-                return completion(result: {throw Constants.Errors.ChartImageCorrupt})
+                return completion({throw Constants.Errors.chartImageCorrupt})
             }
             
-            completion(result: {return (chartImage)})
+            completion({return (chartImage)})
             
         })
         
         task.resume()
     }
     
-    public func queryUserObjectsFor(usernames: [String], cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFUser])) -> Void) {
+    open func queryUserObjectsFor(_ usernames: [String], cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFUser])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
-            return completion(result: {throw Constants.Errors.NoInternetConnection})
+            return completion({throw Constants.Errors.noInternetConnection})
         }
         
-        let usernamesLowercase = usernames.map { ($0.lowercaseString) }
+        let usernamesLowercase = usernames.map { ($0.lowercased()) }
         
         let userQuery = PFUser.query()
         userQuery?.cachePolicy = cachePolicy
         userQuery?.whereKey("username_lowercase", containedIn: usernamesLowercase)
         
-        userQuery?.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        userQuery?.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+                return completion({throw Constants.Errors.errorAccessingParseDatabase})
             }
             
             guard objects?.isEmpty == false, let objects = objects as? [PFUser] else {
-                return completion(result: {throw Constants.Errors.ParseUserObjectNotFound})
+                return completion({throw Constants.Errors.parseUserObjectNotFound})
             }
             
-            completion(result: {return (objects: objects)})
+            completion({return (objects: objects)})
             
         }
     }
     
-    public func queryStockObjectsFor(symbols: [String], cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
+    open func queryStockObjectsFor(_ symbols: [String], cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
-            return completion(result: {throw Constants.Errors.NoInternetConnection})
+            return completion({throw Constants.Errors.noInternetConnection})
         }
         
-        let mappedSymbols = symbols.map ({ $0.uppercaseString })
+        let mappedSymbols = symbols.map ({ $0.uppercased() })
         
         let stockQuery = PFQuery(className:"Stocks")
         stockQuery.cachePolicy = cachePolicy
         stockQuery.whereKey("Symbol", containedIn: mappedSymbols)
         
-        stockQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        stockQuery.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+                return completion({throw Constants.Errors.errorAccessingParseDatabase})
             }
             
             guard objects?.isEmpty == false, let objects = objects else {
-                return completion(result: {throw Constants.Errors.ParseStockObjectNotFound})
+                return completion({throw Constants.Errors.parseStockObjectNotFound})
             }
             
-            completion(result: {return (objects: objects)})
+            completion({return (objects: objects)})
             
         }
     }
     
-    public func queryTradeIdeaObjectsFor(key: String?, object: PFObject?, skip: Int, limit: Int?, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
+    open func queryTradeIdeaObjectsFor(_ key: String?, object: PFObject?, skip: Int, limit: Int?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
-            return completion(result: {throw Constants.Errors.NoInternetConnection})
+            return completion({throw Constants.Errors.noInternetConnection})
         }
         
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
@@ -259,11 +259,11 @@ public class QueryHelper {
             tradeIdeaQuery.whereKey(key, equalTo: object)
         }
         
-        if key != "user", let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
+        if key != "user", let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             tradeIdeaQuery.whereKey("user", notContainedIn: blockedUsers)
         }
         
-        if key != "user", let currentUser = PFUser.currentUser() {
+        if key != "user", let currentUser = PFUser.current() {
             
             let subTradeIdeaQuery = PFUser.query()
             subTradeIdeaQuery?.whereKey("blocked_users", notEqualTo: currentUser)
@@ -271,34 +271,34 @@ public class QueryHelper {
             tradeIdeaQuery.whereKey("user", matchesQuery: subTradeIdeaQuery!)
         }
         
-        tradeIdeaQuery.orderByDescending("createdAt")
+        tradeIdeaQuery.order(byDescending: "createdAt")
         
-        if let limit = limit  where limit > 0 {
+        if let limit = limit  , limit > 0 {
             tradeIdeaQuery.limit = limit
         }
         tradeIdeaQuery.skip  = skip
         
-        tradeIdeaQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        tradeIdeaQuery.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+                return completion({throw Constants.Errors.errorAccessingParseDatabase})
             }
             
             guard objects?.isEmpty == false, let objects = objects else {
-                return completion(result: {throw Constants.Errors.ParseTradeIdeaObjectNotFound})
+                return completion({throw Constants.Errors.parseTradeIdeaObjectNotFound})
             }
             
             // The find succeeded.
             print("Successfully retrieved \(objects.count) objects")
             
-            completion(result: {return (objects: objects)})
+            completion({return (objects: objects)})
         }
     }
     
-    public func countTradeIdeasFor(key: String, object: PFObject, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> (Int)) -> Void) {
+    open func countTradeIdeasFor(_ key: String, object: PFObject, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
-            return completion(result: {throw Constants.Errors.NoInternetConnection})
+            return completion({throw Constants.Errors.noInternetConnection})
         }
         
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
@@ -306,11 +306,11 @@ public class QueryHelper {
         
         tradeIdeaQuery.whereKey(key, equalTo: object)
         
-        if key != "user", let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
+        if key != "user", let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             tradeIdeaQuery.whereKey("user", notContainedIn: blockedUsers)
         }
         
-        if key != "user", let currentUser = PFUser.currentUser() {
+        if key != "user", let currentUser = PFUser.current() {
             
             let subTradeIdeaQuery = PFUser.query()
             subTradeIdeaQuery?.whereKey("blocked_users", notEqualTo: currentUser)
@@ -318,35 +318,35 @@ public class QueryHelper {
             tradeIdeaQuery.whereKey("user", matchesQuery: subTradeIdeaQuery!)
         }
         
-        tradeIdeaQuery.countObjectsInBackgroundWithBlock { (count, error) in
+        tradeIdeaQuery.countObjectsInBackground { (count, error) in
             
             guard error == nil else {
-                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+                return completion({throw Constants.Errors.errorAccessingParseDatabase})
             }
             
             let count = Int(count)
             
             print("tradeIdeas count", count)
             
-            completion(result: {return (count: count)})
+            completion({return (count: count)})
         }
     }
     
-    public func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
+    open func queryActivityFor(_ fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
-            return completion(result: {throw Constants.Errors.NoInternetConnection})
+            return completion({throw Constants.Errors.noInternetConnection})
         }
         
         let activityQuery = PFQuery(className:"Activity")
         activityQuery.cachePolicy = cachePolicy
-        activityQuery.orderByDescending("createdAt")
+        activityQuery.order(byDescending: "createdAt")
         
         if let includeKeys = includeKeys {
             activityQuery.includeKeys(includeKeys)
         }
         
-        if let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
+        if let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             activityQuery.whereKey("fromUser", notContainedIn: blockedUsers)
         }
         
@@ -374,43 +374,43 @@ public class QueryHelper {
             activityQuery.whereKey("activityType", containedIn: activityType)
         }
         
-        if let skip = skip  where skip > 0 {
+        if let skip = skip  , skip > 0 {
             activityQuery.skip = skip
         }
         
-        if let limit = limit  where limit > 0 {
+        if let limit = limit  , limit > 0 {
             activityQuery.limit = limit
         }
         
-        activityQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        activityQuery.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+                return completion({throw Constants.Errors.errorAccessingParseDatabase})
             }
             
             guard let objects = objects else {
-                return completion(result: {throw Constants.Errors.ParseTradeIdeaObjectNotFound})
+                return completion({throw Constants.Errors.parseTradeIdeaObjectNotFound})
             }
             
             // The find succeeded.
             print("Successfully retrieved \(objects.count) objects")
             
-            completion(result: {return (objects: objects)})
+            completion({return (objects: objects)})
             
         }
     }
     
-    public func countActivityFor(fromUser: PFUser?, toUser: PFUser?, tradeIdea: PFObject?, stock: PFObject?, activityType: String?, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> (Int)) -> Void) {
+    open func countActivityFor(_ fromUser: PFUser?, toUser: PFUser?, tradeIdea: PFObject?, stock: PFObject?, activityType: String?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
-            return completion(result: {throw Constants.Errors.NoInternetConnection})
+            return completion({throw Constants.Errors.noInternetConnection})
         }
         
         let activityQuery = PFQuery(className:"Activity")
         activityQuery.cachePolicy = cachePolicy
-        activityQuery.orderByDescending("createdAt")
+        activityQuery.order(byDescending: "createdAt")
         
-        if let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
+        if let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             activityQuery.whereKey("fromUser", notContainedIn: blockedUsers)
         }
         
@@ -434,24 +434,24 @@ public class QueryHelper {
             activityQuery.whereKey("activityType", equalTo: activityType)
         }
         
-        activityQuery.countObjectsInBackgroundWithBlock { (count, error) in
+        activityQuery.countObjectsInBackground { (count, error) in
             
             guard error == nil else {
-                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+                return completion({throw Constants.Errors.errorAccessingParseDatabase})
             }
             
             let count = Int(count)
             
             print("userActivity count", count)
             
-            completion(result: {return (count: count)})
+            completion({return (count: count)})
         }
     }
     
-    public func queryActivityForUser(toUser: PFUser, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
+    open func queryActivityForUser(_ toUser: PFUser, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
-            return completion(result: {throw Constants.Errors.NoInternetConnection})
+            return completion({throw Constants.Errors.noInternetConnection})
         }
         
         let activityQuery = PFQuery(className:"Activity")
@@ -461,34 +461,34 @@ public class QueryHelper {
         activityQuery.whereKey("toUser", equalTo: toUser)
         activityQuery.whereKeyExists("fromUser")
         activityQuery.includeKeys(["fromUser", "toUser", "tradeIdea", "stock"])
-        activityQuery.orderByDescending("createdAt")
+        activityQuery.order(byDescending: "createdAt")
         
-        if let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
+        if let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             activityQuery.whereKey("fromUser", notContainedIn: blockedUsers)
         }
         
-        activityQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        activityQuery.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+                return completion({throw Constants.Errors.errorAccessingParseDatabase})
             }
             
             guard objects?.isEmpty == false, let objects = objects else {
-                return completion(result: {throw Constants.Errors.ParseTradeIdeaObjectNotFound})
+                return completion({throw Constants.Errors.parseTradeIdeaObjectNotFound})
             }
             
             // The find succeeded.
             print("Successfully retrieved \(objects.count) activities")
             
-            completion(result: {return (objects: objects)})
+            completion({return (objects: objects)})
             
         }
     }
     
-    public func queryActivityForFollowing(fromUser: PFUser, cachePolicy: PFCachePolicy = .NetworkElseCache, completion: (result: () throws -> ([PFObject])) -> Void) {
+    open func queryActivityForFollowing(_ fromUser: PFUser, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
-            return completion(result: {throw Constants.Errors.NoInternetConnection})
+            return completion({throw Constants.Errors.noInternetConnection})
         }
         
         let followActivityQuery = PFQuery(className:"Activity")
@@ -502,28 +502,28 @@ public class QueryHelper {
         activityQuery.cachePolicy = cachePolicy
         
         activityQuery.whereKey("fromUser", notEqualTo: fromUser)
-        activityQuery.whereKey("fromUser", matchesKey: "fromUser", inQuery: followActivityQuery)
+        activityQuery.whereKey("fromUser", matchesKey: "fromUser", in: followActivityQuery)
         activityQuery.includeKeys(["fromUser", "toUser", "tradeIdea", "stock"])
-        activityQuery.orderByDescending("createdAt")
+        activityQuery.order(byDescending: "createdAt")
         
-        if let currentUser = PFUser.currentUser(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
+        if let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             activityQuery.whereKey("fromUser", notContainedIn: blockedUsers)
         }
         
-        activityQuery.findObjectsInBackgroundWithBlock { (objects, error) -> Void in
+        activityQuery.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion(result: {throw Constants.Errors.ErrorAccessingParseDatabase})
+                return completion({throw Constants.Errors.errorAccessingParseDatabase})
             }
             
             guard objects?.isEmpty == false, let objects = objects else {
-                return completion(result: {throw Constants.Errors.ParseTradeIdeaObjectNotFound})
+                return completion({throw Constants.Errors.parseTradeIdeaObjectNotFound})
             }
             
             // The find succeeded.
             print("Successfully retrieved \(objects.count) activities")
             
-            completion(result: {return (objects: objects)})
+            completion({return (objects: objects)})
             
         }
     }

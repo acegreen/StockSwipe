@@ -49,57 +49,57 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     @IBOutlet var reshareButton: UIButton!
     @IBOutlet var reshareCountLabel: UILabel!
     
-    @IBAction func likeButton(sender: UIButton) {
+    @IBAction func likeButton(_ sender: UIButton) {
         registerLike(sender: sender)
     }
     
-    @IBAction func replyButton(sender: AnyObject) {
+    @IBAction func replyButton(_ sender: AnyObject) {
         
-        let tradeIdeaPostNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("TradeIdeaPostNavigationController") as! UINavigationController
+        let tradeIdeaPostNavigationController = Constants.storyboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
         let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
         
         ideaPostViewController.originalTradeIdea = self.tradeIdea
-        ideaPostViewController.tradeIdeaType = .Reply
+        ideaPostViewController.tradeIdeaType = .reply
         ideaPostViewController.delegate =  self
         
-        tradeIdeaPostNavigationController.modalPresentationStyle = .FormSheet
-        UIApplication.topViewController()?.presentViewController(tradeIdeaPostNavigationController, animated: true, completion: nil)
+        tradeIdeaPostNavigationController.modalPresentationStyle = .formSheet
+        UIApplication.topViewController()?.present(tradeIdeaPostNavigationController, animated: true, completion: nil)
     }
     
-    @IBAction func reshareButton(sender: UIButton) {
+    @IBAction func reshareButton(_ sender: UIButton) {
         
-        if !sender.selected == true {
+        if !sender.isSelected == true {
             
-            let tradeIdeaPostNavigationController = Constants.storyboard.instantiateViewControllerWithIdentifier("TradeIdeaPostNavigationController") as! UINavigationController
+            let tradeIdeaPostNavigationController = Constants.storyboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
             let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
             
             ideaPostViewController.originalTradeIdea = self.tradeIdea
-            ideaPostViewController.tradeIdeaType = .Reshare
+            ideaPostViewController.tradeIdeaType = .reshare
             ideaPostViewController.delegate =  self
             
-            tradeIdeaPostNavigationController.modalPresentationStyle = .FormSheet
-            UIApplication.topViewController()?.presentViewController(tradeIdeaPostNavigationController, animated: true, completion: nil)
+            tradeIdeaPostNavigationController.modalPresentationStyle = .formSheet
+            UIApplication.topViewController()?.present(tradeIdeaPostNavigationController, animated: true, completion: nil)
             
         } else {
             registerUnshare(sender: sender)
         }
     }
     
-    @IBAction func threeDotsButton(sender: AnyObject) {
+    @IBAction func threeDotsButton(_ sender: AnyObject) {
         
         guard let viewRect = sender as? UIView else {
             return
         }
         
         let threeDotsAlert = UIAlertController()
-        threeDotsAlert.modalPresentationStyle = .Popover
+        threeDotsAlert.modalPresentationStyle = .popover
         
-        if let currentUser = PFUser.currentUser() where self.tradeIdea.user.objectId != currentUser.objectId  {
+        if let currentUser = PFUser.current() , self.tradeIdea.user.objectId != currentUser.objectId  {
             threeDotsAlert.addAction(blockAction(self.tradeIdea.user.userObject))
             
-            let reportIdea = UIAlertAction(title: "Report", style: .Default) { action in
+            let reportIdea = UIAlertAction(title: "Report", style: .default) { action in
                 
-                SweetAlert().showAlert("Report \(self.tradeIdea.user.username!)?", subTitle: "", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor.colorFromRGB(0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Report \(self.tradeIdea.user.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor.colorFromRGB(0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
                     
                     if !isOtherButton {
                         
@@ -112,13 +112,13 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         spamObject.saveEventually ({ (success, error) in
                             
                             if success {
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.Success)
+                                DispatchQueue.main.async(execute: { () -> Void in
+                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.success)
                                 })
                                 
                             } else {
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                                DispatchQueue.main.async(execute: { () -> Void in
+                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
                                 })
                             }
                         })
@@ -132,13 +132,13 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         spamObject.saveEventually ({ (success, error) in
                             
                             if success {
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.Success)
+                                DispatchQueue.main.async(execute: { () -> Void in
+                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.success)
                                 })
                                 
                             } else {
-                                dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.Warning)
+                                DispatchQueue.main.async(execute: { () -> Void in
+                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
                                 })
                             }
                         })
@@ -148,15 +148,15 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             threeDotsAlert.addAction(reportIdea)
         }
         
-        if let user = PFUser.currentUser() where self.tradeIdea.user.objectId == user.objectId  {
-            let deleteIdea = UIAlertAction(title: "Delete Idea", style: .Default) { action in
+        if let user = PFUser.current() , self.tradeIdea.user.objectId == user.objectId  {
+            let deleteIdea = UIAlertAction(title: "Delete Idea", style: .default) { action in
                 
                 QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.tradeIdea.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue, Constants.ActivityType.TradeIdeaLike.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.Mention.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
                         let activityObjects = try result()
-                        PFObject.deleteAllInBackground(activityObjects)
+                        PFObject.deleteAll(inBackground: activityObjects)
                         
                     } catch {
                         
@@ -170,7 +170,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             threeDotsAlert.addAction(deleteIdea)
         }
         
-        let cancel = UIAlertAction(title: "Cancel", style: .Cancel) { action in
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { action in
         }
         
         threeDotsAlert.addAction(cancel)
@@ -180,13 +180,13 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             presenter.sourceRect = viewRect.bounds;
         }
         
-        UIApplication.topViewController()?.presentViewController(threeDotsAlert, animated: true, completion: nil)
+        UIApplication.topViewController()?.present(threeDotsAlert, animated: true, completion: nil)
         threeDotsAlert.view.tintColor = Constants.stockSwipeGreenColor
     }
     
-    func handleGestureRecognizer(tapGestureRecognizer: UITapGestureRecognizer) {
+    func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
-        let profileContainerController = Constants.storyboard.instantiateViewControllerWithIdentifier("ProfileContainerController") as! ProfileContainerController
+        let profileContainerController = Constants.storyboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
         
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == userName) {
             profileContainerController.user = self.tradeIdea.user
@@ -196,10 +196,10 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         profileContainerController.navigationItem.rightBarButtonItem = nil
         
-        UIApplication.topViewController()?.showViewController(profileContainerController, sender: self)
+        UIApplication.topViewController()?.show(profileContainerController, sender: self)
     }
     
-    func configureCell(tradeIdea: TradeIdea!, timeFormat: Constants.TimeFormat) {
+    func configureCell(_ tradeIdea: TradeIdea!, timeFormat: Constants.TimeFormat) {
         
         guard let tradeIdea = tradeIdea else { return }
         
@@ -220,7 +220,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         self.checkMore()
     }
     
-    func configureCell(tradeIdeaObject: PFObject, timeFormat: Constants.TimeFormat) {
+    func configureCell(_ tradeIdeaObject: PFObject, timeFormat: Constants.TimeFormat) {
         
         self.tradeIdea = TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
             
@@ -242,11 +242,11 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         })
     }
     
-    func configureMainTradeIdea(tradeIdea: TradeIdea!, timeFormat: Constants.TimeFormat) {
+    func configureMainTradeIdea(_ tradeIdea: TradeIdea!, timeFormat: Constants.TimeFormat) {
         
         guard tradeIdea.user != nil else { return }
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
             
             self.userName.text = tradeIdea.user.fullname
             
@@ -257,9 +257,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.ideaDescription.text = tradeIdea.description
             
             switch timeFormat {
-            case .Short:
+            case .short:
                 self.ideaTime.text = tradeIdea.publishedDate.formattedAsTimeAgoShort()
-            case .Long:
+            case .long:
                 self.ideaTime.text = tradeIdea.publishedDate.formattedAsTimeAgo()
             }
             
@@ -274,18 +274,18 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
     }
     
-    func configureNestedTradeIdea(nestedTradeIdea: TradeIdea?) {
+    func configureNestedTradeIdea(_ nestedTradeIdea: TradeIdea?) {
         
         guard nestedTradeIdeaStack != nil else { return }
         
         guard let nestedTradeIdea = nestedTradeIdea else {
-            self.nestedTradeIdeaStack.hidden = true
+            self.nestedTradeIdeaStack.isHidden = true
             return
         }
         
-        self.nestedTradeIdeaStack.hidden = false
+        self.nestedTradeIdeaStack.isHidden = false
     
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
         
             self.nestedUsername.text = nestedTradeIdea.user.fullname
             
@@ -307,24 +307,24 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
         
-        if tradeIdeaTyp == .Reshare {
+        if tradeIdeaTyp == .reshare {
             self.registerReshare(sender: self.reshareButton)
         }
         
         self.delegate?.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaTyp)
         
-        guard let currentUser = PFUser.currentUser() where currentUser.objectId != self.tradeIdea.user.objectId else { return }
+        guard let currentUser = PFUser.current() , currentUser.objectId != self.tradeIdea.user.objectId else { return }
         
         // Send push
         switch tradeIdeaTyp {
-        case .New:
+        case .new:
             return
             
-        case .Reply:
+        case .reply:
             
             Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":tradeIdea.parseObject.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": "@\(currentUser.username!) replied:\n\(tradeIdea.description)"])
             
-        case .Reshare:
+        case .reshare:
             
             Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n\(self.tradeIdea.description)"])
         }
@@ -335,35 +335,35 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     }
     
     func checkMore() {
-        guard let _ = PFUser.currentUser() else {
+        guard let _ = PFUser.current() else {
             
-            if threeDotsStack != nil && threeDotsStack.isDescendantOfView(self) {
-                threeDotsStack.hidden = true
+            if threeDotsStack != nil && threeDotsStack.isDescendant(of: self) {
+                threeDotsStack.isHidden = true
             }
             return
         }
     }
     
-    func checkLike(tradeIdea: TradeIdea, sender: UIButton?) {
+    func checkLike(_ tradeIdea: TradeIdea, sender: UIButton?) {
         
         guard let sender = sender else { return }
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+        DispatchQueue.main.async(execute: { () -> Void in
         
-            if let likeCount = self.tradeIdea?.likeCount where likeCount > 0 {
+            if let likeCount = self.tradeIdea?.likeCount , likeCount > 0 {
                 self.likeCountLabel.text = String(likeCount)
-                self.likeCountLabel.hidden = false
+                self.likeCountLabel.isHidden = false
             } else {
-                self.likeCountLabel.hidden = true
+                self.likeCountLabel.isHidden = true
             }
             
-            sender.selected = tradeIdea.isLikedByCurrentUser
+            sender.isSelected = tradeIdea.isLikedByCurrentUser
         })
     }
     
-    func registerLike(sender sender: UIButton) {
+    func registerLike(sender: UIButton) {
         
-        guard let currentUser = PFUser.currentUser() else {
+        guard let currentUser = PFUser.current() else {
             Functions.isUserLoggedIn(UIApplication.topViewController()!)
             return
         }
@@ -382,7 +382,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         activityObject?.deleteEventually()
                         
                         self.tradeIdea.likeCount -= 1
-                        sender.selected = false
+                        sender.isSelected = false
                         
                     } else {
                         
@@ -394,7 +394,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         activityObject.saveEventually()
                         
                         self.tradeIdea.likeCount += 1
-                        sender.selected = true
+                        sender.isSelected = true
                         self.tradeIdea.isLikedByCurrentUser = true
                         
                         // Send push
@@ -403,12 +403,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         }
                     }
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                        if let likeCount = self.tradeIdea?.likeCount where likeCount > 0 {
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        if let likeCount = self.tradeIdea?.likeCount , likeCount > 0 {
                             self.likeCountLabel.text = String(likeCount)
-                            self.likeCountLabel.hidden = false
+                            self.likeCountLabel.isHidden = false
                         } else {
-                            self.likeCountLabel.hidden = true
+                            self.likeCountLabel.isHidden = true
                         }
                     })
                     
@@ -419,43 +419,43 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
     }
     
-    func checkReshare(tradeIdea: TradeIdea, sender: UIButton?) {
+    func checkReshare(_ tradeIdea: TradeIdea, sender: UIButton?) {
         
         guard let sender = sender else { return }
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            if let reshareCount = self.tradeIdea?.reshareCount where reshareCount > 0 {
+        DispatchQueue.main.async(execute: { () -> Void in
+            if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
                 self.reshareCountLabel.text = String(reshareCount)
-                self.reshareCountLabel.hidden = false
+                self.reshareCountLabel.isHidden = false
             } else {
-                self.reshareCountLabel.hidden = true
+                self.reshareCountLabel.isHidden = true
             }
             
-            sender.selected = tradeIdea.isResharedByCurrentUser
+            sender.isSelected = tradeIdea.isResharedByCurrentUser
         })
     }
     
-    func registerReshare(sender sender: UIButton) {
+    func registerReshare(sender: UIButton) {
         
         guard self.tradeIdea != nil else { return }
         
         self.tradeIdea.reshareCount += 1
         self.tradeIdea.isResharedByCurrentUser = true
         
-        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-            sender.selected = true
-            if let reshareCount = self.tradeIdea?.reshareCount where reshareCount > 0 {
+        DispatchQueue.main.async(execute: { () -> Void in
+            sender.isSelected = true
+            if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
                 self.reshareCountLabel.text = String(reshareCount)
-                self.reshareCountLabel.hidden = false
+                self.reshareCountLabel.isHidden = false
             } else {
-                self.reshareCountLabel.hidden = true
+                self.reshareCountLabel.isHidden = true
             }
         })
     }
     
-    func registerUnshare(sender sender: UIButton) {
+    func registerUnshare(sender: UIButton) {
         
-        guard let currentUser = PFUser.currentUser() else {
+        guard let currentUser = PFUser.current() else {
             Functions.isUserLoggedIn(UIApplication.topViewController()!)
             return
         }
@@ -479,7 +479,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                                 
                                 let tradeIdeasObjects = try result().first
                                 
-                                tradeIdeasObjects?.deleteInBackgroundWithBlock({ (success, error) in
+                                tradeIdeasObjects?.deleteInBackground(block: { (success, error) in
                                     
                                     if success {
                                         
@@ -496,13 +496,13 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         
                         self.tradeIdea.reshareCount -= 1
                         
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            sender.selected = false
-                            if let reshareCount = self.tradeIdea?.reshareCount where reshareCount > 0 {
+                        DispatchQueue.main.async(execute: { () -> Void in
+                            sender.isSelected = false
+                            if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
                                 self.reshareCountLabel.text = String(reshareCount)
-                                self.reshareCountLabel.hidden = false
+                                self.reshareCountLabel.isHidden = false
                             } else {
-                                self.reshareCountLabel.hidden = true
+                                self.reshareCountLabel.isHidden = true
                             }
                         })
                         
@@ -515,15 +515,15 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
     }
     
-    func blockAction(user: PFUser) -> UIAlertAction {
+    func blockAction(_ user: PFUser) -> UIAlertAction {
         
-        let currentUser = PFUser.currentUser()
+        let currentUser = PFUser.current()
         
         if let blocked_users = currentUser!["blocked_users"] as? [PFUser], let blockedUser = blocked_users .find({ $0.objectId == user.objectId }) {
             
-            let unblockUser = UIAlertAction(title: "Unblock", style: .Default) { action in
+            let unblockUser = UIAlertAction(title: "Unblock", style: .default) { action in
                 
-                currentUser!.removeObject(blockedUser, forKey: "blocked_users")
+                currentUser!.remove(blockedUser, forKey: "blocked_users")
                 
                 currentUser!.saveEventually()
             }
@@ -532,9 +532,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
         } else {
             
-            let blockUser = UIAlertAction(title: "Block", style: .Default) { action in
+            let blockUser = UIAlertAction(title: "Block", style: .default) { action in
                 
-                SweetAlert().showAlert("Block @\(self.tradeIdea.user.username!)?", subTitle: "@\(self.tradeIdea.user.username!) will not be able to follow or view your ideas, and you will not see anything from @\(self.tradeIdea.user.username!)", style: AlertStyle.Warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.stockSwipeGreenColor, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Block @\(self.tradeIdea.user.username!)?", subTitle: "@\(self.tradeIdea.user.username!) will not be able to follow or view your ideas, and you will not see anything from @\(self.tradeIdea.user.username!)", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.stockSwipeGreenColor, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                     
                     if isOtherButton {
                         Functions.blockUser(user, postAlert: true)

@@ -12,49 +12,49 @@ import UIKit
 class FollowButton: UIButton {
     
     enum state {
-        case Following
-        case NotFollowing
-        case Blocked
-        case Disabled
+        case following
+        case notFollowing
+        case blocked
+        case disabled
         
-        static let allStates = [Following, NotFollowing, Blocked]
+        static let allStates = [following, notFollowing, blocked]
     }
     
-    var buttonState = state.NotFollowing {
+    var buttonState = state.notFollowing {
         didSet {
             switch buttonState {
-            case .NotFollowing:
-                enabled = true
-                backgroundColor = UIColor.whiteColor()
+            case .notFollowing:
+                isEnabled = true
+                backgroundColor = UIColor.white
                 borderColor = Constants.stockSwipeGreenColor
                 tintColor = Constants.stockSwipeGreenColor
-                setTitleColor(Constants.stockSwipeGreenColor, forState: .Normal)
-                setImage(UIImage(named: "user_add"), forState: .Normal)
-                setTitle("Follow", forState: .Normal)
-            case .Following:
-                enabled = true
+                setTitleColor(Constants.stockSwipeGreenColor, for: UIControlState())
+                setImage(UIImage(named: "user_add"), for: UIControlState())
+                setTitle("Follow", for: UIControlState())
+            case .following:
+                isEnabled = true
                 backgroundColor = Constants.stockSwipeGreenColor
                 borderColor = Constants.stockSwipeGreenColor
-                tintColor = UIColor.whiteColor()
-                setTitleColor(UIColor.whiteColor(), forState: .Normal)
-                setImage(UIImage(named: "user_checked"), forState: .Normal)
-                setTitle("Following", forState: .Normal)
-            case .Blocked:
-                enabled = true
-                backgroundColor = UIColor.redColor()
-                borderColor = UIColor.whiteColor()
-                tintColor = UIColor.whiteColor()
-                setTitleColor(UIColor.whiteColor(), forState: .Normal)
-                setImage(UIImage(named: "user_blocked"), forState: .Normal)
-                setTitle("Blocked", forState: .Normal)
-            case .Disabled:
-                enabled = false
-                backgroundColor = UIColor.whiteColor()
+                tintColor = UIColor.white
+                setTitleColor(UIColor.white, for: UIControlState())
+                setImage(UIImage(named: "user_checked"), for: UIControlState())
+                setTitle("Following", for: UIControlState())
+            case .blocked:
+                isEnabled = true
+                backgroundColor = UIColor.red
+                borderColor = UIColor.white
+                tintColor = UIColor.white
+                setTitleColor(UIColor.white, for: UIControlState())
+                setImage(UIImage(named: "user_blocked"), for: UIControlState())
+                setTitle("Blocked", for: UIControlState())
+            case .disabled:
+                isEnabled = false
+                backgroundColor = UIColor.white
                 borderColor = Constants.stockSwipeFontColor
-                tintColor = UIColor.lightGrayColor()
-                setTitleColor(UIColor.lightGrayColor(), forState: .Disabled)
-                setImage(UIImage(named: "user_add"), forState: .Disabled)
-                setTitle("Follow", forState: .Normal)
+                tintColor = UIColor.lightGray
+                setTitleColor(UIColor.lightGray, for: .disabled)
+                setImage(UIImage(named: "user_add"), for: .disabled)
+                setTitle("Follow", for: UIControlState())
             }
         }
     }

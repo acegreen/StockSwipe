@@ -20,7 +20,7 @@ import LaunchKit
 import ChimpKit
 
 protocol PushNotificationDelegate {
-    func didReceivePushNotification(userInfo: [NSObject:AnyObject])
+    func didReceivePushNotification(_ userInfo: [AnyHashable: Any])
 }
 
 @UIApplicationMain
@@ -50,7 +50,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         SARate.sharedInstance().promptAtLaunch = false
     }
     
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
         // Enable Parse LocalDatastore
@@ -62,33 +62,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
             $0.clientKey = ""
             $0.server = "http://45.55.137.153:1337/parse"
         }
-        Parse.initializeWithConfiguration(configuration)
+        Parse.initialize(with: configuration)
         
         // [Optional] Track statistics around application opens.
-        PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+        PFAnalytics.trackAppOpened(launchOptions: launchOptions)
         
         // Initialize Parse Twitter
-        PFTwitterUtils.initializeWithConsumerKey(Constants.APIKeys.TwitterKit.key(),
+        PFTwitterUtils.initialize(withConsumerKey: Constants.APIKeys.TwitterKit.key(),
                                                  consumerSecret: Constants.APIKeys.TwitterKit.consumerKey()!)
         
         // Initialize Facebook
-        PFFacebookUtils.initializeFacebookWithApplicationLaunchOptions(launchOptions)
-        PFFacebookUtils.facebookLoginManager().loginBehavior = .SystemAccount
+        PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
+        PFFacebookUtils.facebookLoginManager().loginBehavior = .systemAccount
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         // Intialize Twitter (Fabric)
         Fabric.with([Twitter.self(), Crashlytics.self(), Appsee.self()])
         
         // Initialize LaunchKit
-        LaunchKit.launchWithToken(Constants.APIKeys.LaunchKit.key())
+        LaunchKit.launch(withToken: Constants.APIKeys.LaunchKit.key())
         //LaunchKit.sharedInstance().debugAlwaysPresentAppReleaseNotes = true
         
         // Initialize Rollout
-        Rollout.setupWithKey(Constants.APIKeys.Rollout.key())
+        Rollout.setup(withKey: Constants.APIKeys.Rollout.key())
         
         // Intialize ChimpKit
-        ChimpKit.sharedKit().apiKey = Constants.APIKeys.ChimpKit.key()
-        ChimpKit.sharedKit().shouldUseBackgroundThread = true
+        ChimpKit.shared().apiKey = Constants.APIKeys.ChimpKit.key()
+        ChimpKit.shared().shouldUseBackgroundThread = true
         
         // Register for Google App Indexing
         //GSDAppIndexing.sharedInstance().registerApp(iTunesID)
@@ -102,30 +102,30 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         Settings.registerNotificationDefaults()
         
         // Setup General Appearance
-        UITabBar.appearance().barTintColor = UIColor.whiteColor()
+        UITabBar.appearance().barTintColor = UIColor.white
         UITabBar.appearance().tintColor = Constants.stockSwipeGreenColor
-        self.window?.backgroundColor = UIColor.whiteColor()
+        self.window?.backgroundColor = UIColor.white
         
         // Adding paging indicator
         let pageControl = UIPageControl.appearance()
-        pageControl.pageIndicatorTintColor = UIColor.lightGrayColor()
+        pageControl.pageIndicatorTintColor = UIColor.lightGray
         pageControl.currentPageIndicatorTintColor = Constants.stockSwipeGreenColor
-        pageControl.backgroundColor = UIColor.whiteColor()
+        pageControl.backgroundColor = UIColor.white
         
         // Track user
-        if application.applicationState != UIApplicationState.Background {
+        if application.applicationState != UIApplicationState.background {
             // Track an app open here if we launch with a push, unless
             // "content_available" was used to trigger a background push (introduced in iOS 7).
             // In that case, we skip tracking here to avoid double counting the app-open.
             
-            let preBackgroundPush = !application.respondsToSelector(Selector("backgroundRefreshStatus"))
-            let oldPushHandlerOnly = !self.respondsToSelector(#selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:)))
+            let preBackgroundPush = !application.responds(to: #selector(getter: UIApplication.backgroundRefreshStatus))
+            let oldPushHandlerOnly = !self.responds(to: #selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:)))
             var pushPayload = false
             if let options = launchOptions {
-                pushPayload = options[UIApplicationLaunchOptionsRemoteNotificationKey] != nil
+                pushPayload = options[UIApplicationLaunchOptionsKey.remoteNotification] != nil
             }
             if (preBackgroundPush || oldPushHandlerOnly || pushPayload) {
-                PFAnalytics.trackAppOpenedWithLaunchOptions(launchOptions)
+                PFAnalytics.trackAppOpened(launchOptions: launchOptions)
             }
         }
         
@@ -136,13 +136,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         return true
     }
     
-    func application(application: UIApplication, openURL url: NSURL, sourceApplication: String?, annotation: AnyObject) -> Bool {
+    func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         
         //        let sanitizedURL: NSURL = GSDDeepLink.handleDeepLink(url)
         
         switch url.scheme {
             
-        case "stockswipe":
+        case ?"stockswipe":
             
             guard url.host == "chart", let window = self.window else { return true }
             
@@ -159,12 +159,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                     
                     guard let stockObject = try result().first else { return }
                     
-                    let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
+                    let chartDetailTabBarController  = Constants.storyboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
                     let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
                     
                     if mainTabBarController.presentationController != nil {
                         
-                        mainTabBarController.dismissViewControllerAnimated(false, completion: nil)
+                        mainTabBarController.dismiss(animated: false, completion: nil)
                         
                     }
                     
@@ -172,15 +172,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                     
                     chartDetailTabBarController.chart = chart
                         
-                    mainTabBarController.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
+                    mainTabBarController.present(chartDetailTabBarController, animated: true, completion: nil)
                     
                 } catch {
                     
                     if let error = error as? Constants.Errors {
                         
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                        DispatchQueue.main.async(execute: { () -> Void in
                             
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
                         })
                     }
                 }
@@ -189,9 +189,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
             
             return true
             
-        case "fb863699560384982":
+        case ?"fb863699560384982":
             
-            return FBSDKApplicationDelegate.sharedInstance().application(application, openURL: url, sourceApplication: sourceApplication, annotation: annotation)
+            return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
             
         default:
             
@@ -199,7 +199,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         }
     }
     
-    func application(application: UIApplication, continueUserActivity userActivity: NSUserActivity, restorationHandler: ([AnyObject]?) -> Void) -> Bool {
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
         
         guard let window = self.window else { return true }
         
@@ -224,12 +224,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                 
                 guard let stockObject = try result().first else { return }
                 
-                let chartDetailTabBarController  = Constants.storyboard.instantiateViewControllerWithIdentifier("ChartDetailTabBarController") as! ChartDetailTabBarController
+                let chartDetailTabBarController  = Constants.storyboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
                 let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
                 
                 if mainTabBarController.presentationController != nil {
                     
-                    mainTabBarController.dismissViewControllerAnimated(false, completion: nil)
+                    mainTabBarController.dismiss(animated: false, completion: nil)
                     
                 }
                 
@@ -237,15 +237,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                 
                 chartDetailTabBarController.chart = chart
                 
-                mainTabBarController.presentViewController(chartDetailTabBarController, animated: true, completion: nil)
+                mainTabBarController.present(chartDetailTabBarController, animated: true, completion: nil)
                 
             } catch {
                 
                 if let error = error as? Constants.Errors {
                     
-                    dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                    DispatchQueue.main.async(execute: { () -> Void in
                         
-                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.Warning)
+                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
                     })
                 }
             }
@@ -255,19 +255,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         return true
     }
     
-    func application(application: UIApplication, didRegisterUserNotificationSettings notificationSettings: UIUserNotificationSettings) {
+    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
         
     }
     
-    func application(application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         
-        if let currentInstallation = PFInstallation.currentInstallation() {
-            currentInstallation.setDeviceTokenFromData(deviceToken)
+        if let currentInstallation = PFInstallation.current() {
+            currentInstallation.setDeviceTokenFrom(deviceToken)
             currentInstallation.saveInBackground()
         }
     }
     
-    func application(application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: NSError) {
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         
         if error.code == 3010 {
             
@@ -279,28 +279,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         }
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
         
         self.pushDelegate?.didReceivePushNotification(userInfo)
         
         //PFPush.handlePush(userInfo)
         
-        if application.applicationState == UIApplicationState.Inactive {
-            PFAnalytics.trackAppOpenedWithRemoteNotificationPayload(userInfo)
+        if application.applicationState == UIApplicationState.inactive {
+            PFAnalytics.trackAppOpened(withRemoteNotificationPayload: userInfo)
         }
     }
     
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
         
         
     }
     
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
         
         // Register for Push Notitications
-        if application.respondsToSelector(#selector(UIApplication.registerUserNotificationSettings(_:))) {
-            let userNotificationTypes: UIUserNotificationType = [.Alert, .Badge, .Sound]
-            let settings = UIUserNotificationSettings(forTypes: userNotificationTypes, categories: nil)
+        if application.responds(to: #selector(UIApplication.registerUserNotificationSettings(_:))) {
+            let userNotificationTypes: UIUserNotificationType = [.alert, .badge, .sound]
+            let settings = UIUserNotificationSettings(types: userNotificationTypes, categories: nil)
             application.registerUserNotificationSettings(settings)
             application.registerForRemoteNotifications()
             
@@ -309,24 +309,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         }
     }
     
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
     }
     
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
         // Track Facebook events
         FBSDKAppEvents.activateApp()
         
         // Clear Parse Push badges
-        if application.isRegisteredForRemoteNotifications(), let currentInstallation = PFInstallation.currentInstallation() {
+        if application.isRegisteredForRemoteNotifications, let currentInstallation = PFInstallation.current() {
             currentInstallation.badge = 0
             currentInstallation.saveEventually()
         }
     }
     
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
@@ -334,31 +334,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
     
     // MARK: - Core Data stack
     
-    lazy var applicationDocumentsDirectory: NSURL = {
+    lazy var applicationDocumentsDirectory: URL = {
         // The directory the application uses to store the Core Data store file. This code uses a directory named "MDCSwipeToChoose.SwiftLikedOrNope" in the application's documents Application Support directory.
-        let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count-1] as NSURL
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return urls[urls.count-1] as URL
     }()
     
     lazy var managedObjectModel: NSManagedObjectModel = {
         // The managed object model for the application. This property is not optional. It is a fatal error for the application not to be able to find and load its model.
-        let modelURL = NSBundle.mainBundle().URLForResource("StockSwipe", withExtension: "momd")!
-        return NSManagedObjectModel(contentsOfURL: modelURL)!
+        let modelURL = Bundle.main.url(forResource: "StockSwipe", withExtension: "momd")!
+        return NSManagedObjectModel(contentsOf: modelURL)!
     }()
     
     lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator = {
         // The persistent store coordinator for the application. This implementation creates and return a coordinator, having added the store for the application to it. This property is optional since there are legitimate error conditions that could cause the creation of the store to fail.
         // Create the coordinator and store
         let coordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
-        let url = self.applicationDocumentsDirectory.URLByAppendingPathComponent("StockSwipe.sqlite")
+        let url = self.applicationDocumentsDirectory.appendingPathComponent("StockSwipe.sqlite")
         var failureReason = "There was an error creating or loading the application's saved data."
         do {
-            try coordinator.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: nil)
+            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
         } catch {
             // Report any error we got.
             var dict = [String: AnyObject]()
-            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data"
-            dict[NSLocalizedFailureReasonErrorKey] = failureReason
+            dict[NSLocalizedDescriptionKey] = "Failed to initialize the application's saved data" as AnyObject?
+            dict[NSLocalizedFailureReasonErrorKey] = failureReason as AnyObject?
             
             dict[NSUnderlyingErrorKey] = error as? NSError
             let wrappedError = NSError(domain: "YOUR_ERROR_DOMAIN", code: 9999, userInfo: dict)
@@ -374,7 +374,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
     lazy var managedObjectContext: NSManagedObjectContext = {
         // Returns the managed object context for the application (which is already bound to the persistent store coordinator for the application.) This property is optional since there are legitimate error conditions that could cause the creation of the context to fail.
         let coordinator = self.persistentStoreCoordinator
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
+        var managedObjectContext = NSManagedObjectContext(concurrencyType: .mainQueueConcurrencyType)
         managedObjectContext.persistentStoreCoordinator = coordinator
         return managedObjectContext
     }()
@@ -405,7 +405,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                           contentName: "StockSwipe Rated",
                           contentType: "Rate",
                           contentId: nil,
-                          customAttributes: ["User": PFUser.currentUser()?.username ?? "N/A", "Country Code": Constants.countryCode, "App Version": Constants.AppVersion])
+                          customAttributes: ["User": PFUser.current()?.username ?? "N/A", "Country Code": Constants.countryCode, "App Version": Constants.AppVersion])
     }
     
     func iRateDidDetectAppUpdate() {
@@ -413,7 +413,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         print("iRateDidDetectAppUpdate")
         
         SARate.sharedInstance().eventCount = 0
-        Constants.userDefaults.setBool(false, forKey: "FEEDBACK_GIVEN")
+        Constants.userDefaults.set(false, forKey: "FEEDBACK_GIVEN")
         Constants.userDefaults.synchronize()
         
     }

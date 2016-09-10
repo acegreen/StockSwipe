@@ -25,11 +25,11 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     var activities = [PFObject]()
     var isQueryingForActivities = true
     
-    @IBAction func xButtonPressed(sender: AnyObject) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+    @IBAction func xButtonPressed(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func refreshControlAction(sender: UIRefreshControl) {
+    @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
         getActivities()
     }
     
@@ -41,7 +41,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         self.getActivities()
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     
         // Set badge to nil when user goes to view
@@ -55,7 +55,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     
     func getActivities() {
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         
         isQueryingForActivities = true
         
@@ -73,10 +73,10 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
                 
                 self.activities += activityObjects
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     self.tableView.reloadData()
                     
-                    if self.refreshControl?.refreshing == true {
+                    if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
                         self.updateRefreshDate()
                     }
@@ -85,10 +85,10 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             } catch {
                 
                 // TO-DO: Show sweet alert with Error.message()
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     self.tableView.reloadData()
                     
-                    if self.refreshControl?.refreshing == true {
+                    if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
                         self.updateRefreshDate()
                     }
@@ -97,11 +97,11 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         }
     }
     
-    func loadMoreActivities(skip skip: Int) {
+    func loadMoreActivities(skip: Int) {
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         
-        if self.refreshControl?.refreshing == false {
+        if self.refreshControl?.isRefreshing == false {
             
             self.footerActivityIndicator.startAnimating()
         }
@@ -112,7 +112,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
                 
                 let activityObjects = try result()
                 
-                dispatch_async(dispatch_get_main_queue(), { () -> Void in
+                DispatchQueue.main.async(execute: { () -> Void in
                     
                     for activityObject: PFObject in activityObjects {
                         
@@ -120,10 +120,10 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
                         self.activities.append(activityObject)
                         
                         //now insert cell in tableview
-                        self.tableView.insertRowsAtIndexPaths([NSIndexPath(forRow: self.activities.count - 1, inSection: 0)], withRowAnimation: .None)
+                        self.tableView.insertRows(at: [IndexPath(row: self.activities.count - 1, section: 0)], with: .none)
                     }
                     
-                    if self.footerActivityIndicator?.isAnimating() == true {
+                    if self.footerActivityIndicator?.isAnimating == true {
                         self.footerActivityIndicator.stopAnimating()
                         self.updateRefreshDate()
                     }
@@ -132,7 +132,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             } catch {
                 
                 // TO-DO: Show sweet alert with Error.message()
-                if self.footerActivityIndicator?.isAnimating() == true {
+                if self.footerActivityIndicator?.isAnimating == true {
                     self.footerActivityIndicator.stopAnimating()
                     self.updateRefreshDate()
                 }
@@ -142,9 +142,9 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     
     func updateRefreshDate() {
         
-        let title: String = "Last Update: \(NSDate().formattedAsTimeAgo())"
+        let title: String = "Last Update: \((Date() as NSDate).formattedAsTimeAgo())"
         let attrsDictionary = [
-            NSForegroundColorAttributeName : UIColor.whiteColor()
+            NSForegroundColorAttributeName : UIColor.white
         ]
         
         let attributedTitle: NSAttributedString = NSAttributedString(string: title, attributes: attrsDictionary)
@@ -153,50 +153,50 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     
     // MARK: - Table view data source
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return activities.count
     }
     
-    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
     }
     
-    override func tableView(tableView: UITableView, estimatedHeightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as NotificationCell
-        cell.configureCell(activities[indexPath.row])
+        cell.configureCell(activities[(indexPath as NSIndexPath).row])
         
         return cell
     }
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let activityAtIndexPath = activities[indexPath.row]
-        guard let activityType = Constants.ActivityType(rawValue: activityAtIndexPath.objectForKey("activityType") as! String) else { return }
+        let activityAtIndexPath = activities[(indexPath as NSIndexPath).row]
+        guard let activityType = Constants.ActivityType(rawValue: activityAtIndexPath.object(forKey: "activityType") as! String) else { return }
         
         switch activityType {
         case .Follow, .Mention:
-            guard activityAtIndexPath.objectForKey("fromUser") != nil else { return }
-            self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: tableView.cellForRowAtIndexPath(indexPath))
+            guard activityAtIndexPath.object(forKey: "fromUser") != nil else { return }
+            self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: tableView.cellForRow(at: indexPath))
         case .TradeIdeaNew, .TradeIdeaLike, .TradeIdeaReply, .TradeIdeaReshare:
-            guard activityAtIndexPath.objectForKey("tradeIdea") != nil else { return }
-            self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tableView.cellForRowAtIndexPath(indexPath))
+            guard activityAtIndexPath.object(forKey: "tradeIdea") != nil else { return }
+            self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tableView.cellForRow(at: indexPath))
         case .Block, .StockLong, .StockShort:
             break
         }
     }
     
-    override func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
         if offset >= 0 && offset <= 5 {
@@ -205,7 +205,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let segueIdentifier = segueIdentifierForSegue(segue)
         guard let cell = sender as? NotificationCell else { return }
@@ -214,9 +214,9 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             
         case .TradeIdeaDetailSegueIdentifier:
             
-            let destinationViewController = segue.destinationViewController as! TradeIdeaDetailTableViewController
+            let destinationViewController = segue.destination as! TradeIdeaDetailTableViewController
             
-            if let tradeIdeaObject = cell.activity.objectForKey("tradeIdea") as? PFObject {
+            if let tradeIdeaObject = cell.activity.object(forKey: "tradeIdea") as? PFObject {
                 
                 TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
                     destinationViewController.tradeIdea = tradeIdea
@@ -225,9 +225,9 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             
         case .ProfileSegueIdentifier:
             
-            let profileViewController = segue.destinationViewController as! ProfileContainerController
+            let profileViewController = segue.destination as! ProfileContainerController
             
-            profileViewController.user = User(userObject: cell.activity.objectForKey("fromUser") as! PFUser)
+            profileViewController.user = User(userObject: cell.activity.object(forKey: "fromUser") as! PFUser)
             
             // Just a workaround.. There should be a cleaner way to sort this out
             profileViewController.navigationItem.rightBarButtonItem = nil
@@ -239,7 +239,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
 
 extension NotificationCenterTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    func emptyDataSetShouldDisplay(scrollView: UIScrollView!) -> Bool {
+    func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
         if !isQueryingForActivities && activities.count == 0 {
             return true
         }
@@ -251,11 +251,11 @@ extension NotificationCenterTableViewController: DZNEmptyDataSetSource, DZNEmpty
 //        return UIImage(assetIdentifier: .comingSoonImage)
 //    }
     
-    func titleForEmptyDataSet(scrollView: UIScrollView!) -> NSAttributedString! {
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle: NSAttributedString!
         
-        attributedTitle = NSAttributedString(string: "Nothing New", attributes: [NSFontAttributeName: UIFont.boldSystemFontOfSize(24)])
+        attributedTitle = NSAttributedString(string: "Nothing New", attributes: [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 24)])
         
         return attributedTitle
     }

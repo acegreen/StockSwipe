@@ -17,105 +17,105 @@ class NotificationsTableViewController: UITableViewController {
     @IBOutlet var likesNotificationSwitch: UISwitch!
     @IBOutlet var reshareNotificationSwitch: UISwitch!
     
-    @IBAction func TradeIdeaPostedNotificationSwitch(sender: UISwitch) {
+    @IBAction func TradeIdeaPostedNotificationSwitch(_ sender: UISwitch) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.Warning)
-            sender.on = !sender.on
+            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.warning)
+            sender.isOn = !sender.isOn
             return
         }
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         
-        currentUser["newTradeIdea_notification"] = sender.on
+        currentUser["newTradeIdea_notification"] = sender.isOn
         
         currentUser.saveEventually { (success, error) in
             if success {
-                Constants.userDefaults.setBool(sender.on, forKey: "NEWTRADEIDEA_NOTIFICATION")
+                Constants.userDefaults.set(sender.isOn, forKey: "NEWTRADEIDEA_NOTIFICATION")
             } else {
                 
             }
         }
     }
     
-    @IBAction func followerNotificationSwitch(sender: UISwitch) {
+    @IBAction func followerNotificationSwitch(_ sender: UISwitch) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.Warning)
-            sender.on = !sender.on
+            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.warning)
+            sender.isOn = !sender.isOn
             return
         }
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         
-        currentUser["follower_notification"] = sender.on
+        currentUser["follower_notification"] = sender.isOn
         
         currentUser.saveEventually { (success, error) in
             if success {
-                Constants.userDefaults.setBool(sender.on, forKey: "FOLLOWER_NOTIFICATION")
+                Constants.userDefaults.set(sender.isOn, forKey: "FOLLOWER_NOTIFICATION")
             } else {
                 
             }
         }
     }
     
-    @IBAction func repliesNotificationSwitch(sender: UISwitch) {
+    @IBAction func repliesNotificationSwitch(_ sender: UISwitch) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.Warning)
-            sender.on = !sender.on
+            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.warning)
+            sender.isOn = !sender.isOn
             return
         }
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         
-        currentUser["replyTradeIdea_notification"] = sender.on
+        currentUser["replyTradeIdea_notification"] = sender.isOn
         
         currentUser.saveEventually { (success, error) in
             if success {
-                Constants.userDefaults.setBool(sender.on, forKey: "REPLYTRADEIDEA_NOTIFICATION")
+                Constants.userDefaults.set(sender.isOn, forKey: "REPLYTRADEIDEA_NOTIFICATION")
             } else {
                 
             }
         }
     }
     
-    @IBAction func likesNotificationSwitch(sender: UISwitch) {
+    @IBAction func likesNotificationSwitch(_ sender: UISwitch) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.Warning)
-            sender.on = !sender.on
+            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.warning)
+            sender.isOn = !sender.isOn
             return
         }
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         
-        currentUser["likeTradeIdea_notification"] = sender.on
+        currentUser["likeTradeIdea_notification"] = sender.isOn
         
         currentUser.saveEventually { (success, error) in
             if success {
-                Constants.userDefaults.setBool(sender.on, forKey: "LIKETRADEIDEA_NOTIFICATION")
+                Constants.userDefaults.set(sender.isOn, forKey: "LIKETRADEIDEA_NOTIFICATION")
             } else {
                 
             }
         }
     }
     
-    @IBAction func reshareNotificationSwitch(sender: UISwitch) {
+    @IBAction func reshareNotificationSwitch(_ sender: UISwitch) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.Warning)
-            sender.on = !sender.on
+            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.warning)
+            sender.isOn = !sender.isOn
             return
         }
         
-        guard let currentUser = PFUser.currentUser() else { return }
+        guard let currentUser = PFUser.current() else { return }
         
-        currentUser["reshareTradeIdea_notification"] = sender.on
+        currentUser["reshareTradeIdea_notification"] = sender.isOn
         
         currentUser.saveEventually { (success, error) in
             if success {
-                Constants.userDefaults.setBool(sender.on, forKey: "RESHARETRADEIDEA_NOTIFICATION")
+                Constants.userDefaults.set(sender.isOn, forKey: "RESHARETRADEIDEA_NOTIFICATION")
             } else {
                 
             }
@@ -126,7 +126,7 @@ class NotificationsTableViewController: UITableViewController {
         super.viewDidLoad()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         setSwitches()
@@ -139,13 +139,13 @@ class NotificationsTableViewController: UITableViewController {
     
     func setSwitches() {
         
-        guard PFUser.currentUser() != nil else {
+        guard PFUser.current() != nil else {
             
             return
         }
         
-        followerNotificationSwitch.on = Constants.userDefaults.boolForKey("FOLLOWER_NOTIFICATION")
-        TradeIdeaPostedNotificationSwitch.on = Constants.userDefaults.boolForKey("NEWTRADEIDEA_NOTIFICATION")
+        followerNotificationSwitch.isOn = Constants.userDefaults.bool(forKey: "FOLLOWER_NOTIFICATION")
+        TradeIdeaPostedNotificationSwitch.isOn = Constants.userDefaults.bool(forKey: "NEWTRADEIDEA_NOTIFICATION")
     }
 
     /*

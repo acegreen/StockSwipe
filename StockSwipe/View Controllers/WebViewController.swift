@@ -13,7 +13,7 @@ import Crashlytics
 
 class WebViewController: UIViewController {
     
-    var url: NSURL!
+    var url: URL!
     var webView: WKWebView!
     var customAlert = SweetAlert()
     
@@ -25,39 +25,39 @@ class WebViewController: UIViewController {
     @IBOutlet var shareButton: UIBarButtonItem!
     @IBOutlet var safariButton: UIBarButtonItem!
     
-    @IBAction func xButtonPressed(sender: AnyObject) {
+    @IBAction func xButtonPressed(_ sender: AnyObject) {
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
     }
     
-    @IBAction func shareButtonPressed(sender: AnyObject) {
+    @IBAction func shareButtonPressed(_ sender: AnyObject) {
         
         Functions.presentActivityVC(nil, imageToShare: nil, url: self.url, sender: self.shareButton, vc: self) { (activity, success, items, error) -> Void in
             
             if success {
                 
-                SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.Success)
+                SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
                 
                 // log shared successfully
-                Answers.logShareWithMethod("\(activity!)",
+                Answers.logShare(withMethod: "\(activity!)",
                     contentName: "\(self.url.path) shared",
                     contentType: "Share",
                     contentId: nil,
-                    customAttributes: ["User": PFUser.currentUser()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                    customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
                 
                 //"Installation ID":PFInstallation.currentInstallation()!.installationId,
                 
             } else if error != nil {
                 
-                SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.Error)
+                SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
             }
             
         }
     }
     
-    @IBAction func safariButtonPressed(sender: AnyObject) {
+    @IBAction func safariButtonPressed(_ sender: AnyObject) {
         
-        UIApplication.sharedApplication().openURL(self.url)
+        UIApplication.shared.openURL(self.url)
     }
     
     override func viewDidLoad() {
@@ -68,16 +68,16 @@ class WebViewController: UIViewController {
         self.view.insertSubview(webView, belowSubview: webViewProgressBar)
         
         self.webView.navigationDelegate = self
-        self.webView.addObserver(self, forKeyPath: "estimatedProgress", options: .New, context: nil)
+        self.webView.addObserver(self, forKeyPath: "estimatedProgress", options: .new, context: nil)
         
         if url != nil {
             self.urlField.text = String(self.url.host!)
-            let urlrequest: NSURLRequest = NSURLRequest(URL: self.url)
-            self.webView.loadRequest(urlrequest)
+            let urlrequest: URLRequest = URLRequest(url: self.url)
+            self.webView.load(urlrequest)
         }
     }
     
-    override func observeValueForKeyPath(keyPath: String?, ofObject object: AnyObject?, change: [String : AnyObject]?, context: UnsafeMutablePointer<Void>) {
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         
         if (keyPath == "loading") {
 //            backButton.enabled = webView.canGoBack
@@ -85,14 +85,14 @@ class WebViewController: UIViewController {
         }
         
         if (keyPath == "estimatedProgress") {
-            webViewProgressBar.hidden = webView.estimatedProgress == 1
+            webViewProgressBar.isHidden = webView.estimatedProgress == 1
             webViewProgressBar.setProgress(Float(webView.estimatedProgress), animated: true)
         }
     }
     
     deinit {
         
-        if webView.loading {
+        if webView.isLoading {
             
             webView.stopLoading()
         }
@@ -105,14 +105,14 @@ class WebViewController: UIViewController {
 
 extension WebViewController: WKNavigationDelegate {
     
-    func webView(webView: WKWebView, didFailNavigation navigation: WKNavigation!, withError error: NSError) {
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         
         print("error: \(error.localizedDescription): \(error.userInfo)")
         
-        SweetAlert().showAlert("Something went wrong while loading", subTitle: "Please try again", style: AlertStyle.Warning)
+        SweetAlert().showAlert("Something went wrong while loading", subTitle: "Please try again", style: AlertStyle.warning)
     }
     
-    func webView(webView: WKWebView, didFinishNavigation navigation: WKNavigation!) {
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         
         webViewProgressBar.setProgress(0.0, animated: false)
     }

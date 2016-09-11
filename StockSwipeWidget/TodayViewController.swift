@@ -148,7 +148,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         
         let removableObjects = NSMutableArray()
         for subview: AnyObject in self.view.subviews {
-            if subview.isKind(of: UIButton) {
+            if subview is UIButton {
                 removableObjects.add(subview)
             }
         }
@@ -195,10 +195,10 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
             if subJson["symbol"].string == buttonPressed.currentTitle {
                 
                 guard let symbol = subJson["symbol"].string,
-                      let url = NSURL(string: "stockswipe://chart?symbol=" + symbol)
+                      let url = URL(string: "stockswipe://chart?symbol=" + symbol)
                 else { return }
                             
-                extensionContext?.openURL(url, completionHandler: nil)
+                extensionContext?.open(url, completionHandler: nil)
             }
         }
     }
@@ -222,7 +222,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
                 
                 for (index, subJson) in self.trendingStocksJSON {
                     
-                    let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: self.trendingStocksJSON.count - Int(index)!, wordTappable: true)
+                    let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: (self.trendingStocksJSON.count - Int(index)!) as NSNumber, wordTappable: true)
                     self.cloudWords.append(cloudWord)
                     
                 }

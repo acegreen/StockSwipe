@@ -17,7 +17,7 @@ import SafariServices
 import AMPopTip
 import NVActivityIndicatorView
 
-open class Functions {
+class Functions {
     
     //func isConnectedToNetwork() -> Bool {
     //

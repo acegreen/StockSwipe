@@ -8,9 +8,9 @@
 
 import Foundation
 
-open class Settings {
+class Settings {
     
-    open class func registerGeneralDefaults() {
+    class func registerGeneralDefaults() {
         let generalPrefsFile: URL = Bundle.main.url(forResource: "GeneralPreferences", withExtension: "plist")!
         let generalPrefs: NSDictionary = NSDictionary(contentsOf: generalPrefsFile)!
         Constants.userDefaults.register(defaults: generalPrefs as! [String : AnyObject])
@@ -20,7 +20,7 @@ open class Settings {
         Constants.userDefaults.synchronize()
     }
     
-    open class func registerStocksDefaults() {
+    class func registerStocksDefaults() {
         
         switch Constants.countryCode {
         
@@ -56,7 +56,7 @@ open class Settings {
         Constants.userDefaults.synchronize()
     }
     
-    open class func registerNotificationDefaults() {
+    class func registerNotificationDefaults() {
         let notificationPrefsFile: URL = Bundle.main.url(forResource: "NotificationPreferences", withExtension: "plist")!
         let notificationPrefs: NSDictionary = NSDictionary(contentsOf: notificationPrefsFile)!
         Constants.userDefaults.register(defaults: notificationPrefs as! [String : AnyObject])

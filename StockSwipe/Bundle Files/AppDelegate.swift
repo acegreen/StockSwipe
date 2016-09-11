@@ -142,7 +142,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         
         switch url.scheme {
             
-        case ?"stockswipe":
+        case "stockswipe"?:
             
             guard url.host == "chart", let window = self.window else { return true }
             
@@ -159,7 +159,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                     
                     guard let stockObject = try result().first else { return }
                     
-                    let chartDetailTabBarController  = Constants.storyboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
+                    let chartDetailTabBarController  = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
                     let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
                     
                     if mainTabBarController.presentationController != nil {
@@ -189,7 +189,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
             
             return true
             
-        case ?"fb863699560384982":
+        case "fb863699560384982"?:
             
             return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
             
@@ -224,7 +224,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                 
                 guard let stockObject = try result().first else { return }
                 
-                let chartDetailTabBarController  = Constants.storyboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
+                let chartDetailTabBarController  = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
                 let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
                 
                 if mainTabBarController.presentationController != nil {

@@ -1,7 +1,7 @@
 # The file is sourced by bash, so the only expressions allowed are assignments without spaces
-build=246
-lib=1.2.0
+build=257
+lib=1.3.1
 api=1.14.0
 xcodeproj_configuration=7
 structure=1
-installer_app_build=15
+installer_app_build=16

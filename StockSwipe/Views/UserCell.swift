@@ -45,7 +45,7 @@ class UserCell: UITableViewCell {
     
     func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
-        let profileContainerController = Constants.storyboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
+        let profileContainerController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
         
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == username) {
             profileContainerController.user = self.user

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A319" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Page View Controller-->
+        <scene sceneID="MAA-26-D5h">
+            <objects>
+                <pageViewController storyboardIdentifier="PageViewController" autoresizesArchivedViewToFullSize="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="Y8J-Ew-sD8" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qqf-gR-pFy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-270" y="-1283"/>
+        </scene>
+        <!--Page Content View Controller-->
+        <scene sceneID="zvO-iY-rUl">
+            <objects>
+                <viewController storyboardIdentifier="PageContentViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Etz-2f-HJ9" customClass="PageContentViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="7XX-i1-bzd"/>
+                        <viewControllerLayoutGuide type="bottom" id="hz8-Ic-WLh"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="2sb-rt-nqy">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="4bv-Ee-2OU"/>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="hz8-Ic-WLh" firstAttribute="top" secondItem="4bv-Ee-2OU" secondAttribute="bottom" id="DwG-7a-ukf"/>
+                            <constraint firstItem="4bv-Ee-2OU" firstAttribute="top" secondItem="7XX-i1-bzd" secondAttribute="bottom" id="eNt-bU-Krk"/>
+                            <constraint firstAttribute="trailing" secondItem="4bv-Ee-2OU" secondAttribute="trailing" id="gpI-pa-LZI"/>
+                            <constraint firstItem="4bv-Ee-2OU" firstAttribute="leading" secondItem="2sb-rt-nqy" secondAttribute="leading" id="kK5-BB-pQ2"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="4bv-Ee-2OU" id="aj3-Dk-kEn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1lJ-gr-2CD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="354" y="-1283"/>
+        </scene>
+        <!--Tutorial-->
+        <scene sceneID="J9P-mP-Pqk">
+            <objects>
+                <viewController storyboardIdentifier="LoginViewController" title="Tutorial" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1tJ-Iw-prd" customClass="LoginViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Wgz-cg-lus"/>
+                        <viewControllerLayoutGuide type="bottom" id="XyH-f1-dHw"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Uo3-n8-yW6">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <userGuides>
+                            <userLayoutGuide location="540" affinity="minY"/>
+                        </userGuides>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K32-mO-Pyn">
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We don't dare post anything" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Xb-go-eKt">
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="25" id="gM2-Nj-kjx"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoDark" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="30r-hT-JPQ">
+                                        <color key="tintColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <state key="normal">
+                                            <color key="titleColor" red="0.33333333329999998" green="0.33333333329999998" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstItem="4Xb-go-eKt" firstAttribute="leading" secondItem="30r-hT-JPQ" secondAttribute="trailing" constant="5" id="4uz-KM-6xK"/>
+                                    <constraint firstAttribute="height" secondItem="4Xb-go-eKt" secondAttribute="height" id="Auh-f6-VNX"/>
+                                    <constraint firstItem="30r-hT-JPQ" firstAttribute="leading" secondItem="K32-mO-Pyn" secondAttribute="leading" id="F6r-0R-JmX"/>
+                                    <constraint firstItem="30r-hT-JPQ" firstAttribute="centerY" secondItem="4Xb-go-eKt" secondAttribute="centerY" id="UMh-pQ-ivS"/>
+                                    <constraint firstAttribute="trailing" secondItem="4Xb-go-eKt" secondAttribute="trailing" id="icO-vK-tUn"/>
+                                    <constraint firstItem="4Xb-go-eKt" firstAttribute="centerY" secondItem="K32-mO-Pyn" secondAttribute="centerY" id="q6K-Dt-eo7"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UFl-Lr-N54">
+                                <color key="backgroundColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="HPp-IW-LSC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Not Now">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="0.5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="9"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="notNowButtonPressed:" destination="1tJ-Iw-prd" eventType="touchUpInside" id="wso-UF-IAC"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PE9-3J-cyf">
+                                <color key="backgroundColor" red="0.098039217289999994" green="0.84313726430000002" blue="0.098039217289999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="150" id="GC1-Oi-ILy"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                <state key="normal" title="Log Me In">
+                                    <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="0.5"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="9"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="logInButtonPressed:" destination="1tJ-Iw-prd" eventType="touchUpInside" id="if7-Xo-TXz"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="UFl-Lr-N54" firstAttribute="centerY" secondItem="PE9-3J-cyf" secondAttribute="centerY" id="FNr-Ub-MnV"/>
+                            <constraint firstItem="K32-mO-Pyn" firstAttribute="top" secondItem="PE9-3J-cyf" secondAttribute="bottom" constant="5" id="Mla-U0-apj"/>
+                            <constraint firstItem="K32-mO-Pyn" firstAttribute="centerX" secondItem="Uo3-n8-yW6" secondAttribute="centerX" id="NkF-Tt-fHw"/>
+                            <constraint firstItem="PE9-3J-cyf" firstAttribute="leading" secondItem="Uo3-n8-yW6" secondAttribute="centerX" constant="10" id="dHU-7H-MwC"/>
+                            <constraint firstItem="PE9-3J-cyf" firstAttribute="centerY" secondItem="Uo3-n8-yW6" secondAttribute="centerY" multiplier="1.8" id="fWT-VH-oT3"/>
+                            <constraint firstItem="UFl-Lr-N54" firstAttribute="trailing" secondItem="Uo3-n8-yW6" secondAttribute="centerX" constant="-10" id="lbD-sK-Gdn"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Yan-As-Vyh"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="D5I-mF-4H8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-897" y="-1283"/>
+        </scene>
+    </scenes>
+</document>

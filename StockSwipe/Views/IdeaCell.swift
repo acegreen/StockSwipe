@@ -55,7 +55,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     @IBAction func replyButton(_ sender: AnyObject) {
         
-        let tradeIdeaPostNavigationController = Constants.storyboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
+        let tradeIdeaPostNavigationController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
         let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
         
         ideaPostViewController.originalTradeIdea = self.tradeIdea
@@ -70,7 +70,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         if !sender.isSelected == true {
             
-            let tradeIdeaPostNavigationController = Constants.storyboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
+            let tradeIdeaPostNavigationController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
             let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
             
             ideaPostViewController.originalTradeIdea = self.tradeIdea
@@ -186,7 +186,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
-        let profileContainerController = Constants.storyboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
+        let profileContainerController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
         
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == userName) {
             profileContainerController.user = self.tradeIdea.user

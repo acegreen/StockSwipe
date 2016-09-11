@@ -10,7 +10,7 @@ import UIKit
 
 class NVActivityIndicatorAnimationBallSpinFadeLoader: NVActivityIndicatorAnimationDelegate {
     
-    func setUpAnimationInLayer(_ layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimationInLayer(layer: CALayer, size: CGSize, color: UIColor) {
         let circleSpacing: CGFloat = -2
         let circleSize = (size.width - 4 * circleSpacing) / 5
         let x = (layer.bounds.size.width - size.width) / 2
@@ -40,7 +40,7 @@ class NVActivityIndicatorAnimationBallSpinFadeLoader: NVActivityIndicatorAnimati
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         animation.duration = duration
         animation.repeatCount = HUGE
-        animation.isRemovedOnCompletion = false
+        animation.removedOnCompletion = false
         
         // Draw circles
         for i in 0 ..< 8 {
@@ -51,14 +51,14 @@ class NVActivityIndicatorAnimationBallSpinFadeLoader: NVActivityIndicatorAnimati
                 color: color)
             
             animation.beginTime = beginTime + beginTimes[i]
-            circle.add(animation, forKey: "animation")
+            circle.addAnimation(animation, forKey: "animation")
             layer.addSublayer(circle)
         }
     }
     
-    func circleAt(angle: CGFloat, size: CGFloat, origin: CGPoint, containerSize: CGSize, color: UIColor) -> CALayer {
+    func circleAt(angle angle: CGFloat, size: CGFloat, origin: CGPoint, containerSize: CGSize, color: UIColor) -> CALayer {
         let radius = containerSize.width / 2 - size / 2
-        let circle = NVActivityIndicatorShape.circle.createLayerWith(size: CGSize(width: size, height: size), color: color)
+        let circle = NVActivityIndicatorShape.Circle.createLayerWith(size: CGSize(width: size, height: size), color: color)
         let frame = CGRect(
             x: origin.x + radius * (cos(angle) + 1),
             y: origin.y + radius * (sin(angle) + 1),

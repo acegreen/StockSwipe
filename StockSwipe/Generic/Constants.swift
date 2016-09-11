@@ -22,67 +22,70 @@ var nsUserActivityArray = [NSUserActivity]()
 
 let motionOffset: CGFloat = 20
 
-open class Constants {
+class Constants {
     
-    open static var window: UIWindow? {
+    static var window: UIWindow? {
         get {
             return UIApplication.shared.keyWindow
         }
     }
     
-    open static let current = UIDevice.current
-    open static let bundleIdentifier = Bundle.main.bundleIdentifier
-    open static let infoDict = Bundle.main.infoDictionary
-    open static let AppVersion = infoDict!["CFBundleShortVersionString"]!
-    open static let BundleVersion = infoDict!["CFBundleVersion"]!
+    static let current = UIDevice.current
+    static let bundleIdentifier = Bundle.main.bundleIdentifier
+    static let infoDict = Bundle.main.infoDictionary
+    static let AppVersion = infoDict!["CFBundleShortVersionString"]!
+    static let BundleVersion = infoDict!["CFBundleVersion"]!
     
-    open static let userDefaults: UserDefaults = UserDefaults.standard
+    static let userDefaults: UserDefaults = UserDefaults.standard
     
-    open static let payloadShort = "Version: \(AppVersion) (\(BundleVersion)) \n Copyright © 2015"
-    open static let payload = [ "BundleID" : infoDict!["CFBundleIdentifier"]!,
+    static let payloadShort = "Version: \(AppVersion) (\(BundleVersion)) \n Copyright © 2015"
+    static let payload = [ "BundleID" : infoDict!["CFBundleIdentifier"]!,
         "AppVersion" : AppVersion,
         "BundleVersion" : BundleVersion,
         "DeviceModel" : current.model,
         "SystemName" : current.systemName,
         "SystemVersion" : current.systemVersion ]
     
-    open static let appLink: String = "https://itunes.apple.com/us/app/stockswipe-probably-funnest/id1009599685?ls=1&mt=8"
-    open static let appLinkURL = URL(string: appLink)
-    open static let facebookAppLink = URL(string: "https://fb.me/1156458804442388")
-    open static let appURL = URL(string: "itms-apps://itunes.apple.com/app/id1009599685")
-    open static let appReviewURL = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1009599685")
-    open static let settingsURL = URL(string: UIApplicationOpenSettingsURLString)
+    static let appLink: String = "https://itunes.apple.com/us/app/stockswipe-probably-funnest/id1009599685?ls=1&mt=8"
+    static let appLinkURL = URL(string: appLink)
+    static let facebookAppLink = URL(string: "https://fb.me/1156458804442388")
+    static let appURL = URL(string: "itms-apps://itunes.apple.com/app/id1009599685")
+    static let appReviewURL = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1009599685")
+    static let settingsURL = URL(string: UIApplicationOpenSettingsURLString)
     
-    open static let appEmail: String = "StockSwipe@gmail.com"
-    open static let emailTitle = "StockSwipe Feedback/Bug"
-    open static let messageBody = "Hello StockSwipe Team, </br> </br> </br> </br> </br> - - - - - - - - - - - - - - - - - - - - - </br>" + emailDiagnosticInfo
-    open static let toReceipients = [appEmail]
-    open static let emailDiagnosticInfo = Array(payload.keys).reduce("", { (input, key) -> String in
+    static let appEmail: String = "StockSwipe@gmail.com"
+    static let emailTitle = "StockSwipe Feedback/Bug"
+    static let messageBody = "Hello StockSwipe Team, </br> </br> </br> </br> </br> - - - - - - - - - - - - - - - - - - - - - </br>" + emailDiagnosticInfo
+    static let toReceipients = [appEmail]
+    static let emailDiagnosticInfo = Array(payload.keys).reduce("", { (input, key) -> String in
         return "\(input)\r\n\(key): \(payload[key]!)</br>"
     })
     
-    open static let storyboard = UIStoryboard(name: "Main", bundle: nil)
-    open static let app = UIApplication.shared
+    static let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+    static let loginStoryboard = UIStoryboard(name: "Login", bundle: nil)
+    static let feedbackStoryboard = UIStoryboard(name: "Feedback", bundle: nil)
+
+    static let app = UIApplication.shared
     static let appDel:AppDelegate = app.delegate as! AppDelegate
-    open static let context: NSManagedObjectContext = appDel.managedObjectContext
-    open static let entity = NSEntityDescription.entity(forEntityName: "Charts", in: context)
-    open static let fetchRequest = NSFetchRequest(entityName: "Charts")
+    static let context: NSManagedObjectContext = appDel.managedObjectContext
+    static let entity = NSEntityDescription.entity(forEntityName: "Charts", in: context)
+    static let fetchRequest = NSFetchRequest(entityName: "Charts")
     
-    open static let stockSwipeFont: UIFont? = UIFont(name: "HelveticaNeue", size: 20)
-    open static let stockSwipeFontColor: UIColor = UIColor(red: 111/255, green: 113/255, blue: 121/255, alpha: 1.0)
-    open static let stockSwipeGreenColor: UIColor = UIColor(red: 25/255, green: 200/255, blue: 25/255, alpha: 1.0)
-    open static let stockSwipeGoldColor: UIColor = UIColor(red: 245, green: 192, blue: 24)
-    open static let okAlertAction = UIAlertAction(title: "Ok", style: .default, handler:{ (ACTION :UIAlertAction!)in })
+    static let stockSwipeFont: UIFont? = UIFont(name: "HelveticaNeue", size: 20)
+    static let stockSwipeFontColor: UIColor = UIColor(red: 111/255, green: 113/255, blue: 121/255, alpha: 1.0)
+    static let stockSwipeGreenColor: UIColor = UIColor(red: 25/255, green: 200/255, blue: 25/255, alpha: 1.0)
+    static let stockSwipeGoldColor: UIColor = UIColor(red: 245, green: 192, blue: 24)
+    static let okAlertAction = UIAlertAction(title: "Ok", style: .default, handler:{ (ACTION :UIAlertAction!)in })
     
-    open static let settingsAlertAction: UIAlertAction = UIAlertAction(title: "Settings", style: .default, handler: { (action: UIAlertAction!) in
+    static let settingsAlertAction: UIAlertAction = UIAlertAction(title: "Settings", style: .default, handler: { (action: UIAlertAction!) in
         UIApplication.shared.openURL(settingsURL!)
     })
     
-    open static let cancelAlertAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel, handler:{ (ACTION :UIAlertAction!) in })
+    static let cancelAlertAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel, handler:{ (ACTION :UIAlertAction!) in })
     
-    open static let countryCode = (Locale.current as NSLocale).object(forKey: NSLocale.Key.countryCode) as! String
+    static let countryCode = (Locale.current as NSLocale).object(forKey: NSLocale.Key.countryCode) as! String
     
-    public enum APIKeys: String {
+    enum APIKeys: String {
         case Parse
         case TwitterKit
         case LaunchKit
@@ -122,7 +125,7 @@ open class Constants {
         static let allAPIKeys = [Parse, TwitterKit, LaunchKit, Rollout, ChimpKit, TradeItDev, TradeItProd]
     }
     
-    public enum Errors: Error {
+    enum Errors: Error {
         case noInternetConnection
         case noExchangesOrSectorsSelected
         case ranOutOfChartCards
@@ -170,7 +173,7 @@ open class Constants {
         static let allErrors = [noInternetConnection, noExchangesOrSectorsSelected, ranOutOfChartCards, errorAccessingParseDatabase, errorAccessingServer, errorQueryingForData, queryDataEmpty, errorParsingData, parseUserObjectNotFound,parseStockObjectNotFound,parseTradeIdeaObjectNotFound, chartImageCorrupt, urlEmpty]
     }
     
-    public enum UserChoices: String {
+    enum UserChoices: String {
         case LONG = "LONG"
         case SHORT = "SHORT"
         case SKIP = "SKIP"
@@ -204,7 +207,7 @@ open class Constants {
         case long
     }
     
-    public struct Symbol {
+    struct Symbol {
         
         public enum Exchange: String {
             case NASDAQ, NYSE, AMEX, TSX
@@ -305,6 +308,6 @@ open class Constants {
         static let hasComplexWord = "[a-z][A-Z]|[0-9][a-zA-Z]|[a-zA-Z][0-9]|[^a-zA-Z0-9 ]"
     }
     
-    open static let informationViewHeight:CGFloat = 50
-    open static let chartImageTopPadding:CGFloat = 10.0
+    static let informationViewHeight:CGFloat = 50
+    static let chartImageTopPadding:CGFloat = 10.0
 }

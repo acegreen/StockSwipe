@@ -10,7 +10,7 @@ import UIKit
 
 class NVActivityIndicatorAnimationBallTrianglePath: NVActivityIndicatorAnimationDelegate {
     
-    func setUpAnimationInLayer(_ layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimationInLayer(layer: CALayer, size: CGSize, color: UIColor) {
         let circleSize = size.width / 5
         let deltaX = size.width / 2 - circleSize / 2
         let deltaY = size.height / 2 - circleSize / 2
@@ -26,59 +26,59 @@ class NVActivityIndicatorAnimationBallTrianglePath: NVActivityIndicatorAnimation
         animation.timingFunctions = [timingFunction, timingFunction, timingFunction]
         animation.duration = duration
         animation.repeatCount = HUGE
-        animation.isRemovedOnCompletion = false
+        animation.removedOnCompletion = false
         
         // Top-center circle
-        let topCenterCircle = NVActivityIndicatorShape.ring.createLayerWith(size: CGSize(width: circleSize, height: circleSize), color: color)
+        let topCenterCircle = NVActivityIndicatorShape.Ring.createLayerWith(size: CGSize(width: circleSize, height: circleSize), color: color)
         
         changeAnimation(animation, values:["{0,0}", "{hx,fy}", "{-hx,fy}", "{0,0}"], deltaX: deltaX, deltaY: deltaY)
-        topCenterCircle.frame = CGRect(x: x + size.width / 2 - circleSize / 2, y: y, width: circleSize, height: circleSize)
-        topCenterCircle.add(animation, forKey: "animation")
+        topCenterCircle.frame = CGRectMake(x + size.width / 2 - circleSize / 2, y, circleSize, circleSize)
+        topCenterCircle.addAnimation(animation, forKey: "animation")
         layer.addSublayer(topCenterCircle)
         
         // Bottom-left circle
-        let bottomLeftCircle = NVActivityIndicatorShape.ring.createLayerWith(size: CGSize(width: circleSize, height: circleSize), color: color)
+        let bottomLeftCircle = NVActivityIndicatorShape.Ring.createLayerWith(size: CGSize(width: circleSize, height: circleSize), color: color)
         
         changeAnimation(animation, values: ["{0,0}", "{hx,-fy}", "{fx,0}", "{0,0}"], deltaX: deltaX, deltaY: deltaY)
-        bottomLeftCircle.frame = CGRect(x: x, y: y + size.height - circleSize, width: circleSize, height: circleSize)
-        bottomLeftCircle.add(animation, forKey: "animation")
+        bottomLeftCircle.frame = CGRectMake(x, y + size.height - circleSize, circleSize, circleSize)
+        bottomLeftCircle.addAnimation(animation, forKey: "animation")
         layer.addSublayer(bottomLeftCircle)
         
         // Bottom-right circle
-        let bottomRightCircle = NVActivityIndicatorShape.ring.createLayerWith(size: CGSize(width: circleSize, height: circleSize), color: color)
+        let bottomRightCircle = NVActivityIndicatorShape.Ring.createLayerWith(size: CGSize(width: circleSize, height: circleSize), color: color)
         
         changeAnimation(animation, values: ["{0,0}", "{-fx,0}", "{-hx,-fy}", "{0,0}"], deltaX: deltaX, deltaY:deltaY)
-        bottomRightCircle.frame = CGRect(x: x + size.width - circleSize, y: y + size.height - circleSize, width: circleSize, height: circleSize)
-        bottomRightCircle.add(animation, forKey: "animation")
+        bottomRightCircle.frame = CGRectMake(x + size.width - circleSize, y + size.height - circleSize, circleSize, circleSize)
+        bottomRightCircle.addAnimation(animation, forKey: "animation")
         layer.addSublayer(bottomRightCircle)
     }
     
-    func changeAnimation(_ animation: CAKeyframeAnimation, values rawValues: [String], deltaX: CGFloat, deltaY: CGFloat) -> CAAnimation {
+    func changeAnimation(animation: CAKeyframeAnimation, values rawValues: [String], deltaX: CGFloat, deltaY: CGFloat) -> CAAnimation {
         let values = NSMutableArray(capacity: 5)
         
         for rawValue in rawValues {
             let point = CGPointFromString(translateString(rawValue, deltaX: deltaX, deltaY: deltaY))
             
-            values.add(NSValue(caTransform3D: CATransform3DMakeTranslation(point.x, point.y, 0)))
+            values.addObject(NSValue(CATransform3D: CATransform3DMakeTranslation(point.x, point.y, 0)))
         }
         animation.values = values as [AnyObject]
         
         return animation
     }
     
-    func translateString(_ valueString: String, deltaX: CGFloat, deltaY: CGFloat) -> String {
+    func translateString(valueString: String, deltaX: CGFloat, deltaY: CGFloat) -> String {
         let valueMutableString = NSMutableString(string: valueString)
         let fullDeltaX = 2 * deltaX
         let fullDeltaY = 2 * deltaY
         var range = NSMakeRange(0, valueMutableString.length)
         
-        valueMutableString.replaceOccurrences(of: "hx", with: "\(deltaX)", options: NSString.CompareOptions.caseInsensitive, range: range)
+        valueMutableString.replaceOccurrencesOfString("hx", withString: "\(deltaX)", options: NSStringCompareOptions.CaseInsensitiveSearch, range: range)
         range.length = valueMutableString.length
-        valueMutableString.replaceOccurrences(of: "fx", with: "\(fullDeltaX)", options: NSString.CompareOptions.caseInsensitive, range: range)
+        valueMutableString.replaceOccurrencesOfString("fx", withString: "\(fullDeltaX)", options: NSStringCompareOptions.CaseInsensitiveSearch, range: range)
         range.length = valueMutableString.length
-        valueMutableString.replaceOccurrences(of: "hy", with: "\(deltaY)", options: NSString.CompareOptions.caseInsensitive, range: range)
+        valueMutableString.replaceOccurrencesOfString("hy", withString: "\(deltaY)", options: NSStringCompareOptions.CaseInsensitiveSearch, range: range)
         range.length = valueMutableString.length
-        valueMutableString.replaceOccurrences(of: "fy", with: "\(fullDeltaY)", options: NSString.CompareOptions.caseInsensitive, range: range)
+        valueMutableString.replaceOccurrencesOfString("fy", withString: "\(fullDeltaY)", options: NSStringCompareOptions.CaseInsensitiveSearch, range: range)
         
         return valueMutableString as String
     }

@@ -10,7 +10,7 @@ import UIKit
 
 class NVActivityIndicatorAnimationBallScaleMultiple: NVActivityIndicatorAnimationDelegate {
     
-    func setUpAnimationInLayer(layer: CALayer, size: CGSize, color: UIColor) {
+    func setUpAnimation(in layer: CALayer, size: CGSize, color: UIColor) {
         let duration: CFTimeInterval = 1
         let beginTime = CACurrentMediaTime()
         let beginTimes = [0, 0.2, 0.4]
@@ -36,20 +36,20 @@ class NVActivityIndicatorAnimationBallScaleMultiple: NVActivityIndicatorAnimatio
         animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionLinear)
         animation.duration = duration
         animation.repeatCount = HUGE
-        animation.removedOnCompletion = false
+        animation.isRemovedOnCompletion = false
         
         // Draw balls
         for i in 0 ..< 3 {
-            let circle = NVActivityIndicatorShape.Circle.createLayerWith(size: size, color: color)
+            let circle = NVActivityIndicatorShape.circle.layerWith(size: size, color: color)
             let frame = CGRect(x: (layer.bounds.size.width - size.width) / 2,
-                y: (layer.bounds.size.height - size.height) / 2,
-                width: size.width,
-                height: size.height)
+                               y: (layer.bounds.size.height - size.height) / 2,
+                               width: size.width,
+                               height: size.height)
             
             animation.beginTime = beginTime + beginTimes[i]
             circle.frame = frame
             circle.opacity = 0
-            circle.addAnimation(animation, forKey: "animation")
+            circle.add(animation, forKey: "animation")
             layer.addSublayer(circle)
         }
     }

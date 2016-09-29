@@ -92,9 +92,9 @@ class SearchTableViewController: UITableViewController {
         let objectAtIndex: PFObject
         switch searchController.isActive {
         case true:
-            objectAtIndex = searchResults[(indexPath as NSIndexPath).row]
+            objectAtIndex = searchResults[indexPath.row]
         case false:
-            objectAtIndex = recentSearches[(indexPath as NSIndexPath).row]
+            objectAtIndex = recentSearches[indexPath.row]
         }
         
         if objectAtIndex.isKind(of: PFUser.self) {
@@ -109,15 +109,17 @@ class SearchTableViewController: UITableViewController {
         var objectAtIndex: PFObject
         switch searchController.isActive {
         case true:
-            objectAtIndex = searchResults[(indexPath as NSIndexPath).row]
+            objectAtIndex = searchResults[indexPath.row]
         case false:
-            objectAtIndex = recentSearches[(indexPath as NSIndexPath).row]
+            objectAtIndex = recentSearches[indexPath.row]
         }
         
         if objectAtIndex.isKind(of: PFUser.self) {
             
+            let user = User(userObject: objectAtIndex as! PFUser)
+            
             let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
-            cell.configureCell(objectAtIndex as! PFUser)
+            cell.configureCell(with: user)
             
             return cell
             
@@ -140,9 +142,9 @@ class SearchTableViewController: UITableViewController {
         switch searchController.isActive {
         case true:
             searchController.isActive = false
-            objectAtIndex = searchResults[(indexPath as NSIndexPath).row]
+            objectAtIndex = searchResults[indexPath.row]
         case false:
-            objectAtIndex = recentSearches[(indexPath as NSIndexPath).row]
+            objectAtIndex = recentSearches[indexPath.row]
         }
         
         self.updateUserRecentSearch(objectAtIndex)
@@ -248,15 +250,15 @@ class SearchTableViewController: UITableViewController {
             var stockObjectAtIndex: PFObject!
             switch searchController.isActive {
             case true:
-                stockObjectAtIndex = searchResults[(cellIndex as NSIndexPath).row]
+                stockObjectAtIndex = searchResults[cellIndex.row]
                 
             case false:
-                stockObjectAtIndex = recentSearches[(cellIndex as NSIndexPath).row]
+                stockObjectAtIndex = recentSearches[cellIndex.row]
             }
             
             let chart = Chart(parseObject: stockObjectAtIndex)
             
-            QueryHelper.sharedInstance.queryChartImage(chart.symbol, completion: { (result) in
+            QueryHelper.sharedInstance.queryChartImage(symbol: chart.symbol, completion: { (result) in
                 
                 do {
                     

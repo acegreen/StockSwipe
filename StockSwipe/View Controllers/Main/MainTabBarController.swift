@@ -73,7 +73,7 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
             self.splashView.startAnimation {
                 if PFUser.current() == nil && Constants.userDefaults.bool(forKey: "TUTORIAL_SHOWN") == false {
                     
-                    let logInViewcontroller = self.storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
+                    let logInViewcontroller = Constants.loginStoryboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
                     self.present(logInViewcontroller, animated: true, completion: {
                         Constants.userDefaults.set(true, forKey: "TUTORIAL_SHOWN")
                     })
@@ -101,7 +101,7 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
 extension MainTabBarController: UIViewControllerTransitioningDelegate {
     
     func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.transitionMode = .Present
+        transition.transitionMode = .present
         let center = self.view.center
         transition.startingPoint = center
         transition.bubbleColor = Constants.stockSwipeGoldColor
@@ -109,10 +109,10 @@ extension MainTabBarController: UIViewControllerTransitioningDelegate {
     }
     
     func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        transition.transitionMode = .Dismiss
+        transition.transitionMode = .dismiss
         let center = self.view.center
         transition.startingPoint = center
-        transition.bubbleColor = UIColor.whiteColor()
+        transition.bubbleColor = UIColor.white
         return transition
     }
 }

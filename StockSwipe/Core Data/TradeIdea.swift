@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-public struct TradeIdea {
+public class TradeIdea {
     
     var user: User!
     var description: String!
@@ -37,6 +37,8 @@ public struct TradeIdea {
     
     init(parseObject: PFObject, completion: ((TradeIdea?) -> Void)? = nil) {
         
+        self.parseObject = parseObject
+        
         parseObject.fetchIfNeededInBackground { (parseObject, error) in
             guard let parseObject = parseObject else  {
                 if let completion = completion {
@@ -44,7 +46,7 @@ public struct TradeIdea {
                 }
                 return
             }
-            self.parseObject = parseObject
+            
             self.description = parseObject.object(forKey: "description") as? String ?? ""
             self.likeCount = parseObject.object(forKey: "likeCount") as? Int ?? 0
             self.reshareCount = parseObject.object(forKey: "reshareCount") as? Int ?? 0
@@ -53,26 +55,32 @@ public struct TradeIdea {
             
             self.checkIfLikedByCurrentUser(completion: { (isLikedByCurrentUser) in
                 self.isLikedByCurrentUser = isLikedByCurrentUser
-                
-                self.checkIfResharedByCurrentUser(completion: { (isResharedByCurrentUser) in
-                    self.isResharedByCurrentUser = isResharedByCurrentUser
-                    
-                    User(userObject: parseObject.object(forKey: "user") as! PFUser, completion: { (user) in
-                        self.user = user
-                        if let completion = completion {
-                            completion(self)
-                        }
-                    })
-                })
+            })
+            
+            self.checkIfResharedByCurrentUser(completion: { (isResharedByCurrentUser) in
+                self.isResharedByCurrentUser = isResharedByCurrentUser
+            })
+            
+            guard let userObject = parseObject.object(forKey: "user") as? PFObject else { return
+                if let completion = completion {
+                    completion(self)
+                }
+            }
+            
+            User(userObject: userObject, completion: { (user) in
+                self.user = user
+                if let completion = completion {
+                    completion(self)
+                }
             })
         }
     }
     
-   mutating func checkIfLikedByCurrentUser(completion: ((Bool) -> Void)?) {
+   func checkIfLikedByCurrentUser(completion: ((Bool) -> Void)?) {
         
         guard let currentUser = PFUser.current() else { return }
         
-        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -93,11 +101,11 @@ public struct TradeIdea {
         })
     }
     
-    mutating func checkIfResharedByCurrentUser(completion: ((Bool) -> Void)?) {
+    func checkIfResharedByCurrentUser(completion: ((Bool) -> Void)?) {
         
         guard let currentUser = PFUser.current() else { return }
     
-        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: self.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: self.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
             
             do {
                 

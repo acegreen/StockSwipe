@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-public struct User {
+public class User {
     
     var userObject: PFUser!
     
@@ -25,7 +25,7 @@ public struct User {
     fileprivate var followersCount: Int = 0
     fileprivate var likedIdeasCount: Int = 0
     
-    init(userObject: PFUser, completion: ((User?) -> Void)? = nil) {
+    init(userObject: PFObject, completion: ((User?) -> Void)? = nil) {
         
         userObject.fetchIfNeededInBackground { (userObject, error) in
             
@@ -50,10 +50,10 @@ public struct User {
         }
     }
     
-    mutating func getAvatar(_ completionHandler: @escaping (UIImage) -> Void) {
+    func getAvatar(_ completionHandler: @escaping (UIImage) -> Void) {
         
         if let profileImageURL = self.profile_image_url {
-            QueryHelper.sharedInstance.queryWith(profileImageURL, completionHandler: { (result) in
+            QueryHelper.sharedInstance.queryWith(queryString: profileImageURL, completionHandler: { (result) in
                 
                 do {
                     
@@ -71,9 +71,9 @@ public struct User {
         }
     }
     
-    mutating func getIdeasCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
+    func getIdeasCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
         
-        QueryHelper.sharedInstance.countTradeIdeasFor("user", object: userObject) { (result) in
+        QueryHelper.sharedInstance.countTradeIdeasFor(key: "user", object: userObject) { (result) in
             
             do {
                 
@@ -84,13 +84,13 @@ public struct User {
                 self.ideasCount =  0
             }
             
-            completionHandler(countString: self.ideasCount.suffixNumber())
+            completionHandler(self.ideasCount.suffixNumber())
         }
     }
     
-    mutating func getFollowingCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
+    func getFollowingCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
         
-        QueryHelper.sharedInstance.countActivityFor(userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
+        QueryHelper.sharedInstance.countActivityFor(fromUser: userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
             
             do {
                 
@@ -101,13 +101,13 @@ public struct User {
                 self.followingCount =  0
             }
             
-            completionHandler(countString: self.followingCount.suffixNumber())
+            completionHandler(self.followingCount.suffixNumber())
         }
     }
     
-    mutating func getFollowersCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
+    func getFollowersCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
         
-        QueryHelper.sharedInstance.countActivityFor(nil, toUser: userObject, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
+        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: userObject, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
             
             do {
                 
@@ -118,13 +118,13 @@ public struct User {
                 self.followingCount =  0
             }
             
-            completionHandler(countString: self.followingCount.suffixNumber())
+            completionHandler(self.followingCount.suffixNumber())
         }
     }
     
-    mutating func getLikedIdeasCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
+    func getLikedIdeasCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
         
-        QueryHelper.sharedInstance.countActivityFor(userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, completion: { (result) in
+        QueryHelper.sharedInstance.countActivityFor(fromUser: userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, completion: { (result) in
             
             do {
                 
@@ -135,7 +135,7 @@ public struct User {
                 self.likedIdeasCount =  0
             }
             
-            completionHandler(countString: self.likedIdeasCount.suffixNumber())
+            completionHandler(self.likedIdeasCount.suffixNumber())
         })
     }
 }

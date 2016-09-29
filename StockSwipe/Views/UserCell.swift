@@ -25,22 +25,22 @@ class UserCell: UITableViewCell {
         registerBlock(sender)
     }
 
-    func configureCell(_ userObject: PFUser) {
+    func configureCell(with user: User) {
         
-        self.user = User(userObject: userObject, completion: { (user) in
-            self.fullname.text = self.user.fullname
+        self.user = user
             
-            //                let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
-            //                self.fullname.addGestureRecognizer(tapGestureRecognizerMainUsername)
-            
-            self.username.text = self.user.username
-            
-            DispatchQueue.main.async(execute: { () -> Void in
-                self.userAvatar.image = self.user.avtar
-            })
-            
-            self.checkBlock(self.blockButton)
+        self.fullname.text = self.user.fullname
+        
+        //                let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
+        //                self.fullname.addGestureRecognizer(tapGestureRecognizerMainUsername)
+        
+        self.username.text = self.user.username
+        
+        DispatchQueue.main.async(execute: { () -> Void in
+            self.userAvatar.image = self.user.avtar
         })
+        
+        self.checkBlock(self.blockButton)
     }
     
     func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {

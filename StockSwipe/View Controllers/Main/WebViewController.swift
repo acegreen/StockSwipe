@@ -107,7 +107,7 @@ extension WebViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         
-        print("error: \(error.localizedDescription): \(error.userInfo)")
+        print("error:", error.localizedDescription)
         
         SweetAlert().showAlert("Something went wrong while loading", subTitle: "Please try again", style: AlertStyle.warning)
     }

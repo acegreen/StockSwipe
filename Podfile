@@ -7,13 +7,15 @@ end
 
 target 'StockSwipe' do
     
+    # Utility
     pod 'MDCSwipeToChoose', :git => 'https://github.com/acegreen/MDCSwipeToChoose.git'
     pod 'SDVersion'
     pod 'DZNEmptyDataSet'
-    pod 'Charts', :git => 'https://github.com/danielgindi/Charts.git', :branch => 'Swift-3.0'
+    pod 'Charts', :git => 'https://github.com/danielgindi/Charts.git', :branch => 'Chart2.2.5-Swift3.0'
     pod 'SWXMLHash'
     pod 'DataCache', :git => 'https://github.com/huynguyencong/DataCache.git'
-    
+    pod 'ReachabilitySwift', :git => 'https://github.com/ashleymills/Reachability.swift.git', :branch => 'feature/ios10'
+
     # Analytics
     pod 'Crashlytics'
     pod 'Appsee'
@@ -28,8 +30,9 @@ target 'StockSwipe' do
     pod 'ParseUI'
     
     # Facebook
-    pod 'FacebookCore'
-    pod 'FacebookShare'
+    pod 'FBSDKShareKit'
+    #pod 'FacebookCore'
+    #pod 'FacebookShare'
     
     # Twitter
     pod 'TwitterKit'

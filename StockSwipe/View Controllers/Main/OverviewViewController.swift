@@ -36,7 +36,10 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     var iCarouselTickers = ["^IXIC","^GSPC","^RUT","^VIX","^GDAXI","^FTSE","^FCHI","^N225","^HSI","^GSPTSE","CAD=X"]
     var tickers = [Ticker]()
     var cloudWords = [CloudWord]()
+    
     var tradeIdeaObjects = [PFObject]()
+    var tradeIdeas = [TradeIdea]()
+    
     var topStories = [News]()
     var charts = [Chart]()
     
@@ -150,8 +153,9 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             let breakupSentence = noInternetSentence.components(separatedBy: " ")
             
             for (index, word) in breakupSentence.enumerated() {
-                let cloudWord = CloudWord(word: word, wordCount: breakupSentence.count - Int(index), wordTappable: false)
-                self.cloudWords.append(cloudWord)
+                if let cloudWord = CloudWord(word: word, wordCount: (breakupSentence.count - Int(index)) as NSNumber, wordTappable: false) {
+                    self.cloudWords.append(cloudWord)
+                }
             }
             
             OperationQueue.main.addOperation({() -> Void in
@@ -184,8 +188,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
                 let trendingStocksJSON = JSON(data: trendingStocksData)["symbols"]
                 
-                DataCache.defaultCache.writeData(trendingStocksData, forKey: "TRENDINGSTOCKSCACHEDATA")
-                QueryHelper.sharedInstance.queryStockObjectsFor(trendingStocksJSON.map { $0.1 }.map{ $0["symbol"].string! }, completion: { (result) in
+                DataCache.instance.write(data: trendingStocksData, forKey: "TRENDINGSTOCKSCACHEDATA")
+                QueryHelper.sharedInstance.queryStockObjectsFor(symbols: trendingStocksJSON.map { $0.1 }.map{ $0["symbol"].string! }, completion: { (result) in
                     
                     self.isQueryingForTrendingStocks = false
                     
@@ -194,7 +198,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                         let stockObjects = try result()
                         self.createCloudWords(trendingStocksJSON, stockObjects: stockObjects)
                         
-                        self.stockTwitsLastQueriedDate = NSDate()
+                        self.stockTwitsLastQueriedDate = Date()
                         
                     } catch {
                     }
@@ -209,7 +213,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     func queryICarouselTickers() {
         
         if carouselLastQueriedDate == nil || !Functions.isConnectedToNetwork() {
-            if let carouselCacheData = DataCache.defaultCache.readDataForKey("CAROUSELCACHEDATA") {
+            if let carouselCacheData = DataCache.instance.readData(forKey: "CAROUSELCACHEDATA") {
                 updateCarousel(carouselCacheData)
             }
         } else if carouselLastQueriedDate != nil {
@@ -232,17 +236,17 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             
             self.isQueryingForiCarousel = true
             
-            QueryHelper.sharedInstance.queryYahooSymbolQuote(self.iCarouselTickers, completionHandler: { (symbolQuote, response, error) -> Void in
+            QueryHelper.sharedInstance.queryYahooSymbolQuote(tickers: self.iCarouselTickers, completionHandler: { (symbolQuote, response, error) -> Void in
                 
                 self.isQueryingForiCarousel = false
                 
                 if error != nil {
                     
-                    print("error: \(error!.localizedDescription): \(error!.userInfo)")
+                    print("error:", error!.localizedDescription)
                     
                 } else if let symbolQuote = symbolQuote {
                     
-                    DataCache.defaultCache.writeData(symbolQuote, forKey: "CAROUSELCACHEDATA")
+                    DataCache.instance.write(data: symbolQuote, forKey: "CAROUSELCACHEDATA")
                     self.updateCarousel(symbolQuote)
                     
                     self.carouselLastQueriedDate = Date()
@@ -268,7 +272,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         }
         
         isQueryingForTradeIdeas = true
-        QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
             
             self.isQueryingForTradeIdeas = false
             
@@ -297,7 +301,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     func queryTopStories() {
         
         if topStoriesLastQueriedDate == nil || !Functions.isConnectedToNetwork() {
-            if let topStoriesCacheData = DataCache.defaultCache.readDataForKey("TOPSTORIESCACHEDATA") {
+            if let topStoriesCacheData = DataCache.instance.readData(forKey: "TOPSTORIESCACHEDATA") {
                 self.updateTopStories(topStoriesCacheData)
             }
         } else if topStoriesLastQueriedDate != nil {
@@ -320,7 +324,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         let queryString = "http://feeds.reuters.com/reuters/businessNews?format=xml"
         
-        QueryHelper.sharedInstance.queryWith(queryString) { (result) -> Void in
+        QueryHelper.sharedInstance.queryWith(queryString: queryString) { (result) -> Void in
             
             self.isQueryingForTopStories = false
             
@@ -328,7 +332,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
                 let result = try result()
                 
-                DataCache.defaultCache.writeData(result, forKey: "TOPSTORIESCACHEDATA")
+                DataCache.instance.write(data: result, forKey: "TOPSTORIESCACHEDATA")
                 self.updateTopStories(result)
                 self.topStoriesLastQueriedDate = Date()
                 
@@ -350,9 +354,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 self.charts.removeObject(chart)
             }
             
-            guard let symbol = subJson["symbol"].string else { continue }
-            
-            let cloudWord = CloudWord(word: symbol , wordCount: trendingStocksJSON.count - Int(index)!, wordTappable: true)
+            guard let symbol = subJson["symbol"].string, let wordCount = trendingStocksJSON.count - Int(index)! as? NSNumber else { continue }
+            guard let cloudWord = CloudWord(word: symbol , wordCount: wordCount, wordTappable: true) else { continue }
             self.cloudWords.append(cloudWord)
             
             var chart: Chart!
@@ -372,10 +375,9 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func updateCarousel(_ symbolQuote: Data) {
         
-        guard let carsouelJson:JSON? = JSON(data: symbolQuote) else { return }
-        guard carsouelJson != nil else { return }
-        guard let carsouelJsonResults:JSON? = carsouelJson!["query"]["results"] else { return }
-        guard let quoteJsonResultsQuote = carsouelJsonResults!["quote"].array else { return }
+        let carsouelJson = JSON(data: symbolQuote)
+        let carsouelJsonResults = carsouelJson["query"]["results"]
+        guard let quoteJsonResultsQuote = carsouelJsonResults["quote"].array else { return }
         
         for quote in quoteJsonResultsQuote {
             
@@ -413,12 +415,21 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         self.tradeIdeaObjects = tradeIdeaObjects
         
-        DispatchQueue.main.async(execute: { () -> Void in
-            
-            self.latestTradeIdeasTableView.reloadData()
-            if self.tradeIdeasRefreshControl.isRefreshing == true {
-                self.tradeIdeasRefreshControl.endRefreshing()
-            }
+        tradeIdeas = tradeIdeaObjects.map({
+            TradeIdea(parseObject: $0, completion: { (tradeidea) in
+                
+                if self.tradeIdeas.count == self.tradeIdeaObjects.count {
+                    
+                    DispatchQueue.main.async(execute: { () -> Void in
+                        
+                        self.latestTradeIdeasTableView.reloadData()
+                        if self.tradeIdeasRefreshControl.isRefreshing == true {
+                            self.tradeIdeasRefreshControl.endRefreshing()
+                        }
+                    })
+                }
+                
+            })
         })
     }
     
@@ -454,11 +465,12 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             
             // Get Published Date
             if let pubDate = item["pubDate"].element?.text {
-                let publishedDateFormatter = NSDateFormatter()
+                let publishedDateFormatter = DateFormatter()
                 publishedDateFormatter.dateFormat = "EEE, dd MMM yy HH:mm:ss z"
                 
-                if let formattedDate = publishedDateFormatter.dateFromString(pubDate) {
-                    newsPublishedDate = formattedDate.formattedAsTimeAgo()
+                if let formattedDate = publishedDateFormatter.date(from: pubDate) {
+                    let nsformattedDate = formattedDate as NSDate
+                    newsPublishedDate = nsformattedDate.formattedAsTimeAgo()
                 }
             }
             
@@ -509,7 +521,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
             case is UIButton:
                 
-                symbol = (sender as AnyObject).currentTitle
+                symbol = (sender as! UIButton).currentTitle
                 
                 let destinationView = segue.destination as! ChartDetailTabBarController
                 destinationView.chart = self.charts.find{ $0.symbol == symbol }
@@ -618,7 +630,7 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
         
         let removableObjects = NSMutableArray()
         for subview: AnyObject in self.cloudView.subviews {
-            if subview.isKind(of: UIButton) {
+            if subview.isKind(of: UIButton.self) {
                 removableObjects.add(subview)
             }
         }
@@ -765,7 +777,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         if tableView == latestNewsTableView {
             return topStories.count
         } else if tableView == latestTradeIdeasTableView {
-            return tradeIdeaObjects.count
+            return tradeIdeas.count
         }
         return 0
     }
@@ -784,9 +796,9 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
             
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as TopNewsCell
             
-            guard topStories.get((indexPath as NSIndexPath).row) != nil else { return cell }
+            guard topStories.get(indexPath.row) != nil else { return cell }
             
-            let newsAtIndex = self.topStories[(indexPath as NSIndexPath).row]
+            let newsAtIndex = self.topStories[indexPath.row]
             
             if let newsTitleAtIndex = newsAtIndex.title {
                 
@@ -803,11 +815,9 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         } else if tableView == latestTradeIdeasTableView {
         
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            
-            guard tradeIdeaObjects.get((indexPath as NSIndexPath).row) != nil else { return cell }
-            cell.configureCell(self.tradeIdeaObjects[(indexPath as NSIndexPath).row], timeFormat: .short)
-            
+            cell.configureCell(with: self.tradeIdeas[indexPath.row], timeFormat: .short)
             return cell
+            
         } else {
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as UITableViewCell
             return cell
@@ -818,11 +828,11 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         
         if tableView == latestNewsTableView {
             
-            guard topStories.get((indexPath as NSIndexPath).row) != nil else {
+            guard topStories.get(indexPath.row) != nil else {
                 return
             }
             
-            let newsAtIndex = self.topStories[(indexPath as NSIndexPath).row]
+            let newsAtIndex = self.topStories[indexPath.row]
             
             if let newsurl = newsAtIndex.url {
                 

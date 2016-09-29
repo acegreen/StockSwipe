@@ -657,7 +657,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             
             guard Constants.userDefaults.bool(forKey: sector.key()) else { continue }
             
-            includedSectors.append(sector.key().startCase as AnyObject)
+            includedSectors.append(sector.key().capitalized as AnyObject)
         }
         
         print("includedExchanges:", includedExchanges)

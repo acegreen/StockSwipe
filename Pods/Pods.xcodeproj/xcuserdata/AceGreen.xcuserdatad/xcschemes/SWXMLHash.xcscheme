@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0800"
+   LastUpgradeVersion = "0810"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "03672FD9867CD679DB62CDFA2BAF4324"
+               BlueprintIdentifier = "08A35ECA1F6D8AC8C2F83F9DFD59F9FA"
                BuildableName = "SWXMLHash.framework"
                BlueprintName = "SWXMLHash"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "03672FD9867CD679DB62CDFA2BAF4324"
+            BlueprintIdentifier = "08A35ECA1F6D8AC8C2F83F9DFD59F9FA"
             BuildableName = "SWXMLHash.framework"
             BlueprintName = "SWXMLHash"
             ReferencedContainer = "container:Pods.xcodeproj">

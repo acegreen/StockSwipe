@@ -76,12 +76,12 @@ class FilterTableViewController: UITableViewController, CellType {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as FiltersCell
         
-        switch (indexPath as NSIndexPath).section {
+        switch indexPath.section {
         case 0:
-            let exchange = Constants.Symbol.Exchange.allExchanges[(indexPath as NSIndexPath).row]
+            let exchange = Constants.Symbol.Exchange.allExchanges[indexPath.row]
             cell.filtersCellLeftLabel.text = exchange.key()
         case 1:
-            let sector = Constants.Symbol.Sector.allSectors[(indexPath as NSIndexPath).row]
+            let sector = Constants.Symbol.Sector.allSectors[indexPath.row]
             cell.filtersCellLeftLabel.text = sector.key()
         default:
             break

@@ -29,12 +29,16 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
     // TextView Delegates
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
         
+        let resourceSpecifier = (URL as NSURL).resourceSpecifier
+        
         switch URL.scheme {
         case "cash"?:
             
+            guard let resourceSpecifier = resourceSpecifier else { return false }
+            
             let chartDetailTabBarController  = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
             
-            QueryHelper.sharedInstance.queryStockObjectsFor([URL.resourceSpecifier]) { (result) in
+            QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [resourceSpecifier]) { (result) in
                 
                 do {
                     
@@ -59,7 +63,9 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
             
         case "mention"?:
             
-            QueryHelper.sharedInstance.queryUserObjectsFor([URL.resourceSpecifier], completion: { (result) in
+            guard let resourceSpecifier = resourceSpecifier else { return false }
+            
+            QueryHelper.sharedInstance.queryUserObjectsFor(usernames: [resourceSpecifier], completion: { (result) in
                 
                 do {
                     

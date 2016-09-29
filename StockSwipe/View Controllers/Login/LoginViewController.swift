@@ -273,8 +273,8 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 if let twitterName = result["name"].string {
                     user["full_name"] = twitterName
                     
-                    firstName = twitterName.componentsSeparatedByString(" ").first
-                    lastName = twitterName.componentsSeparatedByString(" ").last
+                    firstName = twitterName.components(separatedBy: " ").first
+                    lastName = twitterName.components(separatedBy: " ").last
                     
                 } else {
                     user["full_name"] = PFTwitterUtils.twitter()?.screenName
@@ -294,7 +294,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 }
                 
                 if let profilePictureURL = result["profile_image_url_https"].URL?.absoluteString {
-                    user["profile_image_url"] = profilePictureURL.stringByReplacingOccurrencesOfString("_normal", withString: "")
+                    user["profile_image_url"] = profilePictureURL.replacingOccurrences(of: "_normal", with: "")
                 }
                 
                 if let profileBannerURL = result["profile_banner_url"].URL?.absoluteString {
@@ -389,18 +389,18 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         
                         if let facebookNameFromName = result["name"].string {
                             
-                            user.username = facebookNameFromName.stringByReplacingOccurrencesOfString(" ", withString: "")
+                            user.username = facebookNameFromName.replacingOccurrences(of: " ", with: "")
                             user["username_lowercase"] = user.username!.lowercased()
                             
                             user["full_name"] = facebookNameFromName
                             user["fullname_lowercase"] = (user["full_name"] as AnyObject).lowercased
                             
-                            firstName = facebookNameFromName.componentsSeparatedByString(" ").first
-                            lastName = facebookNameFromName.componentsSeparatedByString(" ").last
+                            firstName = facebookNameFromName.components(separatedBy: " ").first
+                            lastName = facebookNameFromName.components(separatedBy: " ").last
                             
                         } else if let facebookNameFromEmail = result["email"].string {
                             
-                            user.username = facebookNameFromEmail.componentsSeparatedByString("@").first?.stringByReplacingOccurrencesOfString(" ", withString: "")
+                            user.username = facebookNameFromEmail.components(separatedBy: "@").first?.replacingOccurrences(of: " ", with: "")
                             user["username_lowercase"] = user.username!.lowercased()
                         }
                         
@@ -426,8 +426,8 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         }
                         
                         if let website = result["website"].string {
-                            user["website"] = website.componentsSeparatedByString("\n").first
-                            user["website_raw"] = website.componentsSeparatedByString("\n")
+                            user["website"] = website.components(separatedBy: "\n").first
+                            user["website_raw"] = website.components(separatedBy: "\n")
                         }
                         
                         if let bio = result["bio"].string {

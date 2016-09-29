@@ -42,23 +42,11 @@ class Functions {
     //}
     
     class func isConnectedToNetwork() -> Bool {
-        
-        var zeroAddress = sockaddr_in()
-        zeroAddress.sin_len = UInt8(MemoryLayout.size(ofValue: zeroAddress))
-        zeroAddress.sin_family = sa_family_t(AF_INET)
-        
-        let defaultRouteReachability = withUnsafePointer(to: &zeroAddress) {
-            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
-        }
-        var flags = SCNetworkReachabilityFlags.connectionAutomatic
-        
-        if !SCNetworkReachabilityGetFlags(defaultRouteReachability!, &flags) {
+        if Constants.reachability?.currentReachabilityStatus == .notReachable {
             return false
+        } else {
+            return true
         }
-        
-        let isReachable = (flags.rawValue & UInt32(kSCNetworkFlagsReachable)) != 0
-        let needsConnection = (flags.rawValue & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
-        return (isReachable && !needsConnection)
     }
     
     class func isUserLoggedIn(_ viewController: UIViewController) -> Bool {
@@ -105,7 +93,7 @@ class Functions {
                     })
                 }
                 
-                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -119,7 +107,7 @@ class Functions {
                     }
                 })
                 
-                QueryHelper.sharedInstance.queryActivityFor(user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -266,7 +254,7 @@ class Functions {
         
         guard let imageURL = imageURL else { return completion(nil) }
         
-        QueryHelper.sharedInstance.queryWith(imageURL.absoluteString, completionHandler: { (result) in
+        QueryHelper.sharedInstance.queryWith(queryString: imageURL.absoluteString, completionHandler: { (result) in
             
             do {
                 
@@ -281,22 +269,22 @@ class Functions {
     
     class func getStockObjectAndChart(_ symbol: String, completion: @escaping (_ result: () throws -> (object: PFObject, chart: Chart)) -> Void) {
         
-        QueryHelper.sharedInstance.queryStockObjectsFor([symbol]) { (result) in
+        QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [symbol]) { (result) in
             
             do {
                 
                 let stockObject = try result().first!
                 
-                QueryHelper.sharedInstance.queryChartImage(symbol, completion: { (result) in
+                QueryHelper.sharedInstance.queryChartImage(symbol: symbol, completion: { (result) in
                     
                     do {
                         
                         let chart = Chart(parseObject: stockObject)
-                        completion(result: { (object: stockObject, chart: chart)})
+                        completion({ (object: stockObject, chart: chart)})
                         
                     } catch {
                         
-                        completion(result: {throw error})
+                        completion({throw error})
                         
                     }
                     
@@ -304,7 +292,7 @@ class Functions {
                 
             } catch {
                 
-                completion(result: {throw error})
+                completion({throw error})
                 
             }
         }
@@ -318,7 +306,7 @@ class Functions {
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [parseObject], activityType: nil, skip: nil, limit: nil, includeKeys: nil) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [parseObject], activityType: nil, skip: nil, limit: nil, includeKeys: nil) { (result) in
             
             do {
                 
@@ -396,15 +384,15 @@ class Functions {
     }
     
     class func saveIntoCoreData(_ chart: Chart, userChoice: Constants.UserChoices) {
-        
-        let checkRequest: NSFetchRequest = NSFetchRequest(entityName: "Charts")
-        checkRequest.predicate = NSPredicate(format: "symbol == %@", chart.symbol)
-        checkRequest.fetchLimit = 1
-        checkRequest.returnsObjectsAsFaults = false
+
+        let chartFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Charts")
+        chartFetchRequest.predicate = NSPredicate(format: "symbol == %@", chart.symbol)
+        chartFetchRequest.fetchLimit = 1
+        chartFetchRequest.returnsObjectsAsFaults = false
         
         do {
             
-            let fetchedObjectArray:[ChartModel] = try Constants.context.fetch(checkRequest) as! [ChartModel]
+            let fetchedObjectArray:[ChartModel] = try Constants.context.fetch(chartFetchRequest) as! [ChartModel]
             
             if fetchedObjectArray.count == 0 {
                 
@@ -450,22 +438,22 @@ class Functions {
         }
     }
     
-    class func getChartsFromCoreData() -> NSArray? {
+    class func getChartsFromCoreData() -> [ChartModel]? {
         
-        let fetchRequest = NSFetchRequest(entityName: "Charts")
-        fetchRequest.entity = Constants.entity
+        let chartFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Charts")
+        chartFetchRequest.entity = Constants.entity
         
         let sort = NSSortDescriptor(key: "dateChoosen", ascending: false)
         let sortDescriptors = [sort]
         
-        fetchRequest.sortDescriptors = sortDescriptors
+        chartFetchRequest.sortDescriptors = sortDescriptors
         
         do {
             
-            let results = try Constants.context.fetch(fetchRequest)
+            let results = try Constants.context.fetch(chartFetchRequest)
             
             //println(results)
-            return results
+            return results as? [ChartModel]
             
         } catch let error as NSError {
             // failure
@@ -475,13 +463,11 @@ class Functions {
         return nil
     }
     
-    class func setupConfigParameter(_ parameter:String, completion: @escaping (_ parameterValue: AnyObject?) -> Void) {
+    class func setupConfigParameter(_ parameter:String, completion: @escaping (_ parameterValue: Any?) -> Void) {
         
-        PFConfig.getInBackground {
-            (config: PFConfig?, error: NSError?) -> Void in
-            
+        PFConfig.getInBackground { (config, error) in
             let configParameter = config?[parameter]
-            completion(parameterValue: configParameter)
+            completion(configParameter)
         }
     }
     
@@ -533,7 +519,7 @@ class Functions {
     @available(iOS 9.0, *)
     class func deleteFromSpotlight(_ uniqueIdentifier: String) {
         
-        CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [uniqueIdentifier]) { (error: NSError?) -> Void in
+        CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [uniqueIdentifier]) { (error: Error?) -> Void in
             
             if let error = error {
                 print("Deindexing error: \(error.localizedDescription)")
@@ -551,7 +537,7 @@ class Functions {
             return
         }
         
-        QueryHelper.sharedInstance.queryChartImage(chart.symbol, completion: { (result) in
+        QueryHelper.sharedInstance.queryChartImage(symbol: chart.symbol, completion: { (result) in
             
             do {
                 
@@ -581,7 +567,7 @@ class Functions {
         })
     }
     
-    class func showPopTipOnceForKey(_ key: String, userDefaults: UserDefaults, popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: AMPopTipDirection = .down, color: UIColor = .darkGray()) -> AMPopTip? {
+    class func showPopTipOnceForKey(_ key: String, userDefaults: UserDefaults, popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: AMPopTipDirection = .down, color: UIColor = .darkGray) -> AMPopTip? {
         if (!userDefaults.bool(forKey: key)) {
             userDefaults.set(true, forKey: key)
             userDefaults.synchronize()
@@ -593,8 +579,8 @@ class Functions {
     
     class func showPopTip(popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: AMPopTipDirection, color: UIColor) -> AMPopTip? {
         
-        AMPopTip.appearance().font = UIFont(name: "HelveticaNeue", size: 16)
-        AMPopTip.appearance().textColor = .white()
+        AMPopTip.appearance().font = UIFont(name: "HelveticaNeue", size: 16)!
+        AMPopTip.appearance().textColor = .white
         AMPopTip.appearance().popoverColor = color
         AMPopTip.appearance().offset = 10
         AMPopTip.appearance().edgeMargin = 5
@@ -631,14 +617,13 @@ class Functions {
             // Create loading animation
             let frame = CGRect(x: view.bounds.midX - view.bounds.height / 4 , y: view.bounds.midY - view.bounds.height / 4, width: view.bounds.height / 2, height: view.bounds.height / 2)
             halo = NVActivityIndicatorView(frame: frame, type: .ballScaleMultiple, color: UIColor.lightGray)
-            halo.hidesWhenStopped = true
             view.addSubview(halo)
-            halo.startAnimation()
+            halo.startAnimating()
             
         } else {
             
             if halo !=  nil {
-                halo.stopAnimation()
+                halo.stopAnimating()
             }
         }
     }
@@ -689,14 +674,14 @@ class Functions {
             return completion(nil, false, nil, nil)
         }
         
-        let excludedActivityTypesArray: NSArray = [
+        let excludedActivityTypesArray = [
             UIActivityType.postToWeibo,
             UIActivityType.assignToContact,
             UIActivityType.airDrop,
             ]
         
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
-        activityVC.excludedActivityTypes = excludedActivityTypesArray as? [String] as! [UIActivityType]?
+        activityVC.excludedActivityTypes = excludedActivityTypesArray
         
         activityVC.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.up
         activityVC.popoverPresentationController?.barButtonItem = sender as? UIBarButtonItem

@@ -56,7 +56,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
         
         customAlert.showAlert("Hold On!", subTitle: "While we prepare the snapshot", style: AlertStyle.activityIndicator, dismissTime: nil)
         
-        QueryHelper.sharedInstance.queryChartImage(symbol, completion: { (result) in
+        QueryHelper.sharedInstance.queryChartImage(symbol: symbol, completion: { (result) in
             
             do {
                 
@@ -174,7 +174,7 @@ extension ChartWebViewController: WKNavigationDelegate {
         actionButton.isEnabled = false
         //        tradeItButton.enabled = false
         
-        print("error: \(error.localizedDescription): \(error.userInfo)")
+        print("error:", error.localizedDescription)
         
         SweetAlert().showAlert("Something went wrong while loading chart", subTitle: "Please try again", style: AlertStyle.warning)
     }

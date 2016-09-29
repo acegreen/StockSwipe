@@ -27,6 +27,8 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     var stockObject: PFObject?
     
     var tradeIdeaObjects = [PFObject]()
+    var tradeIdeas = [TradeIdea]()
+    
     var tradeIdeaQueryLimit = 25
     var isQueryingForTradeIdeas = true
     
@@ -78,7 +80,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         guard let stockObject = self.stockObject else { return }
         
         isQueryingForTradeIdeas = true
-        QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
             
             self.isQueryingForTradeIdeas = false
             
@@ -87,14 +89,23 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 let activityObjects = try result()
                 self.tradeIdeaObjects = activityObjects.lazy.map { $0["tradeIdea"] as! PFObject }
                 
-                DispatchQueue.main.async(execute: { () -> Void in
-                    
-                    self.tableView.reloadData()
-                    
-                    if self.refreshControl?.isRefreshing == true {
-                        self.refreshControl?.endRefreshing()
-                        self.updateRefreshDate()
-                    }
+                self.tradeIdeas = activityObjects.map({
+                    TradeIdea(parseObject: $0, completion: { (tradeidea) in
+                        
+                        if self.tradeIdeas.count == self.tradeIdeaObjects.count {
+                            
+                            DispatchQueue.main.async(execute: { () -> Void in
+                                
+                                self.tableView.reloadData()
+                                
+                                if self.refreshControl?.isRefreshing == true {
+                                    self.refreshControl?.endRefreshing()
+                                    self.updateRefreshDate()
+                                }
+                            })
+                        }
+                        
+                    })
                 })
                 
             } catch {
@@ -121,7 +132,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             self.footerActivityIndicator.startAnimating()
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: skip, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: skip, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
             
             do {
                 
@@ -134,15 +145,23 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                     indexPaths.append(IndexPath(row: self.tableView.numberOfRows(inSection: 0) + i, section: 0))
                 }
                 
-                DispatchQueue.main.async(execute: { () -> Void in
-                    
-                    //now insert cell in tableview
-                    self.tableView.insertRows(at: indexPaths, with: .none)
-                    
-                    if self.footerActivityIndicator?.isAnimating == true {
-                        self.footerActivityIndicator.stopAnimating()
-                        self.updateRefreshDate()
-                    }
+                self.tradeIdeas += activityObjects.map({
+                    TradeIdea(parseObject: $0, completion: { (tradeidea) in
+                        
+                        if self.tradeIdeas.count == self.tradeIdeaObjects.count {
+                            
+                            DispatchQueue.main.async(execute: { () -> Void in
+                                
+                                //now insert cell in tableview
+                                self.tableView.insertRows(at: indexPaths, with: .none)
+                                
+                                if self.footerActivityIndicator?.isAnimating == true {
+                                    self.footerActivityIndicator.stopAnimating()
+                                    self.updateRefreshDate()
+                                }
+                            })
+                        }
+                    })
                 })
                 
             } catch {
@@ -188,7 +207,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-        cell.configureCell(tradeIdeaObjects[(indexPath as NSIndexPath).row], timeFormat: .short)
+        cell.configureCell(with: tradeIdeas[indexPath.row], timeFormat: .short)
         cell.delegate = self
         
         return cell

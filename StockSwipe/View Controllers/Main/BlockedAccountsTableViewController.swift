@@ -16,7 +16,7 @@ class BlockedAccountsTableViewController: UITableViewController, SegueHandlerTyp
         case ProfileSegueIdentifier = "ProfileSegueIdentifier"
     }
     
-    var blocked_users = [PFUser]()
+    var blockedUsers = [User]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,11 +34,13 @@ class BlockedAccountsTableViewController: UITableViewController, SegueHandlerTyp
     
     func setupAccounts() {
         guard let currentUser = PFUser.current() else { return }
-        guard (currentUser["blocked_users"] as? [PFUser]) != nil else { return }
+        guard let blockedUsersObjects = currentUser["blocked_users"] as? [PFUser] else { return }
         
-        blocked_users = currentUser["blocked_users"] as! [PFUser]
-        
-        self.tableView.reloadData()
+        blockedUsers = blockedUsersObjects.map({
+            User(userObject: $0, completion: { (user) in
+                self.tableView.reloadData()
+            })
+        })
     }
 
     // MARK: - Table view data source
@@ -50,7 +52,7 @@ class BlockedAccountsTableViewController: UITableViewController, SegueHandlerTyp
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return blocked_users.count
+        return blockedUsers.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -64,10 +66,7 @@ class BlockedAccountsTableViewController: UITableViewController, SegueHandlerTyp
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as UserCell
-        
-        
-        
-        cell.configureCell(blocked_users[(indexPath as NSIndexPath).row])
+        cell.configureCell(with: blockedUsers[indexPath.row])
 
         return cell
     }

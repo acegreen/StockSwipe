@@ -151,7 +151,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         if let user = PFUser.current() , self.tradeIdea.user.objectId == user.objectId  {
             let deleteIdea = UIAlertAction(title: "Delete Idea", style: .default) { action in
                 
-                QueryHelper.sharedInstance.queryActivityFor(nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.tradeIdea.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue, Constants.ActivityType.TradeIdeaLike.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.Mention.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.tradeIdea.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue, Constants.ActivityType.TradeIdeaLike.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.Mention.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -199,9 +199,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         UIApplication.topViewController()?.show(profileContainerController, sender: self)
     }
     
-    func configureCell(_ tradeIdea: TradeIdea!, timeFormat: Constants.TimeFormat) {
-        
-        guard let tradeIdea = tradeIdea else { return }
+    func configureCell(with tradeIdea: TradeIdea, timeFormat: Constants.TimeFormat) {
         
         self.tradeIdea = tradeIdea
         
@@ -220,28 +218,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         self.checkMore()
     }
     
-    func configureCell(_ tradeIdeaObject: PFObject, timeFormat: Constants.TimeFormat) {
-        
-        self.tradeIdea = TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
-            
-            guard let tradeIdea = tradeIdea else { return }
-            
-            self.configureMainTradeIdea(tradeIdea, timeFormat: timeFormat)
-            
-            if let nestedTradeIdeaObject = self.tradeIdea.nestedTradeIdeaObject {
-                self.nestedTradeIdea = TradeIdea(parseObject: nestedTradeIdeaObject, completion: { (nestedTradeIdea) in
-                    self.configureNestedTradeIdea(nestedTradeIdea)
-                })
-            } else {
-                self.nestedTradeIdea = nil
-            }
-            
-            self.checkLike(tradeIdea, sender: self.likeButton)
-            self.checkReshare(tradeIdea, sender: self.reshareButton)
-            self.checkMore()
-        })
-    }
-    
     func configureMainTradeIdea(_ tradeIdea: TradeIdea!, timeFormat: Constants.TimeFormat) {
         
         guard tradeIdea.user != nil else { return }
@@ -256,11 +232,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             self.ideaDescription.text = tradeIdea.description
             
+            let nsPublishedDate = tradeIdea.publishedDate as NSDate
             switch timeFormat {
             case .short:
-                self.ideaTime.text = tradeIdea.publishedDate.formattedAsTimeAgoShort()
+                self.ideaTime.text = nsPublishedDate.formattedAsTimeAgoShort()
             case .long:
-                self.ideaTime.text = tradeIdea.publishedDate.formattedAsTimeAgo()
+                self.ideaTime.text = nsPublishedDate.formattedAsTimeAgo()
             }
             
             self.userAvatar.image = tradeIdea.user.avtar
@@ -372,7 +349,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         if let tradeIdeaObject = tradeIdea.parseObject {
             
-            QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: tradeIdeaObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: tradeIdeaObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                 
                 do {
                     
@@ -464,7 +441,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         if let tradeIdeaObject = tradeIdea.parseObject {
             
-            QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: self.tradeIdea.user.userObject, originalTradeIdea: self.tradeIdea.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: self.tradeIdea.user.userObject, originalTradeIdea: self.tradeIdea.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                 
                 do {
                     
@@ -473,7 +450,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     if activityObject != nil {
                         activityObject?.deleteEventually()
                         
-                        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("reshare_of", object: tradeIdeaObject, skip: 0, limit: 1) { (result) in
+                        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reshare_of", object: tradeIdeaObject, skip: 0, limit: 1) { (result) in
                             
                             do {
                                 

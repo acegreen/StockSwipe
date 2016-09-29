@@ -1,5 +1,5 @@
 PODS:
-  - AMPopTip (1.2.0)
+  - AMPopTip (1.3.0)
   - Appsee (2.2)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
@@ -7,24 +7,16 @@ PODS:
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
-  - BubbleTransition (1.0.3)
+  - BubbleTransition (2.0.0)
   - Charts (2.2.5):
     - Charts/Core (= 2.2.5)
   - Charts/Core (2.2.5)
   - ChimpKit (3.1.1)
-  - Crashlytics (3.8.1):
+  - Crashlytics (3.8.2):
     - Fabric (~> 1.6.3)
-  - DataCache (1.1)
+  - DataCache (1.2)
   - DZNEmptyDataSet (1.8.1)
   - Fabric (1.6.8)
-  - FacebookCore (0.1.1):
-    - Bolts (~> 1.8)
-    - FBSDKCoreKit (~> 4.14)
-  - FacebookShare (0.1.1):
-    - Bolts (~> 1.8)
-    - FacebookCore
-    - FBSDKCoreKit (~> 4.14)
-    - FBSDKShareKit (~> 4.14)
   - FBSDKCoreKit (4.15.1):
     - Bolts (~> 1.7)
   - FBSDKLoginKit (4.15.1):
@@ -35,7 +27,7 @@ PODS:
     - LaunchKit/LaunchKit (= 2.1.4)
   - LaunchKit/LaunchKit (2.1.4)
   - MDCSwipeToChoose (0.2.4)
-  - NVActivityIndicatorView (2.11)
+  - NVActivityIndicatorView (3.0)
   - Parse (1.14.2):
     - Bolts/Tasks (~> 1.8)
   - ParseFacebookUtilsV4 (1.11.1):
@@ -50,11 +42,12 @@ PODS:
   - ParseUI (1.2.0):
     - Bolts/Tasks (~> 1.3)
     - Parse (~> 1.9)
+  - ReachabilitySwift (2.3.3)
   - Rollout.io (1.3.1)
-  - SDVersion (3.5)
+  - SDVersion (3.6)
   - SKSplashView (0.1.2)
   - SwiftyJSON (2.3.2)
-  - SWXMLHash (2.5.1)
+  - SWXMLHash (3.0.2)
   - TwitterCore (2.4.0):
     - Fabric
   - TwitterKit (2.4.0):
@@ -64,13 +57,12 @@ DEPENDENCIES:
   - AMPopTip
   - Appsee
   - BubbleTransition
-  - Charts (from `https://github.com/danielgindi/Charts.git`, branch `Swift-3.0`)
+  - Charts (from `https://github.com/danielgindi/Charts.git`, branch `Chart2.2.5-Swift3.0`)
   - ChimpKit
   - Crashlytics
   - DataCache (from `https://github.com/huynguyencong/DataCache.git`)
   - DZNEmptyDataSet
-  - FacebookCore
-  - FacebookShare
+  - FBSDKShareKit
   - LaunchKit
   - MDCSwipeToChoose (from `https://github.com/acegreen/MDCSwipeToChoose.git`)
   - NVActivityIndicatorView
@@ -78,6 +70,7 @@ DEPENDENCIES:
   - ParseFacebookUtilsV4
   - ParseTwitterUtils
   - ParseUI
+  - ReachabilitySwift (from `https://github.com/ashleymills/Reachability.swift.git`, branch `feature/ios10`)
   - Rollout.io
   - SDVersion
   - SKSplashView (from `https://github.com/acegreen/SKSplashView.git`, branch `ag-improvements`)
@@ -87,12 +80,15 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   Charts:
-    :branch: Swift-3.0
+    :branch: Chart2.2.5-Swift3.0
     :git: https://github.com/danielgindi/Charts.git
   DataCache:
     :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
+  ReachabilitySwift:
+    :branch: feature/ios10
+    :git: https://github.com/ashleymills/Reachability.swift.git
   SKSplashView:
     :branch: ag-improvements
     :git: https://github.com/acegreen/SKSplashView.git
@@ -102,14 +98,17 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   Charts:
-    :commit: 2dd22b903a78d0d34d07ef71728c41ac22f6a114
+    :commit: ab3bb619df2c2d165b41736b6bc25a4218833252
     :git: https://github.com/danielgindi/Charts.git
   DataCache:
-    :commit: d7defe7c3921e4f72860849fd6f45b87f96eea31
+    :commit: e3ffb47844987203dbd71b4fdbeb7181d0398f94
     :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
     :commit: 759f5060c350d533e046ef53f88515552278a706
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
+  ReachabilitySwift:
+    :commit: 3c7e72ac66186e2477d07d36e2b4589fb5e855d8
+    :git: https://github.com/ashleymills/Reachability.swift.git
   SKSplashView:
     :commit: c56a7cee52f75473117eb2597b1b160dd9915f22
     :git: https://github.com/acegreen/SKSplashView.git
@@ -118,36 +117,35 @@ CHECKOUT OPTIONS:
     :git: https://github.com/acegreen/SwiftyJSON.git
 
 SPEC CHECKSUMS:
-  AMPopTip: 853bcb307ecc6f71742cccdbc5b594bea097f188
+  AMPopTip: b810a33c120feacafce170cc9ddcaa8ce3a8389d
   Appsee: c95173e65acaab0ffc8a082c70633c9f5f45d5f0
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  BubbleTransition: a7ae6678721406d60f604cbbea1ace505563119d
+  BubbleTransition: bdb9d71993b8d3513008e2dda6bada1ddad25d4f
   Charts: b48fcc8d7190de910ff9e9748f5360c8ea7856e5
   ChimpKit: d020126089544daa349397a91f1489a3f271b791
-  Crashlytics: 4391d8df0b125345e9f209c5db6e7f40a6a8435d
-  DataCache: 0acf603ad1865736507f3ab8dc09302f7a774d45
+  Crashlytics: 27acca95a01b042a8294291dd6dff27f8f6af6d7
+  DataCache: f7682fbe2cb74bc79849744b6a597edca4fc786f
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Fabric: 5755268d0171435ab167e3d0878a28a777deaf10
-  FacebookCore: 14f27add6888c27470d42a100374e6361f4e0f79
-  FacebookShare: ea0370ca0b914eccc42a753abcd937265c17b030
   FBSDKCoreKit: fc7fa53d16b095ee3fd53f0cd59f1df8bcbb634d
   FBSDKLoginKit: 073f79b3b2e762fc6f54a283fe15f45372d59f5f
   FBSDKShareKit: 11cbb5a4d7b5fda8143cc95b76188147e6725736
   LaunchKit: 95ad4fb171a0f8ea1c80aa26d4fb7bd637788f9c
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
-  NVActivityIndicatorView: 6a2bca6dab5c88ad72c28f50676acc6cca450c0d
+  NVActivityIndicatorView: 81953b5e65093ba79edf4fe7268e002039ca5268
   Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
   ParseTwitterUtils: 0dde9689565e7012d83f892c64aed2ebe69f2ea9
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
+  ReachabilitySwift: e0f6b6f280effb47731acfaaa2d5ffe223703793
   Rollout.io: e2374975b36769db594ecbe8738e13f8a5b202c8
-  SDVersion: 73adb37feaf9ddaca41b88f4095325d4d583af7e
+  SDVersion: 43383b6ac05462c973c3fd92d9748c74e360aba5
   SKSplashView: c65333b6707be6f237d09e7c8977941114b0a70d
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
-  SWXMLHash: 89929225cad9c70ff96dcce54a19ddb2b1a18a69
+  SWXMLHash: e0f6935971f01b06fb228cf435510d998ecde647
   TwitterCore: a139904c80805ad3dde9eef1100704f96f646d1d
   TwitterKit: 1cf9742edf9d182c1518cfdd6aaac0dfe313b38b
 
-PODFILE CHECKSUM: 959623a90b22639b4fbfbb83a4b743a8f4e5f9da
+PODFILE CHECKSUM: f3d735505b7c314d1e1ca834e4a6435f92338387
 
-COCOAPODS: 1.1.0.beta.1
+COCOAPODS: 1.1.0.rc.2

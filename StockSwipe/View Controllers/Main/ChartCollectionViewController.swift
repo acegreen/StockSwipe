@@ -201,7 +201,8 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
     func reloadViewData() {
         
         // Get charts from CoreData
-        swippeChartsdArray = Functions.getChartsFromCoreData()?.mutableCopy() as! [ChartModel]
+        guard let coreDataCharts = Functions.getChartsFromCoreData() else { return }
+        swippeChartsdArray = coreDataCharts
         
         // Enable edit button if array exists
         if self.swippeChartsdArray.count != 0 {
@@ -238,7 +239,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         
         let cell: ChartCollectionViewCell = CollectionView.dequeueReusableCell(withReuseIdentifier: "chartCollectionCellIdentifier", for: indexPath) as! ChartCollectionViewCell
         
-        let chartData = swippeChartsdArray[(indexPath as NSIndexPath).row]
+        let chartData = swippeChartsdArray[indexPath.row]
         cell.configure(withDataSource: chartData)
         
         return cell
@@ -268,7 +269,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
                 return
             }
             
-            QueryHelper.sharedInstance.queryStockObjectsFor([selectedObject.symbol]) { (result) in
+            QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [selectedObject.symbol]) { (result) in
                 
                 do {
                     
@@ -360,7 +361,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
         
         let symbolStringArray: [String] = extractSymbolNames(selectedObjects)
         
-        QueryHelper.sharedInstance.queryStockObjectsFor(symbolStringArray) { (result) in
+        QueryHelper.sharedInstance.queryStockObjectsFor(symbols: symbolStringArray) { (result) in
             
             do {
                 
@@ -368,7 +369,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
                 
                 print("Successfully retrieved \(stockObjects.count) object")
                 
-                QueryHelper.sharedInstance.queryActivityFor(currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: stockObjects, activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: 0, limit: 0, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: stockObjects, activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: 0, limit: 0, includeKeys: nil, completion: { (result) in
                     
                     do {
                         

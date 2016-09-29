@@ -108,11 +108,11 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
         // Company figures query
         let companyFiguresOperation = BlockOperation { () -> Void in
             
-            QueryHelper.sharedInstance.queryYahooSymbolQuote([self.symbol]) { (quoteData, response, error) -> Void in
+            QueryHelper.sharedInstance.queryYahooSymbolQuote(tickers: [self.symbol]) { (quoteData, response, error) -> Void in
                 
                 if error != nil {
                     
-                    print("error: \(error!.localizedDescription): \(error!.userInfo)")
+                    print("error:", error!.localizedDescription)
                     
                 } else if quoteData != nil {
                     
@@ -188,11 +188,11 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
 
         // Company analysts rating query
         let companyAnalystRatings = BlockOperation { () -> Void in
-            QueryHelper.sharedInstance.queryYahooCompanyAnalystRating(self.symbol) { (companyAnalystRatingData, response, error) -> Void in
+            QueryHelper.sharedInstance.queryYahooCompanyAnalystRating(symbol: self.symbol) { (companyAnalystRatingData, response, error) -> Void in
                 
                 if error != nil {
                     
-                    print("error: \(error!.localizedDescription): \(error!.userInfo)")
+                    print("error:", error!.localizedDescription)
                     
                 } else if companyAnalystRatingData != nil {
                     
@@ -252,11 +252,11 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
     
         // Company Profile Query
         let companyProfileQperation = BlockOperation { () -> Void in
-            QueryHelper.sharedInstance.queryYahooCompanyProfile(self.symbol) { (companyProfileData, response, error) -> Void in
+            QueryHelper.sharedInstance.queryYahooCompanyProfile(symbol: self.symbol) { (companyProfileData, response, error) -> Void in
                 
                 if error != nil {
                     
-                    print("error: \(error!.localizedDescription): \(error!.userInfo)")
+                    print("error:", error!.localizedDescription)
                     
                 } else if companyProfileData != nil {
                     
@@ -284,11 +284,11 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
             
         // Company Summary Query
         let companySummaryOperation = BlockOperation { () -> Void in
-            QueryHelper.sharedInstance.queryYahooCompanySummary(self.symbol) { (companySummaryData, response, error) -> Void in
+            QueryHelper.sharedInstance.queryYahooCompanySummary(symbol: self.symbol) { (companySummaryData, response, error) -> Void in
                 
                 if error != nil {
                     
-                    print("error: \(error!.localizedDescription): \(error!.userInfo)")
+                    print("error:", error!.localizedDescription)
                     
                 } else if companySummaryData != nil {
                     
@@ -322,7 +322,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
             }
             
             let chartDataSet = BarChartDataSet(yVals: dataEntries, label: "Analysts Rating")
-            chartDataSet.colors = [UIColor.greenColor(), ChartreuseWebColor, UIColor.yellowColor(), UIColor.orangeColor() , UIColor.redColor()]
+            chartDataSet.colors = [UIColor.green, ChartreuseWebColor, UIColor.yellow, UIColor.orange , UIColor.red]
             chartDataSet.valueFont = UIFont(name: "HelveticaNeue", size: 15.0)!
             chartDataSet.valueTextColor = Constants.stockSwipeFontColor
             
@@ -334,7 +334,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
             //        ratingBarChartView.infoFont = UIFont(name: "HelveticaNeue", size: 20.0)!
             //        ratingBarChartView.infoTextColor = Constants.stockSwipeFontColor
             ratingBarChartView.descriptionText = ""
-            ratingBarChartView.xAxis.labelPosition = .Bottom
+            ratingBarChartView.xAxis.labelPosition = .bottom
             ratingBarChartView.xAxis.drawGridLinesEnabled = false
             ratingBarChartView.xAxis.labelFont = UIFont(name: "HelveticaNeue", size: 11.0)!
             ratingBarChartView.xAxis.labelTextColor = Constants.stockSwipeFontColor
@@ -346,14 +346,14 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
             ratingBarChartView.drawBordersEnabled = false
             ratingBarChartView.drawGridBackgroundEnabled = false
             ratingBarChartView.legend.enabled = false
-            ratingBarChartView.userInteractionEnabled = false
+            ratingBarChartView.isUserInteractionEnabled = false
             
             let chartData = BarChartData(xVals: ratingsType, dataSet: chartDataSet)
             ratingBarChartView.data = chartData
             
             ratingBarChartView.animate(xAxisDuration: 0.5, yAxisDuration: 0.5)
         } else {
-            ratingBarChartView.hidden = true
+            ratingBarChartView.isHidden = true
         }
     }
     

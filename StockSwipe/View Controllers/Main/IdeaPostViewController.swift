@@ -108,7 +108,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.current()?.username ?? "N/A","Description": self.ideaTextView.text, "App Version": Constants.AppVersion])
                 
                 // query all the Stocks mentioned & add them to tradIdeaObject
-                QueryHelper.sharedInstance.queryStockObjectsFor(cashtags, completion: { (result) in
+                QueryHelper.sharedInstance.queryStockObjectsFor(symbols: cashtags, completion: { (result) in
                     
                     do {
                         
@@ -132,7 +132,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 })
                 
                 // query all the users mentioned & add them to tradIdeaObject
-                QueryHelper.sharedInstance.queryUserObjectsFor(mentions, completion: { (result) in
+                QueryHelper.sharedInstance.queryUserObjectsFor(usernames: mentions, completion: { (result) in
                     
                     do {
                         

@@ -55,7 +55,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         
         if let profileImageURL = currentUser.object(forKey: "profile_image_url") as? String {
             
-            QueryHelper.sharedInstance.queryWith(profileImageURL, completionHandler: { (result) in
+            QueryHelper.sharedInstance.queryWith(queryString: profileImageURL, completionHandler: { (result) in
                 
                 do {
                     
@@ -187,7 +187,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             
             let objectsToShare: NSArray = [textToShare, Constants.appLinkURL!]
             
-            let excludedActivityTypesArray: NSArray = [
+            let excludedActivityTypesArray = [
                 UIActivityType.postToWeibo,
                 UIActivityType.addToReadingList,
                 UIActivityType.assignToContact,
@@ -198,7 +198,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             ]
             
             let activityVC = UIActivityViewController(activityItems: objectsToShare as [AnyObject], applicationActivities: nil)
-            activityVC.excludedActivityTypes = excludedActivityTypesArray as? [String] as! [UIActivityType]?
+            activityVC.excludedActivityTypes = excludedActivityTypesArray
             
             activityVC.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.unknown
             
@@ -283,6 +283,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
 }
 
 extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
+    
     //MARK: FBSDKAppInviteDialogDelegate
     func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [AnyHashable: Any]!) {
         print("invitation made")
@@ -295,7 +296,8 @@ extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
                                    customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
         
     }
-    func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: NSError!) {
+    
+    func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: Error!) {
         print("error made")
     }
 }

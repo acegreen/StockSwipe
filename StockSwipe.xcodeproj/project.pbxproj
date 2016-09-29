@@ -18,6 +18,8 @@
 		231E89C21D28729000CD009A /* IdeaPostUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89C11D28729000CD009A /* IdeaPostUITextView.swift */; };
 		231E89C81D2A222A00CD009A /* BlockButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89C71D2A222A00CD009A /* BlockButton.swift */; };
 		232A4E901B7E32A100A0FE4B /* ImageLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */; };
+		233050D01D9C668F009EFA3C /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D055FD1D4E4E9C0079EF9D /* WordCloud.framework */; };
+		233050D11D9C668F009EFA3C /* WordCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23D055FD1D4E4E9C0079EF9D /* WordCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2339B0A41B41A697009CE3EB /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 2339B0951B41A697009CE3EB /* LICENSE */; };
 		2339B0A51B41A697009CE3EB /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2339B0981B41A697009CE3EB /* iRate.bundle */; };
 		2339B0A61B41A697009CE3EB /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2339B09A1B41A697009CE3EB /* iRate.m */; };
@@ -49,7 +51,6 @@
 		2375FE6F1D85A39A0049D297 /* StockExchangePreferences_US.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2375FE691D85A39A0049D297 /* StockExchangePreferences_US.plist */; };
 		2375FE701D85A39A0049D297 /* StockSectorPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2375FE6A1D85A39A0049D297 /* StockSectorPreferences.plist */; };
 		2375FE721D85A45A0049D297 /* NotificationPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2375FE711D85A45A0049D297 /* NotificationPreferences.plist */; };
-		23761CE01D21B5B900FA66C1 /* WordCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 23761CDC1D21B57200FA66C1 /* WordCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		2376E41F1C2B0D7A00B85656 /* QueryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2376E41E1C2B0D7A00B85656 /* QueryHelper.swift */; };
 		2378B58A1B115FB3002ACFDC /* StockSwipeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378B5891B115FB3002ACFDC /* StockSwipeTests.swift */; };
 		23813DEE1D3C8C90008F6540 /* CustomImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23813DED1D3C8C90008F6540 /* CustomImagePickerController.swift */; };
@@ -104,7 +105,6 @@
 		23CE716D1C1215C800E87420 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE716C1C1215C800E87420 /* AdSupport.framework */; };
 		23CF54A51D19BF3B004A01DC /* SuperUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF54A41D19BF3B004A01DC /* SuperUITextView.swift */; };
 		23CF60461B1CA8310087B9D5 /* BorderedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CF60451B1CA8310087B9D5 /* BorderedLabel.swift */; };
-		23D055FE1D4E4E9C0079EF9D /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D055FD1D4E4E9C0079EF9D /* WordCloud.framework */; };
 		23D055FF1D4E4E9C0079EF9D /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D055FD1D4E4E9C0079EF9D /* WordCloud.framework */; };
 		23D4FFE81C317ECE00A1102D /* FiltersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D4FFE71C317ECE00A1102D /* FiltersCell.swift */; };
 		23D7602A1B629831009777E1 /* CustomSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D760291B629831009777E1 /* CustomSegue.swift */; };
@@ -152,13 +152,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		23B8A9BD1B9E75DA0065D65E /* Embed Frameworks */ = {
+		233050D21D9C668F009EFA3C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				23761CE01D21B5B900FA66C1 /* WordCloud.framework in Embed Frameworks */,
+				233050D11D9C668F009EFA3C /* WordCloud.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -225,7 +225,6 @@
 		2375FE691D85A39A0049D297 /* StockExchangePreferences_US.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = StockExchangePreferences_US.plist; sourceTree = "<group>"; };
 		2375FE6A1D85A39A0049D297 /* StockSectorPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = StockSectorPreferences.plist; sourceTree = "<group>"; };
 		2375FE711D85A45A0049D297 /* NotificationPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = NotificationPreferences.plist; sourceTree = "<group>"; };
-		23761CDC1D21B57200FA66C1 /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WordCloud.framework; path = /Users/AceGreen/iOS/BitBucket/StockSwipe/Frameworks/WordCloud/WordCloud.framework; sourceTree = "<absolute>"; };
 		2376E41E1C2B0D7A00B85656 /* QueryHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QueryHelper.swift; sourceTree = "<group>"; };
 		2378B5851B115FB3002ACFDC /* StockSwipeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StockSwipeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2378B5881B115FB3002ACFDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -354,7 +353,7 @@
 				23EA70241B119854008F6C12 /* libsqlite3.dylib in Frameworks */,
 				23EA70221B11984C008F6C12 /* libz.dylib in Frameworks */,
 				23EA70201B119839008F6C12 /* SystemConfiguration.framework in Frameworks */,
-				23D055FE1D4E4E9C0079EF9D /* WordCloud.framework in Frameworks */,
+				233050D01D9C668F009EFA3C /* WordCloud.framework in Frameworks */,
 				23EA701E1B119831008F6C12 /* StoreKit.framework in Frameworks */,
 				23EA701C1B11982D008F6C12 /* Security.framework in Frameworks */,
 				23EA701A1B119827008F6C12 /* QuartzCore.framework in Frameworks */,
@@ -558,8 +557,8 @@
 				238DB6D51D85A01F00082918 /* SearchTableViewController.swift */,
 				238DB6D61D85A01F00082918 /* SettingsTableViewController.swift */,
 				238DB6D71D85A01F00082918 /* StreamTableViewController.swift */,
-				238DB6D81D85A01F00082918 /* TradeIdeaDetailTableViewController.swift */,
 				238DB6D91D85A01F00082918 /* TradeIdeasTableViewController.swift */,
+				238DB6D81D85A01F00082918 /* TradeIdeaDetailTableViewController.swift */,
 				238DB6DA1D85A01F00082918 /* WebViewController.swift */,
 			);
 			path = Main;
@@ -800,11 +799,11 @@
 				8AC17D9D1AC7366A004E6D2D /* Frameworks */,
 				8AC17D9E1AC7366A004E6D2D /* Resources */,
 				234F8EB41B14A48600A0E706 /* Run Script */,
-				23B8A9BD1B9E75DA0065D65E /* Embed Frameworks */,
 				23E7F6AE1BCB57A0009A016D /* Embed App Extensions */,
 				816270F03CFA12797FF94487 /* [CP] Embed Pods Frameworks */,
 				1A12D03F3D98D4DD994CBE82 /* [CP] Copy Pods Resources */,
 				E55DE24CF77C74A97428EF60 /* Rollout.io post-build */,
+				233050D21D9C668F009EFA3C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -823,7 +822,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0800;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = StockSwipe;
 				TargetAttributes = {
 					2378B5841B115FB3002ACFDC = {
@@ -1391,7 +1390,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 379EE7BADF3F956ACE9B3CF1 /* Pods-StockSwipe.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -1425,7 +1424,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = CEDDC51E64E945056DDC5558 /* Pods-StockSwipe.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";

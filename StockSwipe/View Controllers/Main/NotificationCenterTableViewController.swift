@@ -59,7 +59,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         
         isQueryingForActivities = true
         
-        QueryHelper.sharedInstance.queryActivityForUser(currentUser) { (result) in
+        QueryHelper.sharedInstance.queryActivityForUser(toUser: currentUser) { (result) in
         
             self.isQueryingForActivities = false
             
@@ -106,7 +106,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             self.footerActivityIndicator.startAnimating()
         }
         
-        QueryHelper.sharedInstance.queryActivityForUser(currentUser) { (result) in
+        QueryHelper.sharedInstance.queryActivityForUser(toUser: currentUser) { (result) in
             
             do {
                 
@@ -174,14 +174,14 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as NotificationCell
-        cell.configureCell(activities[(indexPath as NSIndexPath).row])
+        cell.configureCell(activities[indexPath.row])
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let activityAtIndexPath = activities[(indexPath as NSIndexPath).row]
+        let activityAtIndexPath = activities[indexPath.row]
         guard let activityType = Constants.ActivityType(rawValue: activityAtIndexPath.object(forKey: "activityType") as! String) else { return }
         
         switch activityType {
@@ -189,8 +189,11 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             guard activityAtIndexPath.object(forKey: "fromUser") != nil else { return }
             self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: tableView.cellForRow(at: indexPath))
         case .TradeIdeaNew, .TradeIdeaLike, .TradeIdeaReply, .TradeIdeaReshare:
-            guard activityAtIndexPath.object(forKey: "tradeIdea") != nil else { return }
-            self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tableView.cellForRow(at: indexPath))
+            guard let tradeIdeaAtIndexPath = activityAtIndexPath.object(forKey: "tradeIdea") as? PFObject else { return }
+            let tradeIdea = TradeIdea(parseObject: tradeIdeaAtIndexPath, completion: { (tradeIdea) in
+                self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tradeIdea)
+            })
+            
         case .Block, .StockLong, .StockShort:
             break
         }
@@ -216,17 +219,13 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             
             let destinationViewController = segue.destination as! TradeIdeaDetailTableViewController
             
-            if let tradeIdeaObject = cell.activity.object(forKey: "tradeIdea") as? PFObject {
-                
-                TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
-                    destinationViewController.tradeIdea = tradeIdea
-                })
+            if let tradeIdea = sender as? TradeIdea {
+                destinationViewController.tradeIdea = tradeIdea
             }
             
         case .ProfileSegueIdentifier:
             
             let profileViewController = segue.destination as! ProfileContainerController
-            
             profileViewController.user = User(userObject: cell.activity.object(forKey: "fromUser") as! PFUser)
             
             // Just a workaround.. There should be a cleaner way to sort this out

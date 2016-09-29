@@ -53,7 +53,7 @@ class ProfileDetailTableViewController: UITableViewController {
         
         if let profileImageURL = user.userObject.object(forKey: "profile_image_url") as? String {
             
-            QueryHelper.sharedInstance.queryWith(profileImageURL, completionHandler: { (result) in
+            QueryHelper.sharedInstance.queryWith(queryString: profileImageURL, completionHandler: { (result) in
                 
                 do {
                     

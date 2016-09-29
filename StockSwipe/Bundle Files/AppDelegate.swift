@@ -153,7 +153,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                 false
             }
             
-            QueryHelper.sharedInstance.queryStockObjectsFor([symbol], completion: { (result) in
+            QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [symbol], completion: { (result) in
                 
                 do {
                     
@@ -218,7 +218,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
             symbol = userInfo["symbol"] as? String
         }
         
-        QueryHelper.sharedInstance.queryStockObjectsFor([symbol], completion: { (result) in
+        QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [symbol], completion: { (result) in
             
             do {
                 
@@ -269,6 +269,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         
+        let error = error as NSError
         if error.code == 3010 {
             
             print("Push notifications are not supported in the iOS Simulator.")

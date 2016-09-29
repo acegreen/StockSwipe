@@ -222,7 +222,8 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
                 
                 for (index, subJson) in self.trendingStocksJSON {
                     
-                    let cloudWord = CloudWord(word: subJson["symbol"].string! , wordCount: (self.trendingStocksJSON.count - Int(index)!) as NSNumber, wordTappable: true)
+                    guard let symbol = subJson["symbol"].string, let wordCount = self.trendingStocksJSON.count - Int(index)! as? NSNumber else { continue }
+                    guard let cloudWord = CloudWord(word: symbol , wordCount: wordCount, wordTappable: true) else { continue }
                     self.cloudWords.append(cloudWord)
                     
                 }

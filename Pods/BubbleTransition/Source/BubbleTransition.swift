@@ -13,36 +13,36 @@ import UIKit
 
  - Prepare the transition:
  ```swift
- override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-     let controller = segue.destinationViewController
+ override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     let controller = segue.destination
      controller.transitioningDelegate = self
-     controller.modalPresentationStyle = .Custom
+     controller.modalPresentationStyle = .custom
  }
  ```
  - Implement UIViewControllerTransitioningDelegate:
  ```swift
- func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-     transition.transitionMode = .Present
+ func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+     transition.transitionMode = .present
      transition.startingPoint = someButton.center
      transition.bubbleColor = someButton.backgroundColor!
      return transition
  }
 
- func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-     transition.transitionMode = .Dismiss
+ func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+     transition.transitionMode = .dismiss
      transition.startingPoint = someButton.center
      transition.bubbleColor = someButton.backgroundColor!
      return transition
  }
  ```
  */
-public class BubbleTransition: NSObject {
+open class BubbleTransition: NSObject {
     
     /**
     The point that originates the bubble. The bubble starts from this point
     and shrinks to it on dismiss
     */
-    public var startingPoint = CGPoint.zero {
+    open var startingPoint = CGPoint.zero {
         didSet {
             bubble.center = startingPoint
         }
@@ -52,20 +52,20 @@ public class BubbleTransition: NSObject {
     The transition duration. The same value is used in both the Present or Dismiss actions
     Defaults to `0.5`
     */
-    public var duration = 0.5
+    open var duration = 0.5
     
     /**
-    The transition direction. Possible values `.Present`, `.Dismiss` or `.Pop`
+    The transition direction. Possible values `.present`, `.dismiss` or `.pop`
      Defaults to `.Present`
     */
-    public var transitionMode: BubbleTransitionMode = .Present
+    open var transitionMode: BubbleTransitionMode = .present
     
     /**
     The color of the bubble. Make sure that it matches the destination controller's background color.
     */
-    public var bubbleColor: UIColor = .white
+    open var bubbleColor: UIColor = .white
     
-    public fileprivate(set) var bubble = UIView()
+    open fileprivate(set) var bubble = UIView()
 
     /**
     The possible directions of the transition.
@@ -75,7 +75,7 @@ public class BubbleTransition: NSObject {
      - Pop: For a pop animation in a navigation controller
     */
     @objc public enum BubbleTransitionMode: Int {
-        case Present, Dismiss, Pop
+        case present, dismiss, pop
     }
 }
 
@@ -96,14 +96,14 @@ extension BubbleTransition: UIViewControllerAnimatedTransitioning {
     public func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         
         let containerView = transitionContext.containerView
-
-        if transitionMode == .Present {
+        
+        if transitionMode == .present {
             let presentedControllerView = transitionContext.view(forKey: UITransitionContextViewKey.to)!
             let originalCenter = presentedControllerView.center
             let originalSize = presentedControllerView.frame.size
 
             bubble = UIView()
-            bubble.frame = frameForBubble(originalCenter: originalCenter, size: originalSize, start: startingPoint)
+            bubble.frame = frameForBubble(originalCenter, size: originalSize, start: startingPoint)
             bubble.layer.cornerRadius = bubble.frame.size.height / 2
             bubble.center = startingPoint
             bubble.transform = CGAffineTransform(scaleX: 0.001, y: 0.001)
@@ -120,16 +120,16 @@ extension BubbleTransition: UIViewControllerAnimatedTransitioning {
                 presentedControllerView.transform = CGAffineTransform.identity
                 presentedControllerView.alpha = 1
                 presentedControllerView.center = originalCenter
-                }) { (_) in
+                }, completion: { (_) in
                     transitionContext.completeTransition(true)
-            }
+            }) 
         } else {
-            let key = (transitionMode == .Pop) ? UITransitionContextViewKey.to : UITransitionContextViewKey.from
+            let key = (transitionMode == .pop) ? UITransitionContextViewKey.to : UITransitionContextViewKey.from
             let returningControllerView = transitionContext.view(forKey: key)!
             let originalCenter = returningControllerView.center
             let originalSize = returningControllerView.frame.size
 
-            bubble.frame = frameForBubble(originalCenter: originalCenter, size: originalSize, start: startingPoint)
+            bubble.frame = frameForBubble(originalCenter, size: originalSize, start: startingPoint)
             bubble.layer.cornerRadius = bubble.frame.size.height / 2
             bubble.center = startingPoint
 
@@ -139,25 +139,25 @@ extension BubbleTransition: UIViewControllerAnimatedTransitioning {
                 returningControllerView.center = self.startingPoint
                 returningControllerView.alpha = 0
 
-                if self.transitionMode == .Pop {
+                if self.transitionMode == .pop {
                     containerView.insertSubview(returningControllerView, belowSubview: returningControllerView)
                     containerView.insertSubview(self.bubble, belowSubview: returningControllerView)
                 }
-                }) { (_) in
-                    returningControllerView.center = originalCenter;
+                }, completion: { (_) in
+                    returningControllerView.center = originalCenter
                     returningControllerView.removeFromSuperview()
                     self.bubble.removeFromSuperview()
                     transitionContext.completeTransition(true)
-            }
+            }) 
         }
     }
 }
 
-fileprivate extension BubbleTransition {
-    fileprivate func frameForBubble(originalCenter: CGPoint, size originalSize: CGSize, start: CGPoint) -> CGRect {
-        let lengthX = fmax(start.x, originalSize.width - start.x);
+private extension BubbleTransition {
+    func frameForBubble(_ originalCenter: CGPoint, size originalSize: CGSize, start: CGPoint) -> CGRect {
+        let lengthX = fmax(start.x, originalSize.width - start.x)
         let lengthY = fmax(start.y, originalSize.height - start.y)
-        let offset = sqrt(lengthX * lengthX + lengthY * lengthY) * 2;
+        let offset = sqrt(lengthX * lengthX + lengthY * lengthY) * 2
         let size = CGSize(width: offset, height: offset)
 
         return CGRect(origin: CGPoint.zero, size: size)

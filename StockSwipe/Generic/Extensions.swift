@@ -84,7 +84,7 @@ extension String {
         let utf16view = self.utf16
         let from = String.UTF16View.Index(range.lowerBound, within: utf16view)
         let to = String.UTF16View.Index(range.upperBound, within: utf16view)
-        return NSMakeRange(utf16view.startIndex.distanceTo(from), from.distanceTo(to))
+        return NSMakeRange(utf16view.startIndex.distance(to: from), from.distance(to: to))
     }
     
     mutating func dropTrailingCharacters(_ dropCharacterSet: CharacterSet) {
@@ -96,7 +96,7 @@ extension String {
     }
     
     func URLEncodedString() -> String? {
-        let escapedString = self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed())
+        let escapedString = self.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         return escapedString
     }
     
@@ -128,67 +128,9 @@ extension String {
         return self.replacingOccurrences(of: target, with: withString, options: NSString.CompareOptions.literal, range: nil)
     }
     
-    public var camelCase: String {
-        get {
-            return self.deburr().words().reduceWithIndex("") { (result, index, word) -> String in
-                let lowered = word.lowercased()
-                return result + (index > 0 ? lowered.capitalized : lowered)
-            }
-        }
-    }
-    
-    public var kebabCase: String {
-        get {
-            return self.deburr().words().reduceWithIndex("", combine: { (result, index, word) -> String in
-                return result + (index > 0 ? "-" : "") + word.lowercased()
-            })
-        }
-    }
-    
-    public var snakeCase: String {
-        get {
-            return self.deburr().words().reduceWithIndex("", combine: { (result, index, word) -> String in
-                return result + (index > 0 ? "_" : "") + word.lowercased()
-            })
-        }
-    }
-    
-    public var startCase: String {
-        get {
-            return self.deburr().words().reduceWithIndex("", combine: { (result, index, word) -> String in
-                return result + (index > 0 ? " " : "") + word.capitalized
-            })
-        }
-    }
-    
-    /// Strip string of accents and diacritics
-    func deburr() -> String {
-        let mutString = NSMutableString(string: self)
-        CFStringTransform(mutString, nil, kCFStringTransformStripCombiningMarks, false)
-        return mutString as String
-    }
-    
-    /// Split string into array of 'words'
-    func words() -> [String] {
-        let hasComplexWordRegex = try! NSRegularExpression(pattern: Constants.RegexHelper.hasComplexWord, options: [])
-        let wordRange = NSMakeRange(0, self.characters.count)
-        let hasComplexWord = hasComplexWordRegex.rangeOfFirstMatch(in: self, options: [], range: wordRange)
-        let wordPattern = hasComplexWord.length > 0 ? Constants.RegexHelper.complexWord : Constants.RegexHelper.basicWord
-        let wordRegex = try! NSRegularExpression(pattern: wordPattern, options: [])
-        let matches = wordRegex.matches(in: self, options: [], range: wordRange)
-        let words = matches.map { (result: NSTextCheckingResult) -> String in
-            if let range = self.rangeFromNSRange(result.range) {
-                return self.substring(with: range)
-            } else {
-                return ""
-            }
-        }
-        return words
-    }
-    
     func rangeFromNSRange(_ nsRange : NSRange) -> Range<String.Index>? {
-        let from16 = utf16.startIndex.advancedBy(nsRange.location, limit: utf16.endIndex)
-        let to16 = from16.advancedBy(nsRange.length, limit: utf16.endIndex)
+        let from16 = utf16.startIndex.advanced(by: nsRange.location)
+        let to16 = from16.advanced(by: nsRange.length)
         if let from = String.Index(from16, within: self),
             let to = String.Index(to16, within: self) {
             return from ..< to
@@ -328,11 +270,11 @@ extension URL {
         
         for pair in pairs {
             
-            let elements: NSArray = pair.components(separatedBy: secondSeperator)
+            let elements = pair.components(separatedBy: secondSeperator)
             
-            guard let key = (elements.object(at: 0) as AnyObject).removingPercentEncoding,
-                let value = (elements.object(at: 1) as AnyObject).removingPercentEncoding
-                else { return dict }
+            guard let key = (elements[0] as AnyObject).removingPercentEncoding,
+                  let value = (elements[1] as AnyObject).removingPercentEncoding
+            else { return dict }
             
             dict.setObject(value!, forKey: key! as NSCopying)
         }
@@ -401,9 +343,9 @@ extension DetectTags where Self: UITextView {
         var hashtags = [String]()
         
         // turn string in to NSString
-        let currentText = self.text
+        let currentText = self.text as NSString
         
-        let words:[String] = currentText.components(separatedBy: .whitespacesAndNewlines())
+        let words:[String] = currentText.components(separatedBy: .whitespacesAndNewlines)
         
         for word in words {
             
@@ -454,13 +396,13 @@ extension DetectTags where Self: UITextView {
     func resolveTags() {
         
         // this needs to be an array of NSString.  String does not work.
-        let words = self.text.components(separatedBy: .whitespacesAndNewlines())
+        let words = self.text.components(separatedBy: .whitespacesAndNewlines)
         
         // use storyboard attributes
-        var attributes: [String: AnyObject]?
+        var attributes: [String: Any]?
         if let name = self.font?.familyName, let size = self.font?.pointSize {
             attributes = [
-                NSFontAttributeName : UIFont(name: name, size: size) as AnyObject,
+                NSFontAttributeName : UIFont(name: name, size: size)!,
                 NSForegroundColorAttributeName : (self.textColor ?? UIColor.black)
             ]
         }
@@ -489,13 +431,13 @@ extension DetectTags where Self: UITextView {
                 // drop unwanted characters
                 wordWithTagRemoved.dropTrailingCharacters(CharacterSet.letters.inverted)
                 
-                let remainingRange = Range(text.indices.suffix(from: bookmark))
+                let remainingRange = Range(bookmark..<text.endIndex)
                 
                 guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
                     else { continue }
                 
                 if let matchRange = text.range(of: word as String, options: .literal, range:remainingRange),
-                    let escapedString = wordWithTagRemoved.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed()) {
+                    let escapedString = wordWithTagRemoved.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
                     attributedString.addAttribute(NSLinkAttributeName, value: "cash:\(escapedString)", range: text.NSRangeFromRange(matchRange))
                 }
                 
@@ -506,12 +448,12 @@ extension DetectTags where Self: UITextView {
                 guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
                     else { continue }
                 
-                let remainingRange = Range(text.indices.suffix(from: bookmark))
+                let remainingRange = Range(bookmark..<text.endIndex)
                 
                 // set a link for when the user clicks on this word.
                 // url scheme syntax "mention://" or "hash://"
                 if let matchRange = text.range(of: word, options: .literal, range:remainingRange),
-                    let escapedString = wordWithTagRemoved.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed()) {
+                    let escapedString = wordWithTagRemoved.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
                     attributedString.addAttribute(NSLinkAttributeName, value: "mention:\(escapedString)", range: text.NSRangeFromRange(matchRange))
                 }
             } else if  word.hasPrefix("#") {
@@ -521,17 +463,17 @@ extension DetectTags where Self: UITextView {
                 guard Int(wordWithTagRemoved) == nil && !wordWithTagRemoved.isEmpty
                     else { continue }
                 
-                let remainingRange = Range(text.indices.suffix(from: bookmark))
+                let remainingRange = Range(bookmark..<text.endIndex)
                 
                 // set a link for when the user clicks on this word.
                 // url scheme syntax "mention://" or "hash://"
                 if let matchRange = text.range(of: word, options: .literal, range:remainingRange),
-                    let escapedString = wordWithTagRemoved.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed()) {
+                    let escapedString = wordWithTagRemoved.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed) {
                     attributedString.addAttribute(NSLinkAttributeName, value: "hash:\(escapedString)", range: text.NSRangeFromRange(matchRange))
                 }
             }
             
-            bookmark = <#T##Collection corresponding to `bookmark`##Collection#>.index(bookmark, offsetBy: word.characters.count)
+            bookmark = text.index(bookmark, offsetBy: word.characters.count)
         }
         
         self.attributedText = attributedString

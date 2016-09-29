@@ -91,7 +91,7 @@ class FAQTableViewController: UITableViewController, CellType {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as ExpandingCell
         
-        let questionAtIndex = self.questionObjects[(indexPath as NSIndexPath).row]
+        let questionAtIndex = self.questionObjects[indexPath.row]
         
         cell.title = questionAtIndex.object(forKey: "question") as? String
         cell.detail = questionAtIndex.object(forKey: "answer") as? String

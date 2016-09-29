@@ -14,7 +14,7 @@ class QueryHelper {
     
     static let sharedInstance = QueryHelper()
     
-    class func queryWith(_ queryString: String, useCacheIfPossible: Bool = true, completionHandler: @escaping (_ result: () throws -> Data) -> Void) -> Void {
+    func queryWith(queryString: String, useCacheIfPossible: Bool = true, completionHandler: @escaping (_ result: () throws -> Data) -> Void) -> Void {
         
         if let queryUrl: URL = URL(string: queryString) {
             
@@ -42,7 +42,7 @@ class QueryHelper {
         }
     }
     
-    class func queryStockTwitsTrendingStocks(_ completionHandler: @escaping (_ trendingStocksData: () throws -> Data) -> Void) -> Void {
+    func queryStockTwitsTrendingStocks(completionHandler: @escaping (_ trendingStocksData: () throws -> Data) -> Void) -> Void {
         
         if let trendingStocksUrl = URL(string: "https://api.stocktwits.com/api/2/trending/symbols/equities.json") {
             
@@ -62,7 +62,7 @@ class QueryHelper {
         }
     }
     
-    class func queryYahooSymbolQuote(_ tickers: [String], completionHandler:@escaping (_ symbolQuote: Data?, _ response: URLResponse?, _ error: NSError?) -> Void) {
+    func queryYahooSymbolQuote(tickers: [String], completionHandler:@escaping (_ symbolQuote: Data?, _ response: URLResponse?, _ error: Error?) -> Void) {
         
         let stringICarouselTickers = "(\(tickers))"
         
@@ -88,15 +88,14 @@ class QueryHelper {
             
             let session = URLSession.shared
             
-            let task = session.dataTask(with: marketCarouselUrl, completionHandler: { (marketData, response, error) -> Void in
-                
+            let task = session.dataTask(with: marketCarouselUrl, completionHandler: { (marketData, response, error) in
                 completionHandler(marketData, response, error)
             })
             task.resume()
         }
     }
     
-    class func queryYahooCompanyProfile(_ symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: NSError?) -> Void) {
+    func queryYahooCompanyProfile(symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: Error?) -> Void) {
         
         let companyProfileurl1 = "http://finance.yahoo.com/q/pr?s=\(symbol)"
         let companyProfileurl2 = "\"\(companyProfileurl1)\""
@@ -109,7 +108,7 @@ class QueryHelper {
             
             let session = URLSession.shared
             
-            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) -> Void in
+            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) in
                 
                 completionHandler(quoteData, response, error)
                 
@@ -118,7 +117,7 @@ class QueryHelper {
         }
     }
     
-    class func queryYahooCompanySummary(_ symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: NSError?) -> Void) {
+    func queryYahooCompanySummary(symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: Error?) -> Void) {
         
         let companySummaryurl1 = "http://finance.yahoo.com/q/pr?s=\(symbol)"
         let companySummaryurl2 = "\"\(companySummaryurl1)\""
@@ -131,7 +130,7 @@ class QueryHelper {
             
             let session = URLSession.shared
             
-            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) -> Void in
+            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) in
                 
                 completionHandler(quoteData, response, error)
                 
@@ -140,7 +139,7 @@ class QueryHelper {
         }
     }
     
-    class func queryYahooCompanyAnalystRating(_ symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: NSError?) -> Void) {
+    func queryYahooCompanyAnalystRating(symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: Error?) -> Void) {
         
         let companyAnalystRatingStringPart1 = "https://ca.finance.yahoo.com/q/ao?s=\(symbol)"
         let companyAnalystRatingStringPart2 = "\"\(companyAnalystRatingStringPart1)\""
@@ -153,7 +152,7 @@ class QueryHelper {
             
             let session = URLSession.shared
             
-            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) -> Void in
+            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) in
                 
                 completionHandler(quoteData, response, error)
                 
@@ -162,7 +161,7 @@ class QueryHelper {
         }
     }
     
-    class func queryChartImage(_ symbol: String, completion: @escaping (_ result: () throws -> (UIImage)) -> Void) {
+    func queryChartImage(symbol: String, completion: @escaping (_ result: () throws -> (UIImage)) -> Void) {
         
         guard let chartImageURL: URL = Functions.setImageURL(symbol) else {
             
@@ -191,7 +190,7 @@ class QueryHelper {
         task.resume()
     }
     
-    class func queryUserObjectsFor(_ usernames: [String], cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFUser])) -> Void) {
+    func queryUserObjectsFor(usernames: [String], cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFUser])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -218,7 +217,7 @@ class QueryHelper {
         }
     }
     
-    class func queryStockObjectsFor(_ symbols: [String], cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryStockObjectsFor(symbols: [String], cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -245,7 +244,7 @@ class QueryHelper {
         }
     }
     
-    class func queryTradeIdeaObjectsFor(_ key: String?, object: PFObject?, skip: Int, limit: Int?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryTradeIdeaObjectsFor(key: String?, object: PFObject?, skip: Int, limit: Int?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -295,7 +294,7 @@ class QueryHelper {
         }
     }
     
-    class func countTradeIdeasFor(_ key: String, object: PFObject, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
+    func countTradeIdeasFor(key: String, object: PFObject, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -332,7 +331,7 @@ class QueryHelper {
         }
     }
     
-    class func queryActivityFor(_ fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -400,7 +399,7 @@ class QueryHelper {
         }
     }
     
-    class func countActivityFor(_ fromUser: PFUser?, toUser: PFUser?, tradeIdea: PFObject?, stock: PFObject?, activityType: String?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
+    func countActivityFor(fromUser: PFUser?, toUser: PFUser?, tradeIdea: PFObject?, stock: PFObject?, activityType: String?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -448,7 +447,7 @@ class QueryHelper {
         }
     }
     
-    class func queryActivityForUser(_ toUser: PFUser, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryActivityForUser(toUser: PFUser, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -485,7 +484,7 @@ class QueryHelper {
         }
     }
     
-    class func queryActivityForFollowing(_ fromUser: PFUser, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryActivityForFollowing(fromUser: PFUser, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})

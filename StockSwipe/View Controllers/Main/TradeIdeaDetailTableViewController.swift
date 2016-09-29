@@ -31,6 +31,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     }
     
     var replyTradeIdeaObjects = [PFObject]()
+    var replyTradeIdeas = [TradeIdea]()
     
     @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
         self.getReplyTradeIdeas()
@@ -51,13 +52,32 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         
         guard let tradeIdea = self.tradeIdea else { return }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor("reply_to", object: tradeIdea.parseObject, skip: 0, limit: nil) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reply_to", object: tradeIdea.parseObject, skip: 0, limit: nil) { (result) in
             
             do {
                 
                 let tradeIdeasObjects = try result()
                 
                 self.replyTradeIdeaObjects = tradeIdeasObjects
+                
+                self.replyTradeIdeas = tradeIdeasObjects.map({
+                    TradeIdea(parseObject: $0, completion: { (tradeidea) in
+                        
+                        if self.replyTradeIdeas.count == tradeIdeasObjects.count {
+                            
+                            DispatchQueue.main.async(execute: { () -> Void in
+                                
+                                self.tableView.reloadData()
+                                
+                                if self.refreshControl?.isRefreshing == true {
+                                    self.refreshControl?.endRefreshing()
+                                    self.updateRefreshDate()
+                                }
+                            })
+                        }
+                        
+                    })
+                })
                 
                 DispatchQueue.main.async(execute: { () -> Void in
                     
@@ -110,7 +130,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             return 1
         }
         
-        return replyTradeIdeaObjects.count
+        return replyTradeIdeas.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -125,13 +145,13 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         
         var cell: IdeaCell!
         
-        if (indexPath as NSIndexPath).section == 0 {
+        if indexPath.section == 0 {
             cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            cell.configureCell(self.tradeIdea, timeFormat: .long)
+            cell.configureCell(with: self.tradeIdea, timeFormat: .long)
             cell.delegate = self
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.ReplyIdeaCell.rawValue, for: indexPath) as! IdeaCell
-            cell.configureCell(replyTradeIdeaObjects[(indexPath as NSIndexPath).row], timeFormat: .short)
+            cell.configureCell(with: replyTradeIdeas[indexPath.row], timeFormat: .short)
             cell.delegate = self
         }
         

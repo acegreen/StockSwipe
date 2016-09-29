@@ -39,7 +39,7 @@ class NotificationCell: UITableViewCell {
         
         if let avatarURL = user.object(forKey: "profile_image_url") as? String {
             
-            QueryHelper.sharedInstance.queryWith(avatarURL, completionHandler: { (result) in
+            QueryHelper.sharedInstance.queryWith(queryString: avatarURL, completionHandler: { (result) in
                 
                 do {
                     

@@ -59,10 +59,10 @@ class ProfileDetailTableViewController: UITableViewController {
                     
                     let imageData = try result()
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         let profileImage = UIImage(data: imageData)
                         self.userAvatarImageView.image = profileImage
-                    })
+                    }
                     
                 } catch {
                 }

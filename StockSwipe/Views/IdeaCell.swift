@@ -19,7 +19,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     var delegate: IdeaPostDelegate!
     
     var tradeIdea: TradeIdea!
-    var nestedTradeIdea: TradeIdea!
+    var nestedTradeIdea: TradeIdea?
     
     @IBOutlet var userAvatar: UIImageView!
     
@@ -50,7 +50,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     @IBOutlet var reshareCountLabel: UILabel!
     
     @IBAction func likeButton(_ sender: UIButton) {
-        registerLike(sender: sender)
+        registerLike(on: sender)
     }
     
     @IBAction func replyButton(_ sender: AnyObject) {
@@ -112,14 +112,14 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         spamObject.saveEventually ({ (success, error) in
                             
                             if success {
-                                DispatchQueue.main.async(execute: { () -> Void in
+                                DispatchQueue.main.async {
                                     SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.success)
-                                })
+                                }
                                 
                             } else {
-                                DispatchQueue.main.async(execute: { () -> Void in
+                                DispatchQueue.main.async {
                                     SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
-                                })
+                                }
                             }
                         })
                         
@@ -132,14 +132,14 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         spamObject.saveEventually ({ (success, error) in
                             
                             if success {
-                                DispatchQueue.main.async(execute: { () -> Void in
+                                DispatchQueue.main.async {
                                     SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.success)
-                                })
+                                }
                                 
                             } else {
-                                DispatchQueue.main.async(execute: { () -> Void in
+                                DispatchQueue.main.async {
                                     SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
-                                })
+                                }
                             }
                         })
                     }
@@ -191,7 +191,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == userName) {
             profileContainerController.user = self.tradeIdea.user
         } else if (tapGestureRecognizer.view == nestedUserAvatar || tapGestureRecognizer.view == nestedUsername ) {
-            profileContainerController.user = self.nestedTradeIdea.user
+            profileContainerController.user = self.nestedTradeIdea?.user
         }
         
         profileContainerController.navigationItem.rightBarButtonItem = nil
@@ -202,27 +202,21 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     func configureCell(with tradeIdea: TradeIdea, timeFormat: Constants.TimeFormat) {
         
         self.tradeIdea = tradeIdea
+        self.configureMain(tradeIdea, timeFormat: timeFormat)
         
-        self.configureMainTradeIdea(tradeIdea, timeFormat: timeFormat)
-        
-        if let nestedTradeIdeaObject = self.tradeIdea.nestedTradeIdeaObject {
-            self.nestedTradeIdea = TradeIdea(parseObject: nestedTradeIdeaObject, completion: { (nestedTradeIdea) in
-                self.configureNestedTradeIdea(nestedTradeIdea)
-            })
-        } else {
-            self.nestedTradeIdea = nil
-        }
+        self.nestedTradeIdea = self.tradeIdea.nestedTradeIdea
+        self.configureNested(self.nestedTradeIdea)
         
         self.checkLike(self.tradeIdea, sender: self.likeButton)
         self.checkReshare(self.tradeIdea, sender: self.reshareButton)
         self.checkMore()
     }
     
-    func configureMainTradeIdea(_ tradeIdea: TradeIdea!, timeFormat: Constants.TimeFormat) {
+    func configureMain(_ tradeIdea: TradeIdea!, timeFormat: Constants.TimeFormat) {
         
         guard tradeIdea.user != nil else { return }
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
             
             self.userName.text = tradeIdea.user.fullname
             
@@ -241,7 +235,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             }
             
             self.userAvatar.image = tradeIdea.user.avtar
-        })
+        }
         
         // Add Gesture Recognizers
         let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
@@ -251,7 +245,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
     }
     
-    func configureNestedTradeIdea(_ nestedTradeIdea: TradeIdea?) {
+    func configureNested(_ nestedTradeIdea: TradeIdea?) {
         
         guard nestedTradeIdeaStack != nil else { return }
         
@@ -262,7 +256,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         self.nestedTradeIdeaStack.isHidden = false
     
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
         
             self.nestedUsername.text = nestedTradeIdea.user.fullname
             
@@ -273,7 +267,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.nestedIdeaDescription.text = nestedTradeIdea.description
             
             self.nestedUserAvatar.image = nestedTradeIdea.user.avtar
-        })
+        }
         
         let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
         self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
@@ -285,7 +279,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
         
         if tradeIdeaTyp == .reshare {
-            self.registerReshare(sender: self.reshareButton)
+            self.registerReshare(on: self.reshareButton)
         }
         
         self.delegate?.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaTyp)
@@ -299,11 +293,19 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
         case .reply:
             
-            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":tradeIdea.parseObject.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": "@\(currentUser.username!) replied:\n\(tradeIdea.description)"])
+            #if DEBUG
+                print("send push didn't happen in debug")
+            #else
+                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":tradeIdea.parseObject.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": "@\(currentUser.username!) replied:\n" + tradeIdea.description])
+            #endif
             
         case .reshare:
             
-            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n\(self.tradeIdea.description)"])
+            #if DEBUG
+                print("send push didn't happen in debug")
+            #else
+                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n" + self.tradeIdea.description])
+            #endif
         }
     }
     
@@ -325,7 +327,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard let sender = sender else { return }
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
         
             if let likeCount = self.tradeIdea?.likeCount , likeCount > 0 {
                 self.likeCountLabel.text = String(likeCount)
@@ -335,10 +337,10 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             }
             
             sender.isSelected = tradeIdea.isLikedByCurrentUser
-        })
+        }
     }
     
-    func registerLike(sender: UIButton) {
+    func registerLike(on sender: UIButton) {
         
         guard let currentUser = PFUser.current() else {
             Functions.isUserLoggedIn(UIApplication.topViewController()!)
@@ -376,18 +378,23 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         
                         // Send push
                         if currentUser.objectId != self.tradeIdea.user.objectId {
-                            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": "@\(currentUser.username!) liked:\n\(self.tradeIdea.description)"])
+                            
+                            #if DEBUG
+                                print("send push didn't happen in debug")
+                            #else
+                                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": "@\(currentUser.username!) liked:\n" + self.tradeIdea.description])
+                            #endif
                         }
                     }
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         if let likeCount = self.tradeIdea?.likeCount , likeCount > 0 {
                             self.likeCountLabel.text = String(likeCount)
                             self.likeCountLabel.isHidden = false
                         } else {
                             self.likeCountLabel.isHidden = true
                         }
-                    })
+                    }
                     
                 } catch {
                     
@@ -400,7 +407,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard let sender = sender else { return }
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
             if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
                 self.reshareCountLabel.text = String(reshareCount)
                 self.reshareCountLabel.isHidden = false
@@ -409,17 +416,17 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             }
             
             sender.isSelected = tradeIdea.isResharedByCurrentUser
-        })
+        }
     }
     
-    func registerReshare(sender: UIButton) {
+    func registerReshare(on sender: UIButton) {
         
         guard self.tradeIdea != nil else { return }
         
         self.tradeIdea.reshareCount += 1
         self.tradeIdea.isResharedByCurrentUser = true
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
             sender.isSelected = true
             if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
                 self.reshareCountLabel.text = String(reshareCount)
@@ -427,7 +434,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             } else {
                 self.reshareCountLabel.isHidden = true
             }
-        })
+        }
     }
     
     func registerUnshare(sender: UIButton) {
@@ -473,7 +480,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         
                         self.tradeIdea.reshareCount -= 1
                         
-                        DispatchQueue.main.async(execute: { () -> Void in
+                        DispatchQueue.main.async {
                             sender.isSelected = false
                             if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
                                 self.reshareCountLabel.text = String(reshareCount)
@@ -481,7 +488,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                             } else {
                                 self.reshareCountLabel.isHidden = true
                             }
-                        })
+                        }
                         
                     }
                     

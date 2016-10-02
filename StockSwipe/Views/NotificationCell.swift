@@ -45,9 +45,9 @@ class NotificationCell: UITableViewCell {
                     
                     let avatarData  = try result()
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         self.userAvatar.image = UIImage(data: avatarData)
-                    })
+                    }
                     
                 } catch {
                     // TODO: Handle error

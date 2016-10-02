@@ -37,6 +37,7 @@ public class User {
             }
             
             self.userObject = userObject as! PFUser
+            
             self.objectId = userObject.objectId
             self.fullname = userObject.object(forKey: "full_name") as? String
             self.username = "@\(self.userObject.username!)"

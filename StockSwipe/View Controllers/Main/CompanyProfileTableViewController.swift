@@ -119,7 +119,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                     let quoteJsonResults = JSON(data: quoteData!)["query"]["results"]
                     let quoteJsonResultsQuote = quoteJsonResults["quote"]
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         
                         if let PE = quoteJsonResultsQuote["PERatio"].string {
                             
@@ -179,8 +179,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                         //            companySector.text = newJsonResultsQuote["MarketCapitalization"].string
                         //            companyIndustry.text = newJsonResultsQuote["MarketCapitalization"].string
                         //            companySummary.text = newJsonResultsQuote["MarketCapitalization"].string
-                    })
-                    
+                    }
                 }
             }
         }
@@ -196,7 +195,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                     
                 } else if companyAnalystRatingData != nil {
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         
                         let companyAnalystRatingJSON = JSON(data: companyAnalystRatingData!)["query"]["results"]
                         
@@ -243,8 +242,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                         }
                         
                         self.setChart(self.ratingsType, values: self.ratings)
-                        
-                    })
+                    }
                 }
             }
         }
@@ -260,7 +258,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                     
                 } else if companyProfileData != nil {
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         
                         let companyProfileJsonResults = JSON(data: companyProfileData!)["query"]["results"]
                         
@@ -276,7 +274,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                             
                             self.companyIndustry.text = companyProfileIndustry
                         }
-                    })
+                    }
                 }
             }
         }
@@ -292,14 +290,14 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                     
                 } else if companySummaryData != nil {
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         
                         if let companySummaryJsonResults = JSON(data: companySummaryData!)["query"]["results"]["p"][1].string {
                             
                             self.companySummary.text = companySummaryJsonResults
                             self.companySummary.flashScrollIndicators()
                         }
-                    })
+                    }
                 }
             }
         }

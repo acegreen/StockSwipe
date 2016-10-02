@@ -178,10 +178,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                     
                     if let error = error as? Constants.Errors {
                         
-                        DispatchQueue.main.async(execute: { () -> Void in
-                            
+                        DispatchQueue.main.async {
                             SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
-                        })
+                        }
                     }
                 }
                 
@@ -243,10 +242,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                 
                 if let error = error as? Constants.Errors {
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
-                        
+                    DispatchQueue.main.async {
                         SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
-                    })
+                    }
                 }
             }
             

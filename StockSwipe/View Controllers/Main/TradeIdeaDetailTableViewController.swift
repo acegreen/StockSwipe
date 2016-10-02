@@ -23,14 +23,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     
     var delegate: IdeaPostDelegate!
     
-    var tradeIdea: TradeIdea! {
-        didSet {
-            let indexSet = IndexSet(integer: 0)
-            self.tableView.reloadSections(indexSet, with: .automatic)
-        }
-    }
-    
-    var replyTradeIdeaObjects = [PFObject]()
+    var tradeIdea: TradeIdea!
     var replyTradeIdeas = [TradeIdea]()
     
     @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
@@ -56,52 +49,50 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             
             do {
                 
-                let tradeIdeasObjects = try result()
+                let replyTradeIdeasObjects = try result()
                 
-                self.replyTradeIdeaObjects = tradeIdeasObjects
+                guard replyTradeIdeasObjects.count > 0 else {
+                    
+                    DispatchQueue.main.async {
+                        if self.refreshControl?.isRefreshing == true {
+                            self.refreshControl?.endRefreshing()
+                        }
+                        self.updateRefreshDate()
+                    }
+                    
+                    return
+                }
                 
-                self.replyTradeIdeas = tradeIdeasObjects.map({
-                    TradeIdea(parseObject: $0, completion: { (tradeidea) in
+                for replyTradeIdeaObject in replyTradeIdeasObjects {
+                    
+                    TradeIdea(parseObject: replyTradeIdeaObject, completion: { (replyTradeIdea) in
                         
-                        if self.replyTradeIdeas.count == tradeIdeasObjects.count {
+                        if let replyTradeIdea = replyTradeIdea {
                             
-                            DispatchQueue.main.async(execute: { () -> Void in
+                            DispatchQueue.main.async {
                                 
-                                self.tableView.reloadData()
+                                self.replyTradeIdeas.append(replyTradeIdea)
+                                
+                                //now insert cell in tableview
+                                let indexPath = IndexPath(row: self.replyTradeIdeas.count - 1, section: 1)
+                                self.tableView.insertRows(at: [indexPath], with: .none)
                                 
                                 if self.refreshControl?.isRefreshing == true {
                                     self.refreshControl?.endRefreshing()
-                                    self.updateRefreshDate()
                                 }
-                            })
+                            }
                         }
-                        
                     })
-                })
-                
-                DispatchQueue.main.async(execute: { () -> Void in
-                    
-                    let indexSet = IndexSet(integer: 1)
-                    self.tableView.reloadSections(indexSet, with: .automatic)
-                    
-                    if self.refreshControl?.isRefreshing == true {
-                        self.refreshControl?.endRefreshing()
-                        self.updateRefreshDate()
-                    }
-                })
+                }
                 
             } catch {
                 
                 // TO-DO: Show sweet alert with Error.message()
-                DispatchQueue.main.async(execute: { () -> Void in
-                    let indexSet = IndexSet(integer: 1)
-                    self.tableView.reloadSections(indexSet, with: .automatic)
-                    
+                DispatchQueue.main.async {
                     if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
-                        self.updateRefreshDate()
                     }
-                })
+                }
             }
         }
 
@@ -109,7 +100,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     
     func updateRefreshDate() {
         
-        let title: String = "Last Update: \((Date() as NSDate).formattedAsTimeAgo())"
+        let title: String = "Last Update: " + (Date() as NSDate).formattedAsTimeAgo()
         let attrsDictionary = [
             NSForegroundColorAttributeName : UIColor.white
         ]
@@ -138,7 +129,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
+        return 250
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -185,9 +176,10 @@ extension TradeIdeaDetailTableViewController: IdeaPostDelegate {
         if parseObject == self.tradeIdea.parseObject {
             self.tradeIdea = nil
             self.navigationController?.popViewController(animated: true)
-        } else if let tradeIdea = self.replyTradeIdeaObjects.find ({ $0.objectId == parseObject.objectId }) {
-            let indexPath = IndexPath(row: self.replyTradeIdeaObjects.index(of: tradeIdea)!, section: 0)
-            self.replyTradeIdeaObjects.removeObject(tradeIdea)
+            
+        } else if let tradeIdea = self.replyTradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
+            let indexPath = IndexPath(row: self.replyTradeIdeas.index(of: tradeIdea)!, section: 0)
+            self.replyTradeIdeas.removeObject(tradeIdea)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         

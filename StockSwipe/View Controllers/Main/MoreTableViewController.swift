@@ -61,14 +61,14 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                     
                     let imageData = try result()
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         let profileImage = UIImage(data: imageData)
                         self.profileAvatarImage.image = profileImage
                         
                         if let fullName = currentUser.object(forKey: "full_name") as? String {
                             self.profileLabel.text = fullName
                         }
-                    })
+                    }
                     
                 } catch {
                     

@@ -37,7 +37,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     var tickers = [Ticker]()
     var cloudWords = [CloudWord]()
     
-    var tradeIdeaObjects = [PFObject]()
     var tradeIdeas = [TradeIdea]()
     
     var topStories = [News]()
@@ -259,17 +258,17 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         guard Functions.isConnectedToNetwork() else { return }
         
-        if tradeIdeasLastQueriedDate != nil && self.tradeIdeaObjects.count > 0 {
-            
-            let timeSinceLastRefresh = Date().timeIntervalSince(tradeIdeasLastQueriedDate)
-            
-            guard timeSinceLastRefresh / 60 > 5 else {
-                if self.tradeIdeasRefreshControl.isRefreshing == true {
-                    self.tradeIdeasRefreshControl.endRefreshing()
-                }
-                return
-            }
-        }
+//        if tradeIdeasLastQueriedDate != nil && self.tradeIdeas.count > 0 {
+//            
+//            let timeSinceLastRefresh = Date().timeIntervalSince(tradeIdeasLastQueriedDate)
+//            
+//            guard timeSinceLastRefresh / 60 > 1 else {
+//                if self.tradeIdeasRefreshControl.isRefreshing == true {
+//                    self.tradeIdeasRefreshControl.endRefreshing()
+//                }
+//                return
+//            }
+//        }
         
         isQueryingForTradeIdeas = true
         QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
@@ -280,19 +279,18 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
                 let activityObjects = try result()
                 
-                self.updateTradeIdeas(activityObjects.lazy.map { $0["tradeIdea"] as! PFObject })
-                
+                self.updateTradeIdeas(activityObjects.map { $0["tradeIdea"] as! PFObject })
                 self.tradeIdeasLastQueriedDate = Date()
                 
             } catch {
                 
                 // TO-DO: Show sweet alert with Error.message()
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async {
                     self.latestTradeIdeasTableView.reloadData()
                     if self.tradeIdeasRefreshControl.isRefreshing == true {
                         self.tradeIdeasRefreshControl.endRefreshing()
                     }
-                })
+                }
             }
             
         }
@@ -309,11 +307,11 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             let timeSinceLastRefresh = Date().timeIntervalSince(topStoriesLastQueriedDate)
             
             guard timeSinceLastRefresh / 60 > 1 else {
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async {
                     if self.topStoriesRefreshControl.isRefreshing == true {
                         self.topStoriesRefreshControl.endRefreshing()
                     }
-                })
+                }
                 return
             }
         }
@@ -368,9 +366,9 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             self.charts.append(chart)
         }
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
             self.layoutCloudWords()
-        })
+        }
     }
     
     func updateCarousel(_ symbolQuote: Data) {
@@ -404,33 +402,52 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             self.charts.append(chart)
         }
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
             self.carousel.reloadData()
             NSLog("carousel completed on %@", Thread.isMainThread ? "main thread" : "other thread")
-        })
-        
+        }
     }
     
     func updateTradeIdeas(_ tradeIdeaObjects: [PFObject]) {
         
-        self.tradeIdeaObjects = tradeIdeaObjects
-        
         tradeIdeas = tradeIdeaObjects.map({
             TradeIdea(parseObject: $0, completion: { (tradeidea) in
                 
-                if self.tradeIdeas.count == self.tradeIdeaObjects.count {
+                if self.tradeIdeas.count == tradeIdeaObjects.count {
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         
                         self.latestTradeIdeasTableView.reloadData()
                         if self.tradeIdeasRefreshControl.isRefreshing == true {
                             self.tradeIdeasRefreshControl.endRefreshing()
                         }
-                    })
+                    }
                 }
                 
             })
         })
+        
+//        for tradeIdeaObject in tradeIdeaObjects {
+//            
+//            TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
+//                
+//                if let tradeIdea = tradeIdea {
+//                    
+//                    DispatchQueue.main.async {
+//                        
+//                        self.tradeIdeas.append(tradeIdea)
+//                        
+//                        //now insert cell in tableview
+//                        let indexPath = IndexPath(row: self.tradeIdeas.count - 1, section: 0)
+//                        self.latestTradeIdeasTableView.insertRows(at: [indexPath], with: .none)
+//                        
+//                        if self.tradeIdeasRefreshControl.isRefreshing == true {
+//                            self.tradeIdeasRefreshControl.endRefreshing()
+//                        }
+//                    }
+//                }
+//            })
+//        }
     }
     
     func updateTopStories(_ result: Data) {
@@ -478,7 +495,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             self.topStories.append(newNews)
         }
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
             
             self.latestNewsTableView.reloadData()
             if self.topStoriesRefreshControl.isRefreshing == true {
@@ -486,7 +503,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             }
             
             NSLog("top stories completed on %@", Thread.isMainThread ? "main thread" : "other thread")
-        })
+        }
     }
     
     func refreshTradeIdeas(_ refreshControl: UIRefreshControl) {
@@ -787,7 +804,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 150
+        return 200
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -850,7 +867,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         
         if scrollView == latestNewsTableView && !isQueryingForTopStories && topStories.count == 0 {
             return true
-        } else if scrollView == latestTradeIdeasTableView && !isQueryingForTradeIdeas && tradeIdeaObjects.count == 0 {
+        } else if scrollView == latestTradeIdeasTableView && !isQueryingForTradeIdeas && tradeIdeas.count == 0 {
             return true
         }
         
@@ -878,7 +895,7 @@ extension OverviewViewController: IdeaPostDelegate {
             if tradeIdeaTyp == .new {
                 
                 let indexPath = IndexPath(row: 0, section: 0)
-                self.tradeIdeaObjects.insert(tradeIdea.parseObject, at: 0)
+                self.tradeIdeas.insert(tradeIdea, at: 0)
                 self.latestTradeIdeasTableView.insertRows(at: [indexPath], with: .automatic)
                 
                 self.latestTradeIdeasTableView.reloadEmptyDataSet()
@@ -887,20 +904,20 @@ extension OverviewViewController: IdeaPostDelegate {
         
         func ideaDeleted(with parseObject: PFObject) {
             
-            if let tradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == parseObject.objectId }) {
+            if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
                 
-                if let reshareOf = tradeIdea.object(forKey: "reshare_of") as? PFObject, let reshareTradeIdea = self.tradeIdeaObjects.find ({ $0.objectId == reshareOf.objectId })  {
+                if let reshareOf = tradeIdea.nestedTradeIdea, let reshareTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == reshareOf.parseObject.objectId })  {
                     
-                    let indexPath = IndexPath(row: self.tradeIdeaObjects.index(of: reshareTradeIdea)!, section: 0)
+                    let indexPath = IndexPath(row: self.tradeIdeas.index(of: reshareTradeIdea)!, section: 0)
                     self.latestTradeIdeasTableView.reloadRows(at: [indexPath], with: .automatic)
                 }
                 
-                let indexPath = IndexPath(row: self.tradeIdeaObjects.index(of: tradeIdea)!, section: 0)
-                self.tradeIdeaObjects.removeObject(tradeIdea)
+                let indexPath = IndexPath(row: self.tradeIdeas.index(of: tradeIdea)!, section: 0)
+                self.tradeIdeas.removeObject(tradeIdea)
                 self.latestTradeIdeasTableView.deleteRows(at: [indexPath], with: .automatic)
             }
             
-            if tradeIdeaObjects.count == 0 {
+            if tradeIdeas.count == 0 {
                 self.latestTradeIdeasTableView.reloadEmptyDataSet()
             }
         }

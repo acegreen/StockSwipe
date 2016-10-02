@@ -86,102 +86,108 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         
         activityObject.saveEventually()
         
+        // query all the Stocks mentioned & add them to tradIdeaObject
+        QueryHelper.sharedInstance.queryStockObjectsFor(symbols: cashtags, completion: { (result) in
+            
+            do {
+                
+                let stockObjects = try result()
+                
+                tradeIdeaObject["stocks"] = stockObjects
+                
+                for stockObject in stockObjects {
+                    let activityObject = PFObject(className: "Activity")
+                    activityObject["fromUser"] = currentUser
+                    activityObject["tradeIdea"] = tradeIdeaObject
+                    activityObject["stock"] = stockObject
+                    activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
+                    activityObject.saveEventually()
+                }
+                
+            } catch {
+                
+            }
+            
+        })
+        
+        // query all the users mentioned & add them to tradIdeaObject
+        QueryHelper.sharedInstance.queryUserObjectsFor(usernames: mentions, completion: { (result) in
+            
+            do {
+                
+                let userObjects = try result()
+                
+                tradeIdeaObject["users"] = userObjects
+                
+                for userObject in userObjects {
+                    
+                    guard userObject.objectId != self.originalTradeIdea?.user.objectId else {
+                        continue
+                    }
+                    
+                    let activityObject = PFObject(className: "Activity")
+                    activityObject["fromUser"] = currentUser
+                    activityObject["tradeIdea"] = tradeIdeaObject
+                    activityObject["toUser"] = userObject
+                    activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
+                    activityObject.saveEventually()
+                }
+                
+            } catch {
+                
+            }
+        })
+        
+        // record all hashtag
+        for hashtag in hashtags {
+            
+            let activityObject = PFObject(className: "Activity")
+            activityObject["fromUser"] = currentUser
+            activityObject["tradeIdea"] = tradeIdeaObject
+            activityObject["hashtag"] = hashtag
+            activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
+            activityObject.saveEventually()
+        }
+        
+        tradeIdeaObject["hashtags"] = hashtags
+        
         tradeIdeaObject.saveEventually({ (success, error) in
             
             if success {
                 
+                // log trade idea
+                Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.current()?.username ?? "N/A","Description": self.ideaTextView.text, "App Version": Constants.AppVersion])
+                
                 let newtradeIdea = TradeIdea(parseObject: tradeIdeaObject, completion: { (newtradeIdea) in
                     if let newtradeIdea = newtradeIdea {
-                        self.delegate?.ideaPosted(with: newtradeIdea, tradeIdeaTyp: self.tradeIdeaType)
+                        DispatchQueue.main.async {
+                            self.delegate?.ideaPosted(with: newtradeIdea, tradeIdeaTyp: self.tradeIdeaType)
+                        }
                     }
                 })
                 
                 switch self.tradeIdeaType {
                 case .new:
                     
-                    Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId":currentUser.objectId!, "tradeIdeaObjectId":newtradeIdea.parseObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n\(newtradeIdea.description)"])
+                    #if DEBUG
+                        print("send push didn't happen in debug")
+                    #else
+                        Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId": currentUser.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n" + tradeIdeaObject.object(forKey: "description")])
+                    #endif
                     
-                case .reply, .reshare: break   
+                case .reply, .reshare: break
                 }
-                
-                // log trade idea
-                Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.current()?.username ?? "N/A","Description": self.ideaTextView.text, "App Version": Constants.AppVersion])
-                
-                // query all the Stocks mentioned & add them to tradIdeaObject
-                QueryHelper.sharedInstance.queryStockObjectsFor(symbols: cashtags, completion: { (result) in
-                    
-                    do {
-                        
-                        let stockObjects = try result()
-                        
-                        tradeIdeaObject["stocks"] = stockObjects
-                        
-                        for stockObject in stockObjects {
-                            let activityObject = PFObject(className: "Activity")
-                            activityObject["fromUser"] = currentUser
-                            activityObject["tradeIdea"] = tradeIdeaObject
-                            activityObject["stock"] = stockObject
-                            activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
-                            activityObject.saveEventually()
-                        }
-                        
-                    } catch {
-                        
-                    }
-                    
-                })
-                
-                // query all the users mentioned & add them to tradIdeaObject
-                QueryHelper.sharedInstance.queryUserObjectsFor(usernames: mentions, completion: { (result) in
-                    
-                    do {
-                        
-                        let userObjects = try result()
-                        
-                        tradeIdeaObject["users"] = userObjects
-                        
-                        for userObject in userObjects {
-                            
-                            guard userObject.objectId != self.originalTradeIdea?.user.objectId else {
-                                continue
-                            }
-                            
-                            let activityObject = PFObject(className: "Activity")
-                            activityObject["fromUser"] = currentUser
-                            activityObject["tradeIdea"] = tradeIdeaObject
-                            activityObject["toUser"] = userObject
-                            activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
-                            activityObject.saveEventually()
-                        }
-                        
-                    } catch {
-                        
-                    }
-                })
-                
-                // record all hashtag
-                for hashtag in hashtags {
-                    
-                    let activityObject = PFObject(className: "Activity")
-                    activityObject["fromUser"] = currentUser
-                    activityObject["tradeIdea"] = tradeIdeaObject
-                    activityObject["hashtag"] = hashtag
-                    activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
-                    activityObject.saveEventually()
-                }
-                
-                tradeIdeaObject["hashtags"] = hashtags
                 
             } else {
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async {
                     SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
-                })
+                }
             }
         })
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
             self.dismiss(animated: true, completion: nil)
-        })
+        }
     }
     
     deinit {
@@ -209,7 +215,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         if tradeIdeaType == .new, let stockObject = self.stockObject {
             self.prefillText = "$" + (stockObject.object(forKey: "Symbol") as! String)
         } else if tradeIdeaType == .reply, let originalTradeIdea = self.originalTradeIdea {
-            self.prefillText = "@" + (originalTradeIdea.user.username)
+            self.prefillText = originalTradeIdea.user.username
         } else if tradeIdeaType == .reshare && self.originalTradeIdea != nil {
             
         }

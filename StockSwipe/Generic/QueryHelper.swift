@@ -447,7 +447,7 @@ class QueryHelper {
         }
     }
     
-    func queryActivityForUser(toUser: PFUser, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryActivityForUser(toUser: PFUser, skip: Int?, limit: Int?,cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -464,6 +464,14 @@ class QueryHelper {
         
         if let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             activityQuery.whereKey("fromUser", notContainedIn: blockedUsers)
+        }
+        
+        if let skip = skip  , skip > 0 {
+            activityQuery.skip = skip
+        }
+        
+        if let limit = limit  , limit > 0 {
+            activityQuery.limit = limit
         }
         
         activityQuery.findObjectsInBackground { (objects, error) -> Void in

@@ -182,9 +182,9 @@ class SearchTableViewController: UITableViewController {
                 
                 if let currentUserRecentSearches = currentUserRecentSearches as? [PFObject] {
                     self.recentSearches = currentUserRecentSearches
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         self.tableView.reloadData()
-                    })
+                    }
                 }
             }
         }
@@ -272,7 +272,7 @@ class SearchTableViewController: UITableViewController {
                     print(error)
                 }
                 
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async {
                     
                     SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
                         
@@ -287,8 +287,7 @@ class SearchTableViewController: UITableViewController {
                             Functions.registerUserChoice(chart, with: .SHORT)
                         }
                     }
-                    
-                })
+                }
             })
         }
     }

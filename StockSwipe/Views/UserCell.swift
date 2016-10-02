@@ -28,17 +28,13 @@ class UserCell: UITableViewCell {
     func configureCell(with user: User) {
         
         self.user = user
-            
-        self.fullname.text = self.user.fullname
         
-        //                let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(UserCell.handleGestureRecognizer))
-        //                self.fullname.addGestureRecognizer(tapGestureRecognizerMainUsername)
-        
-        self.username.text = self.user.username
-        
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
+    
+            self.fullname.text = self.user.fullname
+            self.username.text = self.user.username
             self.userAvatar.image = self.user.avtar
-        })
+        }
         
         self.checkBlock(self.blockButton)
     }

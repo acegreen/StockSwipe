@@ -22,7 +22,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         case ProfileSegueIdentifier = "ProfileSegueIdentifier"
     }
     
-    var activities = [PFObject]()
+    var notifications = [PFObject]()
     var isQueryingForActivities = true
     
     @IBAction func xButtonPressed(_ sender: AnyObject) {
@@ -30,7 +30,8 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     }
     
     @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
-        getActivities()
+        notifications.removeAll()
+        getNotifications()
     }
     
     @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
@@ -38,7 +39,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.getActivities()
+        self.getNotifications()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -53,13 +54,13 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         // Dispose of any resources that can be recreated.
     }
     
-    func getActivities() {
+    func getNotifications() {
         
         guard let currentUser = PFUser.current() else { return }
         
         isQueryingForActivities = true
         
-        QueryHelper.sharedInstance.queryActivityForUser(toUser: currentUser) { (result) in
+        QueryHelper.sharedInstance.queryActivityForUser(toUser: currentUser, skip: self.notifications.count, limit: 25) { (result) in
         
             self.isQueryingForActivities = false
             
@@ -69,72 +70,25 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             do {
                 
                 let activityObjects = try result()
-                self.activities = []
                 
-                self.activities += activityObjects
+                self.notifications += activityObjects
                 
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async {
                     self.tableView.reloadData()
                     
                     if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
                         self.updateRefreshDate()
                     }
-                })
+                }
                 
             } catch {
                 
                 // TO-DO: Show sweet alert with Error.message()
-                DispatchQueue.main.async(execute: { () -> Void in
-                    self.tableView.reloadData()
-                    
+                DispatchQueue.main.async {
                     if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
-                        self.updateRefreshDate()
                     }
-                })
-            }
-        }
-    }
-    
-    func loadMoreActivities(skip: Int) {
-        
-        guard let currentUser = PFUser.current() else { return }
-        
-        if self.refreshControl?.isRefreshing == false {
-            
-            self.footerActivityIndicator.startAnimating()
-        }
-        
-        QueryHelper.sharedInstance.queryActivityForUser(toUser: currentUser) { (result) in
-            
-            do {
-                
-                let activityObjects = try result()
-                
-                DispatchQueue.main.async(execute: { () -> Void in
-                    
-                    for activityObject: PFObject in activityObjects {
-                        
-                        //add datasource object here for tableview
-                        self.activities.append(activityObject)
-                        
-                        //now insert cell in tableview
-                        self.tableView.insertRows(at: [IndexPath(row: self.activities.count - 1, section: 0)], with: .none)
-                    }
-                    
-                    if self.footerActivityIndicator?.isAnimating == true {
-                        self.footerActivityIndicator.stopAnimating()
-                        self.updateRefreshDate()
-                    }
-                })
-                
-            } catch {
-                
-                // TO-DO: Show sweet alert with Error.message()
-                if self.footerActivityIndicator?.isAnimating == true {
-                    self.footerActivityIndicator.stopAnimating()
-                    self.updateRefreshDate()
                 }
             }
         }
@@ -142,7 +96,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     
     func updateRefreshDate() {
         
-        let title: String = "Last Update: \((Date() as NSDate).formattedAsTimeAgo())"
+        let title: String = "Last Update: " + (Date() as NSDate).formattedAsTimeAgo()
         let attrsDictionary = [
             NSForegroundColorAttributeName : UIColor.white
         ]
@@ -160,7 +114,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return activities.count
+        return notifications.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -174,14 +128,14 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as NotificationCell
-        cell.configureCell(activities[indexPath.row])
+        cell.configureCell(notifications[indexPath.row])
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        let activityAtIndexPath = activities[indexPath.row]
+        let activityAtIndexPath = notifications[indexPath.row]
         guard let activityType = Constants.ActivityType(rawValue: activityAtIndexPath.object(forKey: "activityType") as! String) else { return }
         
         switch activityType {
@@ -190,10 +144,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: tableView.cellForRow(at: indexPath))
         case .TradeIdeaNew, .TradeIdeaLike, .TradeIdeaReply, .TradeIdeaReshare:
             guard let tradeIdeaAtIndexPath = activityAtIndexPath.object(forKey: "tradeIdea") as? PFObject else { return }
-            let tradeIdea = TradeIdea(parseObject: tradeIdeaAtIndexPath, completion: { (tradeIdea) in
-                self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tradeIdea)
-            })
-            
+            self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tableView.cellForRow(at: indexPath))
         case .Block, .StockLong, .StockShort:
             break
         }
@@ -204,7 +155,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
         if offset >= 0 && offset <= 5 {
             // This is the last cell so get more data
-            //self.loadMoreTradeIdeas(skip: tradeIdeas.count)
+            getNotifications()
         }
     }
     
@@ -218,10 +169,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         case .TradeIdeaDetailSegueIdentifier:
             
             let destinationViewController = segue.destination as! TradeIdeaDetailTableViewController
-            
-            if let tradeIdea = sender as? TradeIdea {
-                destinationViewController.tradeIdea = tradeIdea
-            }
+            destinationViewController.tradeIdea = TradeIdea(parseObject: cell.activity.object(forKey: "tradeIdea") as! PFObject)
             
         case .ProfileSegueIdentifier:
             
@@ -239,7 +187,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
 extension NotificationCenterTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if !isQueryingForActivities && activities.count == 0 {
+        if !isQueryingForActivities && notifications.count == 0 {
             return true
         }
         return false

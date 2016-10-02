@@ -68,7 +68,7 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
     
     func didFinishLoading() {
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
             
             self.splashView.startAnimation {
                 if PFUser.current() == nil && Constants.userDefaults.bool(forKey: "TUTORIAL_SHOWN") == false {
@@ -93,7 +93,7 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
                     })
                 }
             }
-        })
+        }
     }
 }
 

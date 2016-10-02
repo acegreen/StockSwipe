@@ -53,7 +53,7 @@ class Functions {
         
         guard PFUser.current() == nil else { return true }
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
             
             SweetAlert().showAlert("Login Required!", subTitle: "Please login to continue", style: AlertStyle.warning, dismissTime: nil, buttonTitle: "Ok", buttonColor: UIColor.colorFromRGB(0xD0D0D0)) { (isOtherButton) -> Void in
                 
@@ -64,7 +64,7 @@ class Functions {
                     logInViewcontroller.loginDelegate = viewController as? LoginDelegate
                 }
             }
-        })
+        }
         
         return false
     }
@@ -88,9 +88,9 @@ class Functions {
                 
                 if postAlert == true {
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.success)
-                    })
+                    }
                 }
                 
                 QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
@@ -122,9 +122,9 @@ class Functions {
                 })
                 
             } else {
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async {
                     SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
-                })
+                }
             }
         }
     }
@@ -551,7 +551,7 @@ class Functions {
                 print(error)
             }
             
-            DispatchQueue.main.async(execute: { () -> Void in
+            DispatchQueue.main.async {
                 
                 SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
                     
@@ -563,7 +563,7 @@ class Functions {
                         completion(.SHORT)
                     }
                 }
-            })
+            }
         })
     }
     

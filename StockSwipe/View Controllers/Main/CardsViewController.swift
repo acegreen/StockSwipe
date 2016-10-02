@@ -168,11 +168,11 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 // Make information card
                 self.makeCardWithInformation(error)
                 
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async {
                     // Enable short/long buttons
                     //self.fadeInOutButton("In")
                     self.reloadFilterButtonsEnabled(true)
-                })
+                }
             }
         }
     }
@@ -227,12 +227,12 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                             // Make 3 card stack
                             self.makeChartViews()
                             
-                            DispatchQueue.main.async(execute: { () -> Void in
+                            DispatchQueue.main.async {
                                 
                                 // Enable short/long buttons
                                 //self.fadeInOutButton("In")
                                 self.reloadFilterButtonsEnabled(true)
-                            })
+                            }
                             
                         } catch {
                             
@@ -241,12 +241,12 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                                 // Make information card
                                 self.makeCardWithInformation(error)
                                 
-                                DispatchQueue.main.async(execute: { () -> Void in
+                                DispatchQueue.main.async {
                                     
                                     // Enable short/long buttons
                                     //self.fadeInOutButton("In")
                                     self.reloadFilterButtonsEnabled(true)
-                                })
+                                }
                             }
                         }
                     })
@@ -258,12 +258,12 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                         // Make information card
                         self.makeCardWithInformation(error)
                         
-                        DispatchQueue.main.async(execute: { () -> Void in
+                        DispatchQueue.main.async {
                             
                             // Enable short/long buttons
                             //self.fadeInOutButton("In")
                             self.reloadFilterButtonsEnabled(true)
-                        })
+                        }
                     }
                 }
                 
@@ -325,7 +325,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     func makeChartViews() {
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
             
             Functions.activityIndicator(self.view, halo: &self.halo, state: false)
             
@@ -414,12 +414,12 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                     
                 }
             }
-        })
+        }
     }
     
     func makeCardWithInformation(_ error: Constants.Errors) {
         
-        DispatchQueue.main.async(execute: { () -> Void in
+        DispatchQueue.main.async {
             
             Functions.activityIndicator(self.view, halo: &self.halo, state: false)
             
@@ -443,7 +443,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 //            self.informationCardView.layer.shadowPath = UIBezierPath(roundedRect: self.informationCardView.bounds, cornerRadius: 50).CGPath
                 
                 },completion:nil)
-        })
+        }
     }
     
     func view(_ view: UIView!, shouldBeChosenWith direction: MDCSwipeDirection, yes: (() -> Void)!, no: (() -> Void)!) {
@@ -513,11 +513,11 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                     // Make information card
                     self.makeCardWithInformation(error)
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                         // Enable short/long buttons
                         //self.fadeInOutButton("In")
                         self.reloadFilterButtonsEnabled(true)
-                    })
+                    }
                 }
             }
         }
@@ -547,11 +547,9 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         print("View did get tapped")
         
-        DispatchQueue.main.async(execute: { () -> Void in
-            
+        DispatchQueue.main.async {
             self.performCustomSegue(self)
-            
-        })
+        }
     }
     
     func viewDidGetLongPressed(_ view: UIView!) {

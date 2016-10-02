@@ -67,7 +67,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                 
                 let chartImage = UIImage(view: view)
                 
-                DispatchQueue.main.async(execute: { () -> Void in
+                DispatchQueue.main.async {
                 
                     self.customAlert.closeAlertDismissButton()
                     
@@ -89,18 +89,18 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                             SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
                         }
                     })
-                })
+                }
                 
             } catch {
                 
                 if let error = error as? Constants.Errors {
                     
-                    DispatchQueue.main.async(execute: { () -> Void in
+                    DispatchQueue.main.async {
                 
                         self.customAlert.closeAlertDismissButton()
                         
                         SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
-                    })
+                    }
                 }
             }
         })

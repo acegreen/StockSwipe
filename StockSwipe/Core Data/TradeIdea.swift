@@ -14,32 +14,36 @@ public class TradeIdea {
     var user: User!
     var description: String!
     
-    var likeCount: Int = 0 {
-        didSet {
-            self.parseObject.setObject(self.likeCount, forKey: "likeCount")
-            self.parseObject.saveEventually()
-        }
-    }
-    var reshareCount: Int = 0 {
-        didSet {
-            self.parseObject.setObject(self.reshareCount, forKey: "reshareCount")
-            self.parseObject.saveEventually()
-        }
-    }
+    var likeCount: Int = 0
+//    {
+//        didSet {
+//            self.parseObject.setObject(self.likeCount, forKey: "likeCount")
+//            self.parseObject.saveEventually()
+//        }
+//    }
+    
+    var reshareCount: Int = 0
+//    {
+//        didSet {
+//            self.parseObject.setObject(self.reshareCount, forKey: "reshareCount")
+//            self.parseObject.saveEventually()
+//        }
+//    }
     
     var isLikedByCurrentUser: Bool! = false
     var isResharedByCurrentUser: Bool! = false
     
-    var nestedTradeIdeaObject: PFObject?
+    var nestedTradeIdea: TradeIdea?
     
     var publishedDate: Date!
+
     var parseObject: PFObject!
+    var nestedParseObject: PFObject?
     
     init(parseObject: PFObject, completion: ((TradeIdea?) -> Void)? = nil) {
         
-        self.parseObject = parseObject
-        
         parseObject.fetchIfNeededInBackground { (parseObject, error) in
+            
             guard let parseObject = parseObject else  {
                 if let completion = completion {
                     completion(nil)
@@ -47,39 +51,75 @@ public class TradeIdea {
                 return
             }
             
+            self.parseObject = parseObject
+            
             self.description = parseObject.object(forKey: "description") as? String ?? ""
             self.likeCount = parseObject.object(forKey: "likeCount") as? Int ?? 0
             self.reshareCount = parseObject.object(forKey: "reshareCount") as? Int ?? 0
-            self.nestedTradeIdeaObject = parseObject.object(forKey: "reshare_of") as? PFObject
             self.publishedDate = parseObject.createdAt
             
-            self.checkIfLikedByCurrentUser(completion: { (isLikedByCurrentUser) in
-                self.isLikedByCurrentUser = isLikedByCurrentUser
-            })
-            
-            self.checkIfResharedByCurrentUser(completion: { (isResharedByCurrentUser) in
-                self.isResharedByCurrentUser = isResharedByCurrentUser
-            })
-            
-            guard let userObject = parseObject.object(forKey: "user") as? PFObject else { return
-                if let completion = completion {
-                    completion(self)
-                }
+            if let nestedTradeIdeaObject = parseObject.object(forKey: "reshare_of") as? PFObject {
+                
+                self.nestedParseObject = nestedTradeIdeaObject
+                
+                TradeIdea(parseObject: nestedTradeIdeaObject, completion: { (tradeIdea) in
+                    
+                    self.nestedTradeIdea = tradeIdea
+                    
+                    self.checkIfLikedByCurrentUser(completion: { (isLikedByCurrentUser) in
+                        self.isLikedByCurrentUser = isLikedByCurrentUser
+                        
+                        self.checkIfResharedByCurrentUser(completion: { (isResharedByCurrentUser) in
+                            self.isResharedByCurrentUser = isResharedByCurrentUser
+                        })
+                        
+                        guard let userObject = parseObject.object(forKey: "user") as? PFObject else {
+                            if let completion = completion {
+                                completion(nil)
+                            }
+                            return
+                        }
+                        
+                        User(userObject: userObject, completion: { (user) in
+                            self.user = user
+                            if let completion = completion {
+                                completion(self)
+                            }
+                        })
+                    })
+                })
+                
+            } else {
+                
+                self.checkIfLikedByCurrentUser(completion: { (isLikedByCurrentUser) in
+                    self.isLikedByCurrentUser = isLikedByCurrentUser
+                    
+                    self.checkIfResharedByCurrentUser(completion: { (isResharedByCurrentUser) in
+                        self.isResharedByCurrentUser = isResharedByCurrentUser
+                    })
+                    
+                    guard let userObject = parseObject.object(forKey: "user") as? PFObject else {
+                        if let completion = completion {
+                            completion(nil)
+                        }
+                        return
+                    }
+                    
+                    User(userObject: userObject, completion: { (user) in
+                        self.user = user
+                        if let completion = completion {
+                            completion(self)
+                        }
+                    })
+                })
             }
-            
-            User(userObject: userObject, completion: { (user) in
-                self.user = user
-                if let completion = completion {
-                    completion(self)
-                }
-            })
         }
     }
     
    func checkIfLikedByCurrentUser(completion: ((Bool) -> Void)?) {
         
         guard let currentUser = PFUser.current() else { return }
-        
+    
         QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
             
             do {

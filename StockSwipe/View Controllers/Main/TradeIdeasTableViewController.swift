@@ -80,7 +80,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         
         isQueryingForTradeIdeas = true
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: 0, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: self.tradeIdeas.count, limit: self.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], completion: { (result) in
             
             self.isQueryingForTradeIdeas = false
             
@@ -92,6 +92,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 guard tradeIdeaObjects.count > 0 else {
                     
                     DispatchQueue.main.async {
+                        self.tableView.reloadEmptyDataSet()
                         if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
                         } else if self.footerActivityIndicator?.isAnimating == true {
@@ -282,7 +283,7 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
         paragraphStyle.alignment = NSTextAlignment.center
         
         let attributedDescription: NSAttributedString!
-        attributedDescription = NSAttributedString(string: "Be the first to post an idea for \(self.symbol)", attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 18), NSParagraphStyleAttributeName: paragraphStyle])
+        attributedDescription = NSAttributedString(string: "Be the first to post an idea for " + self.symbol, attributes: [NSFontAttributeName: UIFont.systemFont(ofSize: 18), NSParagraphStyleAttributeName: paragraphStyle])
         
         return attributedDescription
         

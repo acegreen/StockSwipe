@@ -59,6 +59,7 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
     }
 
     func subScrollViewDidScroll(_ scrollView: UIScrollView) {
+        
         let offset = scrollView.contentOffset.y
         
         var segmentedControlTransform = CATransform3DIdentity
@@ -66,7 +67,7 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
         segmentedControl.layer.transform = segmentedControlTransform
     }
     
-    func didReloadProfileTableView() {
+    func didRefreshProfileTableView() {
         layoutSegementedControl()
     }
     

@@ -51,7 +51,7 @@ public class User {
         }
     }
     
-    func getAvatar(_ completionHandler: @escaping (UIImage) -> Void) {
+    func getAvatar(_ completion: @escaping (UIImage) -> Void) {
         
         if let profileImageURL = self.profile_image_url {
             QueryHelper.sharedInstance.queryWith(queryString: profileImageURL, completionHandler: { (result) in
@@ -61,18 +61,18 @@ public class User {
                     let avatarData  = try result()
                     self.avtar = UIImage(data: avatarData)
                     
-                    completionHandler(self.avtar)
+                    completion(self.avtar)
                     
                 } catch {
-                    completionHandler(UIImage(named: "dummy_profile_male_big")!)
+                    completion(UIImage(named: "dummy_profile_male_big")!)
                 }
             })
         } else {
-            completionHandler(UIImage(named: "dummy_profile_male_big")!)
+            completion(UIImage(named: "dummy_profile_male_big")!)
         }
     }
     
-    func getIdeasCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
+    func getIdeasCount(_ completion: @escaping (_ countString: String) -> Void) {
         
         QueryHelper.sharedInstance.countTradeIdeasFor(key: "user", object: userObject) { (result) in
             
@@ -85,11 +85,11 @@ public class User {
                 self.ideasCount =  0
             }
             
-            completionHandler(self.ideasCount.suffixNumber())
+            completion(self.ideasCount.suffixNumber())
         }
     }
     
-    func getFollowingCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
+    func getFollowingCount(_ completion: @escaping (_ countString: String) -> Void) {
         
         QueryHelper.sharedInstance.countActivityFor(fromUser: userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
             
@@ -102,11 +102,11 @@ public class User {
                 self.followingCount =  0
             }
             
-            completionHandler(self.followingCount.suffixNumber())
+            completion(self.followingCount.suffixNumber())
         }
     }
     
-    func getFollowersCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
+    func getFollowersCount(_ completion: @escaping (_ countString: String) -> Void) {
         
         QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: userObject, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
             
@@ -119,11 +119,11 @@ public class User {
                 self.followingCount =  0
             }
             
-            completionHandler(self.followingCount.suffixNumber())
+            completion(self.followingCount.suffixNumber())
         }
     }
     
-    func getLikedIdeasCount(_ completionHandler: @escaping (_ countString: String) -> Void) {
+    func getLikedIdeasCount(_ completion: @escaping (_ countString: String) -> Void) {
         
         QueryHelper.sharedInstance.countActivityFor(fromUser: userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, completion: { (result) in
             
@@ -136,7 +136,7 @@ public class User {
                 self.likedIdeasCount =  0
             }
             
-            completionHandler(self.likedIdeasCount.suffixNumber())
+            completion(self.likedIdeasCount.suffixNumber())
         })
     }
 }

@@ -59,7 +59,7 @@ class NotificationCell: UITableViewCell {
                 
             })
         } else {
-            self.userAvatar.image = UIImage(named: "")
+            self.userAvatar.image = UIImage(named: "dummy_profile_male")
         }
 
     }

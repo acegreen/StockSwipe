@@ -28,13 +28,10 @@ class UserCell: UITableViewCell {
     func configureCell(with user: User) {
         
         self.user = user
-        
-        DispatchQueue.main.async {
-    
-            self.fullname.text = self.user.fullname
-            self.username.text = self.user.username
-            self.userAvatar.image = self.user.avtar
-        }
+
+        self.fullname.text = self.user.fullname
+        self.username.text = self.user.username
+        self.userAvatar.image = self.user.avtar
         
         self.checkBlock(self.blockButton)
     }

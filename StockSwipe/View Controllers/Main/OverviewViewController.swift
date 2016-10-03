@@ -258,17 +258,17 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         guard Functions.isConnectedToNetwork() else { return }
         
-//        if tradeIdeasLastQueriedDate != nil && self.tradeIdeas.count > 0 {
-//            
-//            let timeSinceLastRefresh = Date().timeIntervalSince(tradeIdeasLastQueriedDate)
-//            
-//            guard timeSinceLastRefresh / 60 > 1 else {
-//                if self.tradeIdeasRefreshControl.isRefreshing == true {
-//                    self.tradeIdeasRefreshControl.endRefreshing()
-//                }
-//                return
-//            }
-//        }
+        if tradeIdeasLastQueriedDate != nil && self.tradeIdeas.count > 0 {
+            
+            let timeSinceLastRefresh = Date().timeIntervalSince(tradeIdeasLastQueriedDate)
+            
+            guard timeSinceLastRefresh / 60 > 1 else {
+                if self.tradeIdeasRefreshControl.isRefreshing == true {
+                    self.tradeIdeasRefreshControl.endRefreshing()
+                }
+                return
+            }
+        }
         
         isQueryingForTradeIdeas = true
         QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
@@ -410,23 +410,28 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func updateTradeIdeas(_ tradeIdeaObjects: [PFObject]) {
         
-        tradeIdeas = tradeIdeaObjects.map({
-            TradeIdea(parseObject: $0, completion: { (tradeidea) in
+        tradeIdeas.removeAll()
+        tradeIdeaObjects.map({
+            TradeIdea(parseObject: $0, completion: { (tradeIdea) in
+                
+                if let tradeIdea = tradeIdea {
+                    self.tradeIdeas.append(tradeIdea)
+                }
                 
                 if self.tradeIdeas.count == tradeIdeaObjects.count {
                     
                     DispatchQueue.main.async {
-                        
                         self.latestTradeIdeasTableView.reloadData()
                         if self.tradeIdeasRefreshControl.isRefreshing == true {
                             self.tradeIdeasRefreshControl.endRefreshing()
                         }
                     }
                 }
-                
             })
         })
         
+//        self.tradeIdeas.removeAll()
+//        
 //        for tradeIdeaObject in tradeIdeaObjects {
 //            
 //            TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in

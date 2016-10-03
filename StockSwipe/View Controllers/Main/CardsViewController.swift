@@ -228,7 +228,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                             self.makeChartViews()
                             
                             DispatchQueue.main.async {
-                                
                                 // Enable short/long buttons
                                 //self.fadeInOutButton("In")
                                 self.reloadFilterButtonsEnabled(true)
@@ -242,7 +241,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                                 self.makeCardWithInformation(error)
                                 
                                 DispatchQueue.main.async {
-                                    
                                     // Enable short/long buttons
                                     //self.fadeInOutButton("In")
                                     self.reloadFilterButtonsEnabled(true)
@@ -259,7 +257,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                         self.makeCardWithInformation(error)
                         
                         DispatchQueue.main.async {
-                            
                             // Enable short/long buttons
                             //self.fadeInOutButton("In")
                             self.reloadFilterButtonsEnabled(true)

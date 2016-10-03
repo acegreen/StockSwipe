@@ -52,7 +52,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
     
     @IBAction func actionButtonPressed(_ sender: AnyObject) {
         
-        let textToShare = "Discovered $\(self.symbol) #StockSwipe"
+        let textToShare = "Discovered $" + symbol + " #StockSwipe"
         
         customAlert.showAlert("Hold On!", subTitle: "While we prepare the snapshot", style: AlertStyle.activityIndicator, dismissTime: nil)
         
@@ -85,7 +85,6 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                                 customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
                             
                         } else if error != nil {
-                            
                             SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
                         }
                     })

@@ -216,27 +216,25 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard tradeIdea.user != nil else { return }
         
-        DispatchQueue.main.async {
-            
-            self.userName.text = tradeIdea.user.fullname
-            
-            if self.userTag != nil {
-                self.userTag.text = tradeIdea.user.username
-            }
-            
-            self.ideaDescription.text = tradeIdea.description
-            
-            let nsPublishedDate = tradeIdea.publishedDate as NSDate
-            switch timeFormat {
-            case .short:
-                self.ideaTime.text = nsPublishedDate.formattedAsTimeAgoShort()
-            case .long:
-                self.ideaTime.text = nsPublishedDate.formattedAsTimeAgo()
-            }
-            
-            self.userAvatar.image = tradeIdea.user.avtar
+        
+        self.userName.text = tradeIdea.user.fullname
+        
+        if self.userTag != nil {
+            self.userTag.text = tradeIdea.user.username
         }
         
+        self.ideaDescription.text = tradeIdea.description
+        
+        let nsPublishedDate = tradeIdea.publishedDate as NSDate
+        switch timeFormat {
+        case .short:
+            self.ideaTime.text = nsPublishedDate.formattedAsTimeAgoShort()
+        case .long:
+            self.ideaTime.text = nsPublishedDate.formattedAsTimeAgo()
+        }
+        
+        self.userAvatar.image = tradeIdea.user.avtar
+
         // Add Gesture Recognizers
         let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
         self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
@@ -255,19 +253,16 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
         
         self.nestedTradeIdeaStack.isHidden = false
-    
-        DispatchQueue.main.async {
         
-            self.nestedUsername.text = nestedTradeIdea.user.fullname
-            
-            if self.nestedUserTag != nil {
-                self.nestedUserTag.text = nestedTradeIdea.user.username
-            }
-            
-            self.nestedIdeaDescription.text = nestedTradeIdea.description
-            
-            self.nestedUserAvatar.image = nestedTradeIdea.user.avtar
+        self.nestedUsername.text = nestedTradeIdea.user.fullname
+        
+        if self.nestedUserTag != nil {
+            self.nestedUserTag.text = nestedTradeIdea.user.username
         }
+        
+        self.nestedIdeaDescription.text = nestedTradeIdea.description
+        
+        self.nestedUserAvatar.image = nestedTradeIdea.user.avtar
         
         let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
         self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
@@ -358,6 +353,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     let activityObject = try result().first
                     
                     if activityObject != nil {
+                        
                         activityObject?.deleteEventually()
                         
                         self.tradeIdea.likeCount -= 1

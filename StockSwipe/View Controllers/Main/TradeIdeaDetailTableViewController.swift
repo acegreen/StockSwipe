@@ -54,6 +54,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                 guard replyTradeIdeasObjects.count > 0 else {
                     
                     DispatchQueue.main.async {
+                        self.tableView.reloadEmptyDataSet()
                         if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
                         }

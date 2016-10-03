@@ -12,7 +12,7 @@ import DZNEmptyDataSet
 
 protocol ProfileTableVieDelegate {
     func subScrollViewDidScroll(_ scrollView: UIScrollView)
-    func didReloadProfileTableView()
+    func didRefreshProfileTableView()
 }
 
 class ProfileTableViewController: UITableViewController, CellType, SubSegmentedControlDelegate, SegueHandlerType, LoginDelegate {
@@ -168,25 +168,23 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
         
-        getProfile()
-        
         switch selectedSegmentIndex {
         case .zero:
-            self.tradeIdeas.removeAll()
-            self.getUserTradeIdeas()
+            tradeIdeas.removeAll()
+            getUserTradeIdeas()
         case .one:
-            self.followingUsers.removeAll()
+            followingUsers.removeAll()
             getUsersFollowing()
         case .two:
-            self.followersUsers.removeAll()
+            followersUsers.removeAll()
             getUsersFollowers()
         case .three:
-            self.likedTradeIdeas.removeAll()
-            self.getUserTradeIdeas()
+            likedTradeIdeas.removeAll()
+            getUserTradeIdeas()
         }
         self.tableView.reloadData()
         
-        self.delegate?.didReloadProfileTableView()
+        self.delegate?.didRefreshProfileTableView()
     }
     
     @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
@@ -210,7 +208,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     func subDidSelectSegment(_ segmentedControl: UISegmentedControl) {
         
         selectedSegmentIndex = ProfileContainerController.SegmentIndex(rawValue: segmentedControl.selectedSegmentIndex)!
-        self.tableView.reloadData()
         
         switch selectedSegmentIndex {
         case .zero:
@@ -230,6 +227,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 getUserTradeIdeas()
             }
         }
+        self.tableView.reloadData()
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -252,10 +250,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         checkProfileButtonSettings()
         checkFollow(self.followButton)
         
-        DispatchQueue.main.async {
-            self.avatarImage.image = user.avtar
-        }
-        
+        self.avatarImage.image = user.avtar
         self.fullNameLabel.text = user.fullname
         self.usernameLabel.text = user.username
     }
@@ -281,6 +276,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     guard tradeIdeaObjects.count > 0 else {
                         
                         DispatchQueue.main.async {
+                            self.tableView.reloadEmptyDataSet()
                             if self.refreshControl?.isRefreshing == true {
                                 self.refreshControl?.endRefreshing()
                             } else if self.footerActivityIndicator?.isAnimating == true {
@@ -300,12 +296,14 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                                 
                                 DispatchQueue.main.async {
                                     
+                                    // append more trade ideas
                                     self.tradeIdeas.append(tradeIdea)
                                     
-                                    //now insert cell in tableview
+                                    // insert cell in tableview
                                     let indexPath = IndexPath(row: self.tradeIdeas.count - 1, section: 0)
                                     self.tableView.insertRows(at: [indexPath], with: .none)
                                     
+                                    // end refresh and add time stamp
                                     if self.refreshControl?.isRefreshing == true {
                                         self.refreshControl?.endRefreshing()
                                     } else if self.footerActivityIndicator?.isAnimating == true {
@@ -349,6 +347,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     guard likedTradeIdeaObjects.count > 0 else {
                         
                         DispatchQueue.main.async {
+                            self.tableView.reloadEmptyDataSet()
                             if self.refreshControl?.isRefreshing == true {
                                 self.refreshControl?.endRefreshing()
                             } else if self.footerActivityIndicator?.isAnimating == true {

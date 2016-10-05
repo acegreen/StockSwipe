@@ -12,6 +12,11 @@ import Parse
 
 class TradeIdeaDetailTableViewController: UITableViewController, CellType, SegueHandlerType {
     
+    enum QueryType {
+        case newOrOld
+        case update
+    }
+    
     enum CellIdentifier: String {
         case IdeaCell = "IdeaCell"
         case ReplyIdeaCell = "ReplyIdeaCell"
@@ -26,14 +31,18 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     var tradeIdea: TradeIdea!
     var replyTradeIdeas = [TradeIdea]()
     
+    let queue = DispatchQueue(label: "Query Queue")
+    
+    @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
+    
     @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
-        self.getReplyTradeIdeas()
+        self.getReplyTradeIdeas(queryType: .update)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.getReplyTradeIdeas()
+        self.getReplyTradeIdeas(queryType: .newOrOld)
     }
     
     override func didReceiveMemoryWarning() {
@@ -41,50 +50,89 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         // Dispose of any resources that can be recreated.
     }
     
-    func getReplyTradeIdeas() {
+    func getReplyTradeIdeas(queryType: QueryType) {
         
         guard let tradeIdea = self.tradeIdea else { return }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reply_to", object: tradeIdea.parseObject, skip: 0, limit: nil) { (result) in
+        var queryOrder: QueryHelper.QueryOrder
+        var mostRecentTradeIdeaCreationDate: Date?
+        
+        switch queryType {
+        case .newOrOld:
+            queryOrder = .descending
+            
+            if !self.footerActivityIndicator.isAnimating {
+                self.footerActivityIndicator.startAnimating()
+            }
+        case .update:
+            queryOrder = .ascending
+            mostRecentTradeIdeaCreationDate = self.replyTradeIdeas[0].createdAt
+        }
+        
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reply_to", object: tradeIdea.parseObject, skip: self.replyTradeIdeas.count, limit: nil, order: queryOrder, creationDate: mostRecentTradeIdeaCreationDate) { (result) in
             
             do {
                 
-                let replyTradeIdeasObjects = try result()
+                let tradeIdeaObjects = try result()
                 
-                guard replyTradeIdeasObjects.count > 0 else {
+                guard tradeIdeaObjects.count > 0 else {
                     
                     DispatchQueue.main.async {
                         self.tableView.reloadEmptyDataSet()
                         if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
+                        } else if self.footerActivityIndicator?.isAnimating == true {
+                            self.footerActivityIndicator.stopAnimating()
                         }
-                        self.updateRefreshDate()
                     }
+                    self.updateRefreshDate()
                     
                     return
                 }
                 
-                for replyTradeIdeaObject in replyTradeIdeasObjects {
-                    
-                    TradeIdea(parseObject: replyTradeIdeaObject, completion: { (replyTradeIdea) in
+                tradeIdeaObjects.map({ tradeIdeaObject in
+                
+                    self.queue.sync {
                         
-                        if let replyTradeIdea = replyTradeIdea {
+                        TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
                             
-                            DispatchQueue.main.async {
+                            if let tradeIdea = tradeIdea {
                                 
-                                self.replyTradeIdeas.append(replyTradeIdea)
-                                
-                                //now insert cell in tableview
-                                let indexPath = IndexPath(row: self.replyTradeIdeas.count - 1, section: 1)
-                                self.tableView.insertRows(at: [indexPath], with: .none)
-                                
-                                if self.refreshControl?.isRefreshing == true {
-                                    self.refreshControl?.endRefreshing()
+                                DispatchQueue.main.async {
+                                    
+                                    switch queryType {
+                                    case .newOrOld:
+                                        
+                                        // append more trade ideas
+                                        self.replyTradeIdeas.append(tradeIdea)
+                                        
+                                        // insert cell in tableview
+                                        let indexPath = IndexPath(row: self.replyTradeIdeas.count - 1, section: 1)
+                                        self.tableView.insertRows(at: [indexPath], with: .none)
+                                    case .update:
+                                        
+                                        // append more trade ideas
+                                        self.replyTradeIdeas.insert(tradeIdea, at: 0)
+                                        
+                                        // insert cell in tableview
+                                        let indexPath = IndexPath(row: 0, section: 1)
+                                        self.tableView.insertRows(at: [indexPath], with: .none)
+                                    }
                                 }
                             }
-                        }
-                    })
+                        })
+                    }
+                })
+                
+                // end refresh and add time stamp
+                DispatchQueue.main.async {
+                    if self.refreshControl?.isRefreshing == true {
+                        self.refreshControl?.endRefreshing()
+                    } else if self.footerActivityIndicator.isAnimating == true {
+                        self.footerActivityIndicator.stopAnimating()
+                    }
                 }
+                self.updateRefreshDate()
                 
             } catch {
                 
@@ -92,13 +140,14 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                 DispatchQueue.main.async {
                     if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
+                    } else if self.footerActivityIndicator?.isAnimating == true {
+                        self.footerActivityIndicator.stopAnimating()
                     }
                 }
             }
         }
-
     }
-    
+
     func updateRefreshDate() {
         
         let title: String = "Last Update: " + (Date() as NSDate).formattedAsTimeAgo()
@@ -142,12 +191,22 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             cell.configureCell(with: self.tradeIdea, timeFormat: .long)
             cell.delegate = self
         } else {
-            cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier.ReplyIdeaCell.rawValue, for: indexPath) as! IdeaCell
-            cell.configureCell(with: replyTradeIdeas[indexPath.row], timeFormat: .short)
+            cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
+            guard let replyTradeIdeaAtIndex = self.replyTradeIdeas.get(indexPath.row) else { return cell }
+            cell.configureCell(with: replyTradeIdeaAtIndex, timeFormat: .short)
             cell.delegate = self
         }
         
         return cell
+    }
+    
+    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
+        if offset >= 0 && offset <= 5 {
+            // This is the last cell so get more data
+            self.getReplyTradeIdeas(queryType: .newOrOld)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

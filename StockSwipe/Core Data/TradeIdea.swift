@@ -41,7 +41,7 @@ public class TradeIdea {
     
     var nestedTradeIdea: TradeIdea?
     
-    var publishedDate: Date!
+    var createdAt: Date!
 
     var parseObject: PFObject!
     var nestedParseObject: PFObject?
@@ -64,7 +64,7 @@ public class TradeIdea {
             self.likeCount = parseObject.object(forKey: "likeCount") as? Int ?? 0
             self.reshareCount = parseObject.object(forKey: "reshareCount") as? Int ?? 0
             
-            self.publishedDate = parseObject.createdAt
+            self.createdAt = parseObject.createdAt
             
             self.checkNumberOfLikes(completion: { (isLikedByCurrentUser) in
                 

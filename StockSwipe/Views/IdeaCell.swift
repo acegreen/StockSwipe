@@ -225,7 +225,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         self.ideaDescription.text = tradeIdea.description
         
-        let nsPublishedDate = tradeIdea.publishedDate as NSDate
+        let nsPublishedDate = tradeIdea.createdAt as NSDate
         switch timeFormat {
         case .short:
             self.ideaTime.text = nsPublishedDate.formattedAsTimeAgoShort()
@@ -274,7 +274,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
         
         if tradeIdeaTyp == .reshare {
-            self.registerReshare(on: self.reshareButton)
+            registerReshare(on: self.reshareButton)
         }
         
         self.delegate?.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaTyp)
@@ -322,17 +322,14 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard let sender = sender else { return }
         
-        DispatchQueue.main.async {
-        
-            if let likeCount = self.tradeIdea?.likeCount , likeCount > 0 {
-                self.likeCountLabel.text = String(likeCount)
-                self.likeCountLabel.isHidden = false
-            } else {
-                self.likeCountLabel.isHidden = true
-            }
-            
-            sender.isSelected = tradeIdea.isLikedByCurrentUser
+        if let likeCount = self.tradeIdea?.likeCount , likeCount > 0 {
+            self.likeCountLabel.text = String(likeCount)
+            self.likeCountLabel.isHidden = false
+        } else {
+            self.likeCountLabel.isHidden = true
         }
+        
+        sender.isSelected = tradeIdea.isLikedByCurrentUser
     }
     
     func registerLike(on sender: UIButton) {
@@ -403,16 +400,14 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard let sender = sender else { return }
         
-        DispatchQueue.main.async {
-            if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
-                self.reshareCountLabel.text = String(reshareCount)
-                self.reshareCountLabel.isHidden = false
-            } else {
-                self.reshareCountLabel.isHidden = true
-            }
-            
-            sender.isSelected = tradeIdea.isResharedByCurrentUser
+        if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
+            self.reshareCountLabel.text = String(reshareCount)
+            self.reshareCountLabel.isHidden = false
+        } else {
+            self.reshareCountLabel.isHidden = true
         }
+        
+        sender.isSelected = tradeIdea.isResharedByCurrentUser
     }
     
     func registerReshare(on sender: UIButton) {
@@ -422,14 +417,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         self.tradeIdea.reshareCount += 1
         self.tradeIdea.isResharedByCurrentUser = true
         
-        DispatchQueue.main.async {
-            sender.isSelected = true
-            if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
-                self.reshareCountLabel.text = String(reshareCount)
-                self.reshareCountLabel.isHidden = false
-            } else {
-                self.reshareCountLabel.isHidden = true
-            }
+        sender.isSelected = true
+        if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
+            self.reshareCountLabel.text = String(reshareCount)
+            self.reshareCountLabel.isHidden = false
+        } else {
+            self.reshareCountLabel.isHidden = true
         }
     }
     

@@ -20,10 +20,12 @@ public class User {
     
     var profile_image_url: String?
     
-    fileprivate var ideasCount: Int = 0
-    fileprivate var followingCount: Int = 0
-    fileprivate var followersCount: Int = 0
-    fileprivate var likedIdeasCount: Int = 0
+    var createdAt: Date!
+    
+    var ideasCount: Int = 0
+    var followingCount: Int = 0
+    var followersCount: Int = 0
+    var likedIdeasCount: Int = 0
     
     init(userObject: PFObject, completion: ((User?) -> Void)? = nil) {
         
@@ -42,6 +44,8 @@ public class User {
             self.fullname = userObject.object(forKey: "full_name") as? String
             self.username = "@\(self.userObject.username!)"
             self.profile_image_url = userObject.object(forKey: "profile_image_url") as? String
+            
+            self.createdAt = userObject.createdAt
             
             self.getAvatar({ (UIImage) in
                 if let completion = completion {

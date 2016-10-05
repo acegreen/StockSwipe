@@ -55,8 +55,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     var isQueryingForTradeIdeas = false
     var isQueryingForTopStories = false
     
-    let  tradeIdeaQueryLimit = 15
-    
     var tradeIdeasRefreshControl = UIRefreshControl()
     var topStoriesRefreshControl = UIRefreshControl()
     
@@ -271,7 +269,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         }
         
         isQueryingForTradeIdeas = true
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
             
             self.isQueryingForTradeIdeas = false
             
@@ -429,30 +427,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 }
             })
         })
-        
-//        self.tradeIdeas.removeAll()
-//        
-//        for tradeIdeaObject in tradeIdeaObjects {
-//            
-//            TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
-//                
-//                if let tradeIdea = tradeIdea {
-//                    
-//                    DispatchQueue.main.async {
-//                        
-//                        self.tradeIdeas.append(tradeIdea)
-//                        
-//                        //now insert cell in tableview
-//                        let indexPath = IndexPath(row: self.tradeIdeas.count - 1, section: 0)
-//                        self.latestTradeIdeasTableView.insertRows(at: [indexPath], with: .none)
-//                        
-//                        if self.tradeIdeasRefreshControl.isRefreshing == true {
-//                            self.tradeIdeasRefreshControl.endRefreshing()
-//                        }
-//                    }
-//                }
-//            })
-//        }
     }
     
     func updateTopStories(_ result: Data) {
@@ -835,9 +809,12 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
             return cell
             
         } else if tableView == latestTradeIdeasTableView {
-        
+            
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            cell.configureCell(with: self.tradeIdeas[indexPath.row], timeFormat: .short)
+            
+            guard let tradeIdeaAtIndex = self.tradeIdeas.get(indexPath.row) else { return cell }
+            cell.configureCell(with: tradeIdeaAtIndex, timeFormat: .short)
+            cell.delegate = self
             return cell
             
         } else {

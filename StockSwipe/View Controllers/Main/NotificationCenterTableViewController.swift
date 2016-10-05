@@ -13,6 +13,11 @@ import Parse
 
 class NotificationCenterTableViewController: UITableViewController, CellType, SegueHandlerType {
     
+    enum QueryType {
+        case newOrOld
+        case update
+    }
+    
     enum CellIdentifier: String {
         case NotificationCell = "NotificationCell"
     }
@@ -30,8 +35,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     }
     
     @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
-        notifications.removeAll()
-        getNotifications()
+        getNotifications(queryType: .update)
     }
     
     @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
@@ -39,7 +43,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.getNotifications()
+        getNotifications(queryType: .newOrOld)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,13 +58,25 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         // Dispose of any resources that can be recreated.
     }
     
-    func getNotifications() {
+    func getNotifications(queryType: QueryType) {
         
         guard let currentUser = PFUser.current() else { return }
         
         isQueryingForActivities = true
         
-        QueryHelper.sharedInstance.queryActivityForUser(toUser: currentUser, skip: self.notifications.count, limit: 25) { (result) in
+        var queryOrder: QueryHelper.QueryOrder
+        switch queryType {
+        case .newOrOld:
+            queryOrder = .descending
+            
+            if !self.footerActivityIndicator.isAnimating {
+                self.footerActivityIndicator.startAnimating()
+            }
+        case .update:
+            queryOrder = .ascending
+        }
+        
+        QueryHelper.sharedInstance.queryActivityForUser(user: currentUser, skip: self.notifications.count, limit: 25, order: queryOrder) { (result) in
         
             self.isQueryingForActivities = false
             
@@ -71,16 +87,55 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
                 
                 let activityObjects = try result()
                 
-                self.notifications += activityObjects
-                
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
+                guard activityObjects.count > 0 else {
                     
-                    if self.refreshControl?.isRefreshing == true {
-                        self.refreshControl?.endRefreshing()
+                    DispatchQueue.main.async {
+                        self.tableView.reloadEmptyDataSet()
+                        if self.refreshControl?.isRefreshing == true {
+                            self.refreshControl?.endRefreshing()
+                        } else if self.footerActivityIndicator?.isAnimating == true {
+                            self.footerActivityIndicator.stopAnimating()
+                        }
                         self.updateRefreshDate()
                     }
+                    
+                    return
                 }
+                
+                activityObjects.map({ activity in
+                    
+                    DispatchQueue.main.async {
+                        
+                        switch queryType {
+                        case .newOrOld:
+                            
+                            // append more trade ideas
+                            self.notifications.append(activity)
+                            
+                            // insert cell in tableview
+                            let indexPath = IndexPath(row: self.notifications.count - 1, section: 0)
+                            self.tableView.insertRows(at: [indexPath], with: .none)
+                            
+                        case .update:
+                            
+                            // append more trade ideas
+                            self.notifications.insert(activity, at: 0)
+                            
+                            // insert cell in tableview
+                            let indexPath = IndexPath(row: 0, section: 0)
+                            self.tableView.insertRows(at: [indexPath], with: .none)
+                        }
+                    }
+                })
+                
+                DispatchQueue.main.async {
+                    if self.refreshControl?.isRefreshing == true {
+                        self.refreshControl?.endRefreshing()
+                    } else if self.footerActivityIndicator.isAnimating == true {
+                        self.footerActivityIndicator.stopAnimating()
+                    }
+                }
+                self.updateRefreshDate()
                 
             } catch {
                 
@@ -88,6 +143,8 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
                 DispatchQueue.main.async {
                     if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
+                    } else if self.footerActivityIndicator.isAnimating == true {
+                        self.footerActivityIndicator.stopAnimating()
                     }
                 }
             }
@@ -155,7 +212,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
         if offset >= 0 && offset <= 5 {
             // This is the last cell so get more data
-            getNotifications()
+            self.getNotifications(queryType: .newOrOld)
         }
     }
     

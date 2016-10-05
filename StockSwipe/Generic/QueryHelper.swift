@@ -12,8 +12,14 @@ import SwiftyJSON
 
 class QueryHelper {
     
-    static let sharedInstance = QueryHelper()
+    enum QueryOrder {
+        case ascending
+        case descending
+    }
     
+    static let sharedInstance = QueryHelper()
+    static let tradeIdeaQueryLimit = 25
+
     func queryWith(queryString: String, useCacheIfPossible: Bool = true, completionHandler: @escaping (_ result: () throws -> Data) -> Void) -> Void {
         
         if let queryUrl: URL = URL(string: queryString) {
@@ -200,6 +206,7 @@ class QueryHelper {
         
         let userQuery = PFUser.query()
         userQuery?.cachePolicy = cachePolicy
+        
         userQuery?.whereKey("username_lowercase", containedIn: usernamesLowercase)
         
         userQuery?.findObjectsInBackground { (objects, error) -> Void in
@@ -227,6 +234,7 @@ class QueryHelper {
         
         let stockQuery = PFQuery(className:"Stocks")
         stockQuery.cachePolicy = cachePolicy
+        
         stockQuery.whereKey("Symbol", containedIn: mappedSymbols)
         
         stockQuery.findObjectsInBackground { (objects, error) -> Void in
@@ -244,7 +252,7 @@ class QueryHelper {
         }
     }
     
-    func queryTradeIdeaObjectsFor(key: String?, object: PFObject?, skip: Int, limit: Int?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryTradeIdeaObjectsFor(key: String?, object: PFObject?, skip: Int?, limit: Int?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -252,6 +260,18 @@ class QueryHelper {
         
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
         tradeIdeaQuery.cachePolicy = cachePolicy
+    
+        switch order {
+        case .ascending:
+            tradeIdeaQuery.order(byAscending: "createdAt")
+        case .descending:
+            tradeIdeaQuery.order(byDescending: "createdAt")
+        }
+        
+        if let creationDate = creationDate {
+            tradeIdeaQuery.whereKey("createdAt", greaterThan: creationDate)
+        }
+        
         tradeIdeaQuery.includeKeys(["user", "reshare_of"])
         
         if let key = key, let object = object {
@@ -270,12 +290,13 @@ class QueryHelper {
             tradeIdeaQuery.whereKey("user", matchesQuery: subTradeIdeaQuery!)
         }
         
-        tradeIdeaQuery.order(byDescending: "createdAt")
+        if let skip = skip, skip > 0 {
+            tradeIdeaQuery.skip = skip
+        }
         
-        if let limit = limit  , limit > 0 {
+        if let limit = limit, limit > 0 {
             tradeIdeaQuery.limit = limit
         }
-        tradeIdeaQuery.skip  = skip
         
         tradeIdeaQuery.findObjectsInBackground { (objects, error) -> Void in
             
@@ -283,7 +304,7 @@ class QueryHelper {
                 return completion({throw Constants.Errors.errorAccessingParseDatabase})
             }
             
-            guard objects?.isEmpty == false, let objects = objects else {
+            guard let objects = objects else {
                 return completion({throw Constants.Errors.parseTradeIdeaObjectNotFound})
             }
             
@@ -331,7 +352,7 @@ class QueryHelper {
         }
     }
     
-    func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -339,7 +360,17 @@ class QueryHelper {
         
         let activityQuery = PFQuery(className:"Activity")
         activityQuery.cachePolicy = cachePolicy
-        activityQuery.order(byDescending: "createdAt")
+        
+        switch order {
+        case .ascending:
+            activityQuery.order(byAscending: "createdAt")
+        case .descending:
+            activityQuery.order(byDescending: "createdAt")
+        }
+        
+        if let creationDate = creationDate {
+            activityQuery.whereKey("createdAt", greaterThan: creationDate)
+        }
         
         if let includeKeys = includeKeys {
             activityQuery.includeKeys(includeKeys)
@@ -373,11 +404,11 @@ class QueryHelper {
             activityQuery.whereKey("activityType", containedIn: activityType)
         }
         
-        if let skip = skip  , skip > 0 {
+        if let skip = skip, skip > 0 {
             activityQuery.skip = skip
         }
         
-        if let limit = limit  , limit > 0 {
+        if let limit = limit, limit > 0 {
             activityQuery.limit = limit
         }
         
@@ -447,7 +478,7 @@ class QueryHelper {
         }
     }
     
-    func queryActivityForUser(toUser: PFUser, skip: Int?, limit: Int?,cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryActivityForUser(user: PFUser, skip: Int?, limit: Int?, order: QueryOrder = .descending, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -456,21 +487,27 @@ class QueryHelper {
         let activityQuery = PFQuery(className:"Activity")
         activityQuery.cachePolicy = cachePolicy
         
-        activityQuery.whereKey("fromUser", notEqualTo: toUser)
-        activityQuery.whereKey("toUser", equalTo: toUser)
+        switch order {
+        case .ascending:
+            activityQuery.order(byAscending: "createdAt")
+        case .descending:
+            activityQuery.order(byDescending: "createdAt")
+        }
+        
+        activityQuery.whereKey("fromUser", notEqualTo: user)
+        activityQuery.whereKey("toUser", equalTo: user)
         activityQuery.whereKeyExists("fromUser")
         activityQuery.includeKeys(["fromUser", "toUser", "tradeIdea", "stock"])
-        activityQuery.order(byDescending: "createdAt")
         
         if let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             activityQuery.whereKey("fromUser", notContainedIn: blockedUsers)
         }
         
-        if let skip = skip  , skip > 0 {
+        if let skip = skip, skip > 0 {
             activityQuery.skip = skip
         }
         
-        if let limit = limit  , limit > 0 {
+        if let limit = limit, limit > 0 {
             activityQuery.limit = limit
         }
         
@@ -507,11 +544,11 @@ class QueryHelper {
         
         let activityQuery = PFQuery(className:"Activity")
         activityQuery.cachePolicy = cachePolicy
+        activityQuery.order(byDescending: "createdAt")
         
         activityQuery.whereKey("fromUser", notEqualTo: fromUser)
         activityQuery.whereKey("fromUser", matchesKey: "fromUser", in: followActivityQuery)
         activityQuery.includeKeys(["fromUser", "toUser", "tradeIdea", "stock"])
-        activityQuery.order(byDescending: "createdAt")
         
         if let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             activityQuery.whereKey("fromUser", notContainedIn: blockedUsers)

@@ -14,14 +14,14 @@ PODS:
   - ChimpKit (3.1.1)
   - Crashlytics (3.8.2):
     - Fabric (~> 1.6.3)
-  - DataCache (1.2)
+  - DataCache (1.2.2)
   - DZNEmptyDataSet (1.8.1)
-  - Fabric (1.6.8)
-  - FBSDKCoreKit (4.15.1):
+  - Fabric (1.6.9)
+  - FBSDKCoreKit (4.16.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.15.1):
+  - FBSDKLoginKit (4.16.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.15.1):
+  - FBSDKShareKit (4.16.0):
     - FBSDKCoreKit
   - LaunchKit (2.1.4):
     - LaunchKit/LaunchKit (= 2.1.4)
@@ -43,15 +43,15 @@ PODS:
     - Bolts/Tasks (~> 1.3)
     - Parse (~> 1.9)
   - ReachabilitySwift (2.3.3)
-  - Rollout.io (1.3.1)
+  - Rollout.io (1.4.0)
   - SDVersion (3.6)
   - SKSplashView (0.1.2)
   - SwiftyJSON (2.3.2)
   - SWXMLHash (3.0.2)
-  - TwitterCore (2.4.0):
+  - TwitterCore (2.5.0):
     - Fabric
-  - TwitterKit (2.4.0):
-    - TwitterCore (= 2.4.0)
+  - TwitterKit (2.5.0):
+    - TwitterCore (= 2.5.0)
 
 DEPENDENCIES:
   - AMPopTip
@@ -101,7 +101,7 @@ CHECKOUT OPTIONS:
     :commit: ab3bb619df2c2d165b41736b6bc25a4218833252
     :git: https://github.com/danielgindi/Charts.git
   DataCache:
-    :commit: e3ffb47844987203dbd71b4fdbeb7181d0398f94
+    :commit: 494bff94a77fd9f0ba23cc7f9f1d646142f6cf95
     :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
     :commit: 759f5060c350d533e046ef53f88515552278a706
@@ -124,12 +124,12 @@ SPEC CHECKSUMS:
   Charts: b48fcc8d7190de910ff9e9748f5360c8ea7856e5
   ChimpKit: d020126089544daa349397a91f1489a3f271b791
   Crashlytics: 27acca95a01b042a8294291dd6dff27f8f6af6d7
-  DataCache: f7682fbe2cb74bc79849744b6a597edca4fc786f
+  DataCache: aab67eb89877e40e4d56f345a160d10b6f3f80ac
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fabric: 5755268d0171435ab167e3d0878a28a777deaf10
-  FBSDKCoreKit: fc7fa53d16b095ee3fd53f0cd59f1df8bcbb634d
-  FBSDKLoginKit: 073f79b3b2e762fc6f54a283fe15f45372d59f5f
-  FBSDKShareKit: 11cbb5a4d7b5fda8143cc95b76188147e6725736
+  Fabric: bc5bec42cef4bcf1ee3ce0e218fc518e4b44dfbb
+  FBSDKCoreKit: 7a6baaed4a2b2a244ba253346713bdbc74df135b
+  FBSDKLoginKit: 9a514a55a7d05190f64d4ef09502737588b5b561
+  FBSDKShareKit: e81505de17fc0624cbaa87b83cccc9f2a786e6cb
   LaunchKit: 95ad4fb171a0f8ea1c80aa26d4fb7bd637788f9c
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
   NVActivityIndicatorView: 81953b5e65093ba79edf4fe7268e002039ca5268
@@ -138,13 +138,13 @@ SPEC CHECKSUMS:
   ParseTwitterUtils: 0dde9689565e7012d83f892c64aed2ebe69f2ea9
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   ReachabilitySwift: e0f6b6f280effb47731acfaaa2d5ffe223703793
-  Rollout.io: e2374975b36769db594ecbe8738e13f8a5b202c8
+  Rollout.io: 1728f4bd338906f630a9bb2a93ee95cbdf6d69c8
   SDVersion: 43383b6ac05462c973c3fd92d9748c74e360aba5
   SKSplashView: c65333b6707be6f237d09e7c8977941114b0a70d
   SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
   SWXMLHash: e0f6935971f01b06fb228cf435510d998ecde647
-  TwitterCore: a139904c80805ad3dde9eef1100704f96f646d1d
-  TwitterKit: 1cf9742edf9d182c1518cfdd6aaac0dfe313b38b
+  TwitterCore: 95c46af93112768a7983bd370d66023553601d01
+  TwitterKit: dd8042698b0ff5bd3066fa919b3b2b50d8eed829
 
 PODFILE CHECKSUM: f3d735505b7c314d1e1ca834e4a6435f92338387
 

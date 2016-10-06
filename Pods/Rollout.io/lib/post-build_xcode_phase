@@ -10,10 +10,6 @@ ERROR_wrongArguments=("exit=1" "message=Got an incorrect command line argument" 
 ERROR_appKeyMissing=("exit=2" "message=app_key argument is required" "xcode_alert=error")
 ERROR_wrongSelfVersion=("exit=3" "message=Incorrect SDK version" "xcode_alert=error")
 ERROR_missingDsym=("exit=14" "message=Missing dSYM. Please contact us at support@rollout.io" "xcode_alert=error")
-ERROR_missingExecutable=("exit=15" "message=Missing executable. Please contact us at support@rollout.io" "xcode_alert=error")
-ERROR_dsym2protoFailed=("exit=17" "message=dsym2proto failed. Please contact us at support@rollout.io" "xcode_alert=error")
-ERROR_missingProto=("exit=19" "message=The proto data file is missing. Please contact us at support@rollout.io" "xcode_alert=error")
-ERROR_dsym2protoNotFound=("exit=20" "message=dsym2proto not found. Please contact us at support@rollout.io" "xcode_alert=error")
 
 handle_error() { #{{{
   eval local error=('"${'$1'[@]}"')
@@ -111,23 +107,6 @@ else
 fi
 
 [ -f "$dsym_file" ] || handle_error ERROR_missingDsym
-
-[ `(. "$LIB_DIR"/versions; echo $lib | cut -d- -f1)` != SwiftBeta -a "$CONFIGURATION" != "Debug-SwiftMilestone" -a "$CONFIGURATION" != "Release-SwiftMilestone" ] || {
-  echo "In Swift-beta part"
-  executable_file=${SYMROOT}/${CONFIGURATION}-${PLATFORM_NAME}/${PRODUCT_NAME}.app/${PRODUCT_NAME}
-  debug_info_file_name=rollout_swift_debug_info
-  dsym2proto="`get_overridable_rollout_tool dsym2proto`"
-  [ -x "$dsym2proto" ] || handle_error ERROR_dsym2protoNotFound
-
-  "$dsym2proto" --include-names --input-dsym "$dsym_file" --input-binary "$executable_file" --create-protobin --supported-swift-only --output-prefix $temp_dir/$debug_info_file_name || handle_error ERROR_dsym2protoFailed
-	mv $temp_dir/$debug_info_file_name.bin $temp_dir/$debug_info_file_name
-
-  cp -v $temp_dir/$debug_info_file_name  "${CONFIGURATION_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/"
-  if [ -d "${INSTALL_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}" ]; then
-    echo "Rollout: Installation mode, special copy"
-    cp -v $temp_dir/$debug_info_file_name  "${INSTALL_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
-  fi
-}
 
 if [ -z "$disable_upload" ]; then
   dsym_session_id=$RANDOM

@@ -37,7 +37,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>724</string>
+	<string>787</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
@@ -102,6 +102,10 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>$(PRODUCT_NAME) allows you to take a picture to be set as a profile picture</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(PRODUCT_NAME) allows you to select your photo to be set as a profile picture</string>
 	<key>NSUserActivityTypes</key>
 	<array>
 		<string>com.stockswipe.stocksSwiped</string>

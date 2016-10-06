@@ -32,8 +32,8 @@ rollout_build=`(. "$BIN_DIR"/../lib/versions; echo $build)`
 
 shopt -s nullglob
 
-unset app_key help exit xcode_dir tweaker_before_linking
-while getopts "p:k:lh" option; do
+unset app_key help exit xcode_dir tweaker_before_linking include_swift
+while getopts "p:k:lsh" option; do
   case $option in
     k)
       app_key=$OPTARG
@@ -46,6 +46,9 @@ while getopts "p:k:lh" option; do
       ;;
     p)
       xcode_dir=$OPTARG
+      ;;
+    s)
+      include_swift="-s"
       ;;
     *)
       exit=1
@@ -62,6 +65,7 @@ $0 <options>
   -p <.xcodeproj dir>    a path to the project directory (optional, for cases
                          in which the script cannot locate it automatically)
   -l                     set tweaker script phase before the linking phase
+  -s                     Include swift support
   -h                     this help message
 EOF
   exit
@@ -84,8 +88,9 @@ echo "Configuring project \"$xcode_dir\""
 rm -rf "$PROJECT_DIR"/Rollout-ios-SDK
 analytics  rm_exit_status $? 
 
-"$BIN_DIR"/Installer "$xcode_dir" "$app_key"
-
+[ -n "$include_swift" ] && "$BIN_DIR"/Installer "$xcode_dir" "$app_key" "$include_swift" || {
+    "$BIN_DIR"/Installer "$xcode_dir" "$app_key"
+}
 exit_status=$?
 
 analytics configure_pod_exit_status $exit_status 

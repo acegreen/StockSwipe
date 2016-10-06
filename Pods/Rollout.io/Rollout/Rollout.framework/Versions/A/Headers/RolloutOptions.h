@@ -21,5 +21,6 @@ typedef enum {
 @property (nonatomic) BOOL rolloutDisabled;
 @property (nonatomic, copy) NSArray *patchingDisabledClasses;
 @property (nonatomic, strong) NSArray *blockedInJSClasses;
+@property (nonatomic, copy) NSString *customSigningCertificate;
 @end
 

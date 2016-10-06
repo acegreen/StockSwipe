@@ -561,6 +561,8 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             case .SKIP:
                 self.skipCardView()
             }
+            
+            Functions.registerUserChoice(chart, with: choice)
         }
     }
     

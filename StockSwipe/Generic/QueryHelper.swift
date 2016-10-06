@@ -17,6 +17,12 @@ class QueryHelper {
         case descending
     }
     
+    enum QueryType {
+        case new
+        case older
+        case update
+    }
+    
     static let sharedInstance = QueryHelper()
     static let tradeIdeaQueryLimit = 25
 
@@ -268,9 +274,9 @@ class QueryHelper {
             tradeIdeaQuery.order(byDescending: "createdAt")
         }
         
-        if let creationDate = creationDate {
-            tradeIdeaQuery.whereKey("createdAt", greaterThan: creationDate)
-        }
+//        if let creationDate = creationDate {
+//            tradeIdeaQuery.whereKey("createdAt", greaterThan: creationDate)
+//        }
         
         tradeIdeaQuery.includeKeys(["user", "reshare_of"])
         
@@ -368,9 +374,9 @@ class QueryHelper {
             activityQuery.order(byDescending: "createdAt")
         }
         
-        if let creationDate = creationDate {
-            activityQuery.whereKey("createdAt", greaterThan: creationDate)
-        }
+//        if let creationDate = creationDate {
+//            activityQuery.whereKey("createdAt", greaterThan: creationDate)
+//        }
         
         if let includeKeys = includeKeys {
             activityQuery.includeKeys(includeKeys)

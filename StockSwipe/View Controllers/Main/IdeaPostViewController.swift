@@ -158,24 +158,20 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 // log trade idea
                 Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.current()?.username ?? "N/A","Description": self.ideaTextView.text, "App Version": Constants.AppVersion])
                 
-                let newtradeIdea = TradeIdea(parseObject: tradeIdeaObject, completion: { (newtradeIdea) in
-                    if let newtradeIdea = newtradeIdea {
+                let newTradeIdea = TradeIdea(parseObject: tradeIdeaObject, completion: { (newTradeIdea) in
+                    if let newTradeIdea = newTradeIdea {
                         DispatchQueue.main.async {
-                            self.delegate?.ideaPosted(with: newtradeIdea, tradeIdeaTyp: self.tradeIdeaType)
+                            self.delegate?.ideaPosted(with: newTradeIdea, tradeIdeaTyp: self.tradeIdeaType)
                         }
                     }
                 })
                 
-                switch self.tradeIdeaType {
-                case .new:
-                    
+                if self.tradeIdeaType == .new {
                     #if DEBUG
                         print("send push didn't happen in debug")
                     #else
-                        Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId": currentUser.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n" + tradeIdeaObject.object(forKey: "description")])
+                        Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId": currentUser.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n" + newTradeIdea.description])
                     #endif
-                    
-                case .reply, .reshare: break
                 }
                 
             } else {

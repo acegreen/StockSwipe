@@ -16,7 +16,7 @@ public class User {
     var objectId: String!
     var fullname: String! = "John Doe"
     var username: String! = "@JohnDoe"
-    var avtar: UIImage!
+    var avtar: UIImage! = UIImage(named: "dummy_profile_male")
     
     var profile_image_url: String?
     
@@ -47,7 +47,10 @@ public class User {
             
             self.createdAt = userObject.createdAt
             
-            self.getAvatar({ (UIImage) in
+            self.getAvatar({ (image) in
+                if let image = image  {
+                    self.avtar = image
+                }
                 if let completion = completion {
                     completion(self)
                 }
@@ -55,7 +58,7 @@ public class User {
         }
     }
     
-    func getAvatar(_ completion: @escaping (UIImage) -> Void) {
+    func getAvatar(_ completion: @escaping (UIImage?) -> Void) {
         
         if let profileImageURL = self.profile_image_url {
             QueryHelper.sharedInstance.queryWith(queryString: profileImageURL, completionHandler: { (result) in
@@ -63,16 +66,18 @@ public class User {
                 do {
                     
                     let avatarData  = try result()
-                    self.avtar = UIImage(data: avatarData)
                     
-                    completion(self.avtar)
+                    if let image = UIImage(data: avatarData) {
+                        completion(image)
+                    }
                     
                 } catch {
-                    completion(UIImage(named: "dummy_profile_male_big")!)
+                    completion(nil)
                 }
+
             })
         } else {
-            completion(UIImage(named: "dummy_profile_male_big")!)
+            completion(nil)
         }
     }
     

@@ -10,13 +10,11 @@
 @protocol RolloutNetwork;
 @protocol RolloutDeviceProperties;
 @protocol RolloutErrors;
-@class RolloutSwiftDevModeDataProvider;
 
 @interface RolloutConfiguration : NSObject
 
 @property (atomic) NSDictionary *conf;
 @property (atomic, readonly) NSDictionary *configurationsByTweakId;
-@property (nonatomic) RolloutSwiftDevModeDataProvider *swiftDevModeDataProvider;
 
 - (instancetype)initWithDeviceProperties:(id<RolloutDeviceProperties>)deviceProperties rolloutErrors:(id<RolloutErrors>)rolloutErrors;
 @end

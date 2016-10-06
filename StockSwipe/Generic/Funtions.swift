@@ -19,28 +19,6 @@ import NVActivityIndicatorView
 
 class Functions {
     
-    //func isConnectedToNetwork() -> Bool {
-    //
-    //    var zeroAddress = sockaddr_in(sin_len: 0, sin_family: 0, sin_port: 0, sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
-    //    zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
-    //    zeroAddress.sin_family = sa_family_t(AF_INET)
-    //
-    //    let defaultRouteReachability = withUnsafePointer(&zeroAddress) {
-    //        SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0)).takeRetainedValue()
-    //    }
-    //
-    //    var flags: SCNetworkReachabilityFlags = 0
-    //    if SCNetworkReachabilityGetFlags(defaultRouteReachability, &flags) == 0 {
-    //        return false
-    //    }
-    //
-    //    let isReachable = (flags & UInt32(kSCNetworkFlagsReachable)) != 0
-    //    let needsConnection = (flags & UInt32(kSCNetworkFlagsConnectionRequired)) != 0
-    //
-    //    return isReachable && !needsConnection
-    //
-    //}
-    
     class func isConnectedToNetwork() -> Bool {
         if Constants.reachability?.currentReachabilityStatus == .notReachable {
             return false
@@ -318,6 +296,7 @@ class Functions {
                     
                     if (firstActivityObjectActivityType == Constants.ActivityType.StockLong.rawValue &&  choice == .LONG) || (firstActivityObjectActivityType == Constants.ActivityType.StockShort.rawValue &&  choice == .SHORT) {
                         
+                        firstActivityObject["activityType"] = firstActivityObject["activityType"]
                         firstActivityObject.saveEventually()
                     
                     } else {
@@ -378,8 +357,6 @@ class Functions {
             }
             
             print("\(choice)", chart)
-            
-            saveIntoCoreData(chart, userChoice: choice)
         }
     }
     
@@ -461,6 +438,58 @@ class Functions {
         }
         
         return nil
+    }
+    
+    class func makeTradeIdeas(from tradeIdeaObjects: [PFObject], sorted: Bool, completion: @escaping ([TradeIdea]) -> Void) {
+        
+        //let queue = DispatchQueue(label: "Trade Idea Query Queue")
+        var tradeIdeas = [TradeIdea]()
+        
+        for tradeIdeaObject in tradeIdeaObjects {
+            
+            //queue.async {
+                
+                TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
+                    
+                    if let tradeIdea = tradeIdea {
+                        
+                        tradeIdeas.append(tradeIdea)
+                        
+                        if tradeIdeas.count == tradeIdeaObjects.count {
+                            if sorted {
+                                tradeIdeas.sort { $0.createdAt > $1.createdAt }
+                            }
+                            
+                            completion(tradeIdeas)
+                        }
+                    }
+                })
+            //}
+        }
+    }
+    
+    class func makeUser(from userObjects: [PFUser], completion: @escaping ([User]) -> Void) {
+        
+        //let queue = DispatchQueue(label: "Users Query Queue")
+        var users = [User]()
+        
+        for userObject in userObjects {
+            
+            //queue.async {
+                
+                User(userObject: userObject, completion: { (user) in
+                    
+                    if let user = user {
+                        
+                        users.append(user)
+                        
+                        if users.count == userObjects.count {
+                            completion(users)
+                        }
+                    }
+                })
+            //}
+        }
     }
     
     class func setupConfigParameter(_ parameter:String, completion: @escaping (_ parameterValue: Any?) -> Void) {
@@ -558,8 +587,13 @@ class Functions {
                     guard let topVC = UIApplication.topViewController() , Functions.isUserLoggedIn(topVC) else { return }
                     
                     if !isOtherButton {
+                        saveIntoCoreData(chart, userChoice: .LONG)
+                        
                         completion(.LONG)
+                        
                     } else if isOtherButton {
+                        saveIntoCoreData(chart, userChoice: .SHORT)
+                        
                         completion(.SHORT)
                     }
                 }
@@ -591,6 +625,18 @@ class Functions {
         popTip.shouldDismissOnTap = true
         
         return popTip
+    }
+    
+    class func dismissAllPopTips(_ allPopTips: [AMPopTip?]) {
+        
+        if !allPopTips.isEmpty {
+            
+            for tip in allPopTips {
+                
+                tip?.hide()
+                
+            }
+        }
     }
     
     class func displayAlert (_ title: String, message: String, Action1:UIAlertAction?, Action2:UIAlertAction?) -> UIAlertController {
@@ -629,10 +675,8 @@ class Functions {
     }
     
     class func markFeedbackGiven() {
-        
         Constants.userDefaults.set(true, forKey: "FEEDBACK_GIVEN")
         Constants.userDefaults.synchronize()
-        
     }
     
     class func sendPush(_ pushType: Constants.PushType, parameters: [String:String]) {
@@ -641,11 +685,9 @@ class Functions {
     }
     
     class func getCenterOfView(_ view: UIView) -> CGPoint {
-        
         let bounds:CGRect = view.bounds
         let centerOfView:CGPoint = CGPoint(x: bounds.midX, y: bounds.midY)
         return centerOfView
-        
     }
     
     class func presentActivityVC(_ textToShare: String?, imageToShare: UIImage?, url: URL?, sender: AnyObject, vc: UIViewController, completion:@escaping (_ activity: String?, _ success:Bool, _ items:[AnyObject]?, _ error:NSError?) -> Void) {
@@ -733,17 +775,5 @@ class Functions {
         
         return formatter.string(from: date)
         
-    }
-    
-    class func dismissAllPopTips(_ allPopTips: [AMPopTip?]) {
-        
-        if !allPopTips.isEmpty {
-            
-            for tip in allPopTips {
-                
-                tip?.hide()
-                
-            }
-        }
     }
 }

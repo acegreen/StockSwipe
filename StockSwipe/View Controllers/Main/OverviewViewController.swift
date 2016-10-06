@@ -408,24 +408,20 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func updateTradeIdeas(_ tradeIdeaObjects: [PFObject]) {
         
-        tradeIdeas.removeAll()
-        tradeIdeaObjects.map({
-            TradeIdea(parseObject: $0, completion: { (tradeIdea) in
+        Functions.makeTradeIdeas(from: tradeIdeaObjects, sorted: true, completion: { (tradeIdeas) in
+            
+            DispatchQueue.main.async {
                 
-                if let tradeIdea = tradeIdea {
-                    self.tradeIdeas.append(tradeIdea)
-                }
+                self.tradeIdeas = tradeIdeas
                 
-                if self.tradeIdeas.count == tradeIdeaObjects.count {
-                    
-                    DispatchQueue.main.async {
-                        self.latestTradeIdeasTableView.reloadData()
-                        if self.tradeIdeasRefreshControl.isRefreshing == true {
-                            self.tradeIdeasRefreshControl.endRefreshing()
-                        }
-                    }
+                // reload table
+                self.latestTradeIdeasTableView.reloadData()
+                
+                // end refresh indicator
+                if self.tradeIdeasRefreshControl.isRefreshing == true {
+                    self.tradeIdeasRefreshControl.endRefreshing()
                 }
-            })
+            }
         })
     }
     

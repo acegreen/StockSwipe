@@ -1,32 +1,152 @@
 #!/bin/bash
 
-set -e
+unset arch output_file_map
+extract_args() {
+    while [[ $# -gt 0 ]]
+    do
+    key="$1"
+
+    case $key in
+        -target)
+        arch="$2"
+        shift # past argument
+        ;;
+        -output-file-map)
+        output_file_map="$2"
+        shift #past argument
+        ;;
+        *)
+            # unknown option
+        ;;
+    esac
+    shift # past argument or value
+    done
+}
+extract_args "$@"
+
+is_debug=`basename "$0"`
+exec 3>/dev/null 4>&3
+if [ "$is_debug" == "swiftc_debug" ]; then
+    echo "running swiftc in debug"
+    set -x
+    exec 3>&1 4>&2
+fi
+
+log_debug() {
+    echo "$1" >&3
+}
+
+log_always() {
+    echo "$1"
+}
+
+swift_injections_dir=/tmp/rollout_var/swift_injections
+mkdir -p "$swift_injections_dir"
+VAR_DIR=`mktemp -d $swift_injections_dir/"$arch".XXXXX`
+
+originalParams=("$@")
+swift_path=`/usr/bin/xcrun -f swiftc`
+error_file="$VAR_DIR"/swiftc_error
+error_handler() {
+    local check_last_status=$1
+    local last_status=$2
+    local category=$3
+    log_debug "exec original swiftc"
+    unset ROLLOUT_REPLACEMENTS
+    unset DYLD_FORCE_FLAT_NAMESPACE
+    unset DYLD_INSERT_LIBRARIES
+    "$swift_path" "${originalParams[@]}"
+    local original_status=$?
+    if [[ ("$check_last_status" == "false" && "$original_status" -eq "0") || ("$check_last_status" == "true" && "$original_status" -ne "$last_status") ]]; then 
+        log_always "ROLLOUT ERROR: $category"
+        session_id=$RANDOM
+        error_build_copy=$swift_injections_dir/error.$arch
+        error_session_copy=$swift_injections_dir/error.$session_id
+        log_always "going to send error file to Rollout.io . Session id: $session_id. Also copying the error file to \"$error_build_copy\""
+        cp $error_file $error_build_copy
+        cp $error_file $error_session_copy
+        (
+            { set +x; } > /dev/null 2>&1
+            echo "`date +"%Y-%m-%d_%H:%M:%S"`: session $session_id started."
+            server="$ROLLOUT_allServicesInOneServer"
+            [ -n "$ROLLOUT_allServicesInOneServer" ] || server="https://error.rollout.io"
+            url="$server/build/error/$category"
+            echo "`date +"%Y-%m-%d_%H:%M:%S"`: sending \"$error_session_copy\" file to url \"$url\"."
+            gzip -c "$error_session_copy" | curl -sS --location --post301 --post302 -F data=@"-" "$url"
+            echo "`date +"%Y-%m-%d_%H:%M:%S"`: removing error file \"$error_session_copy\".."
+            rm $error_session_copy
+            echo "`date +"%Y-%m-%d_%H:%M:%S"`: session $session_id finished."
+            echo
+        ) >> $swift_injections_dir/error_reporting.log 2>&1 &
+    else
+       log_debug "OTHER ERROR"
+    fi
+   
+    clean 
+    exit $last_status
+}
+
+clean() {
+    local debug_path=/tmp/rollout_swiftc_generated_files_debug_location
+    [ -d $debug_path ] && {
+      rm -rf $debug_path/"$arch"
+      mv "$VAR_DIR" $debug_path/"$arch"
+    } || {
+      rm -rf "$VAR_DIR"
+    }
+}
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
-Temp_Files=()
+STRIPFILES=()
+rollout_replacements_file="$VAR_DIR"/replacements
+rollout_sources_file="$VAR_DIR"/sources
 for i in "$@"
 do
     [[ $i =~ RolloutGenerated\.swift$ ]] && {
-        Rollout_Generated=`mktemp "$i".XXXX`
-        cp $i $Rollout_Generated
-        Rollout_Replacements="$Rollout_Replacements,$i,$Rollout_Generated"
+        touch "$i"
+        last_component=`basename "$i"`
+        Rollout_Generated="$VAR_DIR"/"$last_component"
+        cp "$i" "$Rollout_Generated" 2>$error_file ||  error_handler "false" $? "CopyFiles"
+        echo "$i" >> "$rollout_replacements_file"
+        echo "$Rollout_Generated" >> "$rollout_replacements_file"
+        filename="${last_component%.*}"
+        obj_file=`grep -o "${last_component}.*object.*:.*${filename}.o\"" "$output_file_map" | grep -o 'object.*' | grep -o ":.*" | grep -o "\/.*o"`
+        obj_file=$(echo ${obj_file} | sed "s@\\\\@@g")
+        STRIPFILES+=("$obj_file")
+        continue;
+    } 
+
+    [[ $i =~ RolloutSwiftInjectionBridge\.swift$ ]] && {
+        last_component=`basename "$i"`
+        filename="${last_component%.*}"
+        obj_file=`grep -o "${last_component}.*object.*:.*${filename}.o\"" "$output_file_map" | grep -o 'object.*' | grep -o ":.*" | grep -o "\/.*o"`
+        obj_file=$(echo ${obj_file} | sed "s@\\\\@@g")
+        STRIPFILES+=("$obj_file")
         continue;
     }
+
     [[ $i =~ \.swift$ ]] && {
-        TEMP_FILE=`mktemp "$i".XXXX`
-        cp $i $TEMP_FILE
-        Temp_Files+=($TEMP_FILE)
-        Rollout_Replacements="$Rollout_Replacements,$i,$TEMP_FILE"
+        last_component=`basename "$i"`
+        TEMP_FILE="$VAR_DIR"/"$last_component"
+        cp "$i" "$TEMP_FILE" 2>$error_file ||  error_handler "false" $? "CopyFiles"
+        echo "$TEMP_FILE" >> "$rollout_sources_file"
+        echo "$i" >> "$rollout_replacements_file"
+        echo "$TEMP_FILE" >> "$rollout_replacements_file"
     }
 done
 
-Rollout_Replacements="${Rollout_Replacements:1}"
+"$DIR/../../lib/Oyster/MacOS/Oyster" "$Rollout_Generated" "$rollout_sources_file" >&3 2>$error_file || error_handler "false" $? "Oyster"
 
-"$DIR"/../../Oyster/Build/Products/Debug/Oyster "$Rollout_Generated" "${Temp_Files[@]}" 
+export ROLLOUT_REPLACEMENTS="$rollout_replacements_file"
+export DYLD_FORCE_FLAT_NAMESPACE=1
+export DYLD_INSERT_LIBRARIES="$DIR/../../lib/libRolloutOverrides.dylib"
 
-swift_path=`/usr/bin/xcrun -f swiftc`
+"$swift_path" "$@" 2>$error_file || error_handler "true" $? "Compiler" 
+cat $error_file
 
-ROLLOUT_REPLACEMENTS=$Rollout_Replacements DYLD_FORCE_FLAT_NAMESPACE=1 DYLD_INSERT_LIBRARIES=$DIR/../../Oyster/lib_overrides.dylib "$swift_path" "$@"
+for i in "${STRIPFILES[@]}"
+do
+    strip -x "$i" 2>$error_file 1>&2 || error_handler "false" $? "Strip"
+done
 
-rm $Rollout_Generated "${Temp_Files[@]}"  
+clean

@@ -12,11 +12,6 @@ import Parse
 
 class TradeIdeaDetailTableViewController: UITableViewController, CellType, SegueHandlerType {
     
-    enum QueryType {
-        case newOrOld
-        case update
-    }
-    
     enum CellIdentifier: String {
         case IdeaCell = "IdeaCell"
         case ReplyIdeaCell = "ReplyIdeaCell"
@@ -30,6 +25,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     
     var tradeIdea: TradeIdea!
     var replyTradeIdeas = [TradeIdea]()
+    var isQueryingForReplyTradeIdeas = false
     
     let queue = DispatchQueue(label: "Query Queue")
     
@@ -42,7 +38,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.getReplyTradeIdeas(queryType: .newOrOld)
+        self.getReplyTradeIdeas(queryType: .new)
     }
     
     override func didReceiveMemoryWarning() {
@@ -50,15 +46,18 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         // Dispose of any resources that can be recreated.
     }
     
-    func getReplyTradeIdeas(queryType: QueryType) {
+    func getReplyTradeIdeas(queryType: QueryHelper.QueryType) {
         
+        guard !isQueryingForReplyTradeIdeas else { return }
         guard let tradeIdea = self.tradeIdea else { return }
+        
+        isQueryingForReplyTradeIdeas = true
         
         var queryOrder: QueryHelper.QueryOrder
         var mostRecentTradeIdeaCreationDate: Date?
         
         switch queryType {
-        case .newOrOld:
+        case .new, .older:
             queryOrder = .descending
             
             if !self.footerActivityIndicator.isAnimating {
@@ -73,9 +72,9 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             
             do {
                 
-                let tradeIdeaObjects = try result()
+                let replyTradeIdeaObjects = try result()
                 
-                guard tradeIdeaObjects.count > 0 else {
+                guard replyTradeIdeaObjects.count > 0 else {
                     
                     DispatchQueue.main.async {
                         self.tableView.reloadEmptyDataSet()
@@ -90,49 +89,58 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                     return
                 }
                 
-                tradeIdeaObjects.map({ tradeIdeaObject in
-                
-                    self.queue.sync {
+                Functions.makeTradeIdeas(from: replyTradeIdeaObjects, sorted: true, completion: { (replyTradeIdeas) in
+                    
+                    DispatchQueue.main.async {
                         
-                        TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
+                        switch queryType {
+                        case .new:
                             
-                            if let tradeIdea = tradeIdea {
-                                
-                                DispatchQueue.main.async {
-                                    
-                                    switch queryType {
-                                    case .newOrOld:
-                                        
-                                        // append more trade ideas
-                                        self.replyTradeIdeas.append(tradeIdea)
-                                        
-                                        // insert cell in tableview
-                                        let indexPath = IndexPath(row: self.replyTradeIdeas.count - 1, section: 1)
-                                        self.tableView.insertRows(at: [indexPath], with: .none)
-                                    case .update:
-                                        
-                                        // append more trade ideas
-                                        self.replyTradeIdeas.insert(tradeIdea, at: 0)
-                                        
-                                        // insert cell in tableview
-                                        let indexPath = IndexPath(row: 0, section: 1)
-                                        self.tableView.insertRows(at: [indexPath], with: .none)
-                                    }
-                                }
+                            self.replyTradeIdeas = replyTradeIdeas
+                            
+                            // reload table
+                            self.tableView.reloadData()
+                            
+                        case .older:
+                            
+                            // append more trade ideas
+                            let currentCount = self.replyTradeIdeas.count
+                            self.replyTradeIdeas += replyTradeIdeas
+                            
+                            // insert cell in tableview
+                            self.tableView.beginUpdates()
+                            for (i,_) in replyTradeIdeas.enumerated() {
+                                let indexPath = IndexPath(row: currentCount + i, section: 0)
+                                self.tableView.insertRows(at: [indexPath], with: .none)
                             }
-                        })
+                            self.tableView.endUpdates()
+                            
+                        case .update:
+                            
+                            // append more trade ideas
+                            
+                            self.tableView.beginUpdates()
+                            replyTradeIdeas.map {
+                                self.replyTradeIdeas.insert($0, at: 0)
+                                
+                                // insert cell in tableview
+                                let indexPath = IndexPath(row: 0, section: 0)
+                                self.tableView.insertRows(at: [indexPath], with: .none)
+                            }
+                            self.tableView.endUpdates()
+                        }
+                        
+                        // end refresh and add time stamp
+                        if self.refreshControl?.isRefreshing == true {
+                            self.refreshControl?.endRefreshing()
+                        } else if self.footerActivityIndicator.isAnimating == true {
+                            self.footerActivityIndicator.stopAnimating()
+                        }
+                        self.updateRefreshDate()
                     }
+                    
+                    self.isQueryingForReplyTradeIdeas = false
                 })
-                
-                // end refresh and add time stamp
-                DispatchQueue.main.async {
-                    if self.refreshControl?.isRefreshing == true {
-                        self.refreshControl?.endRefreshing()
-                    } else if self.footerActivityIndicator.isAnimating == true {
-                        self.footerActivityIndicator.stopAnimating()
-                    }
-                }
-                self.updateRefreshDate()
                 
             } catch {
                 
@@ -144,6 +152,8 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                         self.footerActivityIndicator.stopAnimating()
                     }
                 }
+                
+                self.isQueryingForReplyTradeIdeas = false
             }
         }
     }
@@ -191,7 +201,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             cell.configureCell(with: self.tradeIdea, timeFormat: .long)
             cell.delegate = self
         } else {
-            cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
+            cell = tableView.dequeueReusableCell(withIdentifier: "ReplyIdeaCell", for: indexPath) as! IdeaCell
             guard let replyTradeIdeaAtIndex = self.replyTradeIdeas.get(indexPath.row) else { return cell }
             cell.configureCell(with: replyTradeIdeaAtIndex, timeFormat: .short)
             cell.delegate = self
@@ -205,7 +215,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
         if offset >= 0 && offset <= 5 {
             // This is the last cell so get more data
-            self.getReplyTradeIdeas(queryType: .newOrOld)
+            self.getReplyTradeIdeas(queryType: .older)
         }
     }
     

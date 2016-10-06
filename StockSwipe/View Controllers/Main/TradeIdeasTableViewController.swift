@@ -13,11 +13,6 @@ import Parse
 
 class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate, CellType, SegueHandlerType {
     
-    enum QueryType {
-        case newOrOld
-        case update
-    }
-    
     enum CellIdentifier: String {
         case IdeaCell = "IdeaCell"
     }
@@ -32,7 +27,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     var stockObject: PFObject?
     
     var tradeIdeas = [TradeIdea]()
-    var isQueryingForTradeIdeas = true
+    var isQueryingForTradeIdeas = false
     
     let queue = DispatchQueue(label: "Query Queue")
     
@@ -63,7 +58,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             self.navigationItem.title = symbol
         }
         
-        getTradeIdeas(queryType: .newOrOld)
+        getTradeIdeas(queryType: .new)
         
         // Hide post button if symbol is not available
         if self.stockObject == nil {
@@ -76,8 +71,9 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         // Dispose of any resources that can be recreated.
     }
     
-    func getTradeIdeas(queryType: QueryType) {
+    func getTradeIdeas(queryType: QueryHelper.QueryType) {
         
+        guard !isQueryingForTradeIdeas else { return }
         guard let stockObject = self.stockObject else { return }
         
         isQueryingForTradeIdeas = true
@@ -86,7 +82,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         var mostRecentTradeIdeaCreationDate: Date?
 
         switch queryType {
-        case .newOrOld:
+        case .new, .older:
             queryOrder = .descending
             
             if !self.footerActivityIndicator.isAnimating {
@@ -98,8 +94,6 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         }
         
         QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: self.tradeIdeas.count, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentTradeIdeaCreationDate, completion: { (result) in
-            
-            self.isQueryingForTradeIdeas = false
             
             do {
                 
@@ -122,49 +116,58 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                     return
                 }
                 
-                tradeIdeaObjects.map({ tradeIdeaObject in
+                Functions.makeTradeIdeas(from: tradeIdeaObjects, sorted: true, completion: { (tradeIdeas) in
                     
-                    self.queue.sync {
+                    DispatchQueue.main.async {
                         
-                        TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
+                        switch queryType {
+                        case .new:
                             
-                            if let tradeIdea = tradeIdea {
-                                
-                                DispatchQueue.main.async {
-                                    
-                                    switch queryType {
-                                    case .newOrOld:
-                                        
-                                        // append more trade ideas
-                                        self.tradeIdeas.append(tradeIdea)
-                                        
-                                        // insert cell in tableview
-                                        let indexPath = IndexPath(row: self.tradeIdeas.count - 1, section: 0)
-                                        self.tableView.insertRows(at: [indexPath], with: .none)
-                                    case .update:
-                                        
-                                        // append more trade ideas
-                                        self.tradeIdeas.insert(tradeIdea, at: 0)
-                                        
-                                        // insert cell in tableview
-                                        let indexPath = IndexPath(row: 0, section: 0)
-                                        self.tableView.insertRows(at: [indexPath], with: .none)
-                                    }
-                                }
+                            self.tradeIdeas = tradeIdeas
+                            
+                            // reload table
+                            self.tableView.reloadData()
+                            
+                        case .older:
+                            
+                            // append more trade ideas
+                            let currentCount = self.tradeIdeas.count
+                            self.tradeIdeas += tradeIdeas
+                            
+                            // insert cell in tableview
+                            self.tableView.beginUpdates()
+                            for (i,_) in tradeIdeas.enumerated() {
+                                let indexPath = IndexPath(row: currentCount + i, section: 0)
+                                self.tableView.insertRows(at: [indexPath], with: .none)
                             }
-                        })
+                            self.tableView.endUpdates()
+                            
+                        case .update:
+                            
+                            // append more trade ideas
+                            
+                            self.tableView.beginUpdates()
+                            tradeIdeas.map {
+                                self.tradeIdeas.insert($0, at: 0)
+                                
+                                // insert cell in tableview
+                                let indexPath = IndexPath(row: 0, section: 0)
+                                self.tableView.insertRows(at: [indexPath], with: .none)
+                            }
+                            self.tableView.endUpdates()
+                        }
+                        
+                        // end refresh and add time stamp
+                        if self.refreshControl?.isRefreshing == true {
+                            self.refreshControl?.endRefreshing()
+                        } else if self.footerActivityIndicator.isAnimating == true {
+                            self.footerActivityIndicator.stopAnimating()
+                        }
+                        self.updateRefreshDate()
                     }
+                    
+                    self.isQueryingForTradeIdeas = false
                 })
-                
-                // end refresh and add time stamp
-                DispatchQueue.main.async {
-                    if self.refreshControl?.isRefreshing == true {
-                        self.refreshControl?.endRefreshing()
-                    } else if self.footerActivityIndicator.isAnimating == true {
-                        self.footerActivityIndicator.stopAnimating()
-                    }
-                }
-                self.updateRefreshDate()
                 
             } catch {
                 
@@ -176,6 +179,8 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                         self.footerActivityIndicator.stopAnimating()
                     }
                 }
+                
+                self.isQueryingForTradeIdeas = false
             }
         })
     }
@@ -225,7 +230,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
         if offset >= 0 && offset <= 5 {
             // This is the last cell so get more data
-            self.getTradeIdeas(queryType: .newOrOld)
+            self.getTradeIdeas(queryType: .older)
         }
     }
     

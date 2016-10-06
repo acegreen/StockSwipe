@@ -4,131 +4,92 @@
 <dict>
 	<key>files</key>
 	<dict>
-		<key>Headers/CloudLayoutOperation.h</key>
+		<key>Resources/Info.plist</key>
 		<data>
-		+q9LQ5z/JSsC3VrF7mWagjeX+w4=
-		</data>
-		<key>Headers/CloudWord.h</key>
-		<data>
-		kzxd+Gn3vVhphTXFStOIBl4tCjI=
-		</data>
-		<key>Headers/QuadTree.h</key>
-		<data>
-		PBhZ/0nXggajP+TBZYCPid9eXsg=
-		</data>
-		<key>Headers/UIColor+CloudSettings.h</key>
-		<data>
-		SF4LkKUOXztt4bgn/0NgLWRT6Xk=
-		</data>
-		<key>Headers/UIFont+CloudSettings.h</key>
-		<data>
-		BnPNk3U/DuYYFag2eCIk4o8aMxQ=
-		</data>
-		<key>Headers/WordCloud.h</key>
-		<data>
-		cAFtmR3FfePW8+s4bXsvcmGFr08=
-		</data>
-		<key>Info.plist</key>
-		<data>
-		qolfHIiZI80YXd50LyCeRHgC0sI=
-		</data>
-		<key>Modules/module.modulemap</key>
-		<data>
-		yVMx5Jrg0CTYwCPtJXqmKBoRHtU=
+		PSyD9zWkLxgIG8m5dCgxdtD+ud8=
 		</data>
 	</dict>
 	<key>files2</key>
 	<dict>
-		<key>Headers/CloudLayoutOperation.h</key>
+		<key>Headers/Regex-Swift.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			+q9LQ5z/JSsC3VrF7mWagjeX+w4=
+			iZ0p4ETGiHGHsyB+ARNvtYaUckw=
 			</data>
 			<key>hash2</key>
 			<data>
-			f5g1pgMRESJmeV31hKRVZ7bhZVOcNwMPR1I8EDi39/8=
+			zx9+NsTcEQEgcGXb18XTP7cZ2UWpOTg2RsMCdm/f6X0=
 			</data>
 		</dict>
-		<key>Headers/CloudWord.h</key>
+		<key>Headers/Regex-umbrella.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			kzxd+Gn3vVhphTXFStOIBl4tCjI=
+			NHPLCDDQ8hJGel+zuiMlSNZnAd0=
 			</data>
 			<key>hash2</key>
 			<data>
-			riiU6OaZLk1RdEEDkbaRDK+wtrUpkG7MYfw5Xr3IeBk=
+			lVUx8Ft5tVFeVTGIUnHesslvWi5628F+Z6WBgxkFuqs=
 			</data>
 		</dict>
-		<key>Headers/QuadTree.h</key>
+		<key>Modules/Regex.swiftmodule/x86_64.swiftdoc</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			PBhZ/0nXggajP+TBZYCPid9eXsg=
+			FdIwdJsbO2+MAZl8HDs5pZKw46Y=
 			</data>
 			<key>hash2</key>
 			<data>
-			fws77hKfdp7ui8UHWq4L4UTdTPmZZD8INjNrNAO7QwE=
+			+2giJZn+4jEAtOVqQIoJRzBYzJnBGKkc3AzoGNNRz6s=
 			</data>
 		</dict>
-		<key>Headers/UIColor+CloudSettings.h</key>
+		<key>Modules/Regex.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			SF4LkKUOXztt4bgn/0NgLWRT6Xk=
+			FtLVEc1Z+MexZDaTsnLOeWzCC50=
 			</data>
 			<key>hash2</key>
 			<data>
-			t3SRWO/PzvuG99mdiVJRB+WA5tuAFfZGhDj/81dJzKU=
-			</data>
-		</dict>
-		<key>Headers/UIFont+CloudSettings.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			BnPNk3U/DuYYFag2eCIk4o8aMxQ=
-			</data>
-			<key>hash2</key>
-			<data>
-			agcfRO8a8lCUMJQiHnkYSzYS5BAHuMZ+I4QUzHzTQB8=
-			</data>
-		</dict>
-		<key>Headers/WordCloud.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			cAFtmR3FfePW8+s4bXsvcmGFr08=
-			</data>
-			<key>hash2</key>
-			<data>
-			BFhd0wT1z3b6NvojwWYCiIlVXWgdzGSqgRe0AzALafU=
+			d0k1A6a4755tszdbOwAto3b4qsPyaIs3jP/nMLMIU9I=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			yVMx5Jrg0CTYwCPtJXqmKBoRHtU=
+			JAn5iLi6UVnqPq3nn81W6ZRsHQg=
 			</data>
 			<key>hash2</key>
 			<data>
-			i5zrenNYonznL3Ghzi3+LWyfkyZ9BFEkA28/bMwa19w=
+			UUhG1+flptju/YP0ayK7vgIwE7iUoOpRuxK6410zDKc=
+			</data>
+		</dict>
+		<key>Resources/Info.plist</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			PSyD9zWkLxgIG8m5dCgxdtD+ud8=
+			</data>
+			<key>hash2</key>
+			<data>
+			MIP1T1UOHzHnqzPJx674uLolFN9S0xx1g/7DmAOGZMA=
 			</data>
 		</dict>
 	</dict>
 	<key>rules</key>
 	<dict>
-		<key>^</key>
+		<key>^Resources/</key>
 		<true/>
-		<key>^.*\.lproj/</key>
+		<key>^Resources/.*\.lproj/</key>
 		<dict>
 			<key>optional</key>
 			<true/>
 			<key>weight</key>
 			<real>1000</real>
 		</dict>
-		<key>^.*\.lproj/locversion.plist$</key>
+		<key>^Resources/.*\.lproj/locversion.plist$</key>
 		<dict>
 			<key>omit</key>
 			<true/>
@@ -144,11 +105,6 @@
 		<dict>
 			<key>weight</key>
 			<real>11</real>
-		</dict>
-		<key>^</key>
-		<dict>
-			<key>weight</key>
-			<real>20</real>
 		</dict>
 		<key>^(.*/)?\.DS_Store$</key>
 		<dict>
@@ -166,20 +122,6 @@
 		</dict>
 		<key>^.*</key>
 		<true/>
-		<key>^.*\.lproj/</key>
-		<dict>
-			<key>optional</key>
-			<true/>
-			<key>weight</key>
-			<real>1000</real>
-		</dict>
-		<key>^.*\.lproj/locversion.plist$</key>
-		<dict>
-			<key>omit</key>
-			<true/>
-			<key>weight</key>
-			<real>1100</real>
-		</dict>
 		<key>^Info\.plist$</key>
 		<dict>
 			<key>omit</key>
@@ -193,6 +135,25 @@
 			<true/>
 			<key>weight</key>
 			<real>20</real>
+		</dict>
+		<key>^Resources/</key>
+		<dict>
+			<key>weight</key>
+			<real>20</real>
+		</dict>
+		<key>^Resources/.*\.lproj/</key>
+		<dict>
+			<key>optional</key>
+			<true/>
+			<key>weight</key>
+			<real>1000</real>
+		</dict>
+		<key>^Resources/.*\.lproj/locversion.plist$</key>
+		<dict>
+			<key>omit</key>
+			<true/>
+			<key>weight</key>
+			<real>1100</real>
 		</dict>
 		<key>^[^/]+$</key>
 		<dict>

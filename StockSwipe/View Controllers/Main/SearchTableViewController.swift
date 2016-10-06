@@ -116,10 +116,14 @@ class SearchTableViewController: UITableViewController {
         
         if objectAtIndex.isKind(of: PFUser.self) {
             
-            let user = User(userObject: objectAtIndex as! PFUser)
-            
             let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
-            cell.configureCell(with: user)
+            User(userObject: objectAtIndex as! PFUser, completion: { (user) in
+                if let user = user {
+                    DispatchQueue.main.async {
+                        cell.configureCell(with: user)
+                    }
+                }
+            })
             
             return cell
             
@@ -263,9 +267,7 @@ class SearchTableViewController: UITableViewController {
                 do {
                     
                     let chartImage = try result()
-                    
                     chart.image = chartImage
-                    
                     
                 } catch {
                     
@@ -274,18 +276,8 @@ class SearchTableViewController: UITableViewController {
                 
                 DispatchQueue.main.async {
                     
-                    SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
-                        
-                        guard Functions.isUserLoggedIn(self) else { return }
-                        
-                        if !isOtherButton {
-                            
-                            Functions.registerUserChoice(chart, with: .LONG)
-                            
-                        } else if isOtherButton {
-                            
-                            Functions.registerUserChoice(chart, with: .SHORT)
-                        }
+                    Functions.addToWatchlist(chart) { (choice) in
+                        Functions.registerUserChoice(chart, with: choice)
                     }
                 }
             })

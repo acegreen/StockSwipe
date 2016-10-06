@@ -52,7 +52,7 @@ public class TradeIdea {
             
             guard let parseObject = parseObject else  {
                 if let completion = completion {
-                    completion(nil)
+                    completion(self)
                 }
                 return
             }
@@ -111,7 +111,15 @@ public class TradeIdea {
                 self.likeCount = activityObjects.count
                 
                 if let currentUser = PFUser.current() {
-                    self.isLikedByCurrentUser = activityObjects.map { $0.object(forKey: "fromUser") as? PFUser }.contains { $0?.objectId == currentUser.objectId }
+                    
+                    var userObjects = [PFUser]()
+                    for activityObject in activityObjects {
+                        if let userObject = activityObject["fromUser"] as? PFUser {
+                            userObjects.append(userObject)
+                        }
+                    }
+                    
+                    self.isLikedByCurrentUser = userObjects.contains { $0.objectId == currentUser.objectId }
                 }
                 
             } catch {
@@ -133,7 +141,15 @@ public class TradeIdea {
                 self.reshareCount = activityObjects.count
                 
                 if let currentUser = PFUser.current() {
-                    self.isResharedByCurrentUser = activityObjects.map { $0.object(forKey: "fromUser") as? PFUser }.contains { $0?.objectId == currentUser.objectId }
+                    
+                    var userObjects = [PFUser]()
+                    for activityObject in activityObjects {
+                        if let userObject = activityObject["fromUser"] as? PFUser {
+                            userObjects.append(userObject)
+                        }
+                    }
+                    
+                    self.isResharedByCurrentUser = userObjects.contains { $0.objectId == currentUser.objectId }
                 }
                 
             } catch {

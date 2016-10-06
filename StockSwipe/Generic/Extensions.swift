@@ -539,7 +539,7 @@ extension UITableView {
 extension UITableViewCell: ReusableView { }
 
 extension SegueHandlerType where Self: UIViewController, SegueIdentifier.RawValue == String {
-    func performSegueWithIdentifier(_ segueIdentifier: SegueIdentifier, sender: AnyObject?) {
+    func performSegueWithIdentifier(_ segueIdentifier: SegueIdentifier, sender: Any?) {
         performSegue(withIdentifier: segueIdentifier.rawValue, sender: sender)
     }
     

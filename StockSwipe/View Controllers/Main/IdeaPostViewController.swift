@@ -121,6 +121,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 
                 for userObject in userObjects {
                     
+                    // Avoid creating an activity when self is mentioned
                     guard userObject.objectId != self.originalTradeIdea?.user.objectId else {
                         continue
                     }
@@ -131,8 +132,13 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                     activityObject["toUser"] = userObject
                     activityObject["activityType"] = Constants.ActivityType.Mention.rawValue
                     activityObject.saveEventually()
+                    
+                    #if DEBUG
+                        print("send push didn't happen in debug")
+                    #else
+                        Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": userObject.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "mention_notification", "title": "Trade Idea Mention Notification", "message": "@\(currentUser.username!) mentioned you in a trade idea"])
+                    #endif
                 }
-                
             } catch {
                 
             }

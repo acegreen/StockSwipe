@@ -201,7 +201,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     func subDidSelectSegment(_ segmentedControl: UISegmentedControl) {
         
         selectedSegmentIndex = ProfileContainerController.SegmentIndex(rawValue: segmentedControl.selectedSegmentIndex)!
-        self.tableView.reloadData()
         
         switch selectedSegmentIndex {
         case .zero:
@@ -221,6 +220,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 getTradeIdeas(queryType: .new)
             }
         }
+        self.tableView.reloadData()
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -384,8 +384,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 do {
                     
                     let activityObjects = try result()
-                    
-                    let likedTradeIdeaObjects = activityObjects.map { $0["tradeIdea"] as! PFObject }
+
+                    var likedTradeIdeaObjects = [PFObject]()
+                    for activityObject in activityObjects {
+                        if let likedTradeIdeaObject = activityObject["tradeIdea"] as? PFObject {
+                            likedTradeIdeaObjects.append(likedTradeIdeaObject)
+                        }
+                    }
                     
                     guard likedTradeIdeaObjects.count > 0 else {
                         
@@ -502,7 +507,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             do {
                 
                 let activityObjects = try result()
-                let userObjects = activityObjects.map { $0["toUser"] as! PFUser }
+                
+                var userObjects = [PFUser]()
+                for activityObject in activityObjects {
+                    if let userObject = activityObject["toUser"] as? PFUser {
+                        userObjects.append(userObject)
+                    }
+                }
                 
                 guard userObjects.count > 0 else {
                     
@@ -616,7 +627,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             do {
                 
                 let activityObjects = try result()
-                let userObjects = activityObjects.map { $0["fromUser"] as! PFUser }
+                
+                var userObjects = [PFUser]()
+                for activityObject in activityObjects {
+                    if let userObject = activityObject["fromUser"] as? PFUser {
+                        userObjects.append(userObject)
+                    }
+                }
                 
                 guard userObjects.count > 0 else {
                     
@@ -929,7 +946,7 @@ extension ProfileTableViewController: IdeaPostDelegate {
     
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
         
-        if tradeIdeaTyp == .new && selectedSegmentIndex == .zero {
+        if selectedSegmentIndex == .zero {
             
             let indexPath = IndexPath(row: 0, section: 0)
             self.tradeIdeas.insert(tradeIdea, at: 0)

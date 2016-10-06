@@ -99,9 +99,16 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                 
                 let activityObjects = try result()
                 
-                let tradeIdeaObjects = activityObjects.map { $0["tradeIdea"] as! PFObject }
+                var tradeIdeaObjects = [PFObject]()
+                for activityObject in activityObjects {
+                    if let tradeIdeaObject = activityObject["tradeIdea"] as? PFObject {
+                        tradeIdeaObjects.append(tradeIdeaObject)
+                    }
+                }
                 
                 guard tradeIdeaObjects.count > 0 else {
+                    
+                    self.isQueryingForTradeIdeas = false
                     
                     DispatchQueue.main.async {
                         self.tableView.reloadEmptyDataSet()
@@ -263,15 +270,12 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
 extension TradeIdeasTableViewController: IdeaPostDelegate {
     
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
+            
+        let indexPath = IndexPath(row: 0, section: 0)
+        self.tradeIdeas.insert(tradeIdea, at: 0)
+        self.tableView.insertRows(at: [indexPath], with: .automatic)
         
-        if tradeIdeaTyp == .new {
-            
-            let indexPath = IndexPath(row: 0, section: 0)
-            self.tradeIdeas.insert(tradeIdea, at: 0)
-            self.tableView.insertRows(at: [indexPath], with: .automatic)
-            
-            self.tableView.reloadEmptyDataSet()
-        }
+        self.tableView.reloadEmptyDataSet()
     }
     
     func ideaDeleted(with parseObject: PFObject) {
@@ -307,7 +311,6 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
     }
     
     func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
-        
         return UIImage(assetIdentifier: .noIdeaBulbImage)
     }
     

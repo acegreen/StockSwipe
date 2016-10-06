@@ -537,8 +537,8 @@
 		238DB6C21D85A01F00082918 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				238DB6D11D85A01F00082918 /* OverviewViewController.swift */,
 				238DB6CD1D85A01F00082918 /* MainTabBarController.swift */,
+				238DB6D11D85A01F00082918 /* OverviewViewController.swift */,
 				238DB6C41D85A01F00082918 /* CardsViewController.swift */,
 				238DB6C51D85A01F00082918 /* ChartCollectionViewController.swift */,
 				238DB6C61D85A01F00082918 /* ChartDetailTabBarController.swift */,

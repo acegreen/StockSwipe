@@ -118,14 +118,14 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         trendingCloudOperation.queuePriority = .high
         
         let marketCarouselOperation = BlockOperation { () -> Void in
-            self.queryICarouselTickers()
+            self.queryCarouselTickers()
         }
         marketCarouselOperation.queuePriority = .normal
         
         let tradeIdeasOperation = BlockOperation { () -> Void in
             self.queryTradeIdeas()
         }
-        tradeIdeasOperation.queuePriority = .normal
+        tradeIdeasOperation.queuePriority = .high
         
         let topStoriesOperation = BlockOperation { () -> Void in
             self.queryTopStories()
@@ -207,7 +207,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         }
     }
     
-    func queryICarouselTickers() {
+    func queryCarouselTickers() {
         
         if carouselLastQueriedDate == nil || !Functions.isConnectedToNetwork() {
             if let carouselCacheData = DataCache.instance.readData(forKey: "CAROUSELCACHEDATA") {
@@ -277,7 +277,14 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
                 let activityObjects = try result()
                 
-                self.updateTradeIdeas(activityObjects.map { $0["tradeIdea"] as! PFObject })
+                var tradeIdeaObjects = [PFObject]()
+                for activityObject in activityObjects {
+                    if let tradeIdeaObject = activityObject["tradeIdea"] as? PFObject {
+                        tradeIdeaObjects.append(tradeIdeaObject)
+                    }
+                }
+                
+                self.updateTradeIdeas(tradeIdeaObjects)
                 self.tradeIdeasLastQueriedDate = Date()
                 
             } catch {
@@ -431,7 +438,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         let items = xml["rss"]["channel"]["item"]
         
-        self.topStories = []
+        self.topStories.removeAll()
         
         for item in items {
             
@@ -485,7 +492,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         let tradeIdeasOperation = BlockOperation { () -> Void in
             self.queryTradeIdeas()
         }
-        tradeIdeasOperation.queuePriority = .normal
+        tradeIdeasOperation.queuePriority = .high
         overviewVCOperationQueue.addOperation(tradeIdeasOperation)
     }
     
@@ -850,6 +857,15 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
         }
         
         return false
+    }
+    
+    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage? {
+        
+        if scrollView == latestTradeIdeasTableView {
+            return UIImage(assetIdentifier: .noIdeaBulbImage)
+        }
+        
+        return nil
     }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {

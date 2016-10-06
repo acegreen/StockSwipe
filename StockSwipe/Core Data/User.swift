@@ -33,7 +33,7 @@ public class User {
             
             guard let userObject = userObject else {
                 if let completion = completion {
-                    completion(nil)
+                    completion(self)
                 }
                 return
             }
@@ -74,7 +74,6 @@ public class User {
                 } catch {
                     completion(nil)
                 }
-
             })
         } else {
             completion(nil)

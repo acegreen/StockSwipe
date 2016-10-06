@@ -318,6 +318,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 }
                 
                 user["follower_notification"] = true
+                user["mention_notification"] = true
                 user["newTradeIdea_notification"] = true
                 user["replyTradeIdea_notification"] = true
                 user["likeTradeIdea_notification"] = true
@@ -439,6 +440,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         }
                         
                         user["follower_notification"] = true
+                        user["mention_notification"] = true
                         user["newTradeIdea_notification"] = true
                         user["replyTradeIdea_notification"] = true
                         user["likeTradeIdea_notification"] = true

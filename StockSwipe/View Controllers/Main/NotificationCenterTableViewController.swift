@@ -196,12 +196,25 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         guard let activityType = Constants.ActivityType(rawValue: activityAtIndexPath.object(forKey: "activityType") as! String) else { return }
         
         switch activityType {
-        case .Follow, .Mention:
-            guard activityAtIndexPath.object(forKey: "fromUser") != nil else { return }
-            self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: tableView.cellForRow(at: indexPath))
-        case .TradeIdeaNew, .TradeIdeaLike, .TradeIdeaReply, .TradeIdeaReshare:
+        case .Follow:
+            
+            guard let userObjectAtIndexPath = activityAtIndexPath.object(forKey: "fromUser") as? PFUser else { return }
+            
+            User(userObject: userObjectAtIndexPath, completion: { (user) in
+                DispatchQueue.main.async {
+                    self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: user)
+                }
+            })
+            
+        case .Mention, .TradeIdeaNew, .TradeIdeaLike, .TradeIdeaReply, .TradeIdeaReshare:
             guard let tradeIdeaAtIndexPath = activityAtIndexPath.object(forKey: "tradeIdea") as? PFObject else { return }
-            self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tableView.cellForRow(at: indexPath))
+            
+            TradeIdea(parseObject: tradeIdeaAtIndexPath, completion: { (tradeIdea) in
+                DispatchQueue.main.async {
+                    self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tradeIdea)
+                }
+            })
+            
         case .Block, .StockLong, .StockShort:
             break
         }
@@ -219,19 +232,19 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let segueIdentifier = segueIdentifierForSegue(segue)
-        guard let cell = sender as? NotificationCell else { return }
+        guard sender != nil else { return }
         
         switch segueIdentifier {
             
         case .TradeIdeaDetailSegueIdentifier:
             
             let destinationViewController = segue.destination as! TradeIdeaDetailTableViewController
-            destinationViewController.tradeIdea = TradeIdea(parseObject: cell.activity.object(forKey: "tradeIdea") as! PFObject)
+            destinationViewController.tradeIdea = sender as? TradeIdea
             
         case .ProfileSegueIdentifier:
             
             let profileViewController = segue.destination as! ProfileContainerController
-            profileViewController.user = User(userObject: cell.activity.object(forKey: "fromUser") as! PFUser)
+            profileViewController.user = sender as? User
             
             // Just a workaround.. There should be a cleaner way to sort this out
             profileViewController.navigationItem.rightBarButtonItem = nil

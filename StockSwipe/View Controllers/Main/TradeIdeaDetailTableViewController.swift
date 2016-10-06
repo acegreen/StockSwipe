@@ -76,6 +76,8 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                 
                 guard replyTradeIdeaObjects.count > 0 else {
                     
+                    self.isQueryingForReplyTradeIdeas = false
+                    
                     DispatchQueue.main.async {
                         self.tableView.reloadEmptyDataSet()
                         if self.refreshControl?.isRefreshing == true {
@@ -189,6 +191,11 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        if indexPath.section == 0 {
+            return 320
+        }
+        
         return 250
     }
     

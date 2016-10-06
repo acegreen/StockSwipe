@@ -748,7 +748,11 @@ class Functions {
         let svc = SFSafariViewController(url: withURL, entersReaderIfAvailable: true)
         svc.modalTransitionStyle = .coverVertical
         svc.modalPresentationStyle = .overFullScreen
-        svc.view.tintColor = Constants.stockSwipeGreenColor
+        if #available(iOS 10.0, *) {
+            svc.preferredControlTintColor = Constants.stockSwipeGreenColor
+        } else {
+            svc.view.tintColor = Constants.stockSwipeGreenColor
+        }
         
         UIApplication.topViewController()?.present(svc, animated: true, completion: nil)
     }

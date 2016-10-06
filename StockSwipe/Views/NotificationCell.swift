@@ -31,8 +31,9 @@ class NotificationCell: UITableViewCell {
         if let fullname = user["full_name"] as? String {
             self.fullname.text = fullname
             
-            let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(NotificationCell.handleGestureRecognizer))
-            self.fullname.addGestureRecognizer(tapGestureRecognizerMainUsername)
+//            let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(NotificationCell.handleGestureRecognizer))
+//            self.fullname.addGestureRecognizer(tapGestureRecognizerMainUsername)
+            
         } else {
             self.fullname.text = "John Doe"
         }
@@ -54,14 +55,13 @@ class NotificationCell: UITableViewCell {
                 }
                 
                 // Add Gesture Recognizers
-                let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(NotificationCell.handleGestureRecognizer))
-                self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
+//                let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(NotificationCell.handleGestureRecognizer))
+//                self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
                 
             })
         } else {
             self.userAvatar.image = UIImage(named: "dummy_profile_male")
         }
-
     }
     
     func stringForActivityType(_ activityType: String) -> String? {

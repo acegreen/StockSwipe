@@ -127,6 +127,11 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 }
             }
             
+            guard Functions.isConnectedToNetwork() else {
+                self.reloadCardViews()
+                return
+            }
+            
             Functions.setupConfigParameter("THRESHOLDX", completion: { (parameterValue) -> Void in
                 
                 if parameterValue != nil {
@@ -165,15 +170,12 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             
             if let error = error as? Constants.Errors {
                 
-                DispatchQueue.main.async {
-                    
-                    // Make information card
-                    self.makeCardWithInformation(error)
-                    
-                    // Enable short/long buttons
-                    //self.fadeInOutButton("In")
-                    self.reloadFilterButtonsEnabled(true)
-                }
+                // Make information card
+                self.makeCardWithInformation(error)
+                
+                // Enable short/long buttons
+                //self.fadeInOutButton("In")
+                self.reloadFilterButtonsEnabled(true)
             }
         }
     }
@@ -225,29 +227,23 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                             
                             try result()
                             
-                            DispatchQueue.main.async {
-                                
-                                // Make 3 card stack
-                                self.makeChartViews()
-                                
-                                // Enable short/long buttons
-                                //self.fadeInOutButton("In")
-                                self.reloadFilterButtonsEnabled(true)
-                            }
+                            // Make 3 card stack
+                            self.makeChartViews()
+                            
+                            // Enable short/long buttons
+                            //self.fadeInOutButton("In")
+                            self.reloadFilterButtonsEnabled(true)
                             
                         } catch {
                             
                             if let error = error as? Constants.Errors {
                                 
-                                DispatchQueue.main.async {
-                                    
-                                    // Make information card
-                                    self.makeCardWithInformation(error)
-                                    
-                                    // Enable short/long buttons
-                                    //self.fadeInOutButton("In")
-                                    self.reloadFilterButtonsEnabled(true)
-                                }
+                                // Make information card
+                                self.makeCardWithInformation(error)
+                                
+                                // Enable short/long buttons
+                                //self.fadeInOutButton("In")
+                                self.reloadFilterButtonsEnabled(true)
                             }
                         }
                     })
@@ -255,16 +251,13 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 } catch {
                     
                     if let error = error as? Constants.Errors {
+                    
+                        // Make information card
+                        self.makeCardWithInformation(error)
                         
-                        DispatchQueue.main.async {
-                            
-                            // Make information card
-                            self.makeCardWithInformation(error)
-                            
-                            // Enable short/long buttons
-                            //self.fadeInOutButton("In")
-                            self.reloadFilterButtonsEnabled(true)
-                        }
+                        // Enable short/long buttons
+                        //self.fadeInOutButton("In")
+                        self.reloadFilterButtonsEnabled(true)
                     }
                 }
                 
@@ -326,119 +319,125 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     func makeChartViews() {
         
-        Functions.activityIndicator(self.view, halo: &self.halo, state: false)
-        
-        // Display First Card
-        if self.firstCardView == nil {
+        DispatchQueue.main.async {
             
-            self.firstCardView = self.popChartViewWithFrame(CardPosition.firstCard , frame: CGRect(x: self.view.bounds.width + self.frontCardViewFrame().width, y: self.navigationController!.navigationBar.frame.height + 50, width: chartWidth, height: chartHeight))
+            Functions.activityIndicator(self.view, halo: &self.halo, state: false)
             
-            if self.firstCardView != nil {
+            // Display First Card
+            if self.firstCardView == nil {
                 
-                self.view.addSubview(self.firstCardView)
+                self.firstCardView = self.popChartViewWithFrame(CardPosition.firstCard , frame: CGRect(x: self.view.bounds.width + self.frontCardViewFrame().width, y: self.navigationController!.navigationBar.frame.height + 50, width: chartWidth, height: chartHeight))
                 
-                self.firstCardView.isUserInteractionEnabled = true
-                
-                self.firstCardView.transform = CGAffineTransform(rotationAngle: CGFloat(Functions.degreesToRadians(30)))
-                
-                UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                if self.firstCardView != nil {
                     
-                    self.firstCardView.transform = CGAffineTransform(rotationAngle: CGFloat(Functions.degreesToRadians(0)))
+                    self.view.addSubview(self.firstCardView)
                     
-                    self.firstCardView.frame = self.frontCardViewFrame()
+                    self.firstCardView.isUserInteractionEnabled = true
                     
-                    }, completion: { (finished) -> Void in
+                    self.firstCardView.transform = CGAffineTransform(rotationAngle: CGFloat(Functions.degreesToRadians(30)))
+                    
+                    UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
                         
-                        Functions.showPopTipOnceForKey("TAP_CARD_TIP_SHOWN", userDefaults: Constants.userDefaults,
-                                                       popTipText: NSLocalizedString("Tap a card to view more details", comment: ""),
-                                                       inView: self.view,
-                                                       fromFrame: self.frontCardViewFrame(), direction: .up, color: Constants.stockSwipeGreenColor)
+                        self.firstCardView.transform = CGAffineTransform(rotationAngle: CGFloat(Functions.degreesToRadians(0)))
                         
-                })
-            }
-        }
-        
-        // Display Second Card
-        if self.secondCardView == nil {
-            
-            self.secondCardView = self.popChartViewWithFrame(CardPosition.secondCard, frame: CGRect(x: 0 - self.frontCardViewFrame().width, y: self.frontCardViewFrame().origin.y + self.chartOffsetsY, width: self.frontCardViewFrame().width - (self.chartOffsetsX * 2), height: self.frontCardViewFrame().height))
-            
-            if self.secondCardView != nil {
-                
-                self.view.insertSubview(self.secondCardView, belowSubview: self.firstCardView)
-                self.secondCardView.isUserInteractionEnabled = false
-                
-                self.secondCardView.transform = CGAffineTransform(rotationAngle: CGFloat(Functions.degreesToRadians(-30)))
-                
-                UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
-                    
-                    self.secondCardView.transform = CGAffineTransform(rotationAngle: CGFloat(Functions.degreesToRadians(0)))
-                    
-                    self.secondCardView.frame = self.middleCardViewFrame()
-                    
-                    }, completion: { (finished) -> Void in
-                })
+                        self.firstCardView.frame = self.frontCardViewFrame()
+                        
+                        }, completion: { (finished) -> Void in
+                            
+                            Functions.showPopTipOnceForKey("TAP_CARD_TIP_SHOWN", userDefaults: Constants.userDefaults,
+                                                           popTipText: NSLocalizedString("Tap a card to view more details", comment: ""),
+                                                           inView: self.view,
+                                                           fromFrame: self.frontCardViewFrame(), direction: .up, color: Constants.stockSwipeGreenColor)
+                            
+                    })
+                }
             }
             
-        }
-        
-        // Display Third Card
-        if self.thirdCardView == nil {
-            
-            self.thirdCardView = self.popChartViewWithFrame(CardPosition.thirdCard, frame: CGRect(x: self.middleCardViewFrame().origin.x + self.chartOffsetsX, y: self.view.bounds.height + self.middleCardViewFrame().height, width: self.middleCardViewFrame().width - (self.chartOffsetsX * 2), height: self.middleCardViewFrame().height))
-            
-            if self.thirdCardView != nil {
+            // Display Second Card
+            if self.secondCardView == nil {
                 
-                self.view.insertSubview(self.thirdCardView, belowSubview: self.secondCardView)
+                self.secondCardView = self.popChartViewWithFrame(CardPosition.secondCard, frame: CGRect(x: 0 - self.frontCardViewFrame().width, y: self.frontCardViewFrame().origin.y + self.chartOffsetsY, width: self.frontCardViewFrame().width - (self.chartOffsetsX * 2), height: self.frontCardViewFrame().height))
                 
-                self.thirdCardView.isUserInteractionEnabled = false
-                
-                UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                if self.secondCardView != nil {
                     
-                    self.thirdCardView.frame = self.backCardViewFrame()
+                    self.view.insertSubview(self.secondCardView, belowSubview: self.firstCardView)
+                    self.secondCardView.isUserInteractionEnabled = false
                     
-                    }, completion: { (finished) -> Void in
+                    self.secondCardView.transform = CGAffineTransform(rotationAngle: CGFloat(Functions.degreesToRadians(-30)))
+                    
+                    UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
                         
-                        if self.fourthCardView == nil  {
+                        self.secondCardView.transform = CGAffineTransform(rotationAngle: CGFloat(Functions.degreesToRadians(0)))
+                        
+                        self.secondCardView.frame = self.middleCardViewFrame()
+                        
+                        }, completion: { (finished) -> Void in
+                    })
+                }
+                
+            }
+            
+            // Display Third Card
+            if self.thirdCardView == nil {
+                
+                self.thirdCardView = self.popChartViewWithFrame(CardPosition.thirdCard, frame: CGRect(x: self.middleCardViewFrame().origin.x + self.chartOffsetsX, y: self.view.bounds.height + self.middleCardViewFrame().height, width: self.middleCardViewFrame().width - (self.chartOffsetsX * 2), height: self.middleCardViewFrame().height))
+                
+                if self.thirdCardView != nil {
+                    
+                    self.view.insertSubview(self.thirdCardView, belowSubview: self.secondCardView)
+                    
+                    self.thirdCardView.isUserInteractionEnabled = false
+                    
+                    UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
+                        
+                        self.thirdCardView.frame = self.backCardViewFrame()
+                        
+                        }, completion: { (finished) -> Void in
                             
-                            self.fourthCardView = self.popChartViewWithFrame(CardPosition.fourthCard, frame: self.fourthCardViewFrame())
-                            
-                            if self.thirdCardView != nil && self.fourthCardView != nil {
+                            if self.fourthCardView == nil  {
                                 
-                                self.view.insertSubview(self.fourthCardView, belowSubview: self.thirdCardView)
-                                self.fourthCardView.isUserInteractionEnabled = false
+                                self.fourthCardView = self.popChartViewWithFrame(CardPosition.fourthCard, frame: self.fourthCardViewFrame())
+                                
+                                if self.thirdCardView != nil && self.fourthCardView != nil {
+                                    
+                                    self.view.insertSubview(self.fourthCardView, belowSubview: self.thirdCardView)
+                                    self.fourthCardView.isUserInteractionEnabled = false
+                                }
                             }
-                        }
-                })
-                
+                    })
+                    
+                }
             }
         }
     }
-    
+        
     func makeCardWithInformation(_ error: Constants.Errors) {
+        
+        DispatchQueue.main.async {
             
-        Functions.activityIndicator(self.view, halo: &self.halo, state: false)
-        
-        guard self.informationCardView == nil else { return }
-        
-        self.informationCardView = NoChartView(frame: self.backCardViewFrame(), text: error.message())
-        
-        self.view.addSubview(self.informationCardView)
-        self.view.sendSubview(toBack: self.informationCardView)
-        
-        self.informationCardView.alpha = 0.0
-        
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: {
+            Functions.activityIndicator(self.view, halo: &self.halo, state: false)
             
-            self.informationCardView.alpha = 1.0
+            guard self.informationCardView == nil else { return }
             
-            //            // draw shadow
-            //            self.informationCardView.layer.shadowOpacity = 0.5
-            //            self.informationCardView.layer.shadowRadius = 5
-            //            self.informationCardView.layer.shadowOffset = CGSizeMake(0, 10)
-            //            self.informationCardView.layer.shadowPath = UIBezierPath(roundedRect: self.informationCardView.bounds, cornerRadius: 50).CGPath
+            self.informationCardView = NoChartView(frame: self.backCardViewFrame(), text: error.message())
             
-            },completion:nil)
+            self.view.addSubview(self.informationCardView)
+            self.view.sendSubview(toBack: self.informationCardView)
+            
+            self.informationCardView.alpha = 0.0
+            
+            UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: {
+                
+                self.informationCardView.alpha = 1.0
+                
+                //            // draw shadow
+                //            self.informationCardView.layer.shadowOpacity = 0.5
+                //            self.informationCardView.layer.shadowRadius = 5
+                //            self.informationCardView.layer.shadowOffset = CGSizeMake(0, 10)
+                //            self.informationCardView.layer.shadowPath = UIBezierPath(roundedRect: self.informationCardView.bounds, cornerRadius: 50).CGPath
+                
+                },completion:nil)
+        }
     }
     
     func view(_ view: UIView!, shouldBeChosenWith direction: MDCSwipeDirection, yes: (() -> Void)!, no: (() -> Void)!) {
@@ -505,15 +504,12 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 
                 if let error = error as? Constants.Errors {
                     
-                    DispatchQueue.main.async {
+                    // Make information card
+                    self.makeCardWithInformation(error)
                     
-                        // Make information card
-                        self.makeCardWithInformation(error)
-                        
-                        // Enable short/long buttons
-                        //self.fadeInOutButton("In")
-                        self.reloadFilterButtonsEnabled(true)
-                    }
+                    // Enable short/long buttons
+                    //self.fadeInOutButton("In")
+                    self.reloadFilterButtonsEnabled(true)
                 }
             }
         }
@@ -686,92 +682,99 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     func reloadFilterButtonsEnabled (_ state: Bool) {
         
-        if state {
-            self.reloadButton.isEnabled = true
-            self.filterButton.isEnabled = true
-        } else {
-            self.reloadButton.isEnabled = false
-            self.filterButton.isEnabled = false
+        DispatchQueue.main.async {
+            if state {
+                self.reloadButton.isEnabled = true
+                self.filterButton.isEnabled = true
+            } else {
+                self.reloadButton.isEnabled = false
+                self.filterButton.isEnabled = false
+            }
         }
     }
     
     func resizeCardViews() {
         
-        // resize the middle card as it becomes top view.
-        if firstCardView != nil {
+        DispatchQueue.main.async {
             
-            UIView.animate(withDuration: 0.1, animations: { () -> Void in
+            // resize the middle card as it becomes top view.
+            if self.firstCardView != nil {
                 
-                self.firstCardView.frame = self.frontCardViewFrame()
+                UIView.animate(withDuration: 0.1, animations: { () -> Void in
+                    
+                    self.firstCardView.frame = self.frontCardViewFrame()
+                    
+                })
+            }
+            
+            // resize the second as it becomes middle view.
+            if self.secondCardView != nil {
                 
-            })
-        }
-        
-        // resize the second as it becomes middle view.
-        if secondCardView != nil {
-            
-            UIView.animate(withDuration: 0.1, animations: { () -> Void in
+                UIView.animate(withDuration: 0.1, animations: { () -> Void in
+                    
+                    self.secondCardView.frame = self.middleCardViewFrame()
+                })
                 
-                self.secondCardView.frame = self.middleCardViewFrame()
-            })
+            }
             
-        }
-        
-        // resize the back card as it becomes middle view.
-        if thirdCardView != nil {
-            
-            UIView.animate(withDuration: 0.1, animations: { () -> Void in
+            // resize the back card as it becomes middle view.
+            if self.thirdCardView != nil {
                 
-                self.thirdCardView.frame = self.backCardViewFrame()
-                //                self.thirdCardView.layer.shadowOpacity = 0.0
-            })
-            
-        }
-        
-        // resize information card if it exits
-        if informationCardView != nil {
-            
-            UIView.animate(withDuration: 0.1, animations: { () -> Void in
+                UIView.animate(withDuration: 0.1, animations: { () -> Void in
+                    
+                    self.thirdCardView.frame = self.backCardViewFrame()
+                    //                self.thirdCardView.layer.shadowOpacity = 0.0
+                })
                 
-                self.informationCardView.frame = self.backCardViewFrame()
-            })
+            }
             
+            // resize information card if it exits
+            if self.informationCardView != nil {
+                
+                UIView.animate(withDuration: 0.1, animations: { () -> Void in
+                    
+                    self.informationCardView.frame = self.backCardViewFrame()
+                })
+                
+            }
         }
     }
     
     func removalAllCards() {
         
-        if (self.fourthCardView != nil) {
+        DispatchQueue.main.async {
+            if (self.fourthCardView != nil) {
+                
+                self.fourthCardView.removeFromSuperview()
+                self.fourthCardView = nil
+            }
             
-            self.fourthCardView.removeFromSuperview()
-            self.fourthCardView = nil
-        }
-        
-        if (self.thirdCardView != nil) {
+            if (self.thirdCardView != nil) {
+                
+                self.thirdCardView.removeFromSuperview()
+                self.thirdCardView = nil
+            }
             
-            self.thirdCardView.removeFromSuperview()
-            self.thirdCardView = nil
-        }
-        
-        if (self.secondCardView != nil) {
+            if (self.secondCardView != nil) {
+                
+                self.secondCardView.removeFromSuperview()
+                self.secondCardView = nil
+                
+            }
             
-            self.secondCardView.removeFromSuperview()
-            self.secondCardView = nil
+            if (self.firstCardView != nil) {
+                
+                self.firstCardView.removeFromSuperview()
+                self.firstCardView = nil
+                
+            }
             
-        }
-        
-        if (self.firstCardView != nil) {
-            
-            self.firstCardView.removeFromSuperview()
-            self.firstCardView = nil
-            
-        }
-        
-        if (self.informationCardView != nil) {
-            
-            self.informationCardView.removeFromSuperview()
-            self.informationCardView = nil
-            
+            if (self.informationCardView != nil) {
+                
+                self.informationCardView.removeFromSuperview()
+                self.informationCardView = nil
+                
+            }
         }
     }
     

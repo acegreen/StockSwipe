@@ -103,7 +103,7 @@ public class TradeIdea {
     
     func checkNumberOfLikes(completion: ((Int) -> Void)?) {
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -133,7 +133,7 @@ public class TradeIdea {
     
     func checkNumberOfReshares(completion: ((Int) -> Void)?) {
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: self.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: self.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -160,52 +160,6 @@ public class TradeIdea {
             }
         })
     }
-    
-//    func checkIfLikedByCurrentUser(completion: ((Bool) -> Void)?) {
-//        
-//        guard let currentUser = PFUser.current() else { return }
-//        
-//        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
-//            
-//            do {
-//                
-//                let activityObject = try result().first
-//                
-//                if activityObject != nil {
-//                    self.isLikedByCurrentUser = true
-//                }
-//                
-//            } catch {
-//            }
-//            
-//            if let completion = completion {
-//                completion(self.isLikedByCurrentUser)
-//            }
-//        })
-//    }
-//    
-//    func checkIfResharedByCurrentUser(completion: ((Bool) -> Void)?) {
-//        
-//        guard let currentUser = PFUser.current() else { return }
-//    
-//        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: self.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
-//            
-//            do {
-//                
-//                let activityObject = try result().first
-//                
-//                if activityObject != nil {
-//                    self.isResharedByCurrentUser = true
-//                }
-//    
-//            } catch {
-//            }
-//            
-//            if let completion = completion {
-//                completion(self.isResharedByCurrentUser)
-//            }
-//        })
-//    }
 }
 
 extension TradeIdea: Equatable {}

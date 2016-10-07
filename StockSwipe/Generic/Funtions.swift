@@ -284,7 +284,7 @@ class Functions {
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [parseObject], activityType: nil, skip: nil, limit: nil, includeKeys: nil) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
             
             do {
                 
@@ -443,8 +443,8 @@ class Functions {
     class func makeTradeIdeas(from tradeIdeaObjects: [PFObject], sorted: Bool, completion: @escaping ([TradeIdea]) -> Void) {
         
         //let queue = DispatchQueue(label: "Trade Idea Query Queue")
-        var tradeIdeas = [TradeIdea]()
         
+        var tradeIdeas = [TradeIdea]()
         for tradeIdeaObject in tradeIdeaObjects {
             
             //queue.async {
@@ -471,8 +471,8 @@ class Functions {
     class func makeUser(from userObjects: [PFUser], completion: @escaping ([User]) -> Void) {
         
         //let queue = DispatchQueue(label: "Users Query Queue")
-        var users = [User]()
         
+        var users = [User]()
         for userObject in userObjects {
             
             //queue.async {

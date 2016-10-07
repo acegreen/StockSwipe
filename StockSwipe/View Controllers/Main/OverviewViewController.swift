@@ -117,22 +117,22 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         }
         trendingCloudOperation.queuePriority = .high
         
-        let marketCarouselOperation = BlockOperation { () -> Void in
-            self.queryCarouselTickers()
-        }
-        marketCarouselOperation.queuePriority = .normal
-        
         let tradeIdeasOperation = BlockOperation { () -> Void in
             self.queryTradeIdeas()
         }
         tradeIdeasOperation.queuePriority = .high
+        
+        let marketCarouselOperation = BlockOperation { () -> Void in
+            self.queryCarouselTickers()
+        }
+        marketCarouselOperation.queuePriority = .normal
         
         let topStoriesOperation = BlockOperation { () -> Void in
             self.queryTopStories()
         }
         topStoriesOperation.queuePriority = .normal
         
-        overviewVCOperationQueue.addOperations([trendingCloudOperation, marketCarouselOperation, tradeIdeasOperation, topStoriesOperation], waitUntilFinished: true)
+        overviewVCOperationQueue.addOperations([trendingCloudOperation, tradeIdeasOperation, marketCarouselOperation, topStoriesOperation], waitUntilFinished: true)
         
         let animationOperation = BlockOperation { () -> Void in
             self.animationDelegate?.didFinishLoading()
@@ -235,8 +235,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             
             QueryHelper.sharedInstance.queryYahooSymbolQuote(tickers: self.iCarouselTickers, completionHandler: { (symbolQuote, response, error) -> Void in
                 
-                self.isQueryingForiCarousel = false
-                
                 if error != nil {
                     
                     print("error:", error!.localizedDescription)
@@ -248,6 +246,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                     
                     self.carouselLastQueriedDate = Date()
                 }
+                
+                self.isQueryingForiCarousel = false
             })
         }
     }
@@ -269,9 +269,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         }
         
         isQueryingForTradeIdeas = true
+        
         QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
-            
-            self.isQueryingForTradeIdeas = false
             
             do {
                 
@@ -291,7 +290,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
                 // TO-DO: Show sweet alert with Error.message()
                 DispatchQueue.main.async {
-                    self.latestTradeIdeasTableView.reloadData()
                     if self.tradeIdeasRefreshControl.isRefreshing == true {
                         self.tradeIdeasRefreshControl.endRefreshing()
                     }
@@ -329,8 +327,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         QueryHelper.sharedInstance.queryWith(queryString: queryString) { (result) -> Void in
             
-            self.isQueryingForTopStories = false
-            
             do {
                 
                 let result = try result()
@@ -345,6 +341,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                     print(error)
                 }
             }
+            
+            self.isQueryingForTopStories = false
         }
     }
     
@@ -428,6 +426,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 if self.tradeIdeasRefreshControl.isRefreshing == true {
                     self.tradeIdeasRefreshControl.endRefreshing()
                 }
+                
+                self.isQueryingForTradeIdeas = false
             }
         })
     }

@@ -371,9 +371,10 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func updateCarousel(_ symbolQuote: Data) {
         
-        let carsouelJson = JSON(data: symbolQuote)
-        let carsouelJsonResults = carsouelJson["query"]["results"]
-        guard let quoteJsonResultsQuote = carsouelJsonResults["quote"].array else { return }
+        let carsouelJson:JSON? = JSON(data: symbolQuote)
+        guard carsouelJson != nil else { return }
+        guard let carsouelJsonResults:JSON? = carsouelJson!["query"]["results"] else { return }
+        guard let quoteJsonResultsQuote = carsouelJsonResults!["quote"].array else { return }
         
         for quote in quoteJsonResultsQuote {
             

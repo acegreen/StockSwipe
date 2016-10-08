@@ -124,19 +124,16 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                         if let PE = quoteJsonResultsQuote["PERatio"].string {
                             
                             self.PELabel.text = PE
-                            
                         }
                         
                         if let MarketCapitalization = quoteJsonResultsQuote["MarketCapitalization"].string {
                             
                             self.marketCapLabel.text = MarketCapitalization
-                            
                         }
                         
                         if let EarningsShare = quoteJsonResultsQuote["EarningsShare"].string {
                             
                             self.EPSLabel.text = EarningsShare
-                            
                         }
                         
                         if let YearRange = quoteJsonResultsQuote["YearRange"].string {
@@ -156,9 +153,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                                 percentYieldString = " (\(percentYield)%)"
                                 
                                 self.DivYieldLabel.text = DividendShare + percentYieldString
-                                
                             }
-                            
                         }
                         //            earningsDateLabel.text = newJsonResultsQuote["MarketCapitalization"].string
                         
@@ -173,7 +168,6 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                         if let EPSEstimateNextYear = quoteJsonResultsQuote["EPSEstimateNextYear"].string {
                             
                             self.EPSEstimate.text = EPSEstimateNextYear
-                            
                         }
                         
                         //            companySector.text = newJsonResultsQuote["MarketCapitalization"].string
@@ -387,7 +381,6 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
         default:
             
             break
-            
         }
     }
 }

@@ -26,7 +26,7 @@ class QueryHelper {
     static let sharedInstance = QueryHelper()
     static let tradeIdeaQueryLimit = 25
 
-    func queryWith(queryString: String, useCacheIfPossible: Bool = true, completionHandler: @escaping (_ result: () throws -> Data) -> Void) -> Void {
+    func queryWith(queryString: String, useCacheIfPossible: Bool = false, completionHandler: @escaping (_ result: () throws -> Data) -> Void) -> Void {
         
         if let queryUrl: URL = URL(string: queryString) {
             
@@ -274,9 +274,9 @@ class QueryHelper {
             tradeIdeaQuery.order(byDescending: "createdAt")
         }
         
-//        if let creationDate = creationDate {
-//            tradeIdeaQuery.whereKey("createdAt", greaterThan: creationDate)
-//        }
+        if let creationDate = creationDate {
+            tradeIdeaQuery.whereKey("createdAt", greaterThan: creationDate)
+        }
         
         tradeIdeaQuery.includeKeys(["user", "reshare_of"])
         
@@ -374,9 +374,9 @@ class QueryHelper {
             activityQuery.order(byDescending: "createdAt")
         }
         
-//        if let creationDate = creationDate {
-//            activityQuery.whereKey("createdAt", greaterThan: creationDate)
-//        }
+        if let creationDate = creationDate {
+            activityQuery.whereKey("createdAt", greaterThan: creationDate)
+        }
         
         if let includeKeys = includeKeys {
             activityQuery.includeKeys(includeKeys)

@@ -33,6 +33,8 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     @IBOutlet var profileAvatarImage: UIImageView!
     @IBOutlet var profileLabel: UILabel!
     
+    var currentUser: User!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -46,36 +48,23 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     func updateProfile() {
         
         guard PFUser.current() != nil else {
+            
             self.profileAvatarImage.image = UIImage(assetIdentifier: .UserDummyImage)
             self.profileLabel.text = "My Profile"
             return
         }
         
         guard let currentUser = PFUser.current() , currentUser.isAuthenticated else { return }
-        
-        if let profileImageURL = currentUser.object(forKey: "profile_image_url") as? String {
+
+        User(userObject: currentUser, completion: { (user) in
             
-            QueryHelper.sharedInstance.queryWith(queryString: profileImageURL, completionHandler: { (result) in
-                
-                do {
-                    
-                    let imageData = try result()
-                    
-                    DispatchQueue.main.async {
-                        let profileImage = UIImage(data: imageData)
-                        self.profileAvatarImage.image = profileImage
-                        
-                        if let fullName = currentUser.object(forKey: "full_name") as? String {
-                            self.profileLabel.text = fullName
-                        }
-                    }
-                    
-                } catch {
-                    
-                }
-                
-            })
-        }
+            self.currentUser = user
+            
+            DispatchQueue.main.async {
+                self.profileAvatarImage.image = self.currentUser.avtar
+                self.profileLabel.text = self.currentUser.fullname
+            }
+        })
     }
     
     func presentFacebookInvite() {
@@ -238,7 +227,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             
             if let currentUser = PFUser.current() {
                 let profileViewController = segue.destination as! ProfileContainerController
-                profileViewController.user = User(userObject: currentUser)
+                profileViewController.user = self.currentUser
                 
                 // Just a workaround.. There should be a cleaner way to sort this out
                 profileViewController.navigationItem.rightBarButtonItem = nil

@@ -45,6 +45,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     var isQueryingForFollowing = false
     var isQueryingForFollowers = false
     var isQueryingForLikedTradeIdeas = false
+    
+    var tradeIdeaslastRefreshDate: Date!
+    var followinglastRefreshDate: Date!
+    var followerslastRefreshDate: Date!
+    var likedTradeIdeaslastRefreshDate: Date!
         
     var selectedSegmentIndex: ProfileContainerController.SegmentIndex = ProfileContainerController.SegmentIndex(rawValue: 0)!
     
@@ -255,6 +260,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let userObject = self.user?.userObject else { return }
         
         var queryOrder: QueryHelper.QueryOrder
+        var mostRecentRefreshDate: Date?
+
         switch queryType {
         case .new, .older:
             queryOrder = .descending
@@ -270,14 +277,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         switch selectedSegmentIndex {
         case .zero:
             
-            isQueryingForTradeIdeas = true
-            
-            var mostRecentTradeIdeaCreationDate: Date?
             if queryType == .update {
-                mostRecentTradeIdeaCreationDate = self.tradeIdeas[0].createdAt
+                mostRecentRefreshDate = tradeIdeaslastRefreshDate
             }
             
-            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "user", object: userObject, skip: self.tradeIdeas.count, limit: QueryHelper.tradeIdeaQueryLimit, order: queryOrder, creationDate: mostRecentTradeIdeaCreationDate) { (result) in
+            isQueryingForTradeIdeas = true
+            
+            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "user", object: userObject, skip: self.tradeIdeas.count, limit: QueryHelper.tradeIdeaQueryLimit, order: queryOrder, creationDate: mostRecentRefreshDate) { (result) in
                 
                 do {
                     
@@ -296,6 +302,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                             }
                         }
                         self.updateRefreshDate()
+                        self.tradeIdeaslastRefreshDate = Date()
                         
                         return
                     }
@@ -329,12 +336,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                             case .update:
                                 
                                 // append more trade ideas
-                                
                                 self.tableView.beginUpdates()
-                                tradeIdeas.map {
-                                    self.tradeIdeas.insert($0, at: 0)
-                                    
-                                    // insert cell in tableview
+                                for tradeIdea in tradeIdeas {
+                                    self.tradeIdeas.insert(tradeIdea, at: 0)
                                     let indexPath = IndexPath(row: 0, section: 0)
                                     self.tableView.insertRows(at: [indexPath], with: .none)
                                 }
@@ -348,6 +352,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                                 self.footerActivityIndicator.stopAnimating()
                             }
                             self.updateRefreshDate()
+                            self.tradeIdeaslastRefreshDate = Date()
                         }
                         
                         self.isQueryingForTradeIdeas = false
@@ -372,14 +377,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         case .three:
             
-            isQueryingForLikedTradeIdeas = true
-            
-            var mostRecentTradeIdeaCreationDate: Date?
             if queryType == .update {
-                mostRecentTradeIdeaCreationDate = self.likedTradeIdeas[0].createdAt
+                mostRecentRefreshDate = likedTradeIdeaslastRefreshDate
             }
             
-            QueryHelper.sharedInstance.queryActivityFor(fromUser: userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: self.likedTradeIdeas.count, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentTradeIdeaCreationDate, completion: { (result) in
+            isQueryingForLikedTradeIdeas = true
+            
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: self.likedTradeIdeas.count, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
                 
                 do {
                     
@@ -405,6 +409,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                             }
                         }
                         self.updateRefreshDate()
+                        self.likedTradeIdeaslastRefreshDate = Date()
                         
                         return
                     }
@@ -437,13 +442,10 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                                 
                             case .update:
                                 
-                                // append more trade ideas
-                                
+                                // add more trade ideas to the top
                                 self.tableView.beginUpdates()
-                                likedTradeIdeas.map {
-                                    self.likedTradeIdeas.insert($0, at: 0)
-                                    
-                                    // insert cell in tableview
+                                for likedTradeIdea in likedTradeIdeas {
+                                    self.likedTradeIdeas.insert(likedTradeIdea, at: 0)
                                     let indexPath = IndexPath(row: 0, section: 0)
                                     self.tableView.insertRows(at: [indexPath], with: .none)
                                 }
@@ -456,7 +458,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                             } else if self.footerActivityIndicator.isAnimating == true {
                                 self.footerActivityIndicator.stopAnimating()
                             }
+                            
                             self.updateRefreshDate()
+                            self.likedTradeIdeaslastRefreshDate = Date()
                         }
                         
                         self.isQueryingForLikedTradeIdeas = false
@@ -485,8 +489,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let user = user else { return }
         
         var queryOrder: QueryHelper.QueryOrder
-        var mostRecentTradeIdeaCreationDate: Date?
-        
+        var mostRecentRefreshDate: Date?
+
         switch queryType {
         case .new, .older:
             queryOrder = .descending
@@ -497,12 +501,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
         case .update:
             queryOrder = .ascending
-            mostRecentTradeIdeaCreationDate = self.followingUsers[0].createdAt
+            mostRecentRefreshDate = followinglastRefreshDate
         }
         
         isQueryingForFollowing = true
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: user.userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: self.followingUsers.count, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["toUser"], order: queryOrder, creationDate: mostRecentTradeIdeaCreationDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: user.userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: self.followingUsers.count, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["toUser"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -527,6 +531,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                             self.footerActivityIndicator.stopAnimating()
                         }
                         self.updateRefreshDate()
+                        self.followinglastRefreshDate = Date()
                     }
                     
                     return
@@ -578,7 +583,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         } else if self.footerActivityIndicator.isAnimating == true {
                             self.footerActivityIndicator.stopAnimating()
                         }
+                        
                         self.updateRefreshDate()
+                        self.followinglastRefreshDate = Date()
                     }
                     
                     self.isQueryingForFollowing = false
@@ -605,7 +612,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let user = user else { return }
         
         var queryOrder: QueryHelper.QueryOrder
-        var mostRecentTradeIdeaCreationDate: Date?
+        var mostRecentRefreshDate: Date?
 
         switch queryType {
         case .new, .older:
@@ -617,12 +624,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
         case .update:
             queryOrder = .ascending
-            mostRecentTradeIdeaCreationDate = self.followersUsers[0].createdAt
+            mostRecentRefreshDate = followerslastRefreshDate
         }
         
         isQueryingForFollowers = true
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: user.userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: self.followersUsers.count, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["fromUser"], order: queryOrder, creationDate: mostRecentTradeIdeaCreationDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: user.userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: self.followersUsers.count, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["fromUser"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -646,7 +653,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         } else if self.footerActivityIndicator?.isAnimating == true {
                             self.footerActivityIndicator.stopAnimating()
                         }
+                        
                         self.updateRefreshDate()
+                        self.followerslastRefreshDate = Date()
                     }
                     
                     return
@@ -698,7 +707,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         } else if self.footerActivityIndicator.isAnimating == true {
                             self.footerActivityIndicator.stopAnimating()
                         }
+                        
                         self.updateRefreshDate()
+                        self.followerslastRefreshDate = Date()
                     }
                     
                     self.isQueryingForFollowers = false

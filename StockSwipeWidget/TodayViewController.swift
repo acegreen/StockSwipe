@@ -47,14 +47,18 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.preferredContentSize = CGSize(width: 320, height: 300);
-        
         cloudLayoutOperationQueue = OperationQueue()
         cloudLayoutOperationQueue.name = "Cloud layout operation queue"
         cloudLayoutOperationQueue.maxConcurrentOperationCount = 1
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        if #available(iOSApplicationExtension 10.0, *) {
+            self.extensionContext?.widgetLargestAvailableDisplayMode = .expanded
+        } else {
+            self.preferredContentSize = CGSize(width: 320, height: 300)
+        }
         
         requestStockTwitsTrendingStocks { (result) in
             
@@ -111,17 +115,11 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
     
     // MARK: - <UIContentContainer>
     
-//    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
-//        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
-//        
-//        weak var weakSelf = self
-//        
-//        coordinator.animateAlongsideTransition({(id__unused context) -> Void in
-//            let strongSelf = weakSelf
-//            strongSelf!.layoutCloudWords()
-//            }, completion: nil)
-//        
-//    }
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        self.layoutCloudWords(for: size)
+    }
     
     // MARK: - <UIStateRestoring>
     
@@ -138,8 +136,8 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
     /**
     Content size category has changed.  Layout cloud again, to account for new pointSize
     **/
-    func contentSizeCategoryDidChange(_ __unused: Notification) {
-        self.layoutCloudWords()
+    func contentSizeCategoryDidChange(_ unused: Notification) {
+        self.layoutCloudWords(for: self.view.bounds.size)
     }
     
     // MARK: - Private methods
@@ -173,13 +171,13 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         #endif
     }
     
-    func layoutCloudWords() {
+    func layoutCloudWords(for size: CGSize) {
         
         self.cloudLayoutOperationQueue.cancelAllOperations()
         self.cloudLayoutOperationQueue.waitUntilAllOperationsAreFinished()
         self.removeCloudWords()
         self.view.backgroundColor = UIColor.clear
-        let cloudFrame = CGRect(x: 0.0, y: 0.0, width: self.view.bounds.width, height: self.view.bounds.height)
+        let cloudFrame = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
         let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: cloudFrame, scale: UIScreen.main.scale, delegate: self)
         self.cloudLayoutOperationQueue.addOperation(newCloudLayoutOperation)
         
@@ -217,7 +215,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
                     return completion({throw Errors.queryDataEmpty})
                 }
                 
-                self.cloudWords = []
+                self.cloudWords.removeAll()
                 self.trendingStocksJSON = JSON(data: trendingStocksData)["symbols"]
                 
                 for (index, subJson) in self.trendingStocksJSON {
@@ -225,11 +223,10 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
                     guard let symbol = subJson["symbol"].string, let wordCount = self.trendingStocksJSON.count - Int(index)! as? NSNumber else { continue }
                     guard let cloudWord = CloudWord(word: symbol , wordCount: wordCount, wordTappable: true) else { continue }
                     self.cloudWords.append(cloudWord)
-                    
                 }
                 
                 DispatchQueue.main.async(execute: { () -> Void in
-                    self.layoutCloudWords()
+                    self.layoutCloudWords(for: self.view.bounds.size)
                 })
                 
                 self.stockTwitsLastQueriedDate = Date()
@@ -266,8 +263,17 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
     }
     
     func widgetMarginInsets(forProposedMarginInsets defaultMarginInsets: UIEdgeInsets) -> UIEdgeInsets {
-        
         return UIEdgeInsets.zero
     }
     
+    @available(iOSApplicationExtension 10.0, *)
+    func widgetActiveDisplayModeDidChange(_ activeDisplayMode: NCWidgetDisplayMode, withMaximumSize maxSize: CGSize) {
+        
+        switch activeDisplayMode {
+        case .compact:
+            self.preferredContentSize = CGSize(width: 320, height: 200)
+        case .expanded:
+            self.preferredContentSize = CGSize(width: 320, height: 300)
+        }
+    }
 }

@@ -28,6 +28,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     
     var tradeIdeas = [TradeIdea]()
     var isQueryingForTradeIdeas = false
+    var tradeIdeaslastRefreshDate: Date!
     
     let queue = DispatchQueue(label: "Query Queue")
     
@@ -79,8 +80,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         isQueryingForTradeIdeas = true
         
         var queryOrder: QueryHelper.QueryOrder
-        var mostRecentTradeIdeaCreationDate: Date?
-
+        var mostRecentRefreshDate: Date?
         switch queryType {
         case .new, .older:
             queryOrder = .descending
@@ -90,10 +90,10 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             }
         case .update:
             queryOrder = .ascending
-            mostRecentTradeIdeaCreationDate = self.tradeIdeas[0].createdAt
+            mostRecentRefreshDate = tradeIdeaslastRefreshDate
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: self.tradeIdeas.count, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentTradeIdeaCreationDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: self.tradeIdeas.count, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -118,7 +118,9 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                             self.footerActivityIndicator.stopAnimating()
                         }
                     }
+                    
                     self.updateRefreshDate()
+                    self.tradeIdeaslastRefreshDate = Date()
                     
                     return
                 }
@@ -170,7 +172,9 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                         } else if self.footerActivityIndicator.isAnimating == true {
                             self.footerActivityIndicator.stopAnimating()
                         }
+                        
                         self.updateRefreshDate()
+                        self.tradeIdeaslastRefreshDate = Date()
                     }
                     
                     self.isQueryingForTradeIdeas = false

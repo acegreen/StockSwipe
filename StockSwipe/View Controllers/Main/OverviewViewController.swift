@@ -295,7 +295,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                     }
                 }
             }
-            
         }
     }
     

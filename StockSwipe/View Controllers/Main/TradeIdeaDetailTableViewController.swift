@@ -26,6 +26,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     var tradeIdea: TradeIdea!
     var replyTradeIdeas = [TradeIdea]()
     var isQueryingForReplyTradeIdeas = false
+    var replyTradeIdeaslastRefreshDate: Date!
     
     let queue = DispatchQueue(label: "Query Queue")
     
@@ -54,8 +55,8 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         isQueryingForReplyTradeIdeas = true
         
         var queryOrder: QueryHelper.QueryOrder
-        var mostRecentTradeIdeaCreationDate: Date?
-        
+        var mostRecentRefreshDate: Date?
+
         switch queryType {
         case .new, .older:
             queryOrder = .descending
@@ -65,10 +66,10 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             }
         case .update:
             queryOrder = .ascending
-            mostRecentTradeIdeaCreationDate = self.replyTradeIdeas[0].createdAt
+            mostRecentRefreshDate = replyTradeIdeaslastRefreshDate
         }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reply_to", object: tradeIdea.parseObject, skip: self.replyTradeIdeas.count, limit: nil, order: queryOrder, creationDate: mostRecentTradeIdeaCreationDate) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reply_to", object: tradeIdea.parseObject, skip: self.replyTradeIdeas.count, limit: nil, order: queryOrder, creationDate: mostRecentRefreshDate) { (result) in
             
             do {
                 
@@ -86,7 +87,9 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                             self.footerActivityIndicator.stopAnimating()
                         }
                     }
+                    
                     self.updateRefreshDate()
+                    self.replyTradeIdeaslastRefreshDate = Date()
                     
                     return
                 }
@@ -138,7 +141,9 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                         } else if self.footerActivityIndicator.isAnimating == true {
                             self.footerActivityIndicator.stopAnimating()
                         }
+                        
                         self.updateRefreshDate()
+                        self.replyTradeIdeaslastRefreshDate = Date()
                     }
                     
                     self.isQueryingForReplyTradeIdeas = false

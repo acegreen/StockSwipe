@@ -37,12 +37,12 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        updateProfile()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
-        updateProfile()
     }
     
     func updateProfile() {

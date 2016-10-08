@@ -221,6 +221,10 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         } else if tradeIdeaType == .reshare && self.originalTradeIdea != nil {
             
         }
+        
+        if self.prefillText.isEmpty {
+            postButton.isEnabled = false
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

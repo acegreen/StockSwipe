@@ -28,7 +28,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     
     var tradeIdeas = [TradeIdea]()
     var isQueryingForTradeIdeas = false
-    var tradeIdeaslastRefreshDate: Date!
+    var tradeIdeasLastRefreshDate: Date!
     
     let queue = DispatchQueue(label: "Query Queue")
     
@@ -59,11 +59,17 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             self.navigationItem.title = symbol
         }
         
-        getTradeIdeas(queryType: .new)
-        
         // Hide post button if symbol is not available
         if self.stockObject == nil {
             tradeIdeaPostButton.isEnabled = false
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        if self.tradeIdeas.count  == 0 {
+            getTradeIdeas(queryType: .new)
         }
     }
     
@@ -80,7 +86,9 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         isQueryingForTradeIdeas = true
         
         var queryOrder: QueryHelper.QueryOrder
+        var skip: Int?
         var mostRecentRefreshDate: Date?
+        
         switch queryType {
         case .new, .older:
             queryOrder = .descending
@@ -88,12 +96,15 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             if !self.footerActivityIndicator.isAnimating {
                 self.footerActivityIndicator.startAnimating()
             }
+            
+            skip = self.tradeIdeas.count
+            
         case .update:
             queryOrder = .ascending
-            mostRecentRefreshDate = tradeIdeaslastRefreshDate
+            mostRecentRefreshDate = tradeIdeasLastRefreshDate
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: self.tradeIdeas.count, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -120,7 +131,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                     }
                     
                     self.updateRefreshDate()
-                    self.tradeIdeaslastRefreshDate = Date()
+                    self.tradeIdeasLastRefreshDate = Date()
                     
                     return
                 }
@@ -154,12 +165,9 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                         case .update:
                             
                             // append more trade ideas
-                            
                             self.tableView.beginUpdates()
-                            tradeIdeas.map {
-                                self.tradeIdeas.insert($0, at: 0)
-                                
-                                // insert cell in tableview
+                            for tradeIdea in tradeIdeas {
+                                self.tradeIdeas.insert(tradeIdea, at: 0)
                                 let indexPath = IndexPath(row: 0, section: 0)
                                 self.tableView.insertRows(at: [indexPath], with: .none)
                             }
@@ -174,7 +182,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                         }
                         
                         self.updateRefreshDate()
-                        self.tradeIdeaslastRefreshDate = Date()
+                        self.tradeIdeasLastRefreshDate = Date()
                     }
                     
                     self.isQueryingForTradeIdeas = false

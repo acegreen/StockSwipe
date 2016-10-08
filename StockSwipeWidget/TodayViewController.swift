@@ -65,10 +65,9 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         }
     }
     
-    //    deinit {
-    //
-    //        cloudLayoutOperationQueue.cancelAllOperations()
-    //    }
+    deinit {
+        cloudLayoutOperationQueue.cancelAllOperations()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

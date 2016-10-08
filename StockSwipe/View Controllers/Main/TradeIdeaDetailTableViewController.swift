@@ -26,7 +26,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     var tradeIdea: TradeIdea!
     var replyTradeIdeas = [TradeIdea]()
     var isQueryingForReplyTradeIdeas = false
-    var replyTradeIdeaslastRefreshDate: Date!
+    var replyTradeIdeasLastRefreshDate: Date!
     
     let queue = DispatchQueue(label: "Query Queue")
     
@@ -38,8 +38,14 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         
-        self.getReplyTradeIdeas(queryType: .new)
+        if self.replyTradeIdeas.count  == 0 {
+            getReplyTradeIdeas(queryType: .new)
+        }
     }
     
     override func didReceiveMemoryWarning() {
@@ -55,6 +61,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         isQueryingForReplyTradeIdeas = true
         
         var queryOrder: QueryHelper.QueryOrder
+        var skip: Int?
         var mostRecentRefreshDate: Date?
 
         switch queryType {
@@ -64,12 +71,15 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             if !self.footerActivityIndicator.isAnimating {
                 self.footerActivityIndicator.startAnimating()
             }
+            
+            skip = self.replyTradeIdeas.count
+            
         case .update:
             queryOrder = .ascending
-            mostRecentRefreshDate = replyTradeIdeaslastRefreshDate
+            mostRecentRefreshDate = replyTradeIdeasLastRefreshDate
         }
         
-        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reply_to", object: tradeIdea.parseObject, skip: self.replyTradeIdeas.count, limit: nil, order: queryOrder, creationDate: mostRecentRefreshDate) { (result) in
+        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reply_to", object: tradeIdea.parseObject, skip: skip, limit: nil, order: queryOrder, creationDate: mostRecentRefreshDate) { (result) in
             
             do {
                 
@@ -89,7 +99,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                     }
                     
                     self.updateRefreshDate()
-                    self.replyTradeIdeaslastRefreshDate = Date()
+                    self.replyTradeIdeasLastRefreshDate = Date()
                     
                     return
                 }
@@ -122,13 +132,10 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                             
                         case .update:
                             
-                            // append more trade ideas
-                            
+                            // append more trade ideas                           
                             self.tableView.beginUpdates()
-                            replyTradeIdeas.map {
-                                self.replyTradeIdeas.insert($0, at: 0)
-                                
-                                // insert cell in tableview
+                            for replyTradeIdea in replyTradeIdeas {
+                                self.replyTradeIdeas.insert(replyTradeIdea, at: 0)
                                 let indexPath = IndexPath(row: 0, section: 0)
                                 self.tableView.insertRows(at: [indexPath], with: .none)
                             }
@@ -143,7 +150,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                         }
                         
                         self.updateRefreshDate()
-                        self.replyTradeIdeaslastRefreshDate = Date()
+                        self.replyTradeIdeasLastRefreshDate = Date()
                     }
                     
                     self.isQueryingForReplyTradeIdeas = false

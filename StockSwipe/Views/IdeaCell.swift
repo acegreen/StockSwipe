@@ -223,7 +223,11 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.userTag.text = tradeIdea.user.username
         }
         
-        self.ideaDescription.text = tradeIdea.description
+        if let tradeIdeaDescription = tradeIdea.description {
+            self.ideaDescription.text = tradeIdeaDescription
+        } else {
+            self.ideaDescription = nil
+        }
         
         let nsPublishedDate = tradeIdea.createdAt as NSDate
         switch timeFormat {
@@ -258,6 +262,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         if self.nestedUserTag != nil {
             self.nestedUserTag.text = nestedTradeIdea.user.username
+        }
+        
+        if let nestedTradeIdeaDescription = nestedTradeIdea.description {
+            self.nestedIdeaDescription.text = nestedTradeIdeaDescription
+        } else {
+            self.nestedIdeaDescription = nil
         }
         
         self.nestedIdeaDescription.text = nestedTradeIdea.description

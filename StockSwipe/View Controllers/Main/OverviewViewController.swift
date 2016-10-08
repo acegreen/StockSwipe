@@ -96,14 +96,15 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         self.latestNewsTableView.addSubview(topStoriesRefreshControl)
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(true)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         loadViewData()
     }
     
-    //    deinit {
-    //        cloudLayoutOperationQueue.cancelAllOperations()
-    //    }
+    deinit {
+        cloudLayoutOperationQueue.cancelAllOperations()
+        overviewVCOperationQueue.cancelAllOperations()
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -155,11 +156,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 }
             }
             
-            OperationQueue.main.addOperation({() -> Void in
-                self.layoutCloudWords()
-                self.cloudWords.removeAll()
-                
-            })
+            self.cloudWords.removeAll()
+            self.layoutCloudWords()
         }
         
         guard Functions.isConnectedToNetwork() else { return }
@@ -368,9 +366,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             self.charts.append(chart)
         }
         
-        DispatchQueue.main.async {
-            self.layoutCloudWords()
-        }
+        self.layoutCloudWords()
     }
     
     func updateCarousel(_ symbolQuote: Data) {
@@ -640,6 +636,8 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
     
     func layoutCloudWords() {
         
+        self.cloudLayoutOperationQueue.cancelAllOperations()
+        self.cloudLayoutOperationQueue.waitUntilAllOperationsAreFinished()
         self.removeCloudWords()
         self.view.backgroundColor = UIColor.white
         let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: self.cloudView.bounds, scale: UIScreen.main.scale, delegate: self)

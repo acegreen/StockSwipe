@@ -432,7 +432,6 @@ class QueryHelper {
             print("Successfully retrieved \(objects.count) objects")
             
             completion({return (objects: objects)})
-            
         }
     }
     
@@ -484,7 +483,7 @@ class QueryHelper {
         }
     }
     
-    func queryActivityForUser(user: PFUser, skip: Int?, limit: Int?, order: QueryOrder = .descending, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryActivityForUser(user: PFUser, skip: Int?, limit: Int?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         guard Functions.isConnectedToNetwork() else {
             return completion({throw Constants.Errors.noInternetConnection})
@@ -498,6 +497,10 @@ class QueryHelper {
             activityQuery.order(byAscending: "createdAt")
         case .descending:
             activityQuery.order(byDescending: "createdAt")
+        }
+        
+        if let creationDate = creationDate {
+            activityQuery.whereKey("createdAt", greaterThan: creationDate)
         }
         
         activityQuery.whereKey("fromUser", notEqualTo: user)
@@ -523,15 +526,14 @@ class QueryHelper {
                 return completion({throw Constants.Errors.errorAccessingParseDatabase})
             }
             
-            guard objects?.isEmpty == false, let objects = objects else {
+            guard let objects = objects else {
                 return completion({throw Constants.Errors.parseTradeIdeaObjectNotFound})
             }
             
             // The find succeeded.
-            print("Successfully retrieved \(objects.count) activities")
+            print("Successfully retrieved \(objects.count) objects")
             
             completion({return (objects: objects)})
-            
         }
     }
     

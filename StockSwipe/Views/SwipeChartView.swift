@@ -110,7 +110,6 @@ class SwipeChartView: MDCSwipeToChooseView {
         likedImageLabelView.imageView.tintColor = UIColor.black
         
         if !likedImageLabelView.isDescendant(of: self) {
-            
             self.informationView.addSubview(self.likedImageLabelView)
         }
     }
@@ -125,14 +124,13 @@ class SwipeChartView: MDCSwipeToChooseView {
         nopeImageLabelView.imageView.tintColor = UIColor.black
         
         if !nopeImageLabelView .isDescendant(of: self) {
-            
             self.informationView.addSubview(self.nopeImageLabelView)
         }
     }
     
     func buildImageLabelViewLeftOf(_ x:CGFloat, image:UIImage, text:String) -> ImagelabelView {
         
-        let frame:CGRect = CGRect(x:x-80, y: 0,
+        let frame:CGRect = CGRect(x: x - 80, y: 0,
             width: image.size.width,
             height: self.informationView.bounds.height)
         let view:ImagelabelView = ImagelabelView(frame:frame, image:image, text:text)

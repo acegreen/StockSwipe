@@ -287,11 +287,9 @@ extension UIImage {
     
     enum AssetIdentifier: String  {
         
-        case ideaGuyImage = "idea_guy"
         case noIdeaBulbImage = "no_idea"
         case newsBigImage = "news_big"
         case xButton = "x"
-        case comingSoonImage = "coming_soon"
         case UserBlockedBig = "user_blocked_big"
         case UserDummyImage = "dummy_profile_male_big"
     }

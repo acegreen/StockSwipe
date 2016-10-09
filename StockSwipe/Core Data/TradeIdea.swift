@@ -66,9 +66,9 @@ public class TradeIdea {
             
             self.createdAt = parseObject.createdAt
             
-            self.checkNumberOfLikes(completion: { (isLikedByCurrentUser) in
+            self.checkNumberOfLikes(completion: { (likeCount) in
                 
-                self.checkNumberOfReshares(completion: { (isResharedByCurrentUser) in
+                self.checkNumberOfReshares(completion: { (reshareCount) in
                     
                     if let userObject = parseObject.object(forKey: "user") as? PFObject {
                         

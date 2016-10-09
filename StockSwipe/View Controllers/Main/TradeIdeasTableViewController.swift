@@ -281,7 +281,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
 
 extension TradeIdeasTableViewController: IdeaPostDelegate {
     
-    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
+    internal func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
             
         let indexPath = IndexPath(row: 0, section: 0)
         self.tradeIdeas.insert(tradeIdea, at: 0)
@@ -290,7 +290,7 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
         self.tableView.reloadEmptyDataSet()
     }
     
-    func ideaDeleted(with parseObject: PFObject) {
+    internal func ideaDeleted(with parseObject: PFObject) {
         
         if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
             
@@ -307,6 +307,13 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
         
         if tradeIdeas.count == 0 {
             self.tableView.reloadEmptyDataSet()
+        }
+    }
+    
+    internal func ideaUpdated(with tradeIdea: TradeIdea) {
+        if let currentTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == tradeIdea.parseObject.objectId }), let index = self.tradeIdeas.index(of: currentTradeIdea) {
+            let indexPath = IndexPath(row: index, section: 0)
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
 }

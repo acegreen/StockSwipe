@@ -17,7 +17,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
     
     var ratingsType: [String] = ["Buy", "Outperform", "Hold", "Underperform", "Sell"]
     var ratings: [Double] = [Double](repeating: 0.0, count: 5)
-    let ChartreuseWebColor = UIColor(red:0.50, green:1.00, blue:0.00, alpha:1.0)
+    let outperformGreen = UIColor(red: 25/255, green: 225/255, blue: 25/255, alpha: 1.0)
     
     @IBOutlet var PELabel: UILabel!
     @IBOutlet var marketCapLabel: UILabel!
@@ -67,6 +67,10 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
         }
     }
     
+    deinit {
+        companyProfileOperationQueue.cancelAllOperations()
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
@@ -103,7 +107,6 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
     func runDataQueueries() {
         
         companyProfileOperationQueue.cancelAllOperations()
-        companyProfileOperationQueue.waitUntilAllOperationsAreFinished()
         
         // Company figures query
         let companyFiguresOperation = BlockOperation { () -> Void in
@@ -314,7 +317,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
             }
             
             let chartDataSet = BarChartDataSet(yVals: dataEntries, label: "Analysts Rating")
-            chartDataSet.colors = [UIColor.green, ChartreuseWebColor, UIColor.yellow, UIColor.orange , UIColor.red]
+            chartDataSet.colors = [Constants.stockSwipeGreenColor, outperformGreen, UIColor.yellow, UIColor.orange , UIColor.red]
             chartDataSet.valueFont = UIFont(name: "HelveticaNeue", size: 15.0)!
             chartDataSet.valueTextColor = Constants.stockSwipeFontColor
             
@@ -356,12 +359,12 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
         case input where input >= 1.0 && input <= 1.5:
             
             overallRating.text = "Buy"
-            overallRating.textColor = UIColor.green
+            overallRating.textColor = Constants.stockSwipeGreenColor
             
         case input where input > 1.5 && input <= 2.5:
             
             overallRating.text = "Outperform"
-            overallRating.textColor = ChartreuseWebColor
+            overallRating.textColor = outperformGreen
             
         case input where input > 2.5 && input <= 3.5:
             

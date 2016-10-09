@@ -256,11 +256,13 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
 
 extension TradeIdeaDetailTableViewController: IdeaPostDelegate {
     
-    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
+    internal func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
         print("idea posted")
+        
+        self.delegate?.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaTyp)
     }
     
-    func ideaDeleted(with parseObject: PFObject) {
+    internal func ideaDeleted(with parseObject: PFObject) {
         
         if parseObject == self.tradeIdea.parseObject {
             self.tradeIdea = nil
@@ -273,5 +275,15 @@ extension TradeIdeaDetailTableViewController: IdeaPostDelegate {
         }
         
         self.delegate?.ideaDeleted(with: parseObject)
+    }
+    
+    internal func ideaUpdated(with tradeIdea: TradeIdea) {
+        
+        if let currentTradeIdea = self.replyTradeIdeas.find ({ $0.parseObject.objectId == tradeIdea.parseObject.objectId }), let index = self.replyTradeIdeas.index(of: currentTradeIdea) {
+            let indexPath = IndexPath(row: index, section: 0)
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+        }
+        
+        self.delegate?.ideaUpdated(with: tradeIdea)
     }
 }

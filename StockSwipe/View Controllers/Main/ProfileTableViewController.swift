@@ -965,7 +965,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
 
 extension ProfileTableViewController: IdeaPostDelegate {
     
-    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
+    internal func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
         
         if selectedSegmentIndex == .zero && self.user?.objectId == PFUser.current()?.objectId {
             
@@ -977,9 +977,9 @@ extension ProfileTableViewController: IdeaPostDelegate {
         }
     }
     
-    func ideaDeleted(with parseObject: PFObject) {
+    internal func ideaDeleted(with parseObject: PFObject) {
         
-        guard self.user?.objectId == PFUser.current()?.objectId else { return }
+//        guard self.user?.objectId == PFUser.current()?.objectId else { return }
         
         if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
             
@@ -996,6 +996,14 @@ extension ProfileTableViewController: IdeaPostDelegate {
         
         if tradeIdeas.count == 0 {
             self.tableView.reloadEmptyDataSet()
+        }
+    }
+
+    internal func ideaUpdated(with tradeIdea: TradeIdea) {
+     
+        if (selectedSegmentIndex == .zero || selectedSegmentIndex == .three), let currentTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == tradeIdea.parseObject.objectId }), let index = self.tradeIdeas.index(of: currentTradeIdea) {
+            let indexPath = IndexPath(row: index, section: 0)
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
     }
 }

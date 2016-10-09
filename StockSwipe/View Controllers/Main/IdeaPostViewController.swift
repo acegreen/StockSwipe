@@ -13,6 +13,7 @@ import Crashlytics
 protocol IdeaPostDelegate {
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType)
     func ideaDeleted(with tradeIdeaObject: PFObject)
+    func ideaUpdated(with tradeIdea: TradeIdea)
 }
 
 class IdeaPostViewController: UIViewController, UITextViewDelegate {

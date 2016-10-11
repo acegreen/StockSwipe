@@ -38,14 +38,14 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        updateProfile()
+        updateProfile { }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
     }
     
-    func updateProfile() {
+    func updateProfile(completion: @escaping () -> Void) {
         
         guard PFUser.current() != nil else {
             
@@ -64,25 +64,21 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                 self.profileAvatarImage.image = self.currentUser.avtar
                 self.profileLabel.text = self.currentUser.fullname
             }
+            
+            completion()
         })
     }
     
-    func presentFacebookInvite() {
-        let content = FBSDKAppInviteContent()
-        content.appLinkURL = Constants.facebookAppLink as URL!
-        //optionally set previewImageURL
-        //content.appInvitePreviewImageURL = NSURL(string: "https://www.mydomain.com/my_invite_image.jpg")!
-        // Present the dialog. Assumes self is a view controller
-        // which implements the protocol `FBSDKAppInviteDialogDelegate`.
-        FBSDKAppInviteDialog.show(from: self, with: content, delegate: self)
-    }
+    // MARK: - LoginDelegate methods
     
     func didLoginSuccessfully() {
-        self.updateProfile()
+        self.updateProfile { 
+            self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: self)
+        }
     }
     
     func didLogoutSuccessfully() {
-        self.updateProfile()
+        updateProfile { }
     }
     
     // MARK: - Table view data source
@@ -105,7 +101,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             
         case .ProfileCell:
             
-            guard Functions.isUserLoggedIn(self) else { return }
+            guard Functions.isUserLoggedIn(presenting: self) else { return }
             
             self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: self)
             
@@ -226,11 +222,13 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         case .ProfileSegueIdentifier:
             
             if let currentUser = PFUser.current() {
-                let profileViewController = segue.destination as! ProfileContainerController
-                profileViewController.user = self.currentUser
+                
+                let profileContainerController = segue.destination as! ProfileContainerController
+                profileContainerController.loginDelegate = self
+                profileContainerController.user = self.currentUser
                 
                 // Just a workaround.. There should be a cleaner way to sort this out
-                profileViewController.navigationItem.rightBarButtonItem = nil
+                profileContainerController.navigationItem.rightBarButtonItem = nil
             }
             
         case .FAQSegueIdentifier:
@@ -267,13 +265,13 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         }
         
         self.dismiss(animated: true, completion: nil)
-        
     }
 }
 
 extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
     
     //MARK: FBSDKAppInviteDialogDelegate
+    
     func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [AnyHashable: Any]!) {
         print("invitation made")
         
@@ -288,5 +286,15 @@ extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
     
     func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: Error!) {
         print("error made")
+    }
+    
+    func presentFacebookInvite() {
+        let content = FBSDKAppInviteContent()
+        content.appLinkURL = Constants.facebookAppLink as URL!
+        //optionally set previewImageURL
+        //content.appInvitePreviewImageURL = NSURL(string: "https://www.mydomain.com/my_invite_image.jpg")!
+        // Present the dialog. Assumes self is a view controller
+        // which implements the protocol `FBSDKAppInviteDialogDelegate`.
+        FBSDKAppInviteDialog.show(from: self, with: content, delegate: self)
     }
 }

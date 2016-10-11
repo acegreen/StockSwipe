@@ -353,7 +353,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     func registerLike(on sender: UIButton) {
         
         guard let currentUser = PFUser.current() else {
-            Functions.isUserLoggedIn(UIApplication.topViewController()!)
+            Functions.isUserLoggedIn(presenting: UIApplication.topViewController()!)
             return
         }
         
@@ -453,7 +453,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     func registerUnshare(sender: UIButton) {
         
         guard let currentUser = PFUser.current() else {
-            Functions.isUserLoggedIn(UIApplication.topViewController()!)
+            Functions.isUserLoggedIn(presenting: UIApplication.topViewController()!)
             return
         }
         

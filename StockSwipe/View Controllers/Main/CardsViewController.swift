@@ -11,6 +11,7 @@ import CoreSpotlight
 import MDCSwipeToChoose
 import Parse
 import NVActivityIndicatorView
+import Crashlytics
 
 class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
@@ -444,7 +445,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         if (direction == .left || direction == .right) {
             
-            guard Functions.isUserLoggedIn(self) else { return no() }
+            guard Functions.isUserLoggedIn(presenting: self) else { return no() }
             
             return yes()
             
@@ -460,23 +461,34 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     // This is called when a user swipes the view in a direction.
     func view(_ view: UIView, wasChosenWith wasChosenWithDirection: MDCSwipeDirection) -> Void {
         
-        guard let chartChoosen: Chart = self.charts.find({$0.symbol == self.firstCardView.chart.symbol}) else { return }
+        guard let chartChosen: Chart = self.charts.find({$0.symbol == self.firstCardView.chart.symbol}) else { return }
        
         // Register choice
         if wasChosenWithDirection == MDCSwipeDirection.left {
             
-            Functions.registerUserChoice(chartChoosen, with: .SHORT)
+            Functions.registerUserChoice(chartChosen, with: .SHORT)
+            
+            // log swipe
+            Answers.logCustomEvent(withName: "Swipe", customAttributes: ["Direction":  Constants.UserChoices.SHORT.rawValue, "User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
             
         } else if wasChosenWithDirection == MDCSwipeDirection.right {
             
-            Functions.registerUserChoice(chartChoosen, with: .LONG)
+            Functions.registerUserChoice(chartChosen, with: .LONG)
+            
+            // log swipe
+            Answers.logCustomEvent(withName: "Swipe", customAttributes: ["Direction": Constants.UserChoices.LONG.rawValue, "User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+            
+        } else {
+            
+            // log swipe
+            Answers.logCustomEvent(withName: "Swipe", customAttributes: ["Direction": Constants.UserChoices.SKIP.rawValue, "User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
         }
         
         // Create NSUserActivity
-        Functions.createNSUserActivity(chartChoosen, domainIdentifier: "com.stockswipe.stocksSwiped")
+        Functions.createNSUserActivity(chartChosen, domainIdentifier: "com.stockswipe.stocksSwiped")
         
-        self.parseObjects.removeObject(chartChoosen.parseObject!)
-        self.charts.removeObject(chartChoosen)
+        self.parseObjects.removeObject(chartChosen.parseObject!)
+        self.charts.removeObject(chartChosen)
             
         // Swap and resize cards after each choice made
         self.swapAndResizeCardView(self.secondCardView)
@@ -514,13 +526,13 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             }
         }
         
-        print("charts.count after swipe", self.charts.count)
+        //print("charts.count after swipe", self.charts.count)
     }
     
     // This is called when a user didn't fully swipe left or right.
     func viewDidCancelSwipe(_ view: UIView) -> Void {
         
-        print("You couldn't decide")
+        //print("You couldn't decide")
         
         if self.secondCardView != nil {
             
@@ -548,7 +560,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         guard let chart: Chart = self.charts.find({ $0.symbol == self.firstCardView.chart.symbol }) else { return }
         
-        Functions.addToWatchlist(chart) { (choice) in
+        Functions.addToWatchlist(chart, registerChoice: false) { (choice) in
             switch choice {
             case .LONG:
                 self.longCardView()
@@ -557,8 +569,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             case .SKIP:
                 self.skipCardView()
             }
-            
-            Functions.registerUserChoice(chart, with: choice)
         }
     }
     

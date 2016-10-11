@@ -171,8 +171,8 @@ class SearchTableViewController: UITableViewController {
             guard let results = results as? [PFObject] else { return }
             
             self.searchResults = results
-            self.tableView.reloadData()
             
+            self.tableView.reloadData()
         }
     }
     
@@ -232,9 +232,13 @@ class SearchTableViewController: UITableViewController {
             
             let profileNavigationController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
             let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
-            profileContainerController.user = User(userObject: user)
             
-            UIApplication.topViewController()?.present(profileNavigationController, animated: true, completion: nil)
+            User(userObject: user, completion: { (user) in
+                
+                profileContainerController.user = user
+                    
+                UIApplication.topViewController()?.present(profileNavigationController, animated: true, completion: nil)
+            })
         }
     }
     
@@ -276,8 +280,7 @@ class SearchTableViewController: UITableViewController {
                 
                 DispatchQueue.main.async {
                     
-                    Functions.addToWatchlist(chart) { (choice) in
-                        Functions.registerUserChoice(chart, with: choice)
+                    Functions.addToWatchlist(chart, registerChoice: true) { (choice) in
                     }
                 }
             })

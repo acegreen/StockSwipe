@@ -697,6 +697,7 @@
 			isa = PBXGroup;
 			children = (
 				23875DED1B11745A00966012 /* SwipeChartView.swift */,
+				23C925671B1AB6E400D17B70 /* CollectionViewCell.swift */,
 				23E0FFDD1B1BEDD800251BC6 /* NoChartView.swift */,
 				232A4E8F1B7E32A100A0FE4B /* ImageLabelView.swift */,
 				23CF60451B1CA8310087B9D5 /* BorderedLabel.swift */,
@@ -712,7 +713,6 @@
 				231E89BD1D2714D500CD009A /* FollowButton.swift */,
 				231E89C71D2A222A00CD009A /* BlockButton.swift */,
 				23C122541C5AA0FE00524721 /* TopNewsCell.swift */,
-				23C925671B1AB6E400D17B70 /* CollectionViewCell.swift */,
 				23D4FFE71C317ECE00A1102D /* FiltersCell.swift */,
 				23ECED251B9B60B200688768 /* NewsCell.swift */,
 				2394DFAD1C8CAE610018A5A9 /* ExpandingCell.swift */,

@@ -18,14 +18,22 @@ open class Chart: NSObject {
     fileprivate var chartImageURL: URL!
     
     var shortCount: Int = 0 {
-        didSet {
-            self.parseObject?.setObject(self.shortCount, forKey: "shortCount")
+        willSet {
+            if newValue > shortCount {
+                self.parseObject?.incrementKey("shortCount")
+            } else if shortCount > 0 {
+                self.parseObject?.incrementKey("shortCount", byAmount: -1)
+            }
             self.parseObject?.saveEventually()
         }
     }
     var longCount: Int = 0 {
-        didSet {
-            self.parseObject?.setObject(self.longCount, forKey: "longCount")
+        willSet {
+            if newValue > longCount {
+                self.parseObject?.incrementKey("longCount")
+            } else if longCount > 0 {
+                self.parseObject?.incrementKey("longCount", byAmount: -1)
+            }
             self.parseObject?.saveEventually()
         }
     }
@@ -35,11 +43,11 @@ open class Chart: NSObject {
         
         if self.shortCount > 0 || self.shortCount > 0 {
             
-            return "\(companyName)\nLongs: \(longCount)\nShorts: \(shortCount)"
+            return companyName + "\n" + "Shorts: \(shortCount)" + "\n" + "Longs: \(longCount)"
             
         } else {
             
-            return "\(companyName)"
+            return companyName
         }
     }
     

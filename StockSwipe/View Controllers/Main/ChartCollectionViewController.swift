@@ -355,7 +355,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
     
     func deleteUserFromParseObjectLongedShortedColumn(_ selectedObjects: [ChartModel]) {
         
-        guard Functions.isUserLoggedIn(self) else { return }
+        guard Functions.isUserLoggedIn(presenting: self) else { return }
         guard let currentUser = PFUser.current() else { return }
         
         let symbolStringArray: [String] = extractSymbolNames(selectedObjects)

@@ -41,6 +41,7 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
     var selectedSegmentIndex: SegmentIndex = SegmentIndex(rawValue: 0)!
     
     var delegate: SubSegmentedControlDelegate!
+    var loginDelegate: LoginDelegate?
     
     var user: User?
     var isCurrentUserBlocked: Bool = false
@@ -165,9 +166,19 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
             let profileVC = segue.destination as! ProfileTableViewController
             self.delegate = profileVC
             profileVC.delegate = self
+            profileVC.loginDelegate = self
             profileVC.user = user
         }
     }
+}
 
+extension ProfileContainerController: LoginDelegate {
+    func didLoginSuccessfully() {
+        self.loginDelegate?.didLoginSuccessfully()
+    }
+    
+    func didLogoutSuccessfully() {
+        self.loginDelegate?.didLogoutSuccessfully()
+    }
 }
 

@@ -53,7 +53,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             return
         }
         guard let currentUser = PFUser.current() else {
-            Functions.isUserLoggedIn(self)
+            Functions.isUserLoggedIn(presenting: self)
             return
         }
         
@@ -163,7 +163,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             if success {
                 
                 // log trade idea
-                Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText,"User": PFUser.current()?.username ?? "N/A","Description": self.ideaTextView.text, "App Version": Constants.AppVersion])
+                Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText, "User": PFUser.current()?.username ?? "N/A", "Description": self.ideaTextView.text, "App Version": Constants.AppVersion])
                 
                 let newTradeIdea = TradeIdea(parseObject: tradeIdeaObject, completion: { (newTradeIdea) in
                     if let newTradeIdea = newTradeIdea {

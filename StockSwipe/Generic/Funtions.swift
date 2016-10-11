@@ -27,7 +27,7 @@ class Functions {
         }
     }
     
-    class func isUserLoggedIn(_ viewController: UIViewController) -> Bool {
+    class func isUserLoggedIn(presenting viewController: UIViewController) -> Bool {
         
         guard PFUser.current() == nil else { return true }
         
@@ -316,10 +316,10 @@ class Functions {
                             
                             firstActivityObject["activityType"] = Constants.ActivityType.StockShort.rawValue
                             
-                            chart.shortCount += 1
                             if chart.longCount > 1 {
                                 chart.longCount -= 1
                             }
+                            chart.shortCount += 1
                             
                         default:
                             break
@@ -351,6 +351,9 @@ class Functions {
                     
                     activityObject.saveEventually()
                 }
+                
+                // Update Spotlight
+                self.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
                 
             } catch {
                 
@@ -503,7 +506,7 @@ class Functions {
     @available(iOS 9.0, *)
     class func createNSUserActivity(_ chart: Chart, domainIdentifier: String) {
         
-        let attributeSet:CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeImage as String)
+        let attributeSet:CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
         attributeSet.contentDescription = chart.searchDescription
         //    attributeSet.thumbnailData = image
         attributeSet.relatedUniqueIdentifier = chart.symbol
@@ -523,10 +526,9 @@ class Functions {
         print("NSUserActivity created")
     }
     
-    @available(iOS 9.0, *)
     class func addToSpotlight(_ chart: Chart, domainIdentifier: String) {
         
-        let attributeSet:CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeImage as String)
+        let attributeSet: CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
         attributeSet.title = chart.symbol
         attributeSet.contentDescription = chart.searchDescription
         attributeSet.thumbnailData = nil
@@ -545,10 +547,9 @@ class Functions {
         
     }
     
-    @available(iOS 9.0, *)
-    class func deleteFromSpotlight(_ uniqueIdentifier: String) {
+    class func removeFromSpotlight(_ domainIdentifier: String) {
         
-        CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [uniqueIdentifier]) { (error: Error?) -> Void in
+        CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [domainIdentifier]) { (error: Error?) -> Void in
             
             if let error = error {
                 print("Deindexing error: \(error.localizedDescription)")
@@ -558,7 +559,7 @@ class Functions {
         }
     }
     
-    class func addToWatchlist(_ chart: Chart, completion: @escaping (Constants.UserChoices) -> Void)  {
+    class func addToWatchlist(_ chart: Chart, registerChoice: Bool, completion: @escaping (Constants.UserChoices) -> Void)  {
         
         guard Functions.isConnectedToNetwork() else {
             
@@ -584,14 +585,24 @@ class Functions {
                 
                 SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
                     
-                    guard let topVC = UIApplication.topViewController() , Functions.isUserLoggedIn(topVC) else { return }
+                    guard let topVC = UIApplication.topViewController(), Functions.isUserLoggedIn(presenting: topVC) else { return }
                     
                     if !isOtherButton {
+                        
+                        if registerChoice {
+                            Functions.registerUserChoice(chart, with: .LONG)
+                        }
+                        
                         saveIntoCoreData(chart, userChoice: .LONG)
                         
                         completion(.LONG)
                         
                     } else if isOtherButton {
+                        
+                        if registerChoice {
+                            Functions.registerUserChoice(chart, with: .SHORT)
+                        }
+                        
                         saveIntoCoreData(chart, userChoice: .SHORT)
                         
                         completion(.SHORT)

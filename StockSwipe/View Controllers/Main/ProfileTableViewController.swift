@@ -30,6 +30,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     }
     
     var delegate: ProfileTableVieDelegate!
+    var loginDelegate: LoginDelegate?
     
     var user: User?
     var isCurrentUserBlocked: Bool = false
@@ -70,7 +71,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         }
         
         guard let currentUser = PFUser.current() else {
-            Functions.isUserLoggedIn(self)
+            Functions.isUserLoggedIn(presenting: self)
             return
         }
         guard let user = self.user else { return }
@@ -791,7 +792,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         guard let currentUser = PFUser.current() else {
             let logInViewcontroller = LoginViewController.sharedInstance
             logInViewcontroller.loginDelegate = self
-            Functions.isUserLoggedIn(UIApplication.topViewController()!)
+            Functions.isUserLoggedIn(presenting: UIApplication.topViewController()!)
             return
         }
         
@@ -859,6 +860,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func didLoginSuccessfully() {
         self.getProfile()
+        
+        self.loginDelegate?.didLoginSuccessfully()
     }
     
     func didLogoutSuccessfully() {
@@ -868,6 +871,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         } else {
             navigationController?.popViewController(animated: true)
         }
+        
+        self.loginDelegate?.didLogoutSuccessfully()
     }
     
     func updateRefreshDate() {

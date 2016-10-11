@@ -20,10 +20,4 @@ class ChartModel: NSManagedObject {
     @NSManaged var longs: Int32
     @NSManaged var userChoice: String
     @NSManaged var dateChoosen: Date
-    
-    var searchDescription: String {
-        
-        return "\(companyName)\nLongs: \(longs)\nShorts: \(shorts)"
-        
-    }
 }

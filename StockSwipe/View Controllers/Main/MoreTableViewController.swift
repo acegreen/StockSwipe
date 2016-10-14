@@ -276,7 +276,7 @@ extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
         print("invitation made")
         
         // log shared successfully
-        Answers.logShare(withMethod: "\("Facebook Invite")",
+        Answers.logShare(withMethod: "Facebook Invite",
                                    contentName: "Facebook Invite Friends",
                                    contentType: "Share",
                                    contentId: nil,

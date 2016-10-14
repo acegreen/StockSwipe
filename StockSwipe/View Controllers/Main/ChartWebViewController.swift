@@ -78,8 +78,8 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                             SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
                             
                             // log shared successfully
-                            Answers.logShare(withMethod: "\(activity!)",
-                                contentName: "\(self.symbol) Chart Shared",
+                            Answers.logShare(withMethod: activity,
+                                contentName: self.symbol + " Chart Shared",
                                 contentType: "Share",
                                 contentId: nil,
                                 customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])

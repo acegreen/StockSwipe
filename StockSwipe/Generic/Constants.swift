@@ -77,6 +77,7 @@ class Constants {
     static let stockSwipeFontColor: UIColor = UIColor(red: 111/255, green: 113/255, blue: 121/255, alpha: 1.0)
     static let stockSwipeGreenColor: UIColor = UIColor(red: 25/255, green: 200/255, blue: 25/255, alpha: 1.0)
     static let stockSwipeGoldColor: UIColor = UIColor(red: 245, green: 192, blue: 24)
+    static let stockSwipeRedColor: UIColor = UIColor(rgbValue: 0xFF3A2D)  // #FF3A2D - Flat red
     static let okAlertAction = UIAlertAction(title: "Ok", style: .default, handler:{ (ACTION :UIAlertAction!)in })
     
     static let settingsAlertAction: UIAlertAction = UIAlertAction(title: "Settings", style: .default, handler: { (action: UIAlertAction!) in

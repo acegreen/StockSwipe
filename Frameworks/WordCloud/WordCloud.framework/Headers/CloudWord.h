@@ -38,7 +38,7 @@
 /**
  Returns an index for the color of this word
  */
-@property (nonatomic, assign) NSUInteger wordColor;
+@property (nonatomic, assign) UIColor *wordColor;
 /**
  Returns the unweight4ed number of occurrences of this word in the source
  */
@@ -88,7 +88,7 @@
  
  @return An initialized CloudWord object
  */
-- (instancetype)initWithWord:(NSString *)aWord wordCount:(NSNumber *)wordCount wordTappable:(BOOL)wordTappable NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithWord:(NSString *)aWord wordCount:(NSNumber *)wordCount wordColor:(UIColor *)wordColor wordTappable:(BOOL)wordTappable NS_DESIGNATED_INITIALIZER;
 - (instancetype)init;
 /**
  Assign an indexed color to the word
@@ -97,7 +97,7 @@
 
  @note Sets self.wordColor
  */
-- (void)determineColorForScale:(CGFloat)scale;
+// - (void)determineColorForScale:(CGFloat)scale;
 /**
  Assign a random word orientation to the word
 

@@ -14,6 +14,7 @@ import SystemConfiguration
 import SDVersion
 import Parse
 import SafariServices
+import SwiftyJSON
 import AMPopTip
 import NVActivityIndicatorView
 
@@ -33,7 +34,7 @@ class Functions {
         
         DispatchQueue.main.async {
             
-            SweetAlert().showAlert("Login Required!", subTitle: "Please login to continue", style: AlertStyle.warning, dismissTime: nil, buttonTitle: "Ok", buttonColor: UIColor.colorFromRGB(0xD0D0D0)) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Login Required!", subTitle: "Please login to continue", style: AlertStyle.warning, dismissTime: nil, buttonTitle: "Ok", buttonColor: UIColor(rgbValue: 0xD0D0D0)) { (isOtherButton) -> Void in
                 
                 if isOtherButton {
                     
@@ -495,6 +496,31 @@ class Functions {
         }
     }
     
+    class func makeTickers(from symbolQuote: Data, completion: @escaping ([Ticker]) -> Void) {
+        
+        var tickers = [Ticker]()
+        
+        let carsouelJson = JSON(data: symbolQuote)
+        let carsouelJsonResults = carsouelJson["query"]["results"]
+        guard let quoteJsonResultsQuote = carsouelJsonResults["quote"].array else { return }
+        
+        for quote in quoteJsonResultsQuote {
+            
+            let symbol = quote["Symbol"].string
+            let companyName = quote["Name"].string
+            let exchange = quote["StockExchange"].string
+            let currentPrice = quote["LastTradePriceOnly"].doubleValue
+            let changeInDollar = quote["Change"].doubleValue
+            let changeInPercent = quote["ChangeinPercent"].doubleValue
+            
+            let ticker = Ticker(symbol: symbol, companyName: companyName, exchange: exchange, currentPrice: currentPrice, changeInDollar: changeInDollar, changeInPercent: changeInPercent)
+            
+            tickers.append(ticker)
+        }
+        
+        completion(tickers)
+    }
+    
     class func setupConfigParameter(_ parameter:String, completion: @escaping (_ parameterValue: Any?) -> Void) {
         
         PFConfig.getInBackground { (config, error) in
@@ -507,17 +533,18 @@ class Functions {
     class func createNSUserActivity(_ chart: Chart, domainIdentifier: String) {
         
         let attributeSet:CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
-        attributeSet.contentDescription = chart.searchDescription
-        //    attributeSet.thumbnailData = image
+        attributeSet.contentDescription = chart.companyName
+        attributeSet.artist = "Shorts: \(chart.shortCount)"
+        attributeSet.album = "Longs: \(chart.longCount)"
         attributeSet.relatedUniqueIdentifier = chart.symbol
         
         let activity = NSUserActivity(activityType: domainIdentifier)
         activity.title = chart.symbol
         activity.keywords = NSSet(array: [chart.symbol, chart.companyName, chart.searchDescription, "Stocks", "Markets"]) as! Set<String>
-        activity.userInfo = ["symbol": chart.symbol, "companyName": chart.companyName, "searchDescription": chart.searchDescription]
+        activity.userInfo = ["symbol": chart.symbol, "companyName": chart.companyName]
         activity.contentAttributeSet = attributeSet
         
-        activity.requiredUserInfoKeys = NSSet(array: ["symbol", "companyName", "searchDescription"]) as! Set<String>
+        activity.requiredUserInfoKeys = NSSet(array: ["symbol", "companyName"]) as! Set<String>
         activity.isEligibleForSearch = true
         activity.isEligibleForPublicIndexing = true
         nsUserActivityArray.append(activity)
@@ -528,11 +555,12 @@ class Functions {
     
     class func addToSpotlight(_ chart: Chart, domainIdentifier: String) {
         
-        let attributeSet: CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
+        let attributeSet: CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeMP3 as String)
         attributeSet.title = chart.symbol
-        attributeSet.contentDescription = chart.searchDescription
-        attributeSet.thumbnailData = nil
-        attributeSet.keywords = [chart.symbol, chart.companyName, chart.searchDescription, "Stocks", "Markets"]
+        attributeSet.contentDescription = chart.companyName
+        attributeSet.artist = "Shorts: \(chart.shortCount)"
+        attributeSet.album = "Longs: \(chart.longCount)"
+        attributeSet.keywords = [chart.symbol, chart.companyName, "Stocks", "Markets"]
         
         let searchableItem = CSSearchableItem(uniqueIdentifier: chart.symbol, domainIdentifier: domainIdentifier, attributeSet: attributeSet)
         
@@ -541,7 +569,7 @@ class Functions {
             if let error = error {
                 print("Deindexing error: \(error.localizedDescription)")
             } else {
-                print("Search item successfully indexed!")
+                print("\(chart.symbol) successfully indexed")
             }
         }
         
@@ -554,7 +582,7 @@ class Functions {
             if let error = error {
                 print("Deindexing error: \(error.localizedDescription)")
             } else {
-                print("Search item successfully removed!")
+                print("Search item successfully removed")
             }
         }
     }
@@ -622,18 +650,18 @@ class Functions {
         return nil
     }
     
-    class func showPopTip(popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: AMPopTipDirection, color: UIColor) -> AMPopTip? {
+    class func showPopTip(popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: AMPopTipDirection, color: UIColor, duration: TimeInterval = 3) -> AMPopTip? {
         
-        AMPopTip.appearance().font = UIFont(name: "HelveticaNeue", size: 16)!
-        AMPopTip.appearance().textColor = .white
-        AMPopTip.appearance().popoverColor = color
-        AMPopTip.appearance().offset = 10
-        AMPopTip.appearance().edgeMargin = 5
         let popTip = AMPopTip()
-        popTip.showText(text, direction: direction, maxWidth: 300, in: view, fromFrame: frame, duration: 3)
+        popTip.font = UIFont(name: "HelveticaNeue", size: 16)!
+        popTip.textColor = .white
+        popTip.popoverColor = color
+        popTip.offset = 10
+        popTip.edgeMargin = 5
         popTip.actionAnimation = AMPopTipActionAnimation.bounce
         popTip.shouldDismissOnTapOutside = true
         popTip.shouldDismissOnTap = true
+        popTip.showText(text, direction: direction, maxWidth: 300, in: view, fromFrame: frame, duration: duration)
         
         return popTip
     }
@@ -643,24 +671,20 @@ class Functions {
         if !allPopTips.isEmpty {
             
             for tip in allPopTips {
-                
                 tip?.hide()
-                
             }
         }
     }
     
-    class func displayAlert (_ title: String, message: String, Action1:UIAlertAction?, Action2:UIAlertAction?) -> UIAlertController {
+    class func displayAlert (_ title: String, message: String, Action1: UIAlertAction?, Action2: UIAlertAction?) -> UIAlertController {
         
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
         
         if Action1 != nil {
-            
             alert.addAction(Action1!)
         }
         
         if Action2 != nil {
-            
             alert.addAction(Action2!)
         }
         

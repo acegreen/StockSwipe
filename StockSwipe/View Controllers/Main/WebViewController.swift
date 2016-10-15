@@ -39,7 +39,7 @@ class WebViewController: UIViewController {
                 SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
                 
                 // log shared successfully
-                Answers.logShare(withMethod: activity,
+                Answers.logShare(withMethod: "\(activity!)",
                     contentName: "\(self.url.path) shared",
                     contentType: "Share",
                     contentId: nil,

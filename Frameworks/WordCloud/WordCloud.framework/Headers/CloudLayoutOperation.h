@@ -40,7 +40,7 @@
 
  @param isVertical Whether the word orientation is vertical
  */
-- (void)insertWord:(NSString *)word pointSize:(CGFloat)pointSize color:(NSInteger)color center:(CGPoint)center vertical:(BOOL)isVertical tappable:(BOOL)isTappable;
+- (void)insertWord:(NSString *)word pointSize:(CGFloat)pointSize color:(UIColor *)color center:(CGPoint)center vertical:(BOOL)isVertical tappable:(BOOL)isTappable;
 
 #ifdef DEBUG
 @optional

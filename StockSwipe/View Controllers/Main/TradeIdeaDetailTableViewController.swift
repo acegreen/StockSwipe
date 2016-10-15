@@ -125,7 +125,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                             // insert cell in tableview
                             self.tableView.beginUpdates()
                             for (i,_) in replyTradeIdeas.enumerated() {
-                                let indexPath = IndexPath(row: currentCount + i, section: 0)
+                                let indexPath = IndexPath(row: currentCount + i, section: 1)
                                 self.tableView.insertRows(at: [indexPath], with: .none)
                             }
                             self.tableView.endUpdates()
@@ -136,7 +136,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                             self.tableView.beginUpdates()
                             for replyTradeIdea in replyTradeIdeas {
                                 self.replyTradeIdeas.insert(replyTradeIdea, at: 0)
-                                let indexPath = IndexPath(row: 0, section: 0)
+                                let indexPath = IndexPath(row: 0, section: 1)
                                 self.tableView.insertRows(at: [indexPath], with: .none)
                             }
                             self.tableView.endUpdates()

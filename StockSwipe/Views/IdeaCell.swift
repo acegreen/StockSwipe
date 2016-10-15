@@ -99,7 +99,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             let reportIdea = UIAlertAction(title: "Report", style: .default) { action in
                 
-                SweetAlert().showAlert("Report \(self.tradeIdea.user.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor.colorFromRGB(0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Report \(self.tradeIdea.user.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor(rgbValue: 0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
                     
                     if !isOtherButton {
                         
@@ -223,8 +223,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.userTag.text = tradeIdea.user.username
         }
         
-        if let tradeIdeaDescription = tradeIdea.description {
-            self.ideaDescription.text = tradeIdeaDescription
+        if !tradeIdea.ideaDescription.isEmpty {
+            self.ideaDescription.text = tradeIdea.ideaDescription
         } else {
             self.ideaDescription = nil
         }
@@ -264,13 +264,11 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.nestedUserTag.text = nestedTradeIdea.user.username
         }
         
-        if let nestedTradeIdeaDescription = nestedTradeIdea.description {
-            self.nestedIdeaDescription.text = nestedTradeIdeaDescription
+        if !nestedTradeIdea.ideaDescription.isEmpty {
+            self.nestedIdeaDescription.text = nestedTradeIdea.ideaDescription
         } else {
             self.nestedIdeaDescription = nil
         }
-        
-        self.nestedIdeaDescription.text = nestedTradeIdea.description
         
         self.nestedUserAvatar.image = nestedTradeIdea.user.avtar
         
@@ -299,7 +297,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             #if DEBUG
                 print("send push didn't happen in debug")
             #else
-                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":tradeIdea.parseObject.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": "@\(currentUser.username!) replied:\n" + tradeIdea.description])
+                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":tradeIdea.parseObject.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": "@\(currentUser.username!) replied:\n" + tradeIdea.ideaDescription])
             #endif
             
         case .reshare:
@@ -307,7 +305,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             #if DEBUG
                 print("send push didn't happen in debug")
             #else
-                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n" + self.tradeIdea.description])
+                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n" + self.tradeIdea.ideaDescription])
             #endif
         }
         
@@ -392,7 +390,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                             #if DEBUG
                                 print("send push didn't happen in debug")
                             #else
-                                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": "@\(currentUser.username!) liked:\n" + self.tradeIdea.description])
+                                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": "@\(currentUser.username!) liked:\n" + self.tradeIdea.ideaDescription])
                             #endif
                         }
                     }

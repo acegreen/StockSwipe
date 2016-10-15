@@ -103,13 +103,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
             let reportIdea = UIAlertAction(title: "Report", style: .default) { action in
                 
-                SweetAlert().showAlert("Report \(user.userObject.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor.colorFromRGB(0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Report \(user.userObject.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor(rgbValue: 0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
                     
                     if !isOtherButton {
                         
                         Functions.blockUser(user.userObject, postAlert: false)
                         
-                        let spamObject = PFObject(className: "Spam")
+                        let spamObject = PFObject(className: "Spamß")
                         spamObject["reported_user"] = user.userObject
                         spamObject["reported_by"] = currentUser
                         

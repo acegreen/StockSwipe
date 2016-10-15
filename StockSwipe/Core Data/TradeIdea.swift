@@ -9,10 +9,10 @@
 import UIKit
 import Parse
 
-public class TradeIdea {
+public class TradeIdea: NSObject {
     
     var user: User!
-    var description: String!
+    var ideaDescription: String!
     
     var likeCount: Int = 0 {
         willSet {
@@ -48,6 +48,8 @@ public class TradeIdea {
     
     init(parseObject: PFObject, completion: ((TradeIdea?) -> Void)? = nil) {
         
+        super.init()
+        
         parseObject.fetchIfNeededInBackground { (parseObject, error) in
             
             guard let parseObject = parseObject else  {
@@ -59,7 +61,7 @@ public class TradeIdea {
             
             self.parseObject = parseObject
             
-            self.description = parseObject.object(forKey: "description") as? String ?? ""
+            self.ideaDescription = parseObject.object(forKey: "description") as? String ?? ""
             
             self.likeCount = parseObject.object(forKey: "likeCount") as? Int ?? 0
             self.reshareCount = parseObject.object(forKey: "reshareCount") as? Int ?? 0
@@ -162,10 +164,10 @@ public class TradeIdea {
     }
 }
 
-extension TradeIdea: Equatable {}
-
-public func ==(lhs: TradeIdea, rhs: TradeIdea) -> Bool {
-    let areEqual = lhs.parseObject == rhs.parseObject
-    
-    return areEqual
-}
+//extension TradeIdea: Equatable {}
+//
+//public func ==(lhs: TradeIdea, rhs: TradeIdea) -> Bool {
+//    let areEqual = lhs.parseObject == rhs.parseObject
+//    
+//    return areEqual
+//}

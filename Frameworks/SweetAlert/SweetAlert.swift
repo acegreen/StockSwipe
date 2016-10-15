@@ -71,8 +71,8 @@ open class SweetAlert: UIViewController {
         contentView.layer.borderWidth = 0.5
         contentView.addSubview(titleLabel)
         contentView.addSubview(subTitleTextView)
-        contentView.backgroundColor = UIColor.colorFromRGB(0xFFFFFF)
-        contentView.layer.borderColor = UIColor.colorFromRGB(0xCCCCCC).cgColor
+        contentView.backgroundColor = UIColor(rgbValue: 0xFFFFFF)
+        contentView.layer.borderColor = UIColor(rgbValue: 0xCCCCCC).cgColor
         view.addSubview(contentView)
     }
     
@@ -81,14 +81,14 @@ open class SweetAlert: UIViewController {
         titleLabel.numberOfLines = 1
         titleLabel.textAlignment = .center
         titleLabel.font = UIFont(name: kFont, size:20)
-        titleLabel.textColor = UIColor.colorFromRGB(0x575757)
+        titleLabel.textColor = UIColor(rgbValue: 0x575757)
     }
     
     fileprivate func setupSubtitleTextView() {
         subTitleTextView.text = ""
         subTitleTextView.textAlignment = .center
         subTitleTextView.font = UIFont(name: kFont, size:16)
-        subTitleTextView.textColor = UIColor.colorFromRGB(0x797979)
+        subTitleTextView.textColor = UIColor(rgbValue: 0x797979)
         subTitleTextView.isEditable = false
     }
     
@@ -284,7 +284,7 @@ open class SweetAlert: UIViewController {
     }
     
     open func showAlert(_ title: String, subTitle: String?, style: AlertStyle, dismissTime: TimeInterval?, buttonTitle: String?, action: ((_ isOtherButton: Bool) -> Void)? = nil) -> SweetAlert {
-        self.showAlert(title, subTitle: subTitle, style: style, dismissTime: dismissTime, buttonTitle: buttonTitle,buttonColor: UIColor.colorFromRGB(0xAEDEF4))
+        self.showAlert(title, subTitle: subTitle, style: style, dismissTime: dismissTime, buttonTitle: buttonTitle,buttonColor: UIColor(rgbValue: 0xAEDEF4))
         userAction = action
         return self
     }
@@ -479,7 +479,7 @@ class CancelAnimatedView: AnimatableView {
     fileprivate func setupLayers() {
         circleLayer.path = outlineCircle
         circleLayer.fillColor = UIColor.clear.cgColor;
-        circleLayer.strokeColor = UIColor.colorFromRGB(0xF27474).cgColor;
+        circleLayer.strokeColor = UIColor(rgbValue: 0xF27474).cgColor;
         circleLayer.lineCap = kCALineCapRound
         circleLayer.lineWidth = 4;
         circleLayer.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
@@ -488,7 +488,7 @@ class CancelAnimatedView: AnimatableView {
         
         crossPathLayer.path = crossPath
         crossPathLayer.fillColor = UIColor.clear.cgColor;
-        crossPathLayer.strokeColor = UIColor.colorFromRGB(0xF27474).cgColor;
+        crossPathLayer.strokeColor = UIColor(rgbValue: 0xF27474).cgColor;
         crossPathLayer.lineCap = kCALineCapRound
         crossPathLayer.lineWidth = 4;
         crossPathLayer.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
@@ -576,7 +576,7 @@ class InfoAnimatedView: AnimatableView {
     func setupLayers() {
         circleLayer.path = outlineCircle
         circleLayer.fillColor = UIColor.clear.cgColor;
-        circleLayer.strokeColor = UIColor.colorFromRGB(0xF8D486).cgColor;
+        circleLayer.strokeColor = UIColor(rgbValue: 0xF8D486).cgColor;
         circleLayer.lineCap = kCALineCapRound
         circleLayer.lineWidth = 4;
         circleLayer.frame = CGRect(x: 0, y: 0, width: self.frame.size.width, height: self.frame.size.height)
@@ -591,8 +591,8 @@ class InfoAnimatedView: AnimatableView {
         colorAnimation.repeatCount = HUGE
         colorAnimation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
         colorAnimation.autoreverses = true
-        colorAnimation.fromValue = UIColor.colorFromRGB(0xF7D58B).cgColor
-        colorAnimation.toValue = UIColor.colorFromRGB(0xF2A665).cgColor
+        colorAnimation.fromValue = UIColor(rgbValue: 0xF7D58B).cgColor
+        colorAnimation.toValue = UIColor(rgbValue: 0xF2A665).cgColor
         circleLayer.add(colorAnimation, forKey: "strokeColor")
     }
 }

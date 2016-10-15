@@ -223,7 +223,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         
         guard Functions.isConnectedToNetwork() else {
             
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet.", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet.", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
             
@@ -236,7 +236,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
         } else {
             
-            SweetAlert().showAlert("Missing Information", subTitle: "Please enter both your username & password", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Missing Information", subTitle: "Please enter both your username & password", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
             
@@ -483,7 +483,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
         } else {
             
-            SweetAlert().showAlert("Email Verification Required", subTitle: "Please verify your email first using the email sent to you", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Email Verification Required", subTitle: "Please verify your email first using the email sent to you", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
             
@@ -505,14 +505,14 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         
         if !Functions.isConnectedToNetwork() {
             
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
             return
             
         } else if !ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter).accessGranted {
             
-            SweetAlert().showAlert("No Authorization", subTitle: "Go to Settings -> Twitter -> Allow These Apps To Use Your Account -> StockSwipe", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: "Settings", otherButtonColor: UIColor.colorFromRGB(0xAEDEF4)) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("No Authorization", subTitle: "Go to Settings -> Twitter -> Allow These Apps To Use Your Account -> StockSwipe", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: "Settings", otherButtonColor: UIColor(rgbValue: 0xAEDEF4)) { (isOtherButton) -> Void in
                 
                 if !isOtherButton {
                     
@@ -522,7 +522,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
         } else if !ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierFacebook).accessGranted {
             
-            SweetAlert().showAlert("No Authorization", subTitle: "Go to Settings -> Facebook -> Allow These Apps To Use Your Account -> StockSwipe", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: "Settings", otherButtonColor: UIColor.colorFromRGB(0xAEDEF4)) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("No Authorization", subTitle: "Go to Settings -> Facebook -> Allow These Apps To Use Your Account -> StockSwipe", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: "Settings", otherButtonColor: UIColor(rgbValue: 0xAEDEF4)) { (isOtherButton) -> Void in
                 
                 if !isOtherButton {
                     
@@ -532,7 +532,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
         } else {
             
-            SweetAlert().showAlert("Logged Failed!", subTitle: error?.localizedDescription, style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Logged Failed!", subTitle: error?.localizedDescription, style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
         }

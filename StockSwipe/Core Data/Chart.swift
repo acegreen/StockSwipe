@@ -9,7 +9,7 @@ import UIKit
 import CoreData
 import Parse
 
-open class Chart: NSObject {
+public class Chart: NSObject {
     
     var symbol: String!
     var companyName: String!

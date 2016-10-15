@@ -78,6 +78,15 @@ extension Int {
     }
 }
 
+extension Double {
+    
+    /// Rounds the double to decimal places value
+    func roundTo(places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+}
+
 extension String {
     
     func NSRangeFromRange(_ range: Range<String.Index>) -> NSRange {
@@ -239,8 +248,9 @@ extension UIColor {
         self.init(red: newRed, green: newGreen, blue: newBlue, alpha: 1.0)
     }
     
-    class func colorFromRGB(_ rgbValue: UInt) -> UIColor {
-        return UIColor(
+    convenience init( rgbValue: UInt) {
+        
+        self.init(
             red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
             blue: CGFloat(rgbValue & 0x0000FF) / 255.0,

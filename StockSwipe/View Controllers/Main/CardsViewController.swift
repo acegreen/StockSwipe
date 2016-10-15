@@ -72,7 +72,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             return
         }
         
-        SweetAlert().showAlert("Reload?", subTitle: "Reloading with no internet will cause you to lose your loaded cards", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor.colorFromRGB(0xD0D0D0) , otherButtonTitle: "Reload", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+        SweetAlert().showAlert("Reload?", subTitle: "Reloading with no internet will cause you to lose your loaded cards", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor: UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: "Reload", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
             
             if !isOtherButton {
                 

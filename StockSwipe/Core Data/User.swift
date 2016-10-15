@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 
-public class User {
+public class User: NSObject {
     
     var userObject: PFUser!
     
@@ -28,6 +28,8 @@ public class User {
     var likedIdeasCount: Int = 0
     
     init(userObject: PFObject, completion: ((User?) -> Void)? = nil) {
+        
+        super.init()
         
         userObject.fetchIfNeededInBackground { (userObject, error) in
             
@@ -149,10 +151,10 @@ public class User {
     }
 }
 
-extension User: Equatable {}
-
-public func ==(lhs: User, rhs: User) -> Bool {
-    let areEqual = lhs.userObject == rhs.userObject
-    
-    return areEqual
-}
+//extension User: Equatable {}
+//
+//public func ==(lhs: User, rhs: User) -> Bool {
+//    let areEqual = lhs.userObject == rhs.userObject
+//    
+//    return areEqual
+//}

@@ -36,7 +36,6 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         }
     }
     
-    var cloudColors:[UIColor] = [UIColor.white]
     var cloudFontName = "HelveticaNeue"
     var cloudLayoutOperationQueue: OperationQueue!
     var cloudWords = [CloudWord]()
@@ -76,12 +75,12 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
     
     // MARK: - <CloudLayoutOperationDelegate>
     
-    func insertWord(_ word: String, pointSize: CGFloat,color: Int, center: CGPoint, vertical isVertical: Bool, tappable: Bool) {
+    func insertWord(_ word: String, pointSize: CGFloat,color: UIColor, center: CGPoint, vertical isVertical: Bool, tappable: Bool) {
         
         let wordButton: UIButton = UIButton(type: UIButtonType.system)
         wordButton.setTitle(word, for: UIControlState())
         wordButton.titleLabel?.textAlignment = NSTextAlignment.center
-        wordButton.setTitleColor(self.cloudColors[color < self.cloudColors.count ? color : 0], for: UIControlState())
+        wordButton.setTitleColor(color, for: UIControlState())
         wordButton.titleLabel?.font = UIFont(name: cloudFontName, size: pointSize)
         wordButton.sizeToFit()
         var wordButtonRect: CGRect = wordButton.frame
@@ -220,7 +219,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
                 for (index, subJson) in self.trendingStocksJSON {
                     
                     guard let symbol = subJson["symbol"].string, let wordCount = self.trendingStocksJSON.count - Int(index)! as? NSNumber else { continue }
-                    guard let cloudWord = CloudWord(word: symbol , wordCount: wordCount, wordTappable: true) else { continue }
+                    guard let cloudWord = CloudWord(word: symbol , wordCount: wordCount, wordColor: UIColor.white, wordTappable: true) else { continue }
                     self.cloudWords.append(cloudWord)
                 }
                 

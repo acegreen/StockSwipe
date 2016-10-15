@@ -19,53 +19,5 @@
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "StockSwipe/View Controllers/Main/TradeIdeaDetailTableViewController.swift"
-            timestampString = "497742106.293693"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "281"
-            endingLineNumber = "281"
-            landmarkName = "ideaUpdated(with:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "StockSwipe.TradeIdeaDetailTableViewController.ideaUpdated (with : StockSwipe.TradeIdea) -&gt; ()"
-                  moduleName = "StockSwipe"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AceGreen/App%20Development/iOS/BitBucket/StockSwipe/StockSwipe/View%20Controllers/Main/TradeIdeaDetailTableViewController.swift"
-                  timestampString = "497982176.780647"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "282"
-                  endingLineNumber = "282"
-                  offsetFromSymbolStart = "40">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "StockSwipe.TradeIdeaDetailTableViewController.(ideaUpdated (with : StockSwipe.TradeIdea) -&gt; ()).(closure #1)"
-                  moduleName = "StockSwipe"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/AceGreen/App%20Development/iOS/BitBucket/StockSwipe/StockSwipe/View%20Controllers/Main/TradeIdeaDetailTableViewController.swift"
-                  timestampString = "497982176.782953"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "282"
-                  endingLineNumber = "282"
-                  offsetFromSymbolStart = "24">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

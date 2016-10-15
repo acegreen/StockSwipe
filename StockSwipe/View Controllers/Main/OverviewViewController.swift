@@ -42,7 +42,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     var topStories = [News]()
     var charts = [Chart]()
     
-    var cloudColors:[UIColor] = [UIColor.gray]
     var cloudFontName = "HelveticaNeue"
     
     var stockTwitsLastQueriedDate: Date!
@@ -147,11 +146,11 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         if cloudWords.count == 0 && stockTwitsLastQueriedDate == nil {
             
-            let noInternetSentence = "The cloud is empty weird indeed could not grab Any Trending Stocks"
+            let noInternetSentence = "The cloud is empty weird indeed could not grab Any trending stocks"
             let breakupSentence = noInternetSentence.components(separatedBy: " ")
             
             for (index, word) in breakupSentence.enumerated() {
-                if let cloudWord = CloudWord(word: word, wordCount: (breakupSentence.count - Int(index)) as NSNumber, wordTappable: false) {
+                if let cloudWord = CloudWord(word: word, wordCount: (breakupSentence.count - Int(index)) as NSNumber, wordColor: UIColor.gray, wordTappable: false) {
                     self.cloudWords.append(cloudWord)
                 }
             }
@@ -189,6 +188,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                     self.isQueryingForTrendingStocks = false
                     
                     do {
+                        
+                        // print(trendingStocksJSON)
                         
                         let stockObjects = try result()
                         self.createCloudWords(trendingStocksJSON, stockObjects: stockObjects)
@@ -345,6 +346,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func createCloudWords(_ trendingStocksJSON: JSON, stockObjects: [PFObject]) {
         
+        let stockNames = trendingStocksJSON.map { $0.1 }.map{ $0["symbol"].string! }
+        
         self.cloudWords.removeAll()
         for (index, subJson) in trendingStocksJSON {
             
@@ -353,7 +356,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             }
             
             guard let symbol = subJson["symbol"].string, let wordCount = trendingStocksJSON.count - Int(index)! as? NSNumber else { continue }
-            guard let cloudWord = CloudWord(word: symbol , wordCount: wordCount, wordTappable: true) else { continue }
+            guard let cloudWord = CloudWord(word: symbol , wordCount: wordCount, wordColor: UIColor.gray, wordTappable: true) else { continue }
             self.cloudWords.append(cloudWord)
             
             var chart: Chart!
@@ -371,33 +374,18 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func updateCarousel(_ symbolQuote: Data) {
         
-        let carsouelJson = JSON(data: symbolQuote)
-        let carsouelJsonResults = carsouelJson["query"]["results"]
-        guard let quoteJsonResultsQuote = carsouelJsonResults["quote"].array else { return }
-        
-        for quote in quoteJsonResultsQuote {
+        Functions.makeTickers(from: symbolQuote) { (tickers) in
             
-            let symbol = quote["Symbol"].string
-            let companyName = quote["Name"].string
-            let exchange = quote["StockExchange"].string
-            let currentPrice = quote["LastTradePriceOnly"].string
-            let changeInDollar = quote["Change"].string
-            let changeInPercent = quote["ChangeinPercent"].string
+            self.tickers = tickers
             
-            if let ticker = (self.tickers.find{ $0.symbol == symbol}) {
-                self.tickers.removeObject(ticker)
+            for ticker in tickers {
+                if let chart = (self.charts.find{ $0.symbol == ticker.symbol}) {
+                    self.charts.removeObject(chart)
+                }
+                
+                let chart = Chart(symbol: ticker.symbol, companyName: ticker.companyName)
+                self.charts.append(chart)
             }
-            
-            if let chart = (self.charts.find{ $0.symbol == symbol}) {
-                self.charts.removeObject(chart)
-            }
-            
-            let ticker = Ticker(symbol: symbol, companyName: companyName, exchange: exchange, currentPrice: currentPrice, changeInDollar: changeInDollar, changeInPercent: changeInPercent)
-            
-            let chart = Chart(symbol: symbol, companyName: companyName)
-            
-            self.tickers.append(ticker)
-            self.charts.append(chart)
         }
         
         DispatchQueue.main.async {
@@ -565,12 +553,12 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
     
     // MARK: - CloudLayoutOperationDelegate
     
-    func insertWord(_ word: String, pointSize: CGFloat,color: Int, center: CGPoint, vertical isVertical: Bool, tappable: Bool) {
+    func insertWord(_ word: String, pointSize: CGFloat, color: UIColor, center: CGPoint, vertical isVertical: Bool, tappable: Bool) {
         
         let wordButton: UIButton = UIButton(type: UIButtonType.system)
         wordButton.setTitle(word, for: UIControlState())
         wordButton.titleLabel?.textAlignment = NSTextAlignment.center
-        wordButton.setTitleColor(self.cloudColors[color < self.cloudColors.count ? color : 0], for: UIControlState())
+        wordButton.setTitleColor(color, for: UIControlState())
         wordButton.titleLabel?.font = UIFont(name: self.cloudFontName, size: pointSize)
         wordButton.sizeToFit()
         var wordButtonRect: CGRect = wordButton.frame
@@ -639,7 +627,7 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
         self.cloudLayoutOperationQueue.cancelAllOperations()
         self.cloudLayoutOperationQueue.waitUntilAllOperationsAreFinished()
         self.removeCloudWords()
-        self.view.backgroundColor = UIColor.white
+        //self.view.backgroundColor = UIColor.clear
         let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: self.cloudView.bounds, scale: UIScreen.main.scale, delegate: self)
         self.cloudLayoutOperationQueue.addOperation(newCloudLayoutOperation)
         
@@ -694,34 +682,17 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
             itemView = view as! iCarouselTickerView
         }
         
-        guard tickers.get(index) != nil else { return itemView }
+        guard let tickerAtIndex = tickers.get(index) else { return itemView }
         
-        if let tickerCompanyName = tickers[index].companyName {
-            
+        if let tickerCompanyName = tickerAtIndex.companyName {
             itemView.nameLabel.text = tickerCompanyName
         }
         
-        if let tickerCurrentPrice = tickers[index].currentPrice {
-            
-            itemView.priceLabel.text = "\(tickerCurrentPrice)"
-        }
+        itemView.priceLabel.text = tickerAtIndex.priceFormatted
+        //itemView.priceLabel.textColor = tickerAtIndex.changeInDollar < 0 ? Constants.stockSwipeRedColor : Constants.stockSwipeGreenColor
         
-        if let tickerChangeInDollar = tickers[index].changeInDollar {
-            
-            if let tickerChangeInPercent = tickers[index].changeInPercent {
-                
-                itemView.priceChangeLabel.text = "\(tickerChangeInDollar) (\(tickerChangeInPercent))"
-                
-                //                    if tickerChangeInDollarDoubleValue > 0 {
-                //
-                //                        itemView.priceChangeLabel.textColor = stockSwipeGreenColor
-                //
-                //                    } else {
-                //
-                //                        itemView.priceChangeLabel.textColor = UIColor.redColor()
-                //                    }
-            }
-        }
+        itemView.priceChangeLabel.text = tickerAtIndex.changeFormatted
+        itemView.priceChangeLabel.textColor = tickerAtIndex.changeInDollar < 0 ? Constants.stockSwipeRedColor : Constants.stockSwipeGreenColor
         
         return itemView
     }

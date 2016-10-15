@@ -177,7 +177,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                     #if DEBUG
                         print("send push didn't happen in debug")
                     #else
-                        Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId": currentUser.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n" + newTradeIdea.description])
+                        Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId": currentUser.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n" + newTradeIdea.ideaDescription])
                     #endif
                 }
                 

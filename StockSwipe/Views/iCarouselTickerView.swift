@@ -32,7 +32,6 @@ class iCarouselTickerView: UIView {
         super.init(frame: frame)
         
         constructViews()
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -61,7 +60,7 @@ class iCarouselTickerView: UIView {
         let priceViewFrame:CGRect = CGRect(x: 0, y: self.nameLabel.frame.height + topPadding, width: self.bounds.width * 0.40, height: viewHeight);
         self.priceLabel = UILabel(frame:priceViewFrame)
         self.priceLabel.backgroundColor = UIColor.clear
-        self.priceLabel.textAlignment = .center
+        self.priceLabel.textAlignment = .right
         self.priceLabel.font = priceViewFont
         self.priceLabel.text = "0.0"
         self.priceLabel.textColor = priceViewFontColor
@@ -70,7 +69,6 @@ class iCarouselTickerView: UIView {
         self.priceLabel.adjustsFontSizeToFitWidth = true
         
         if !priceLabel.isDescendant(of: self) {
-            
             self.addSubview(self.priceLabel)
         }
         
@@ -86,7 +84,6 @@ class iCarouselTickerView: UIView {
         self.priceChangeLabel.adjustsFontSizeToFitWidth = true
         
         if !priceChangeLabel.isDescendant(of: self) {
-            
             self.addSubview(self.priceChangeLabel)
         }
     }

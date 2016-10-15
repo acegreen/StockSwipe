@@ -1,4 +1,6 @@
+#ifdef __OBJC__
 #import <UIKit/UIKit.h>
+#endif
 
 #import "ParseFacebookUtilsV4.h"
 #import "PFFacebookUtils.h"

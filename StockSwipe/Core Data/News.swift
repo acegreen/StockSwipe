@@ -16,5 +16,4 @@ public struct News {
     let url: String?
     let publisher: String?
     let publishedDate: String?
-    
 }

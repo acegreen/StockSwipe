@@ -13,9 +13,17 @@ public struct Ticker {
     let symbol: String?
     let companyName:String?
     let exchange: String?
-    let currentPrice: String?
-    let changeInDollar: String?
-    let changeInPercent: String?
+    var currentPrice: Double = 0.0
+    var changeInDollar: Double = 0.0
+    var changeInPercent: Double = 0.0
+    
+    var priceFormatted: String {
+        return "\(currentPrice.roundTo(places: 2))"
+    }
+    
+    var changeFormatted: String {
+        return "\(changeInDollar.roundTo(places: 2)) " + "(\(changeInPercent.roundTo(places: 2))%)"
+    }
 }
 
 extension Ticker: Equatable {}

@@ -78,7 +78,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
                             SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
                             
                             // log shared successfully
-                            Answers.logShare(withMethod: activity,
+                            Answers.logShare(withMethod: "\(activity!)",
                                 contentName: self.symbol + " Chart Shared",
                                 contentType: "Share",
                                 contentId: nil,
@@ -163,9 +163,9 @@ extension ChartWebViewController: WKNavigationDelegate {
         actionButton.isEnabled = true
         //        tradeItButton.enabled = true
         
-        Functions.showPopTip(popTipText: NSLocalizedString("Share this trade idea", comment: ""),
-                             inView: view,
-                             fromFrame: CGRect(x: view.frame.width - 30, y: -10, width: 1, height: 1), direction: .down, color: Constants.stockSwipeGreenColor)
+        Functions.showPopTip(popTipText: NSLocalizedString("Share", comment: ""),
+                             inView: self.navigationController!.view,
+                             fromFrame: CGRect(x: view.frame.width - 30, y: 50, width: 1, height: 1), direction: .down, color: Constants.stockSwipeGreenColor, duration: 2)
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {

@@ -64,9 +64,13 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     var overviewVCOperationQueue: OperationQueue = OperationQueue()
     var cloudLayoutOperationQueue: OperationQueue = OperationQueue()
     
+    @IBOutlet var cloudViewHeightConstraint: NSLayoutConstraint!
+    
     @IBOutlet var carousel : iCarousel!
     
     @IBOutlet var cloudView: UIView!
+    
+    @IBOutlet var trendingCloudShowButton: UIButton!
     
     @IBOutlet var latestTradeIdeasTableView: UITableView!
     
@@ -77,6 +81,40 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     @IBOutlet var emptyLabel1: UILabel!
     
     @IBOutlet var emptyLabel2: UILabel!
+    
+    @IBAction func trendingCloudShowButtonAction(_ sender: UIButton) {
+        
+        if sender.currentTitle == "See less" {
+            
+            UIView.animate(withDuration: 1.0,
+                           delay: 0,
+                           usingSpringWithDamping: 1,
+                           initialSpringVelocity: 1,
+                           options: UIViewAnimationOptions.curveEaseIn,
+                           animations: { () -> Void in
+                            self.cloudViewHeightConstraint = self.cloudViewHeightConstraint.setMultiplier(multiplier: 0.2)
+                }, completion: { (success) in
+                    self.layoutCloudWords()
+            })
+            
+            sender.setTitle("See more", for: UIControlState())
+            
+        } else {
+            
+            UIView.animate(withDuration: 1.0,
+                           delay: 0,
+                           usingSpringWithDamping: 1,
+                           initialSpringVelocity: 1,
+                           options: UIViewAnimationOptions.curveEaseIn,
+                           animations: { () -> Void in
+                            self.cloudViewHeightConstraint = self.cloudViewHeightConstraint.setMultiplier(multiplier: 0.4)
+                }, completion: { (success) in
+                    self.layoutCloudWords()
+            })
+            
+            sender.setTitle("See less", for: UIControlState())
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +131,11 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         self.latestNewsTableView.tableFooterView = UIView(frame: CGRect.zero)
         topStoriesRefreshControl.addTarget(self, action: #selector(OverviewViewController.refreshTopStories(_:)), for: .valueChanged)
         self.latestNewsTableView.addSubview(topStoriesRefreshControl)
+        
+        // Set "Show less" button
+        if Constants.current.userInterfaceIdiom == .phone {
+            self.trendingCloudShowButton.isHidden = false
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

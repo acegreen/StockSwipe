@@ -11,6 +11,7 @@ import Parse
 import ParseUI
 import ParseTwitterUtils
 import ParseFacebookUtilsV4
+import Crashlytics
 import LaunchKit
 import ChimpKit
 import SwiftyJSON
@@ -344,6 +345,9 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         // send delegate info
                         self.loginDelegate?.didLoginSuccessfully()
                         
+                        // Log Login
+                        Answers.logLogin(withMethod: ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter).accountTypeDescription, success: 1, customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                        
                         //            if let authData = user.performSelector(Selector("authData")).takeUnretainedValue() {
                         //
                         //                print(authData["twitter"]!!["id"])
@@ -464,6 +468,9 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                                 // send delegate info
                                 self.loginDelegate?.didLoginSuccessfully()
                                 
+                                // Log Login
+                                Answers.logLogin(withMethod: ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierFacebook).accountTypeDescription, success: 1, customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                                
                             }
                             
                             self.logInViewController.dismiss(animated: true, completion: { () -> Void in
@@ -505,6 +512,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         
         if !Functions.isConnectedToNetwork() {
             
+            // Show Error Alert
             SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }
@@ -512,26 +520,32 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
         } else if !ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter).accessGranted {
             
+            // Show Error Alert
             SweetAlert().showAlert("No Authorization", subTitle: "Go to Settings -> Twitter -> Allow These Apps To Use Your Account -> StockSwipe", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: "Settings", otherButtonColor: UIColor(rgbValue: 0xAEDEF4)) { (isOtherButton) -> Void in
                 
                 if !isOtherButton {
-                    
                     UIApplication.shared.openURL(Constants.settingsURL!)
                 }
             }
+            
+            // Log Login Fail
+            Answers.logLogin(withMethod: ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter).accountTypeDescription, success: 0, customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
             
         } else if !ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierFacebook).accessGranted {
             
             SweetAlert().showAlert("No Authorization", subTitle: "Go to Settings -> Facebook -> Allow These Apps To Use Your Account -> StockSwipe", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: "Settings", otherButtonColor: UIColor(rgbValue: 0xAEDEF4)) { (isOtherButton) -> Void in
                 
                 if !isOtherButton {
-                    
                     UIApplication.shared.openURL(Constants.settingsURL!)
                 }
             }
             
+            // Log Login Fail
+            Answers.logLogin(withMethod: ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierFacebook).accountTypeDescription, success: 0, customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+            
         } else {
             
+            // Show Error Alert
             SweetAlert().showAlert("Logged Failed!", subTitle: error?.localizedDescription, style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
             }

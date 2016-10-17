@@ -197,36 +197,28 @@ class Functions {
     
     class func setImageURL(_ symbol: String) -> URL? {
         
-        let URL: Foundation.URL?
-        
         if UIDevice.current.userInterfaceIdiom == .pad {
             
-            URL = Foundation.URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D.png")
+            return URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D.png")
             
         } else {
             
-            URL = Foundation.URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D_phone.png")
+            return URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D_phone.png")
         }
-        
-        return URL
     }
     
     class func setChartURL(_ symbol: String) -> URL {
         
         let formattedSymbol = symbol.URLEncodedString()!
         
-        let URL: Foundation.URL!
-        
         if UIDevice.current.userInterfaceIdiom == .pad {
             
-            URL = Foundation.URL(string: "http://45.55.137.153/?symbol=\(formattedSymbol)&interval=D")
+            return URL(string: "http://45.55.137.153/?symbol=\(formattedSymbol)&interval=D")!
             
         } else {
             
-            URL = Foundation.URL(string: "http://45.55.137.153/mobile_white.html?symbol=\(formattedSymbol)&interval=D")
+            return URL(string: "http://45.55.137.153/mobile_white.html?symbol=\(formattedSymbol)&interval=D")!
         }
-        
-        return URL
     }
     
     class func getImage(_ imageURL: URL?, completion: @escaping (UIImage?) -> Void) {
@@ -540,7 +532,7 @@ class Functions {
         
         let activity = NSUserActivity(activityType: domainIdentifier)
         activity.title = chart.symbol
-        activity.keywords = NSSet(array: [chart.symbol, chart.companyName, chart.searchDescription, "Stocks", "Markets"]) as! Set<String>
+        activity.keywords = NSSet(array: [chart.symbol, chart.companyName, "Stocks", "Markets"]) as! Set<String>
         activity.userInfo = ["symbol": chart.symbol, "companyName": chart.companyName]
         activity.contentAttributeSet = attributeSet
         

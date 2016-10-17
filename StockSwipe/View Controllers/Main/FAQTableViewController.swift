@@ -15,7 +15,6 @@ class FAQTableViewController: UITableViewController, CellType {
         case ExpandingCell = "ExpandingCell"
     }
     
-    let estimatedHeight: CGFloat = 150
     let topInset: CGFloat = 20
     
     var questionObjects = [PFObject]()
@@ -25,8 +24,6 @@ class FAQTableViewController: UITableViewController, CellType {
         
         tableView.tableFooterView = UIView()
         tableView.contentInset.top = topInset
-        tableView.estimatedRowHeight = estimatedHeight
-        tableView.rowHeight = UITableViewAutomaticDimension
 
         let faqQuery = PFQuery(className: "FAQ")
         faqQuery.order(byAscending: "index")
@@ -51,6 +48,14 @@ class FAQTableViewController: UITableViewController, CellType {
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
         return self.questionObjects.count
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableViewAutomaticDimension
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
     }
     
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {

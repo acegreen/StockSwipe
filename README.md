@@ -1,3 +1,5 @@
+![Twitter_Ad_1.png](https://bitbucket.org/repo/gL9grq/images/3439099559-Twitter_Ad_1.png)
+
 # StockSwipe #
 
 Don't find a gold digger, find a gold miner. And instead of begging for a date, find a 10 bagger trade!!

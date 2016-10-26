@@ -864,7 +864,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8AC17D9B1AC7366A004E6D2D /* Build configuration list for PBXProject "StockSwipe.xcodeproj.rollouttemp" */;
+			buildConfigurationList = 8AC17D9B1AC7366A004E6D2D /* Build configuration list for PBXProject "StockSwipe" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1502,7 +1502,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8AC17D9B1AC7366A004E6D2D /* Build configuration list for PBXProject "StockSwipe.xcodeproj.rollouttemp" */ = {
+		8AC17D9B1AC7366A004E6D2D /* Build configuration list for PBXProject "StockSwipe" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8AC17DC01AC7366A004E6D2D /* Debug */,

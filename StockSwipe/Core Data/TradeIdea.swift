@@ -14,27 +14,8 @@ public class TradeIdea: NSObject {
     var user: User!
     var ideaDescription: String!
     
-    var likeCount: Int = 0 {
-        willSet {
-            if newValue > likeCount {
-                self.parseObject.incrementKey("likeCount")
-            } else if likeCount > 0 {
-                self.parseObject.incrementKey("likeCount", byAmount: -1)
-            }
-            self.parseObject.saveEventually()
-        }
-    }
-    
-    var reshareCount: Int = 0 {
-        willSet {
-            if newValue > reshareCount {
-                self.parseObject.incrementKey("reshareCount")
-            } else if reshareCount > 0 {
-                self.parseObject.incrementKey("reshareCount", byAmount: -1)
-            }
-            self.parseObject.saveEventually()
-        }
-    }
+    var likeCount: Int = 0
+    var reshareCount: Int = 0
     
     var isLikedByCurrentUser: Bool! = false
     var isResharedByCurrentUser: Bool! = false
@@ -60,12 +41,9 @@ public class TradeIdea: NSObject {
             }
             
             self.parseObject = parseObject
-            
+
             self.ideaDescription = parseObject.object(forKey: "description") as? String ?? ""
-            
-            self.likeCount = parseObject.object(forKey: "likeCount") as? Int ?? 0
-            self.reshareCount = parseObject.object(forKey: "reshareCount") as? Int ?? 0
-            
+
             self.createdAt = parseObject.createdAt
             
             self.checkNumberOfLikes(completion: { (likeCount) in
@@ -105,7 +83,7 @@ public class TradeIdea: NSObject {
     
     func checkNumberOfLikes(completion: ((Int) -> Void)?) {
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -135,7 +113,7 @@ public class TradeIdea: NSObject {
     
     func checkNumberOfReshares(completion: ((Int) -> Void)?) {
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: self.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: self.parseObject, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 

@@ -312,7 +312,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         isQueryingForTradeIdeas = true
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
             
             do {
                 

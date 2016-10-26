@@ -72,7 +72,7 @@ class Functions {
                     }
                 }
                 
-                QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -86,7 +86,7 @@ class Functions {
                     }
                 })
                 
-                QueryHelper.sharedInstance.queryActivityFor(fromUser: user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -248,16 +248,8 @@ class Functions {
                 
                 QueryHelper.sharedInstance.queryChartImage(symbol: symbol, completion: { (result) in
                     
-                    do {
-                        
-                        let chart = Chart(parseObject: stockObject)
-                        completion({ (object: stockObject, chart: chart)})
-                        
-                    } catch {
-                        
-                        completion({throw error})
-                        
-                    }
+                    let chart = Chart(parseObject: stockObject)
+                    completion({ (object: stockObject, chart: chart)})
                     
                 })
                 
@@ -277,7 +269,7 @@ class Functions {
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
             
             do {
                 

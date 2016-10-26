@@ -27,16 +27,13 @@ public class TradeIdea: NSObject {
     var parseObject: PFObject!
     var nestedParseObject: PFObject?
     
-    init(parseObject: PFObject, completion: ((TradeIdea?) -> Void)? = nil) {
+    init(parseObject: PFObject) {
         
         super.init()
         
         parseObject.fetchIfNeededInBackground { (parseObject, error) in
             
             guard let parseObject = parseObject else  {
-                if let completion = completion {
-                    completion(self)
-                }
                 return
             }
             
@@ -46,38 +43,16 @@ public class TradeIdea: NSObject {
 
             self.createdAt = parseObject.createdAt
             
-            self.checkNumberOfLikes(completion: { (likeCount) in
+            if let userObject = parseObject.object(forKey: "user") as? PFObject {
                 
-                self.checkNumberOfReshares(completion: { (reshareCount) in
-                    
-                    if let userObject = parseObject.object(forKey: "user") as? PFObject {
-                        
-                        User(userObject: userObject, completion: { (user) in
-                            
-                            self.user = user
-                            
-                            if let nestedTradeIdeaObject = parseObject.object(forKey: "reshare_of") as? PFObject {
-                                
-                                self.nestedParseObject = nestedTradeIdeaObject
-                                
-                                TradeIdea(parseObject: nestedTradeIdeaObject, completion: { (tradeIdea) in
-                                    
-                                    self.nestedTradeIdea = tradeIdea
-                                    
-                                    if let completion = completion {
-                                        completion(self)
-                                    }
-                                })
-                            } else {
-                                
-                                if let completion = completion {
-                                    completion(self)
-                                }
-                            }
-                        })
-                    }
-                })
-            })
+                self.user = User(userObject: userObject)
+            }
+            
+            if let nestedTradeIdeaObject = parseObject.object(forKey: "reshare_of") as? PFObject {
+                
+                self.nestedParseObject = nestedTradeIdeaObject
+                self.nestedTradeIdea = TradeIdea(parseObject: nestedTradeIdeaObject)
+            }
         }
     }
     

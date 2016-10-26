@@ -417,18 +417,15 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func updateCarousel(_ symbolQuote: Data) {
         
-        Functions.makeTickers(from: symbolQuote) { (tickers) in
-            
-            self.tickers = tickers
-            
-            for ticker in tickers {
-                if let chart = (self.charts.find{ $0.symbol == ticker.symbol}) {
-                    self.charts.removeObject(chart)
-                }
-                
-                let chart = Chart(symbol: ticker.symbol, companyName: ticker.companyName)
-                self.charts.append(chart)
+        self.tickers = Functions.makeTickers(from: symbolQuote)
+        
+        for ticker in tickers {
+            if let chart = (self.charts.find{ $0.symbol == ticker.symbol}) {
+                self.charts.removeObject(chart)
             }
+            
+            let chart = Chart(symbol: ticker.symbol, companyName: ticker.companyName)
+            self.charts.append(chart)
         }
         
         DispatchQueue.main.async {
@@ -439,23 +436,17 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func updateTradeIdeas(_ tradeIdeaObjects: [PFObject]) {
         
-        Functions.makeTradeIdeas(from: tradeIdeaObjects, sorted: true, completion: { (tradeIdeas) in
-            
-            DispatchQueue.main.async {
-                
-                self.tradeIdeas = tradeIdeas
-                
-                // reload table
-                self.latestTradeIdeasTableView.reloadData()
-                
-                // end refresh indicator
-                if self.tradeIdeasRefreshControl.isRefreshing == true {
-                    self.tradeIdeasRefreshControl.endRefreshing()
-                }
-                
-                self.isQueryingForTradeIdeas = false
-            }
-        })
+        self.tradeIdeas = Functions.makeTradeIdeas(from: tradeIdeaObjects)
+
+        // reload table
+        self.latestTradeIdeasTableView.reloadData()
+        
+        // end refresh indicator
+        if self.tradeIdeasRefreshControl.isRefreshing == true {
+            self.tradeIdeasRefreshControl.endRefreshing()
+        }
+        
+        self.isQueryingForTradeIdeas = false
     }
     
     func updateTopStories(_ result: Data) {

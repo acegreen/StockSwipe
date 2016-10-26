@@ -27,18 +27,13 @@ public class User: NSObject {
     var followersCount: Int = 0
     var likedIdeasCount: Int = 0
     
-    init(userObject: PFObject, completion: ((User?) -> Void)? = nil) {
+    init(userObject: PFObject) {
         
         super.init()
         
         userObject.fetchIfNeededInBackground { (userObject, error) in
             
-            guard let userObject = userObject else {
-                if let completion = completion {
-                    completion(self)
-                }
-                return
-            }
+            guard let userObject = userObject else { return }
             
             self.userObject = userObject as! PFUser
             
@@ -48,37 +43,29 @@ public class User: NSObject {
             self.profile_image_url = userObject.object(forKey: "profile_image_url") as? String
             
             self.createdAt = userObject.createdAt
-            
-            self.getAvatar({ (image) in
-                if let image = image  {
-                    self.avtar = image
-                }
-                if let completion = completion {
-                    completion(self)
-                }
-            })
         }
     }
     
     func getAvatar(_ completion: @escaping (UIImage?) -> Void) {
         
         if let profileImageURL = self.profile_image_url {
-            QueryHelper.sharedInstance.queryWith(queryString: profileImageURL, completionHandler: { (result) in
+            QueryHelper.sharedInstance.queryWith(queryString: profileImageURL, useCacheIfPossible: true, completionHandler: { (result) in
                 
                 do {
                     
                     let avatarData  = try result()
                     
                     if let image = UIImage(data: avatarData) {
+                        self.avtar = image
                         completion(image)
                     }
                     
                 } catch {
-                    completion(nil)
+                    completion(self.avtar)
                 }
             })
         } else {
-            completion(nil)
+            completion(self.avtar)
         }
     }
     

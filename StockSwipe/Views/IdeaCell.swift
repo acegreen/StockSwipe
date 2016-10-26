@@ -237,7 +237,11 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.ideaTime.text = nsPublishedDate.formattedAsTimeAgo()
         }
         
-        self.userAvatar.image = tradeIdea.user.avtar
+        self.tradeIdea.user.getAvatar({ (image) in
+            DispatchQueue.main.async {
+                self.userAvatar.image = image
+            }
+        })
 
         // Add Gesture Recognizers
         let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
@@ -270,7 +274,11 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.nestedIdeaDescription = nil
         }
         
-        self.nestedUserAvatar.image = nestedTradeIdea.user.avtar
+        nestedTradeIdea.user.getAvatar({ (image) in
+            DispatchQueue.main.async {
+                self.nestedUserAvatar.image = image
+            }
+        })
         
         let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
         self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
@@ -290,6 +298,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         // Send push
         switch tradeIdeaTyp {
         case .new:
+            
             return
             
         case .reply:

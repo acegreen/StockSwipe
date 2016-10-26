@@ -37,10 +37,10 @@ class BlockedAccountsTableViewController: UITableViewController, SegueHandlerTyp
         guard let blockedUsersObjects = currentUser["blocked_users"] as? [PFUser] else { return }
         
         blockedUsers = blockedUsersObjects.map({
-            User(userObject: $0, completion: { (user) in
-                self.tableView.reloadData()
-            })
+            User(userObject: $0)
         })
+        
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source

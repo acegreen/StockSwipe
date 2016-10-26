@@ -117,13 +117,9 @@ class SearchTableViewController: UITableViewController {
         if objectAtIndex.isKind(of: PFUser.self) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
-            User(userObject: objectAtIndex as! PFUser, completion: { (user) in
-                if let user = user {
-                    DispatchQueue.main.async {
-                        cell.configureCell(with: user)
-                    }
-                }
-            })
+            let user = User(userObject: objectAtIndex as! PFUser)
+            
+            cell.configureCell(with: user)
             
             return cell
             
@@ -233,12 +229,11 @@ class SearchTableViewController: UITableViewController {
             let profileNavigationController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
             let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
             
-            User(userObject: user, completion: { (user) in
-                
-                profileContainerController.user = user
-                    
-                UIApplication.topViewController()?.present(profileNavigationController, animated: true, completion: nil)
-            })
+            let user = User(userObject: user)
+            
+            profileContainerController.user = user
+            
+            UIApplication.topViewController()?.present(profileNavigationController, animated: true, completion: nil)
         }
     }
     

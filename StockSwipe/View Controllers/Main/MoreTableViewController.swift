@@ -56,17 +56,15 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         
         guard let currentUser = PFUser.current() , currentUser.isAuthenticated else { return }
 
-        User(userObject: currentUser, completion: { (user) in
-            
-            self.currentUser = user
-            
+        self.currentUser = User(userObject: currentUser)
+    
+        self.currentUser.getAvatar { (avatar) in
             DispatchQueue.main.async {
                 self.profileAvatarImage.image = self.currentUser.avtar
-                self.profileLabel.text = self.currentUser.fullname
             }
-            
-            completion()
-        })
+        }
+        
+        self.profileLabel.text = self.currentUser.fullname
     }
     
     // MARK: - LoginDelegate methods

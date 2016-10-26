@@ -428,65 +428,21 @@ class Functions {
         return nil
     }
     
-    class func makeTradeIdeas(from tradeIdeaObjects: [PFObject], sorted: Bool, completion: @escaping ([TradeIdea]) -> Void) {
-        
-        //let queue = DispatchQueue(label: "Trade Idea Query Queue")
-        
-        var tradeIdeas = [TradeIdea]()
-        for tradeIdeaObject in tradeIdeaObjects {
-            
-            //queue.async {
-                
-                TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
-                    
-                    if let tradeIdea = tradeIdea {
-                        
-                        tradeIdeas.append(tradeIdea)
-                        
-                        if tradeIdeas.count == tradeIdeaObjects.count {
-                            if sorted {
-                                tradeIdeas.sort { $0.createdAt > $1.createdAt }
-                            }
-                            
-                            completion(tradeIdeas)
-                        }
-                    }
-                })
-            //}
-        }
+    class func makeTradeIdeas(from tradeIdeaObjects: [PFObject]) -> [TradeIdea] {
+        return tradeIdeaObjects.map { TradeIdea(parseObject: $0) }
     }
     
-    class func makeUser(from userObjects: [PFUser], completion: @escaping ([User]) -> Void) {
-        
-        //let queue = DispatchQueue(label: "Users Query Queue")
-        
-        var users = [User]()
-        for userObject in userObjects {
-            
-            //queue.async {
-                
-                User(userObject: userObject, completion: { (user) in
-                    
-                    if let user = user {
-                        
-                        users.append(user)
-                        
-                        if users.count == userObjects.count {
-                            completion(users)
-                        }
-                    }
-                })
-            //}
-        }
+    class func makeUser(from userObjects: [PFUser]) -> [User] {
+        return userObjects.map { User(userObject: $0) }
     }
     
-    class func makeTickers(from symbolQuote: Data, completion: @escaping ([Ticker]) -> Void) {
+    class func makeTickers(from symbolQuote: Data) -> [Ticker] {
         
         var tickers = [Ticker]()
         
         let carsouelJson = JSON(data: symbolQuote)
         let carsouelJsonResults = carsouelJson["query"]["results"]
-        guard let quoteJsonResultsQuote = carsouelJsonResults["quote"].array else { return }
+        guard let quoteJsonResultsQuote = carsouelJsonResults["quote"].array else { return tickers }
         
         for quote in quoteJsonResultsQuote {
             
@@ -502,7 +458,7 @@ class Functions {
             tickers.append(ticker)
         }
         
-        completion(tickers)
+        return tickers
     }
     
     class func setupConfigParameter(_ parameter:String, completion: @escaping (_ parameterValue: Any?) -> Void) {

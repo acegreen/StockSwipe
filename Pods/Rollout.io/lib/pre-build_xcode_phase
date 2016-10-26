@@ -3,6 +3,20 @@
 LIB_DIR=$(dirname "$0")
 ROLLOUT_DIR=$(dirname "$LIB_DIR")
 
+unset app_key
+while getopts "k:" option; do #{{{
+  case $option in
+    k)
+      app_key=$OPTARG
+      ;;
+  esac
+done #}}}
+
+BUILD_SETTINGS_FILE=/tmp/rollout_var/build_data/$TARGET_NAME.$CURRENT_ARCH-apple-$SWIFT_PLATFORM_TARGET_PREFIX$IPHONEOS_DEPLOYMENT_TARGET
+echo "Using build settings file: $BUILD_SETTINGS_FILE"
+mkdir -p `dirname $BUILD_SETTINGS_FILE`
+echo "rollout_key=$app_key" > $BUILD_SETTINGS_FILE
+
 xcodeproj_configuration=`(. "$LIB_DIR"/versions; echo $xcodeproj_configuration)`
 [ 0$ROLLOUT_lastXcodeprojConfiguration -ge $xcodeproj_configuration ] || {
   cat << end_of_error_msg

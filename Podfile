@@ -1,8 +1,7 @@
-platform :ios, '9.0'
 use_frameworks!
 
 def shared_pods
-    pod 'SwiftyJSON', :git => 'https://github.com/acegreen/SwiftyJSON.git', :branch => 'swift3'
+    pod 'SwiftyJSON'
 end
 
 target 'StockSwipe' do
@@ -11,10 +10,10 @@ target 'StockSwipe' do
     pod 'MDCSwipeToChoose', :git => 'https://github.com/acegreen/MDCSwipeToChoose.git'
     pod 'SDVersion'
     pod 'DZNEmptyDataSet'
-    pod 'Charts', :git => 'https://github.com/danielgindi/Charts.git', :branch => 'Chart2.2.5-Swift3.0'
+    pod 'Charts'
     pod 'SWXMLHash'
     pod 'DataCache', :git => 'https://github.com/huynguyencong/DataCache.git'
-    pod 'ReachabilitySwift', :git => 'https://github.com/ashleymills/Reachability.swift.git', :branch => 'feature/ios10'
+    pod 'ReachabilitySwift'
 
     # Analytics
     pod 'Crashlytics'

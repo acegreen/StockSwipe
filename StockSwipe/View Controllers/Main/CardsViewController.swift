@@ -207,7 +207,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         self.reloadFilterButtonsEnabled(false)
         
         if firstCardView == nil {
-            Functions.activityIndicator(self.view, halo: &halo, state: true)
+            activityIndicator(state: true)
         }
         
         // Setup config parameters
@@ -322,7 +322,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         DispatchQueue.main.async {
             
-            Functions.activityIndicator(self.view, halo: &self.halo, state: false)
+            self.activityIndicator(state: false)
             
             // Display First Card
             if self.firstCardView == nil {
@@ -416,7 +416,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         DispatchQueue.main.async {
             
-            Functions.activityIndicator(self.view, halo: &self.halo, state: false)
+            self.activityIndicator(state: false)
             
             guard self.informationCardView == nil else { return }
             
@@ -437,7 +437,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 //            self.informationCardView.layer.shadowOffset = CGSizeMake(0, 10)
                 //            self.informationCardView.layer.shadowPath = UIBezierPath(roundedRect: self.informationCardView.bounds, cornerRadius: 50).CGPath
                 
-                },completion:nil)
+                },completion: nil)
         }
     }
     
@@ -784,6 +784,36 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 self.informationCardView.removeFromSuperview()
                 self.informationCardView = nil
                 
+            }
+        }
+    }
+    
+    func activityIndicator(state: Bool) {
+        
+        var halo: NVActivityIndicatorView!
+        
+        if state {
+            
+            if halo != nil, halo.isDescendant(of: view) {
+                halo.stopAnimating()
+                halo.removeFromSuperview()
+                halo = nil
+            }
+            
+            if halo == nil {
+                // Create loading animation
+                let frame = CGRect(x: view.bounds.midX - view.bounds.height / 4 , y: view.bounds.midY - view.bounds.height / 4, width: view.bounds.height / 2, height: view.bounds.height / 2)
+                halo = NVActivityIndicatorView(frame: frame, type: .ballScaleMultiple, color: UIColor.lightGray)
+                view.addSubview(halo)
+                halo.startAnimating()
+            }
+            
+        } else {
+            
+            if halo != nil {
+                halo.stopAnimating()
+                halo.removeFromSuperview()
+                halo = nil
             }
         }
     }

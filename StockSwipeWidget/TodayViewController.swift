@@ -174,7 +174,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         self.cloudLayoutOperationQueue.cancelAllOperations()
         self.cloudLayoutOperationQueue.waitUntilAllOperationsAreFinished()
         self.removeCloudWords()
-        self.view.backgroundColor = UIColor.clear
+        //self.view.backgroundColor = UIColor.clear
         let cloudFrame = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
         let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: cloudFrame, scale: UIScreen.main.scale, delegate: self)
         self.cloudLayoutOperationQueue.addOperation(newCloudLayoutOperation)

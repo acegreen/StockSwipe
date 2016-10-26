@@ -42,11 +42,8 @@ public class Chart: NSObject {
     var searchDescription: String {
         
         if self.shortCount > 0 || self.shortCount > 0 {
-            
             return companyName + "\n" + "Shorts: \(shortCount)" + "\n" + "Longs: \(longCount)"
-            
         } else {
-            
             return companyName
         }
     }

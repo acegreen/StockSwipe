@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04A4CC8974BC29CC234258FC /* RolloutGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19A09659B9CAECBD7A088E6 /* RolloutGenerated.swift */; };
 		230428D41CA2E419009DDC21 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23332BA11CA08404006E4863 /* MainInterface.storyboard */; };
 		230428D51CA2E46C009DDC21 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23332BA41CA08416006E4863 /* TodayViewController.swift */; };
 		230FBB2B1D1F0505000394AD /* TintableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 230FBB2A1D1F0505000394AD /* TintableButton.swift */; };
@@ -128,6 +129,7 @@
 		23EA70261B11985A008F6C12 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA70251B11985A008F6C12 /* Accounts.framework */; };
 		23EA70281B119861008F6C12 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA70271B119861008F6C12 /* Social.framework */; };
 		23ECED261B9B60B200688768 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23ECED251B9B60B200688768 /* NewsCell.swift */; };
+		607FBFE70B135B3DEF994BCE /* RolloutSwiftInjectionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0858F652FFF7167EBAFD9A9 /* RolloutSwiftInjectionBridge.swift */; };
 		7888E1041B669C780087C255 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7602B1B62AC5B009777E1 /* CoreSpotlight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7888E10A1B66D5880087C255 /* CustomUnwindSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7888E1091B66D5880087C255 /* CustomUnwindSegue.swift */; };
 		A9A3E6D544B258A12E459335 /* Pods_StockSwipeWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20F0DA058379F7E7BCD77D90 /* Pods_StockSwipeWidget.framework */; };
@@ -318,6 +320,8 @@
 		88C8817E07F719AC9372FB54 /* Pods_StockSwipeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockSwipeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC17DA01AC7366A004E6D2D /* StockSwipe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockSwipe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEDDC51E64E945056DDC5558 /* Pods-StockSwipe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipe.release.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipe/Pods-StockSwipe.release.xcconfig"; sourceTree = "<group>"; };
+		F0858F652FFF7167EBAFD9A9 /* RolloutSwiftInjectionBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutSwiftInjectionBridge.swift; path = Pods/Rollout.io/RolloutSwift/RolloutSwiftInjectionBridge.swift; sourceTree = "<group>"; };
+		F19A09659B9CAECBD7A088E6 /* RolloutGenerated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutGenerated.swift; path = Pods/Rollout.io/RolloutSwift/RolloutGenerated.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -664,6 +668,7 @@
 				2378B5861B115FB3002ACFDC /* StockSwipeTests */,
 				8AC17DA11AC7366A004E6D2D /* Products */,
 				396D5A88566A826DCB501185 /* Pods */,
+				9873A5938BC1C33740F8D01F /* Rollout */,
 			);
 			sourceTree = "<group>";
 		};
@@ -749,6 +754,15 @@
 			path = "Core Data";
 			sourceTree = "<group>";
 		};
+		9873A5938BC1C33740F8D01F /* Rollout */ = {
+			isa = PBXGroup;
+			children = (
+				F19A09659B9CAECBD7A088E6 /* RolloutGenerated.swift */,
+				F0858F652FFF7167EBAFD9A9 /* RolloutSwiftInjectionBridge.swift */,
+			);
+			name = Rollout;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -795,8 +809,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AC17DC21AC7366A004E6D2D /* Build configuration list for PBXNativeTarget "StockSwipe" */;
 			buildPhases = (
+				635387C0EFB532040394A7C0 /* Rollout.io pre-build */,
 				58B6642F3B6926F22922ACFF /* [CP] Check Pods Manifest.lock */,
-				87072B184AF3EBA76AFF04FF /* Rollout.io pre-build */,
 				8AC17D9C1AC7366A004E6D2D /* Sources */,
 				8AC17D9D1AC7366A004E6D2D /* Frameworks */,
 				8AC17D9E1AC7366A004E6D2D /* Resources */,
@@ -804,8 +818,8 @@
 				23E7F6AE1BCB57A0009A016D /* Embed App Extensions */,
 				816270F03CFA12797FF94487 /* [CP] Embed Pods Frameworks */,
 				1A12D03F3D98D4DD994CBE82 /* [CP] Copy Pods Resources */,
-				E55DE24CF77C74A97428EF60 /* Rollout.io post-build */,
 				23CCA6A51DA5D5E700EE4F09 /* Embed Frameworks */,
+				F51A97A940D58E83C99BE5F1 /* Rollout.io post-build */,
 			);
 			buildRules = (
 			);
@@ -850,7 +864,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 8AC17D9B1AC7366A004E6D2D /* Build configuration list for PBXProject "StockSwipe" */;
+			buildConfigurationList = 8AC17D9B1AC7366A004E6D2D /* Build configuration list for PBXProject "StockSwipe.xcodeproj.rollouttemp" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -1000,6 +1014,20 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
+		635387C0EFB532040394A7C0 /* Rollout.io pre-build */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Rollout.io pre-build";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "ROLLOUT_lastXcodeprojConfiguration=7 \"${SRCROOT}/Pods/Rollout.io/lib/pre-build_xcode_phase\" -k 568730c9045462554abcb4cc";
+		};
 		773D38C05ADA2DAD6FDEBBFE /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1030,21 +1058,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StockSwipe/Pods-StockSwipe-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		87072B184AF3EBA76AFF04FF /* Rollout.io pre-build */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Rollout.io pre-build";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "ROLLOUT_lastXcodeprojConfiguration=7 \"${SRCROOT}/Pods/Rollout.io/lib/pre-build_xcode_phase\"";
-		};
-		E55DE24CF77C74A97428EF60 /* Rollout.io post-build */ = {
+		F51A97A940D58E83C99BE5F1 /* Rollout.io post-build */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1158,6 +1172,8 @@
 				23CF60461B1CA8310087B9D5 /* BorderedLabel.swift in Sources */,
 				23DD55051D34A4DC00D8FE3B /* NotificationCell.swift in Sources */,
 				23C122551C5AA0FE00524721 /* TopNewsCell.swift in Sources */,
+				04A4CC8974BC29CC234258FC /* RolloutGenerated.swift in Sources */,
+				607FBFE70B135B3DEF994BCE /* RolloutSwiftInjectionBridge.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1419,6 +1435,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "AG.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = StockSwipe;
 				PROVISIONING_PROFILE = "";
+				SWIFT_EXEC = "$(SRCROOT)/Pods/Rollout.io/lib/swift_wrapper/swiftc";
 				SWIFT_OBJC_BRIDGING_HEADER = "StockSwipe/Bundle Files/BridgingHeader.h";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1456,6 +1473,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "AG.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = StockSwipe;
 				PROVISIONING_PROFILE = "";
+				SWIFT_EXEC = "$(SRCROOT)/Pods/Rollout.io/lib/swift_wrapper/swiftc";
 				SWIFT_OBJC_BRIDGING_HEADER = "StockSwipe/Bundle Files/BridgingHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
@@ -1484,7 +1502,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		8AC17D9B1AC7366A004E6D2D /* Build configuration list for PBXProject "StockSwipe" */ = {
+		8AC17D9B1AC7366A004E6D2D /* Build configuration list for PBXProject "StockSwipe.xcodeproj.rollouttemp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				8AC17DC01AC7366A004E6D2D /* Debug */,

@@ -6,6 +6,9 @@
 //  Copyright © 2015 StockSwipe. All rights reserved.
 //
 
+// Exclude file from rollout
+// ROLLOUT_EXCLUDE_SWIFT_FILE_INSTRUMENTATION
+
 import Foundation
 import NVActivityIndicatorView
 
@@ -604,7 +607,8 @@ extension NSLayoutConstraint {
             toItem: secondItem,
             attribute: secondAttribute,
             multiplier: multiplier,
-            constant: constant)
+            constant: constant
+        )
         
         newConstraint.priority = priority
         newConstraint.shouldBeArchived = self.shouldBeArchived

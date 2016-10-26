@@ -84,7 +84,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     @IBAction func trendingCloudShowButtonAction(_ sender: UIButton) {
         
-        if sender.currentTitle == "See less" {
+        if sender.currentTitle == "See Less" {
             
             UIView.animate(withDuration: 1.0,
                            delay: 0,
@@ -94,10 +94,10 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                            animations: { () -> Void in
                             self.cloudViewHeightConstraint = self.cloudViewHeightConstraint.setMultiplier(multiplier: 0.2)
                 }, completion: { (success) in
+    
                     self.layoutCloudWords()
+                    sender.setTitle("See More", for: UIControlState())
             })
-            
-            sender.setTitle("See more", for: UIControlState())
             
         } else {
             
@@ -109,10 +109,10 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                            animations: { () -> Void in
                             self.cloudViewHeightConstraint = self.cloudViewHeightConstraint.setMultiplier(multiplier: 0.4)
                 }, completion: { (success) in
+                    
                     self.layoutCloudWords()
+                    sender.setTitle("See Less", for: UIControlState())
             })
-            
-            sender.setTitle("See less", for: UIControlState())
         }
     }
     

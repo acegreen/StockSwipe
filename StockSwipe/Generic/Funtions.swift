@@ -683,24 +683,6 @@ class Functions {
         return alert
     }
     
-    class func activityIndicator(_ view: UIView, halo: inout NVActivityIndicatorView!, state: Bool) {
-        
-        if state {
-            
-            // Create loading animation
-            let frame = CGRect(x: view.bounds.midX - view.bounds.height / 4 , y: view.bounds.midY - view.bounds.height / 4, width: view.bounds.height / 2, height: view.bounds.height / 2)
-            halo = NVActivityIndicatorView(frame: frame, type: .ballScaleMultiple, color: UIColor.lightGray)
-            view.addSubview(halo)
-            halo.startAnimating()
-            
-        } else {
-            
-            if halo !=  nil {
-                halo.stopAnimating()
-            }
-        }
-    }
-    
     class func markFeedbackGiven() {
         Constants.userDefaults.set(true, forKey: "FEEDBACK_GIVEN")
         Constants.userDefaults.synchronize()

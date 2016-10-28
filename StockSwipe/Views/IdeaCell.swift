@@ -214,15 +214,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     func configureMain(_ tradeIdea: TradeIdea!, timeFormat: Constants.TimeFormat) {
         
-        guard tradeIdea.user != nil else { return }
-        
-        
-        self.userName.text = tradeIdea.user.fullname
-        
-        if self.userTag != nil {
-            self.userTag.text = tradeIdea.user.username
-        }
-        
         if !tradeIdea.ideaDescription.isEmpty {
             self.ideaDescription.text = tradeIdea.ideaDescription
         } else {
@@ -237,18 +228,27 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.ideaTime.text = nsPublishedDate.formattedAsTimeAgo()
         }
         
-        self.tradeIdea.user.getAvatar({ (image) in
-            DispatchQueue.main.async {
-                self.userAvatar.image = image
+        tradeIdea.user.fetchUserIfNeeded { (user) in
+            
+            self.userName.text = tradeIdea.user.fullname
+            
+            if self.userTag != nil {
+                self.userTag.text = tradeIdea.user.username
             }
-        })
-
-        // Add Gesture Recognizers
-        let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
-        
-        let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
+            
+            tradeIdea.user.getAvatar({ (image) in
+                DispatchQueue.main.async {
+                    self.userAvatar.image = image
+                }
+            })
+            
+            // Add Gesture Recognizers
+            let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+            self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
+            
+            let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+            self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
+        }
     }
     
     func configureNested(_ nestedTradeIdea: TradeIdea?) {
@@ -262,29 +262,32 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         self.nestedTradeIdeaStack.isHidden = false
         
-        self.nestedUsername.text = nestedTradeIdea.user.fullname
-        
-        if self.nestedUserTag != nil {
-            self.nestedUserTag.text = nestedTradeIdea.user.username
-        }
-        
         if !nestedTradeIdea.ideaDescription.isEmpty {
             self.nestedIdeaDescription.text = nestedTradeIdea.ideaDescription
         } else {
             self.nestedIdeaDescription = nil
         }
         
-        nestedTradeIdea.user.getAvatar({ (image) in
-            DispatchQueue.main.async {
-                self.nestedUserAvatar.image = image
+        nestedTradeIdea.user.fetchUserIfNeeded { (user) in
+            
+            self.nestedUsername.text = nestedTradeIdea.user.fullname
+            
+            if self.nestedUserTag != nil {
+                self.nestedUserTag.text = nestedTradeIdea.user.username
             }
-        })
-        
-        let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
-        
-        let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.nestedUsername.addGestureRecognizer(tapGestureRecognizerNestedUsername)
+            
+            nestedTradeIdea.user.getAvatar({ (image) in
+                DispatchQueue.main.async {
+                    self.nestedUserAvatar.image = image
+                }
+            })
+            
+            let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+            self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
+            
+            let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+            self.nestedUsername.addGestureRecognizer(tapGestureRecognizerNestedUsername)
+        }
     }
     
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
@@ -347,14 +350,16 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard let sender = sender else { return }
         
-        if self.tradeIdea.likeCount > 0 {
-            self.likeCountLabel.text = String(self.tradeIdea.likeCount)
-            self.likeCountLabel.isHidden = false
-        } else {
-            self.likeCountLabel.isHidden = true
+        tradeIdea.checkNumberOfLikes { (likes) in
+            if self.tradeIdea.likeCount > 0 {
+                self.likeCountLabel.text = String(self.tradeIdea.likeCount)
+                self.likeCountLabel.isHidden = false
+            } else {
+                self.likeCountLabel.isHidden = true
+            }
+            
+            sender.isSelected = tradeIdea.isLikedByCurrentUser
         }
-        
-        sender.isSelected = tradeIdea.isLikedByCurrentUser
     }
     
     func registerLike(on sender: UIButton) {
@@ -428,14 +433,17 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard let sender = sender else { return }
         
-        if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
-            self.reshareCountLabel.text = String(reshareCount)
-            self.reshareCountLabel.isHidden = false
-        } else {
-            self.reshareCountLabel.isHidden = true
+        tradeIdea.checkNumberOfReshares { (reshares) in
+            
+            if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
+                self.reshareCountLabel.text = String(reshareCount)
+                self.reshareCountLabel.isHidden = false
+            } else {
+                self.reshareCountLabel.isHidden = true
+            }
+            
+            sender.isSelected = tradeIdea.isResharedByCurrentUser
         }
-        
-        sender.isSelected = tradeIdea.isResharedByCurrentUser
     }
     
     func registerReshare(on sender: UIButton) {

@@ -104,7 +104,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                     return
                 }
                 
-                let replyTradeIdeas = Functions.makeTradeIdeas(from: replyTradeIdeaObjects)
+                let replyTradeIdeas = TradeIdea.makeTradeIdeas(from: replyTradeIdeaObjects)
                 
                 DispatchQueue.main.async {
                     

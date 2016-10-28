@@ -34,22 +34,20 @@ public class Chart: NSObject {
     init(parseObject: PFObject) {
         
         super.init()
+    
+        self.parseObject = parseObject
         
         let symbol = parseObject.object(forKey: "Symbol") as! String
         let companyName = parseObject.object(forKey: "Company") as! String
-        
-        self.parseObject = parseObject
         
         self.symbol = symbol
         self.companyName = companyName
         
         // check for longs/shorts
         self.checkNumberOfShorts { (shorts) in
-            
         }
         
         self.checkNumberOfLongs { (longs) in
-            
         }
         
         // Index to Spotlight

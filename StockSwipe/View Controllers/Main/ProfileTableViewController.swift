@@ -319,7 +319,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         return
                     }
                     
-                    let tradeIdeas = Functions.makeTradeIdeas(from: tradeIdeaObjects)
+                    let tradeIdeas = TradeIdea.makeTradeIdeas(from: tradeIdeaObjects)
                     
                     DispatchQueue.main.async {
                         
@@ -427,7 +427,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         return
                     }
                     
-                    let likedTradeIdeas = Functions.makeTradeIdeas(from: likedTradeIdeaObjects)
+                    let likedTradeIdeas = TradeIdea.makeTradeIdeas(from: likedTradeIdeaObjects)
                     
                     DispatchQueue.main.async {
                         
@@ -552,7 +552,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     return
                 }
                 
-                let followingUsers = Functions.makeUser(from: userObjects)
+                let followingUsers = User.makeUser(from: userObjects)
                 
                 DispatchQueue.main.async {
                     
@@ -676,7 +676,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     return
                 }
                 
-                let followerUsers = Functions.makeUser(from: userObjects)
+                let followerUsers = User.makeUser(from: userObjects)
                 
                 DispatchQueue.main.async {
                     

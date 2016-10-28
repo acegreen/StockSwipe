@@ -27,32 +27,24 @@ public class TradeIdea: NSObject {
     var parseObject: PFObject!
     var nestedParseObject: PFObject?
     
-    init(parseObject: PFObject) {
+    public init(parseObject: PFObject) {
         
         super.init()
         
+        self.parseObject = parseObject
+        
+        self.fetchTradeIdeaIfNeeded { _ in }
+    }
+    
+    func fetchTradeIdeaIfNeeded(_ completion: @escaping (TradeIdea?) -> Void) {
+        
         parseObject.fetchIfNeededInBackground { (parseObject, error) in
             
-            guard let parseObject = parseObject else  {
-                return
-            }
+            guard let parseObject = parseObject else { return completion(nil) }
             
-            self.parseObject = parseObject
-
-            self.ideaDescription = parseObject.object(forKey: "description") as? String ?? ""
-
-            self.createdAt = parseObject.createdAt
+            self.updateObject(parseObject: parseObject)
             
-            if let userObject = parseObject.object(forKey: "user") as? PFObject {
-                
-                self.user = User(userObject: userObject)
-            }
-            
-            if let nestedTradeIdeaObject = parseObject.object(forKey: "reshare_of") as? PFObject {
-                
-                self.nestedParseObject = nestedTradeIdeaObject
-                self.nestedTradeIdea = TradeIdea(parseObject: nestedTradeIdeaObject)
-            }
+            completion(self)
         }
     }
     
@@ -114,6 +106,29 @@ public class TradeIdea: NSObject {
                 completion(self.reshareCount)
             }
         })
+    }
+    
+    internal func updateObject(parseObject: PFObject) {
+        
+        self.ideaDescription = parseObject.object(forKey: "description") as? String ?? ""
+        
+        self.createdAt = parseObject.createdAt
+        
+        if let userObject = parseObject.object(forKey: "user") as? PFUser {
+            self.user = User(userObject: userObject)
+        }
+        
+        if let nestedTradeIdeaObject = parseObject.object(forKey: "reshare_of") as? PFObject {
+            self.nestedParseObject = nestedTradeIdeaObject
+            self.nestedTradeIdea = TradeIdea(parseObject: nestedTradeIdeaObject)
+        }
+    }
+}
+
+extension TradeIdea {
+    
+    class func makeTradeIdeas(from tradeIdeaObjects: [PFObject]) -> [TradeIdea] {
+        return tradeIdeaObjects.map { TradeIdea(parseObject: $0) }
     }
 }
 

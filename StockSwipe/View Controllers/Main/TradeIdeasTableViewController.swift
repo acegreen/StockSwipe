@@ -136,7 +136,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                     return
                 }
                 
-                let tradeIdeas = Functions.makeTradeIdeas(from: tradeIdeaObjects)
+                let tradeIdeas = TradeIdea.makeTradeIdeas(from: tradeIdeaObjects)
                 
                 DispatchQueue.main.async {
                     

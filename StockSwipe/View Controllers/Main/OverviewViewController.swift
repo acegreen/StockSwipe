@@ -417,7 +417,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func updateCarousel(_ symbolQuote: Data) {
         
-        self.tickers = Functions.makeTickers(from: symbolQuote)
+        self.tickers = Ticker.makeTickers(from: symbolQuote)
         
         for ticker in tickers {
             if let chart = (self.charts.find{ $0.symbol == ticker.symbol}) {
@@ -436,7 +436,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func updateTradeIdeas(_ tradeIdeaObjects: [PFObject]) {
         
-        self.tradeIdeas = Functions.makeTradeIdeas(from: tradeIdeaObjects)
+        self.tradeIdeas = TradeIdea.makeTradeIdeas(from: tradeIdeaObjects)
 
         // reload table
         self.latestTradeIdeasTableView.reloadData()

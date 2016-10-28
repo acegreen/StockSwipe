@@ -17,11 +17,11 @@ PODS:
   - DataCache (1.2.2)
   - DZNEmptyDataSet (1.8.1)
   - Fabric (1.6.10)
-  - FBSDKCoreKit (4.16.1):
+  - FBSDKCoreKit (4.17.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.16.1):
+  - FBSDKLoginKit (4.17.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.16.1):
+  - FBSDKShareKit (4.17.0):
     - FBSDKCoreKit
   - LaunchKit (2.1.4):
     - LaunchKit/LaunchKit (= 2.1.4)
@@ -109,9 +109,9 @@ SPEC CHECKSUMS:
   DataCache: aab67eb89877e40e4d56f345a160d10b6f3f80ac
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Fabric: c73f371ee543e3f0b80608f2674750e4910d1669
-  FBSDKCoreKit: 6feac4e8921ccd7afa83fb1df6291dc6eec42c7c
-  FBSDKLoginKit: 469a56cebe2e1ed62b1621d0b155970fd6aac2d8
-  FBSDKShareKit: 53af0239b5bd2ebf191f32f75991245a208cc982
+  FBSDKCoreKit: 30a21d2d7b92984b3d80497113433c00824c35e9
+  FBSDKLoginKit: 42b7129ac0373ca99eaf4cbebf4d07bd42371f59
+  FBSDKShareKit: 9b573d03fbee36cbaf42d5bb1f2bc019e0d72347
   LaunchKit: 95ad4fb171a0f8ea1c80aa26d4fb7bd637788f9c
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
   NVActivityIndicatorView: 81953b5e65093ba79edf4fe7268e002039ca5268

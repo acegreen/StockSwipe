@@ -351,8 +351,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         guard let sender = sender else { return }
         
         tradeIdea.checkNumberOfLikes { (likes) in
-            if self.tradeIdea.likeCount > 0 {
-                self.likeCountLabel.text = String(self.tradeIdea.likeCount)
+            if likes > 0 {
+                self.likeCountLabel.text = String(likes.suffixNumber())
                 self.likeCountLabel.isHidden = false
             } else {
                 self.likeCountLabel.isHidden = true
@@ -370,6 +370,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
         
         guard self.tradeIdea != nil else { return }
+
+        sender.isEnabled = false
         
         if let tradeIdeaObject = tradeIdea.parseObject {
             
@@ -381,10 +383,13 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     
                     if activityObject != nil {
                         
-                        activityObject?.deleteEventually()
-                        
-                        self.tradeIdea.likeCount -= 1
-                        self.tradeIdea.isLikedByCurrentUser = false
+                        activityObject?.deleteInBackground(block: { (success, error) in
+                            
+                            self.tradeIdea.likeCount -= 1
+                            self.tradeIdea.isLikedByCurrentUser = false
+                            
+                            self.updateLike(sender: sender)
+                        })
                         
                     } else {
                         
@@ -393,39 +398,48 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         activityObject["toUser"] = self.tradeIdea.user.userObject
                         activityObject["tradeIdea"] = tradeIdeaObject
                         activityObject["activityType"] = Constants.ActivityType.TradeIdeaLike.rawValue
-                        activityObject.saveEventually()
-                        
-                        self.tradeIdea.likeCount += 1
-                        self.tradeIdea.isLikedByCurrentUser = true
-                        
-                        // Send push
-                        if currentUser.objectId != self.tradeIdea.user.objectId {
+                        activityObject.saveEventually({ (success, error) in
                             
-                            #if DEBUG
-                                print("send push didn't happen in debug")
-                            #else
-                                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": "@\(currentUser.username!) liked:\n" + self.tradeIdea.ideaDescription])
-                            #endif
-                        }
+                            if success {
+                                self.tradeIdea.likeCount += 1
+                                self.tradeIdea.isLikedByCurrentUser = true
+                                
+                                self.updateLike(sender: sender)
+                                
+                                // Send push
+                                if currentUser.objectId != self.tradeIdea.user.objectId {
+                                    
+                                    #if DEBUG
+                                        print("send push didn't happen in debug")
+                                    #else
+                                        Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": "@\(currentUser.username!) liked:\n" + self.tradeIdea.ideaDescription])
+                                    #endif
+                                }
+                            }
+                        })
                     }
-                    
-                    DispatchQueue.main.async {
-                        if self.tradeIdea.likeCount > 0 {
-                            self.likeCountLabel.text = String(self.tradeIdea.likeCount)
-                            self.likeCountLabel.isHidden = false
-                        } else {
-                            self.likeCountLabel.isHidden = true
-                        }
-                        
-                        sender.isSelected = self.tradeIdea.isLikedByCurrentUser
-                    }
-                    
-                    self.delegate?.ideaUpdated(with: self.tradeIdea)
                     
                 } catch {
                     
                 }
             })
+        }
+    }
+    
+    func updateLike(sender: UIButton) {
+        
+        DispatchQueue.main.async {
+            if self.tradeIdea.likeCount > 0 {
+                self.likeCountLabel.text = String(self.tradeIdea.likeCount)
+                self.likeCountLabel.isHidden = false
+            } else {
+                self.likeCountLabel.isHidden = true
+            }
+            
+            sender.isEnabled = true
+            sender.isSelected = self.tradeIdea.isLikedByCurrentUser
+            
+            self.delegate?.ideaUpdated(with: self.tradeIdea)
         }
     }
     
@@ -435,8 +449,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         tradeIdea.checkNumberOfReshares { (reshares) in
             
-            if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
-                self.reshareCountLabel.text = String(reshareCount)
+            if reshares > 0 {
+                self.reshareCountLabel.text = String(reshares.suffixNumber())
                 self.reshareCountLabel.isHidden = false
             } else {
                 self.reshareCountLabel.isHidden = true
@@ -453,16 +467,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         self.tradeIdea.reshareCount += 1
         self.tradeIdea.isResharedByCurrentUser = true
 
-        if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
-            self.reshareCountLabel.text = String(reshareCount)
-            self.reshareCountLabel.isHidden = false
-        } else {
-            self.reshareCountLabel.isHidden = true
-        }
-        
-        sender.isSelected = self.tradeIdea.isResharedByCurrentUser
-        
-        self.delegate?.ideaUpdated(with: self.tradeIdea)
+        self.updateReshare(sender: sender)
     }
     
     func registerUnshare(sender: UIButton) {
@@ -474,6 +479,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard self.tradeIdea != nil else { return }
         
+        sender.isEnabled = false
+        
         if let tradeIdeaObject = tradeIdea.parseObject {
             
             QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: self.tradeIdea.user.userObject, originalTradeIdea: self.tradeIdea.parseObject, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
@@ -483,49 +490,56 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     let activityObject = try result().first
                     
                     if activityObject != nil {
-                        activityObject?.deleteEventually()
-                        
-                        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reshare_of", object: tradeIdeaObject, skip: 0, limit: 1) { (result) in
+                        activityObject?.deleteInBackground(block: { (success, error) in
                             
-                            do {
+                            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reshare_of", object: tradeIdeaObject, skip: 0, limit: 1) { (result) in
                                 
-                                let tradeIdeasObjects = try result().first
-                                
-                                tradeIdeasObjects?.deleteInBackground(block: { (success, error) in
+                                do {
                                     
-                                    if success {
+                                    let tradeIdeasObjects = try result().first
+                                    
+                                    tradeIdeasObjects?.deleteInBackground(block: { (success, error) in
                                         
-                                        self.delegate?.ideaDeleted(with: tradeIdeasObjects!)
-                                        return
-                                    }
-                                })
-                                
-                            } catch {
-                                
-                                // TO-DO: Show sweet alert with Error.message()
-                            }
-                        }
-                        
-                        self.tradeIdea.reshareCount -= 1
-                        self.tradeIdea.isResharedByCurrentUser = false
-                        
-                        DispatchQueue.main.async {
-
-                            if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
-                                self.reshareCountLabel.text = String(reshareCount)
-                                self.reshareCountLabel.isHidden = false
-                            } else {
-                                self.reshareCountLabel.isHidden = true
+                                        if success {
+                                            
+                                            self.delegate?.ideaDeleted(with: tradeIdeasObjects!)
+                                            return
+                                        }
+                                    })
+                                    
+                                } catch {
+                                    
+                                    // TO-DO: Show sweet alert with Error.message()
+                                }
                             }
                             
-                            sender.isSelected = self.tradeIdea.isResharedByCurrentUser
-                        }
+                            self.tradeIdea.reshareCount -= 1
+                            self.tradeIdea.isResharedByCurrentUser = false
+                            
+                            self.updateReshare(sender: sender)
+                        })
                     }
                     
                 } catch {
                     
                 }
             })
+        }
+    }
+    
+    func updateReshare(sender: UIButton) {
+    
+        DispatchQueue.main.async {
+            if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
+                self.reshareCountLabel.text = String(reshareCount)
+                self.reshareCountLabel.isHidden = false
+            } else {
+                self.reshareCountLabel.isHidden = true
+            }
+            
+            sender.isSelected = self.tradeIdea.isResharedByCurrentUser
+            
+            self.delegate?.ideaUpdated(with: self.tradeIdea)
         }
     }
     

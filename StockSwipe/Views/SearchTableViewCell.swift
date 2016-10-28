@@ -40,15 +40,14 @@ class SearchTableViewCell: UITableViewCell {
                 
                 if result?.range != nil
                 {
-                    displayString.setAttributes([NSBackgroundColorAttributeName:highlightColour], range: result!.range)
+                    displayString.setAttributes([NSBackgroundColorAttributeName: highlightColour], range: result!.range)
                 }
                 
             })
             
             self.textLabel?.attributedText = displayString
             
-        } catch
-        {
+        } catch {
             self.textLabel?.text = cellText
         }
     }

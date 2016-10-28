@@ -770,13 +770,15 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 
                 let activityObject = try result()
                 
-                if activityObject.first != nil {
-                    sender.buttonState = FollowButton.state.following
-                } else {
-                    sender.buttonState = FollowButton.state.notFollowing
+                DispatchQueue.main.async {
+                    if activityObject.first != nil {
+                        sender.buttonState = FollowButton.state.following
+                    } else {
+                        sender.buttonState = FollowButton.state.notFollowing
+                    }
+                    
+                    sender.isHidden = false
                 }
-                
-                sender.isHidden = false
                 
             } catch {
             }
@@ -816,6 +818,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
+        sender.isEnabled = false
+        
         QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
             
             do {
@@ -829,7 +833,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     activityObject["toUser"] = userObject
                     activityObject["activityType"] = Constants.ActivityType.Follow.rawValue
                     
-                    activityObject.saveInBackground(block: { (success, error) in
+                    activityObject.saveEventually({ (success, error) in
                         
                         if success {
                             sender.buttonState = FollowButton.state.following
@@ -842,18 +846,29 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                             #endif
                             
                         } else {
-                            sender.buttonState = FollowButton.state.notFollowing
+                            
+                            DispatchQueue.main.async {
+                                sender.buttonState = FollowButton.state.notFollowing
+                            }
                         }
                     })
+                    
                 } else {
                     activityObject.first?.deleteEventually()
-                    sender.buttonState = FollowButton.state.notFollowing
+                    
+                    DispatchQueue.main.async {
+                        sender.buttonState = FollowButton.state.notFollowing
+                    }
                 }
                 
             } catch {
                 
                 // TO-DO: handle error
                 
+            }
+            
+            DispatchQueue.main.async {
+                sender.isEnabled = true
             }
         }
         

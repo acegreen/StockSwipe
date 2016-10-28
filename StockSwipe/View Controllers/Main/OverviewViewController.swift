@@ -920,7 +920,7 @@ extension OverviewViewController: IdeaPostDelegate {
     internal func ideaUpdated(with tradeIdea: TradeIdea) {
         if let currentTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == tradeIdea.parseObject.objectId }), let index = self.tradeIdeas.index(of: currentTradeIdea) {
             let indexPath = IndexPath(row: index, section: 0)
-            self.latestTradeIdeasTableView.reloadRows(at: [indexPath], with: .automatic)
+            self.latestTradeIdeasTableView.reloadRows(at: [indexPath], with: .none)
         }
     }
 }

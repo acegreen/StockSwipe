@@ -22,10 +22,10 @@ public class User: NSObject {
     
     var createdAt: Date!
     
-    var ideasCount: Int = 0
-    var followingCount: Int = 0
-    var followersCount: Int = 0
-    var likedIdeasCount: Int = 0
+    private(set) var ideasCount: Int = 0
+    private(set) var followingCount: Int = 0
+    private(set) var followersCount: Int = 0
+    private(set) var likedIdeasCount: Int = 0
     
     public init(userObject: PFUser) {
         

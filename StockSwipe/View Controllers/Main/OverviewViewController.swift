@@ -94,8 +94,9 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                            animations: { () -> Void in
                             self.cloudViewHeightConstraint = self.cloudViewHeightConstraint.setMultiplier(multiplier: 0.2)
                 }, completion: { (success) in
-    
-                    self.layoutCloudWords()
+                    
+                    // hardcoding the size because of a glitch when animating
+                    self.layoutCloudWords(for: CGSize(width: self.cloudView.bounds.width, height: self.view.bounds.height * 0.2))
                     sender.setTitle("See More", for: UIControlState())
             })
             
@@ -108,9 +109,11 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                            options: UIViewAnimationOptions.curveEaseIn,
                            animations: { () -> Void in
                             self.cloudViewHeightConstraint = self.cloudViewHeightConstraint.setMultiplier(multiplier: 0.4)
+                            
                 }, completion: { (success) in
                     
-                    self.layoutCloudWords()
+                    // hardcoding the size because of a glitch when animating
+                    self.layoutCloudWords(for: CGSize(width: self.cloudView.bounds.width, height: self.view.bounds.height * 0.4))
                     sender.setTitle("See Less", for: UIControlState())
             })
         }
@@ -199,7 +202,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             }
             
             self.cloudWords.removeAll()
-            self.layoutCloudWords()
+            self.layoutCloudWords(for: self.cloudView.bounds.size)
         }
         
         guard Functions.isConnectedToNetwork() else { return }
@@ -412,7 +415,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             self.charts.append(chart)
         }
         
-        self.layoutCloudWords()
+        self.layoutCloudWords(for: self.cloudView.bounds.size)
     }
     
     func updateCarousel(_ symbolQuote: Data) {
@@ -624,7 +627,7 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
         
         coordinator.animate(alongsideTransition: {(context) -> Void in
             let strongSelf = weakSelf
-            strongSelf!.layoutCloudWords()
+            strongSelf!.layoutCloudWords(for: self.cloudView.bounds.size)
             }, completion: nil)
         
     }
@@ -639,7 +642,7 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
     
     // Content size category has changed.  Layout cloud again, to account for new pointSize
     func contentSizeCategoryDidChange(_ __unused: Notification) {
-        self.layoutCloudWords()
+        self.layoutCloudWords(for: self.cloudView.bounds.size)
     }
     
     func removeCloudWords() {
@@ -656,13 +659,14 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
         })
     }
     
-    func layoutCloudWords() {
+    func layoutCloudWords(for size: CGSize) {
         
         self.cloudLayoutOperationQueue.cancelAllOperations()
         self.cloudLayoutOperationQueue.waitUntilAllOperationsAreFinished()
         self.removeCloudWords()
         //self.view.backgroundColor = UIColor.clear
-        let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: self.cloudView.bounds, scale: UIScreen.main.scale, delegate: self)
+        let cloudFrame = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
+        let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: cloudFrame, scale: UIScreen.main.scale, delegate: self)
         self.cloudLayoutOperationQueue.addOperation(newCloudLayoutOperation)
         
         NSLog("cloud completed on %@", Thread.isMainThread ? "main thread" : "other thread")

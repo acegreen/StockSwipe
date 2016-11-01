@@ -307,51 +307,46 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
 
     func setChart(_ dataPoints: [String], values: [Double]) {
         
-        if let _ = values.find ({ $0 > 1 }) {
-            
-            var dataEntries = [BarChartDataEntry]()
-            
-            for i in 0..<dataPoints.count {
-                let dataEntry = BarChartDataEntry(x: Double(i), y: values[i])
-                dataEntries.append(dataEntry)
-            }
-            
-            let chartDataSet = BarChartDataSet(values: dataEntries, label: "Analysts Rating")
-            chartDataSet.colors = [Constants.stockSwipeGreenColor, outperformGreen, UIColor.yellow, UIColor.orange , UIColor.red]
-            chartDataSet.valueFont = UIFont(name: "HelveticaNeue", size: 15.0)!
-            chartDataSet.valueTextColor = Constants.stockSwipeFontColor
-            
-//            let numberFormatter = IAxisValueFormatter()
-//            numberFormatter.numberStyle = .none
-//            chartDataSet.valueFormatter = numberFormatter
-            
-            //        ratingBarChartView.noDataText = "Loading Analysts Data"
-            //        ratingBarChartView.infoFont = UIFont(name: "HelveticaNeue", size: 20.0)!
-            //        ratingBarChartView.infoTextColor = Constants.stockSwipeFontColor
-            ratingBarChartView.chartDescription = nil
-            ratingBarChartView.xAxis.labelPosition = .bottom
-            ratingBarChartView.xAxis.drawGridLinesEnabled = false
-            ratingBarChartView.xAxis.labelFont = UIFont(name: "HelveticaNeue", size: 11.0)!
-            ratingBarChartView.xAxis.labelTextColor = Constants.stockSwipeFontColor
-            ratingBarChartView.leftAxis.enabled = false
-            ratingBarChartView.leftAxis.drawGridLinesEnabled = false
-            ratingBarChartView.leftAxis.axisMinimum = 0.0
-            ratingBarChartView.rightAxis.enabled = false
-            ratingBarChartView.rightAxis.drawGridLinesEnabled = false
-            ratingBarChartView.drawBordersEnabled = false
-            ratingBarChartView.drawGridBackgroundEnabled = false
-            ratingBarChartView.legend.enabled = false
-            ratingBarChartView.isUserInteractionEnabled = false
-            
-            let chartData = BarChartData(dataSet: chartDataSet)
-            //(xVals: ratingsType, dataSet: chartDataSet)
-            
-            ratingBarChartView.data = chartData
-            ratingBarChartView.animate(xAxisDuration: 0.5, yAxisDuration: 0.5)
-            
-        } else {
-            ratingBarChartView.isHidden = true
+        var dataEntries = [BarChartDataEntry]()
+        
+        for i in 0..<dataPoints.count {
+            let dataEntry = BarChartDataEntry(x: Double(i), y: values[i])
+            dataEntries.append(dataEntry)
         }
+        
+        let chartDataSet = BarChartDataSet(values: dataEntries, label: "Analysts Rating")
+        chartDataSet.colors = [Constants.stockSwipeGreenColor, outperformGreen, UIColor.yellow, UIColor.orange , UIColor.red]
+        chartDataSet.valueFont = UIFont(name: "HelveticaNeue", size: 15.0)!
+        chartDataSet.valueFormatter = ChartYValueFormatter(values: values)
+        
+        // X-Axis formatting
+        ratingBarChartView.xAxis.labelPosition = .bottom
+        ratingBarChartView.xAxis.granularity = 1
+        ratingBarChartView.xAxis.drawGridLinesEnabled = false
+        ratingBarChartView.xAxis.labelFont = UIFont(name: "HelveticaNeue", size: 11.0)!
+        ratingBarChartView.xAxis.labelTextColor = Constants.stockSwipeFontColor
+        ratingBarChartView.xAxis.valueFormatter = ChartXAxisFormatter(entries: ratingsType)
+        
+        // Left-Axis formatting
+        ratingBarChartView.leftAxis.enabled = false
+        ratingBarChartView.leftAxis.drawGridLinesEnabled = false
+        ratingBarChartView.leftAxis.axisMinimum = 0.0
+        
+        // Right-Axis formatting
+        ratingBarChartView.rightAxis.enabled = false
+        ratingBarChartView.rightAxis.drawGridLinesEnabled = false
+        
+        // Other formatting
+        ratingBarChartView.chartDescription = nil
+        ratingBarChartView.drawBordersEnabled = false
+        ratingBarChartView.drawGridBackgroundEnabled = false
+        ratingBarChartView.legend.enabled = false
+        ratingBarChartView.isUserInteractionEnabled = false
+        
+        let chartData = BarChartData(dataSet: chartDataSet)
+        
+        ratingBarChartView.data = chartData
+        ratingBarChartView.animate(xAxisDuration: 0.5, yAxisDuration: 0.5)
     }
     
     func setOverallAnalystRating(_ input: Double) {

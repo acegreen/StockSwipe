@@ -36,7 +36,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
             
             guard let resourceSpecifier = resourceSpecifier else { return false }
             
-            let chartDetailTabBarController  = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
+            let chartDetailTabBarController  = Constants.chartDetailStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
             
             QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [resourceSpecifier]) { (result) in
                 
@@ -72,7 +72,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     
                     if let userObject = userObject {
                         
-                        let profileNavigationController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
+                        let profileNavigationController = Constants.profileStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
                         let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
                         profileContainerController.user = User(userObject: userObject)
                         

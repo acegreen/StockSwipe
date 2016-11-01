@@ -221,7 +221,7 @@ class SearchTableViewController: UITableViewController {
         
         self.dismiss(animated: true) {
             
-            let chartDetailTabBarController  = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
+            let chartDetailTabBarController  = Constants.chartDetailStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
             
             let chart = Chart(parseObject: stockObject)
             
@@ -234,7 +234,7 @@ class SearchTableViewController: UITableViewController {
         
         self.dismiss(animated: true) {
             
-            let profileNavigationController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
+            let profileNavigationController = Constants.profileStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
             let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
             
             let user = User(userObject: user)

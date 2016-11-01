@@ -84,7 +84,7 @@ class NotificationCell: UITableViewCell {
     
     func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
-        let profileContainerController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
+        let profileContainerController = Constants.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
         
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == fullname) {
             profileContainerController.user = User(userObject: self.activity.object(forKey: "fromUser") as! PFUser)

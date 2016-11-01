@@ -159,7 +159,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                     
                     guard let stockObject = try result().first else { return }
                     
-                    let chartDetailTabBarController  = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
+                    let chartDetailTabBarController  = Constants.chartDetailStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
                     let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
                     
                     if mainTabBarController.presentationController != nil {
@@ -223,7 +223,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                 
                 guard let stockObject = try result().first else { return }
                 
-                let chartDetailTabBarController  = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
+                let chartDetailTabBarController  = Constants.chartDetailStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
                 let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
                 
                 if mainTabBarController.presentationController != nil {

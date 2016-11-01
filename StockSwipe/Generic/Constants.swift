@@ -63,6 +63,9 @@ class Constants {
     })
     
     static let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+    static let chartDetailStoryboard = UIStoryboard(name: "ChartDetail", bundle: nil)
+    static let tradeIdeaStoryboard = UIStoryboard(name: "TradeIdea", bundle: nil)
+    static let profileStoryboard = UIStoryboard(name: "Profile", bundle: nil)
     static let loginStoryboard = UIStoryboard(name: "Login", bundle: nil)
     static let feedbackStoryboard = UIStoryboard(name: "Feedback", bundle: nil)
 

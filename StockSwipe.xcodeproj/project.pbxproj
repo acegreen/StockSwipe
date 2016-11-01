@@ -107,6 +107,9 @@
 		23C221C11DC8E8C5003898E9 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221A81DC8E8C5003898E9 /* UserCell.swift */; };
 		23C221C31DC8E8D7003898E9 /* ChartXAxisFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221C21DC8E8D7003898E9 /* ChartXAxisFormatter.swift */; };
 		23C221C51DC8ECF9003898E9 /* ChartYAxisFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221C41DC8ECF9003898E9 /* ChartYAxisFormatter.swift */; };
+		23C221C81DC90AF4003898E9 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23C221C61DC90AF4003898E9 /* Profile.storyboard */; };
+		23C221CA1DC90CF6003898E9 /* ChartDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23C221C91DC90CF6003898E9 /* ChartDetail.storyboard */; };
+		23C221CD1DC90E7E003898E9 /* TradeIdea.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23C221CB1DC90E7E003898E9 /* TradeIdea.storyboard */; };
 		23C925601B1A7D9400D17B70 /* Chart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C9255F1B1A7D9400D17B70 /* Chart.swift */; };
 		23CAE2661C2B46A800D15819 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CAE2651C2B46A800D15819 /* LocalAuthentication.framework */; };
 		23CAE26D1C2CB41300D15819 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23CAE26C1C2CB41300D15819 /* Settings.swift */; };
@@ -293,6 +296,9 @@
 		23C221A81DC8E8C5003898E9 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		23C221C21DC8E8D7003898E9 /* ChartXAxisFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartXAxisFormatter.swift; sourceTree = "<group>"; };
 		23C221C41DC8ECF9003898E9 /* ChartYAxisFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartYAxisFormatter.swift; sourceTree = "<group>"; };
+		23C221C71DC90AF4003898E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Profile.storyboard; sourceTree = "<group>"; };
+		23C221C91DC90CF6003898E9 /* ChartDetail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ChartDetail.storyboard; sourceTree = "<group>"; };
+		23C221CC1DC90E7E003898E9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/TradeIdea.storyboard; sourceTree = "<group>"; };
 		23C9255F1B1A7D9400D17B70 /* Chart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chart.swift; sourceTree = "<group>"; };
 		23CAE2651C2B46A800D15819 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		23CAE26C1C2CB41300D15819 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -508,8 +514,11 @@
 		238C1AFD1C8C6600009F9CC1 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				238C1B001C8C6600009F9CC1 /* Main.storyboard */,
 				238C1AFE1C8C6600009F9CC1 /* LaunchScreen.storyboard */,
+				238C1B001C8C6600009F9CC1 /* Main.storyboard */,
+				23C221C91DC90CF6003898E9 /* ChartDetail.storyboard */,
+				23C221CB1DC90E7E003898E9 /* TradeIdea.storyboard */,
+				23C221C61DC90AF4003898E9 /* Profile.storyboard */,
 				238DB6B91D85965200082918 /* Feedback.storyboard */,
 				238DB6BB1D85977300082918 /* Login.storyboard */,
 			);
@@ -912,8 +921,10 @@
 			files = (
 				2339B0AD1B41A697009CE3EB /* SARate.podspec in Resources */,
 				238DB6BC1D85977300082918 /* Login.storyboard in Resources */,
+				23C221C81DC90AF4003898E9 /* Profile.storyboard in Resources */,
 				2375FE6F1D85A39A0049D297 /* StockExchangePreferences_US.plist in Resources */,
 				2339B0AB1B41A697009CE3EB /* star.png in Resources */,
+				23C221CA1DC90CF6003898E9 /* ChartDetail.storyboard in Resources */,
 				238C1B021C8C6600009F9CC1 /* LaunchScreen.storyboard in Resources */,
 				2339B0A41B41A697009CE3EB /* LICENSE in Resources */,
 				2375FE701D85A39A0049D297 /* StockSectorPreferences.plist in Resources */,
@@ -926,6 +937,7 @@
 				238C1AFB1C8C65D6009F9CC1 /* Images.xcassets in Resources */,
 				238DB6BA1D85965200082918 /* Feedback.storyboard in Resources */,
 				2375FE721D85A45A0049D297 /* NotificationPreferences.plist in Resources */,
+				23C221CD1DC90E7E003898E9 /* TradeIdea.storyboard in Resources */,
 				2375FE6B1D85A39A0049D297 /* KaushanScript.ttf in Resources */,
 				2375FE6C1D85A39A0049D297 /* Lato-Light.ttf in Resources */,
 				2375FE6D1D85A39A0049D297 /* GeneralPreferences.plist in Resources */,
@@ -1223,6 +1235,22 @@
 				238C1B011C8C6600009F9CC1 /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		23C221C61DC90AF4003898E9 /* Profile.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				23C221C71DC90AF4003898E9 /* Base */,
+			);
+			name = Profile.storyboard;
+			sourceTree = "<group>";
+		};
+		23C221CB1DC90E7E003898E9 /* TradeIdea.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				23C221CC1DC90E7E003898E9 /* Base */,
+			);
+			name = TradeIdea.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

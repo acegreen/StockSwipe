@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		mIOeE+j6SyORL8NPYkcRXvkWVng=
+		WNBVt20DAgmaUH+vC73+vnbFIIY=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -15,11 +15,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			iZ0p4ETGiHGHsyB+ARNvtYaUckw=
+			ia8kbYWaVTQgpHA4qU9S16Y5Wsg=
 			</data>
 			<key>hash2</key>
 			<data>
-			zx9+NsTcEQEgcGXb18XTP7cZ2UWpOTg2RsMCdm/f6X0=
+			/li/YmeTSZFp3ZdTNhvqlZbsO5EOLQqmd6h6KcJ5xno=
 			</data>
 		</dict>
 		<key>Headers/Yaml-umbrella.h</key>
@@ -37,22 +37,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			1RmlH0UAhDJ6T5BXZusdV5iBdgw=
+			fSe/xjzwS+3A4jdgzUFghKq/UL8=
 			</data>
 			<key>hash2</key>
 			<data>
-			8vD5i8H1KiIGQ6ysi2/GxkMchlONlwpm2U0KRsjdCN4=
+			kQ1KRNKzlMgMWH2UEw8DbGVm7e8t0EXVaJKigaGMME8=
 			</data>
 		</dict>
 		<key>Modules/Yaml.swiftmodule/x86_64.swiftmodule</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			iX+a+qZstqmL1bkynBs4gmkSnzk=
+			1vD3ahJ1FgtQk7+3aPJiKJPKHvY=
 			</data>
 			<key>hash2</key>
 			<data>
-			kvTNRs7kGryu7duon5TqP8LlT5myR2tKGpmEKHMCSno=
+			SwZMkQ12PE0fKDx1KhY1nSGCvjsE1TjiLZuEiykIwOA=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -70,11 +70,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			mIOeE+j6SyORL8NPYkcRXvkWVng=
+			WNBVt20DAgmaUH+vC73+vnbFIIY=
 			</data>
 			<key>hash2</key>
 			<data>
-			R/yayzXkHrzgHcEHFT+NC95oWjIl0UyWNrEUaf3sQ/s=
+			t7EbraJIwiT/uOJWhfhNkekv+K/RZU/KUmbWD4NySbE=
 			</data>
 		</dict>
 	</dict>
@@ -95,6 +95,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^version.plist$</key>
 		<true/>
@@ -154,6 +159,11 @@
 			<true/>
 			<key>weight</key>
 			<real>1100</real>
+		</dict>
+		<key>^Resources/Base\.lproj/</key>
+		<dict>
+			<key>weight</key>
+			<real>1010</real>
 		</dict>
 		<key>^[^/]+$</key>
 		<dict>

@@ -14,27 +14,8 @@ public class TradeIdea: NSObject {
     var user: User!
     var ideaDescription: String!
     
-    var likeCount: Int = 0 {
-        willSet {
-            if newValue > likeCount {
-                self.parseObject.incrementKey("likeCount")
-            } else if likeCount > 0 {
-                self.parseObject.incrementKey("likeCount", byAmount: -1)
-            }
-            self.parseObject.saveEventually()
-        }
-    }
-    
-    var reshareCount: Int = 0 {
-        willSet {
-            if newValue > reshareCount {
-                self.parseObject.incrementKey("reshareCount")
-            } else if reshareCount > 0 {
-                self.parseObject.incrementKey("reshareCount", byAmount: -1)
-            }
-            self.parseObject.saveEventually()
-        }
-    }
+    var likeCount: Int = 0
+    var reshareCount: Int = 0
     
     var isLikedByCurrentUser: Bool! = false
     var isResharedByCurrentUser: Bool! = false
@@ -46,66 +27,30 @@ public class TradeIdea: NSObject {
     var parseObject: PFObject!
     var nestedParseObject: PFObject?
     
-    init(parseObject: PFObject, completion: ((TradeIdea?) -> Void)? = nil) {
+    public init(parseObject: PFObject) {
         
         super.init()
         
+        self.parseObject = parseObject
+        
+        self.fetchTradeIdeaIfNeeded { _ in }
+    }
+    
+    func fetchTradeIdeaIfNeeded(_ completion: @escaping (TradeIdea?) -> Void) {
+        
         parseObject.fetchIfNeededInBackground { (parseObject, error) in
             
-            guard let parseObject = parseObject else  {
-                if let completion = completion {
-                    completion(self)
-                }
-                return
-            }
+            guard let parseObject = parseObject else { return completion(nil) }
             
-            self.parseObject = parseObject
+            self.updateObject(parseObject: parseObject)
             
-            self.ideaDescription = parseObject.object(forKey: "description") as? String ?? ""
-            
-            self.likeCount = parseObject.object(forKey: "likeCount") as? Int ?? 0
-            self.reshareCount = parseObject.object(forKey: "reshareCount") as? Int ?? 0
-            
-            self.createdAt = parseObject.createdAt
-            
-            self.checkNumberOfLikes(completion: { (likeCount) in
-                
-                self.checkNumberOfReshares(completion: { (reshareCount) in
-                    
-                    if let userObject = parseObject.object(forKey: "user") as? PFObject {
-                        
-                        User(userObject: userObject, completion: { (user) in
-                            
-                            self.user = user
-                            
-                            if let nestedTradeIdeaObject = parseObject.object(forKey: "reshare_of") as? PFObject {
-                                
-                                self.nestedParseObject = nestedTradeIdeaObject
-                                
-                                TradeIdea(parseObject: nestedTradeIdeaObject, completion: { (tradeIdea) in
-                                    
-                                    self.nestedTradeIdea = tradeIdea
-                                    
-                                    if let completion = completion {
-                                        completion(self)
-                                    }
-                                })
-                            } else {
-                                
-                                if let completion = completion {
-                                    completion(self)
-                                }
-                            }
-                        })
-                    }
-                })
-            })
+            completion(self)
         }
     }
     
     func checkNumberOfLikes(completion: ((Int) -> Void)?) {
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.parseObject, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -135,7 +80,7 @@ public class TradeIdea: NSObject {
     
     func checkNumberOfReshares(completion: ((Int) -> Void)?) {
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: self.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: self.parseObject, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -161,6 +106,29 @@ public class TradeIdea: NSObject {
                 completion(self.reshareCount)
             }
         })
+    }
+    
+    internal func updateObject(parseObject: PFObject) {
+        
+        self.ideaDescription = parseObject.object(forKey: "description") as? String ?? ""
+        
+        self.createdAt = parseObject.createdAt
+        
+        if let userObject = parseObject.object(forKey: "user") as? PFUser {
+            self.user = User(userObject: userObject)
+        }
+        
+        if let nestedTradeIdeaObject = parseObject.object(forKey: "reshare_of") as? PFObject {
+            self.nestedParseObject = nestedTradeIdeaObject
+            self.nestedTradeIdea = TradeIdea(parseObject: nestedTradeIdeaObject)
+        }
+    }
+}
+
+extension TradeIdea {
+    
+    class func makeTradeIdeas(from tradeIdeaObjects: [PFObject]) -> [TradeIdea] {
+        return tradeIdeaObjects.map { TradeIdea(parseObject: $0) }
     }
 }
 

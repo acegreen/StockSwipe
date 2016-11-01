@@ -1,6 +1,6 @@
 PODS:
   - AMPopTip (1.3.0)
-  - Appsee (2.2)
+  - Appsee (2.3)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
@@ -8,20 +8,20 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
   - BubbleTransition (2.0.0)
-  - Charts (2.2.5):
-    - Charts/Core (= 2.2.5)
-  - Charts/Core (2.2.5)
+  - Charts (3.0.0):
+    - Charts/Core (= 3.0.0)
+  - Charts/Core (3.0.0)
   - ChimpKit (3.1.1)
-  - Crashlytics (3.8.2):
+  - Crashlytics (3.8.3):
     - Fabric (~> 1.6.3)
   - DataCache (1.2.2)
   - DZNEmptyDataSet (1.8.1)
-  - Fabric (1.6.9)
-  - FBSDKCoreKit (4.16.0):
+  - Fabric (1.6.10)
+  - FBSDKCoreKit (4.17.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.16.0):
+  - FBSDKLoginKit (4.17.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.16.0):
+  - FBSDKShareKit (4.17.0):
     - FBSDKCoreKit
   - LaunchKit (2.1.4):
     - LaunchKit/LaunchKit (= 2.1.4)
@@ -42,11 +42,11 @@ PODS:
   - ParseUI (1.2.0):
     - Bolts/Tasks (~> 1.3)
     - Parse (~> 1.9)
-  - ReachabilitySwift (2.3.3)
-  - Rollout.io (1.4.0)
+  - ReachabilitySwift (3)
+  - Rollout.io (1.5.1)
   - SDVersion (3.6)
   - SKSplashView (0.1.2)
-  - SwiftyJSON (2.3.2)
+  - SwiftyJSON (3.1.1)
   - SWXMLHash (3.0.2)
   - TwitterCore (2.5.0):
     - Fabric
@@ -57,7 +57,7 @@ DEPENDENCIES:
   - AMPopTip
   - Appsee
   - BubbleTransition
-  - Charts (from `https://github.com/danielgindi/Charts.git`, branch `Chart2.2.5-Swift3.0`)
+  - Charts
   - ChimpKit
   - Crashlytics
   - DataCache (from `https://github.com/huynguyencong/DataCache.git`)
@@ -70,66 +70,48 @@ DEPENDENCIES:
   - ParseFacebookUtilsV4
   - ParseTwitterUtils
   - ParseUI
-  - ReachabilitySwift (from `https://github.com/ashleymills/Reachability.swift.git`, branch `feature/ios10`)
+  - ReachabilitySwift
   - Rollout.io
   - SDVersion
   - SKSplashView (from `https://github.com/acegreen/SKSplashView.git`, branch `ag-improvements`)
-  - SwiftyJSON (from `https://github.com/acegreen/SwiftyJSON.git`, branch `swift3`)
+  - SwiftyJSON
   - SWXMLHash
   - TwitterKit
 
 EXTERNAL SOURCES:
-  Charts:
-    :branch: Chart2.2.5-Swift3.0
-    :git: https://github.com/danielgindi/Charts.git
   DataCache:
     :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
-  ReachabilitySwift:
-    :branch: feature/ios10
-    :git: https://github.com/ashleymills/Reachability.swift.git
   SKSplashView:
     :branch: ag-improvements
     :git: https://github.com/acegreen/SKSplashView.git
-  SwiftyJSON:
-    :branch: swift3
-    :git: https://github.com/acegreen/SwiftyJSON.git
 
 CHECKOUT OPTIONS:
-  Charts:
-    :commit: ab3bb619df2c2d165b41736b6bc25a4218833252
-    :git: https://github.com/danielgindi/Charts.git
   DataCache:
     :commit: 494bff94a77fd9f0ba23cc7f9f1d646142f6cf95
     :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
     :commit: 759f5060c350d533e046ef53f88515552278a706
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
-  ReachabilitySwift:
-    :commit: 3c7e72ac66186e2477d07d36e2b4589fb5e855d8
-    :git: https://github.com/ashleymills/Reachability.swift.git
   SKSplashView:
     :commit: c56a7cee52f75473117eb2597b1b160dd9915f22
     :git: https://github.com/acegreen/SKSplashView.git
-  SwiftyJSON:
-    :commit: 8971384559780e631b041ac91b16734a396d4c14
-    :git: https://github.com/acegreen/SwiftyJSON.git
 
 SPEC CHECKSUMS:
   AMPopTip: b810a33c120feacafce170cc9ddcaa8ce3a8389d
-  Appsee: c95173e65acaab0ffc8a082c70633c9f5f45d5f0
+  Appsee: 3f57734813c0bb22f5c0c6bb412c6140f23fd2fb
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   BubbleTransition: bdb9d71993b8d3513008e2dda6bada1ddad25d4f
-  Charts: b48fcc8d7190de910ff9e9748f5360c8ea7856e5
+  Charts: beb341928d2135613b4325a6c6aff9f2f6de895e
   ChimpKit: d020126089544daa349397a91f1489a3f271b791
-  Crashlytics: 27acca95a01b042a8294291dd6dff27f8f6af6d7
+  Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
   DataCache: aab67eb89877e40e4d56f345a160d10b6f3f80ac
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fabric: bc5bec42cef4bcf1ee3ce0e218fc518e4b44dfbb
-  FBSDKCoreKit: 7a6baaed4a2b2a244ba253346713bdbc74df135b
-  FBSDKLoginKit: 9a514a55a7d05190f64d4ef09502737588b5b561
-  FBSDKShareKit: e81505de17fc0624cbaa87b83cccc9f2a786e6cb
+  Fabric: c73f371ee543e3f0b80608f2674750e4910d1669
+  FBSDKCoreKit: 30a21d2d7b92984b3d80497113433c00824c35e9
+  FBSDKLoginKit: 42b7129ac0373ca99eaf4cbebf4d07bd42371f59
+  FBSDKShareKit: 9b573d03fbee36cbaf42d5bb1f2bc019e0d72347
   LaunchKit: 95ad4fb171a0f8ea1c80aa26d4fb7bd637788f9c
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
   NVActivityIndicatorView: 81953b5e65093ba79edf4fe7268e002039ca5268
@@ -137,15 +119,15 @@ SPEC CHECKSUMS:
   ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
   ParseTwitterUtils: 0dde9689565e7012d83f892c64aed2ebe69f2ea9
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
-  ReachabilitySwift: e0f6b6f280effb47731acfaaa2d5ffe223703793
-  Rollout.io: 1728f4bd338906f630a9bb2a93ee95cbdf6d69c8
+  ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
+  Rollout.io: 633918322ee94d38bf1a1f761f12eaf83d724cc0
   SDVersion: 43383b6ac05462c973c3fd92d9748c74e360aba5
   SKSplashView: c65333b6707be6f237d09e7c8977941114b0a70d
-  SwiftyJSON: 04ccea08915aa0109039157c7974cf0298da292a
+  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
   SWXMLHash: e0f6935971f01b06fb228cf435510d998ecde647
   TwitterCore: 95c46af93112768a7983bd370d66023553601d01
   TwitterKit: dd8042698b0ff5bd3066fa919b3b2b50d8eed829
 
-PODFILE CHECKSUM: f3d735505b7c314d1e1ca834e4a6435f92338387
+PODFILE CHECKSUM: 02ac816521d2c93c853d74fb20f7e9d1d381cf96
 
-COCOAPODS: 1.1.0.rc.3
+COCOAPODS: 1.1.1

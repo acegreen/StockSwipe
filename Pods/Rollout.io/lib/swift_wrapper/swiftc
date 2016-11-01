@@ -8,16 +8,20 @@ extract_args() {
 
     case $key in
         -target)
-        arch="$2"
-        shift # past argument
-        ;;
+            arch="$2"
+            shift # past argument
+            ;;
         -output-file-map)
-        output_file_map="$2"
-        shift #past argument
-        ;;
+            output_file_map="$2"
+            shift #past argument
+            ;;
+        -module-name)
+            module_name="$2"
+            shift #past argument
+            ;;
         *)
             # unknown option
-        ;;
+            ;;
     esac
     shift # past argument or value
     done
@@ -26,10 +30,12 @@ extract_args "$@"
 
 is_debug=`basename "$0"`
 exec 3>/dev/null 4>&3
+debug_mode=""
 if [ "$is_debug" == "swiftc_debug" ]; then
     echo "running swiftc in debug"
     set -x
     exec 3>&1 4>&2
+    debug_mode="-d"
 fi
 
 log_debug() {
@@ -39,6 +45,12 @@ log_debug() {
 log_always() {
     echo "$1"
 }
+
+BUILD_SETTINGS_FILE=/tmp/rollout_var/build_data/$module_name.$arch
+log_debug "Using build settings file: $BUILD_SETTINGS_FILE"
+export ROLLOUT_KEY=`cat $BUILD_SETTINGS_FILE | grep "^rollout_key=" | cut -d= -f2`
+
+export ROLLOUT_SWIFT_VERSION=`xcrun swift --version | grep version | sed -E 's/^.* version ([^ ]+).*/\1/'`
 
 swift_injections_dir=/tmp/rollout_var/swift_injections
 mkdir -p "$swift_injections_dir"
@@ -59,6 +71,19 @@ error_handler() {
     local original_status=$?
     if [[ ("$check_last_status" == "false" && "$original_status" -eq "0") || ("$check_last_status" == "true" && "$original_status" -ne "$last_status") ]]; then 
         log_always "ROLLOUT ERROR: $category"
+        [ $category == "Oyster" ] && {
+            log_dir=/tmp/rollout_var
+            log_file=$log_dir/upload_oyster_crash_report.log
+            session_id=$RANDOM
+            log_always "Rollout: Will send oyster crash report now if any (in background), the output will be saved to $log_file , session id is $session_id"
+            mkdir -p $log_dir
+            (
+                log_always "`date +"%Y-%m-%d_%H:%M:%S"`: session $session_id started (rollout key $ROLLOUT_KEY)"
+                "$DIR/../../lib/Oyster/MacOS/Oyster" -r
+                log_always "`date +"%Y-%m-%d_%H:%M:%S"`: session $session_id finished (rollout key $ROLLOUT_KEY)"
+            ) >> $log_file 2>&1 &
+        }
+
         session_id=$RANDOM
         error_build_copy=$swift_injections_dir/error.$arch
         error_session_copy=$swift_injections_dir/error.$session_id
@@ -72,7 +97,7 @@ error_handler() {
             [ -n "$ROLLOUT_allServicesInOneServer" ] || server="https://error.rollout.io"
             url="$server/build/error/$category"
             echo "`date +"%Y-%m-%d_%H:%M:%S"`: sending \"$error_session_copy\" file to url \"$url\"."
-            gzip -c "$error_session_copy" | curl -sS --location --post301 --post302 -F data=@"-" "$url"
+            gzip -c "$error_session_copy" | curl -sS --location --post301 --post302 -F rollout_key=$ROLLOUT_KEY -F data=@"-" "$url"
             echo "`date +"%Y-%m-%d_%H:%M:%S"`: removing error file \"$error_session_copy\".."
             rm $error_session_copy
             echo "`date +"%Y-%m-%d_%H:%M:%S"`: session $session_id finished."
@@ -100,6 +125,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 STRIPFILES=()
 rollout_replacements_file="$VAR_DIR"/replacements
 rollout_sources_file="$VAR_DIR"/sources
+touch "$rollout_sources_file"
+
 for i in "$@"
 do
     [[ $i =~ RolloutGenerated\.swift$ ]] && {
@@ -135,7 +162,11 @@ do
     }
 done
 
-"$DIR/../../lib/Oyster/MacOS/Oyster" "$Rollout_Generated" "$rollout_sources_file" >&3 2>$error_file || error_handler "false" $? "Oyster"
+"$DIR/../../lib/Oyster/MacOS/Oyster" "$Rollout_Generated" "$rollout_sources_file" $debug_mode >&3 2>$error_file; oyster_exit_code=$?
+
+[ $oyster_exit_code -eq 0 ] || {
+    error_handler "false" $oyster_exit_code "Oyster"
+}
 
 export ROLLOUT_REPLACEMENTS="$rollout_replacements_file"
 export DYLD_FORCE_FLAT_NAMESPACE=1

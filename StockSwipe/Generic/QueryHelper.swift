@@ -358,7 +358,7 @@ class QueryHelper {
         }
     }
     
-    func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stock: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stocks: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
 //        guard Functions.isConnectedToNetwork() else {
 //            return completion({throw Constants.Errors.noInternetConnection})
@@ -402,8 +402,8 @@ class QueryHelper {
             activityQuery.whereKey("tradeIdea", equalTo: tradeIdea)
         }
         
-        if let stock = stock {
-            activityQuery.whereKey("stock", containedIn: stock)
+        if let stocks = stocks {
+            activityQuery.whereKey("stock", containedIn: stocks)
         }
         
         if let activityType = activityType {

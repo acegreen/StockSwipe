@@ -1,6 +1,6 @@
 //
 //  Appsee.h
-//  Appsee v2.2
+//  Appsee v2.3
 //
 //  Copyright (c) 2016 Shift 6 Ltd. All rights reserved.
 //
@@ -13,6 +13,8 @@
 #import <CoreVideo/CoreVideo.h>
 #import <QuartzCore/QuartzCore.h>
 #import <SystemConfiguration/SystemConfiguration.h>
+
+@protocol AppseeDelegate;
 
 /********************************************************************************************
     Appsee SDK.
@@ -39,9 +41,29 @@
 /** Stops the current session and uploads it immediately (in the background). Usually, this method shouldn't be called unless you explictly want 
     to stop recording and force uploading at some point in your app, before the user minimizes it.
  */
-+(void)stopAndUpload;
++(void)stopAndUpload __deprecated_msg("Please use [finishSession:NO upload:YES] instead");
 
-/** Pause recording of the video. To resume, call 'resume'.
+/**
+ * Finishes the current session and uploads it (in the background). Usually, this method shouldn't be called unless you
+ * explicitly want to stop recording and force uploading at some point in your app, before the user minimizes it.
+ @param verifyBackground Finish the session only if app is in background (pass 'NO' unless you have a Voip app).
+ @param shouldUpload Upload the session immediately, or wait until the app is in the background.
+ */
++(void)finishSession:(BOOL)verifyBackground upload:(BOOL)shouldUpload;
+
+/**
+ * Upload previous sessions. This method should not be called unless your app is never in the background and you want to upload 
+ * sessions on the foreground.
+ */
++(void)upload;
+
+/**
+ * Force Appsee to start a new session (if not already running). Applicable only when a prior session was manually finished using finishSession:upload:
+ */
++(void)forceNewSession;
+
+/**
+ * Pause recording of the video. To resume, call 'resume'.
  */
 +(void)pause;
 
@@ -118,20 +140,31 @@
  Privacy Control
  ****************/
  
-/** Mark a view as sensitive, to ensure it is not displayed in videos. 
- * Note that password fields are marked as sensitive by default.
+/** Mark a view as sensitive, to ensure it is not displayed in videos.
  @param view A UIView that contains sensitive information.
  */
 +(void)markViewAsSensitive:(UIView*)view;
 
-/** Unmark a view as sensitive, so it will be displayed in videos.
+/** Mark a layer as sensitive, to ensure it is not displayed in videos.
+ @param layer A CALayer that contains sensitive information.
+ @param view the UIView which contains the sensitive layer.
+ */
++(void)markLayerAsSensitive:(CALayer*)layer inView:(UIView *)parentView;
+
+/** Unmark a view as sensitive, so it will be displayed in videos. Unmarking a view will also prevent future auto-detected views from being masked.
  @param view A UIView that no longer contains sensitive information.
  */
 +(void)unmarkViewAsSensitive:(UIView*)view;
 
+/** Unmark a layer as sensitive, so it will be displayed in videos.
+ @param layer A CALayer that no longer contains sensitive information.
+ @param view the UIView which contains the layer.
+ */
++(void)unmarkLayerAsSensitive:(CALayer *)layer inView:(UIView *)parentView;
+
 /*********************
 3rd Party Integration
-**********************/
+**********************/ 
 /** Generate a unique ID for an external 3rd party system.
 This method should be usually called right after the start: method.
 @param systemName The 3rd party system name (ie: "Adobe")
@@ -146,21 +179,51 @@ This method should be usually called right after the start: method.
 */
 +(void)set3rdPartyID:(NSString *)externalID forSystem:(NSString *)systemName persistent:(BOOL)isPersistent;
 
-
+/*********
+ Delegate
+ *********/
+/** Set a delegate to receive appsee notifications
+ * @param delegate an instance of AppseeDelegate
+ */
++(void)setDelegate:(id<AppseeDelegate>)delegate;
 
 
 @end
 
-/***************************
-NSNotificationCenter Consts
-****************************/
+
+/************************
+ AppseeDelegate Protocol
+************************/
+@protocol AppseeDelegate <NSObject>
+
+@optional
+-(BOOL)appseeSessionStarting;
+
+@optional
+-(void)appseeSessionStarted:(NSString *)sessionId videoRecorded:(BOOL)isVideoRecorded;
+
+@optional
+-(BOOL)appseeSessionEnding:(NSString *)sessionId;
+
+@optional
+-(void)appseeSessionEnded:(NSString *)sessionId;
+
+@optional
+-(NSString *)appseeScreenDetected:(NSString *)screenName;
+
+@end
+
+
+/*****************************************
+NSNotificationCenter Consts - Deprecated
+******************************************/
 
 // Notification Types
-extern NSString *const AppseeSessionStartedNotification;
-extern NSString *const AppseeSessionEndedNotification;
-extern NSString *const AppseeScreenDetectedNotification;
+extern NSString *const AppseeSessionStartedNotification __deprecated_msg("Appsee's NSNotificationCenter messages are deprecated. Please use AppseeDelegate for receiving notifications");
+extern NSString *const AppseeSessionEndedNotification   __deprecated_msg("Appsee's NSNotificationCenter messages are deprecated. Please use AppseeDelegate for receiving notifications");
+extern NSString *const AppseeScreenDetectedNotification __deprecated_msg("Appsee's NSNotificationCenter messages are deprecated. Please use AppseeDelegate for receiving notifications");
 
 // UserInfo Keys
-extern NSString *const kAppseeSessionId;        // AppseeSessionStartedNotification, AppseeSessionEndedNotification
-extern NSString *const kAppseeIsVideoRecorded;  // AppseeSessionStartedNotification
-extern NSString *const kAppseeScreenName;       // AppseeScreenDetectedNotification
+extern NSString *const kAppseeSessionId                 __deprecated_msg("Appsee's NSNotificationCenter messages are deprecated. Please use AppseeDelegate for receiving notifications");
+extern NSString *const kAppseeIsVideoRecorded           __deprecated_msg("Appsee's NSNotificationCenter messages are deprecated. Please use AppseeDelegate for receiving notifications");
+extern NSString *const kAppseeScreenName                __deprecated_msg("Appsee's NSNotificationCenter messages are deprecated. Please use AppseeDelegate for receiving notifications");

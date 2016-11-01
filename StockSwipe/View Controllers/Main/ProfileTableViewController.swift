@@ -252,9 +252,14 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         checkProfileButtonSettings()
         checkFollow(self.followButton)
         
-        self.avatarImage.image = user.avtar
         self.fullNameLabel.text = user.fullname
         self.usernameLabel.text = user.username
+        
+        user.getAvatar { (avatar) in
+            DispatchQueue.main.async {
+                self.avatarImage.image = avatar
+            }
+        }
     }
     
     func getTradeIdeas(queryType: QueryHelper.QueryType) {
@@ -314,56 +319,55 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         return
                     }
                     
-                    Functions.makeTradeIdeas(from: tradeIdeaObjects, sorted: true, completion: { (tradeIdeas) in
+                    let tradeIdeas = TradeIdea.makeTradeIdeas(from: tradeIdeaObjects)
+                    
+                    DispatchQueue.main.async {
                         
-                        DispatchQueue.main.async {
+                        switch queryType {
+                        case .new:
                             
-                            switch queryType {
-                            case .new:
-                                
-                                self.tradeIdeas = tradeIdeas
-
-                                // reload table
-                                self.tableView.reloadData()
-                                
-                            case .older:
-                                
-                                // append more trade ideas
-                                let currentCount = self.tradeIdeas.count
-                                self.tradeIdeas += tradeIdeas
-                                
-                                // insert cell in tableview
-                                self.tableView.beginUpdates()
-                                for (i,_) in tradeIdeas.enumerated() {
-                                    let indexPath = IndexPath(row: currentCount + i, section: 0)
-                                    self.tableView.insertRows(at: [indexPath], with: .none)
-                                }
-                                self.tableView.endUpdates()
-                                
-                            case .update:
-                                
-                                // append more trade ideas
-                                self.tableView.beginUpdates()
-                                for tradeIdea in tradeIdeas {
-                                    self.tradeIdeas.insert(tradeIdea, at: 0)
-                                    let indexPath = IndexPath(row: 0, section: 0)
-                                    self.tableView.insertRows(at: [indexPath], with: .none)
-                                }
-                                self.tableView.endUpdates()
-                            }
+                            self.tradeIdeas = tradeIdeas
                             
-                            // end refresh and add time stamp
-                            if self.refreshControl?.isRefreshing == true {
-                                self.refreshControl?.endRefreshing()
-                            } else if self.footerActivityIndicator.isAnimating == true {
-                                self.footerActivityIndicator.stopAnimating()
+                            // reload table
+                            self.tableView.reloadData()
+                            
+                        case .older:
+                            
+                            // append more trade ideas
+                            let currentCount = self.tradeIdeas.count
+                            self.tradeIdeas += tradeIdeas
+                            
+                            // insert cell in tableview
+                            self.tableView.beginUpdates()
+                            for (i,_) in tradeIdeas.enumerated() {
+                                let indexPath = IndexPath(row: currentCount + i, section: 0)
+                                self.tableView.insertRows(at: [indexPath], with: .none)
                             }
-                            self.updateRefreshDate()
-                            self.tradeIdeasLastRefreshDate = Date()
+                            self.tableView.endUpdates()
+                            
+                        case .update:
+                            
+                            // append more trade ideas
+                            self.tableView.beginUpdates()
+                            for tradeIdea in tradeIdeas {
+                                self.tradeIdeas.insert(tradeIdea, at: 0)
+                                let indexPath = IndexPath(row: 0, section: 0)
+                                self.tableView.insertRows(at: [indexPath], with: .none)
+                            }
+                            self.tableView.endUpdates()
                         }
                         
-                        self.isQueryingForTradeIdeas = false
-                    })
+                        // end refresh and add time stamp
+                        if self.refreshControl?.isRefreshing == true {
+                            self.refreshControl?.endRefreshing()
+                        } else if self.footerActivityIndicator.isAnimating == true {
+                            self.footerActivityIndicator.stopAnimating()
+                        }
+                        self.updateRefreshDate()
+                        self.tradeIdeasLastRefreshDate = Date()
+                    }
+                    
+                    self.isQueryingForTradeIdeas = false
                     
                 } catch {
                     
@@ -392,7 +396,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
             isQueryingForLikedTradeIdeas = true
             
-            QueryHelper.sharedInstance.queryActivityFor(fromUser: userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
                 
                 do {
                     
@@ -423,57 +427,56 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         return
                     }
                     
-                    Functions.makeTradeIdeas(from: likedTradeIdeaObjects, sorted: true, completion: { (likedTradeIdeas) in
+                    let likedTradeIdeas = TradeIdea.makeTradeIdeas(from: likedTradeIdeaObjects)
+                    
+                    DispatchQueue.main.async {
                         
-                        DispatchQueue.main.async {
+                        switch queryType {
+                        case .new:
                             
-                            switch queryType {
-                            case .new:
-                                
-                                self.likedTradeIdeas = likedTradeIdeas
-                                
-                                // reload table
-                                self.tableView.reloadData()
-                                
-                            case .older:
-                                
-                                // append more trade ideas
-                                let currentCount = self.likedTradeIdeas.count
-                                self.likedTradeIdeas += likedTradeIdeas
-                                
-                                // insert cell in tableview
-                                self.tableView.beginUpdates()
-                                for (i,_) in likedTradeIdeas.enumerated() {
-                                    let indexPath = IndexPath(row: currentCount + i, section: 0)
-                                    self.tableView.insertRows(at: [indexPath], with: .none)
-                                }
-                                self.tableView.endUpdates()
-                                
-                            case .update:
-                                
-                                // add more trade ideas to the top
-                                self.tableView.beginUpdates()
-                                for likedTradeIdea in likedTradeIdeas {
-                                    self.likedTradeIdeas.insert(likedTradeIdea, at: 0)
-                                    let indexPath = IndexPath(row: 0, section: 0)
-                                    self.tableView.insertRows(at: [indexPath], with: .none)
-                                }
-                                self.tableView.endUpdates()
+                            self.likedTradeIdeas = likedTradeIdeas
+                            
+                            // reload table
+                            self.tableView.reloadData()
+                            
+                        case .older:
+                            
+                            // append more trade ideas
+                            let currentCount = self.likedTradeIdeas.count
+                            self.likedTradeIdeas += likedTradeIdeas
+                            
+                            // insert cell in tableview
+                            self.tableView.beginUpdates()
+                            for (i,_) in likedTradeIdeas.enumerated() {
+                                let indexPath = IndexPath(row: currentCount + i, section: 0)
+                                self.tableView.insertRows(at: [indexPath], with: .none)
                             }
+                            self.tableView.endUpdates()
                             
-                            // end refresh and add time stamp
-                            if self.refreshControl?.isRefreshing == true {
-                                self.refreshControl?.endRefreshing()
-                            } else if self.footerActivityIndicator.isAnimating == true {
-                                self.footerActivityIndicator.stopAnimating()
+                        case .update:
+                            
+                            // add more trade ideas to the top
+                            self.tableView.beginUpdates()
+                            for likedTradeIdea in likedTradeIdeas {
+                                self.likedTradeIdeas.insert(likedTradeIdea, at: 0)
+                                let indexPath = IndexPath(row: 0, section: 0)
+                                self.tableView.insertRows(at: [indexPath], with: .none)
                             }
-                            
-                            self.updateRefreshDate()
-                            self.likedTradeIdeasLastRefreshDate = Date()
+                            self.tableView.endUpdates()
                         }
                         
-                        self.isQueryingForLikedTradeIdeas = false
-                    })
+                        // end refresh and add time stamp
+                        if self.refreshControl?.isRefreshing == true {
+                            self.refreshControl?.endRefreshing()
+                        } else if self.footerActivityIndicator.isAnimating == true {
+                            self.footerActivityIndicator.stopAnimating()
+                        }
+                        
+                        self.updateRefreshDate()
+                        self.likedTradeIdeasLastRefreshDate = Date()
+                    }
+                    
+                    self.isQueryingForLikedTradeIdeas = false
                     
                 } catch {
                     
@@ -518,7 +521,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         isQueryingForFollowing = true
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: user.userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["toUser"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: user.userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["toUser"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -549,57 +552,56 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     return
                 }
                 
-                Functions.makeUser(from: userObjects, completion: { (followingUsers) in
+                let followingUsers = User.makeUser(from: userObjects)
+                
+                DispatchQueue.main.async {
                     
-                    DispatchQueue.main.async {
+                    switch queryType {
+                    case .new:
                         
-                        switch queryType {
-                        case .new:
-                            
-                            self.followingUsers = followingUsers
-                            
-                            // reload table
-                            self.tableView.reloadData()
-                            
-                        case .older:
-                            
-                            // append more users
-                            let currentCount = self.followingUsers.count
-                            self.followingUsers += followingUsers
-                            
-                            // insert cell in tableview
-                            self.tableView.beginUpdates()
-                            for (i,_) in followingUsers.enumerated() {
-                                let indexPath = IndexPath(row: currentCount + i, section: 0)
-                                self.tableView.insertRows(at: [indexPath], with: .none)
-                            }
-                            self.tableView.endUpdates()
-                            
-                        case .update:
-                            
-                            // append more users and insert rows
-                            self.tableView.beginUpdates()
-                            for followingUser in followingUsers {
-                                self.followingUsers.insert(followingUser, at: 0)
-                                let indexPath = IndexPath(row: 0, section: 0)
-                                self.tableView.insertRows(at: [indexPath], with: .none)
-                            }
-                            self.tableView.endUpdates()
+                        self.followingUsers = followingUsers
+                        
+                        // reload table
+                        self.tableView.reloadData()
+                        
+                    case .older:
+                        
+                        // append more users
+                        let currentCount = self.followingUsers.count
+                        self.followingUsers += followingUsers
+                        
+                        // insert cell in tableview
+                        self.tableView.beginUpdates()
+                        for (i,_) in followingUsers.enumerated() {
+                            let indexPath = IndexPath(row: currentCount + i, section: 0)
+                            self.tableView.insertRows(at: [indexPath], with: .none)
                         }
+                        self.tableView.endUpdates()
                         
-                        // end refresh and add time stamp
-                        if self.refreshControl?.isRefreshing == true {
-                            self.refreshControl?.endRefreshing()
-                        } else if self.footerActivityIndicator.isAnimating == true {
-                            self.footerActivityIndicator.stopAnimating()
+                    case .update:
+                        
+                        // append more users and insert rows
+                        self.tableView.beginUpdates()
+                        for followingUser in followingUsers {
+                            self.followingUsers.insert(followingUser, at: 0)
+                            let indexPath = IndexPath(row: 0, section: 0)
+                            self.tableView.insertRows(at: [indexPath], with: .none)
                         }
-                        
-                        self.updateRefreshDate()
-                        self.followingLastRefreshDate = Date()
+                        self.tableView.endUpdates()
                     }
                     
-                    self.isQueryingForFollowing = false
-                })
+                    // end refresh and add time stamp
+                    if self.refreshControl?.isRefreshing == true {
+                        self.refreshControl?.endRefreshing()
+                    } else if self.footerActivityIndicator.isAnimating == true {
+                        self.footerActivityIndicator.stopAnimating()
+                    }
+                    
+                    self.updateRefreshDate()
+                    self.followingLastRefreshDate = Date()
+                }
+                
+                self.isQueryingForFollowing = false
                 
             } catch {
                 
@@ -642,7 +644,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         isQueryingForFollowers = true
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: user.userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["fromUser"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: user.userObject, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["fromUser"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -674,57 +676,56 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     return
                 }
                 
-                Functions.makeUser(from: userObjects, completion: { (followerUsers) in
+                let followerUsers = User.makeUser(from: userObjects)
+                
+                DispatchQueue.main.async {
                     
-                    DispatchQueue.main.async {
+                    switch queryType {
+                    case .new:
                         
-                        switch queryType {
-                        case .new:
-                            
-                            self.followerUsers = followerUsers
-                            
-                            // reload table
-                            self.tableView.reloadData()
-                            
-                        case .older:
-                            
-                            // append more users
-                            let currentCount = self.followerUsers.count
-                            self.followerUsers += followerUsers
-                            
-                            // insert cell in tableview
-                            self.tableView.beginUpdates()
-                            for (i,_) in followerUsers.enumerated() {
-                                let indexPath = IndexPath(row: currentCount + i, section: 0)
-                                self.tableView.insertRows(at: [indexPath], with: .none)
-                            }
-                            self.tableView.endUpdates()
-                            
-                        case .update:
-                            
-                            // append more users and insert rows
-                            self.tableView.beginUpdates()
-                            for followerUser in followerUsers {
-                                self.followerUsers.insert(followerUser, at: 0)
-                                let indexPath = IndexPath(row: 0, section: 0)
-                                self.tableView.insertRows(at: [indexPath], with: .none)
-                            }
-                            self.tableView.endUpdates()
+                        self.followerUsers = followerUsers
+                        
+                        // reload table
+                        self.tableView.reloadData()
+                        
+                    case .older:
+                        
+                        // append more users
+                        let currentCount = self.followerUsers.count
+                        self.followerUsers += followerUsers
+                        
+                        // insert cell in tableview
+                        self.tableView.beginUpdates()
+                        for (i,_) in followerUsers.enumerated() {
+                            let indexPath = IndexPath(row: currentCount + i, section: 0)
+                            self.tableView.insertRows(at: [indexPath], with: .none)
                         }
+                        self.tableView.endUpdates()
                         
-                        // end refresh and add time stamp
-                        if self.refreshControl?.isRefreshing == true {
-                            self.refreshControl?.endRefreshing()
-                        } else if self.footerActivityIndicator.isAnimating == true {
-                            self.footerActivityIndicator.stopAnimating()
+                    case .update:
+                        
+                        // append more users and insert rows
+                        self.tableView.beginUpdates()
+                        for followerUser in followerUsers {
+                            self.followerUsers.insert(followerUser, at: 0)
+                            let indexPath = IndexPath(row: 0, section: 0)
+                            self.tableView.insertRows(at: [indexPath], with: .none)
                         }
-                        
-                        self.updateRefreshDate()
-                        self.followersLastRefreshDate = Date()
+                        self.tableView.endUpdates()
                     }
                     
-                    self.isQueryingForFollowers = false
-                })
+                    // end refresh and add time stamp
+                    if self.refreshControl?.isRefreshing == true {
+                        self.refreshControl?.endRefreshing()
+                    } else if self.footerActivityIndicator.isAnimating == true {
+                        self.footerActivityIndicator.stopAnimating()
+                    }
+                    
+                    self.updateRefreshDate()
+                    self.followersLastRefreshDate = Date()
+                }
+                
+                self.isQueryingForFollowers = false
                 
             } catch {
                 
@@ -763,19 +764,21 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
                 let activityObject = try result()
                 
-                if activityObject.first != nil {
-                    sender.buttonState = FollowButton.state.following
-                } else {
-                    sender.buttonState = FollowButton.state.notFollowing
+                DispatchQueue.main.async {
+                    if activityObject.first != nil {
+                        sender.buttonState = FollowButton.state.following
+                    } else {
+                        sender.buttonState = FollowButton.state.notFollowing
+                    }
+                    
+                    sender.isHidden = false
                 }
-                
-                sender.isHidden = false
                 
             } catch {
             }
@@ -815,7 +818,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
+        sender.isEnabled = false
+        
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
             
             do {
                 
@@ -828,7 +833,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     activityObject["toUser"] = userObject
                     activityObject["activityType"] = Constants.ActivityType.Follow.rawValue
                     
-                    activityObject.saveInBackground(block: { (success, error) in
+                    activityObject.saveEventually({ (success, error) in
                         
                         if success {
                             sender.buttonState = FollowButton.state.following
@@ -841,18 +846,29 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                             #endif
                             
                         } else {
-                            sender.buttonState = FollowButton.state.notFollowing
+                            
+                            DispatchQueue.main.async {
+                                sender.buttonState = FollowButton.state.notFollowing
+                            }
                         }
                     })
+                    
                 } else {
                     activityObject.first?.deleteEventually()
-                    sender.buttonState = FollowButton.state.notFollowing
+                    
+                    DispatchQueue.main.async {
+                        sender.buttonState = FollowButton.state.notFollowing
+                    }
                 }
                 
             } catch {
                 
                 // TO-DO: handle error
                 
+            }
+            
+            DispatchQueue.main.async {
+                sender.isEnabled = true
             }
         }
         

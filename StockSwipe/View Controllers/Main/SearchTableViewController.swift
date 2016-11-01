@@ -106,7 +106,7 @@ class SearchTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var objectAtIndex: PFObject
+        var objectAtIndex: PFObject?
         switch searchController.isActive {
         case true:
             objectAtIndex = searchResults[indexPath.row]
@@ -114,20 +114,16 @@ class SearchTableViewController: UITableViewController {
             objectAtIndex = recentSearches[indexPath.row]
         }
         
-        if objectAtIndex.isKind(of: PFUser.self) {
+        if let objectAtIndex = objectAtIndex, objectAtIndex.isKind(of: PFUser.self) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
-            User(userObject: objectAtIndex as! PFUser, completion: { (user) in
-                if let user = user {
-                    DispatchQueue.main.async {
-                        cell.configureCell(with: user)
-                    }
-                }
-            })
+            let user = User(userObject: objectAtIndex as! PFUser)
+            
+            cell.configureCell(with: user)
             
             return cell
             
-        } else {
+        } else if let objectAtIndex = objectAtIndex, objectAtIndex.isKind(of: PFObject.self) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "SearchCell", for: indexPath)
             cell.textLabel?.text = objectAtIndex.object(forKey: "Symbol") as? String
@@ -135,6 +131,14 @@ class SearchTableViewController: UITableViewController {
             
             let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(SearchTableViewController.longPress(_:)))
             cell.addGestureRecognizer(longPressRecognizer)
+            
+            return cell
+            
+        } else {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SearchCell", for: indexPath)
+            cell.textLabel?.text = "N/A"
+            cell.detailTextLabel?.text = "N/A"
             
             return cell
         }
@@ -233,12 +237,11 @@ class SearchTableViewController: UITableViewController {
             let profileNavigationController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
             let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
             
-            User(userObject: user, completion: { (user) in
-                
-                profileContainerController.user = user
-                    
-                UIApplication.topViewController()?.present(profileNavigationController, animated: true, completion: nil)
-            })
+            let user = User(userObject: user)
+            
+            profileContainerController.user = user
+            
+            UIApplication.topViewController()?.present(profileNavigationController, animated: true, completion: nil)
         }
     }
     

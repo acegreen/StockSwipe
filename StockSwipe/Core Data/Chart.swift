@@ -17,36 +17,16 @@ public class Chart: NSObject {
     
     fileprivate var chartImageURL: URL!
     
-    var shortCount: Int = 0 {
-        willSet {
-            if newValue > shortCount {
-                self.parseObject?.incrementKey("shortCount")
-            } else if shortCount > 0 {
-                self.parseObject?.incrementKey("shortCount", byAmount: -1)
-            }
-            self.parseObject?.saveEventually()
-        }
-    }
-    var longCount: Int = 0 {
-        willSet {
-            if newValue > longCount {
-                self.parseObject?.incrementKey("longCount")
-            } else if longCount > 0 {
-                self.parseObject?.incrementKey("longCount", byAmount: -1)
-            }
-            self.parseObject?.saveEventually()
-        }
-    }
+    var shortCount: Int = 0 
+    var longCount: Int = 0
+    
     var parseObject: PFObject?
     
     var searchDescription: String {
         
         if self.shortCount > 0 || self.shortCount > 0 {
-            
             return companyName + "\n" + "Shorts: \(shortCount)" + "\n" + "Longs: \(longCount)"
-            
         } else {
-            
             return companyName
         }
     }
@@ -54,17 +34,21 @@ public class Chart: NSObject {
     init(parseObject: PFObject) {
         
         super.init()
+    
+        self.parseObject = parseObject
         
         let symbol = parseObject.object(forKey: "Symbol") as! String
         let companyName = parseObject.object(forKey: "Company") as! String
-        let shortCount = parseObject.object(forKey: "shortCount") as? Int
-        let longCount = parseObject.object(forKey: "longCount") as? Int
         
         self.symbol = symbol
         self.companyName = companyName
-        self.shortCount = shortCount ?? 0
-        self.longCount = longCount ?? 0
-        self.parseObject = parseObject
+        
+        // check for longs/shorts
+        self.checkNumberOfShorts { (shorts) in
+        }
+        
+        self.checkNumberOfLongs { (longs) in
+        }
         
         // Index to Spotlight
         Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
@@ -79,6 +63,46 @@ public class Chart: NSObject {
         
         // Index to Spotlight
         Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
+    }
+    
+    func checkNumberOfShorts(completion: ((Int) -> Void)?) {
+        
+        guard let parseObject = self.parseObject else { return }
+        
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockShort.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            
+            do {
+                
+                let activityObjects = try result()
+                self.shortCount = activityObjects.count
+                
+            } catch {
+            }
+            
+            if let completion = completion {
+                completion(self.shortCount)
+            }
+        })
+    }
+    
+    func checkNumberOfLongs(completion: ((Int) -> Void)?) {
+        
+        guard let parseObject = self.parseObject else { return }
+        
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            
+            do {
+                
+                let activityObjects = try result()
+                self.longCount = activityObjects.count
+                
+            } catch {
+            }
+            
+            if let completion = completion {
+                completion(self.longCount)
+            }
+        })
     }
     
     func getChartImage(completion: ((UIImage?) -> Void)?) {

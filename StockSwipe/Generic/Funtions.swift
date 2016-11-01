@@ -72,7 +72,7 @@ class Functions {
                     }
                 }
                 
-                QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -86,7 +86,7 @@ class Functions {
                     }
                 })
                 
-                QueryHelper.sharedInstance.queryActivityFor(fromUser: user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -248,16 +248,8 @@ class Functions {
                 
                 QueryHelper.sharedInstance.queryChartImage(symbol: symbol, completion: { (result) in
                     
-                    do {
-                        
-                        let chart = Chart(parseObject: stockObject)
-                        completion({ (object: stockObject, chart: chart)})
-                        
-                    } catch {
-                        
-                        completion({throw error})
-                        
-                    }
+                    let chart = Chart(parseObject: stockObject)
+                    completion({ (object: stockObject, chart: chart)})
                     
                 })
                 
@@ -277,7 +269,7 @@ class Functions {
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
             
             do {
                 
@@ -434,83 +426,6 @@ class Functions {
         }
         
         return nil
-    }
-    
-    class func makeTradeIdeas(from tradeIdeaObjects: [PFObject], sorted: Bool, completion: @escaping ([TradeIdea]) -> Void) {
-        
-        //let queue = DispatchQueue(label: "Trade Idea Query Queue")
-        
-        var tradeIdeas = [TradeIdea]()
-        for tradeIdeaObject in tradeIdeaObjects {
-            
-            //queue.async {
-                
-                TradeIdea(parseObject: tradeIdeaObject, completion: { (tradeIdea) in
-                    
-                    if let tradeIdea = tradeIdea {
-                        
-                        tradeIdeas.append(tradeIdea)
-                        
-                        if tradeIdeas.count == tradeIdeaObjects.count {
-                            if sorted {
-                                tradeIdeas.sort { $0.createdAt > $1.createdAt }
-                            }
-                            
-                            completion(tradeIdeas)
-                        }
-                    }
-                })
-            //}
-        }
-    }
-    
-    class func makeUser(from userObjects: [PFUser], completion: @escaping ([User]) -> Void) {
-        
-        //let queue = DispatchQueue(label: "Users Query Queue")
-        
-        var users = [User]()
-        for userObject in userObjects {
-            
-            //queue.async {
-                
-                User(userObject: userObject, completion: { (user) in
-                    
-                    if let user = user {
-                        
-                        users.append(user)
-                        
-                        if users.count == userObjects.count {
-                            completion(users)
-                        }
-                    }
-                })
-            //}
-        }
-    }
-    
-    class func makeTickers(from symbolQuote: Data, completion: @escaping ([Ticker]) -> Void) {
-        
-        var tickers = [Ticker]()
-        
-        let carsouelJson = JSON(data: symbolQuote)
-        let carsouelJsonResults = carsouelJson["query"]["results"]
-        guard let quoteJsonResultsQuote = carsouelJsonResults["quote"].array else { return }
-        
-        for quote in quoteJsonResultsQuote {
-            
-            let symbol = quote["Symbol"].string
-            let companyName = quote["Name"].string
-            let exchange = quote["StockExchange"].string
-            let currentPrice = quote["LastTradePriceOnly"].doubleValue
-            let changeInDollar = quote["Change"].doubleValue
-            let changeInPercent = quote["ChangeinPercent"].doubleValue
-            
-            let ticker = Ticker(symbol: symbol, companyName: companyName, exchange: exchange, currentPrice: currentPrice, changeInDollar: changeInDollar, changeInPercent: changeInPercent)
-            
-            tickers.append(ticker)
-        }
-        
-        completion(tickers)
     }
     
     class func setupConfigParameter(_ parameter:String, completion: @escaping (_ parameterValue: Any?) -> Void) {
@@ -681,24 +596,6 @@ class Functions {
         }
         
         return alert
-    }
-    
-    class func activityIndicator(_ view: UIView, halo: inout NVActivityIndicatorView!, state: Bool) {
-        
-        if state {
-            
-            // Create loading animation
-            let frame = CGRect(x: view.bounds.midX - view.bounds.height / 4 , y: view.bounds.midY - view.bounds.height / 4, width: view.bounds.height / 2, height: view.bounds.height / 2)
-            halo = NVActivityIndicatorView(frame: frame, type: .ballScaleMultiple, color: UIColor.lightGray)
-            view.addSubview(halo)
-            halo.startAnimating()
-            
-        } else {
-            
-            if halo !=  nil {
-                halo.stopAnimating()
-            }
-        }
     }
     
     class func markFeedbackGiven() {

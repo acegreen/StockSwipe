@@ -312,30 +312,30 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
             var dataEntries = [BarChartDataEntry]()
             
             for i in 0..<dataPoints.count {
-                let dataEntry = BarChartDataEntry(value: values[i], xIndex: i)
+                let dataEntry = BarChartDataEntry(x: Double(i), y: values[i])
                 dataEntries.append(dataEntry)
             }
             
-            let chartDataSet = BarChartDataSet(yVals: dataEntries, label: "Analysts Rating")
+            let chartDataSet = BarChartDataSet(values: dataEntries, label: "Analysts Rating")
             chartDataSet.colors = [Constants.stockSwipeGreenColor, outperformGreen, UIColor.yellow, UIColor.orange , UIColor.red]
             chartDataSet.valueFont = UIFont(name: "HelveticaNeue", size: 15.0)!
             chartDataSet.valueTextColor = Constants.stockSwipeFontColor
             
-            let numberFormatter = NumberFormatter()
-            numberFormatter.numberStyle = .none
-            chartDataSet.valueFormatter = numberFormatter
+//            let numberFormatter = IAxisValueFormatter()
+//            numberFormatter.numberStyle = .none
+//            chartDataSet.valueFormatter = numberFormatter
             
             //        ratingBarChartView.noDataText = "Loading Analysts Data"
             //        ratingBarChartView.infoFont = UIFont(name: "HelveticaNeue", size: 20.0)!
             //        ratingBarChartView.infoTextColor = Constants.stockSwipeFontColor
-            ratingBarChartView.descriptionText = ""
+            ratingBarChartView.chartDescription = nil
             ratingBarChartView.xAxis.labelPosition = .bottom
             ratingBarChartView.xAxis.drawGridLinesEnabled = false
             ratingBarChartView.xAxis.labelFont = UIFont(name: "HelveticaNeue", size: 11.0)!
             ratingBarChartView.xAxis.labelTextColor = Constants.stockSwipeFontColor
             ratingBarChartView.leftAxis.enabled = false
             ratingBarChartView.leftAxis.drawGridLinesEnabled = false
-            ratingBarChartView.leftAxis.axisMinValue = 0.0
+            ratingBarChartView.leftAxis.axisMinimum = 0.0
             ratingBarChartView.rightAxis.enabled = false
             ratingBarChartView.rightAxis.drawGridLinesEnabled = false
             ratingBarChartView.drawBordersEnabled = false
@@ -343,10 +343,12 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
             ratingBarChartView.legend.enabled = false
             ratingBarChartView.isUserInteractionEnabled = false
             
-            let chartData = BarChartData(xVals: ratingsType, dataSet: chartDataSet)
-            ratingBarChartView.data = chartData
+            let chartData = BarChartData(dataSet: chartDataSet)
+            //(xVals: ratingsType, dataSet: chartDataSet)
             
+            ratingBarChartView.data = chartData
             ratingBarChartView.animate(xAxisDuration: 0.5, yAxisDuration: 0.5)
+            
         } else {
             ratingBarChartView.isHidden = true
         }

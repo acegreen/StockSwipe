@@ -151,7 +151,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         if let user = PFUser.current() , self.tradeIdea.user.objectId == user.objectId  {
             let deleteIdea = UIAlertAction(title: "Delete Idea", style: .default) { action in
                 
-                QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.tradeIdea.parseObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue, Constants.ActivityType.TradeIdeaLike.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.Mention.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.tradeIdea.parseObject, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue, Constants.ActivityType.TradeIdeaLike.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.Mention.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -214,15 +214,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     func configureMain(_ tradeIdea: TradeIdea!, timeFormat: Constants.TimeFormat) {
         
-        guard tradeIdea.user != nil else { return }
-        
-        
-        self.userName.text = tradeIdea.user.fullname
-        
-        if self.userTag != nil {
-            self.userTag.text = tradeIdea.user.username
-        }
-        
         if !tradeIdea.ideaDescription.isEmpty {
             self.ideaDescription.text = tradeIdea.ideaDescription
         } else {
@@ -237,14 +228,27 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.ideaTime.text = nsPublishedDate.formattedAsTimeAgo()
         }
         
-        self.userAvatar.image = tradeIdea.user.avtar
-
-        // Add Gesture Recognizers
-        let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
-        
-        let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
+        tradeIdea.user.fetchUserIfNeeded { (user) in
+            
+            self.userName.text = tradeIdea.user.fullname
+            
+            if self.userTag != nil {
+                self.userTag.text = tradeIdea.user.username
+            }
+            
+            tradeIdea.user.getAvatar({ (image) in
+                DispatchQueue.main.async {
+                    self.userAvatar.image = image
+                }
+            })
+            
+            // Add Gesture Recognizers
+            let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+            self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
+            
+            let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+            self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
+        }
     }
     
     func configureNested(_ nestedTradeIdea: TradeIdea?) {
@@ -258,25 +262,32 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         self.nestedTradeIdeaStack.isHidden = false
         
-        self.nestedUsername.text = nestedTradeIdea.user.fullname
-        
-        if self.nestedUserTag != nil {
-            self.nestedUserTag.text = nestedTradeIdea.user.username
-        }
-        
         if !nestedTradeIdea.ideaDescription.isEmpty {
             self.nestedIdeaDescription.text = nestedTradeIdea.ideaDescription
         } else {
             self.nestedIdeaDescription = nil
         }
         
-        self.nestedUserAvatar.image = nestedTradeIdea.user.avtar
-        
-        let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
-        
-        let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-        self.nestedUsername.addGestureRecognizer(tapGestureRecognizerNestedUsername)
+        nestedTradeIdea.user.fetchUserIfNeeded { (user) in
+            
+            self.nestedUsername.text = nestedTradeIdea.user.fullname
+            
+            if self.nestedUserTag != nil {
+                self.nestedUserTag.text = nestedTradeIdea.user.username
+            }
+            
+            nestedTradeIdea.user.getAvatar({ (image) in
+                DispatchQueue.main.async {
+                    self.nestedUserAvatar.image = image
+                }
+            })
+            
+            let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+            self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
+            
+            let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+            self.nestedUsername.addGestureRecognizer(tapGestureRecognizerNestedUsername)
+        }
     }
     
     func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
@@ -290,6 +301,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         // Send push
         switch tradeIdeaTyp {
         case .new:
+            
             return
             
         case .reply:
@@ -338,14 +350,16 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard let sender = sender else { return }
         
-        if self.tradeIdea.likeCount > 0 {
-            self.likeCountLabel.text = String(self.tradeIdea.likeCount)
-            self.likeCountLabel.isHidden = false
-        } else {
-            self.likeCountLabel.isHidden = true
+        tradeIdea.checkNumberOfLikes { (likes) in
+            if likes > 0 {
+                self.likeCountLabel.text = String(likes.suffixNumber())
+                self.likeCountLabel.isHidden = false
+            } else {
+                self.likeCountLabel.isHidden = true
+            }
+            
+            sender.isSelected = tradeIdea.isLikedByCurrentUser
         }
-        
-        sender.isSelected = tradeIdea.isLikedByCurrentUser
     }
     
     func registerLike(on sender: UIButton) {
@@ -356,10 +370,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
         
         guard self.tradeIdea != nil else { return }
+
+        sender.isEnabled = false
         
         if let tradeIdeaObject = tradeIdea.parseObject {
             
-            QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: tradeIdeaObject, stock: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: tradeIdeaObject, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                 
                 do {
                     
@@ -367,10 +383,13 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     
                     if activityObject != nil {
                         
-                        activityObject?.deleteEventually()
-                        
-                        self.tradeIdea.likeCount -= 1
-                        self.tradeIdea.isLikedByCurrentUser = false
+                        activityObject?.deleteInBackground(block: { (success, error) in
+                            
+                            self.tradeIdea.likeCount -= 1
+                            self.tradeIdea.isLikedByCurrentUser = false
+                            
+                            self.updateLike(sender: sender)
+                        })
                         
                     } else {
                         
@@ -379,34 +398,26 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         activityObject["toUser"] = self.tradeIdea.user.userObject
                         activityObject["tradeIdea"] = tradeIdeaObject
                         activityObject["activityType"] = Constants.ActivityType.TradeIdeaLike.rawValue
-                        activityObject.saveEventually()
-                        
-                        self.tradeIdea.likeCount += 1
-                        self.tradeIdea.isLikedByCurrentUser = true
-                        
-                        // Send push
-                        if currentUser.objectId != self.tradeIdea.user.objectId {
+                        activityObject.saveEventually({ (success, error) in
                             
-                            #if DEBUG
-                                print("send push didn't happen in debug")
-                            #else
-                                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": "@\(currentUser.username!) liked:\n" + self.tradeIdea.ideaDescription])
-                            #endif
-                        }
+                            if success {
+                                self.tradeIdea.likeCount += 1
+                                self.tradeIdea.isLikedByCurrentUser = true
+                                
+                                self.updateLike(sender: sender)
+                                
+                                // Send push
+                                if currentUser.objectId != self.tradeIdea.user.objectId {
+                                    
+                                    #if DEBUG
+                                        print("send push didn't happen in debug")
+                                    #else
+                                        Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": "@\(currentUser.username!) liked:\n" + self.tradeIdea.ideaDescription])
+                                    #endif
+                                }
+                            }
+                        })
                     }
-                    
-                    DispatchQueue.main.async {
-                        if self.tradeIdea.likeCount > 0 {
-                            self.likeCountLabel.text = String(self.tradeIdea.likeCount)
-                            self.likeCountLabel.isHidden = false
-                        } else {
-                            self.likeCountLabel.isHidden = true
-                        }
-                        
-                        sender.isSelected = self.tradeIdea.isLikedByCurrentUser
-                    }
-                    
-                    self.delegate?.ideaUpdated(with: self.tradeIdea)
                     
                 } catch {
                     
@@ -415,18 +426,38 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
     }
     
+    func updateLike(sender: UIButton) {
+        
+        DispatchQueue.main.async {
+            if self.tradeIdea.likeCount > 0 {
+                self.likeCountLabel.text = String(self.tradeIdea.likeCount)
+                self.likeCountLabel.isHidden = false
+            } else {
+                self.likeCountLabel.isHidden = true
+            }
+            
+            sender.isEnabled = true
+            sender.isSelected = self.tradeIdea.isLikedByCurrentUser
+            
+            self.delegate?.ideaUpdated(with: self.tradeIdea)
+        }
+    }
+    
     func checkReshare(_ tradeIdea: TradeIdea, sender: UIButton?) {
         
         guard let sender = sender else { return }
         
-        if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
-            self.reshareCountLabel.text = String(reshareCount)
-            self.reshareCountLabel.isHidden = false
-        } else {
-            self.reshareCountLabel.isHidden = true
+        tradeIdea.checkNumberOfReshares { (reshares) in
+            
+            if reshares > 0 {
+                self.reshareCountLabel.text = String(reshares.suffixNumber())
+                self.reshareCountLabel.isHidden = false
+            } else {
+                self.reshareCountLabel.isHidden = true
+            }
+            
+            sender.isSelected = tradeIdea.isResharedByCurrentUser
         }
-        
-        sender.isSelected = tradeIdea.isResharedByCurrentUser
     }
     
     func registerReshare(on sender: UIButton) {
@@ -436,16 +467,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         self.tradeIdea.reshareCount += 1
         self.tradeIdea.isResharedByCurrentUser = true
 
-        if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
-            self.reshareCountLabel.text = String(reshareCount)
-            self.reshareCountLabel.isHidden = false
-        } else {
-            self.reshareCountLabel.isHidden = true
-        }
-        
-        sender.isSelected = self.tradeIdea.isResharedByCurrentUser
-        
-        self.delegate?.ideaUpdated(with: self.tradeIdea)
+        self.updateReshare(sender: sender)
     }
     
     func registerUnshare(sender: UIButton) {
@@ -457,58 +479,67 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard self.tradeIdea != nil else { return }
         
+        sender.isEnabled = false
+        
         if let tradeIdeaObject = tradeIdea.parseObject {
             
-            QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: self.tradeIdea.user.userObject, originalTradeIdea: self.tradeIdea.parseObject, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: self.tradeIdea.user.userObject, originalTradeIdea: self.tradeIdea.parseObject, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
                 
                 do {
                     
                     let activityObject = try result().first
                     
                     if activityObject != nil {
-                        activityObject?.deleteEventually()
-                        
-                        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reshare_of", object: tradeIdeaObject, skip: 0, limit: 1) { (result) in
+                        activityObject?.deleteInBackground(block: { (success, error) in
                             
-                            do {
+                            QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reshare_of", object: tradeIdeaObject, skip: 0, limit: 1) { (result) in
                                 
-                                let tradeIdeasObjects = try result().first
-                                
-                                tradeIdeasObjects?.deleteInBackground(block: { (success, error) in
+                                do {
                                     
-                                    if success {
+                                    let tradeIdeasObjects = try result().first
+                                    
+                                    tradeIdeasObjects?.deleteInBackground(block: { (success, error) in
                                         
-                                        self.delegate?.ideaDeleted(with: tradeIdeasObjects!)
-                                        return
-                                    }
-                                })
-                                
-                            } catch {
-                                
-                                // TO-DO: Show sweet alert with Error.message()
-                            }
-                        }
-                        
-                        self.tradeIdea.reshareCount -= 1
-                        self.tradeIdea.isResharedByCurrentUser = false
-                        
-                        DispatchQueue.main.async {
-
-                            if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
-                                self.reshareCountLabel.text = String(reshareCount)
-                                self.reshareCountLabel.isHidden = false
-                            } else {
-                                self.reshareCountLabel.isHidden = true
+                                        if success {
+                                            
+                                            self.delegate?.ideaDeleted(with: tradeIdeasObjects!)
+                                            return
+                                        }
+                                    })
+                                    
+                                } catch {
+                                    
+                                    // TO-DO: Show sweet alert with Error.message()
+                                }
                             }
                             
-                            sender.isSelected = self.tradeIdea.isResharedByCurrentUser
-                        }
+                            self.tradeIdea.reshareCount -= 1
+                            self.tradeIdea.isResharedByCurrentUser = false
+                            
+                            self.updateReshare(sender: sender)
+                        })
                     }
                     
                 } catch {
                     
                 }
             })
+        }
+    }
+    
+    func updateReshare(sender: UIButton) {
+    
+        DispatchQueue.main.async {
+            if let reshareCount = self.tradeIdea?.reshareCount , reshareCount > 0 {
+                self.reshareCountLabel.text = String(reshareCount)
+                self.reshareCountLabel.isHidden = false
+            } else {
+                self.reshareCountLabel.isHidden = true
+            }
+            
+            sender.isSelected = self.tradeIdea.isResharedByCurrentUser
+            
+            self.delegate?.ideaUpdated(with: self.tradeIdea)
         }
     }
     

@@ -64,9 +64,13 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     var overviewVCOperationQueue: OperationQueue = OperationQueue()
     var cloudLayoutOperationQueue: OperationQueue = OperationQueue()
     
+    @IBOutlet var cloudViewHeightConstraint: NSLayoutConstraint!
+    
     @IBOutlet var carousel : iCarousel!
     
     @IBOutlet var cloudView: UIView!
+    
+    @IBOutlet var trendingCloudShowButton: UIButton!
     
     @IBOutlet var latestTradeIdeasTableView: UITableView!
     
@@ -77,6 +81,43 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     @IBOutlet var emptyLabel1: UILabel!
     
     @IBOutlet var emptyLabel2: UILabel!
+    
+    @IBAction func trendingCloudShowButtonAction(_ sender: UIButton) {
+        
+        if sender.currentTitle == "See Less" {
+            
+            UIView.animate(withDuration: 1.0,
+                           delay: 0,
+                           usingSpringWithDamping: 1,
+                           initialSpringVelocity: 1,
+                           options: UIViewAnimationOptions.curveEaseIn,
+                           animations: { () -> Void in
+                            self.cloudViewHeightConstraint = self.cloudViewHeightConstraint.setMultiplier(multiplier: 0.2)
+                }, completion: { (success) in
+                    
+                    // hardcoding the size because of a glitch when animating
+                    self.layoutCloudWords(for: CGSize(width: self.cloudView.bounds.width, height: self.view.bounds.height * 0.2))
+                    sender.setTitle("See More", for: UIControlState())
+            })
+            
+        } else {
+            
+            UIView.animate(withDuration: 1.0,
+                           delay: 0,
+                           usingSpringWithDamping: 1,
+                           initialSpringVelocity: 1,
+                           options: UIViewAnimationOptions.curveEaseIn,
+                           animations: { () -> Void in
+                            self.cloudViewHeightConstraint = self.cloudViewHeightConstraint.setMultiplier(multiplier: 0.4)
+                            
+                }, completion: { (success) in
+                    
+                    // hardcoding the size because of a glitch when animating
+                    self.layoutCloudWords(for: CGSize(width: self.cloudView.bounds.width, height: self.view.bounds.height * 0.4))
+                    sender.setTitle("See Less", for: UIControlState())
+            })
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,6 +134,11 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         self.latestNewsTableView.tableFooterView = UIView(frame: CGRect.zero)
         topStoriesRefreshControl.addTarget(self, action: #selector(OverviewViewController.refreshTopStories(_:)), for: .valueChanged)
         self.latestNewsTableView.addSubview(topStoriesRefreshControl)
+        
+        // Set "Show less" button
+        if Constants.current.userInterfaceIdiom == .phone {
+            self.trendingCloudShowButton.isHidden = false
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -156,7 +202,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             }
             
             self.cloudWords.removeAll()
-            self.layoutCloudWords()
+            self.layoutCloudWords(for: self.cloudView.bounds.size)
         }
         
         guard Functions.isConnectedToNetwork() else { return }
@@ -269,7 +315,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         isQueryingForTradeIdeas = true
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
             
             do {
                 
@@ -369,23 +415,20 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             self.charts.append(chart)
         }
         
-        self.layoutCloudWords()
+        self.layoutCloudWords(for: self.cloudView.bounds.size)
     }
     
     func updateCarousel(_ symbolQuote: Data) {
         
-        Functions.makeTickers(from: symbolQuote) { (tickers) in
-            
-            self.tickers = tickers
-            
-            for ticker in tickers {
-                if let chart = (self.charts.find{ $0.symbol == ticker.symbol}) {
-                    self.charts.removeObject(chart)
-                }
-                
-                let chart = Chart(symbol: ticker.symbol, companyName: ticker.companyName)
-                self.charts.append(chart)
+        self.tickers = Ticker.makeTickers(from: symbolQuote)
+        
+        for ticker in tickers {
+            if let chart = (self.charts.find{ $0.symbol == ticker.symbol}) {
+                self.charts.removeObject(chart)
             }
+            
+            let chart = Chart(symbol: ticker.symbol, companyName: ticker.companyName)
+            self.charts.append(chart)
         }
         
         DispatchQueue.main.async {
@@ -396,23 +439,17 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func updateTradeIdeas(_ tradeIdeaObjects: [PFObject]) {
         
-        Functions.makeTradeIdeas(from: tradeIdeaObjects, sorted: true, completion: { (tradeIdeas) in
-            
-            DispatchQueue.main.async {
-                
-                self.tradeIdeas = tradeIdeas
-                
-                // reload table
-                self.latestTradeIdeasTableView.reloadData()
-                
-                // end refresh indicator
-                if self.tradeIdeasRefreshControl.isRefreshing == true {
-                    self.tradeIdeasRefreshControl.endRefreshing()
-                }
-                
-                self.isQueryingForTradeIdeas = false
-            }
-        })
+        self.tradeIdeas = TradeIdea.makeTradeIdeas(from: tradeIdeaObjects)
+
+        // reload table
+        self.latestTradeIdeasTableView.reloadData()
+        
+        // end refresh indicator
+        if self.tradeIdeasRefreshControl.isRefreshing == true {
+            self.tradeIdeasRefreshControl.endRefreshing()
+        }
+        
+        self.isQueryingForTradeIdeas = false
     }
     
     func updateTopStories(_ result: Data) {
@@ -590,7 +627,7 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
         
         coordinator.animate(alongsideTransition: {(context) -> Void in
             let strongSelf = weakSelf
-            strongSelf!.layoutCloudWords()
+            strongSelf!.layoutCloudWords(for: self.cloudView.bounds.size)
             }, completion: nil)
         
     }
@@ -605,7 +642,7 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
     
     // Content size category has changed.  Layout cloud again, to account for new pointSize
     func contentSizeCategoryDidChange(_ __unused: Notification) {
-        self.layoutCloudWords()
+        self.layoutCloudWords(for: self.cloudView.bounds.size)
     }
     
     func removeCloudWords() {
@@ -622,13 +659,14 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
         })
     }
     
-    func layoutCloudWords() {
+    func layoutCloudWords(for size: CGSize) {
         
         self.cloudLayoutOperationQueue.cancelAllOperations()
         self.cloudLayoutOperationQueue.waitUntilAllOperationsAreFinished()
         self.removeCloudWords()
         //self.view.backgroundColor = UIColor.clear
-        let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: self.cloudView.bounds, scale: UIScreen.main.scale, delegate: self)
+        let cloudFrame = CGRect(x: 0.0, y: 0.0, width: size.width, height: size.height)
+        let newCloudLayoutOperation: CloudLayoutOperation = CloudLayoutOperation(cloudWords: self.cloudWords, fontName: self.cloudFontName, forContainerWithFrame: cloudFrame, scale: UIScreen.main.scale, delegate: self)
         self.cloudLayoutOperationQueue.addOperation(newCloudLayoutOperation)
         
         NSLog("cloud completed on %@", Thread.isMainThread ? "main thread" : "other thread")
@@ -886,7 +924,7 @@ extension OverviewViewController: IdeaPostDelegate {
     internal func ideaUpdated(with tradeIdea: TradeIdea) {
         if let currentTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == tradeIdea.parseObject.objectId }), let index = self.tradeIdeas.index(of: currentTradeIdea) {
             let indexPath = IndexPath(row: index, section: 0)
-            self.latestTradeIdeasTableView.reloadRows(at: [indexPath], with: .automatic)
+            self.latestTradeIdeasTableView.reloadRows(at: [indexPath], with: .none)
         }
     }
 }

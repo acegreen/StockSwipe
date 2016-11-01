@@ -165,13 +165,8 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 // log trade idea
                 Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText, "User": PFUser.current()?.username ?? "N/A", "Description": self.ideaTextView.text, "App Version": Constants.AppVersion])
                 
-                let newTradeIdea = TradeIdea(parseObject: tradeIdeaObject, completion: { (newTradeIdea) in
-                    if let newTradeIdea = newTradeIdea {
-                        DispatchQueue.main.async {
-                            self.delegate?.ideaPosted(with: newTradeIdea, tradeIdeaTyp: self.tradeIdeaType)
-                        }
-                    }
-                })
+                let newTradeIdea = TradeIdea(parseObject: tradeIdeaObject)
+                self.delegate?.ideaPosted(with: newTradeIdea, tradeIdeaTyp: self.tradeIdeaType)
                 
                 if self.tradeIdeaType == .new {
                     #if DEBUG

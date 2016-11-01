@@ -18,25 +18,25 @@ class RolloutSwiftType<T>
     }
 }
 
-func initWithSwiftTypeWrapper<T>(value: T) -> RolloutSwiftTypeWrapper {
+func initWithSwiftTypeWrapper<T>(_ value: T) -> RolloutSwiftTypeWrapper {
     let swiftType = RolloutSwiftType(value: value)
     let swiftWrapper = RolloutSwiftTypeWrapper(object: swiftType, className: "\(T.self)")
-    return swiftWrapper
+    return swiftWrapper!
 }
 
-func cast<T, U>(value: T, type: U.Type) -> U {
+func cast<T, U>(_ value: T, type: U.Type) -> U {
     return value as! U
 }
 
-func extractFromTypeWrapper<T>(typeWrapper: Any) -> T {
+func extractFromTypeWrapper<T>(_ typeWrapper: Any) -> T {
     return extractFromTypeWrapper(typeWrapper as! RolloutTypeWrapper)
 }
 
-func extractFromTypeWrapper<T>(typeWrapper: RolloutTypeWrapper) -> T {
-    
-    if (RolloutTypePointer == typeWrapper.type && typeWrapper.pointerValue == UnsafeMutablePointer<Void>(nil)) {
+func extractFromTypeWrapper<T>(_ typeWrapper: RolloutTypeWrapper) -> T {
+    if (RolloutTypePointer == typeWrapper.type && typeWrapper.pointerValue == nil) {
         return cast(Int(""), type: T.self)
     }
+
     else if (T.self == Int.self || T.self == Int?.self) {
         return typeWrapper.longValue() as! T
     }
@@ -84,46 +84,71 @@ func extractFromTypeWrapper<T>(typeWrapper: RolloutTypeWrapper) -> T {
         return swiftType.get()
     }
     
-    return typeWrapper.objCObjectPointerValue as! T
+    let interimOptionalValueDueToBugInSwift3 = typeWrapper.objCObjectPointerValue as? T
+    return interimOptionalValueDueToBugInSwift3!
 }
 
-func initWithTypeWrapper<T>(value: T) -> RolloutTypeWrapper {
+func initWithTypeWrapper<T>(_ value: T) -> RolloutTypeWrapper {
     
     if (T.self == Void.self) {
         return RolloutTypeWrapper.init(void: ())
     }
     else if (cast(value, type: (T?).self)  == nil) {
-        return RolloutTypeWrapper.init(pointer: UnsafeMutablePointer<Void>(nil))
+        return RolloutTypeWrapper.init(pointer: nil)
     }
     else if (T.self == Int.self || T.self == Int?.self) {
         return RolloutTypeWrapper.init(long: value as! Int)
     }
     else if (T.self == UInt.self || T.self == UInt.self) {
-        return RolloutTypeWrapper.init(ULong: value as! UInt)
+        #if swift(>=3.0)
+            return RolloutTypeWrapper.init(uLong: value as! UInt)
+        #else
+            return RolloutTypeWrapper.init(ULong: value as! UInt)
+        #endif
     }
     else if (T.self == Int8.self || T.self == Int8?.self) {
-        return RolloutTypeWrapper.init(SChar: value as! Int8)
+        #if swift(>=3.0)
+            return RolloutTypeWrapper.init(sChar: value as! Int8)
+        #else
+            return RolloutTypeWrapper.init(SChar: value as! Int8)
+        #endif
     }
     else if (T.self == UInt8.self || T.self == UInt8?.self ) {
-        return RolloutTypeWrapper.init(UChar: value as! UInt8)
+        #if swift(>=3.0)
+            return RolloutTypeWrapper.init(uChar: value as! UInt8)
+        #else
+            return RolloutTypeWrapper.init(UChar: value as! UInt8)
+        #endif
     }
     else if (T.self == Int16.self || T.self == Int16?.self) {
         return RolloutTypeWrapper.init(short: value as! Int16)
     }
     else if (T.self == UInt16.self || T.self == UInt16?.self) {
-        return RolloutTypeWrapper.init(UShort: value as! UInt16)
+        #if swift(>=3.0)
+            return RolloutTypeWrapper.init(uShort: value as! UInt16)
+        #else
+            return RolloutTypeWrapper.init(UShort: value as! UInt16)
+        #endif
     }
     else if (T.self == Int32.self || T.self == Int32?.self) {
         return RolloutTypeWrapper.init(int: value as! Int32)
     }
     else if (T.self == UInt32.self || T.self == UInt32?.self) {
-        return RolloutTypeWrapper.init(UInt: value as! UInt32)
+        #if swift(>=3.0)
+            return RolloutTypeWrapper.init(uInt: value as! UInt32)
+        #else
+            return RolloutTypeWrapper.init(UInt: value as! UInt32)
+        #endif
     }
     else if (T.self == Int64.self || T.self == Int64?.self) {
         return RolloutTypeWrapper.init(longLong: value as! Int64)
     }
     else if (T.self == UInt64.self || T.self == UInt64?.self) {
-        return RolloutTypeWrapper.init(ULongLong: value as! UInt64)
+        #if swift(>=3.0)
+            return RolloutTypeWrapper.init(uLongLong: value as! UInt64)
+        #else
+            return RolloutTypeWrapper.init(ULongLong: value as! UInt64)
+        #endif
     }
     else if (T.self == Float.self || T.self == Float?.self) {
         return RolloutTypeWrapper.init(float: value as! Float)
@@ -145,27 +170,54 @@ func initWithTypeWrapper<T>(value: T) -> RolloutTypeWrapper {
     return RolloutTypeWrapper(objCObjectPointer: swiftWrapper)
 }
 
-@inline(__always) func Rollout_shouldPatch(tweakData:RolloutSwiftTweakData?) -> Bool {
-    if tweakData != nil && tweakData!.shouldPatchInTheCurrentThread {
-        return true
+#if swift(>=3.0)
+    @inline(__always) func Rollout_shouldPatch(_ tweakData:RolloutSwiftTweakData?) -> Bool {
+        if tweakData != nil && tweakData!.shouldPatchInTheCurrentThread {
+            return true
+        }
+        return false
     }
-    return false
-}
-
-func Rollout_invoke(tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: (NSArray!)->Void) -> Void {
-    let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
-    tweakData.invocation.invokeWithContext(context, originalMethodWrapper: {args in
-        origClosure(args)
-        return RolloutTypeWrapper.init(void: ())
-    })
-}
-
-func Rollout_invokeReturn<T>(tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: (NSArray!)->T) -> T {
-    let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
-    let result = tweakData.invocation.invokeWithContext(context, originalMethodWrapper: {args in
-        let originalResult = origClosure(args)
-        return initWithTypeWrapper(originalResult)
-    })
     
-    return extractFromTypeWrapper(result)
-}
+    func Rollout_invoke(_ tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: @escaping (NSArray!)->Void) -> Void {
+        let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
+        tweakData.invocation.invoke(with: context, originalMethodWrapper: {args in
+            origClosure(args as NSArray!)
+            return RolloutTypeWrapper.init(void: ())
+        })
+    }
+    
+    func Rollout_invokeReturn<T>(_ tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: @escaping (NSArray!)->T) -> T {
+        let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
+        let result = tweakData.invocation.invoke(with: context, originalMethodWrapper: {args in
+            let originalResult = origClosure(args as NSArray!)
+            return initWithTypeWrapper(originalResult)
+        })
+        
+        return extractFromTypeWrapper(result)
+    }
+#else
+    @inline(__always) func Rollout_shouldPatch(tweakData:RolloutSwiftTweakData?) -> Bool {
+        if tweakData != nil && tweakData!.shouldPatchInTheCurrentThread {
+            return true
+        }
+        return false
+    }
+    
+    func Rollout_invoke(tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: (NSArray!)->Void) -> Void {
+        let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
+        tweakData.invocation.invokeWithContext(context, originalMethodWrapper: {args in
+            origClosure(args)
+            return RolloutTypeWrapper.init(void: ())
+        })
+    }
+    
+    func Rollout_invokeReturn<T>(tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: (NSArray!)->T) -> T {
+        let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
+        let result = tweakData.invocation.invokeWithContext(context, originalMethodWrapper: {args in
+            let originalResult = origClosure(args)
+            return initWithTypeWrapper(originalResult)
+        })
+        
+        return extractFromTypeWrapper(result)
+    }
+#endif

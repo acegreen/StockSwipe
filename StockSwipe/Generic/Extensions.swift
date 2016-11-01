@@ -6,6 +6,9 @@
 //  Copyright © 2015 StockSwipe. All rights reserved.
 //
 
+// Exclude file from rollout
+// ROLLOUT_EXCLUDE_SWIFT_FILE_INSTRUMENTATION
+
 import Foundation
 import NVActivityIndicatorView
 
@@ -591,4 +594,29 @@ extension CellType where Self: UIViewController, CellIdentifier.RawValue == Stri
     //    func dequeueReusableCellWithIdentifier(cellIdentifier: CellIdentifier, forIndexPath: NSIndexPath) {
     //         dequeueReusableCellWithIdentifier(cellIdentifier.rawValue, forIndexPath: forIndexPath)
     //    }
+}
+
+extension NSLayoutConstraint {
+    
+    func setMultiplier(multiplier: CGFloat) -> NSLayoutConstraint {
+        
+        let newConstraint = NSLayoutConstraint(
+            item: firstItem,
+            attribute: firstAttribute,
+            relatedBy: relation,
+            toItem: secondItem,
+            attribute: secondAttribute,
+            multiplier: multiplier,
+            constant: constant
+        )
+        
+        newConstraint.priority = priority
+        newConstraint.shouldBeArchived = self.shouldBeArchived
+        newConstraint.identifier = self.identifier
+        newConstraint.isActive = true
+        
+        NSLayoutConstraint.deactivate([self])
+        NSLayoutConstraint.activate([newConstraint])
+        return newConstraint
+    }
 }

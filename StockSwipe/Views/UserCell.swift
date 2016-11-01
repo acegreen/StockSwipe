@@ -31,7 +31,12 @@ class UserCell: UITableViewCell {
 
         self.fullname.text = self.user.fullname
         self.username.text = self.user.username
-        self.userAvatar.image = self.user.avtar
+        
+        self.user.getAvatar({ (image) in
+            DispatchQueue.main.async {
+                self.userAvatar.image = image
+            }
+        })
         
         self.checkBlock(self.blockButton)
     }

@@ -368,7 +368,7 @@ class ChartCollectionViewController: UIViewController, UICollectionViewDelegate,
                 
                 print("Successfully retrieved \(stockObjects.count) object")
                 
-                QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: stockObjects, activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: 0, limit: 0, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: stockObjects, activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: 0, limit: 0, includeKeys: nil, completion: { (result) in
                     
                     do {
                         

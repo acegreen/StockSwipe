@@ -222,21 +222,16 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         case .Follow:
             
             guard let userObjectAtIndexPath = activityAtIndexPath.object(forKey: "fromUser") as? PFUser else { return }
+            let user = User(userObject: userObjectAtIndexPath)
             
-            User(userObject: userObjectAtIndexPath, completion: { (user) in
-                DispatchQueue.main.async {
-                    self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: user)
-                }
-            })
+            self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: user)
+
             
         case .Mention, .TradeIdeaNew, .TradeIdeaLike, .TradeIdeaReply, .TradeIdeaReshare:
             guard let tradeIdeaAtIndexPath = activityAtIndexPath.object(forKey: "tradeIdea") as? PFObject else { return }
             
-            TradeIdea(parseObject: tradeIdeaAtIndexPath, completion: { (tradeIdea) in
-                DispatchQueue.main.async {
-                    self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tradeIdea)
-                }
-            })
+            let tradeIdea = TradeIdea(parseObject: tradeIdeaAtIndexPath)
+            self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tradeIdea)
             
         case .Block, .StockLong, .StockShort:
             break

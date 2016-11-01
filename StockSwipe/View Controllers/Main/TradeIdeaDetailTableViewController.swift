@@ -104,57 +104,56 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                     return
                 }
                 
-                Functions.makeTradeIdeas(from: replyTradeIdeaObjects, sorted: true, completion: { (replyTradeIdeas) in
+                let replyTradeIdeas = TradeIdea.makeTradeIdeas(from: replyTradeIdeaObjects)
+                
+                DispatchQueue.main.async {
                     
-                    DispatchQueue.main.async {
+                    switch queryType {
+                    case .new:
                         
-                        switch queryType {
-                        case .new:
-                            
-                            self.replyTradeIdeas = replyTradeIdeas
-                            
-                            // reload table
-                            self.tableView.reloadData()
-                            
-                        case .older:
-                            
-                            // append more trade ideas
-                            let currentCount = self.replyTradeIdeas.count
-                            self.replyTradeIdeas += replyTradeIdeas
-                            
-                            // insert cell in tableview
-                            self.tableView.beginUpdates()
-                            for (i,_) in replyTradeIdeas.enumerated() {
-                                let indexPath = IndexPath(row: currentCount + i, section: 1)
-                                self.tableView.insertRows(at: [indexPath], with: .none)
-                            }
-                            self.tableView.endUpdates()
-                            
-                        case .update:
-                            
-                            // append more trade ideas                           
-                            self.tableView.beginUpdates()
-                            for replyTradeIdea in replyTradeIdeas {
-                                self.replyTradeIdeas.insert(replyTradeIdea, at: 0)
-                                let indexPath = IndexPath(row: 0, section: 1)
-                                self.tableView.insertRows(at: [indexPath], with: .none)
-                            }
-                            self.tableView.endUpdates()
+                        self.replyTradeIdeas = replyTradeIdeas
+                        
+                        // reload table
+                        self.tableView.reloadData()
+                        
+                    case .older:
+                        
+                        // append more trade ideas
+                        let currentCount = self.replyTradeIdeas.count
+                        self.replyTradeIdeas += replyTradeIdeas
+                        
+                        // insert cell in tableview
+                        self.tableView.beginUpdates()
+                        for (i,_) in replyTradeIdeas.enumerated() {
+                            let indexPath = IndexPath(row: currentCount + i, section: 1)
+                            self.tableView.insertRows(at: [indexPath], with: .none)
                         }
+                        self.tableView.endUpdates()
                         
-                        // end refresh and add time stamp
-                        if self.refreshControl?.isRefreshing == true {
-                            self.refreshControl?.endRefreshing()
-                        } else if self.footerActivityIndicator.isAnimating == true {
-                            self.footerActivityIndicator.stopAnimating()
+                    case .update:
+                        
+                        // append more trade ideas
+                        self.tableView.beginUpdates()
+                        for replyTradeIdea in replyTradeIdeas {
+                            self.replyTradeIdeas.insert(replyTradeIdea, at: 0)
+                            let indexPath = IndexPath(row: 0, section: 1)
+                            self.tableView.insertRows(at: [indexPath], with: .none)
                         }
-                        
-                        self.updateRefreshDate()
-                        self.replyTradeIdeasLastRefreshDate = Date()
+                        self.tableView.endUpdates()
                     }
                     
-                    self.isQueryingForReplyTradeIdeas = false
-                })
+                    // end refresh and add time stamp
+                    if self.refreshControl?.isRefreshing == true {
+                        self.refreshControl?.endRefreshing()
+                    } else if self.footerActivityIndicator.isAnimating == true {
+                        self.footerActivityIndicator.stopAnimating()
+                    }
+                    
+                    self.updateRefreshDate()
+                    self.replyTradeIdeasLastRefreshDate = Date()
+                }
+                
+                self.isQueryingForReplyTradeIdeas = false
                 
             } catch {
                 

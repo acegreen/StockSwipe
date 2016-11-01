@@ -104,7 +104,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             mostRecentRefreshDate = tradeIdeasLastRefreshDate
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stock: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -136,57 +136,56 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
                     return
                 }
                 
-                Functions.makeTradeIdeas(from: tradeIdeaObjects, sorted: true, completion: { (tradeIdeas) in
+                let tradeIdeas = TradeIdea.makeTradeIdeas(from: tradeIdeaObjects)
+                
+                DispatchQueue.main.async {
                     
-                    DispatchQueue.main.async {
+                    switch queryType {
+                    case .new:
                         
-                        switch queryType {
-                        case .new:
-                            
-                            self.tradeIdeas = tradeIdeas
-                            
-                            // reload table
-                            self.tableView.reloadData()
-                            
-                        case .older:
-                            
-                            // append more trade ideas
-                            let currentCount = self.tradeIdeas.count
-                            self.tradeIdeas += tradeIdeas
-                            
-                            // insert cell in tableview
-                            self.tableView.beginUpdates()
-                            for (i,_) in tradeIdeas.enumerated() {
-                                let indexPath = IndexPath(row: currentCount + i, section: 0)
-                                self.tableView.insertRows(at: [indexPath], with: .none)
-                            }
-                            self.tableView.endUpdates()
-                            
-                        case .update:
-                            
-                            // append more trade ideas
-                            self.tableView.beginUpdates()
-                            for tradeIdea in tradeIdeas {
-                                self.tradeIdeas.insert(tradeIdea, at: 0)
-                                let indexPath = IndexPath(row: 0, section: 0)
-                                self.tableView.insertRows(at: [indexPath], with: .none)
-                            }
-                            self.tableView.endUpdates()
+                        self.tradeIdeas = tradeIdeas
+                        
+                        // reload table
+                        self.tableView.reloadData()
+                        
+                    case .older:
+                        
+                        // append more trade ideas
+                        let currentCount = self.tradeIdeas.count
+                        self.tradeIdeas += tradeIdeas
+                        
+                        // insert cell in tableview
+                        self.tableView.beginUpdates()
+                        for (i,_) in tradeIdeas.enumerated() {
+                            let indexPath = IndexPath(row: currentCount + i, section: 0)
+                            self.tableView.insertRows(at: [indexPath], with: .none)
                         }
+                        self.tableView.endUpdates()
                         
-                        // end refresh and add time stamp
-                        if self.refreshControl?.isRefreshing == true {
-                            self.refreshControl?.endRefreshing()
-                        } else if self.footerActivityIndicator.isAnimating == true {
-                            self.footerActivityIndicator.stopAnimating()
+                    case .update:
+                        
+                        // append more trade ideas
+                        self.tableView.beginUpdates()
+                        for tradeIdea in tradeIdeas {
+                            self.tradeIdeas.insert(tradeIdea, at: 0)
+                            let indexPath = IndexPath(row: 0, section: 0)
+                            self.tableView.insertRows(at: [indexPath], with: .none)
                         }
-                        
-                        self.updateRefreshDate()
-                        self.tradeIdeasLastRefreshDate = Date()
+                        self.tableView.endUpdates()
                     }
                     
-                    self.isQueryingForTradeIdeas = false
-                })
+                    // end refresh and add time stamp
+                    if self.refreshControl?.isRefreshing == true {
+                        self.refreshControl?.endRefreshing()
+                    } else if self.footerActivityIndicator.isAnimating == true {
+                        self.footerActivityIndicator.stopAnimating()
+                    }
+                    
+                    self.updateRefreshDate()
+                    self.tradeIdeasLastRefreshDate = Date()
+                }
+                
+                self.isQueryingForTradeIdeas = false
                 
             } catch {
                 

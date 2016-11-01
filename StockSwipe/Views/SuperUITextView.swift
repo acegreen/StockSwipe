@@ -74,10 +74,10 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                         
                         let profileNavigationController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
                         let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
-                        profileContainerController.user = User(userObject: userObject, completion: { (user) in
-                            UIApplication.topViewController()?.present(profileNavigationController, animated: true, completion: nil)
+                        profileContainerController.user = User(userObject: userObject)
+                        
+                        UIApplication.topViewController()?.present(profileNavigationController, animated: true, completion: nil)
 
-                        })
                     }
                     
                 } catch {

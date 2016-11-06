@@ -62,11 +62,11 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
     }
     
     func tweetView(_ tweetView: TWTRTweetView, didTap url: URL) {
-        Functions.presentSafariBrowser(url)
+        Functions.presentSafariBrowser(with: url)
     }
     
     func tweetView(_ tweetView: TWTRTweetView, didTapProfileImageFor user: TWTRUser) {
-        Functions.presentSafariBrowser(user.profileURL)
+        Functions.presentSafariBrowser(with: user.profileURL)
     }
     
 //    func tweetView(tweetView: TWTRTweetView, didTapImage image: UIImage, withURL imageURL: NSURL) {

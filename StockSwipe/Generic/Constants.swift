@@ -38,6 +38,7 @@ class Constants {
     static let BundleVersion = infoDict!["CFBundleVersion"]!
     
     static let userDefaults: UserDefaults = UserDefaults.standard
+    static var swipeAddToWatchlist: Bool = false
     
     static let payloadShort = "Version: \(AppVersion) (\(BundleVersion)) \n Copyright © 2015"
     static let payload = [ "BundleID" : infoDict!["CFBundleIdentifier"]!,
@@ -53,6 +54,7 @@ class Constants {
     static let appURL = URL(string: "itms-apps://itunes.apple.com/app/id1009599685")
     static let appReviewURL = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1009599685")
     static let settingsURL = URL(string: UIApplicationOpenSettingsURLString)
+    static let publicationURL = URL(string: "https://medium.com/stockswipe-trade-ideas")
     
     static let appEmail: String = "StockSwipe@gmail.com"
     static let emailTitle = "StockSwipe Feedback/Bug"
@@ -61,6 +63,11 @@ class Constants {
     static let emailDiagnosticInfo = Array(payload.keys).reduce("", { (input, key) -> String in
         return "\(input)\r\n\(key): \(payload[key]!)</br>"
     })
+
+    static let app = UIApplication.shared
+    static let appDel:AppDelegate = app.delegate as! AppDelegate
+    static let context: NSManagedObjectContext = appDel.managedObjectContext
+    static let entity = NSEntityDescription.entity(forEntityName: "Charts", in: context)
     
     static let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
     static let chartDetailStoryboard = UIStoryboard(name: "ChartDetail", bundle: nil)
@@ -68,11 +75,6 @@ class Constants {
     static let profileStoryboard = UIStoryboard(name: "Profile", bundle: nil)
     static let loginStoryboard = UIStoryboard(name: "Login", bundle: nil)
     static let feedbackStoryboard = UIStoryboard(name: "Feedback", bundle: nil)
-
-    static let app = UIApplication.shared
-    static let appDel:AppDelegate = app.delegate as! AppDelegate
-    static let context: NSManagedObjectContext = appDel.managedObjectContext
-    static let entity = NSEntityDescription.entity(forEntityName: "Charts", in: context)
     
     static let reachability = Reachability()
     

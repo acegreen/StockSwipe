@@ -2,16 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "add_watchlist.png",
+      "filename" : "add_watchlist_small.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "add_watchlist@2x.png",
+      "filename" : "add_watchlist_small@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "add_watchlist_small@3x.png",
       "scale" : "3x"
     }
   ],

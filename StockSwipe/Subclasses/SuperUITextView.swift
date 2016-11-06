@@ -95,7 +95,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
             SweetAlert().showAlert("Coming Soon!", subTitle: "hashtags will be supported soon", style: AlertStyle.warning)
             
         default:
-            Functions.presentSafariBrowser(URL)
+            Functions.presentSafariBrowser(with: URL)
         }
         
         return false

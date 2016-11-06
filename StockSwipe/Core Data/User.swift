@@ -51,6 +51,7 @@ public class User: NSObject {
     func getAvatar(_ completion: @escaping (UIImage?) -> Void) {
         
         if let profileImageURL = self.profile_image_url {
+            
             QueryHelper.sharedInstance.queryWith(queryString: profileImageURL, useCacheIfPossible: true, completionHandler: { (result) in
                 
                 do {
@@ -59,8 +60,9 @@ public class User: NSObject {
                     
                     if let image = UIImage(data: avatarData) {
                         self.avtar = image
-                        completion(image)
                     }
+                    
+                    completion(self.avtar)
                     
                 } catch {
                     completion(self.avtar)

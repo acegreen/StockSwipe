@@ -494,7 +494,7 @@ class Functions {
         }
     }
     
-    class func addToWatchlist(_ chart: Chart, registerChoice: Bool, completion: @escaping (Constants.UserChoices) -> Void)  {
+    class func promptAddToWatchlist(_ chart: Chart, registerChoice: Bool, completion: @escaping (Constants.UserChoices) -> Void)  {
         
         guard Functions.isConnectedToNetwork() else {
             
@@ -661,7 +661,7 @@ class Functions {
         }
     }
     
-    class func presentSafariBrowser(_ withURL: URL!) {
+    class func presentSafariBrowser(with url: URL!, readerMode: Bool = true) {
         
         guard Functions.isConnectedToNetwork() else {
             
@@ -669,7 +669,10 @@ class Functions {
             return
         }
         
-        let svc = SFSafariViewController(url: withURL, entersReaderIfAvailable: true)
+        // override reader mode for medium stories (for some reason opens a blank white page)
+        let readerMode: Bool = url.absoluteString.contains("medium") ? false : readerMode
+        
+        let svc = SFSafariViewController(url: url, entersReaderIfAvailable: readerMode)
         svc.modalTransitionStyle = .coverVertical
         svc.modalPresentationStyle = .overFullScreen
         if #available(iOS 10.0, *) {

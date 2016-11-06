@@ -101,6 +101,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         Settings.registerStocksDefaults()
         Settings.registerNotificationDefaults()
         
+        Constants.swipeAddToWatchlist = PFUser.current()?.object(forKey: "swipe_addToWatchlist") as? Bool ?? Constants.userDefaults.bool(forKey: "SWIPE_ADD_TO_WATCHLIST")
+        
         // Setup General Appearance
         UITabBar.appearance().barTintColor = UIColor.white
         UITabBar.appearance().tintColor = Constants.stockSwipeGreenColor

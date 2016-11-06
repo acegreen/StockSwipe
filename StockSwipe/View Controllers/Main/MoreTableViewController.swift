@@ -24,6 +24,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         case ProfileCell = "ProfileCell"
         case FAQCell = "FAQCell"
         case TutorialCell = "TutorialCell"
+        case PublicationCell = "PublicationCell"
         case WriteReviewCell = "WriteReviewCell"
         case GiveFeedbackCell =  "GiveFeedbackCell"
         case InviteFacebookCell = "InviteFacebookCell"
@@ -81,16 +82,6 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     
     // MARK: - Table view data source
     
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        
-        if let view = view as? UITableViewHeaderFooterView {
-            
-            view.textLabel!.textColor = UIColor.gray
-            view.textLabel!.font = Constants.stockSwipeFont
-        }
-        
-    }
-    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let reuseIdentifier = reuseIdentifierForCell(tableView, indexPath: indexPath)
@@ -116,6 +107,15 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             
             let logInViewcontroller = LoginViewController.sharedInstance
             self.show(logInViewcontroller, sender: self)
+            
+        case .PublicationCell:
+            
+            guard Functions.isConnectedToNetwork() else {
+                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
+                return
+            }
+            
+            Functions.presentSafariBrowser(with: Constants.publicationURL)
             
         case .WriteReviewCell:
             

@@ -1013,8 +1013,52 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="WriteReviewCell" rowHeight="80" id="p9V-81-Jwp">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PublicationCell" rowHeight="80" id="seV-dD-UFK">
                                         <rect key="frame" x="0.0" y="275" width="375" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="seV-dD-UFK" id="I7J-gj-2ra">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="m0L-wO-Chd">
+                                                    <rect key="frame" x="28" y="10" width="319" height="60"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="news_small" translatesAutoresizingMaskIntoConstraints="NO" id="298-K8-cMS">
+                                                            <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="298-K8-cMS" secondAttribute="height" multiplier="1:1" id="1QJ-OC-ZHB"/>
+                                                                <constraint firstAttribute="width" constant="60" id="gXo-UC-rx8"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="9dL-L6-Gcp">
+                                                            <rect key="frame" x="80" y="0.5" width="239" height="59"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="All Things Stocks" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gli-Xn-8aW">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="239" height="24"/>
+                                                                    <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="20"/>
+                                                                    <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Our medium publication with many awesome stocks related stories" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LT6-5W-Uld">
+                                                                    <rect key="frame" x="0.0" y="24" width="239" height="35"/>
+                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                                    <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="m0L-wO-Chd" firstAttribute="centerY" secondItem="I7J-gj-2ra" secondAttribute="centerY" id="EZN-U3-oeQ"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="m0L-wO-Chd" secondAttribute="trailing" constant="20" id="Stv-n4-IlJ"/>
+                                                <constraint firstItem="m0L-wO-Chd" firstAttribute="leading" secondItem="I7J-gj-2ra" secondAttribute="leadingMargin" constant="20" id="fI0-AP-930"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="WriteReviewCell" rowHeight="80" id="p9V-81-Jwp">
+                                        <rect key="frame" x="0.0" y="355" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p9V-81-Jwp" id="3eq-3Q-ad0">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="79"/>
@@ -1059,7 +1103,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="GiveFeedbackCell" rowHeight="80" id="7eC-2r-lWe">
-                                        <rect key="frame" x="0.0" y="355" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="435" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7eC-2r-lWe" id="afZ-ay-Iy5">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="79"/>
@@ -1103,7 +1147,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="InviteFacebookCell" rowHeight="80" id="0d5-hS-sc3">
-                                        <rect key="frame" x="0.0" y="435" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="515" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0d5-hS-sc3" id="D81-sy-FgK">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="79"/>
@@ -1147,7 +1191,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ShareCell" rowHeight="80" id="9n6-b8-toF">
-                                        <rect key="frame" x="0.0" y="515" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="595" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9n6-b8-toF" id="HzS-ba-UCj">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="79"/>
@@ -1206,7 +1250,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stockswipe_logo_small" translatesAutoresizingMaskIntoConstraints="NO" id="ux3-Gf-jNx">
-                                    <rect key="frame" x="101.5" y="-2" width="37" height="37"/>
+                                    <rect key="frame" x="102" y="-2" width="37" height="37"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 </imageView>
                             </subviews>
@@ -1383,13 +1427,13 @@
                                                                     <rect key="frame" x="0.0" y="0.0" width="285" height="21.5"/>
                                                                     <subviews>
                                                                         <label opaque="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="John Doe" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hg8-6j-tkG">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="212.5" height="21.5"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="246" height="21.5"/>
                                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
                                                                             <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Idea Time" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="qHl-rJ-fQW">
-                                                                            <rect key="frame" x="217.5" y="0.0" width="67.5" height="21.5"/>
+                                                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Time" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="qHl-rJ-fQW">
+                                                                            <rect key="frame" x="251" y="0.0" width="34" height="21.5"/>
                                                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                             <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
@@ -1778,6 +1822,7 @@
         <image name="like" width="18" height="18"/>
         <image name="long" width="30" height="30"/>
         <image name="news" width="25" height="25"/>
+        <image name="news_small" width="25" height="25"/>
         <image name="notifications" width="25" height="25"/>
         <image name="reload" width="22" height="22"/>
         <image name="reply" width="18" height="18"/>
@@ -1794,7 +1839,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="quK-gg-uD0"/>
         <segue reference="xxP-uL-bqJ"/>
-        <segue reference="Ygx-l9-7SY"/>
+        <segue reference="0hg-QI-Zcz"/>
         <segue reference="sLE-BL-QrO"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.098039217293262482" green="0.78431373834609985" blue="0.098039217293262482" alpha="1" colorSpace="calibratedRGB"/>

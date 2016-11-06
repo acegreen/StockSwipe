@@ -50,6 +50,12 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
     //        #endif
     //    }
     
+    @IBAction func addToWatchlistAction(_ sender: UIBarButtonItem) {
+        
+        Functions.promptAddToWatchlist(chart, registerChoice: true) { (choice) in
+        }
+    }
+    
     @IBAction func actionButtonPressed(_ sender: AnyObject) {
         
         let textToShare = "Discovered $" + symbol + " #StockSwipe"

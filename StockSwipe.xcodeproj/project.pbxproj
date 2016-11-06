@@ -603,6 +603,7 @@
 				23C221971DC8E8C5003898E9 /* GradientAnimationImage.swift */,
 				23C221981DC8E8C5003898E9 /* iCarouselTickerView.swift */,
 				23C221991DC8E8C5003898E9 /* IdeaCell.swift */,
+				23C221A81DC8E8C5003898E9 /* UserCell.swift */,
 				23C2219A1DC8E8C5003898E9 /* IdeaPostButton.swift */,
 				23C2219B1DC8E8C5003898E9 /* IdeaPostUITextView.swift */,
 				23C2219C1DC8E8C5003898E9 /* ImageLabelView.swift */,
@@ -617,7 +618,6 @@
 				23C221A51DC8E8C5003898E9 /* TintableLabel.swift */,
 				23C221A61DC8E8C5003898E9 /* TopNewsCell.swift */,
 				23C221A71DC8E8C5003898E9 /* TransparentView.swift */,
-				23C221A81DC8E8C5003898E9 /* UserCell.swift */,
 				23C221C21DC8E8D7003898E9 /* ChartXAxisFormatter.swift */,
 				23C221C41DC8ECF9003898E9 /* ChartYAxisFormatter.swift */,
 			);

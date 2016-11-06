@@ -23,10 +23,24 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
         case NotificationsCell = "NotificationsCell"
         case BlockedAccountsCell = "BlockedAccountsCell"
     }
-        
-    @IBAction func dismissSettings(_ sender: UIBarButtonItem)
-    {
+    
+    @IBAction func dismissSettings(_ sender: UIBarButtonItem) {
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBOutlet var swipeWatchListSwitch: UISwitch!
+    
+    @IBAction func swipeWatchListSwitchAction(_ sender: UISwitch) {
+        
+        Constants.userDefaults.set(sender.isOn, forKey: "SWIPE_ADD_TO_WATCHLIST")
+        Constants.swipeAddToWatchlist = sender.isOn
+        
+        guard let currentUser = PFUser.current() else { return }
+        
+        currentUser["swipe_addToWatchlist"] = sender.isOn
+        
+        currentUser.saveEventually { (success, error) in
+        }
     }
     
     override func viewDidLoad() {
@@ -34,7 +48,9 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
+        
+        setSwitches()
     }
     
     // MARK: - Table view data source
@@ -42,11 +58,8 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         if let view = view as? UITableViewHeaderFooterView {
-            
             view.textLabel!.textColor = UIColor.gray
-            view.textLabel!.font = Constants.stockSwipeFont
         }
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -59,5 +72,14 @@ class SettingsTableViewController: UITableViewController, MFMailComposeViewContr
         case .BlockedAccountsSegueIdentifier:
             break
         }
+    }
+    
+    func setSwitches() {
+        
+        guard let currentUser = PFUser.current(), Functions.isConnectedToNetwork() else {
+            return
+        }
+        
+        swipeWatchListSwitch.isOn = currentUser.object(forKey: "swipe_addToWatchlist") as? Bool ?? Constants.userDefaults.bool(forKey: "SWIPE_ADD_TO_WATCHLIST")
     }
 }

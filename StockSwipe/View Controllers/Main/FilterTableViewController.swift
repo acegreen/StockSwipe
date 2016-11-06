@@ -67,7 +67,6 @@ class FilterTableViewController: UITableViewController, CellType {
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         
         if let view = view as? UITableViewHeaderFooterView {
-            
             view.textLabel!.textColor = UIColor.gray
         }
     }

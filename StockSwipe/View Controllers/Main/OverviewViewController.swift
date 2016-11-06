@@ -691,7 +691,7 @@ extension OverviewViewController: CloudLayoutOperationDelegate {
             
             guard let chart = (self.charts.find{ $0.symbol == (sender.view as! UIButton).currentTitle }) else { return }
             
-            Functions.addToWatchlist(chart, registerChoice: true) { (choice) in
+            Functions.promptAddToWatchlist(chart, registerChoice: true) { (choice) in
             }
         }
     }
@@ -843,7 +843,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
             
             if let newsurl = newsAtIndex.url {
                 
-                Functions.presentSafariBrowser(URL(string: newsurl))
+                Functions.presentSafariBrowser(with: URL(string: newsurl))
                 
             }
         }

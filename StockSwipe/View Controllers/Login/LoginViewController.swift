@@ -324,6 +324,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 user["replyTradeIdea_notification"] = true
                 user["likeTradeIdea_notification"] = true
                 user["reshareTradeIdea_notification"] = true
+                user["swipe_addToWatchlist"] = false
                 
                 user.saveInBackground(block: { (success, error) in
                     
@@ -340,7 +341,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         LaunchKit.sharedInstance().setUserIdentifier(user.objectId, email: user.email, name: user.username)
                         
                         // register to MailChimp
-                        self.registerUserMailChimp("4266807125", firstName: firstName, lastName: lastName, username: user.username, email: user.email)
+                        self.registerUserMailChimp(listID: "4266807125", firstName: firstName, lastName: lastName, username: user.username, email: user.email)
                         
                         // send delegate info
                         self.loginDelegate?.didLoginSuccessfully()
@@ -449,6 +450,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                         user["replyTradeIdea_notification"] = true
                         user["likeTradeIdea_notification"] = true
                         user["reshareTradeIdea_notification"] = true
+                        user["swipe_addToWatchlist"] = false
                         
                         user.saveInBackground(block: { (success, error) in
                             
@@ -463,7 +465,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                                 LaunchKit.sharedInstance().setUserIdentifier(user.objectId, email: user.email, name: user.username)
                                 
                                 // register to MailChimp
-                                self.registerUserMailChimp("4266807125", firstName: firstName, lastName: lastName, username: user.username, email: user.email)
+                                self.registerUserMailChimp(listID: "4266807125", firstName: firstName, lastName: lastName, username: user.username, email: user.email)
                                 
                                 // send delegate info
                                 self.loginDelegate?.didLoginSuccessfully()
@@ -610,12 +612,11 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     //        print("User dismissed sign up")
     //    }
     
-    func registerUserMailChimp(_ listID: String, firstName:String?, lastName:String?, username: String?, email: String?) {
+    func registerUserMailChimp(listID: String, firstName: String?, lastName: String?, username: String?, email: String?) {
         
-        guard username != nil else { return }
-        guard email != nil else { return }
+        guard let username = username, let email = email else { return }
         
-        let params:[AnyHashable: Any] = ["id": listID, "email": ["email": email!], "merge_vars": ["FNAME": firstName ?? "", "LNAME": lastName ?? "","username": username!], "double_optin": false]
+        let params:[String: Any] = ["id": listID, "email": ["email": email], "merge_vars": ["FNAME": firstName ?? "", "LNAME": lastName ?? "", "username": username], "double_optin": false]
         ChimpKit.shared().callApiMethod("lists/subscribe", withParams: params, andCompletionHandler: {(response, data, error) -> Void in
             if let httpResponse = response as? HTTPURLResponse {
                 print("ChimpKit response:", httpResponse)

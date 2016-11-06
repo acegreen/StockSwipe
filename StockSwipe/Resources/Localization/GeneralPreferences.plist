@@ -20,5 +20,7 @@
 	<false/>
 	<key>CLOUD_TIP_SHOWN</key>
 	<false/>
+	<key>SWIPE_ADD_TO_WATCHLIST</key>
+	<false/>
 </dict>
 </plist>

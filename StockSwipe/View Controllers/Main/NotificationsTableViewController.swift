@@ -165,11 +165,11 @@ class NotificationsTableViewController: UITableViewController {
             return
         }
         
-        followerNotificationSwitch.isOn = currentUser.object(forKey: "follower_notification") as? Bool ?? true
-        mentionNotificationSwitch.isOn = currentUser.object(forKey: "mention_notification") as? Bool ?? true
-        TradeIdeaPostedNotificationSwitch.isOn = currentUser.object(forKey: "newTradeIdea_notification") as? Bool ?? true
-        repliesNotificationSwitch.isOn = currentUser.object(forKey: "replyTradeIdea_notification") as? Bool ?? true
-        likesNotificationSwitch.isOn = currentUser.object(forKey: "likeTradeIdea_notification") as? Bool ?? true
-        reshareNotificationSwitch.isOn = currentUser.object(forKey: "reshareTradeIdea_notification") as? Bool ?? true
+        followerNotificationSwitch.isOn = currentUser.object(forKey: "follower_notification") as? Bool ?? Constants.userDefaults.bool(forKey: "FOLLOWER_NOTIFICATION")
+        mentionNotificationSwitch.isOn = currentUser.object(forKey: "mention_notification") as? Bool ?? Constants.userDefaults.bool(forKey: "MENTION_NOTIFICATION")
+        TradeIdeaPostedNotificationSwitch.isOn = currentUser.object(forKey: "newTradeIdea_notification") as? Bool ?? Constants.userDefaults.bool(forKey: "NEWTRADEIDEA_NOTIFICATION")
+        repliesNotificationSwitch.isOn = currentUser.object(forKey: "replyTradeIdea_notification") as? Bool ?? Constants.userDefaults.bool(forKey: "REPLYTRADEIDEA_NOTIFICATION")
+        likesNotificationSwitch.isOn = currentUser.object(forKey: "likeTradeIdea_notification") as? Bool ?? Constants.userDefaults.bool(forKey: "LIKETRADEIDEA_NOTIFICATION")
+        reshareNotificationSwitch.isOn = currentUser.object(forKey: "reshareTradeIdea_notification") as? Bool ?? Constants.userDefaults.bool(forKey: "RESHARETRADEIDEA_NOTIFICATION")
     }
 }

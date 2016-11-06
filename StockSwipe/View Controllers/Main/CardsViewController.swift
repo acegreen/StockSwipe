@@ -468,12 +468,20 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             
             Functions.registerUserChoice(chartChosen, with: .SHORT)
             
+            if Constants.swipeAddToWatchlist {
+                Functions.saveIntoCoreData(chartChosen, userChoice: .SHORT)
+            }
+            
             // log swipe
             Answers.logCustomEvent(withName: "Swipe", customAttributes: ["Direction":  Constants.UserChoices.SHORT.rawValue, "User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
             
         } else if wasChosenWithDirection == MDCSwipeDirection.right {
             
             Functions.registerUserChoice(chartChosen, with: .LONG)
+            
+            if Constants.swipeAddToWatchlist {
+                Functions.saveIntoCoreData(chartChosen, userChoice: .LONG)
+            }
             
             // log swipe
             Answers.logCustomEvent(withName: "Swipe", customAttributes: ["Direction": Constants.UserChoices.LONG.rawValue, "User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
@@ -560,7 +568,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         guard let chart: Chart = self.charts.find({ $0.symbol == self.firstCardView.chart.symbol }) else { return }
         
-        Functions.addToWatchlist(chart, registerChoice: false) { (choice) in
+        Functions.promptAddToWatchlist(chart, registerChoice: false) { (choice) in
             switch choice {
             case .LONG:
                 self.longCardView()

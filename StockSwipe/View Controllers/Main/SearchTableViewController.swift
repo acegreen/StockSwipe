@@ -283,7 +283,7 @@ class SearchTableViewController: UITableViewController {
                 
                 DispatchQueue.main.async {
                     
-                    Functions.addToWatchlist(chart, registerChoice: true) { (choice) in
+                    Functions.promptAddToWatchlist(chart, registerChoice: true) { (choice) in
                     }
                 }
             })

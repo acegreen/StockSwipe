@@ -163,7 +163,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             if success {
                 
                 // log trade idea
-                Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText, "User": PFUser.current()?.username ?? "N/A", "Description": self.ideaTextView.text, "App Version": Constants.AppVersion])
+                Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText, "User": PFUser.current()?.username ?? "N/A", "Description": self.ideaTextView.text, "Activity Type": activityObject["activityType"],"App Version": Constants.AppVersion])
                 
                 let newTradeIdea = TradeIdea(parseObject: tradeIdeaObject)
                 self.delegate?.ideaPosted(with: newTradeIdea, tradeIdeaTyp: self.tradeIdeaType)

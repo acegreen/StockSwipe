@@ -9,6 +9,7 @@
 import UIKit
 import Parse
 import DZNEmptyDataSet
+import Crashlytics
 
 protocol ProfileTableVieDelegate {
     func subScrollViewDidScroll(_ scrollView: UIScrollView)
@@ -845,6 +846,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                                 Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId":userObject.objectId!, "checkSetting": "follower_notification", "title": "Follower Notification", "message": "@\(currentUser.username!) is now following you"])
                             #endif
                             
+                            // log following
+                            Answers.logCustomEvent(withName: "Follow", customAttributes: ["From User": currentUser.username ?? "N/A", "To User": userObject.username ?? "N/A", "Activity Type": "Followed", "App Version": Constants.AppVersion])
+                            
                         } else {
                             
                             DispatchQueue.main.async {
@@ -859,6 +863,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     DispatchQueue.main.async {
                         sender.buttonState = FollowButton.state.notFollowing
                     }
+                    
+                    // log following
+                    Answers.logCustomEvent(withName: "Follow", customAttributes: ["From User": currentUser.username ?? "N/A", "To User": userObject.username ?? "N/A", "Activity Type": "Unfollowed", "App Version": Constants.AppVersion])
                 }
                 
             } catch {

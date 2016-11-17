@@ -88,20 +88,7 @@ class SearchTableViewController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        
-        let objectAtIndex: PFObject
-        switch searchController.isActive {
-        case true:
-            objectAtIndex = searchResults[indexPath.row]
-        case false:
-            objectAtIndex = recentSearches[indexPath.row]
-        }
-        
-        if objectAtIndex.isKind(of: PFUser.self) {
-            return 150
-        } else {
-            return 60
-        }
+        return 100
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -109,9 +96,9 @@ class SearchTableViewController: UITableViewController {
         var objectAtIndex: PFObject?
         switch searchController.isActive {
         case true:
-            objectAtIndex = searchResults[indexPath.row]
+            objectAtIndex = searchResults.get(indexPath.row)
         case false:
-            objectAtIndex = recentSearches[indexPath.row]
+            objectAtIndex = recentSearches.get(indexPath.row)
         }
         
         if let objectAtIndex = objectAtIndex, objectAtIndex.isKind(of: PFUser.self) {

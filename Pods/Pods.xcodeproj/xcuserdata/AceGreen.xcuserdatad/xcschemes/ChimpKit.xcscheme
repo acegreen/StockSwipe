@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '0628930F72C297A8B86FC7F4B211510A'
+               BlueprintIdentifier = '0DA3D658687906C608ED3603EB64B9A6'
                BlueprintName = 'ChimpKit'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'ChimpKit.framework'>

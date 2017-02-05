@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "Rollout post-build phase: `date`"
+
 export PATH=/usr/bin:/bin:"$PATH"
 
 LIB_DIR=$(dirname "$0")
@@ -10,6 +12,10 @@ ERROR_wrongArguments=("exit=1" "message=Got an incorrect command line argument" 
 ERROR_appKeyMissing=("exit=2" "message=app_key argument is required" "xcode_alert=error")
 ERROR_wrongSelfVersion=("exit=3" "message=Incorrect SDK version" "xcode_alert=error")
 ERROR_missingDsym=("exit=14" "message=Missing dSYM. Please contact us at support@rollout.io" "xcode_alert=error")
+ERROR_missingSwiftInjectionDir=("exit=15" "message=Missing Swift injection dir. Please contact us at support@rollout.io" "xcode_alert=error")
+ERROR_missingStructure=("exit=16" "message=Missing Swift structure. Please contact us at support@rollout.io" "xcode_alert=error")
+ERROR_missingSwiftModule=("exit=17" "message=Could not determine Swift module. Please contact us at support@rollout.io" "xcode_alert=error")
+ERROR_structureWasNotUpdated=("exit=18" "message=Structure is too old (was not updated by swift wrapper). Please contact us at support@rollout.io" "xcode_alert=error")
 
 handle_error() { #{{{
   eval local error=('"${'$1'[@]}"')
@@ -77,15 +83,18 @@ EOF
 [ -n "$app_key" ] || handle_error ERROR_appKeyMissing
 
 rollout_build=`(. "$LIB_DIR"/versions; echo $build)`
-echo "Rollout.io upload_dsym_phase (Rollout SDK build $build)"
+echo "Rollout.io upload_data_phase (Rollout SDK build $build)"
 
 xcodeproj_configuration=`(. "$LIB_DIR"/versions; echo $xcodeproj_configuration)`
 [ 0$ROLLOUT_lastXcodeprojConfiguration -ge $xcodeproj_configuration ] || {
   cat << end_of_error_msg
 Rollout.io SDK version was not reconfigured, aborting...
 Our guess is that you changed Rollout.io version in your podfile, but have not reconfigured it yet.
-If this is correct, please run the following command:
-    "$ROLLOUT_DIR"/install/configure_pod.sh -k $app_key
+You need to run the configure_pod script again
+For objective-c and swift support, please run:
+    "$ROLLOUT_DIR"/install/configure_pod.sh -k $app_key -s
+For objective-c only support, please run:
+    "$ROLLOUT_DIR"/install/configure_pod.sh -k $app_key -o
 
 If our guess is incorrect or if the above didn't help, please contact us at support@rollout.io
 end_of_error_msg
@@ -108,19 +117,39 @@ fi
 
 [ -f "$dsym_file" ] || handle_error ERROR_missingDsym
 
-if [ -z "$disable_upload" ]; then
-  dsym_session_id=$RANDOM
-  named_dsym="$VAR_DIR"/dsym__"$app_key"__`date +"%Y-%m-%d_%H:%M:%S"`__$dsym_session_id.dsym
-  cp "$dsym_file" "$named_dsym"
-  echo "Going to upload the dsym in the background. Session id: $dsym_session_id, dsym path: \"$named_dsym\""
-  (
-    echo "`date +"%Y-%m-%d_%H:%M:%S"`: session $dsym_session_id started (-k $app_key -d \"$named_dsym\")"
-    "$LIB_DIR"/upload_dsym -k $app_key -d "$named_dsym"
-    rm "$named_dsym"
-    echo "`date +"%Y-%m-%d_%H:%M:%S"`: session $dsym_session_id finished"
-  ) >> "$VAR_DIR"/upload_dsym.log 2>&1 &
+unset rollout_structure_file
+if [[ "$SWIFT_EXEC" =~ /lib/swift_wrapper/swiftc ]]; then
+  rollout_structure_file="$OBJECT_FILE_DIR_normal/$CURRENT_ARCH/${PRODUCT_MODULE_NAME}.rollout_structure"
+  swift_module="`dirname "$rollout_structure_file"`/$PRODUCT_MODULE_NAME".swiftmodule
+  [ -f "$swift_module" ] || handle_error ERROR_missingSwiftModule
+  [ -f "$rollout_structure_file" ] || handle_error ERROR_missingStructure
+  [ `stat -f "%m" "$rollout_structure_file"` -ge `stat -f "%m" "$swift_module"` ] || handle_error ERROR_structureWasNotUpdated
 else
-  echo "Dsym uploading disabled"
+  echo "SWIFT_EXEC=\"$SWIFT_EXEC\" is either unset or is some custom path used for tests, so no structure uploading will be done"
+fi
+
+if [ -z "$disable_upload" ]; then
+  upload_session_id=$RANDOM
+  named_dsym="$VAR_DIR"/dsym__"$app_key"__`date +"%Y-%m-%d_%H:%M:%S"`__$upload_session_id.dsym
+  cp "$dsym_file" "$named_dsym"
+
+  unset named_structure_file
+  if [ -n "$rollout_structure_file" ]; then
+    named_structure_file="$VAR_DIR"/structure__"$app_key"__`date +"%Y-%m-%d_%H:%M:%S"`__$upload_session_id.json
+    cp "$rollout_structure_file" "$named_structure_file"
+  fi
+
+  echo "Going to upload the data in the background. Session id: $upload_session_id, dsym path: \"$named_dsym\", structure path: \"$named_structure_file\"   "
+  (
+    upload_data_cmd=("$LIB_DIR"/upload_data -k $app_key -d "$named_dsym")
+    [ -z "$named_structure_file" ] || upload_data_cmd=("${upload_data_cmd[@]}" -s "$named_structure_file")
+    echo "`date +"%Y-%m-%d_%H:%M:%S"`: session $upload_session_id started (`printf "%q " "${upload_data_cmd[@]}"`)"
+    "${upload_data_cmd[@]}"
+    rm -f "$named_dsym" "$named_structure_file"
+    echo "`date +"%Y-%m-%d_%H:%M:%S"`: session $upload_session_id finished"
+  ) >> "$VAR_DIR"/upload_data.log 2>&1 &
+else
+  echo "Data uploading disabled"
 fi
 
 rm -rf $temp_dir

@@ -6,7 +6,7 @@
 	<dict>
 		<key>Resources/Info.plist</key>
 		<data>
-		eikPwhx0t/9W/kWYJC0ohwW6+F8=
+		xwJbs/GcVvPk8J21qtvczNdmvR4=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -26,44 +26,44 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			RvZUzlfpDkYHj7N3MUzX1T/eYZg=
+			i2gbKqLXrmiTPIBodP7FxgYrdhs=
 			</data>
 			<key>hash2</key>
 			<data>
-			sSwAsqORJcN2j09noEZOx1IsIseqVQp1BEHcDp8y2yk=
+			C2e/Yq2OPz97ry+620MCZ3g739UboGdC5KjmBLopBFI=
 			</data>
 		</dict>
 		<key>Headers/KSCrash.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			S3WRMyQYIs7u041v1Cqq4jLvAy8=
+			vLekGIBm4dN10994Q1W/iDWrMkA=
 			</data>
 			<key>hash2</key>
 			<data>
-			86Pi0VLrrI8XR8fZgZTkZAnyEbZZ+ouHQkBOgp9hzLQ=
+			h8FMa7hTkSkjfl9oEcTdjwRn7Aadj0mWOgm+KVRXUdQ=
 			</data>
 		</dict>
 		<key>Headers/KSCrashAdvanced.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			UgYajHU8KTWJx2SSDpdhzTMdiOo=
+			Cln5/On6HatabfjxTU6Ik5S1WUA=
 			</data>
 			<key>hash2</key>
 			<data>
-			TNn2IgtCkOfg2xX/0Fn8zA0+V1mw2A4AIqAOI28hR/0=
+			ztHyuSwvpqLML6ZRU3XwfZ9V7XlXef+Va1G4Of2Gjtc=
 			</data>
 		</dict>
 		<key>Headers/KSCrashC.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			+QSTjSWYU9u8kNK6xq8HbVDZAG0=
+			dYMKYAI6uBlMRV7m6tV1uESrhKw=
 			</data>
 			<key>hash2</key>
 			<data>
-			XMaCqLygGFkmZYFiRjiGbIaZgOdp8bYvHlxWd/t8baE=
+			XcSmA+Fv9JbOAsYuMGAnqqzPaa69+tj6v9PHU/nSwTA=
 			</data>
 		</dict>
 		<key>Headers/KSCrashContext.h</key>
@@ -103,33 +103,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			UHGbox5LMgdeD+uESKKoDVUdyyU=
+			hPR+iE2jWMBzIEhVQLlInpReEy4=
 			</data>
 			<key>hash2</key>
 			<data>
-			LvtMLiE1iMnhScvoC7BKGgWBLJr8ixuRsIdHNrHSUfQ=
-			</data>
-		</dict>
-		<key>Headers/KSCrashReportFilterCompletion.h</key>
-		<dict>
-			<key>hash</key>
-			<data>
-			N7idmHrDfC77vQ3SfPWaCX+ufSo=
-			</data>
-			<key>hash2</key>
-			<data>
-			5LniqaufMMwdGrrZoCsLkyz/f4xpLd8q1jUXHR/5hcY=
+			2xDPV2eDaEId4OI+AkWfqmImzkJdnRWA9oM2/AINEUw=
 			</data>
 		</dict>
 		<key>Headers/KSCrashReportStore.h</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			UyTFDYAjNMopdr5QFCn6NDK46Ag=
+			lw9DRxRCCBESEJmVYC1xRuCW3+c=
 			</data>
 			<key>hash2</key>
 			<data>
-			gLgQtDYkKzPwJL/f0qd06MI0wpJGO51TRG4Rg5DBoII=
+			XRmoCb6gv5kQgZbZ2GFe7Rsf+qBiA0t/hxOQvoQiXzY=
 			</data>
 		</dict>
 		<key>Headers/KSCrashReportVersion.h</key>
@@ -158,11 +147,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			W+zcPeD8GMDD07Czw5djVrad1Vo=
+			M4noVmvxTcFAu+TkYPTHcNy78Cw=
 			</data>
 			<key>hash2</key>
 			<data>
-			z2El7diBK9zt9rWjAqtG1Q88rCO5nkS2OTpfWsrzHzo=
+			Muby0FY1Fn5KRyTW0gmvOLqvQAV9OqAUvyjBGobWEYI=
 			</data>
 		</dict>
 		<key>Headers/KSCrashState.h</key>
@@ -220,6 +209,17 @@
 			c/3zvkqGzNd80hmM1ogUTv1p1ZFSYXMiIo+obY4o9qY=
 			</data>
 		</dict>
+		<key>Headers/KSZombie.h</key>
+		<dict>
+			<key>hash</key>
+			<data>
+			3G0CB2E/7vxmwp/0R+1G94+d2dQ=
+			</data>
+			<key>hash2</key>
+			<data>
+			ZIjoEL7keyWsm6xG8yxlMsqIt0gn5HtFiWwH6idOBiA=
+			</data>
+		</dict>
 		<key>Headers/NSError+SimpleConstructor.h</key>
 		<dict>
 			<key>hash</key>
@@ -257,11 +257,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			eikPwhx0t/9W/kWYJC0ohwW6+F8=
+			xwJbs/GcVvPk8J21qtvczNdmvR4=
 			</data>
 			<key>hash2</key>
 			<data>
-			PFiOR9q19q96/yIEJJUBlDDDCQsnQdReM1WXJEet0OE=
+			N4QaPaZNJsab8VVrQuOX0iNPb9K18G2ZM+HVKlyIDxI=
 			</data>
 		</dict>
 	</dict>

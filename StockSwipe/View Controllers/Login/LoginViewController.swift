@@ -294,15 +294,15 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     user["location"] = location
                 }
                 
-                if let profilePictureURL = result["profile_image_url_https"].URL?.absoluteString {
+                if let profilePictureURL = result["profile_image_url_https"].url?.absoluteString {
                     user["profile_image_url"] = profilePictureURL.replacingOccurrences(of: "_normal", with: "")
                 }
                 
-                if let profileBannerURL = result["profile_banner_url"].URL?.absoluteString {
+                if let profileBannerURL = result["profile_banner_url"].url?.absoluteString {
                     user["profile_banner_url"] = profileBannerURL
                 }
                 
-                if let website = result["entities"]["url"]["urls"][0]["expanded_url"].URL?.absoluteString {
+                if let website = result["entities"]["url"]["urls"][0]["expanded_url"].url?.absoluteString {
                     user["website"] = website
                 }
                 
@@ -423,11 +423,11 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                             user["location_id"] = result["location"]["id"].string
                         } 
                         
-                        if let pictureURL = result["picture"]["data"]["url"].URL?.absoluteString {
+                        if let pictureURL = result["picture"]["data"]["url"].url?.absoluteString {
                             user["profile_image_url"] = pictureURL
                         }
                         
-                        if let profileBannerURL = result["cover"]["source"].URL?.absoluteString {
+                        if let profileBannerURL = result["cover"]["source"].url?.absoluteString {
                             user["profile_banner_url"] = profileBannerURL
                         }
                         

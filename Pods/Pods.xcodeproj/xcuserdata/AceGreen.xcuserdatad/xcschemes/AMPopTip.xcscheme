@@ -14,7 +14,7 @@
             buildForArchiving = "YES">
             <BuildableReference
                BuildableIdentifier = 'primary'
-               BlueprintIdentifier = '586E40C0BEBAB01A075A5E60359FA09D'
+               BlueprintIdentifier = '9F64F691C3C68E6FDA6FB1E22434EBA5'
                BlueprintName = 'AMPopTip'
                ReferencedContainer = 'container:Pods.xcodeproj'
                BuildableName = 'AMPopTip.framework'>

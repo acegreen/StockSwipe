@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		04A4CC8974BC29CC234258FC /* RolloutGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = F19A09659B9CAECBD7A088E6 /* RolloutGenerated.swift */; };
 		230428D41CA2E419009DDC21 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23332BA11CA08404006E4863 /* MainInterface.storyboard */; };
 		230428D51CA2E46C009DDC21 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23332BA41CA08416006E4863 /* TodayViewController.swift */; };
 		23142DC61D4FAF3A00F11531 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23142DC51D4FAF3A00F11531 /* News.swift */; };
@@ -134,11 +133,14 @@
 		23EA70241B119854008F6C12 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA70231B119854008F6C12 /* libsqlite3.dylib */; };
 		23EA70261B11985A008F6C12 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA70251B11985A008F6C12 /* Accounts.framework */; };
 		23EA70281B119861008F6C12 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA70271B119861008F6C12 /* Social.framework */; };
-		607FBFE70B135B3DEF994BCE /* RolloutSwiftInjectionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F0858F652FFF7167EBAFD9A9 /* RolloutSwiftInjectionBridge.swift */; };
+		636457445B0485D53C6E28B7 /* RolloutMayPatchFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB1CA957321EFDA1E1E45F90 /* RolloutMayPatchFilter.swift */; };
 		7888E1041B669C780087C255 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7602B1B62AC5B009777E1 /* CoreSpotlight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7888E10A1B66D5880087C255 /* CustomUnwindSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7888E1091B66D5880087C255 /* CustomUnwindSegue.swift */; };
+		793C96A2DC02565A0E5EE2C2 /* RolloutGenerated.swift in Sources */ = {isa = PBXBuildFile; fileRef = 719D5DAE1EAD12F8B6389381 /* RolloutGenerated.swift */; };
 		A9A3E6D544B258A12E459335 /* Pods_StockSwipeWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20F0DA058379F7E7BCD77D90 /* Pods_StockSwipeWidget.framework */; };
+		AC7AC577C9B683701974CEE0 /* RolloutSwiftInjectionBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58E68754E05918C3775E6019 /* RolloutSwiftInjectionBridge.swift */; };
 		C2364103441D8611646C3A53 /* Pods_StockSwipe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7830F84A5696F175B212B1F6 /* Pods_StockSwipe.framework */; };
+		C62C3D888BFF891B6F1A5C0B /* RolloutSwiftCompilerInitiator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F5F6439F4878BA3BCF5DF96 /* RolloutSwiftCompilerInitiator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -325,13 +327,15 @@
 		302A57B5A56184CF31B8BD67 /* Pods-StockSwipeWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipeWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipeWidget/Pods-StockSwipeWidget.release.xcconfig"; sourceTree = "<group>"; };
 		379EE7BADF3F956ACE9B3CF1 /* Pods-StockSwipe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipe/Pods-StockSwipe.debug.xcconfig"; sourceTree = "<group>"; };
 		422C898FA876840C7EB3FDD1 /* Pods-StockSwipeWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipeWidget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipeWidget/Pods-StockSwipeWidget.debug.xcconfig"; sourceTree = "<group>"; };
+		58E68754E05918C3775E6019 /* RolloutSwiftInjectionBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutSwiftInjectionBridge.swift; path = Pods/Rollout.io/RolloutSwift/RolloutSwiftInjectionBridge.swift; sourceTree = "<group>"; };
+		719D5DAE1EAD12F8B6389381 /* RolloutGenerated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutGenerated.swift; path = Pods/Rollout.io/RolloutSwift/RolloutGenerated.swift; sourceTree = "<group>"; };
 		7830F84A5696F175B212B1F6 /* Pods_StockSwipe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockSwipe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7888E1091B66D5880087C255 /* CustomUnwindSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUnwindSegue.swift; sourceTree = "<group>"; };
+		7F5F6439F4878BA3BCF5DF96 /* RolloutSwiftCompilerInitiator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutSwiftCompilerInitiator.swift; path = Pods/Rollout.io/RolloutSwift/RolloutSwiftCompilerInitiator.swift; sourceTree = "<group>"; };
 		88C8817E07F719AC9372FB54 /* Pods_StockSwipeTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockSwipeTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AC17DA01AC7366A004E6D2D /* StockSwipe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockSwipe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEDDC51E64E945056DDC5558 /* Pods-StockSwipe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipe.release.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipe/Pods-StockSwipe.release.xcconfig"; sourceTree = "<group>"; };
-		F0858F652FFF7167EBAFD9A9 /* RolloutSwiftInjectionBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutSwiftInjectionBridge.swift; path = Pods/Rollout.io/RolloutSwift/RolloutSwiftInjectionBridge.swift; sourceTree = "<group>"; };
-		F19A09659B9CAECBD7A088E6 /* RolloutGenerated.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutGenerated.swift; path = Pods/Rollout.io/RolloutSwift/RolloutGenerated.swift; sourceTree = "<group>"; };
+		DB1CA957321EFDA1E1E45F90 /* RolloutMayPatchFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RolloutMayPatchFilter.swift; path = Pods/Rollout.io/RolloutSwift/RolloutMayPatchFilter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -669,6 +673,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		5C613B28F15A782B6F359111 /* Rollout */ = {
+			isa = PBXGroup;
+			children = (
+				719D5DAE1EAD12F8B6389381 /* RolloutGenerated.swift */,
+				7F5F6439F4878BA3BCF5DF96 /* RolloutSwiftCompilerInitiator.swift */,
+				58E68754E05918C3775E6019 /* RolloutSwiftInjectionBridge.swift */,
+				DB1CA957321EFDA1E1E45F90 /* RolloutMayPatchFilter.swift */,
+			);
+			name = Rollout;
+			sourceTree = "<group>";
+		};
 		80893E71A9F8EDD83DB17696 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -715,7 +730,7 @@
 				2378B5861B115FB3002ACFDC /* StockSwipeTests */,
 				8AC17DA11AC7366A004E6D2D /* Products */,
 				396D5A88566A826DCB501185 /* Pods */,
-				9873A5938BC1C33740F8D01F /* Rollout */,
+				5C613B28F15A782B6F359111 /* Rollout */,
 			);
 			sourceTree = "<group>";
 		};
@@ -769,15 +784,6 @@
 			path = "Core Data";
 			sourceTree = "<group>";
 		};
-		9873A5938BC1C33740F8D01F /* Rollout */ = {
-			isa = PBXGroup;
-			children = (
-				F19A09659B9CAECBD7A088E6 /* RolloutGenerated.swift */,
-				F0858F652FFF7167EBAFD9A9 /* RolloutSwiftInjectionBridge.swift */,
-			);
-			name = Rollout;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -824,8 +830,8 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8AC17DC21AC7366A004E6D2D /* Build configuration list for PBXNativeTarget "StockSwipe" */;
 			buildPhases = (
+				7284BFDD6AEA5115C4AB0711 /* Rollout.io pre-build */,
 				58B6642F3B6926F22922ACFF /* [CP] Check Pods Manifest.lock */,
-				635387C0EFB532040394A7C0 /* Rollout.io pre-build */,
 				8AC17D9C1AC7366A004E6D2D /* Sources */,
 				8AC17D9D1AC7366A004E6D2D /* Frameworks */,
 				8AC17D9E1AC7366A004E6D2D /* Resources */,
@@ -834,7 +840,7 @@
 				816270F03CFA12797FF94487 /* [CP] Embed Pods Frameworks */,
 				1A12D03F3D98D4DD994CBE82 /* [CP] Copy Pods Resources */,
 				23CCA6A51DA5D5E700EE4F09 /* Embed Frameworks */,
-				F51A97A940D58E83C99BE5F1 /* Rollout.io post-build */,
+				90172FF166367D27F3BF6613 /* Rollout.io post-build */,
 			);
 			buildRules = (
 			);
@@ -1032,7 +1038,7 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		635387C0EFB532040394A7C0 /* Rollout.io pre-build */ = {
+		7284BFDD6AEA5115C4AB0711 /* Rollout.io pre-build */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1044,7 +1050,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ROLLOUT_lastXcodeprojConfiguration=7 \"${SRCROOT}/Pods/Rollout.io/lib/pre-build_xcode_phase\" -k 568730c9045462554abcb4cc";
+			shellScript = "ROLLOUT_lastXcodeprojConfiguration=9 \"${SRCROOT}/Pods/Rollout.io/lib/pre-build_xcode_phase\" -k 568730c9045462554abcb4cc";
 		};
 		773D38C05ADA2DAD6FDEBBFE /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1076,7 +1082,7 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-StockSwipe/Pods-StockSwipe-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		F51A97A940D58E83C99BE5F1 /* Rollout.io post-build */ = {
+		90172FF166367D27F3BF6613 /* Rollout.io post-build */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1088,7 +1094,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "ROLLOUT_lastXcodeprojConfiguration=7 \"${SRCROOT}/Pods/Rollout.io/lib/post-build_xcode_phase\" -k 568730c9045462554abcb4cc";
+			shellScript = "ROLLOUT_lastXcodeprojConfiguration=9 \"${SRCROOT}/Pods/Rollout.io/lib/post-build_xcode_phase\" -k 568730c9045462554abcb4cc";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1191,9 +1197,11 @@
 				23E0FFDA1B1B6AE000251BC6 /* StockSwipe.xcdatamodeld in Sources */,
 				23C221AF1DC8E8C5003898E9 /* FollowButton.swift in Sources */,
 				2339B0A81B41A697009CE3EB /* SARateViewController.m in Sources */,
-				04A4CC8974BC29CC234258FC /* RolloutGenerated.swift in Sources */,
-				607FBFE70B135B3DEF994BCE /* RolloutSwiftInjectionBridge.swift in Sources */,
 				23C221B91DC8E8C5003898E9 /* SearchTableViewCell.swift in Sources */,
+				793C96A2DC02565A0E5EE2C2 /* RolloutGenerated.swift in Sources */,
+				C62C3D888BFF891B6F1A5C0B /* RolloutSwiftCompilerInitiator.swift in Sources */,
+				AC7AC577C9B683701974CEE0 /* RolloutSwiftInjectionBridge.swift in Sources */,
+				636457445B0485D53C6E28B7 /* RolloutMayPatchFilter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

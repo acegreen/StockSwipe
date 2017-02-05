@@ -12,10 +12,11 @@
 @class RolloutDeviceProperties;
 @class RolloutInvocationContext;
 @class RolloutClientOptions;
+@class RolloutInvocationResult;
 
 @protocol RolloutInvocation
 
-- (RolloutTypeWrapper *)invokeWithContext:(RolloutInvocationContext *)context originalMethodWrapper:(RolloutTypeWrapper *(^)(NSArray *))originalMethodWrapper;
+- (RolloutInvocationResult *)invokeWithContext:(RolloutInvocationContext *)context originalMethodWrapper:(RolloutInvocationResult *(^)(NSArray *))originalMethodWrapper;
 
 @end
 

@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "ECFE28C84AA39CA18DC7FBB56EC6DEF6"
+               BlueprintIdentifier = "74F7912B7126EBCE8C07F5DDF0D54F42"
                BuildableName = "Pods_StockSwipe.framework"
                BlueprintName = "Pods-StockSwipe"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "ECFE28C84AA39CA18DC7FBB56EC6DEF6"
+            BlueprintIdentifier = "74F7912B7126EBCE8C07F5DDF0D54F42"
             BuildableName = "Pods_StockSwipe.framework"
             BlueprintName = "Pods-StockSwipe"
             ReferencedContainer = "container:Pods.xcodeproj">

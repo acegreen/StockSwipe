@@ -1,0 +1,78 @@
+#!/bin/bash
+
+export PATH=/usr/bin:/bin:"$PATH"
+
+lib_dir=$(dirname "$0")
+rollout_dir=$(dirname "$lib_dir")
+cache_dir="${rollout_dir}/.cache"
+
+unset help exit rollout_key bundle_version bundle_short_version dsym_file structure_file
+while getopts "k:m:d:s:h" option; do
+  case $option in
+    k)
+      rollout_key=$OPTARG
+      ;;
+    d)
+      dsym_file="$OPTARG"
+      ;;
+    s)
+      structure_file="$OPTARG"
+      ;;
+    h)
+      help=1
+      ;;
+    *)
+      exit=1
+      ;;
+  esac
+done
+
+[ -z "$help" ] || {
+  cat 1>&2 << EOF
+Usage:  $0 <options>
+
+  -k <app key>                 Rollout app key
+  -d <path to dsym>            path to the dsym file (the binary file, not the .dsym directory)
+  -s <path to structure file>  path to the structure file
+  -h                           this help message
+EOF
+  exit
+}
+
+[ -n "$rollout_key" ] || { echo "Rollout app key is required (-k)" 1>&2 ; exit=1; }
+[ -n "$dsym_file" ] || { echo "Path to dsym is required (-d)" 1>&2; exit=1; }
+
+[ -z "$exit" ] || exit 1
+
+rollout_build=`. "$lib_dir"/versions; echo $build`
+[ -n "$rollout_build" ] || { echo "Could not extract rollout build number" 1>&2; exit 2; }
+
+server="$ROLLOUT_allServicesInOneServer"
+[ -n "$ROLLOUT_allServicesInOneServer" ] || server="https://upload.rollout.io"
+
+exit_status=0
+fail_script() { #{{{
+  echo "$1"
+  exit_status="$2"
+} #}}}
+
+structure_file_gzip=""
+if [ -f "$structure_file" ]; then
+  structure_file_gzip="$structure_file".gz
+  gzip < "$structure_file" > "$structure_file_gzip" || fail_script "gzip file \"$structure_file\" failed" "$?"
+fi
+
+dsym_file_gzip="$dsym_file".gz
+gzip < "$dsym_file" > "$dsym_file_gzip" || fail_script "gzip file \"$dsym_file\" failed" "$?"
+if [ -f "$structure_file_gzip" ]; then
+  curl -sS --location --post301 --post302 -F dsym=@"$dsym_file_gzip" -F swift_structure=@"$structure_file_gzip" "${server}/api/dsym/$rollout_key?rollout_key=$rollout_key&rollout_build=$rollout_build" || fail_script "curl failed" "$?"
+else
+  curl -sS --location --post301 --post302 -F dsym=@"$dsym_file_gzip" "${server}/api/dsym/$rollout_key?rollout_key=$rollout_key&rollout_build=$rollout_build" || fail_script "curl failed" "$?"
+fi
+rm "$dsym_file_gzip" || fail_script "rm gzipped dsym file failed" "$?"
+
+if [ -f "$structure_file_gzip" ]; then
+  rm "$structure_file_gzip" || fail_script "rm gzipped structure file failed" "$?"
+fi 
+
+exit "$exit_status"

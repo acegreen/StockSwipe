@@ -434,7 +434,11 @@
 }
 
 - (void)hide {
-    if (self.isAnimating) {
+    [self hideForced:NO];
+}
+
+- (void)hideForced:(BOOL)forced {
+    if (!forced && self.isAnimating) {
         return;
     }
     self.isAnimating = YES;
@@ -458,7 +462,7 @@
     };
 
     BOOL isActive = YES;
-#ifndef AM_POPTIP_EXTENSION
+#if NS_EXTENSION_UNAVAILABLE_IOS
     UIApplicationState state = [[UIApplication sharedApplication] applicationState];
     isActive = (state == UIApplicationStateActive);
 #endif

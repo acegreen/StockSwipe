@@ -1,33 +1,33 @@
 PODS:
-  - AMPopTip (1.3.0)
-  - Appsee (2.3)
+  - AMPopTip (1.4.1)
+  - Appsee (2.3.1)
   - Bolts (1.8.4):
     - Bolts/AppLinks (= 1.8.4)
     - Bolts/Tasks (= 1.8.4)
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
-  - BubbleTransition (2.0.0)
-  - Charts (3.0.0):
-    - Charts/Core (= 3.0.0)
-  - Charts/Core (3.0.0)
+  - BubbleTransition (2.0.1)
+  - Charts (3.0.1):
+    - Charts/Core (= 3.0.1)
+  - Charts/Core (3.0.1)
   - ChimpKit (3.1.1)
   - Crashlytics (3.8.3):
     - Fabric (~> 1.6.3)
   - DataCache (1.2.2)
   - DZNEmptyDataSet (1.8.1)
-  - Fabric (1.6.10)
-  - FBSDKCoreKit (4.17.0):
+  - Fabric (1.6.11)
+  - FBSDKCoreKit (4.19.0):
     - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.17.0):
+  - FBSDKLoginKit (4.19.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.17.0):
+  - FBSDKShareKit (4.19.0):
     - FBSDKCoreKit
   - LaunchKit (2.1.4):
     - LaunchKit/LaunchKit (= 2.1.4)
   - LaunchKit/LaunchKit (2.1.4)
   - MDCSwipeToChoose (0.2.4)
-  - NVActivityIndicatorView (3.0)
+  - NVActivityIndicatorView (3.4)
   - Parse (1.14.2):
     - Bolts/Tasks (~> 1.8)
   - ParseFacebookUtilsV4 (1.11.1):
@@ -43,15 +43,15 @@ PODS:
     - Bolts/Tasks (~> 1.3)
     - Parse (~> 1.9)
   - ReachabilitySwift (3)
-  - Rollout.io (1.5.1)
+  - Rollout.io (1.11.1)
   - SDVersion (3.6)
   - SKSplashView (0.1.2)
-  - SwiftyJSON (3.1.1)
-  - SWXMLHash (3.0.2)
-  - TwitterCore (2.5.0):
+  - SwiftyJSON (3.1.4)
+  - SWXMLHash (3.0.4)
+  - TwitterCore (2.8.0):
     - Fabric
-  - TwitterKit (2.5.0):
-    - TwitterCore (= 2.5.0)
+  - TwitterKit (2.8.0):
+    - TwitterCore (= 2.8.0)
 
 DEPENDENCIES:
   - AMPopTip
@@ -99,35 +99,35 @@ CHECKOUT OPTIONS:
     :git: https://github.com/acegreen/SKSplashView.git
 
 SPEC CHECKSUMS:
-  AMPopTip: b810a33c120feacafce170cc9ddcaa8ce3a8389d
-  Appsee: 3f57734813c0bb22f5c0c6bb412c6140f23fd2fb
+  AMPopTip: 65ce21ac23607020e6b5b4e261b8b76df7190987
+  Appsee: 78b5d4b281ceb83d5fd17d7df18d5ff8c292e031
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  BubbleTransition: bdb9d71993b8d3513008e2dda6bada1ddad25d4f
-  Charts: beb341928d2135613b4325a6c6aff9f2f6de895e
+  BubbleTransition: bb24ed389ab672eecf3c87170d0a73f959a8e696
+  Charts: 0e84f4418e87dad6a9edde221fba37ebb51d3ba7
   ChimpKit: d020126089544daa349397a91f1489a3f271b791
   Crashlytics: 2b6dbe138a42395577cfa73dfa1aa7248cadf39e
   DataCache: aab67eb89877e40e4d56f345a160d10b6f3f80ac
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fabric: c73f371ee543e3f0b80608f2674750e4910d1669
-  FBSDKCoreKit: 30a21d2d7b92984b3d80497113433c00824c35e9
-  FBSDKLoginKit: 42b7129ac0373ca99eaf4cbebf4d07bd42371f59
-  FBSDKShareKit: 9b573d03fbee36cbaf42d5bb1f2bc019e0d72347
+  Fabric: 5911403591946b8228ab1c51d98f1d7137e863c6
+  FBSDKCoreKit: 894b2b6eda6a4c8c4204e92e59cc355709ef045c
+  FBSDKLoginKit: 83ca4d8f12a2022570af9fd6aacf27f6b425b99f
+  FBSDKShareKit: 5953758366278430dc322d5cdc906db361ed7f81
   LaunchKit: 95ad4fb171a0f8ea1c80aa26d4fb7bd637788f9c
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
-  NVActivityIndicatorView: 81953b5e65093ba79edf4fe7268e002039ca5268
+  NVActivityIndicatorView: 5754be63ceecd1df8af37d3c088d81872feeb8b8
   Parse: 4335d65f40cb3d43190d723144bbe1afb9c38230
   ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
   ParseTwitterUtils: 0dde9689565e7012d83f892c64aed2ebe69f2ea9
   ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
-  Rollout.io: 633918322ee94d38bf1a1f761f12eaf83d724cc0
+  Rollout.io: 2057beff22c917b0a402bfeaca2016cb0c06b524
   SDVersion: 43383b6ac05462c973c3fd92d9748c74e360aba5
   SKSplashView: c65333b6707be6f237d09e7c8977941114b0a70d
-  SwiftyJSON: f0be2e604f83e8405a624e9f891898bf6ed4e019
-  SWXMLHash: e0f6935971f01b06fb228cf435510d998ecde647
-  TwitterCore: 95c46af93112768a7983bd370d66023553601d01
-  TwitterKit: dd8042698b0ff5bd3066fa919b3b2b50d8eed829
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+  SWXMLHash: 29d20b84692fc319ea8ed933058fe7d8d005139b
+  TwitterCore: e959987be23c767004d29eb7fab8d85d8585a2e5
+  TwitterKit: f7b0a1adcb800f6446ff0ef70164797376522ff3
 
 PODFILE CHECKSUM: 02ac816521d2c93c853d74fb20f7e9d1d381cf96
 
-COCOAPODS: 1.1.1
+COCOAPODS: 1.2.0

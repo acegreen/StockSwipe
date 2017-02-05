@@ -4,8 +4,10 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RolloutProxyInfo.h"
 
-typedef void (^RolloutTracker)(NSDictionary *data);
+typedef void (^RolloutTracker)(NSDictionary * _Nonnull data);
+typedef NSString * _Nonnull (^RolloutProxy)(RolloutProxyInfo* _Nonnull proxyInfo);
 
 typedef enum {
     RolloutOptionsVerboseLevelSilent,
@@ -14,13 +16,15 @@ typedef enum {
 
 @interface RolloutOptions : NSObject
 
-@property (nonatomic, copy) RolloutTracker tracker;
+@property (nonatomic, copy, nullable) RolloutTracker tracker;
+@property (nonatomic, copy, nullable) RolloutProxy proxy;
 @property (nonatomic) BOOL disableSyncLoadingFallback;
 @property (nonatomic) RolloutOptionsVerboseLevel verbose;
-@property (nonatomic, strong) NSArray *silentFiles;
+@property (nonatomic, strong) NSArray * _Nullable silentFiles;
 @property (nonatomic) BOOL rolloutDisabled;
-@property (nonatomic, copy) NSArray *patchingDisabledClasses;
-@property (nonatomic, strong) NSArray *blockedInJSClasses;
-@property (nonatomic, copy) NSString *customSigningCertificate;
+@property (nonatomic, copy) NSArray * _Nullable patchingDisabledClasses;
+@property (nonatomic, strong) NSArray * _Nullable blockedInJSClasses;
+@property (nonatomic, copy) NSString * _Nullable customSigningCertificate;
+
 @end
 

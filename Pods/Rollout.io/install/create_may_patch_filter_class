@@ -1,0 +1,60 @@
+#!/bin/bash
+
+unset number_of_filters filter_length
+exit=false
+help=false
+while getopts "n:l:h" option; do
+  case $option in
+    n)
+      declare -i number_of_filters=$OPTARG
+      ;;
+    l)
+      declare -i filter_length=$OPTARG
+      ;;
+    h)
+      help=true
+      ;;
+    *)
+      exit=true
+      ;;
+  esac
+done
+
+if $help; then
+  cat << EOF
+
+Description: Generate filter variables for Rollout Swift code instrumentation
+
+Usage:
+$0 [<options>]
+
+  -n <number>            number of filters
+  -l <number>            filter length
+  -h                     this help message
+EOF
+  exit
+fi
+
+[ -n "$number_of_filters" ] && [ -n "$filter_length" ] || {
+  echo "Both -n and -l are required"
+  exit=true
+}
+
+if $exit; then
+  exit 1
+fi
+
+cat << end_of_input
+@objc class RolloutMayPatchFilter {
+    @objc static let numberOfFilters = $number_of_filters
+    @objc static let filterLength = $filter_length
+
+end_of_input
+
+for((n = 0; n < $number_of_filters; n++)); do
+  for((i = 0; i < $filter_length; i++)); do
+    echo "    @objc static var f_${n}_$i = false"
+  done
+done
+
+echo "}"

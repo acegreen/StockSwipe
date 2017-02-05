@@ -170,6 +170,14 @@ func initWithTypeWrapper<T>(_ value: T) -> RolloutTypeWrapper {
     return RolloutTypeWrapper(objCObjectPointer: swiftWrapper)
 }
 
+func Rollout_tweakDataForHash(hash:String) -> RolloutSwiftTweakData? {
+    #if swift(>=3.0)
+        return RolloutSwiftSwizzlingData.instance().tweakData(forHash:hash)
+    #else
+        return RolloutSwiftSwizzlingData.instance().tweakDataForHash(hash)
+    #endif
+}
+
 #if swift(>=3.0)
     @inline(__always) func Rollout_shouldPatch(_ tweakData:RolloutSwiftTweakData?) -> Bool {
         if tweakData != nil && tweakData!.shouldPatchInTheCurrentThread {
@@ -178,22 +186,57 @@ func initWithTypeWrapper<T>(_ value: T) -> RolloutTypeWrapper {
         return false
     }
     
-    func Rollout_invoke(_ tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: @escaping (NSArray!)->Void) -> Void {
+    func Rollout_invoke(_ tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: @escaping (NSArray!) -> Void) -> Void {
         let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
         tweakData.invocation.invoke(with: context, originalMethodWrapper: {args in
             origClosure(args as NSArray!)
-            return RolloutTypeWrapper.init(void: ())
+            return RolloutInvocationResult(returnValue: RolloutTypeWrapper.init(void: ()))
         })
     }
     
-    func Rollout_invokeReturn<T>(_ tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: @escaping (NSArray!)->T) -> T {
+    func Rollout_invokeThrowing(_ tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: @escaping (NSArray!) throws -> Void) throws -> Void {
         let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
         let result = tweakData.invocation.invoke(with: context, originalMethodWrapper: {args in
-            let originalResult = origClosure(args as NSArray!)
-            return initWithTypeWrapper(originalResult)
-        })
+            do {
+                try origClosure(args as NSArray!)
+                return RolloutInvocationResult(returnValue: RolloutTypeWrapper.init(void: ()))
+            } catch {
+                return RolloutInvocationResult(swiftError: error)
+            }
+        })!
         
-        return extractFromTypeWrapper(result)
+        if let error = result.swiftError {
+            throw(error)
+        }
+    }
+    
+    func Rollout_invokeReturn<T>(_ tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: @escaping (NSArray!) throws ->T) -> T {
+        let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
+        let result = tweakData.invocation.invoke(with: context, originalMethodWrapper: {args in
+                let originalResult = try! origClosure(args as NSArray!)
+                return RolloutInvocationResult(returnValue: initWithTypeWrapper(originalResult))
+            }
+        )!
+        
+        return extractFromTypeWrapper(result.returnValue)
+    }
+
+    func Rollout_invokeReturnThrowing<T>(_ tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: @escaping (NSArray!) throws ->T) throws -> T {
+        let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
+        let result = tweakData.invocation.invoke(with: context, originalMethodWrapper: {args in
+            do {
+                let originalResult = try origClosure(args as NSArray!)
+                return RolloutInvocationResult(returnValue: initWithTypeWrapper(originalResult))
+            } catch {
+                return RolloutInvocationResult(swiftError: error)
+            }
+        })!
+        
+        if let error = result.swiftError {
+            throw error
+        }
+        
+        return extractFromTypeWrapper(result.returnValue)
     }
 #else
     @inline(__always) func Rollout_shouldPatch(tweakData:RolloutSwiftTweakData?) -> Bool {
@@ -207,17 +250,51 @@ func initWithTypeWrapper<T>(_ value: T) -> RolloutTypeWrapper {
         let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
         tweakData.invocation.invokeWithContext(context, originalMethodWrapper: {args in
             origClosure(args)
-            return RolloutTypeWrapper.init(void: ())
+            return RolloutInvocationResult(returnValue: RolloutTypeWrapper.init(void: ()))
         })
+    }
+    
+    func Rollout_invokeThrowing(tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: (NSArray!) throws -> Void) throws -> Void {
+        let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
+        let result = tweakData.invocation.invokeWithContext(context, originalMethodWrapper: {args in
+            do {
+                try origClosure(args)
+                return RolloutInvocationResult(returnValue: RolloutTypeWrapper.init(void: ()))
+            } catch let error {
+                return RolloutInvocationResult(swiftError: error as NSError!)
+            }
+        })!
+        
+        if let error = result.swiftError {
+            throw(error)
+        }
     }
     
     func Rollout_invokeReturn<T>(tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: (NSArray!)->T) -> T {
         let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
         let result = tweakData.invocation.invokeWithContext(context, originalMethodWrapper: {args in
             let originalResult = origClosure(args)
-            return initWithTypeWrapper(originalResult)
+            return RolloutInvocationResult(returnValue: initWithTypeWrapper(originalResult))
         })
         
-        return extractFromTypeWrapper(result)
+        return extractFromTypeWrapper(result.returnValue)
+    }
+
+    func Rollout_invokeReturnThrowing<T>(tweakData:RolloutSwiftTweakData, target: AnyObject, arguments: [RolloutTypeWrapper], origClosure: (NSArray!) throws ->T) throws -> T {
+        let context = RolloutInvocationContext(target: target, tweakId: tweakData.tweakId, arguments: arguments, swiftTweakData: tweakData)
+        let result = tweakData.invocation.invokeWithContext(context, originalMethodWrapper: {args in
+            do {
+                let originalResult = try origClosure(args as NSArray!)
+                return RolloutInvocationResult(returnValue: initWithTypeWrapper(originalResult))
+            } catch let error {
+                return RolloutInvocationResult(swiftError: error as NSError)
+            }
+        })!
+        
+        if let error = result.swiftError {
+            throw error
+        }
+        
+        return extractFromTypeWrapper(result.returnValue)
     }
 #endif

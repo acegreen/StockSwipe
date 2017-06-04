@@ -225,7 +225,7 @@ class QueryHelper {
                 return completion({throw Constants.Errors.parseUserObjectNotFound})
             }
             
-            completion({return (objects: objects)})
+            completion({return (objects)})
             
         }
     }
@@ -253,7 +253,7 @@ class QueryHelper {
                 return completion({throw Constants.Errors.parseStockObjectNotFound})
             }
             
-            completion({return (objects: objects)})
+            completion({return (objects)})
             
         }
     }
@@ -317,7 +317,7 @@ class QueryHelper {
             // The find succeeded.
             print("Successfully retrieved \(objects.count) objects")
             
-            completion({return (objects: objects)})
+            completion({return (objects)})
         }
     }
     
@@ -354,7 +354,7 @@ class QueryHelper {
             
             print("tradeIdeas count", count)
             
-            completion({return (count: count)})
+            completion({return (count)})
         }
     }
     
@@ -431,7 +431,7 @@ class QueryHelper {
             // The find succeeded.
             print("Successfully retrieved \(objects.count) objects")
             
-            completion({return (objects: objects)})
+            completion({return (objects)})
         }
     }
     
@@ -479,7 +479,7 @@ class QueryHelper {
             
             print("userActivity count", count)
             
-            completion({return (count: count)})
+            completion({return (count)})
         }
     }
     
@@ -533,7 +533,7 @@ class QueryHelper {
             // The find succeeded.
             print("Successfully retrieved \(objects.count) objects")
             
-            completion({return (objects: objects)})
+            completion({return (objects)})
         }
     }
     
@@ -575,7 +575,7 @@ class QueryHelper {
             // The find succeeded.
             print("Successfully retrieved \(objects.count) activities")
             
-            completion({return (objects: objects)})
+            completion({return (objects)})
             
         }
     }

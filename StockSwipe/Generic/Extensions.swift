@@ -6,9 +6,6 @@
 //  Copyright © 2015 StockSwipe. All rights reserved.
 //
 
-// Exclude file from rollout
-// ROLLOUT_EXCLUDE_SWIFT_FILE_INSTRUMENTATION
-
 import Foundation
 import NVActivityIndicatorView
 

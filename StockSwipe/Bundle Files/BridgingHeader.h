@@ -9,6 +9,5 @@
 #import "UIView+TLMotionEffect.h"
 #import "iCarousel.h"
 //#import <TradeItIosTicketSDK/TradeItIosTicketSDK.h>
-#import <Rollout/Rollout.h>
 
 #endif

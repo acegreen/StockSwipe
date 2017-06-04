@@ -1,7 +1,0 @@
-#!/bin/bash
-
-set -e
-
-swift_stdlib_tool_path=`/usr/bin/xcrun -f swift-stdlib-tool`
-
-"$swift_stdlib_tool_path" "$@"

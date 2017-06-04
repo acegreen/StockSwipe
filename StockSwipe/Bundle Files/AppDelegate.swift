@@ -15,7 +15,6 @@ import ParseFacebookUtilsV4
 import Fabric
 import TwitterKit
 import Crashlytics
-import Appsee
 import LaunchKit
 import ChimpKit
 
@@ -67,24 +66,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpened(launchOptions: launchOptions)
         
-        // Initialize Parse Twitter
+        // Initialize Parse (Twitter login)
         PFTwitterUtils.initialize(withConsumerKey: Constants.APIKeys.TwitterKit.key(),
                                                  consumerSecret: Constants.APIKeys.TwitterKit.consumerKey()!)
+        
+        // Initialize Twitter
+        Twitter.sharedInstance().start(withConsumerKey: Constants.APIKeys.TwitterKit.key(), consumerSecret: Constants.APIKeys.TwitterKit.consumerKey()!)
         
         // Initialize Facebook
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
         PFFacebookUtils.facebookLoginManager().loginBehavior = .systemAccount
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        // Intialize Twitter (Fabric)
-        Fabric.with([Twitter.self(), Crashlytics.self(), Appsee.self()])
+        // Intialize Fabric
+        Fabric.with([Crashlytics.self()])
         
         // Initialize LaunchKit
         LaunchKit.launch(withToken: Constants.APIKeys.LaunchKit.key())
         //LaunchKit.sharedInstance().debugAlwaysPresentAppReleaseNotes = true
-        
-        // Initialize Rollout
-        Rollout.setup(withKey: Constants.APIKeys.Rollout.key())
         
         // Intialize ChimpKit
         ChimpKit.shared().apiKey = Constants.APIKeys.ChimpKit.key()

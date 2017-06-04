@@ -17,9 +17,7 @@ target 'StockSwipe' do
 
     # Analytics
     pod 'Crashlytics'
-    pod 'Appsee'
     pod 'LaunchKit'
-    pod 'Rollout.io'
     pod 'ChimpKit'
     
     # Parse

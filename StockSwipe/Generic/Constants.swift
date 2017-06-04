@@ -97,7 +97,6 @@ class Constants {
         case Parse
         case TwitterKit
         case LaunchKit
-        case Rollout
         case ChimpKit
         case TradeItDev
         case TradeItProd
@@ -110,8 +109,6 @@ class Constants {
                 return "ANFH82HYTm0L9IAjlA0bH4nmK"
             case .LaunchKit:
                 return "FYwLCkgJpT_r8kEp1O_-PSg-UnhaD3B7PMPxkG5qIIfq"
-            case .Rollout:
-                return "568730c9045462554abcb4cc"
             case .ChimpKit:
                 return "549c43655bcc48fb60af6a1c24e77495-us12"
             case .TradeItDev:
@@ -130,7 +127,7 @@ class Constants {
             }
         }
         
-        static let allAPIKeys = [Parse, TwitterKit, LaunchKit, Rollout, ChimpKit, TradeItDev, TradeItProd]
+        static let allAPIKeys = [Parse, TwitterKit, LaunchKit, ChimpKit, TradeItDev, TradeItProd]
     }
     
     enum Errors: Error {

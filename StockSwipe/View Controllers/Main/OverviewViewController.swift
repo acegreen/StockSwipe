@@ -460,7 +460,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         self.topStories.removeAll()
         
-        for item in items {
+        for item in items.all {
             
             var newsDecodedTitle: String?
             var newsUrl: String?

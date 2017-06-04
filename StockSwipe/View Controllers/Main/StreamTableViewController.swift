@@ -57,10 +57,6 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
     }
     
     // TWTRTweetViewDelegate
-    func tweetView(_ tweetView: TWTRTweetView, shouldDisplay controller: TWTRTweetDetailViewController) -> Bool {
-        return false
-    }
-    
     func tweetView(_ tweetView: TWTRTweetView, didTap url: URL) {
         Functions.presentSafariBrowser(with: url)
     }

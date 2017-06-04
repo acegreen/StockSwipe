@@ -547,7 +547,7 @@ class Functions {
         })
     }
     
-    class func showPopTipOnceForKey(_ key: String, userDefaults: UserDefaults, popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: AMPopTipDirection = .down, color: UIColor = .darkGray) -> AMPopTip? {
+    class func showPopTipOnceForKey(_ key: String, userDefaults: UserDefaults, popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: PopTipDirection = .down, color: UIColor = .darkGray) -> PopTip? {
         if (!userDefaults.bool(forKey: key)) {
             userDefaults.set(true, forKey: key)
             userDefaults.synchronize()
@@ -557,23 +557,23 @@ class Functions {
         return nil
     }
     
-    class func showPopTip(popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: AMPopTipDirection, color: UIColor, duration: TimeInterval = 3) -> AMPopTip? {
+    class func showPopTip(popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: PopTipDirection, color: UIColor, duration: TimeInterval = 3) -> PopTip? {
         
-        let popTip = AMPopTip()
+        let popTip = PopTip()
         popTip.font = UIFont(name: "HelveticaNeue", size: 16)!
         popTip.textColor = .white
-        popTip.popoverColor = color
+        popTip.backgroundColor = color
         popTip.offset = 10
         popTip.edgeMargin = 5
-        popTip.actionAnimation = AMPopTipActionAnimation.bounce
+        popTip.actionAnimation = PopTipActionAnimation.bounce(8)
         popTip.shouldDismissOnTapOutside = true
         popTip.shouldDismissOnTap = true
-        popTip.showText(text, direction: direction, maxWidth: 300, in: view, fromFrame: frame, duration: duration)
+        popTip.show(text: text, direction: direction, maxWidth: 300, in: view, from: frame, duration: duration)
         
         return popTip
     }
     
-    class func dismissAllPopTips(_ allPopTips: [AMPopTip?]) {
+    class func dismissAllPopTips(_ allPopTips: [PopTip?]) {
         
         if !allPopTips.isEmpty {
             

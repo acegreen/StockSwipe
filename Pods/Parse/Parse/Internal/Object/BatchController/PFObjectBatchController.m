@@ -197,6 +197,8 @@
             }
 
             //TODO: (nlutsenko) Convert to using errors instead of assertions.
+            PFParameterAssert([className isEqualToString:object.parseClassName],
+                              @"All object should be in the same class.");
             PFParameterAssert(object.objectId != nil,
                               @"All objects must exist on the server.");
 

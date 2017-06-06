@@ -562,7 +562,7 @@ class Functions {
         let popTip = PopTip()
         popTip.font = UIFont(name: "HelveticaNeue", size: 16)!
         popTip.textColor = .white
-        popTip.backgroundColor = color
+        popTip.bubbleColor = color
         popTip.offset = 10
         popTip.edgeMargin = 5
         popTip.actionAnimation = PopTipActionAnimation.bounce(8)

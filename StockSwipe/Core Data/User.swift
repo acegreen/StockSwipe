@@ -59,7 +59,7 @@ public class User: NSObject {
                     let avatarData  = try result()
                     
                     if let image = UIImage(data: avatarData) {
-                        self.avtar = image
+                        self.avtar = image ?? UIImage(named: "dummy_profile_male")
                     }
                     
                     completion(self.avtar)
@@ -144,7 +144,7 @@ public class User: NSObject {
     internal func updateObject(userObject: PFUser) {
         
         self.objectId = userObject.objectId
-        self.fullname = userObject.object(forKey: "full_name") as? String
+        self.fullname = userObject.object(forKey: "full_name") as? String ?? "John Doe"
         self.username = "@\(self.userObject.username!)"
         self.profile_image_url = userObject.object(forKey: "profile_image_url") as? String
         

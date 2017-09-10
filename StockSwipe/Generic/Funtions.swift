@@ -341,6 +341,9 @@ class Functions {
                 // Update Spotlight
                 self.addToSpotlight(chart, domainIdentifier: "com.stockswipe.stocksQueried")
                 
+                // Increment eventCount
+                Functions.incrementEventCount()
+                
             } catch {
                 
             }
@@ -609,6 +612,12 @@ class Functions {
                           contentType: "Rate",
                           contentId: nil,
                           customAttributes: ["User": PFUser.current()?.username ?? "N/A", "Country Code": Constants.countryCode, "App Version": Constants.AppVersion])
+    }
+    
+    class func incrementEventCount() {
+        // increment event count
+        SARate.sharedInstance().eventCount += 1
+        print("eventCount", SARate.sharedInstance().eventCount)
     }
     
     class func sendPush(_ pushType: Constants.PushType, parameters: [String:String]) {

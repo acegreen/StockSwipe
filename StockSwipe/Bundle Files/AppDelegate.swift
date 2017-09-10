@@ -36,7 +36,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         
         //configure
         SARate.sharedInstance().minAppStoreRaiting = 4
-        SARate.sharedInstance().eventsUntilPrompt = 7
+        SARate.sharedInstance().eventsUntilPrompt = 25
         SARate.sharedInstance().daysUntilPrompt = 7
         SARate.sharedInstance().remindPeriod = 0
         
@@ -129,10 +129,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                 PFAnalytics.trackAppOpened(launchOptions: launchOptions)
             }
         }
-        
-        // increment event count
-        SARate.sharedInstance().eventCount += 1
-        print("eventCount", SARate.sharedInstance().eventCount)
         
         return true
     }

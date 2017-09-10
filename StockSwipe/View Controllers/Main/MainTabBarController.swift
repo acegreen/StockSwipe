@@ -81,7 +81,6 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
                 } else if SARate.sharedInstance().eventCount >= SARate.sharedInstance().eventsUntilPrompt && Constants.userDefaults.bool(forKey: "FEEDBACK_GIVEN") == false {
                     
                     self.performSegue(withIdentifier: "FeedbackSegueIdentifier", sender: self)
-                    SARate.sharedInstance().eventCount = 0
                     
                 } else {
                     

@@ -31,6 +31,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         case PostIdeaSegueIdentifier = "PostIdeaSegueIdentifier"
     }
     
+    var didLoadDataFirstTime = false
+    
     var animationDelegate: SplashAnimationDelegate?
     
     var iCarouselTickers = ["^IXIC","^GSPC","^RUT","^VIX","^GDAXI","^FTSE","^FCHI","^N225","^HSI","^GSPTSE","CAD=X"]
@@ -143,7 +145,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        loadViewData()
+        loadViewData(firstLaunch: !didLoadDataFirstTime)
     }
     
     deinit {
@@ -156,7 +158,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         // Dispose of any resources that can be recreated.
     }
     
-    func loadViewData() {
+    func loadViewData(firstLaunch: Bool) {
         
         let trendingCloudOperation = BlockOperation { () -> Void in
             self.queryStockTwitsTrendingStocks()
@@ -180,12 +182,17 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         overviewVCOperationQueue.addOperations([trendingCloudOperation, tradeIdeasOperation, marketCarouselOperation, topStoriesOperation], waitUntilFinished: true)
         
-        let animationOperation = BlockOperation { () -> Void in
-            self.animationDelegate?.didFinishLoading()
+        if firstLaunch {
+            
+            let animationOperation = BlockOperation { () -> Void in
+                self.animationDelegate?.didFinishLoading()
+            }
+            animationOperation.queuePriority = .normal
+            
+            overviewVCOperationQueue.addOperation(animationOperation)
         }
-        animationOperation.queuePriority = .normal
         
-        overviewVCOperationQueue.addOperation(animationOperation)
+        didLoadDataFirstTime = true
     }
     
     func queryStockTwitsTrendingStocks() {

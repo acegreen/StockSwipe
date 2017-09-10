@@ -399,13 +399,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         print("iRateDidOpenAppStore")
         
         Functions.markFeedbackGiven()
-        
-        // log rating event
-        Answers.logRating(nil,
-                          contentName: "StockSwipe Rated",
-                          contentType: "Rate",
-                          contentId: nil,
-                          customAttributes: ["User": PFUser.current()?.username ?? "N/A", "Country Code": Constants.countryCode, "App Version": Constants.AppVersion])
     }
     
     func iRateDidDetectAppUpdate() {

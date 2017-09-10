@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A319" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hHT-78-OwD">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="hHT-78-OwD">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -15,35 +18,35 @@
         </array>
     </customFonts>
     <scenes>
-        <!--View Controller-->
+        <!--Feedback Main View Controller-->
         <scene sceneID="T3k-aH-cly">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="P6j-Zb-7by" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <viewController id="q5Q-Rk-QTM" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="FeedbackMainViewController" id="q5Q-Rk-QTM" customClass="FeedbackMainViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="L50-KA-tB0"/>
                         <viewControllerLayoutGuide type="bottom" id="sTx-DO-k3P"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="TkP-Ft-EQC">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hello!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YP5-BX-Lqw">
+                                <rect key="frame" x="16" y="65" width="343" height="70"/>
                                 <fontDescription key="fontDescription" name="KaushanScript-Regular" family="Kaushan Script" pointSize="48"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yva-oS-zOr">
+                                <rect key="frame" x="137.5" y="247" width="100" height="100"/>
                                 <state key="normal" image="smile">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <segue destination="j9a-1o-tgD" kind="show" id="YYN-3W-J3c">
-                                        <nil key="action"/>
-                                    </segue>
+                                    <action selector="reviewAction" destination="q5Q-Rk-QTM" eventType="touchUpInside" id="HJa-lM-Fj0"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="laK-tA-HQK">
+                                <rect key="frame" x="137.5" y="377" width="100" height="100"/>
                                 <state key="normal" image="sad">
                                     <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -54,6 +57,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="We’d love some feedback! How do you feel about StockSwipe? " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1E2-qK-2be">
+                                <rect key="frame" x="16" y="155" width="343" height="47"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
@@ -77,33 +81,36 @@
                     </view>
                     <navigationItem key="navigationItem" id="ZGa-iz-N1J"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P6j-Zb-7by" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-214" y="281"/>
         </scene>
         <!--Feedback View Controller-->
         <scene sceneID="6IX-i2-lVl">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="EvK-tR-Je1" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="j9a-1o-tgD" customClass="FeedbackViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="4Cp-hX-70C"/>
                         <viewControllerLayoutGuide type="bottom" id="upz-tB-Vbr"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zNy-CS-Zxc">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Yay!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0ER-l8-GtD">
+                                <rect key="frame" x="16" y="65" width="343" height="70"/>
                                 <fontDescription key="fontDescription" name="KaushanScript-Regular" family="Kaushan Script" pointSize="48"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="How about rating StockSwipe on the AppStore? We always appreciate the feedback!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Biz-oH-PmR">
+                                <rect key="frame" x="16" y="185" width="343" height="70"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="s9x-Tr-400">
+                                <rect key="frame" x="191.5" y="607" width="167.5" height="40"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="9gS-W6-dnP"/>
@@ -123,6 +130,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O3b-VO-io1">
+                                <rect key="frame" x="16" y="607" width="167.5" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="Zny-9M-ItO"/>
                                 </constraints>
@@ -165,23 +173,24 @@
                         <outlet property="negativeButton" destination="O3b-VO-io1" id="3e5-vK-oJk"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="EvK-tR-Je1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="503" y="-39"/>
         </scene>
         <!--Feedback View Controller-->
         <scene sceneID="DNk-MB-dQh">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="FVh-Bt-egQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="xPG-s5-Y2B" customClass="FeedbackViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="zdu-fI-RTp"/>
                         <viewControllerLayoutGuide type="bottom" id="YzA-Sb-vC1"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="vqw-ZG-X7M">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRd-9i-LxQ">
+                                <rect key="frame" x="16" y="607" width="167.5" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="40" id="Ahg-Tu-SzG"/>
                                     <constraint firstAttribute="height" constant="40" id="MWC-MZ-2GZ"/>
@@ -205,16 +214,19 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Is there any way we can improve your experience with StockSwipe? Contact us, we'd love your feedback!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="h2t-tr-rrw">
+                                <rect key="frame" x="16" y="185" width="343" height="70"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sorry!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="15D-UE-616">
+                                <rect key="frame" x="16" y="65" width="343" height="70"/>
                                 <fontDescription key="fontDescription" name="KaushanScript-Regular" family="Kaushan Script" pointSize="48"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pmF-40-Nnn">
+                                <rect key="frame" x="191.5" y="607" width="167.5" height="40"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="40" id="NNu-zu-hta"/>
@@ -258,13 +270,13 @@
                         <outlet property="negativeButton" destination="MRd-9i-LxQ" id="jfc-88-jFf"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FVh-Bt-egQ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="503" y="616"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="TNz-zd-gke">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Dhh-YT-Di0" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="hHT-78-OwD" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="Hzf-Y5-Nfq">
@@ -276,6 +288,7 @@
                         <segue destination="q5Q-Rk-QTM" kind="relationship" relationship="rootViewController" id="zuJ-dc-C4I"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Dhh-YT-Di0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-886" y="281"/>
         </scene>

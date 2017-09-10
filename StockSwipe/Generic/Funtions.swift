@@ -13,6 +13,7 @@ import MobileCoreServices
 import SystemConfiguration
 import SDVersion
 import Parse
+import Crashlytics
 import SafariServices
 import SwiftyJSON
 import AMPopTip
@@ -601,6 +602,13 @@ class Functions {
     class func markFeedbackGiven() {
         Constants.userDefaults.set(true, forKey: "FEEDBACK_GIVEN")
         Constants.userDefaults.synchronize()
+        
+        // log rating event
+        Answers.logRating(nil,
+                          contentName: "StockSwipe Rated",
+                          contentType: "Rate",
+                          contentId: nil,
+                          customAttributes: ["User": PFUser.current()?.username ?? "N/A", "Country Code": Constants.countryCode, "App Version": Constants.AppVersion])
     }
     
     class func sendPush(_ pushType: Constants.PushType, parameters: [String:String]) {

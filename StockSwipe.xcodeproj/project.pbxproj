@@ -76,6 +76,7 @@
 		238DB6F51D85A01F00082918 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6DA1D85A01F00082918 /* WebViewController.swift */; };
 		2394DFAA1C8C691B0018A5A9 /* SweetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2394DFA91C8C691B0018A5A9 /* SweetAlert.swift */; };
 		239A3E491BAA1CCF00894D1E /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239A3E481BAA1CCF00894D1E /* JavaScriptCore.framework */; };
+		239C3E481F65FECE00D1B422 /* FeedbackMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239C3E471F65FECE00D1B422 /* FeedbackMainViewController.swift */; };
 		239EDA6D1BB0258B001CC63C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239EDA6C1BB0258B001CC63C /* Extensions.swift */; };
 		239EDA6F1BB025B0001CC63C /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239EDA6E1BB025B0001CC63C /* Constants.swift */; };
 		23B70D5B1B115BEF00FF2C04 /* ChartModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23B70D5A1B115BEF00FF2C04 /* ChartModel.swift */; };
@@ -264,6 +265,7 @@
 		238DB6DA1D85A01F00082918 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		2394DFA91C8C691B0018A5A9 /* SweetAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SweetAlert.swift; sourceTree = "<group>"; };
 		239A3E481BAA1CCF00894D1E /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
+		239C3E471F65FECE00D1B422 /* FeedbackMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackMainViewController.swift; sourceTree = "<group>"; };
 		239EDA6C1BB0258B001CC63C /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		239EDA6E1BB025B0001CC63C /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		23B70D5A1B115BEF00FF2C04 /* ChartModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartModel.swift; sourceTree = "<group>"; };
@@ -352,6 +354,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23EA701E1B119831008F6C12 /* StoreKit.framework in Frameworks */,
 				23CCA6A31DA5D5E600EE4F09 /* WordCloud.framework in Frameworks */,
 				23CAE2661C2B46A800D15819 /* LocalAuthentication.framework in Frameworks */,
 				23CE716D1C1215C800E87420 /* AdSupport.framework in Frameworks */,
@@ -365,7 +368,6 @@
 				23EA70241B119854008F6C12 /* libsqlite3.dylib in Frameworks */,
 				23EA70221B11984C008F6C12 /* libz.dylib in Frameworks */,
 				23EA70201B119839008F6C12 /* SystemConfiguration.framework in Frameworks */,
-				23EA701E1B119831008F6C12 /* StoreKit.framework in Frameworks */,
 				23EA701C1B11982D008F6C12 /* Security.framework in Frameworks */,
 				23EA701A1B119827008F6C12 /* QuartzCore.framework in Frameworks */,
 				23EA70161B119818008F6C12 /* CoreLocation.framework in Frameworks */,
@@ -534,6 +536,7 @@
 		238DB6BD1D85A01F00082918 /* Feedback */ = {
 			isa = PBXGroup;
 			children = (
+				239C3E471F65FECE00D1B422 /* FeedbackMainViewController.swift */,
 				238DB6BE1D85A01F00082918 /* FeedbackViewController.swift */,
 			);
 			path = Feedback;
@@ -1130,6 +1133,7 @@
 				238DB6EB1D85A01F00082918 /* NotificationsTableViewController.swift in Sources */,
 				23C221AD1DC8E8C5003898E9 /* ExpandingCell.swift in Sources */,
 				238DB6DF1D85A01F00082918 /* CardsViewController.swift in Sources */,
+				239C3E481F65FECE00D1B422 /* FeedbackMainViewController.swift in Sources */,
 				238DB6DE1D85A01F00082918 /* BlockedAccountsTableViewController.swift in Sources */,
 				23C221C01DC8E8C5003898E9 /* TransparentView.swift in Sources */,
 				238DB6E21D85A01F00082918 /* ChartWebViewController.swift in Sources */,

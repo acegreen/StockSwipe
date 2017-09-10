@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import StoreKit
 import MessageUI
 
 class FeedbackViewController: UIViewController, MFMailComposeViewControllerDelegate {
@@ -21,7 +22,13 @@ class FeedbackViewController: UIViewController, MFMailComposeViewControllerDeleg
     
     @IBAction func reviewAction() {
         self.dismiss(animated: true) {
-            iRate.sharedInstance().openRatingsPageInAppStore()
+            
+            if #available(iOS 10.3, *) {
+                SKStoreReviewController.requestReview()
+                Functions.markFeedbackGiven()
+            } else {
+                iRate.sharedInstance().openRatingsPageInAppStore()
+            }
         }
     }
     

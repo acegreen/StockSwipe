@@ -1,1 +1,0 @@
- const unsigned char ParseTwitterUtilsVersionString[] __attribute__ ((used)) = "@(#)PROGRAM:ParseTwitterUtils  PROJECT:Pods-1" "\n"; const double ParseTwitterUtilsVersionNumber __attribute__ ((used)) = (double)1.;

@@ -1,2 +1,0 @@
-#!/bin/sh
-./Chartinder/Fabric.framework/run a2f6ea076be955480fbc29c2f8e699b31c176eee 02d6e59a1350ec2cf623eb4e41c9b0649e0739bc0100febae451d731a304c832

@@ -1,5 +1,0 @@
-version: "Apple Swift version 2.1 (swiftlang-700.1.101.6 clang-700.1.76)"
-options: "ae07d55a893cd272944ceb52aec553c5"
-build_time: [501988302, 604663000]
-inputs:
-  "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/ChartinderTests/ChartinderTests.swift": [485745843, 0]

@@ -25,7 +25,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="ProfileTableViewController" id="eDN-Sc-NCM" customClass="ProfileTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="1" sectionHeaderHeight="22" sectionFooterHeight="22" id="hUY-bS-BQb">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <view key="tableHeaderView" opaque="NO" contentMode="scaleToFill" id="aRf-7p-R4R">
@@ -181,19 +181,19 @@
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="3jT-PK-NIY">
-                                                    <rect key="frame" x="70" y="0.0" width="275" height="208.5"/>
+                                                    <rect key="frame" x="70" y="0.0" width="275" height="111"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="4AL-fJ-B94">
                                                             <rect key="frame" x="0.0" y="0.0" width="275" height="21.5"/>
                                                             <subviews>
-                                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="245" verticalHuggingPriority="251" horizontalCompressionResistancePriority="755" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tbg-hX-sry">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="120" height="21.5"/>
+                                                                <label opaque="NO" contentMode="left" verticalHuggingPriority="251" horizontalCompressionResistancePriority="755" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tbg-hX-sry">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="96" height="21.5"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
                                                                     <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="@JohnDoe" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nrN-g5-CUR">
-                                                                    <rect key="frame" x="125" y="0.0" width="77.5" height="21.5"/>
+                                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" text="@JohnDoe" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nrN-g5-CUR">
+                                                                    <rect key="frame" x="101" y="0.0" width="101.5" height="21.5"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
@@ -223,13 +223,13 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </textView>
                                                         <stackView hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="iae-s8-X4l">
-                                                            <rect key="frame" x="0.0" y="89" width="275" height="82.5"/>
+                                                            <rect key="frame" x="0.0" y="81.5" width="275" height="0.0"/>
                                                             <subviews>
-                                                                <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="au8-pz-iHq">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="208" height="40"/>
+                                                                <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="au8-pz-iHq">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="208" height="0.0"/>
                                                                     <subviews>
-                                                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_profile_male_big" translatesAutoresizingMaskIntoConstraints="NO" id="rDL-Y3-Ugg">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                                                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="dummy_profile_male_big" translatesAutoresizingMaskIntoConstraints="NO" id="rDL-Y3-Ugg">
+                                                                            <rect key="frame" x="0.0" y="-40" width="40" height="40"/>
                                                                             <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <constraints>
                                                                                 <constraint firstAttribute="height" constant="40" id="Vfp-fG-lPi"/>
@@ -241,14 +241,14 @@
                                                                                 </userDefinedRuntimeAttribute>
                                                                             </userDefinedRuntimeAttributes>
                                                                         </imageView>
-                                                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="245" verticalHuggingPriority="251" horizontalCompressionResistancePriority="755" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IzH-bI-BHb">
-                                                                            <rect key="frame" x="45" y="0.0" width="85.5" height="40"/>
+                                                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="251" horizontalCompressionResistancePriority="755" ambiguous="YES" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IzH-bI-BHb">
+                                                                            <rect key="frame" x="45" y="-40" width="85.5" height="40"/>
                                                                             <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
                                                                             <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
                                                                         </label>
-                                                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" text="@JohnDoe" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S5R-jk-bzd">
-                                                                            <rect key="frame" x="135.5" y="0.0" width="72.5" height="40"/>
+                                                                        <label opaque="NO" contentMode="left" horizontalHuggingPriority="248" verticalHuggingPriority="251" ambiguous="YES" text="@JohnDoe" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S5R-jk-bzd">
+                                                                            <rect key="frame" x="135.5" y="-40" width="72.5" height="40"/>
                                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                                             <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                             <nil key="highlightedColor"/>
@@ -256,7 +256,7 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="uCe-ot-0sY" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="45" width="141.5" height="37.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="141.5" height="0.0"/>
                                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
@@ -274,10 +274,10 @@
                                                             </subviews>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="inF-hl-fjK">
-                                                            <rect key="frame" x="0.0" y="186.5" width="275" height="22"/>
+                                                            <rect key="frame" x="0.0" y="89" width="275" height="22"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="75" translatesAutoresizingMaskIntoConstraints="NO" id="INm-Lb-24H">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="231" height="22"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="204" height="22"/>
                                                                     <subviews>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="5Oa-AV-foy">
                                                                             <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
@@ -293,7 +293,7 @@
                                                                             </subviews>
                                                                         </stackView>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="kaV-g0-YKG">
-                                                                            <rect key="frame" x="93" y="0.0" width="31.5" height="22"/>
+                                                                            <rect key="frame" x="93" y="0.0" width="18" height="22"/>
                                                                             <subviews>
                                                                                 <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zd7-Fg-Ymc" customClass="TintableButton" customModule="StockSwipe" customModuleProvider="target">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
@@ -305,7 +305,7 @@
                                                                                     </connections>
                                                                                 </button>
                                                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qUE-4C-vrq">
-                                                                                    <rect key="frame" x="23" y="2" width="8.5" height="18"/>
+                                                                                    <rect key="frame" x="18" y="2" width="0.0" height="18"/>
                                                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     <nil key="highlightedColor"/>
@@ -313,7 +313,7 @@
                                                                             </subviews>
                                                                         </stackView>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="y8X-Fa-5pV">
-                                                                            <rect key="frame" x="199.5" y="0.0" width="31.5" height="22"/>
+                                                                            <rect key="frame" x="186" y="0.0" width="18" height="22"/>
                                                                             <subviews>
                                                                                 <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tNG-kP-NWm" customClass="TintableButton" customModule="StockSwipe" customModuleProvider="target">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="18" height="22"/>
@@ -324,7 +324,7 @@
                                                                                     </connections>
                                                                                 </button>
                                                                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q5T-Cl-Mip">
-                                                                                    <rect key="frame" x="23" y="2" width="8.5" height="18"/>
+                                                                                    <rect key="frame" x="18" y="2" width="0.0" height="18"/>
                                                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="15"/>
                                                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                                     <nil key="highlightedColor"/>
@@ -480,7 +480,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="ProfileDetailTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="oun-jb-v51" customClass="ProfileDetailTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="uwF-o1-OmL">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -688,7 +688,7 @@
         <scene sceneID="Ktk-Mj-4ff">
             <objects>
                 <navigationController storyboardIdentifier="ProfileNavigationController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BId-qw-LUN" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="Oge-lT-I8l">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="Oge-lT-I8l">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="titleTextAttributes">
@@ -785,7 +785,7 @@
             <objects>
                 <tableViewController id="XHG-nM-Qe0" customClass="SettingsTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="y7J-cH-0Ho">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1045,7 +1045,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="MT7-6N-jYK" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="KFz-Yl-SS1">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="KFz-Yl-SS1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="titleTextAttributes">
@@ -1067,7 +1067,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NotificationsTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nVq-GI-b18" customClass="NotificationsTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="60" sectionHeaderHeight="10" sectionFooterHeight="10" id="JLV-Nq-oct">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1390,7 +1390,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="K1C-Ug-CId" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="uPh-jP-8jd">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="uPh-jP-8jd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <textAttributes key="titleTextAttributes">

@@ -47,7 +47,7 @@ class GradientAnimationImage: UIImageView {
         gradientAnimation.duration = 1.7
         gradientAnimation.repeatCount = Float.infinity
         gradientAnimation.isRemovedOnCompletion = false
-        gradientAnimation.fillMode = kCAFillModeForwards
+        gradientAnimation.fillMode = CAMediaTimingFillMode.forwards
         
         // Use image to create a mask on the gradient layer.
         let maskLayer = CALayer()
@@ -72,7 +72,7 @@ class GradientAnimationImage: UIImageView {
         gradientAnimation.duration = 1.7
         gradientAnimation.repeatCount = Float.infinity
         gradientAnimation.isRemovedOnCompletion = false
-        gradientAnimation.fillMode = kCAFillModeForwards
+        gradientAnimation.fillMode = CAMediaTimingFillMode.forwards
         
         // Use image to create a mask on the gradient layer.
         let maskLayer = CALayer()

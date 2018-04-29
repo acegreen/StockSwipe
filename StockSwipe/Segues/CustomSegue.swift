@@ -22,12 +22,9 @@ class CustomSegue: UIStoryboardSegue {
         
         let scaleY = sourceViewController.view.frame.height / (frontView?.frame.height)!
         
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
-            
-                frontView?.transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
-            
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIView.AnimationOptions(), animations: { () -> Void in
+                frontView?.transform = CGAffineTransform(scaleX: scaleX, y: scaleY)            
             }) { (finished) -> Void in
-                
                 sourceViewController.present(destinationViewController as WebViewController, animated: false, completion: nil)
         }
     }

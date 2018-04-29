@@ -38,13 +38,13 @@ class ChartCollectionViewCell: UICollectionViewCell {
             self.overlayLabel.layer.borderColor = UIColor.red.cgColor
             self.overlayLabel.text = "\(Constants.UserChoices.SHORT.rawValue)"
             self.overlayLabel.textColor = UIColor.red
-            self.overlayLabel.transform = CGAffineTransform.identity.rotated(by: CGFloat(Functions.degreesToRadians(15)))
+            self.overlayLabel.transform = CGAffineTransform.identity.rotated(by: 15.toRadians())
             
         case .LONG:
             self.overlayLabel.layer.borderColor = Constants.stockSwipeGreenColor.cgColor
             self.overlayLabel.text = "\(Constants.UserChoices.LONG.rawValue)"
             self.overlayLabel.textColor = Constants.stockSwipeGreenColor
-            self.overlayLabel.transform = CGAffineTransform.identity.rotated(by: CGFloat(Functions.degreesToRadians(-15)))
+            self.overlayLabel.transform = CGAffineTransform.identity.rotated(by: -15.toRadians())
         case .SKIP:
             break
         }

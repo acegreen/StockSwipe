@@ -15,7 +15,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>2.5.18</string>
+	<string>2.5.19</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
@@ -37,24 +37,13 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>25</string>
+	<string>3</string>
 	<key>Fabric</key>
 	<dict>
 		<key>APIKey</key>
 		<string>a2f6ea076be955480fbc29c2f8e699b31c176eee</string>
 		<key>Kits</key>
 		<array>
-			<dict>
-				<key>KitInfo</key>
-				<dict>
-					<key>consumerKey</key>
-					<string>ckr5RTSy2QVRofMfud7pfimZI</string>
-					<key>consumerSecret</key>
-					<string>xScXj29ktV650wR0uTYzmWoAESKmGbI32rKB0yrOccIw8GGXG6</string>
-				</dict>
-				<key>KitName</key>
-				<string>Twitter</string>
-			</dict>
 			<dict>
 				<key>KitInfo</key>
 				<dict/>
@@ -76,6 +65,8 @@
 	<string>863699560384982</string>
 	<key>FacebookDisplayName</key>
 	<string>StockSwipe</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>fbauth2</string>
@@ -104,6 +95,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) allows you to take a picture to be set as a profile picture</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>$(PRODUCT_NAME) allows you save charts to your photo library</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>$(PRODUCT_NAME) allows you to select your photo to be set as a profile picture</string>
 	<key>NSUserActivityTypes</key>

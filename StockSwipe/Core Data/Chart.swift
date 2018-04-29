@@ -59,7 +59,7 @@ public class Chart: NSObject {
         super.init()
         
         self.symbol = symbol
-        self.companyName = companyName ?? "Company Name N/A"
+        self.companyName = companyName
         
         // Index to Spotlight
         Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
@@ -77,6 +77,7 @@ public class Chart: NSObject {
                 self.shortCount = activityObjects.count
                 
             } catch {
+                //TODO: handle error
             }
             
             if let completion = completion {
@@ -97,6 +98,7 @@ public class Chart: NSObject {
                 self.longCount = activityObjects.count
                 
             } catch {
+                //TODO: handle error
             }
             
             if let completion = completion {
@@ -108,9 +110,7 @@ public class Chart: NSObject {
     func getChartImage(completion: ((UIImage?) -> Void)?) {
         
         guard let chartImageURL = Functions.setImageURL(symbol) else { return }
-        
         self.chartImageURL = chartImageURL
-    
         Functions.getImage(chartImageURL, completion: { (image) in
             
             if let image = image {

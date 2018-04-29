@@ -8,7 +8,7 @@
 
 import Foundation
 import CoreData
-import ReachabilitySwift
+import Reachability
 
 var chartWidth:CGFloat = 0
 var chartHeight:CGFloat = 0
@@ -48,12 +48,11 @@ class Constants {
         "SystemName" : current.systemName,
         "SystemVersion" : current.systemVersion ]
     
-    static let appLink: String = "https://itunes.apple.com/us/app/stockswipe-probably-funnest/id1009599685?ls=1&mt=8"
-    static let appLinkURL = URL(string: appLink)
+    static let appLinkURL = URL(string: "https://itunes.apple.com/us/app/stockswipe-probably-funnest/id1009599685?ls=1&mt=8")
     static let facebookAppLink = URL(string: "https://fb.me/1156458804442388")
     static let appURL = URL(string: "itms-apps://itunes.apple.com/app/id1009599685")
     static let appReviewURL = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1009599685")
-    static let settingsURL = URL(string: UIApplicationOpenSettingsURLString)
+    static let settingsURL = URL(string: UIApplication.openSettingsURLString)
     static let publicationURL = URL(string: "https://medium.com/stockswipe-trade-ideas")
     
     static let appEmail: String = "StockSwipe@gmail.com"
@@ -69,13 +68,6 @@ class Constants {
     static let context: NSManagedObjectContext = appDel.managedObjectContext
     static let entity = NSEntityDescription.entity(forEntityName: "Charts", in: context)
     
-    static let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
-    static let chartDetailStoryboard = UIStoryboard(name: "ChartDetail", bundle: nil)
-    static let tradeIdeaStoryboard = UIStoryboard(name: "TradeIdea", bundle: nil)
-    static let profileStoryboard = UIStoryboard(name: "Profile", bundle: nil)
-    static let loginStoryboard = UIStoryboard(name: "Login", bundle: nil)
-    static let feedbackStoryboard = UIStoryboard(name: "Feedback", bundle: nil)
-    
     static let reachability = Reachability()
     
     static let stockSwipeFont: UIFont? = UIFont(name: "HelveticaNeue", size: 20)
@@ -86,18 +78,29 @@ class Constants {
     static let okAlertAction = UIAlertAction(title: "Ok", style: .default, handler:{ (ACTION :UIAlertAction!)in })
     
     static let settingsAlertAction: UIAlertAction = UIAlertAction(title: "Settings", style: .default, handler: { (action: UIAlertAction!) in
-        UIApplication.shared.openURL(settingsURL!)
+        UIApplication.shared.open(settingsURL!, options: [:], completionHandler: nil)
     })
     
     static let cancelAlertAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel, handler:{ (ACTION :UIAlertAction!) in })
     
     static let countryCode = (Locale.current as NSLocale).object(forKey: NSLocale.Key.countryCode) as! String
     
+    struct Storyboards {
+        static let launchStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        static let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
+        static let cardDetailStoryboard = UIStoryboard(name: "CardDetail", bundle: nil)
+        static let tradeIdeaStoryboard = UIStoryboard(name: "TradeIdea", bundle: nil)
+        static let profileStoryboard = UIStoryboard(name: "Profile", bundle: nil)
+        static let loginStoryboard = UIStoryboard(name: "Login", bundle: nil)
+        static let feedbackStoryboard = UIStoryboard(name: "Feedback", bundle: nil)
+    }
+    
     enum APIKeys: String {
         case Parse
         case TwitterKit
         case LaunchKit
         case ChimpKit
+        case EodHistorcalData
         case TradeItDev
         case TradeItProd
         
@@ -111,6 +114,8 @@ class Constants {
                 return "FYwLCkgJpT_r8kEp1O_-PSg-UnhaD3B7PMPxkG5qIIfq"
             case .ChimpKit:
                 return "549c43655bcc48fb60af6a1c24e77495-us12"
+            case .EodHistorcalData:
+                return "5c5b6db11b85d5.07117487"
             case .TradeItDev:
                 return "3e6d674e62714a1ea041a455ae0d2fe2"
             case .TradeItProd:
@@ -127,55 +132,7 @@ class Constants {
             }
         }
         
-        static let allAPIKeys = [Parse, TwitterKit, LaunchKit, ChimpKit, TradeItDev, TradeItProd]
-    }
-    
-    enum Errors: Error {
-        case noInternetConnection
-        case noExchangesOrSectorsSelected
-        case ranOutOfChartCards
-        case errorAccessingParseDatabase
-        case errorAccessingServer
-        case errorQueryingForData
-        case queryDataEmpty
-        case errorParsingData
-        case parseUserObjectNotFound
-        case parseStockObjectNotFound
-        case parseTradeIdeaObjectNotFound
-        case chartImageCorrupt
-        case urlEmpty
-        
-        public func message() -> String {
-            switch self {
-            case .noInternetConnection:
-                return "No internet connection!\nMake sure your device is connected"
-            case .noExchangesOrSectorsSelected:
-                return "No Filters?\nYou must have at least one exchange and one sector selected"
-            case .ranOutOfChartCards:
-                return "Temporarily out of Stock \n Check back soon!"
-            case .errorAccessingParseDatabase:
-                return  "There was an error while accessing the database"
-            case .errorAccessingServer:
-                return  "There was an error while accessing the server"
-            case .errorQueryingForData:
-                return  "Oops! We ran into an issue querying for data"
-            case .queryDataEmpty:
-                return "Oops! We ran into an issue querying for data"
-            case .errorParsingData:
-                return "Oops! We ran into an issue querying for data"
-            case .parseUserObjectNotFound:
-                return "We could not find this user in our database"
-            case .parseStockObjectNotFound:
-                return "We could not find this symbol in our database"
-            case .parseTradeIdeaObjectNotFound:
-                return "We could not find this trade idea in our database"
-            case .chartImageCorrupt:
-                return "Oops! We ran into an issue querying for data"
-            case .urlEmpty:
-                return "Oops! We ran into an issue querying for data"
-            }
-        }
-        static let allErrors = [noInternetConnection, noExchangesOrSectorsSelected, ranOutOfChartCards, errorAccessingParseDatabase, errorAccessingServer, errorQueryingForData, queryDataEmpty, errorParsingData, parseUserObjectNotFound,parseStockObjectNotFound,parseTradeIdeaObjectNotFound, chartImageCorrupt, urlEmpty]
+        static let allAPIKeys = [Parse, TwitterKit, LaunchKit, ChimpKit, EodHistorcalData, TradeItDev, TradeItProd]
     }
     
     enum UserChoices: String {

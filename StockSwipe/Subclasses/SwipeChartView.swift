@@ -52,11 +52,11 @@ class SwipeChartView: MDCSwipeToChooseView {
         if !imageView .isDescendant(of: self) {
             
             self.addSubview(imageView)
-            self.sendSubview(toBack: imageView)
+            self.sendSubviewToBack(imageView)
             
         }
         
-        self.autoresizingMask = [UIViewAutoresizing.flexibleHeight, UIViewAutoresizing.flexibleWidth]
+        self.autoresizingMask = [UIView.AutoresizingMask.flexibleHeight, UIView.AutoresizingMask.flexibleWidth]
         self.imageView.autoresizingMask = self.autoresizingMask
         self.imageView.layer.masksToBounds = true
         
@@ -106,7 +106,7 @@ class SwipeChartView: MDCSwipeToChooseView {
         
         let image: UIImage = UIImage(named: "long")!
         self.likedImageLabelView = self.buildImageLabelViewLeftOf(self.informationView.bounds.width - rightPadding, image: image, text: chart.longCount.suffixNumber())
-        likedImageLabelView.imageView.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        likedImageLabelView.imageView.image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         likedImageLabelView.imageView.tintColor = UIColor.black
         
         if !likedImageLabelView.isDescendant(of: self) {
@@ -120,7 +120,7 @@ class SwipeChartView: MDCSwipeToChooseView {
         
         let image:UIImage = UIImage(named:"short")!
         self.nopeImageLabelView = buildImageLabelViewLeftOf(self.likedImageLabelView.frame.minX, image:image, text: chart.shortCount.suffixNumber())
-        nopeImageLabelView.imageView.image?.withRenderingMode(UIImageRenderingMode.alwaysTemplate)
+        nopeImageLabelView.imageView.image?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
         nopeImageLabelView.imageView.tintColor = UIColor.black
         
         if !nopeImageLabelView .isDescendant(of: self) {
@@ -134,7 +134,7 @@ class SwipeChartView: MDCSwipeToChooseView {
             width: image.size.width,
             height: self.informationView.bounds.height)
         let view:ImagelabelView = ImagelabelView(frame:frame, image:image, text:text)
-        view.autoresizingMask = UIViewAutoresizing.flexibleLeftMargin
+        view.autoresizingMask = UIView.AutoresizingMask.flexibleLeftMargin
         return view
     }
 }

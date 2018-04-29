@@ -1,3 +1,4 @@
+platform :ios, '10.3'
 use_frameworks!
 
 def shared_pods
@@ -22,11 +23,13 @@ target 'StockSwipe' do
     
     # Parse
     pod 'Parse'
-    pod 'ParseFacebookUtilsV4'
-    pod 'ParseTwitterUtils'
-    pod 'ParseUI'
+    pod 'Parse/FacebookUtils'
+    pod 'Parse/TwitterUtils'
+    pod 'Parse/UI'
     
     # Facebook
+    pod 'FBSDKCoreKit'
+    pod 'FBSDKLoginKit'
     pod 'FBSDKShareKit'
     #pod 'FacebookCore'
     #pod 'FacebookShare'

@@ -36,7 +36,7 @@ class ExpandingCell: UITableViewCell {
             delay: 0,
             usingSpringWithDamping: 1,
             initialSpringVelocity: 1,
-            options: UIViewAnimationOptions.curveEaseIn,
+            options: UIView.AnimationOptions.curveEaseIn,
             animations: { () -> Void in
                 self.stackView.arrangedSubviews.last?.isHidden = !selected
             },

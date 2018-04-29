@@ -55,7 +55,7 @@ class BorderedLabel: UILabel {
         self.font = UIFont (name: "HelveticaNeue-CondensedBlack", size: 25.0)
         self.textColor = color
         
-        self.transform = CGAffineTransform.identity.rotated(by: CGFloat(Functions.degreesToRadians(angle)))
+        self.transform = CGAffineTransform.identity.rotated(by: angle.toRadians())
         
     }
 }

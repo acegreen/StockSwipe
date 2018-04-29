@@ -20,7 +20,7 @@ class CustomUnwindSegue: UIStoryboardSegue {
         
         sourceViewController.dismiss(animated: true, completion: nil)
         
-        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIViewAnimationOptions(), animations: { () -> Void in
+        UIView.animate(withDuration: 0.5, delay: 0.0, options: UIView.AnimationOptions(), animations: { () -> Void in
             
             frontView?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
             

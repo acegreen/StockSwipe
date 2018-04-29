@@ -11,7 +11,7 @@ import SwiftyJSON
 
 public struct Ticker {
     
-    let symbol: String?
+    let symbol: String
     let companyName:String?
     let exchange: String?
     var currentPrice: Double = 0.0
@@ -29,29 +29,10 @@ public struct Ticker {
 
 extension Ticker {
     
-    static func makeTickers(from symbolQuote: Data) -> [Ticker] {
-        
-        var tickers = [Ticker]()
-        
-        let carsouelJson = JSON(data: symbolQuote)
-        let carsouelJsonResults = carsouelJson["query"]["results"]
-        guard let quoteJsonResultsQuote = carsouelJsonResults["quote"].array else { return tickers }
-        
-        for quote in quoteJsonResultsQuote {
-            
-            let symbol = quote["Symbol"].string
-            let companyName = quote["Name"].string
-            let exchange = quote["StockExchange"].string
-            let currentPrice = quote["LastTradePriceOnly"].doubleValue
-            let changeInDollar = quote["Change"].doubleValue
-            let changeInPercent = quote["ChangeinPercent"].doubleValue
-            
-            let ticker = Ticker(symbol: symbol, companyName: companyName, exchange: exchange, currentPrice: currentPrice, changeInDollar: changeInDollar, changeInPercent: changeInPercent)
-            
-            tickers.append(ticker)
+    static func makeTickers(from eodQuoteResults: [QueryHelper.EODQuoteResult]) -> [Ticker] {
+        return eodQuoteResults.map {
+            Ticker(symbol: String($0.code.split(separator: ".")[0]), companyName: nil, exchange: nil, currentPrice: $0.close, changeInDollar: $0.change, changeInPercent: $0.changePercent)
         }
-        
-        return tickers
     }
 }
 

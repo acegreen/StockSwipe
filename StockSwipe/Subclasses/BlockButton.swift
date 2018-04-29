@@ -25,12 +25,12 @@ class BlockButton: UIButton {
                 backgroundColor = UIColor.red
                 borderColor = UIColor.white
                 tintColor = UIColor.white
-                setImage(UIImage(named: "user_blocked"), for: UIControlState())
+                setImage(UIImage(named: "user_blocked"), for: UIControl.State())
             case .unblocked:
                 backgroundColor = UIColor.white
                 borderColor = Constants.stockSwipeFontColor
                 tintColor = Constants.stockSwipeFontColor
-                setImage(UIImage(named: "user_blocked"), for: UIControlState())
+                setImage(UIImage(named: "user_blocked"), for: UIControl.State())
             }
         }
     }

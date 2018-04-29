@@ -77,10 +77,10 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
     
     func insertWord(_ word: String, pointSize: CGFloat,color: UIColor, center: CGPoint, vertical isVertical: Bool, tappable: Bool) {
         
-        let wordButton: UIButton = UIButton(type: UIButtonType.system)
-        wordButton.setTitle(word, for: UIControlState())
+        let wordButton: UIButton = UIButton(type: UIButton.ButtonType.system)
+        wordButton.setTitle(word, for: UIControl.State())
         wordButton.titleLabel?.textAlignment = NSTextAlignment.center
-        wordButton.setTitleColor(color, for: UIControlState())
+        wordButton.setTitleColor(color, for: UIControl.State())
         wordButton.titleLabel?.font = UIFont(name: cloudFontName, size: pointSize)
         wordButton.sizeToFit()
         var wordButtonRect: CGRect = wordButton.frame
@@ -182,7 +182,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         print("layoutCloudWords complete")
     }
     
-    func wordTapped(_ sender: UITapGestureRecognizer) {
+    @objc func wordTapped(_ sender: UITapGestureRecognizer) {
         
         let buttonPressed = sender.view as! UIButton
         
@@ -204,7 +204,6 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         if let trendingStocksUrl = URL(string: "https://api.stocktwits.com/api/2/trending/symbols/equities.json") {
             
             let trendingStocksSession = URLSession.shared
-            
             let task = trendingStocksSession.dataTask(with: trendingStocksUrl, completionHandler: { (trendingStocksData, response, error) -> Void in
                 
                 guard error == nil else { return completion({throw Errors.errorQueryingForData}) }
@@ -214,7 +213,12 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
                 }
                 
                 self.cloudWords.removeAll()
-                self.trendingStocksJSON = JSON(data: trendingStocksData)["symbols"]
+                
+                do {
+                    self.trendingStocksJSON = try JSON(data: trendingStocksData)["symbols"]
+                } catch {
+                    completion({throw Errors.errorParsingData})
+                }
                 
                 for (index, subJson) in self.trendingStocksJSON {
                     

@@ -23,6 +23,240 @@ class QueryHelper {
         case update
     }
     
+    struct EODQuoteResult: Codable {
+        let code: String
+        let timestamp: Int
+        let gmtoffset: Int
+        let open: Double
+        let high: Double
+        let low: Double
+        let close: Double
+        let volume: Int
+        let previousClose: Double
+        let change: Double
+        let changePercent: Double
+        
+        enum CodingKeys: String, CodingKey {
+            case code
+            case timestamp
+            case gmtoffset
+            case open
+            case high
+            case low
+            case close
+            case volume
+            case previousClose
+            case change
+            case changePercent = "change_p"
+        }
+        
+        static func decodeFrom(data: Data) throws -> [EODQuoteResult] {
+            var result: [EODQuoteResult] = []
+            do {
+                result = try JSONDecoder().decode([EODQuoteResult].self, from: data)
+            } catch {
+                throw QueryError.errorParsingJSON
+            }
+            
+            return result
+        }
+    }
+    
+    struct EODFundamentalsResult: Codable {
+        
+        struct General: Codable {
+            let code: String?
+            let type: String?
+            let name: String?
+            let exchange: String?
+            let currencyCode: String?
+            let currencyName: String?
+            let currencySymbol: String?
+            let countryName: String?
+            let countryISO: String?
+            let ISIN: String?
+            let CUSIP: String?
+            let sector: String?
+            let industry: String?
+            let description: String?
+            let fullTimeEmployees: Int?
+            let updatedAt: String?
+            
+            enum CodingKeys: String, CodingKey {
+                case code = "Code"
+                case type = "Type"
+                case name = "Name"
+                case exchange = "Exchange"
+                case currencyCode = "CurrencyCode"
+                case currencyName = "CurrencyName"
+                case currencySymbol = "CurrencySymbol"
+                case countryName = "CountryName"
+                case countryISO = "CountryISO"
+                case ISIN = "ISIN"
+                case CUSIP = "CUSIP"
+                case sector = "Sector"
+                case industry = "Industry"
+                case description = "Description"
+                case fullTimeEmployees = "FullTimeEmployees"
+                case updatedAt = "UpdatedAt"
+            }
+        }
+        
+        struct Highlights: Codable {
+            let marketCapitalization: Int?
+            let marketCapitalizationMln: String?
+            let EBITDA: Int?
+            let peRatio: String?
+            let peGRatio: String?
+            let wallStreetTargetPrice: String?
+            let bookValue: String?
+            let dividendShare: String?
+            let dividendYield: String?
+            let earningsShare: String?
+            let epsEstimateCurrentYear: String?
+            let epsEstimateNextYear: String?
+            let epsEstimateNextQuarter: String?
+            let mostRecentQuarter: String?
+            let profitMargin: String?
+            let operatingMarginTTM: String?
+            let returnOnAssetsTTM: String?
+            let returnOnEquityTTM: String?
+            let revenueTTM: String?
+            let revenuePerShareTTM: String?
+            let quarterlyRevenueGrowthYOY: String?
+            let grossProfitTTM: String?
+            let dilutedEpsTTM: String?
+            let quarterlyEarningsGrowthYOY: String?
+            
+            enum CodingKeys: String, CodingKey {
+                case marketCapitalization = "MarketCapitalization"
+                case marketCapitalizationMln = "MarketCapitalizationMln"
+                case EBITDA = "EBITDA"
+                case peRatio = "PERatio"
+                case peGRatio = "PEGRatio"
+                case wallStreetTargetPrice = "WallStreetTargetPrice"
+                case bookValue = "BookValue"
+                case dividendShare = "DividendShare"
+                case dividendYield = "DividendYield"
+                case earningsShare = "EarningsShare"
+                case epsEstimateCurrentYear = "EPSEstimateCurrentYear"
+                case epsEstimateNextYear = "EPSEstimateNextYear"
+                case epsEstimateNextQuarter = "EPSEstimateNextQuarter"
+                case mostRecentQuarter = "MostRecentQuarter"
+                case profitMargin = "ProfitMargin"
+                case operatingMarginTTM = "OperatingMarginTTM"
+                case returnOnAssetsTTM = "ReturnOnAssetsTTM"
+                case returnOnEquityTTM = "ReturnOnEquityTTM"
+                case revenueTTM = "RevenueTTM"
+                case revenuePerShareTTM = "RevenuePerShareTTM"
+                case quarterlyRevenueGrowthYOY = "QuarterlyRevenueGrowthYOY"
+                case grossProfitTTM = "GrossProfitTTM"
+                case dilutedEpsTTM = "DilutedEpsTTM"
+                case quarterlyEarningsGrowthYOY = "QuarterlyEarningsGrowthYOY"
+            }
+        }
+        
+        struct Valuation: Codable {
+            let trailingPE: String?
+            let forwardPE: String?
+            let priceSalesTTM: String?
+            let priceBookMRQ: String?
+            let enterpriseValueRevenue: String?
+            let enterpriseValueEbitda: String?
+            
+            enum CodingKeys: String, CodingKey {
+                case trailingPE = "TrailingPE"
+                case forwardPE = "ForwardPE"
+                case priceSalesTTM = "PriceSalesTTM"
+                case priceBookMRQ = "PriceBookMRQ"
+                case enterpriseValueRevenue = "EnterpriseValueRevenue"
+                case enterpriseValueEbitda = "EnterpriseValueEbitda"
+            }
+        }
+        
+        struct Technicals: Codable {
+            let beta: String?
+            let fiftyTwoWeekLow: String?
+            let fiftyTwoWeekHigh: String?
+            let fiftyDayMA: String?
+            let twoHundredDayMA: String?
+            let sharesShort: String?
+            let sharesShortPriorMonth: String?
+            let shortRatio: String?
+            let shortPercent: String?
+            
+            enum CodingKeys: String, CodingKey {
+                case beta = "Beta"
+                case fiftyTwoWeekLow = "52WeekLow"
+                case fiftyTwoWeekHigh = "52WeekHigh"
+                case fiftyDayMA = "50DayMA"
+                case twoHundredDayMA = "200DayMA"
+                case sharesShort = "SharesShort"
+                case sharesShortPriorMonth = "SharesShortPriorMonth"
+                case shortRatio = "ShortRatio"
+                case shortPercent = "ShortPercent"
+            }
+        }
+        
+        let general: General
+        let highlights: Highlights
+        let valuation: Valuation
+        let technicals: Technicals
+        
+        enum CodingKeys: String, CodingKey {
+            case general = "General"
+            case highlights = "Highlights"
+            case valuation = "Valuation"
+            case technicals = "Technicals"
+        }
+        
+        static func decodeFrom(data: Data) throws -> EODFundamentalsResult? {
+            do {
+                return try JSONDecoder().decode(EODFundamentalsResult.self, from: data)
+            } catch {
+                throw QueryError.errorParsingJSON
+            }
+        }
+    }
+    
+    enum QueryError: Error {
+        case noInternetConnection
+        case noExchangesOrSectorsSelected
+        case ranOutOfChartCards
+        case errorAccessingServer
+        case errorQueryingForData(error: Error)
+        case queryDataEmpty
+        case errorParsingJSON
+        case parseObjectAlreadyExists
+        case chartImageCorrupt
+        case urlEmpty
+        
+        public func message() -> String {
+            switch self {
+            case .noInternetConnection:
+                return "No internet connection!\nMake sure your device is connected"
+            case .noExchangesOrSectorsSelected:
+                return "No Filters?\nYou must have at least one exchange and one sector selected"
+            case .ranOutOfChartCards:
+                return "Temporarily out of Stock \n Check back soon!"
+            case .errorAccessingServer:
+                return  "There was an error while accessing the server"
+            case .errorQueryingForData:
+                return  "Oops! We ran into an issue querying for data"
+            case .queryDataEmpty:
+                return "Oops! We ran into an issue querying for data"
+            case .errorParsingJSON:
+                return "Oops! We ran into an issue querying for data"
+            case .parseObjectAlreadyExists:
+                return "This object already exists in our databse"
+            case .chartImageCorrupt:
+                return "Oops! We ran into an issue querying for data"
+            case .urlEmpty:
+                return "Oops! We ran into an issue querying for data"
+            }
+        }
+    }
+    
     static let sharedInstance = QueryHelper()
     static let tradeIdeaQueryLimit = 25
 
@@ -42,10 +276,9 @@ class QueryHelper {
             
             let task = session.dataTask(with: queryUrl, completionHandler: { (queryData, response, error) -> Void in
                 
-                guard error == nil else { return completionHandler({throw Constants.Errors.errorQueryingForData}) }
-                
+                guard error == nil else { return completionHandler({ throw QueryError.errorQueryingForData(error: error!) }) }
                 guard queryData != nil, let queryData = queryData else {
-                    return completionHandler({throw Constants.Errors.queryDataEmpty})
+                    return completionHandler({throw QueryError.queryDataEmpty})
                 }
                 
                 return completionHandler({ queryData })
@@ -59,13 +292,11 @@ class QueryHelper {
         if let trendingStocksUrl = URL(string: "https://api.stocktwits.com/api/2/trending/symbols/equities.json") {
             
             let trendingStocksSession = URLSession.shared
-            
             let task = trendingStocksSession.dataTask(with: trendingStocksUrl, completionHandler: { (trendingStocksData, response, error) -> Void in
                 
-                guard error == nil else { return completionHandler({ throw Constants.Errors.errorQueryingForData }) }
-                
+                guard error == nil else { return completionHandler({ throw QueryError.errorQueryingForData(error: error!) }) }
                 guard trendingStocksData != nil, let trendingStocksData = trendingStocksData else {
-                    return completionHandler({ throw Constants.Errors.queryDataEmpty })
+                    return completionHandler({ throw QueryError.queryDataEmpty })
                 }
                 
                 return completionHandler({ trendingStocksData })
@@ -74,100 +305,76 @@ class QueryHelper {
         }
     }
     
-    func queryYahooSymbolQuote(tickers: [String], completionHandler:@escaping (_ symbolQuote: Data?, _ response: URLResponse?, _ error: Error?) -> Void) {
+    func queryEODQuotes(for symbols: [String], useCacheIfPossible: Bool = false, completionHandler:@escaping (_ eodQuoteResults: () throws -> ([EODQuoteResult], Data)) -> Void) -> Void {
         
-        let stringICarouselTickers = "(\(tickers))"
+        let firstSymbol = symbols[0]
+        let remainingOfSymbols = symbols.suffix(from: 1)
+        let stringOfRemainingOfSymbols = remainingOfSymbols.joined(separator: ",")
         
-        // Company quote query
-        let queryStringPart1 = "https://query.yahooapis.com/v1/public/yql?q="
-        let queryStringPart2 = "select * from yahoo.finance.quotes "
-        let queryStringPart3 = "where symbol in "
+        let query = "https://eodhistoricaldata.com/api/real-time/" + firstSymbol +
+                    "?api_token=" + Constants.APIKeys.EodHistorcalData.key() +
+                    "&fmt=json&s=" + stringOfRemainingOfSymbols
         
-        let queryStringPart4:String = {
+        if let queryURLString = query.URLEncodedString(), let queryURL = URL(string: queryURLString) {
             
-            var queryStringPart4: String!
-            queryStringPart4 = stringICarouselTickers.replace("[", withString: "")
-            queryStringPart4 = queryStringPart4.replace("]", withString: "")
+            var session: URLSession!
+            if useCacheIfPossible {
+                let config = URLSessionConfiguration.default
+                config.urlCache = URLCache.shared
+                config.requestCachePolicy = NSURLRequest.CachePolicy.returnCacheDataElseLoad
+                session = URLSession(configuration: config)
+            } else {
+                session = URLSession.shared
+            }
             
-            return queryStringPart4
-        }()
-        
-        let queryStringPart5 = "&format=json&diagnostics=true&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback="
-        
-        guard let marketQueryString:String = (queryStringPart1 + queryStringPart2 + queryStringPart3 + queryStringPart4).URLEncodedString()! + queryStringPart5 else { return }
-        
-        if let marketCarouselUrl: URL = URL(string: marketQueryString) {
-            
-            let session = URLSession.shared
-            
-            let task = session.dataTask(with: marketCarouselUrl, completionHandler: { (marketData, response, error) in
-                completionHandler(marketData, response, error)
+            let task = session.dataTask(with: queryURL, completionHandler: { (eodData, response, error) -> Void in
+                
+                guard error == nil else { return completionHandler({ throw QueryError.errorQueryingForData(error: error!) }) }
+                guard let eodData = eodData else {
+                    return completionHandler({ throw QueryError.queryDataEmpty })
+                }
+                
+                do {
+                    let eodQuoteResults = try EODQuoteResult.decodeFrom(data: eodData)
+                    completionHandler({ (eodQuoteResults, eodData) })
+                } catch {
+                    completionHandler({ throw error })
+                }
             })
             task.resume()
         }
     }
     
-    func queryYahooCompanyProfile(symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: Error?) -> Void) {
+    func queryEODFundamentals(for symbol: String, useCacheIfPossible: Bool = true, completionHandler:@escaping (_ eodQuoteResults: () throws -> (EODFundamentalsResult?)) -> Void) -> Void {
         
-        let companyProfileurl1 = "http://finance.yahoo.com/q/pr?s=\(symbol)"
-        let companyProfileurl2 = "\"\(companyProfileurl1)\""
-        let profileQueryPart1 = "https://query.yahooapis.com/v1/public/yql?q="
-        let profileQueryPart2 = "select * from html where url=\(companyProfileurl2) and xpath='//table[@class=\"yfnc_datamodoutline1\"]'&format=json"
+        let query = "https://eodhistoricaldata.com/api/fundamentals/" + symbol +
+            "?api_token=" + Constants.APIKeys.EodHistorcalData.key()
         
-        guard let companyProfileQueryString = (profileQueryPart1 + profileQueryPart2).URLEncodedString() else { return }
-        
-        if let companyQuoteUrl: URL = URL(string: companyProfileQueryString) {
+        if let queryURLString = query.URLEncodedString(), let queryURL = URL(string: queryURLString) {
             
-            let session = URLSession.shared
+            var session: URLSession!
+            if useCacheIfPossible {
+                let config = URLSessionConfiguration.default
+                config.urlCache = URLCache.shared
+                config.requestCachePolicy = NSURLRequest.CachePolicy.returnCacheDataElseLoad
+                session = URLSession(configuration: config)
+            } else {
+                session = URLSession.shared
+            }
             
-            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) in
+            let task = session.dataTask(with: queryURL, completionHandler: { (eodData, response, error) -> Void in
                 
-                completionHandler(quoteData, response, error)
-                
-            })
-            task.resume()
-        }
-    }
-    
-    func queryYahooCompanySummary(symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: Error?) -> Void) {
-        
-        let companySummaryurl1 = "http://finance.yahoo.com/q/pr?s=\(symbol)"
-        let companySummaryurl2 = "\"\(companySummaryurl1)\""
-        let summaryQueryPart1 = "https://query.yahooapis.com/v1/public/yql?q="
-        let summaryQueryPart2 = "select * from html where url=\(companySummaryurl2) and xpath='//p[not(node()[2])]'&format=json"
-        
-        guard let companySummaryQueryString = (summaryQueryPart1 + summaryQueryPart2).URLEncodedString() else { return }
-        
-        if let companyQuoteUrl: URL = URL(string: companySummaryQueryString) {
-            
-            let session = URLSession.shared
-            
-            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) in
-                
-                completionHandler(quoteData, response, error)
-                
-            })
-            task.resume()
-        }
-    }
-    
-    func queryYahooCompanyAnalystRating(symbol: String, completionHandler:@escaping (_ queryData: Data?, _ response: URLResponse?, _ error: Error?) -> Void) {
-        
-        let companyAnalystRatingStringPart1 = "https://ca.finance.yahoo.com/q/ao?s=\(symbol)"
-        let companyAnalystRatingStringPart2 = "\"\(companyAnalystRatingStringPart1)\""
-        let companyAnalystRatingQueryPart1 = "https://query.yahooapis.com/v1/public/yql?q="
-        let companyAnalystRatingQueryPart2 = "select * from html where url=\(companyAnalystRatingStringPart2) and xpath='//table[@class=\"yfnc_datamodoutline1 equaltable\"]|//table[@class=\"yfnc_datamodoutline1\"]'&format=json"
-        
-        guard let companyAnalystQueryString = (companyAnalystRatingQueryPart1 + companyAnalystRatingQueryPart2).URLEncodedString() else { return }
-        
-        if let companyQuoteUrl: URL = URL(string: companyAnalystQueryString) {
-            
-            let session = URLSession.shared
-            
-            let task = session.dataTask(with: companyQuoteUrl, completionHandler: { (quoteData, response, error) in
-                
-                completionHandler(quoteData, response, error)
-                
+                guard error == nil else { return completionHandler({ throw QueryError.errorQueryingForData(error: error!) }) }
+                guard let eodData = eodData else {
+                    return completionHandler({ throw QueryError.queryDataEmpty })
+                }
+
+                do {
+                    let eodFundamentalsResult = try EODFundamentalsResult.decodeFrom(data: eodData)
+                    completionHandler({ eodFundamentalsResult })
+                } catch {
+                    completionHandler({ throw error })
+                }
             })
             task.resume()
         }
@@ -178,21 +385,21 @@ class QueryHelper {
         guard let chartImageURL: URL = Functions.setImageURL(symbol) else {
             
             print("image URL is nil")
-            return completion({throw Constants.Errors.urlEmpty})
+            return completion({throw QueryError.urlEmpty})
         }
         
         let chartImageSession = URLSession.shared
         let task = chartImageSession.dataTask(with: chartImageURL, completionHandler: { (chartImagedata, response, error) -> Void in
             
             guard error == nil else {
-                return completion({throw Constants.Errors.errorAccessingServer})
+                return completion({throw QueryError.errorAccessingServer})
             }
-            guard chartImagedata != nil else {
-                return completion({throw Constants.Errors.queryDataEmpty})
+            guard let chartImagedata = chartImagedata else {
+                return completion({throw QueryError.queryDataEmpty})
             }
             
-            guard let chartImage = UIImage(data: chartImagedata!) else {
-                return completion({throw Constants.Errors.chartImageCorrupt})
+            guard let chartImage = UIImage(data: chartImagedata) else {
+                return completion({throw QueryError.chartImageCorrupt})
             }
             
             completion({return (chartImage)})
@@ -205,24 +412,22 @@ class QueryHelper {
     func queryUserObjectsFor(usernames: [String], cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFUser])) -> Void) {
         
 //        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw Constants.Errors.noInternetConnection})
+//            return completion({throw QueryError.noInternetConnection})
 //        }
         
         let usernamesLowercase = usernames.map { ($0.lowercased()) }
         
         let userQuery = PFUser.query()
         userQuery?.cachePolicy = cachePolicy
-        
         userQuery?.whereKey("username_lowercase", containedIn: usernamesLowercase)
-        
         userQuery?.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion({throw Constants.Errors.errorAccessingParseDatabase})
+                return completion({throw QueryError.errorQueryingForData(error: error! )})
             }
             
-            guard objects?.isEmpty == false, let objects = objects as? [PFUser] else {
-                return completion({throw Constants.Errors.parseUserObjectNotFound})
+            guard let objects = objects as? [PFUser] else {
+                return completion({throw QueryError.queryDataEmpty})
             }
             
             completion({return (objects)})
@@ -233,24 +438,22 @@ class QueryHelper {
     func queryStockObjectsFor(symbols: [String], cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
 //        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw Constants.Errors.noInternetConnection})
+//            return completion({throw QueryError.noInternetConnection})
 //        }
         
         let mappedSymbols = symbols.map ({ $0.uppercased() })
         
         let stockQuery = PFQuery(className:"Stocks")
         stockQuery.cachePolicy = cachePolicy
-        
         stockQuery.whereKey("Symbol", containedIn: mappedSymbols)
-        
         stockQuery.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion({throw Constants.Errors.errorAccessingParseDatabase})
+                return completion({throw QueryError.errorQueryingForData(error: error! )})
             }
             
-            guard objects?.isEmpty == false, let objects = objects else {
-                return completion({throw Constants.Errors.parseStockObjectNotFound})
+            guard let objects = objects else {
+                return completion({throw QueryError.queryDataEmpty})
             }
             
             completion({return (objects)})
@@ -261,7 +464,7 @@ class QueryHelper {
     func queryTradeIdeaObjectsFor(key: String?, object: PFObject?, skip: Int?, limit: Int?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
 //        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw Constants.Errors.noInternetConnection})
+//            return completion({throw QueryError.noInternetConnection})
 //        }
         
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
@@ -289,10 +492,8 @@ class QueryHelper {
         }
         
         if key != "user", let currentUser = PFUser.current() {
-            
             let subTradeIdeaQuery = PFUser.query()
             subTradeIdeaQuery?.whereKey("blocked_users", notEqualTo: currentUser)
-            
             tradeIdeaQuery.whereKey("user", matchesQuery: subTradeIdeaQuery!)
         }
         
@@ -307,11 +508,11 @@ class QueryHelper {
         tradeIdeaQuery.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion({throw Constants.Errors.errorAccessingParseDatabase})
+                return completion({throw QueryError.errorQueryingForData(error: error! )})
             }
             
             guard let objects = objects else {
-                return completion({throw Constants.Errors.parseTradeIdeaObjectNotFound})
+                return completion({throw QueryError.queryDataEmpty})
             }
             
             // The find succeeded.
@@ -324,7 +525,7 @@ class QueryHelper {
     func countTradeIdeasFor(key: String, object: PFObject, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
 //        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw Constants.Errors.noInternetConnection})
+//            return completion({throw QueryError.noInternetConnection})
 //        }
         
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
@@ -347,13 +548,10 @@ class QueryHelper {
         tradeIdeaQuery.countObjectsInBackground { (count, error) in
             
             guard error == nil else {
-                return completion({throw Constants.Errors.errorAccessingParseDatabase})
+                return completion({throw QueryError.errorQueryingForData(error: error! )})
             }
             
             let count = Int(count)
-            
-            print("tradeIdeas count", count)
-            
             completion({return (count)})
         }
     }
@@ -361,7 +559,7 @@ class QueryHelper {
     func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stocks: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
 //        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw Constants.Errors.noInternetConnection})
+//            return completion({throw QueryError.noInternetConnection})
 //        }
         
         let activityQuery = PFQuery(className:"Activity")
@@ -421,11 +619,11 @@ class QueryHelper {
         activityQuery.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion({throw Constants.Errors.errorAccessingParseDatabase})
+                return completion({throw QueryError.errorQueryingForData(error: error! )})
             }
             
             guard let objects = objects else {
-                return completion({throw Constants.Errors.parseTradeIdeaObjectNotFound})
+                return completion({throw QueryError.queryDataEmpty})
             }
             
             // The find succeeded.
@@ -438,7 +636,7 @@ class QueryHelper {
     func countActivityFor(fromUser: PFUser?, toUser: PFUser?, tradeIdea: PFObject?, stock: PFObject?, activityType: String?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
 //        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw Constants.Errors.noInternetConnection})
+//            return completion({throw QueryError.noInternetConnection})
 //        }
         
         let activityQuery = PFQuery(className:"Activity")
@@ -472,13 +670,10 @@ class QueryHelper {
         activityQuery.countObjectsInBackground { (count, error) in
             
             guard error == nil else {
-                return completion({throw Constants.Errors.errorAccessingParseDatabase})
+                return completion({throw QueryError.errorQueryingForData(error: error! )})
             }
             
             let count = Int(count)
-            
-            print("userActivity count", count)
-            
             completion({return (count)})
         }
     }
@@ -486,7 +681,7 @@ class QueryHelper {
     func queryActivityForUser(user: PFUser, skip: Int?, limit: Int?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
 //        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw Constants.Errors.noInternetConnection})
+//            return completion({throw QueryError.noInternetConnection})
 //        }
         
         let activityQuery = PFQuery(className:"Activity")
@@ -523,11 +718,11 @@ class QueryHelper {
         activityQuery.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion({throw Constants.Errors.errorAccessingParseDatabase})
+                return completion({throw QueryError.errorQueryingForData(error: error! )})
             }
             
             guard let objects = objects else {
-                return completion({throw Constants.Errors.parseTradeIdeaObjectNotFound})
+                return completion({throw QueryError.queryDataEmpty})
             }
             
             // The find succeeded.
@@ -540,7 +735,7 @@ class QueryHelper {
     func queryActivityForFollowing(fromUser: PFUser, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
 //        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw Constants.Errors.noInternetConnection})
+//            return completion({throw QueryError.noInternetConnection})
 //        }
         
         let followActivityQuery = PFQuery(className:"Activity")
@@ -565,15 +760,12 @@ class QueryHelper {
         activityQuery.findObjectsInBackground { (objects, error) -> Void in
             
             guard error == nil else {
-                return completion({throw Constants.Errors.errorAccessingParseDatabase})
+                return completion({throw QueryError.errorQueryingForData(error: error! )})
             }
             
-            guard objects?.isEmpty == false, let objects = objects else {
-                return completion({throw Constants.Errors.parseTradeIdeaObjectNotFound})
+            guard let objects = objects else {
+                return completion({throw QueryError.queryDataEmpty})
             }
-            
-            // The find succeeded.
-            print("Successfully retrieved \(objects.count) activities")
             
             completion({return (objects)})
             

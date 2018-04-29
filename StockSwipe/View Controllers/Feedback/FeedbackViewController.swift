@@ -22,13 +22,7 @@ class FeedbackViewController: UIViewController, MFMailComposeViewControllerDeleg
     
     @IBAction func reviewAction() {
         self.dismiss(animated: true) {
-            
-            if #available(iOS 10.3, *) {
-                SKStoreReviewController.requestReview()
-                Functions.markFeedbackGiven()
-            } else {
-                iRate.sharedInstance().openRatingsPageInAppStore()
-            }
+            SKStoreReviewController.requestReview()
         }
     }
     
@@ -68,7 +62,7 @@ class FeedbackViewController: UIViewController, MFMailComposeViewControllerDeleg
             
         case MFMailComposeResult.saved.rawValue, MFMailComposeResult.sent.rawValue:
         
-            Functions.markFeedbackGiven()
+            print("Mail Saved")
             
         case MFMailComposeResult.failed.rawValue:
             

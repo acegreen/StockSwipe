@@ -10,8 +10,6 @@ import CoreData
 import CoreSpotlight
 import MobileCoreServices
 import Parse
-import ParseTwitterUtils
-import ParseFacebookUtilsV4
 import Fabric
 import TwitterKit
 import Crashlytics
@@ -23,13 +21,13 @@ protocol PushNotificationDelegate {
 }
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
     var pushDelegate: PushNotificationDelegate?
     
-    override class func initialize() {
-        setupSARate()
+    override init() {
+        AppDelegate.setupSARate()
     }
     
     class func setupSARate() {
@@ -49,7 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         SARate.sharedInstance().promptAtLaunch = false
     }
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // Override point for customization after application launch.
         
         // Enable Parse LocalDatastore
@@ -66,16 +64,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpened(launchOptions: launchOptions)
         
-        // Initialize Parse (Twitter login)
-        PFTwitterUtils.initialize(withConsumerKey: Constants.APIKeys.TwitterKit.key(),
-                                                 consumerSecret: Constants.APIKeys.TwitterKit.consumerKey()!)
-        
         // Initialize Twitter
-        Twitter.sharedInstance().start(withConsumerKey: Constants.APIKeys.TwitterKit.key(), consumerSecret: Constants.APIKeys.TwitterKit.consumerKey()!)
+        PFTwitterUtils.initialize(withConsumerKey: Constants.APIKeys.TwitterKit.key(),
+                                  consumerSecret: Constants.APIKeys.TwitterKit.consumerKey()!)
+        TWTRTwitter.sharedInstance().start(withConsumerKey: Constants.APIKeys.TwitterKit.key(), consumerSecret: Constants.APIKeys.TwitterKit.consumerKey()!)
         
         // Initialize Facebook
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
-        PFFacebookUtils.facebookLoginManager().loginBehavior = .systemAccount
+        PFFacebookUtils.facebookLoginManager().loginBehavior = .browser
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
         // Intialize Fabric
@@ -93,7 +89,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         //GSDAppIndexing.sharedInstance().registerApp(iTunesID)
         
         // check device
-        Functions.checkDevice()
+        Functions.setCardsSize()
         
         // setup user defaults
         Settings.registerGeneralDefaults()
@@ -114,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         pageControl.backgroundColor = UIColor.white
         
         // Track user
-        if application.applicationState != UIApplicationState.background {
+        if application.applicationState != UIApplication.State.background {
             // Track an app open here if we launch with a push, unless
             // "content_available" was used to trigger a background push (introduced in iOS 7).
             // In that case, we skip tracking here to avoid double counting the app-open.
@@ -123,7 +119,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
             let oldPushHandlerOnly = !self.responds(to: #selector(UIApplicationDelegate.application(_:didReceiveRemoteNotification:fetchCompletionHandler:)))
             var pushPayload = false
             if let options = launchOptions {
-                pushPayload = options[UIApplicationLaunchOptionsKey.remoteNotification] != nil
+                pushPayload = options[UIApplication.LaunchOptionsKey.remoteNotification] != nil
             }
             if (preBackgroundPush || oldPushHandlerOnly || pushPayload) {
                 PFAnalytics.trackAppOpened(launchOptions: launchOptions)
@@ -142,9 +138,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         case "stockswipe"?:
             
             guard url.host == "chart", let window = self.window else { return true }
-            
             guard let symbolDict = url.parseQueryString(url.query!, firstSeperator: "&", secondSeperator: "=") else { return false }
-            
             guard let symbol = symbolDict["symbol"] as? String else { return
                 //TO-DO: Alert user that symbol was not found
                 false
@@ -156,25 +150,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                     
                     guard let stockObject = try result().first else { return }
                     
-                    let chartDetailTabBarController  = Constants.chartDetailStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
+                    let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
                     let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
                     
                     if mainTabBarController.presentationController != nil {
-                        
                         mainTabBarController.dismiss(animated: false, completion: nil)
-                        
                     }
                     
                     let chart = Chart(parseObject: stockObject)
-                    
-                    chartDetailTabBarController.chart = chart
-                        
-                    mainTabBarController.present(chartDetailTabBarController, animated: true, completion: nil)
+                    CardDetailTabBarController.chart = chart
+                    mainTabBarController.present(CardDetailTabBarController, animated: true, completion: nil)
                     
                 } catch {
-                    
-                    if let error = error as? Constants.Errors {
-                        
+                    if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {
                             SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
                         }
@@ -184,33 +172,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
             })
             
             return true
-            
         case "fb863699560384982"?:
-            
             return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
-            
         default:
-            
             return false
         }
     }
     
-    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
         
         guard let window = self.window else { return true }
         
         var symbol: String!
         
         if userActivity.activityType == CSSearchableItemActionType {
-            
-            print(userActivity.userInfo)
-            
             if let uniqueIdentifier = userActivity.userInfo?[CSSearchableItemActivityIdentifier] as? String {
                 symbol = uniqueIdentifier
             }
-            
         } else if let userInfo = userActivity.userInfo {
-            
             symbol = userInfo["symbol"] as? String
         }
         
@@ -220,25 +199,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                 
                 guard let stockObject = try result().first else { return }
                 
-                let chartDetailTabBarController  = Constants.chartDetailStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
+                let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
                 let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
                 
                 if mainTabBarController.presentationController != nil {
-                    
                     mainTabBarController.dismiss(animated: false, completion: nil)
-                    
                 }
                 
                 let chart = Chart(parseObject: stockObject)
-                
-                chartDetailTabBarController.chart = chart
-                
-                mainTabBarController.present(chartDetailTabBarController, animated: true, completion: nil)
+                CardDetailTabBarController.chart = chart
+                mainTabBarController.present(CardDetailTabBarController, animated: true, completion: nil)
                 
             } catch {
-                
-                if let error = error as? Constants.Errors {
-                    
+                if let error = error as? QueryHelper.QueryError {
                     DispatchQueue.main.async {
                         SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
                     }
@@ -248,10 +221,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         })
         
         return true
-    }
-    
-    func application(_ application: UIApplication, didRegister notificationSettings: UIUserNotificationSettings) {
-        
     }
     
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
@@ -266,11 +235,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         
         let error = error as NSError
         if error.code == 3010 {
-            
             print("Push notifications are not supported in the iOS Simulator.")
-            
         } else {
-            
             print("application:didFailToRegisterForRemoteNotificationsWithError: %@", error)
         }
     }
@@ -281,7 +247,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
         
         //PFPush.handlePush(userInfo)
         
-        if application.applicationState == UIApplicationState.inactive {
+        if application.applicationState == UIApplication.State.inactive {
             PFAnalytics.trackAppOpened(withRemoteNotificationPayload: userInfo)
         }
     }
@@ -388,22 +354,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate, iRateDelegate {
                 abort()
             }
         }
-    }
-    
-    func iRateDidOpenAppStore() {
-        
-        print("iRateDidOpenAppStore")
-        
-        Functions.markFeedbackGiven()
-    }
-    
-    func iRateDidDetectAppUpdate() {
-        
-        print("iRateDidDetectAppUpdate")
-        
-        SARate.sharedInstance().eventCount = 0
-        Constants.userDefaults.set(false, forKey: "FEEDBACK_GIVEN")
-        Constants.userDefaults.synchronize()
-        
     }
 }

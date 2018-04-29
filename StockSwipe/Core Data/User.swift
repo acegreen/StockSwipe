@@ -17,7 +17,9 @@ public class User: NSObject {
     var fullname: String! = "John Doe"
     var username: String! = "@JohnDoe"
     var avtar: UIImage! = UIImage(named: "dummy_profile_male")
-    
+    var bio: String?
+    var location: String?
+    var website: String?
     var profile_image_url: String?
     
     var createdAt: Date!
@@ -59,7 +61,7 @@ public class User: NSObject {
                     let avatarData  = try result()
                     
                     if let image = UIImage(data: avatarData) {
-                        self.avtar = image ?? UIImage(named: "dummy_profile_male")
+                        self.avtar = image 
                     }
                     
                     completion(self.avtar)
@@ -147,6 +149,18 @@ public class User: NSObject {
         self.fullname = userObject.object(forKey: "full_name") as? String ?? "John Doe"
         self.username = "@\(self.userObject.username!)"
         self.profile_image_url = userObject.object(forKey: "profile_image_url") as? String
+        
+        if let bio = self.userObject.object(forKey: "bio") as? String {
+            self.bio = bio
+        }
+        
+        if let location = self.userObject["location"] as? String {
+            self.location = location
+        }
+        
+        if let website = self.userObject.object(forKey: "website") as? String {
+            self.website = website
+        }
         
         self.createdAt = userObject.createdAt
     }

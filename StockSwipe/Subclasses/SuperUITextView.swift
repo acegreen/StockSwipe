@@ -36,23 +36,19 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
             
             guard let resourceSpecifier = resourceSpecifier else { return false }
             
-            let chartDetailTabBarController  = Constants.chartDetailStoryboard.instantiateViewController(withIdentifier: "ChartDetailTabBarController") as! ChartDetailTabBarController
+            let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
             
             QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [resourceSpecifier]) { (result) in
                 
                 do {
                     
                     let stockObject = try result().first!
-                    
-                    let chart = Chart(parseObject: stockObject)
-                    
-                    chartDetailTabBarController.chart = chart
-                    UIApplication.topViewController()?.present(chartDetailTabBarController, animated: true, completion: nil)
+                    let chart = Chart(parseObject: stockObject)                    
+                    CardDetailTabBarController.chart = chart
+                    UIApplication.topViewController()?.present(CardDetailTabBarController, animated: true, completion: nil)
                     
                 } catch {
-                    
-                    if let error = error as? Constants.Errors {
-                        
+                    if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {
                             SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
                         }
@@ -69,10 +65,9 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                 do {
                     
                     let userObject = try result().first
-                    
                     if let userObject = userObject {
                         
-                        let profileNavigationController = Constants.profileStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
+                        let profileNavigationController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
                         let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
                         profileContainerController.user = User(userObject: userObject)
                         
@@ -81,9 +76,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     }
                     
                 } catch {
-                    
-                    if let error = error as? Constants.Errors {
-                        
+                    if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {
                             SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
                         }

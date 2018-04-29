@@ -55,7 +55,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     @IBAction func replyButton(_ sender: AnyObject) {
         
-        let tradeIdeaPostNavigationController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
+        let tradeIdeaPostNavigationController = Constants.Storyboards.mainStoryboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
         let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
         
         ideaPostViewController.originalTradeIdea = self.tradeIdea
@@ -70,7 +70,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         if !sender.isSelected == true {
             
-            let tradeIdeaPostNavigationController = Constants.mainStoryboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
+            let tradeIdeaPostNavigationController = Constants.Storyboards.mainStoryboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
             let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
             
             ideaPostViewController.originalTradeIdea = self.tradeIdea
@@ -159,9 +159,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         PFObject.deleteAll(inBackground: activityObjects)
                         
                     } catch {
-                        
+                        //TODO: handle error
                     }
-                    
                 })
                 
                 self.tradeIdea.parseObject.deleteEventually()
@@ -184,9 +183,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         threeDotsAlert.view.tintColor = Constants.stockSwipeGreenColor
     }
     
-    func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
+    @objc func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
-        let profileContainerController = Constants.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
+        let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
         
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == userName) {
             profileContainerController.user = self.tradeIdea.user
@@ -385,9 +384,10 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         
                         activityObject?.deleteInBackground(block: { (success, error) in
                             
-                            self.tradeIdea.likeCount -= 1
+                            if self.tradeIdea.likeCount > 1 {
+                                self.tradeIdea.likeCount -= 1
+                            }
                             self.tradeIdea.isLikedByCurrentUser = false
-                            
                             self.updateLike(sender: sender)
                         })
                         
@@ -420,7 +420,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     }
                     
                 } catch {
-                    
+                    //TODO: handle error
                 }
             })
         }
@@ -508,20 +508,20 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                                     })
                                     
                                 } catch {
-                                    
-                                    // TO-DO: Show sweet alert with Error.message()
+                                    //TODO: Show sweet alert with Error.message()
                                 }
                             }
                             
-                            self.tradeIdea.reshareCount -= 1
+                            if self.tradeIdea.reshareCount > 1 {
+                                self.tradeIdea.reshareCount -= 1
+                            }
                             self.tradeIdea.isResharedByCurrentUser = false
-                            
                             self.updateReshare(sender: sender)
                         })
                     }
                     
                 } catch {
-                    
+                    //TODO: handle error
                 }
             })
         }

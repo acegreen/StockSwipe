@@ -22,7 +22,7 @@ import NVActivityIndicatorView
 class Functions {
     
     class func isConnectedToNetwork() -> Bool {
-        if Constants.reachability?.currentReachabilityStatus == .notReachable {
+        if Constants.reachability?.connection == .none {
             return false
         } else {
             return true
@@ -38,7 +38,6 @@ class Functions {
             SweetAlert().showAlert("Login Required!", subTitle: "Please login to continue", style: AlertStyle.warning, dismissTime: nil, buttonTitle: "Ok", buttonColor: UIColor(rgbValue: 0xD0D0D0)) { (isOtherButton) -> Void in
                 
                 if isOtherButton {
-                    
                     let logInViewcontroller = LoginViewController.sharedInstance
                     logInViewcontroller.logIn(viewController)
                     logInViewcontroller.loginDelegate = viewController as? LoginDelegate
@@ -52,13 +51,9 @@ class Functions {
     class func blockUser(_ user: PFUser, postAlert: Bool) {
         
         guard let currentUser = PFUser.current() else { return }
-        
         if currentUser.object(forKey: "blocked_users") != nil {
-            
             currentUser.addUniqueObject(user, forKey: "blocked_users")
-            
         } else {
-            
             currentUser.setObject([user], forKey: "blocked_users")
         }
         
@@ -81,9 +76,7 @@ class Functions {
                         activityObject.first?.deleteEventually()
                         
                     } catch {
-                        
-                        // TO-DO: handle error
-                        
+                        //TODO: handle error
                     }
                 })
                 
@@ -95,9 +88,7 @@ class Functions {
                         activityObject.first?.deleteEventually()
                         
                     } catch {
-                        
-                        // TO-DO: handle error
-                        
+                        //TODO: handle error
                     }
                 })
                 
@@ -109,7 +100,7 @@ class Functions {
         }
     }
     
-    class func checkDevice() {
+    class func setCardsSize() {
         
         switch UIDevice.current.userInterfaceIdiom {
             
@@ -136,12 +127,21 @@ class Functions {
             
         default:
             
+            chartWidth = UIScreen.main.bounds.width - 30
+            chartHeight = chartWidth + (Constants.chartImageTopPadding + Constants.informationViewHeight)
+            horizontalPadding = 10.0
+            numberOfCellsHorizontally = 1
+            
             switch SDiOSVersion.deviceSize() {
                 
-            case .Screen5Dot5inch:
+            case .Screen5Dot8inch:
                 
-                chartWidth = 390
-                chartHeight = chartWidth + (Constants.chartImageTopPadding + Constants.informationViewHeight)
+                numberOfCellsVertically = 3
+                frontCardOffsetFromCenter = -10
+                
+                verticalPadding = -25.0
+                
+            case .Screen5Dot5inch:
                 
                 numberOfCellsVertically = 3
                 frontCardOffsetFromCenter = -10
@@ -149,9 +149,6 @@ class Functions {
                 verticalPadding = -25.0
                 
             case .Screen4Dot7inch:
-                
-                chartWidth = 350
-                chartHeight = chartWidth + (Constants.chartImageTopPadding + Constants.informationViewHeight)
                 
                 numberOfCellsVertically = 3
                 
@@ -161,18 +158,12 @@ class Functions {
                 
             case .Screen4inch:
                 
-                chartWidth = 300
-                chartHeight = chartWidth + (Constants.chartImageTopPadding + Constants.informationViewHeight)
-                
                 numberOfCellsVertically = 2
                 frontCardOffsetFromCenter = 0
                 
                 verticalPadding = -10.0
                 
             case .Screen3Dot5inch:
-                
-                chartWidth = 280
-                chartHeight = chartWidth
                 
                 numberOfCellsVertically = 2
                 frontCardOffsetFromCenter = 0
@@ -181,83 +172,83 @@ class Functions {
                 
             default:
                 
-                chartWidth = 300
-                chartHeight = chartWidth
-                
                 numberOfCellsVertically = 2
                 frontCardOffsetFromCenter = 0
                 
                 verticalPadding = 0.0
             }
-            
-            horizontalPadding = 10.0
-            
-            numberOfCellsHorizontally = 1
-        }
-    }
-    
-    class func setImageURL(_ symbol: String) -> URL? {
-        
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            
-            return URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D.png")
-            
-        } else {
-            
-            return URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D_phone.png")
         }
     }
     
     class func setChartURL(_ symbol: String) -> URL {
         
         let formattedSymbol = symbol.URLEncodedString()!
-        
         if UIDevice.current.userInterfaceIdiom == .pad {
-            
             return URL(string: "http://45.55.137.153/?symbol=\(formattedSymbol)&interval=D")!
-            
         } else {
-            
             return URL(string: "http://45.55.137.153/mobile_white.html?symbol=\(formattedSymbol)&interval=D")!
         }
     }
     
+    class func setImageURL(_ symbol: String) -> URL? {
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D.png")
+        } else {
+            return URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D_phone.png")
+        }
+    }
+    
     class func getImage(_ imageURL: URL?, completion: @escaping (UIImage?) -> Void) {
-        
         guard let imageURL = imageURL else { return completion(nil) }
-        
         QueryHelper.sharedInstance.queryWith(queryString: imageURL.absoluteString, completionHandler: { (result) in
-            
             do {
-                
-                let avatarData  = try result()
-                completion(UIImage(data: avatarData))
-                
+                let imageData  = try result()
+                completion(UIImage(data: imageData))
             } catch {
-                // TODO: Handle error
+                // TODO: handle error
             }
         })
     }
     
-    class func getStockObjectAndChart(_ symbol: String, completion: @escaping (_ result: () throws -> (object: PFObject, chart: Chart)) -> Void) {
+    class func createParseObject(for symbol: String, completion: @escaping (_ result: () throws -> PFObject) -> Void) -> Void {
+        
+        self.getParseObject(symbol) { object in
+            do {
+                
+                guard try object() == nil else { throw QueryHelper.QueryError.parseObjectAlreadyExists }
+                
+                QueryHelper.sharedInstance.queryEODFundamentals(for: symbol) { eodFundamentalsResult in
+                    
+                    do {
+                        guard let eodFundamentalsResult = try eodFundamentalsResult() else { return completion({ throw QueryHelper.QueryError.errorParsingJSON }) }
+                        let parseObject = PFObject(className: "Stocks")
+                        parseObject["Symbol"] = symbol
+                        parseObject["Company"] = eodFundamentalsResult.general.name
+                        parseObject["Exchange"] = eodFundamentalsResult.general.exchange
+                        parseObject["Sector"] = eodFundamentalsResult.general.sector
+                        parseObject.saveInBackground()
+                        
+                        completion( { parseObject })
+                    } catch {
+                        completion({throw error})
+                    }
+                }
+            } catch {
+                completion({throw error})
+            }
+        }
+    }
+    
+    class func getParseObject(_ symbol: String, completion: @escaping (_ result: () throws -> PFObject?) -> Void) -> Void {
         
         QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [symbol]) { (result) in
             
             do {
-                
-                let stockObject = try result().first!
-                
-                QueryHelper.sharedInstance.queryChartImage(symbol: symbol, completion: { (result) in
-                    
-                    let chart = Chart(parseObject: stockObject)
-                    completion({ (object: stockObject, chart: chart)})
-                    
-                })
+                let parseObject = try result().first
+                completion({ parseObject })
                 
             } catch {
-                
                 completion({throw error})
-                
             }
         }
     }
@@ -284,7 +275,7 @@ class Functions {
                         
                         firstActivityObject["activityType"] = firstActivityObject["activityType"]
                         firstActivityObject.saveEventually()
-                    
+                        
                     } else {
                         
                         switch choice {
@@ -345,7 +336,7 @@ class Functions {
                 Functions.incrementEventCount()
                 
             } catch {
-                
+                //TODO: handle error
             }
             
             print("\(choice)", chart)
@@ -353,7 +344,7 @@ class Functions {
     }
     
     class func saveIntoCoreData(_ chart: Chart, userChoice: Constants.UserChoices) {
-
+        
         let chartFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Charts")
         chartFetchRequest.predicate = NSPredicate(format: "symbol == %@", chart.symbol)
         chartFetchRequest.fetchLimit = 1
@@ -370,7 +361,7 @@ class Functions {
                 let newChart = ChartModel(entity: Constants.entity!, insertInto: Constants.context)
                 newChart.symbol = chart.symbol
                 newChart.companyName = chart.companyName
-                newChart.image = UIImagePNGRepresentation(chart.image)
+                newChart.image = chart.image.pngData()
                 newChart.shorts = Int32(chart.shortCount)
                 newChart.longs = Int32(chart.longCount)
                 newChart.userChoice = userChoice.rawValue
@@ -383,7 +374,7 @@ class Functions {
                 let fetchedObject:NSManagedObject = fetchedObjectArray.first!
                 
                 fetchedObject.setValue(chart.symbol, forKey: "symbol")
-                fetchedObject.setValue(UIImagePNGRepresentation(chart.image), forKey: "image")
+                fetchedObject.setValue(chart.image.pngData(), forKey: "image")
                 fetchedObject.setValue(chart.shortCount, forKey: "shorts")
                 fetchedObject.setValue(chart.longCount, forKey: "longs")
                 fetchedObject.setValue(userChoice.rawValue, forKey: "userChoice")
@@ -455,7 +446,7 @@ class Functions {
         activity.userInfo = ["symbol": chart.symbol, "companyName": chart.companyName]
         activity.contentAttributeSet = attributeSet
         
-        activity.requiredUserInfoKeys = NSSet(array: ["symbol", "companyName"]) as! Set<String>
+        activity.requiredUserInfoKeys = NSSet(array: ["symbol", "companyName"]) as? Set<String>
         activity.isEligibleForSearch = true
         activity.isEligibleForPublicIndexing = true
         nsUserActivityArray.append(activity)
@@ -471,10 +462,9 @@ class Functions {
         attributeSet.contentDescription = chart.companyName
         attributeSet.artist = "Shorts: \(chart.shortCount)"
         attributeSet.album = "Longs: \(chart.longCount)"
-        attributeSet.keywords = [chart.symbol, chart.companyName, "Stocks", "Markets"]
+        attributeSet.keywords = [chart.symbol, chart.companyName ?? "", "Stocks", "Markets"]
         
         let searchableItem = CSSearchableItem(uniqueIdentifier: chart.symbol, domainIdentifier: domainIdentifier, attributeSet: attributeSet)
-        
         CSSearchableIndex.default().indexSearchableItems([searchableItem]) { (error) -> Void in
             
             if let error = error {
@@ -489,7 +479,6 @@ class Functions {
     class func removeFromSpotlight(_ domainIdentifier: String) {
         
         CSSearchableIndex.default().deleteSearchableItems(withIdentifiers: [domainIdentifier]) { (error: Error?) -> Void in
-            
             if let error = error {
                 print("Deindexing error: \(error.localizedDescription)")
             } else {
@@ -501,7 +490,6 @@ class Functions {
     class func promptAddToWatchlist(_ chart: Chart, registerChoice: Bool, completion: @escaping (Constants.UserChoices) -> Void)  {
         
         guard Functions.isConnectedToNetwork() else {
-            
             SweetAlert().showAlert("Can't Add To Watchlist!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
             return
         }
@@ -511,13 +499,10 @@ class Functions {
             do {
                 
                 let chartImage = try result()
-                
                 chart.image = chartImage
                 
-                
             } catch {
-                
-                print(error)
+                //TODO: handle error
             }
             
             DispatchQueue.main.async {
@@ -533,7 +518,6 @@ class Functions {
                         }
                         
                         saveIntoCoreData(chart, userChoice: .LONG)
-                        
                         completion(.LONG)
                         
                     } else if isOtherButton {
@@ -543,7 +527,6 @@ class Functions {
                         }
                         
                         saveIntoCoreData(chart, userChoice: .SHORT)
-                        
                         completion(.SHORT)
                     }
                 }
@@ -589,7 +572,7 @@ class Functions {
     
     class func displayAlert (_ title: String, message: String, Action1: UIAlertAction?, Action2: UIAlertAction?) -> UIAlertController {
         
-        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
         
         if Action1 != nil {
             alert.addAction(Action1!)
@@ -636,31 +619,26 @@ class Functions {
         var objectsToShare = [AnyObject]()
         
         if textToShare != nil {
-            
             objectsToShare.append(textToShare! as AnyObject)
         }
         
         if imageToShare != nil {
-            
             objectsToShare.append(imageToShare!)
         }
         
         if url != nil {
-            
             objectsToShare.append(url! as AnyObject)
         }
         
         guard objectsToShare.count != 0 else {
-            
             SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
-            
             return completion(nil, false, nil, nil)
         }
         
         let excludedActivityTypesArray = [
-            UIActivityType.postToWeibo,
-            UIActivityType.assignToContact,
-            UIActivityType.airDrop,
+            UIActivity.ActivityType.postToWeibo,
+            UIActivity.ActivityType.assignToContact,
+            UIActivity.ActivityType.airDrop,
             ]
         
         let activityVC = UIActivityViewController(activityItems: objectsToShare, applicationActivities: nil)
@@ -673,22 +651,18 @@ class Functions {
         
         activityVC.completionWithItemsHandler = { (activity, success, items, error) in
             print("Activity: \(activity) Success: \(success) Items: \(items) Error: \(error)")
-            
             completion(activity.map { $0.rawValue }, success, items as [AnyObject]?, error as NSError?)
         }
     }
     
     class func presentSafariBrowser(with url: URL!, readerMode: Bool = true) {
-        
         guard Functions.isConnectedToNetwork() else {
-            
             SweetAlert().showAlert("Can't Open Url!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
             return
         }
         
         // override reader mode for medium stories (for some reason opens a blank white page)
         let readerMode: Bool = url.absoluteString.contains("medium") ? false : readerMode
-        
         let svc = SFSafariViewController(url: url, entersReaderIfAvailable: readerMode)
         svc.modalTransitionStyle = .coverVertical
         svc.modalPresentationStyle = .overFullScreen
@@ -710,18 +684,4 @@ class Functions {
     //
     //        return RandomNumber
     //    }
-    
-    class func degreesToRadians(_ degrees: Double) -> Double {
-        return degrees * (M_PI/180.0)
-    }
-    
-    class func formatTime(_ date: Date) -> String {
-        
-        let formatter = DateFormatter()
-        formatter.dateStyle = DateFormatter.Style.long
-        formatter.timeStyle = .short
-        
-        return formatter.string(from: date)
-        
-    }
 }

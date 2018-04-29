@@ -70,6 +70,7 @@ public class TradeIdea: NSObject {
                 }
                 
             } catch {
+                //TODO: handle error
             }
             
             if let completion = completion {
@@ -100,6 +101,7 @@ public class TradeIdea: NSObject {
                 }
                 
             } catch {
+                //TODO: handle error
             }
             
             if let completion = completion {

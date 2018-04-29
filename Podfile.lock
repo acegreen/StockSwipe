@@ -1,56 +1,54 @@
 PODS:
-  - AMPopTip (2.1.7)
-  - Bolts (1.8.4):
-    - Bolts/AppLinks (= 1.8.4)
-    - Bolts/Tasks (= 1.8.4)
-  - Bolts/AppLinks (1.8.4):
+  - AMPopTip (3.5.0)
+  - Bolts (1.9.0):
+    - Bolts/AppLinks (= 1.9.0)
+    - Bolts/Tasks (= 1.9.0)
+  - Bolts/AppLinks (1.9.0):
     - Bolts/Tasks
-  - Bolts/Tasks (1.8.4)
-  - BubbleTransition (2.0.2)
-  - Charts (3.0.3):
-    - Charts/Core (= 3.0.3)
-  - Charts/Core (3.0.3)
+  - Bolts/Tasks (1.9.0)
+  - BubbleTransition (3.2.0)
+  - Charts (3.2.1):
+    - Charts/Core (= 3.2.1)
+  - Charts/Core (3.2.1)
   - ChimpKit (3.1.1)
-  - Crashlytics (3.8.6):
-    - Fabric (~> 1.6.3)
-  - DataCache (1.2.2)
+  - Crashlytics (3.12.0):
+    - Fabric (~> 1.9.0)
+  - DataCache (1.4)
   - DZNEmptyDataSet (1.8.1)
-  - Fabric (1.6.13)
-  - FBSDKCoreKit (4.26.0):
-    - Bolts (~> 1.7)
-  - FBSDKLoginKit (4.26.0):
+  - Fabric (1.9.0)
+  - FBSDKCoreKit (4.40.0):
+    - Bolts (~> 1.9)
+  - FBSDKLoginKit (4.40.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.26.0):
+  - FBSDKShareKit (4.40.0):
     - FBSDKCoreKit
   - LaunchKit (2.1.4):
     - LaunchKit/LaunchKit (= 2.1.4)
   - LaunchKit/LaunchKit (2.1.4)
   - MDCSwipeToChoose (0.2.4)
-  - NVActivityIndicatorView (3.7.0):
-    - NVActivityIndicatorView/Presenter (= 3.7.0)
-  - NVActivityIndicatorView/Presenter (3.7.0)
-  - Parse (1.15.2):
-    - Bolts/Tasks (~> 1.8)
-  - ParseFacebookUtilsV4 (1.11.1):
-    - Bolts/Tasks (>= 1.6)
-    - FBSDKCoreKit (~> 4.10)
-    - FBSDKLoginKit (~> 4.10)
-    - FBSDKTVOSKit (~> 4.10)
-    - Parse (~> 1.12)
-  - ParseTwitterUtils (1.11.0):
-    - Bolts/Tasks (~> 1.7)
-    - Parse (~> 1.13)
-  - ParseUI (1.2.0):
-    - Bolts/Tasks (~> 1.3)
-    - Parse (~> 1.9)
-  - ReachabilitySwift (3)
-  - SDVersion (4.2.1)
+  - NVActivityIndicatorView (4.6.1):
+    - NVActivityIndicatorView/Presenter (= 4.6.1)
+  - NVActivityIndicatorView/Presenter (4.6.1)
+  - Parse (1.17.2):
+    - Parse/Core (= 1.17.2)
+  - Parse/Core (1.17.2):
+    - Bolts/Tasks (~> 1.9)
+  - Parse/FacebookUtils (1.17.2):
+    - Bolts (~> 1.9)
+    - FBSDKLoginKit (~> 4.33)
+    - Parse/Core
+  - Parse/TwitterUtils (1.17.2):
+    - Parse/Core
+  - Parse/UI (1.17.2):
+    - Parse/Core
+  - ReachabilitySwift (4.3.0)
+  - SDVersion (4.3.2)
   - SKSplashView (0.1.2)
-  - SwiftyJSON (3.1.4)
-  - SWXMLHash (4.2.0)
-  - TwitterCore (3.0.1)
-  - TwitterKit (3.1.1):
-    - TwitterCore (>= 3.0.1)
+  - SwiftyJSON (4.2.0)
+  - SWXMLHash (4.7.6)
+  - TwitterCore (3.2.0)
+  - TwitterKit (3.4.2):
+    - TwitterCore (>= 3.2.0)
 
 DEPENDENCIES:
   - AMPopTip
@@ -60,20 +58,45 @@ DEPENDENCIES:
   - Crashlytics
   - DataCache (from `https://github.com/huynguyencong/DataCache.git`)
   - DZNEmptyDataSet
+  - FBSDKCoreKit
+  - FBSDKLoginKit
   - FBSDKShareKit
   - LaunchKit
   - MDCSwipeToChoose (from `https://github.com/acegreen/MDCSwipeToChoose.git`)
   - NVActivityIndicatorView
   - Parse
-  - ParseFacebookUtilsV4
-  - ParseTwitterUtils
-  - ParseUI
+  - Parse/FacebookUtils
+  - Parse/TwitterUtils
+  - Parse/UI
   - ReachabilitySwift
   - SDVersion
   - SKSplashView (from `https://github.com/acegreen/SKSplashView.git`, branch `ag-improvements`)
   - SwiftyJSON
   - SWXMLHash
   - TwitterKit
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - AMPopTip
+    - Bolts
+    - BubbleTransition
+    - Charts
+    - ChimpKit
+    - Crashlytics
+    - DZNEmptyDataSet
+    - Fabric
+    - FBSDKCoreKit
+    - FBSDKLoginKit
+    - FBSDKShareKit
+    - LaunchKit
+    - NVActivityIndicatorView
+    - Parse
+    - ReachabilitySwift
+    - SDVersion
+    - SwiftyJSON
+    - SWXMLHash
+    - TwitterCore
+    - TwitterKit
 
 EXTERNAL SOURCES:
   DataCache:
@@ -86,7 +109,7 @@ EXTERNAL SOURCES:
 
 CHECKOUT OPTIONS:
   DataCache:
-    :commit: 95a80e3fa50d9f5e546e02a4b10d26c02a19ef4a
+    :commit: 388549d75f551ffaf9ce3b84147d764f49656fd3
     :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
     :commit: 759f5060c350d533e046ef53f88515552278a706
@@ -96,33 +119,30 @@ CHECKOUT OPTIONS:
     :git: https://github.com/acegreen/SKSplashView.git
 
 SPEC CHECKSUMS:
-  AMPopTip: 409326cfee1108b625c85de73934014598cd0797
-  Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
-  BubbleTransition: 7d98ed7d56f0940e83f350a98103ad473491c769
-  Charts: bcde37724c161958c1438dd4883971fcb2d50c06
+  AMPopTip: 871ae0570b68fe396e714922b3f7d8ed6a36bb71
+  Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
+  BubbleTransition: 2f112cc19772d9ab199bc850de92f5eb34744bce
+  Charts: f122fb70b19847fa5817d018b77d6c5a2296ab25
   ChimpKit: d020126089544daa349397a91f1489a3f271b791
-  Crashlytics: 95d05f4e4c19a771250c4bd9ce344d996de32bbf
-  DataCache: aab67eb89877e40e4d56f345a160d10b6f3f80ac
+  Crashlytics: 07fb167b1694128c1c9a5a5cc319b0e9c3ca0933
+  DataCache: 58345b1a6c12fed9919fe4c00716ede7bc7e8142
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
-  Fabric: 2fb5676bc811af011a04513451f463dac6803206
-  FBSDKCoreKit: c8b8582311ec11b145451d8b9717dc6cc2ae5a76
-  FBSDKLoginKit: f3f03b94c21eb834af243c0a881d48641f47ca60
-  FBSDKShareKit: 320712d8293fde6392872c91eb80ef0da5d73cc3
+  Fabric: f988e33c97f08930a413e08123064d2e5f68d655
+  FBSDKCoreKit: ae214474b25033399c131dc81d258e412582a2ba
+  FBSDKLoginKit: 7a1e411d46acc8834588eca437daf34de42e1d52
+  FBSDKShareKit: 0e45916f4150da485928ae2a17ca021950b194f5
   LaunchKit: 95ad4fb171a0f8ea1c80aa26d4fb7bd637788f9c
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
-  NVActivityIndicatorView: d3738df7e2e476aca0ba6bf32a8c9fbcfc33d64b
-  Parse: 7daa8804b876d250a65420534c97d2d786c3b0b4
-  ParseFacebookUtilsV4: 2f30c2b7021c8005d3042781da7ef87d06589421
-  ParseTwitterUtils: 0dde9689565e7012d83f892c64aed2ebe69f2ea9
-  ParseUI: af2eba584799da4a9fbdac0e178662d7438b502e
-  ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
-  SDVersion: 29ec8c9fbb3c12916782eb23888cb40f16475226
+  NVActivityIndicatorView: 4ca19fccc84595a78957336a086d00a49be6ce61
+  Parse: 3b31a3dd1777b07ee7f0caee32fafbff544483a5
+  ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
+  SDVersion: 18f32c835c1543611fcfae3c6accd9a04b90597e
   SKSplashView: c65333b6707be6f237d09e7c8977941114b0a70d
-  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
-  SWXMLHash: 14965722e1136f72cc78a9c3bb037ca01d8b8677
-  TwitterCore: 6856288a1c25e5281363250681f33b42fce1da42
-  TwitterKit: 313bf02baee8427f7649b3640169178e5a8b5a99
+  SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
+  SWXMLHash: f6e0933ce74f2626669dc544851bc9fc1941670d
+  TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
+  TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: 00402187bddc0fde962744a45f783a7874c8a22e
+PODFILE CHECKSUM: 93df2c987e3b4e0dbe9c228fccd0aecbd3720eaf
 
-COCOAPODS: 1.3.1
+COCOAPODS: 1.6.0.rc.2

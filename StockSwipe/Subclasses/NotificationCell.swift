@@ -26,41 +26,13 @@ class NotificationCell: UITableViewCell {
         self.notificationDesc.text = stringForActivityType(activity.object(forKey: "activityType") as! String)
         self.notificationTime.text = (activity.createdAt as NSDate?)?.formattedAsTimeAgoShort()
         
-        guard let user = activity.object(forKey: "fromUser") as? PFUser else { return }
-        
-        if let fullname = user["full_name"] as? String {
-            self.fullname.text = fullname
-            
-//            let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(NotificationCell.handleGestureRecognizer))
-//            self.fullname.addGestureRecognizer(tapGestureRecognizerMainUsername)
-            
-        } else {
-            self.fullname.text = "John Doe"
-        }
-        
-        if let avatarURL = user.object(forKey: "profile_image_url") as? String {
-            
-            QueryHelper.sharedInstance.queryWith(queryString: avatarURL, useCacheIfPossible: true, completionHandler: { (result) in
-                
-                do {
-                    
-                    let avatarData  = try result()
-                    
-                    DispatchQueue.main.async {
-                        self.userAvatar.image = UIImage(data: avatarData)
-                    }
-                    
-                } catch {
-                    // TODO: Handle error
+        guard let pfUser = activity.object(forKey: "fromUser") as? PFUser else { return }
+        let user = User(userObject: pfUser)
+        self.fullname.text = user.fullname
+        user.getAvatar { (avatar) in
+                DispatchQueue.main.async {
+                    self.userAvatar.image = avatar
                 }
-                
-                // Add Gesture Recognizers
-//                let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(NotificationCell.handleGestureRecognizer))
-//                self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
-                
-            })
-        } else {
-            self.userAvatar.image = UIImage(named: "dummy_profile_male")
         }
     }
     
@@ -84,7 +56,7 @@ class NotificationCell: UITableViewCell {
     
     func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
-        let profileContainerController = Constants.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
+        let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
         
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == fullname) {
             profileContainerController.user = User(userObject: self.activity.object(forKey: "fromUser") as! PFUser)

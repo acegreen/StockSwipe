@@ -17,13 +17,7 @@ class FeedbackMainViewController: UIViewController {
     
     @IBAction func reviewAction() {
         self.dismiss(animated: true) {
-            
-            if #available(iOS 10.3, *) {
-                SKStoreReviewController.requestReview()
-                Functions.markFeedbackGiven()
-            } else {
-                iRate.sharedInstance().openRatingsPageInAppStore()
-            }
+            SKStoreReviewController.requestReview()
         }
     }
 }

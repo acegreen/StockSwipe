@@ -28,25 +28,25 @@ class FollowButton: UIButton {
                 backgroundColor = UIColor.white
                 borderColor = Constants.stockSwipeGreenColor
                 tintColor = Constants.stockSwipeGreenColor
-                setTitleColor(Constants.stockSwipeGreenColor, for: UIControlState())
-                setImage(UIImage(named: "user_add"), for: UIControlState())
-                setTitle("Follow", for: UIControlState())
+                setTitleColor(Constants.stockSwipeGreenColor, for: UIControl.State())
+                setImage(UIImage(named: "user_add"), for: UIControl.State())
+                setTitle("Follow", for: UIControl.State())
             case .following:
                 isEnabled = true
                 backgroundColor = Constants.stockSwipeGreenColor
                 borderColor = Constants.stockSwipeGreenColor
                 tintColor = UIColor.white
-                setTitleColor(UIColor.white, for: UIControlState())
-                setImage(UIImage(named: "user_checked"), for: UIControlState())
-                setTitle("Following", for: UIControlState())
+                setTitleColor(UIColor.white, for: UIControl.State())
+                setImage(UIImage(named: "user_checked"), for: UIControl.State())
+                setTitle("Following", for: UIControl.State())
             case .blocked:
                 isEnabled = true
                 backgroundColor = UIColor.red
                 borderColor = UIColor.white
                 tintColor = UIColor.white
-                setTitleColor(UIColor.white, for: UIControlState())
-                setImage(UIImage(named: "user_blocked"), for: UIControlState())
-                setTitle("Blocked", for: UIControlState())
+                setTitleColor(UIColor.white, for: UIControl.State())
+                setImage(UIImage(named: "user_blocked"), for: UIControl.State())
+                setTitle("Blocked", for: UIControl.State())
             case .disabled:
                 isEnabled = false
                 backgroundColor = UIColor.white
@@ -54,7 +54,7 @@ class FollowButton: UIButton {
                 tintColor = UIColor.lightGray
                 setTitleColor(UIColor.lightGray, for: .disabled)
                 setImage(UIImage(named: "user_add"), for: .disabled)
-                setTitle("Follow", for: UIControlState())
+                setTitle("Follow", for: UIControl.State())
             }
         }
     }

@@ -1,9 +1,15 @@
-![Twitter_Ad_1.png](https://bitbucket.org/repo/gL9grq/images/3439099559-Twitter_Ad_1.png)
+![alt tag](https://user-images.githubusercontent.com/10794609/50870265-4d4d4b00-1385-11e9-8bff-b0698f72c488.png)
 
 # StockSwipe #
 
 Don't find a gold digger, find a gold miner. And instead of begging for a date, find a 10 bagger trade!!
 Lets swipe through stock cards and discover trade ideas in seconds. 
+
+## Screenshots
+
+iPad                                                                                                              |  iPhone
+:----------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------:
+![alt tag](https://user-images.githubusercontent.com/10794609/50870202-04959200-1385-11e9-80fe-342133b86a99.png) | ![alt tag](https://user-images.githubusercontent.com/10794609/50870198-00697480-1385-11e9-8a7e-16e78a6fe023.png)
 
 ###  So what is StockSwipe? ### 
 

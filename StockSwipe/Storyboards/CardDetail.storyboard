@@ -20,8 +20,8 @@
             <objects>
                 <viewController storyboardIdentifier="ChartWebViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P2a-aq-sxG" customClass="ChartWebViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="NN1-iM-ppd"/>
-                        <viewControllerLayoutGuide type="bottom" id="XxA-MD-FoI"/>
+                        <viewControllerLayoutGuide type="top" id="Dsw-L8-JRs"/>
+                        <viewControllerLayoutGuide type="bottom" id="yjo-Se-HWt"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="uuk-VA-MtU">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
@@ -74,7 +74,6 @@
                     <connections>
                         <segue destination="UPa-iY-1wx" kind="relationship" relationship="viewControllers" id="7xd-B5-lib"/>
                         <segue destination="Xji-gg-Vpm" kind="relationship" relationship="viewControllers" id="ty2-eV-4z3"/>
-                        <segue destination="XXv-M8-Uix" kind="relationship" relationship="viewControllers" id="WbY-Pf-jHv"/>
                         <segue destination="5vp-Ls-FNP" kind="relationship" relationship="viewControllers" id="1yp-eG-1yc"/>
                     </connections>
                 </tabBarController>
@@ -112,7 +111,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="StreamTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Gdo-Ou-Tk7" customClass="StreamTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="cfV-D5-LmB">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <sections/>
@@ -140,7 +139,7 @@
         <scene sceneID="QJo-8V-hpL">
             <objects>
                 <tableViewController storyboardIdentifier="TradeIdeasTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7sr-cl-tCf" customClass="TradeIdeasTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" delaysContentTouches="NO" canCancelContentTouches="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="231" sectionHeaderHeight="28" sectionFooterHeight="28" id="atL-hK-Ul0">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" canCancelContentTouches="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="231" sectionHeaderHeight="28" sectionFooterHeight="28" id="atL-hK-Ul0">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -710,7 +709,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="x4b-3S-8dO">
-                                                    <rect key="frame" x="10" y="10.000000000000002" width="394" height="24.666666666666671"/>
+                                                    <rect key="frame" x="10" y="10" width="394" height="24.666666666666671"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="52w Range" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="SuB-zW-nWT">
                                                             <rect key="frame" x="0.0" y="0.0" width="75.666666666666671" height="24.666666666666668"/>
@@ -1099,13 +1098,13 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="DivYieldLabel" destination="K0T-fY-WB1" id="dKJ-hq-Dvv"/>
                         <outlet property="EBITDALabel" destination="seT-2e-rDl" id="llr-cy-Jcx"/>
                         <outlet property="EPSEstimate" destination="XVU-bn-lc4" id="oPF-o3-3FI"/>
                         <outlet property="EPSLabel" destination="HGf-m6-R2x" id="NvX-D9-VSa"/>
                         <outlet property="PELabel" destination="vcE-yH-Sx5" id="sOQ-WR-FKK"/>
                         <outlet property="betaLabel" destination="QSa-lg-6G8" id="2L0-Dp-Gxk"/>
                         <outlet property="bookValueLabel" destination="cqu-tR-bfw" id="7KV-2O-bwP"/>
+                        <outlet property="divYieldLabel" destination="K0T-fY-WB1" id="je1-ax-Omc"/>
                         <outlet property="earningsDateLabel" destination="7al-ad-AWN" id="YUD-Jb-xzA"/>
                         <outlet property="exchangeLabel" destination="0Xb-MJ-GxM" id="EEb-44-3wS"/>
                         <outlet property="fiftyMALabel" destination="4lf-b3-mWL" id="mvD-3s-gCy"/>

@@ -23,7 +23,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
     @IBOutlet var marketCapLabel: UILabel!
     @IBOutlet var EPSLabel: UILabel!
     @IBOutlet var bookValueLabel: UILabel!
-    @IBOutlet var DivYieldLabel: UILabel!
+    @IBOutlet var divYieldLabel: UILabel!
     @IBOutlet var earningsDateLabel: UILabel!
     @IBOutlet var EBITDALabel: UILabel!
     @IBOutlet var wallstreetTargetLabel: UILabel!
@@ -80,7 +80,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         
     }
     
@@ -276,7 +276,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                         self.marketCapLabel.text = (eodFundamentalsResults.highlights.marketCapitalization != nil) ? eodFundamentalsResults.highlights.marketCapitalization?.suffixNumber() : "--"
                         self.EPSLabel.text =  eodFundamentalsResults.highlights.epsEstimateCurrentYear ?? "--"
                         self.bookValueLabel.text = eodFundamentalsResults.highlights.bookValue ?? "--"
-                        self.DivYieldLabel.text =  eodFundamentalsResults.highlights.dividendYield ?? "--"
+                        self.divYieldLabel.text =  eodFundamentalsResults.highlights.dividendYield ?? "--"
                         self.earningsDateLabel.text = eodFundamentalsResults.highlights.mostRecentQuarter ?? "--"
                         self.EBITDALabel.text = eodFundamentalsResults.highlights.EBITDA != nil ? String(eodFundamentalsResults.highlights.EBITDA!) : "--"
                         self.wallstreetTargetLabel.text = eodFundamentalsResults.highlights.wallStreetTargetPrice ?? "--"

@@ -41,7 +41,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         
         if self.replyTradeIdeas.count  == 0 {
             getReplyTradeIdeas(queryType: .new)

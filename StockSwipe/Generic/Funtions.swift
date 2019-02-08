@@ -270,7 +270,6 @@ class Functions {
                 if let firstActivityObject = activityObjects.first {
                     
                     let firstActivityObjectActivityType = firstActivityObject["activityType"] as! String
-                    
                     if (firstActivityObjectActivityType == Constants.ActivityType.StockLong.rawValue &&  choice == .LONG) || (firstActivityObjectActivityType == Constants.ActivityType.StockShort.rawValue &&  choice == .SHORT) {
                         
                         firstActivityObject["activityType"] = firstActivityObject["activityType"]
@@ -355,9 +354,6 @@ class Functions {
             let fetchedObjectArray:[ChartModel] = try Constants.context.fetch(chartFetchRequest) as! [ChartModel]
             
             if fetchedObjectArray.count == 0 {
-                
-                print("no object exists in core data")
-                
                 let newChart = ChartModel(entity: Constants.entity!, insertInto: Constants.context)
                 newChart.symbol = chart.symbol
                 newChart.companyName = chart.companyName
@@ -368,11 +364,7 @@ class Functions {
                 newChart.dateChoosen = Date()
                 
             } else if fetchedObjectArray.count > 0 {
-                
-                print("atleast one core data object exists")
-                
                 let fetchedObject:NSManagedObject = fetchedObjectArray.first!
-                
                 fetchedObject.setValue(chart.symbol, forKey: "symbol")
                 fetchedObject.setValue(chart.image.pngData(), forKey: "image")
                 fetchedObject.setValue(chart.shortCount, forKey: "shorts")
@@ -382,7 +374,7 @@ class Functions {
             }
             
         } catch let error as NSError {
-            // failure
+            //TODO: handle error
             print("Fetch failed: \(error.localizedDescription)")
         }
         

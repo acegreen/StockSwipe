@@ -43,7 +43,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
     }
     
     func updateProfile(completion: @escaping () -> Void) {

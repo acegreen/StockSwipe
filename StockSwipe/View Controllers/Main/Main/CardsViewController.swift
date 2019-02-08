@@ -87,7 +87,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         
         // Get Parse Objects and Make Charts
         if self.charts.count <= 10 && !self.isGettingObjects {

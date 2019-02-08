@@ -15,8 +15,6 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
     var symbol: String!
     var companyName: String!
     
-    var isQueryingForTweets = false
-    
     @IBAction func xButtonPressed(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -42,11 +40,9 @@ class StreamTableViewController: TWTRTimelineViewController, TWTRTweetViewDelega
         }
         
         if symbol != nil {
-            // Request Twitter Feed
             let client = TWTRAPIClient()
-            
             let querySymbol = self.symbol.replacingOccurrences(of: "^", with: "")
-            self.dataSource = TWTRSearchTimelineDataSource(searchQuery: "$\(querySymbol) OR \(companyName)", apiClient: client)
+            self.dataSource = TWTRSearchTimelineDataSource(searchQuery: "$\(querySymbol) OR \(self.companyName)", apiClient: client)
             self.showTweetActions = true
         }
     }
@@ -84,7 +80,6 @@ extension StreamTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDeleg
         return false
     }
 
-    
 //    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
 //        let image = UIImage(named: "twitter_logo")
 //        return image
@@ -93,9 +88,7 @@ extension StreamTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDeleg
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle: NSAttributedString!
-        
         attributedTitle = NSAttributedString(string: "No Tweets!", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
-        
         return attributedTitle
     }
     

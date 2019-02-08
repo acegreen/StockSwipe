@@ -66,7 +66,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         
         if self.tradeIdeas.count  == 0 {
             getTradeIdeas(queryType: .new)
@@ -326,9 +326,9 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
         return false
     }
     
-    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
-        return UIImage(assetIdentifier: .noIdeaBulbImage)
-    }
+//    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+//        return UIImage(assetIdentifier: .noIdeaBulbImage)
+//    }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         

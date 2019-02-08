@@ -42,10 +42,13 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                 
                 do {
                     
-                    let stockObject = try result().first!
-                    let chart = Chart(parseObject: stockObject)                    
-                    CardDetailTabBarController.chart = chart
-                    UIApplication.topViewController()?.present(CardDetailTabBarController, animated: true, completion: nil)
+                    if let stockObject = try result().first {
+                        let chart = Chart(parseObject: stockObject)
+                        CardDetailTabBarController.chart = chart
+                        UIApplication.topViewController()?.present(CardDetailTabBarController, animated: true, completion: nil)
+                    } else {
+                        SweetAlert().showAlert("Uknown Symbol", subTitle: QueryHelper.QueryError.queryDataEmpty.message(), style: AlertStyle.warning)
+                    }
                     
                 } catch {
                     if let error = error as? QueryHelper.QueryError {
@@ -66,7 +69,6 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     
                     let userObject = try result().first
                     if let userObject = userObject {
-                        
                         let profileNavigationController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
                         let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
                         profileContainerController.user = User(userObject: userObject)

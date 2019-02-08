@@ -201,7 +201,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         
         if self.tradeIdeas.count  == 0 {
             getTradeIdeas(queryType: .new)

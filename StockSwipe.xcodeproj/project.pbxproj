@@ -52,7 +52,7 @@
 		238DB6DD1D85A01F00082918 /* PageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C11D85A01F00082918 /* PageContentViewController.swift */; };
 		238DB6DE1D85A01F00082918 /* BlockedAccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C31D85A01F00082918 /* BlockedAccountsTableViewController.swift */; };
 		238DB6DF1D85A01F00082918 /* CardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C41D85A01F00082918 /* CardsViewController.swift */; };
-		238DB6E01D85A01F00082918 /* ChartCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C51D85A01F00082918 /* ChartCollectionViewController.swift */; };
+		238DB6E01D85A01F00082918 /* WatchlistCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C51D85A01F00082918 /* WatchlistCollectionViewController.swift */; };
 		238DB6E11D85A01F00082918 /* CardDetailTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C61D85A01F00082918 /* CardDetailTabBarController.swift */; };
 		238DB6E21D85A01F00082918 /* ChartWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C71D85A01F00082918 /* ChartWebViewController.swift */; };
 		238DB6E41D85A01F00082918 /* CompanyProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C91D85A01F00082918 /* CompanyProfileTableViewController.swift */; };
@@ -241,7 +241,7 @@
 		238DB6C11D85A01F00082918 /* PageContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageContentViewController.swift; sourceTree = "<group>"; };
 		238DB6C31D85A01F00082918 /* BlockedAccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedAccountsTableViewController.swift; sourceTree = "<group>"; };
 		238DB6C41D85A01F00082918 /* CardsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardsViewController.swift; sourceTree = "<group>"; };
-		238DB6C51D85A01F00082918 /* ChartCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartCollectionViewController.swift; sourceTree = "<group>"; };
+		238DB6C51D85A01F00082918 /* WatchlistCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchlistCollectionViewController.swift; sourceTree = "<group>"; };
 		238DB6C61D85A01F00082918 /* CardDetailTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardDetailTabBarController.swift; sourceTree = "<group>"; };
 		238DB6C71D85A01F00082918 /* ChartWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartWebViewController.swift; sourceTree = "<group>"; };
 		238DB6C91D85A01F00082918 /* CompanyProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyProfileTableViewController.swift; sourceTree = "<group>"; };
@@ -553,7 +553,7 @@
 				238DB6CD1D85A01F00082918 /* MainTabBarController.swift */,
 				238DB6D11D85A01F00082918 /* OverviewViewController.swift */,
 				238DB6C41D85A01F00082918 /* CardsViewController.swift */,
-				238DB6C51D85A01F00082918 /* ChartCollectionViewController.swift */,
+				238DB6C51D85A01F00082918 /* WatchlistCollectionViewController.swift */,
 				238DB6CF1D85A01F00082918 /* NotificationCenterTableViewController.swift */,
 				238DB6CE1D85A01F00082918 /* MoreTableViewController.swift */,
 				238DB6D31D85A01F00082918 /* ProfileDetailTableViewController.swift */,
@@ -581,6 +581,7 @@
 			children = (
 				238DB6C61D85A01F00082918 /* CardDetailTabBarController.swift */,
 				238DB6C71D85A01F00082918 /* ChartWebViewController.swift */,
+				238DB6D91D85A01F00082918 /* TradeIdeasTableViewController.swift */,
 				238DB6D71D85A01F00082918 /* StreamTableViewController.swift */,
 				238DB6C91D85A01F00082918 /* CompanyProfileTableViewController.swift */,
 			);
@@ -591,7 +592,6 @@
 			isa = PBXGroup;
 			children = (
 				238DB6CC1D85A01F00082918 /* IdeaPostViewController.swift */,
-				238DB6D91D85A01F00082918 /* TradeIdeasTableViewController.swift */,
 				238DB6D81D85A01F00082918 /* TradeIdeaDetailTableViewController.swift */,
 			);
 			path = TradeIdea;
@@ -1179,7 +1179,7 @@
 				238DB6DE1D85A01F00082918 /* BlockedAccountsTableViewController.swift in Sources */,
 				23C221C01DC8E8C5003898E9 /* TransparentView.swift in Sources */,
 				238DB6E21D85A01F00082918 /* ChartWebViewController.swift in Sources */,
-				238DB6E01D85A01F00082918 /* ChartCollectionViewController.swift in Sources */,
+				238DB6E01D85A01F00082918 /* WatchlistCollectionViewController.swift in Sources */,
 				236875B21B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m in Sources */,
 				238DB6E41D85A01F00082918 /* CompanyProfileTableViewController.swift in Sources */,
 				7888E10A1B66D5880087C255 /* CustomUnwindSegue.swift in Sources */,

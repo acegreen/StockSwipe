@@ -19,7 +19,7 @@ class FilterTableViewController: UITableViewController, CellType {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             

@@ -168,14 +168,30 @@ class SearchTableViewController: UITableViewController {
     func getUserRecentSearches() {
         
         guard let currentUser = PFUser.current() else { return }
+        self.recentSearches.removeAll()
         if let currentUserRecentSearches = currentUser["recentSearches"] as? [PFObject] {
+            let recentSearchFilteredBySymbols = currentUserRecentSearches.filter { !$0.isKind(of: PFUser.self) }
+            let recentSearchFilteredByUsers = currentUserRecentSearches.filter { $0.isKind(of: PFUser.self) }
             
-            PFObject.fetchAllIfNeeded(inBackground: currentUserRecentSearches) { (currentUserRecentSearches, error) in
+            // This is a hack since there is a bug (might have been fixed in newer parse server) where you can't fetch two things of PFObject
+            // eg PFUser & PFObject
+            PFObject.fetchAllIfNeeded(inBackground: recentSearchFilteredBySymbols) { (currentUserRecentSearches, error) in
                 
                 if let currentUserRecentSearches = currentUserRecentSearches as? [PFObject] {
-                    self.recentSearches = currentUserRecentSearches
+                    self.recentSearches += currentUserRecentSearches
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
+                    }
+                }
+                
+                
+                PFObject.fetchAllIfNeeded(inBackground: recentSearchFilteredByUsers) { (currentUserRecentSearches, error) in
+                    
+                    if let currentUserRecentSearches = currentUserRecentSearches as? [PFObject] {
+                        self.recentSearches += currentUserRecentSearches
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
                     }
                 }
             }
@@ -215,12 +231,11 @@ class SearchTableViewController: UITableViewController {
     func presentProfile(_ user: PFUser) {
         
         self.dismiss(animated: true) {
-            let profileNavigationController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileNavigationController") as! UINavigationController
-            let profileContainerController = profileNavigationController.topViewController as! ProfileContainerController
+        let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
             let user = User(userObject: user)
             profileContainerController.user = user
             
-            UIApplication.topViewController()?.present(profileNavigationController, animated: true, completion: nil)
+            UIApplication.topViewController()?.show(profileContainerController, sender: self)
         }
     }
     
@@ -257,9 +272,7 @@ class SearchTableViewController: UITableViewController {
                 }
                 
                 DispatchQueue.main.async {
-                    
-                    Functions.promptAddToWatchlist(chart, registerChoice: true) { (choice) in
-                    }
+                    Functions.promptAddToWatchlist(chart, registerChoice: true) { (choice) in }
                 }
             })
         }

@@ -27,6 +27,10 @@ class ProfileDetailTableViewController: UITableViewController {
     @IBAction func xButtonPressed(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)
     }
+    
+    @IBAction func saveButtonPressed(_ sender: Any) {
+        
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,7 +82,7 @@ extension ProfileDetailTableViewController: UIImagePickerControllerDelegate, UIN
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            userAvatarImageView.contentMode = .scaleAspectFit
+            userAvatarImageView.contentMode = .scaleAspectFill
             userAvatarImageView.image = pickedImage
         }
         dismiss(animated: true, completion: nil)

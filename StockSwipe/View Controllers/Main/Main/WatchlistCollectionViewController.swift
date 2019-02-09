@@ -274,7 +274,6 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                 do {
                     
                     let stockObjects = try result()
-                    
                     for stockObject in stockObjects {
                         
                         let chart = Chart(parseObject: stockObject)
@@ -302,9 +301,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             
             // Check if selection count is greater than 0, then enable trash button
             if self.CollectionView.indexPathsForSelectedItems!.count == 0  {
-                
                 self.TrashButton.isEnabled = false
-                
             }
         }
     }

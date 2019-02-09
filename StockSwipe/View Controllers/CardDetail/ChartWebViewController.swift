@@ -58,7 +58,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
     
     @IBAction func actionButtonPressed(_ sender: AnyObject) {
         
-        let textToShare = "Discovered $" + symbol + " #StockSwipe"
+        let textToShare = "Discovered $" + symbol + " #StockSwipe" + "stockswipe://chart?symbol=\(symbol)"
         
         customAlert.showAlert("Hold On!", subTitle: "While we prepare the snapshot", style: AlertStyle.activityIndicator, dismissTime: nil)
         

@@ -107,7 +107,7 @@ public class Chart: NSObject {
         })
     }
     
-    func getChartImage(completion: ((UIImage?) -> Void)?) {
+    func getImage(completion: ((UIImage?) -> Void)?) {
         
         guard let chartImageURL = Functions.setImageURL(symbol) else { return }
         self.chartImageURL = chartImageURL

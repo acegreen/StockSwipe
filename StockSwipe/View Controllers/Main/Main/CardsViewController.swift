@@ -151,10 +151,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         // Check and remove subviews
         self.removalAllCards()
         
-        // Empty Data sources
-        self.charts.removeAll()
-        self.parseObjects.removeAll()
-        
         // GetObjects and make charts
         do {
             try self.getObjectsAndMakeCharts()
@@ -197,7 +193,9 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         // Disable buttons and enable activity indicator
         self.reloadFilterButtonsEnabled(false)
         
-        activityIndicator(state: true)
+        if self.charts.count == 0 {
+            activityIndicator(state: true)
+        }
         
         // Setup config parameters
         Functions.setupConfigParameter("NUMBEROFCARDSTOQUERY") { (parameterValue) -> Void in
@@ -211,7 +209,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                     guard let results = try result() else { return }
                     self.parseObjects += results
                     
-                    self.getChartImages(results, completion: { (result) -> Void in
+                    self.makeChart(results, completion: { (result) -> Void in
                         
                         do {
                             
@@ -278,22 +276,19 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     // Mark - Get Charts
     
-    func getChartImages(_ objects: [PFObject], completion: @escaping (_ result: () throws -> Void) -> Void) -> Void {
+    func makeChart(_ objects: [PFObject], completion: @escaping (_ result: () throws -> Void) -> Void) -> Void {
         
         guard objects.count != 0  else {
            return completion({throw QueryHelper.QueryError.ranOutOfChartCards})
         }
         
         for object in objects {
-            
             let chart = Chart(parseObject: object)
-            chart.getChartImage(completion: { (image) in
-                
+            chart.getImage(completion: { (image) in
                 if let image = image {
                     chart.image = image
                     self.charts.append(chart)
                 }
-                
                 if self.charts.count > 4 {
                     completion({ () })
                 }
@@ -471,7 +466,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         // Create NSUserActivity
         Functions.createNSUserActivity(chartChosen, domainIdentifier: "com.stockswipe.stocksSwiped")
-        
+
         self.parseObjects.removeObject(chartChosen.parseObject!)
         self.charts.removeObject(chartChosen)
             
@@ -766,6 +761,10 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 
             }
         }
+        
+        // Empty Data sources
+        self.charts.removeAll()
+        self.parseObjects.removeAll()
     }
     
     func activityIndicator(state: Bool) {

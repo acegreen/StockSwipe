@@ -240,9 +240,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     func checkProfileButtonSettings() {
         if user?.objectId == PFUser.current()?.objectId {
             followButton.isHidden = true
-            //editProfileButton.hidden = false
+//            editProfileButton.isHidden = false
         } else {
-            //editProfileButton.hidden = true
+//            editProfileButton.isHidden = true
         }
     }
     

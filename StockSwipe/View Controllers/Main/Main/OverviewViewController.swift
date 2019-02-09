@@ -806,12 +806,10 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
             let newsAtIndex = self.topStories[indexPath.row]
             
             if let newsTitleAtIndex = newsAtIndex.title {
-                
                 cell.newsTitle.text = newsTitleAtIndex
             }
             
             if let newsDetails = newsAtIndex.details {
-                
                 cell.newsDescription.text = newsDetails
             }
             
@@ -843,9 +841,7 @@ extension OverviewViewController: UITableViewDelegate, UITableViewDataSource, DZ
             let newsAtIndex = self.topStories[indexPath.row]
             
             if let newsurl = newsAtIndex.url {
-                
                 Functions.presentSafariBrowser(with: URL(string: newsurl))
-                
             }
         }
         

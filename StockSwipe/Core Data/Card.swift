@@ -1,0 +1,142 @@
+//
+//  Card.swift
+//  StockSwipe
+//
+//  Copyright (c) 2015 Ace Green. All rights reserved.
+//
+
+import UIKit
+import CoreData
+import Parse
+
+public class Card: NSObject {
+    
+    var symbol: String!
+    var companyName: String?
+    var exchange: String?
+    
+    var shortCount: Int = 0 
+    var longCount: Int = 0
+    
+    var parseObject: PFObject?
+    var eodHistoricalData: [QueryHelper.EODHistoricalResult]?
+    var eodFundamentalsData: QueryHelper.EODFundamentalsResult?
+    var cardModel: CardModel?
+    
+//    var searchDescription: String {
+//        if self.shortCount > 0 || self.shortCount > 0 {
+//            return companyName + "\n" + "Shorts: \(shortCount)" + "\n" + "Longs: \(longCount)"
+//        } else {
+//            return companyName
+//        }
+//    }
+    
+    init(cardModel: CardModel) {
+        
+        super.init()
+        
+        self.cardModel = cardModel
+        self.symbol = cardModel.symbol
+        self.companyName = cardModel.companyName
+        self.exchange = cardModel.exchange
+        
+        // Index to Spotlight
+        Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
+    }
+        
+    init(parseObject: PFObject) {
+        
+        super.init()
+        
+        self.parseObject = parseObject
+        self.symbol = parseObject.object(forKey: "Symbol") as? String
+        self.companyName = parseObject.object(forKey: "Company") as? String
+        self.exchange = parseObject.object(forKey: "Exchange") as? String
+        
+        // Index to Spotlight
+        Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
+    }
+    
+    init(parseObject: PFObject, eodHistoricalData: [QueryHelper.EODHistoricalResult]?, eodFundamentalsData: QueryHelper.EODFundamentalsResult?) {
+        
+        super.init()
+    
+        self.parseObject = parseObject
+        self.eodHistoricalData = eodHistoricalData
+        self.eodFundamentalsData = eodFundamentalsData
+        
+        self.symbol = parseObject.object(forKey: "Symbol") as? String
+        self.companyName = parseObject.object(forKey: "Company") as? String
+        self.exchange = parseObject.object(forKey: "Exchange") as? String
+        
+        // Index to Spotlight
+        Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
+    }
+    
+    init(symbol: String!, companyName: String?) {
+        
+        super.init()
+        
+        self.symbol = symbol
+        self.companyName = companyName
+        
+        // Index to Spotlight
+        Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
+    }
+
+    
+    func checkNumberOfShorts(completion: ((Int) -> Void)?) {
+        
+        guard let parseObject = self.parseObject else { return }
+        
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockShort.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            
+            do {
+                
+                let activityObjects = try result()
+                self.shortCount = activityObjects.count
+                
+            } catch {
+                //TODO: handle error
+            }
+            
+            if let completion = completion {
+                completion(self.shortCount)
+            }
+        })
+    }
+    
+    func checkNumberOfLongs(completion: ((Int) -> Void)?) {
+        
+        guard let parseObject = self.parseObject else { return }
+        
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            
+            do {
+                
+                let activityObjects = try result()
+                self.longCount = activityObjects.count
+                
+            } catch {
+                //TODO: handle error
+            }
+            
+            if let completion = completion {
+                completion(self.longCount)
+            }
+        })
+    }
+}
+
+//extension Card: Equatable {}
+//
+//public func ==(lhs: Card, rhs: Card) -> Bool {
+//    let areEqual = lhs.symbol == rhs.symbol &&
+//        lhs.companyName == rhs.companyName &&
+//        lhs.image == rhs.image &&
+//        lhs.shorts == rhs.shorts &&
+//        lhs.longs == rhs.longs &&
+//        lhs.parseObject == rhs.parseObject
+//    
+//    return areEqual
+//}

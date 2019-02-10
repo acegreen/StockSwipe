@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11201" systemVersion="16A319" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MFp-PX-Fpe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MFp-PX-Fpe">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,11 +17,13 @@
                         <viewControllerLayoutGuide type="top" id="gYi-Rb-8Cg"/>
                         <viewControllerLayoutGuide type="bottom" id="DGQ-Tb-Qb3"/>
                     </layoutGuides>
-                    <view key="view" autoresizesSubviews="NO" contentMode="scaleToFill" id="hhu-pZ-40L">
-                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+                    <view key="view" autoresizesSubviews="NO" contentMode="scaleToFill" id="hhu-pZ-40L" customClass="AGGradientView" customModule="StockSwipe" customModuleProvider="target">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stockswipe_logo" translatesAutoresizingMaskIntoConstraints="NO" id="Wh5-um-u60"/>
+                            <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stockswipe_logo" translatesAutoresizingMaskIntoConstraints="NO" id="Wh5-um-u60">
+                                <rect key="frame" x="112.5" y="258.5" width="150" height="150"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="0.098039215690000001" green="0.7843137255" blue="0.098039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -25,6 +31,14 @@
                             <constraint firstItem="Wh5-um-u60" firstAttribute="centerX" secondItem="hhu-pZ-40L" secondAttribute="centerX" id="YMa-Kl-G7F"/>
                             <constraint firstItem="Wh5-um-u60" firstAttribute="centerY" secondItem="hhu-pZ-40L" secondAttribute="centerY" id="tLX-ko-qjk"/>
                         </constraints>
+                        <userDefinedRuntimeAttributes>
+                            <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                                <color key="value" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                            <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                                <color key="value" red="0.6588235294" green="0.87843137250000003" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
+                            </userDefinedRuntimeAttribute>
+                        </userDefinedRuntimeAttributes>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bUk-8f-E7J" userLabel="First Responder" sceneMemberID="firstResponder"/>

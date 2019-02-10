@@ -17,10 +17,10 @@ protocol ChartDetailDelegate {
 class CardDetailTabBarController: UITabBarController {
     
     // Symbol should be passed as we segue here
-    var chart: Chart! {
+    var card: Card! {
         didSet {
-            self.symbol = chart.symbol
-            self.companyName = chart.companyName
+            self.symbol = card.symbol
+            self.companyName = card.companyName
         }
     }
     

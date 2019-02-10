@@ -47,10 +47,10 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let parentTabBarController = self.tabBarController as! CardDetailTabBarController
-        symbol = parentTabBarController.symbol
-        companyName = parentTabBarController.companyName
-        stockObject = parentTabBarController.chart.parseObject
+        let parentTabBarController = self.tabBarController as? CardDetailTabBarController
+        symbol = parentTabBarController?.symbol
+        companyName = parentTabBarController?.companyName
+        stockObject = parentTabBarController?.card.parseObject
         
         // title
         if companyName != nil {
@@ -81,7 +81,6 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     func getTradeIdeas(queryType: QueryHelper.QueryType) {
         
         guard !isQueryingForTradeIdeas else { return }
-        guard let stockObject = self.stockObject else { return }
         
         isQueryingForTradeIdeas = true
         
@@ -104,7 +103,10 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
             mostRecentRefreshDate = tradeIdeasLastRefreshDate
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [stockObject], activityType: [Constants.ActivityType.Mention.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+        let stockObjectArray: [PFObject]? = self.stockObject != nil ? [self.stockObject!] : nil
+        let activityType: Constants.ActivityType = self.stockObject != nil ? Constants.ActivityType.Mention : Constants.ActivityType.TradeIdeaNew
+        
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: stockObjectArray, activityType: [activityType.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -345,8 +347,9 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
         paragraphStyle.lineBreakMode = NSLineBreakMode.byWordWrapping
         paragraphStyle.alignment = NSTextAlignment.center
         
+        let symbolText = (self.symbol != nil) ? "for \(self.symbol)" : ""
         let attributedDescription: NSAttributedString!
-        attributedDescription = NSAttributedString(string: "Be the first to post an idea for " + self.symbol, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18), NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        attributedDescription = NSAttributedString(string: "Be the first to post an idea " + symbolText, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18), NSAttributedString.Key.paragraphStyle: paragraphStyle])
         
         return attributedDescription
         

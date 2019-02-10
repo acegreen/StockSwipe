@@ -18,7 +18,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
     
     var symbol: String!
     var companyName: String!
-    var chart: Chart!
+    var card: Card!
     
     var webView: WKWebView!
     var jsContext: JSContext!
@@ -51,59 +51,41 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
     //    }
     
     @IBAction func addToWatchlistAction(_ sender: UIBarButtonItem) {
-        
-        Functions.promptAddToWatchlist(chart, registerChoice: true) { (choice) in
+        Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in
         }
     }
     
     @IBAction func actionButtonPressed(_ sender: AnyObject) {
         
-        let textToShare = "Discovered $" + symbol + " #StockSwipe" + "stockswipe://chart?symbol=\(symbol)"
+        let textToShare = "Discovered $" + symbol + " #StockSwipe" + "stockswipe://card?symbol=\(symbol)"
         
         customAlert.showAlert("Hold On!", subTitle: "While we prepare the snapshot", style: AlertStyle.activityIndicator, dismissTime: nil)
         
-        QueryHelper.sharedInstance.queryChartImage(symbol: symbol, completion: { (result) in
+        DispatchQueue.main.async {
             
-            do {
+            self.customAlert.closeAlertDismissButton()
+            
+            let view = SwipeCardView(frame: CGRect(x: self.view.bounds.midX - (cardWidth / 2), y: self.view.bounds.midY - (cardHeight / 2), width: cardWidth, height: cardHeight), card: self.card, options: nil)
+            let chartImage = UIImage(view: view)
+            
+            Functions.presentActivityVC(textToShare, imageToShare: chartImage, url: Constants.appLinkURL!, sender: self.actionButton, vc: self, completion: { (activity, success, items, error) -> Void in
                 
-                let chartImageResult = try result()
-                self.chart.image = chartImageResult
-                
-                DispatchQueue.main.async {
-                
-                    self.customAlert.closeAlertDismissButton()
+                if success {
                     
-                    let view = SwipeChartView(frame: CGRect(x: 0, y: 0, width: self.chart.image.size.width, height: self.chart.image.size.height + Constants.informationViewHeight + Constants.chartImageTopPadding), chart: self.chart, options: nil)
-                    let chartImage = UIImage(view: view)
+                    SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
                     
-                    Functions.presentActivityVC(textToShare, imageToShare: chartImage, url: Constants.appLinkURL!, sender: self.actionButton, vc: self, completion: { (activity, success, items, error) -> Void in
-                        
-                        if success {
-                            
-                            SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
-                            
-                            // log shared successfully
-                            Answers.logShare(withMethod: "\(activity!)",
-                                contentName: self.symbol + " Chart Shared",
-                                contentType: "Share",
-                                contentId: nil,
-                                customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
-                            
-                        } else if error != nil {
-                            SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
-                        }
-                    })
+                    // log shared successfully
+                    Answers.logShare(withMethod: "\(activity!)",
+                        contentName: self.symbol + " Card Shared",
+                        contentType: "Share",
+                        contentId: nil,
+                        customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                    
+                } else if error != nil {
+                    SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
                 }
-                
-            } catch {
-                if let error = error as? QueryHelper.QueryError {
-                    DispatchQueue.main.async {
-                        self.customAlert.closeAlertDismissButton()
-                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
-                    }
-                }
-            }
-        })
+            })
+        }
     }
     
     override func viewDidLoad() {
@@ -112,7 +94,7 @@ class ChartWebViewController: UIViewController, ChartDetailDelegate {
         let parentTabBarController = self.tabBarController as! CardDetailTabBarController
         symbol = parentTabBarController.symbol
         companyName = parentTabBarController.companyName
-        chart = parentTabBarController.chart
+        card = parentTabBarController.card
         
         self.webView = WKWebView()
         self.view = self.webView!
@@ -161,7 +143,7 @@ extension ChartWebViewController: WKNavigationDelegate {
         
         Functions.showPopTip(popTipText: NSLocalizedString("Share", comment: ""),
                              inView: self.navigationController!.view,
-                             fromFrame: CGRect(x: view.frame.width - 30, y: 50, width: 1, height: 1), direction: .down, color: Constants.stockSwipeGreenColor, duration: 2)
+                             fromFrame: CGRect(x: view.frame.width - 30, y: 50, width: 1, height: 1), direction: .down, color: Constants.SSColors.green, duration: 2)
     }
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -171,6 +153,6 @@ extension ChartWebViewController: WKNavigationDelegate {
         
         print("error:", error.localizedDescription)
         
-        SweetAlert().showAlert("Something went wrong while loading chart", subTitle: "Please try again", style: AlertStyle.warning)
+        SweetAlert().showAlert("Something went wrong while loading card", subTitle: "Please try again", style: AlertStyle.warning)
     }
 }

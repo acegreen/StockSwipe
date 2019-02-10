@@ -80,14 +80,14 @@ open class SweetAlert: UIViewController {
         titleLabel.text = ""
         titleLabel.numberOfLines = 1
         titleLabel.textAlignment = .center
-        titleLabel.font = UIFont(name: kFont, size:20)
+        titleLabel.font = Constants.SSFonts.makeFont(size:20)
         titleLabel.textColor = UIColor(rgbValue: 0x575757)
     }
     
     fileprivate func setupSubtitleTextView() {
         subTitleTextView.text = ""
         subTitleTextView.textAlignment = .center
-        subTitleTextView.font = UIFont(name: kFont, size:16)
+        subTitleTextView.font = Constants.SSFonts.makeFont(size:16)
         subTitleTextView.textColor = UIColor(rgbValue: 0x797979)
         subTitleTextView.isEditable = false
     }

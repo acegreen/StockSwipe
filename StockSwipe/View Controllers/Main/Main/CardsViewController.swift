@@ -13,7 +13,11 @@ import Parse
 import NVActivityIndicatorView
 import Crashlytics
 
-class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
+class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHandlerType {
+    
+    enum SegueIdentifier: String {
+        case ChartDetailSegueIdentifier = "ChartDetailSegueIdentifier"
+    }
     
     var url: URL!
     var chartRequest:URLRequest!
@@ -24,16 +28,16 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     var includedExchanges = [AnyObject]()
     var includedSectors = [AnyObject]()
     
-    var charts = [Chart]()
+    var cards = [Card]()
     
     var numberOfCardsToQuery: Int = 25
     var numberofCardsInStack: Int = 3
     
-    var firstCardView:SwipeChartView!
-    var secondCardView:SwipeChartView!
-    var thirdCardView:SwipeChartView!
-    var fourthCardView:SwipeChartView!
-    var informationCardView:UIView!
+    var firstCardView: SwipeCardView!
+    var secondCardView: SwipeCardView!
+    var thirdCardView: SwipeCardView!
+    var fourthCardView: SwipeCardView!
+    var informationCardView: UIView!
     
     var blureffect: UIBlurEffect!
     var blurView: UIVisualEffectView!
@@ -44,7 +48,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     let buttonCircleLineWidth: CGFloat = 2.0
     
-    let options:MDCSwipeToChooseViewOptions = MDCSwipeToChooseViewOptions()
+    let options = MDCSwipeToChooseViewOptions()
     
     lazy var halo: NVActivityIndicatorView! = {
         let frame = CGRect(x: self.view.bounds.midX - self.view.bounds.height / 4 , y: self.view.bounds.midY - self.view.bounds.height / 4, width: self.view.bounds.height / 2, height: self.view.bounds.height / 2)
@@ -64,13 +68,12 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     @IBAction func reloadButtonPressed(_ sender: AnyObject) {
         
-        guard !Functions.isConnectedToNetwork() && self.charts.count != 0 else {
-            
+        guard !Functions.isConnectedToNetwork() && self.cards.count != 0 else {
             self.reloadCardViews()
             return
         }
         
-        SweetAlert().showAlert("Reload?", subTitle: "Reloading with no internet will cause you to lose your loaded cards", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor: UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: "Reload", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+        SweetAlert().showAlert("Reload?", subTitle: "Reloading with no internet will cause you to lose your loaded cards", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor: UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: "Reload", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
             
             if !isOtherButton {
                 self.reloadCardViews()
@@ -89,8 +92,8 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Get Parse Objects and Make Charts
-        if self.charts.count <= 10 && !self.isGettingObjects {
+        // Get Parse Objects and Make cards
+        if self.cards.count <= 10 && !self.isGettingObjects {
             
             // Initial config
             self.options.delegate = self
@@ -135,7 +138,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                 self.options.threshold = (self.view.bounds.width / 2) * self.thresholdX
                 print("threshold:",self.options.threshold)
                 
-                // GetObjects and make charts
+                // GetObjects and make cards
                 self.reloadCardViews()
             })
         }
@@ -151,9 +154,9 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         // Check and remove subviews
         self.removalAllCards()
         
-        // GetObjects and make charts
+        // GetObjects and make cards
         do {
-            try self.getObjectsAndMakeCharts()
+            try self.getObjectsAndMakecards()
         } catch  {
             
             if let error = error as? QueryHelper.QueryError {
@@ -168,12 +171,10 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         }
     }
     
-    func getObjectsAndMakeCharts() throws {
+    func getObjectsAndMakecards() throws {
         
         guard Functions.isConnectedToNetwork() else {
-            
             self.isGettingObjects = false
-            
             throw QueryHelper.QueryError.noInternetConnection
         }
         
@@ -181,9 +182,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         setupFilters()
         
         guard !self.includedExchanges.isEmpty && !self.includedSectors.isEmpty else {
-            
             self.isGettingObjects = false
-            
             throw QueryHelper.QueryError.noExchangesOrSectorsSelected
         }
         
@@ -193,7 +192,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         // Disable buttons and enable activity indicator
         self.reloadFilterButtonsEnabled(false)
         
-        if self.charts.count == 0 {
+        if self.cards.count == 0 {
             activityIndicator(state: true)
         }
         
@@ -216,7 +215,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                             try result()
                             
                             // Make 3 card stack
-                            self.makeChartViews()
+                            self.makeCardViews()
                             
                             // Enable short/long buttons
                             //self.fadeInOutButton("In")
@@ -283,20 +282,38 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         }
         
         for object in objects {
-            let chart = Chart(parseObject: object)
-            chart.getImage(completion: { (image) in
-                if let image = image {
-                    chart.image = image
-                    self.charts.append(chart)
+            let symbol = object.object(forKey: "Symbol") as! String
+            QueryHelper.sharedInstance.queryEODHistorical(for: symbol) { eodHistoricalResult in
+                do {
+                    let eodHistoricalResult = try eodHistoricalResult()
+
+                    QueryHelper.sharedInstance.queryEODFundamentals(for: symbol, completionHandler: { eodFundamentalsResult in
+                        
+                        do {
+                            let eodFundamentalsResult = try eodFundamentalsResult()
+                            
+                            if !eodHistoricalResult.isEmpty {
+                                let card = Card(parseObject: object, eodHistoricalData: eodHistoricalResult, eodFundamentalsData: eodFundamentalsResult)
+                                self.cards.append(card)
+                            }
+                            
+                            if self.cards.count > self.numberofCardsInStack / 5 {
+                                completion({ () })
+                            }
+                            
+                        } catch {
+                            // TODO: handle error
+                        }
+                    })
+                    
+                } catch {
+                    // TODO: handle error
                 }
-                if self.charts.count > 4 {
-                    completion({ () })
-                }
-            })
+            }
         }
     }
     
-    func makeChartViews() {
+    func makeCardViews() {
         
         DispatchQueue.main.async {
             
@@ -305,7 +322,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             // Display First Card
             if self.firstCardView == nil {
                 
-                self.firstCardView = self.popChartViewWithFrame(CardPosition.firstCard , frame: CGRect(x: self.view.bounds.width + self.frontCardViewFrame().width, y: self.navigationController!.navigationBar.frame.height + 50, width: chartWidth, height: chartHeight))
+                self.firstCardView = self.popChartViewWithFrame(CardPosition.firstCard , frame: CGRect(x: self.view.bounds.width + self.frontCardViewFrame().width, y: self.navigationController!.navigationBar.frame.height + 50, width: cardWidth, height: cardHeight))
                 
                 if self.firstCardView != nil {
                     
@@ -323,7 +340,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
                             Functions.showPopTipOnceForKey("TAP_CARD_TIP_SHOWN", userDefaults: Constants.userDefaults,
                                                            popTipText: NSLocalizedString("Tap a card to view more details", comment: ""),
                                                            inView: self.view,
-                                                           fromFrame: self.frontCardViewFrame(), direction: .up, color: Constants.stockSwipeGreenColor)
+                                                           fromFrame: self.frontCardViewFrame(), direction: .up, color: Constants.SSColors.green)
                             
                     })
                 }
@@ -433,7 +450,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     // This is called when a user swipes the view in a direction.
     func view(_ view: UIView, wasChosenWith wasChosenWithDirection: MDCSwipeDirection) -> Void {
         
-        guard let chartChosen: Chart = self.charts.find({$0.symbol == self.firstCardView.chart.symbol}) else { return }
+        guard let chartChosen: Card = self.cards.find({ $0.symbol == self.firstCardView.card.symbol }) else { return }
        
         // Register choice
         if wasChosenWithDirection == MDCSwipeDirection.left {
@@ -468,7 +485,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         Functions.createNSUserActivity(chartChosen, domainIdentifier: "com.stockswipe.stocksSwiped")
 
         self.parseObjects.removeObject(chartChosen.parseObject!)
-        self.charts.removeObject(chartChosen)
+        self.cards.removeObject(chartChosen)
             
         // Swap and resize cards after each choice made
         self.swapAndResizeCardView(self.secondCardView)
@@ -485,12 +502,12 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             }
         }
         
-        if self.charts.count <= 10 && !self.isGettingObjects {
+        if self.cards.count <= 10 && !self.isGettingObjects {
             
-            // GetObjects and make charts
+            // GetObjects and make cards
             do {
                 
-                try self.getObjectsAndMakeCharts()
+                try self.getObjectsAndMakecards()
                 
             } catch  {
                 
@@ -506,7 +523,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             }
         }
         
-        //print("charts.count after swipe", self.charts.count)
+        //print("cards.count after swipe", self.cards.count)
     }
     
     // This is called when a user didn't fully swipe left or right.
@@ -531,16 +548,16 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         
         print("View did get tapped")
         
-        self.performCustomSegue(self)
+        self.performCustomSegue()
     }
     
     func viewDidGetLongPressed(_ view: UIView!) {
         
         print("View did get long pressed")
         
-        guard let chart: Chart = self.charts.find({ $0.symbol == self.firstCardView.chart.symbol }) else { return }
+        guard let card: Card = self.cards.find({ $0.symbol == self.firstCardView.card.symbol }) else { return }
         
-        Functions.promptAddToWatchlist(chart, registerChoice: false) { (choice) in
+        Functions.promptAddToWatchlist(card, registerChoice: false) { (choice) in
             switch choice {
             case .LONG:
                 self.longCardView()
@@ -552,9 +569,9 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         }
     }
     
-    func swapAndResizeCardView(_ CardView: SwipeChartView?) -> Void {
+    func swapAndResizeCardView(_ CardView: SwipeCardView?) -> Void {
         
-        // Keep track of the chart currently on top
+        // Keep track of the card currently on top
         self.firstCardView = CardView
         self.secondCardView = self.thirdCardView
         self.thirdCardView = self.fourthCardView
@@ -569,30 +586,22 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         self.resizeCardViews()
     }
     
-    func popChartViewWithFrame(_ cardPosition: CardPosition, frame:CGRect) -> SwipeChartView? {
-        
-        if let chartAtIndex = self.charts.get(cardPosition.rawValue) {
-            
-            return SwipeChartView(frame: frame, chart: chartAtIndex, options: options)
-            
+    func popChartViewWithFrame(_ cardPosition: CardPosition, frame: CGRect) -> SwipeCardView? {
+        if let cardAtIndex = self.cards.get(cardPosition.rawValue) {
+            return SwipeCardView(frame: frame, card: cardAtIndex, options: options)
         } else {
-            
             return nil
         }
-        
     }
     
     func frontCardViewFrame() -> CGRect {
-        
-        return CGRect(x: self.view.bounds.midX - (chartWidth / 2), y: self.view.bounds.midY - (chartHeight / 2) + verticalPadding, width: chartWidth, height: chartHeight)
-        
+        return CGRect(x: self.view.bounds.midX - (cardWidth / 2), y: self.view.bounds.midY - (cardHeight / 2), width: cardWidth, height: cardHeight)
     }
     
     func middleCardViewFrame() ->CGRect {
         
         let frontFrame:CGRect = frontCardViewFrame()
         return CGRect(x: frontFrame.origin.x + chartOffsetsX, y: frontFrame.origin.y + chartOffsetsY, width: frontFrame.width - (chartOffsetsX * 2), height: frontFrame.height)
-        
     }
     
     func backCardViewFrame() ->CGRect {
@@ -627,16 +636,12 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         includedSectors = []
         
         for exchange in Constants.Symbol.Exchange.allExchanges {
-            
             guard Constants.userDefaults.bool(forKey: exchange.key()) == true else { continue }
-            
             includedExchanges.append(exchange.key() as AnyObject)
         }
         
         for sector in Constants.Symbol.Sector.allSectors {
-            
             guard Constants.userDefaults.bool(forKey: sector.key()) else { continue }
-            
             includedSectors.append(sector.key().capitalized as AnyObject)
         }
         
@@ -689,43 +694,31 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
             
             // resize the middle card as it becomes top view.
             if self.firstCardView != nil {
-                
                 UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                    
                     self.firstCardView.frame = self.frontCardViewFrame()
-                    
                 })
             }
             
             // resize the second as it becomes middle view.
             if self.secondCardView != nil {
-                
                 UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                    
                     self.secondCardView.frame = self.middleCardViewFrame()
                 })
-                
             }
             
             // resize the back card as it becomes middle view.
             if self.thirdCardView != nil {
-                
                 UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                    
                     self.thirdCardView.frame = self.backCardViewFrame()
                     //                self.thirdCardView.layer.shadowOpacity = 0.0
                 })
-                
             }
             
             // resize information card if it exits
             if self.informationCardView != nil {
-                
                 UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                    
                     self.informationCardView.frame = self.backCardViewFrame()
                 })
-                
             }
         }
     }
@@ -763,7 +756,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
         }
         
         // Empty Data sources
-        self.charts.removeAll()
+        self.cards.removeAll()
         self.parseObjects.removeAll()
     }
     
@@ -781,21 +774,24 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate {
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        if segue.identifier == "showChartDetail" {
-            guard let chart: Chart = self.charts.find({$0.symbol == self.firstCardView.chart.symbol}) else { return }
+        let segueIdentifier = segueIdentifierForSegue(segue)
+        
+        switch segueIdentifier {
+        case .ChartDetailSegueIdentifier:
+            guard let card: Card = self.cards.find({$0.symbol == self.firstCardView.card.symbol}) else { return }
             let destinationView = segue.destination as! CardDetailTabBarController
-            destinationView.chart = chart
+            destinationView.card = card
         }
     }
     
-    func performCustomSegue(_ whoThat: AnyObject?) {
+    func performCustomSegue() {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Access Chart!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+            SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
             return
         }
         
-        self.performSegue(withIdentifier: "showChartDetail", sender: whoThat)
+        self.performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: self)
     }
     
     //    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue? {

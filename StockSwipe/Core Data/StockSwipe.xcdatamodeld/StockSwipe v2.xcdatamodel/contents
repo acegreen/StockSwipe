@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="18D109" minimumToolsVersion="Xcode 4.3" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
-    <entity name="Charts" representedClassName="ChartModel" syncable="YES">
+    <entity name="Card" representedClassName="CardModel" elementID="Charts" syncable="YES">
         <attribute name="companyName" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="dateChoosen" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
-        <attribute name="image" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="eodFundamentalsData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="eodHistoricalData" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="exchange" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="longs" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="shorts" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="symbol" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="userChoice" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Charts" positionX="-63" positionY="-18" width="128" height="150"/>
+        <element name="Card" positionX="-63" positionY="-18" width="128" height="180"/>
     </elements>
 </model>

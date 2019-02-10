@@ -191,7 +191,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
             if subJson["symbol"].string == buttonPressed.currentTitle {
                 
                 guard let symbol = subJson["symbol"].string,
-                      let url = URL(string: "stockswipe://chart?symbol=" + symbol)
+                      let url = URL(string: "stockswipe://card?symbol=" + symbol)
                 else { return }
                             
                 extensionContext?.open(url, completionHandler: nil)

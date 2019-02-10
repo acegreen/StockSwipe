@@ -84,9 +84,6 @@ class BlockedAccountsTableViewController: UITableViewController, SegueHandlerTyp
         
             guard let cell = sender as? UserCell else { return }
             destinationViewController.user = cell.user
-            
-            // Just a workaround.. There should be a cleaner way to sort this out
-            destinationViewController.navigationItem.rightBarButtonItem = nil
         }
     }
 }

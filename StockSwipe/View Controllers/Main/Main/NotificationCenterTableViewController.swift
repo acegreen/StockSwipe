@@ -253,17 +253,12 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         switch segueIdentifier {
             
         case .TradeIdeaDetailSegueIdentifier:
-            
             let destinationViewController = segue.destination as! TradeIdeaDetailTableViewController
             destinationViewController.tradeIdea = sender as? TradeIdea
             
         case .ProfileSegueIdentifier:
-            
             let profileViewController = segue.destination as! ProfileContainerController
             profileViewController.user = sender as? User
-            
-            // Just a workaround.. There should be a cleaner way to sort this out
-            profileViewController.navigationItem.rightBarButtonItem = nil
         }
     }
 }

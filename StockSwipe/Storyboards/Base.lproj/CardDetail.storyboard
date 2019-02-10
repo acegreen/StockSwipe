@@ -188,8 +188,8 @@
                                                         </userDefinedRuntimeAttribute>
                                                     </userDefinedRuntimeAttributes>
                                                 </imageView>
-                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="B5A-jB-8j7">
-                                                    <rect key="frame" x="70" y="0.0" width="314" height="111.33333333333333"/>
+                                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="B5A-jB-8j7">
+                                                    <rect key="frame" x="70" y="0.0" width="314" height="101.33333333333333"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="ghp-QZ-dS4">
                                                             <rect key="frame" x="0.0" y="0.0" width="314" height="21.666666666666668"/>
@@ -215,7 +215,7 @@
                                                             </subviews>
                                                         </stackView>
                                                         <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="7Q8-vm-n8e" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="36.666666666666671" width="314" height="37.666666666666671"/>
+                                                            <rect key="frame" x="0.0" y="31.666666666666668" width="314" height="37.666666666666657"/>
                                                             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
@@ -231,7 +231,7 @@
                                                             </userDefinedRuntimeAttributes>
                                                         </textView>
                                                         <stackView hidden="YES" opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="kJh-4y-Zsu">
-                                                            <rect key="frame" x="0.0" y="82" width="314" height="45"/>
+                                                            <rect key="frame" x="0.0" y="74.333333333333329" width="314" height="45"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="t6M-xm-xjR">
                                                                     <rect key="frame" x="0.0" y="0.0" width="207.66666666666666" height="40"/>
@@ -264,7 +264,7 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" editable="NO" text="Idea Description" translatesAutoresizingMaskIntoConstraints="NO" id="q1j-k2-z2R" customClass="SuperUITextView" customModule="StockSwipe" customModuleProvider="target">
-                                                                    <rect key="frame" x="0.0" y="45" width="141.66666666666666" height="0.0"/>
+                                                                    <rect key="frame" x="0.0" y="45.000000000000014" width="141.66666666666666" height="0.0"/>
                                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
@@ -282,7 +282,7 @@
                                                             </subviews>
                                                         </stackView>
                                                         <stackView opaque="NO" contentMode="scaleAspectFit" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="BBR-09-6we">
-                                                            <rect key="frame" x="0.0" y="89.333333333333329" width="314" height="22"/>
+                                                            <rect key="frame" x="0.0" y="79.333333333333329" width="314" height="22"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="75" translatesAutoresizingMaskIntoConstraints="NO" id="TUR-3D-9wF">
                                                                     <rect key="frame" x="0.0" y="0.0" width="204" height="22"/>

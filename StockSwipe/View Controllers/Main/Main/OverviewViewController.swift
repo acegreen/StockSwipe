@@ -30,8 +30,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         case PostIdeaSegueIdentifier = "PostIdeaSegueIdentifier"
     }
     
-    var didLoadDataFirstTime = false
-    
     var animationDelegate: SplashAnimationDelegate?
     
     var iCarouselTickers = ["^IXIC","^GSPC","^RUT","^VIX","^GDAXI","^FTSE","^FCHI","^N225","^HSI","^GSPTSE","CAD=X"]
@@ -59,6 +57,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     var overviewVCOperationQueue: OperationQueue = OperationQueue()
     var cloudLayoutOperationQueue: OperationQueue = OperationQueue()
     
+    var queryTimer: Timer!
     let QUERY_INTERVAL: Double = 60 // 5 minutes
     
     @IBOutlet var cloudViewHeightConstraint: NSLayoutConstraint!
@@ -136,16 +135,25 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         if Constants.current.userInterfaceIdiom == .phone {
             self.trendingCloudShowButton.isHidden = false
         }
+        
+        self.loadViewData(firstLaunch: true)
+        self.scheduleQueryTimer()
+        
+        // register for foreground notificaions so we can refresh views
+        NotificationCenter.default.addObserver(self, selector: #selector(OverviewViewController.applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(OverviewViewController.applicationsDidEnterBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadViewData(firstLaunch: !didLoadDataFirstTime)
     }
     
     deinit {
         cloudLayoutOperationQueue.cancelAllOperations()
         overviewVCOperationQueue.cancelAllOperations()
+        
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func didReceiveMemoryWarning() {
@@ -153,7 +161,22 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         // Dispose of any resources that can be recreated.
     }
     
-    func loadViewData(firstLaunch: Bool) {
+    @objc func applicationWillEnterForeground() {
+        self.loadViewData()
+        self.scheduleQueryTimer()
+    }
+    
+    @objc func applicationsDidEnterBackground() {
+        self.queryTimer.invalidate()
+    }
+    
+    private func scheduleQueryTimer() {
+        self.queryTimer = Timer.scheduledTimer(withTimeInterval: QUERY_INTERVAL, repeats: true, block: { timer in
+            self.loadViewData()
+        })
+    }
+    
+    private func loadViewData(firstLaunch: Bool = false) {
         
         let trendingCloudOperation = BlockOperation { () -> Void in
             self.queryStockTwitsTrendingStocks()
@@ -183,11 +206,8 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 self.animationDelegate?.didFinishLoading()
             }
             animationOperation.queuePriority = .normal
-            
             overviewVCOperationQueue.addOperation(animationOperation)
         }
-        
-        didLoadDataFirstTime = true
     }
     
     func queryStockTwitsTrendingStocks() {

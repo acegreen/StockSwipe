@@ -962,7 +962,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         switch segueIdentifier {
             
         case .TradeIdeaDetailSegueIdentifier:
-            
             let destinationViewController = segue.destination as! TradeIdeaDetailTableViewController
             destinationViewController.delegate = self
             
@@ -971,12 +970,10 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
         case .ProfileSegueIdentifier:
             let profileContainerController = segue.destination as! ProfileContainerController
-            profileContainerController.navigationItem.rightBarButtonItem = nil
             
             guard let cell = sender as? UserCell  else { return }
             profileContainerController.user = cell.user
         case .EditProfileSegueIdentifier:
-            
             let navigationController = segue.destination as! UINavigationController
             let profileDetailViewController = navigationController.viewControllers.first as! ProfileDetailTableViewController
             

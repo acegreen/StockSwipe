@@ -24,7 +24,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     var tradeIdeaPostCharacterLimit = 199 {
         didSet{
-            self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit - self.ideaTextView.text.characters.count)
+            self.textCountLabel.text = String(self.tradeIdeaPostCharacterLimit - self.ideaTextView.text.count)
         }
     }
     
@@ -57,7 +57,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             return
         }
         
-        guard (self.ideaTextView.text.characters.filter{ $0 != " " }.count <= self.tradeIdeaPostCharacterLimit) else {
+        guard (self.ideaTextView.text.filter{ $0 != " " }.count <= self.tradeIdeaPostCharacterLimit) else {
             return
         }
         
@@ -322,16 +322,16 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             // Keep track of character count and update label
             currentText = textView.text as NSString
             updatedText = currentText.replacingCharacters(in: range, with:text)
-            self.textCountLabel.text = String(tradeIdeaPostCharacterLimit - updatedText.characters.count)
+            self.textCountLabel.text = String(tradeIdeaPostCharacterLimit - updatedText.count)
             self.textToPost = updatedText
             
-            if tradeIdeaPostCharacterLimit - updatedText.characters.count < 0 {
+            if tradeIdeaPostCharacterLimit - updatedText.count < 0 {
                 self.textCountLabel.textColor = UIColor.red
                 postButton.isEnabled = false
             } else {
                 self.textCountLabel.textColor = Constants.stockSwipeFontColor
                 
-                if (updatedText.characters.filter{$0 != " "}.count > 0) {
+                if (updatedText.filter{$0 != " "}.count > 0) {
                     postButton.isEnabled = true
                 }
             }

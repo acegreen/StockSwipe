@@ -297,7 +297,6 @@ extension UIImage {
     enum AssetIdentifier: String  {
         
         case noIdeaBulbImage = "no_idea"
-        case newsBigImage = "news_big"
         case xButton = "x"
         case UserBlockedBig = "user_blocked_big"
         case UserDummyImage = "dummy_profile_male_big"
@@ -356,7 +355,7 @@ extension DetectTags where Self: UITextView {
         
         for word in words {
             
-            var wordWithTagRemoved = String(word.characters.dropFirst())
+            var wordWithTagRemoved = String(word.dropFirst())
             
             if word.hasPrefix("$") {
                 

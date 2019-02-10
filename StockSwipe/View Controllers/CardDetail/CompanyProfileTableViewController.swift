@@ -278,7 +278,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                         self.bookValueLabel.text = eodFundamentalsResults.highlights.bookValue ?? "--"
                         self.divYieldLabel.text =  eodFundamentalsResults.highlights.dividendYield ?? "--"
                         self.earningsDateLabel.text = eodFundamentalsResults.highlights.mostRecentQuarter ?? "--"
-                        self.EBITDALabel.text = eodFundamentalsResults.highlights.EBITDA != nil ? String(eodFundamentalsResults.highlights.EBITDA!) : "--"
+                        self.EBITDALabel.text = eodFundamentalsResults.highlights.EBITDA != nil ? String(eodFundamentalsResults.highlights.EBITDA!.suffixNumber()) : "--"
                         self.wallstreetTargetLabel.text = eodFundamentalsResults.highlights.wallStreetTargetPrice ?? "--"
                         
                         let fifyTwoWeekLow = eodFundamentalsResults.technicals.fiftyTwoWeekLow ?? ""

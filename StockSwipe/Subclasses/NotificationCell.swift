@@ -62,8 +62,6 @@ class NotificationCell: UITableViewCell {
             profileContainerController.user = User(userObject: self.activity.object(forKey: "fromUser") as! PFUser)
         }
         
-        profileContainerController.navigationItem.rightBarButtonItem = nil
-        
         UIApplication.topViewController()?.show(profileContainerController, sender: self)
     }
 }

@@ -183,7 +183,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         threeDotsAlert.view.tintColor = Constants.stockSwipeGreenColor
     }
     
-    @objc func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
+    @objc func handleProfileGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
         let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
         
@@ -193,9 +193,15 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             profileContainerController.user = self.nestedTradeIdea?.user
         }
         
-        profileContainerController.navigationItem.rightBarButtonItem = nil
-        
         UIApplication.topViewController()?.show(profileContainerController, sender: self)
+    }
+    
+    @objc func handleTradeIdeaGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
+        
+        let tradeIdeaDetailTableViewController = Constants.Storyboards.tradeIdeaStoryboard.instantiateViewController(withIdentifier: "TradeIdeaDetailTableViewController") as! TradeIdeaDetailTableViewController
+        tradeIdeaDetailTableViewController.tradeIdea = self.nestedTradeIdea
+        
+        UIApplication.topViewController()?.show(tradeIdeaDetailTableViewController, sender: self)
     }
     
     func configureCell(with tradeIdea: TradeIdea, timeFormat: Constants.TimeFormat) {
@@ -242,10 +248,10 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             })
             
             // Add Gesture Recognizers
-            let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+            let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleProfileGestureRecognizer))
             self.userAvatar.addGestureRecognizer(tapGestureRecognizerMainAvatar)
             
-            let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
+            let tapGestureRecognizerMainUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleProfileGestureRecognizer))
             self.userName.addGestureRecognizer(tapGestureRecognizerMainUsername)
         }
     }
@@ -281,11 +287,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                 }
             })
             
-            let tapGestureRecognizerNestedAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-            self.nestedUserAvatar.addGestureRecognizer(tapGestureRecognizerNestedAvatar)
-            
-            let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleGestureRecognizer))
-            self.nestedUsername.addGestureRecognizer(tapGestureRecognizerNestedUsername)
+            let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleTradeIdeaGestureRecognizer(_:)))
+            self.nestedTradeIdeaStack.addGestureRecognizer(tapGestureRecognizerNestedUsername)
         }
     }
     

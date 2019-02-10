@@ -49,8 +49,6 @@ class UserCell: UITableViewCell {
             profileContainerController.user = self.user
         }
         
-        profileContainerController.navigationItem.rightBarButtonItem = nil
-        
         UIApplication.topViewController()?.show(profileContainerController, sender: self)
     }
     

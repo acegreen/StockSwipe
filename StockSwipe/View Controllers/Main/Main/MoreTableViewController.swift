@@ -221,9 +221,6 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                 let profileContainerController = segue.destination as! ProfileContainerController
                 profileContainerController.loginDelegate = self
                 profileContainerController.user = self.currentUser
-                
-                // Just a workaround.. There should be a cleaner way to sort this out
-                profileContainerController.navigationItem.rightBarButtonItem = nil
             }
             
         case .FAQSegueIdentifier:

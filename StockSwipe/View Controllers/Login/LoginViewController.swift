@@ -158,13 +158,13 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             
             let logInLogoLabel: UILabel = UILabel()
             logInLogoLabel.text = "Log In"
-            logInLogoLabel.textColor = Constants.stockSwipeFontColor
-            logInLogoLabel.font = UIFont(name: "HelveticaNeue", size: 45.0)
+            logInLogoLabel.textColor = Constants.SSColors.grey
+            logInLogoLabel.font = Constants.SSFonts.xl
             
             let signUpLogoLabel: UILabel = UILabel()
             signUpLogoLabel.text = "Sign Up"
-            signUpLogoLabel.textColor = Constants.stockSwipeFontColor
-            signUpLogoLabel.font = UIFont(name: "HelveticaNeue", size: 45.0)
+            signUpLogoLabel.textColor = Constants.SSColors.grey
+            signUpLogoLabel.font = Constants.SSFonts.xl
             
             // PFLogInFields.passwordForgotten
             self.logInViewController.fields = [PFLogInFields.usernameAndPassword, PFLogInFields.logInButton, PFLogInFields.signUpButton, PFLogInFields.twitter, PFLogInFields.facebook, PFLogInFields.dismissButton]

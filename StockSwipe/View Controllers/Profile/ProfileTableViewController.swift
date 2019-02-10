@@ -104,7 +104,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
             let reportIdea = UIAlertAction(title: "Report", style: .default) { action in
                 
-                SweetAlert().showAlert("Report \(user.userObject.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor(rgbValue: 0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.stockSwipeGreenColor) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Report \(user.userObject.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor(rgbValue: 0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
                     
                     if !isOtherButton {
                         
@@ -164,7 +164,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         }
         
         UIApplication.topViewController()?.present(settingsAlert, animated: true, completion: nil)
-        settingsAlert.view.tintColor = Constants.stockSwipeGreenColor
+        settingsAlert.view.tintColor = Constants.SSColors.green
     }
     
     @IBAction func followButtonPressed(_ sender: FollowButton) {
@@ -943,7 +943,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
             let blockUser = UIAlertAction(title: "Block", style: .default) { action in
                 
-                SweetAlert().showAlert("Block @\(user.username!)?", subTitle: "@\(user.username!) will not be able to follow or view your ideas, and you will not see anything from @\(user.username!)", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.stockSwipeGreenColor, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Block @\(user.username!)?", subTitle: "@\(user.username!) will not be able to follow or view your ideas, and you will not see anything from @\(user.username!)", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.SSColors.green, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                     
                     if isOtherButton {
                         Functions.blockUser(user, postAlert: true)

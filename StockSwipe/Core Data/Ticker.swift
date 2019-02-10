@@ -19,11 +19,11 @@ public struct Ticker {
     var changeInPercent: Double = 0.0
     
     var priceFormatted: String {
-        return "\(currentPrice.roundTo(places: 2))"
+        return "\(currentPrice.roundTo(2))"
     }
     
     var changeFormatted: String {
-        return "\(changeInDollar.roundTo(places: 2)) " + "(\(changeInPercent.roundTo(places: 2))%)"
+        return "\(changeInDollar.roundTo(2)) " + "(\(changeInPercent.roundTo(2))%)"
     }
 }
 

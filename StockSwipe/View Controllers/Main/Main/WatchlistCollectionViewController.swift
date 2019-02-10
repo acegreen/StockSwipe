@@ -34,8 +34,8 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     var blureffect: UIBlurEffect!
     var blurView: UIVisualEffectView!
     
-    var swippeChartsdArray = [ChartModel]()
-    var selectedChart: Chart!
+    var cards = [Card]()
+    var selectedChart: Card!
     
     var cellWidth: CGFloat!
     var cellHeight: CGFloat!
@@ -92,7 +92,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             return
         }
         
-        let selectedCoreDataObjects = (self.CollectionView.indexPathsForSelectedItems?.map{swippeChartsdArray[($0 as NSIndexPath).row]})!
+        let selectedCoreDataObjects = (self.CollectionView.indexPathsForSelectedItems?.map{cards[($0 as NSIndexPath).row]})!
         
         // Delete user from Parse (for the object were the user has Longed/Shorted)
         performDeletionOfObjects(selectedCoreDataObjects)
@@ -179,15 +179,11 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         CollectionViewFlowLayout.sectionInset = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         
         if UIDevice.current.userInterfaceIdiom == .pad {
-            
             cellWidth = (self.view.bounds.width - 30) / numberOfCellsHorizontally
-            
             cellHeight = (cellWidth * 0.60) + Constants.chartImageTopPadding + Constants.informationViewHeight
             
         } else {
-            
-            cellWidth = chartWidth / numberOfCellsHorizontally
-            
+            cellWidth = cardWidth / numberOfCellsHorizontally
             cellHeight = cellWidth
         }
         
@@ -201,17 +197,14 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     func reloadViewData() {
         
         // Get charts from CoreData
-        guard let coreDataCharts = Functions.getChartsFromCoreData() else { return }
-        swippeChartsdArray = coreDataCharts
+        guard let coreDataCharts = Functions.getCardsFromCoreData() else { return }
+        cards = coreDataCharts
         
         // Enable edit button if array exists
-        if self.swippeChartsdArray.count != 0 {
-            
+        if self.cards.count != 0 {
             self.CollectionView.reloadData()
             self.EditButton.isEnabled = true
-            
-        } else if self.swippeChartsdArray.count == 0 {
-            
+        } else if self.cards.count == 0 {
             self.CollectionView.reloadEmptyDataSet()
         }
     }
@@ -231,16 +224,16 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return swippeChartsdArray.count
+        return cards.count
         
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell: ChartCollectionViewCell = CollectionView.dequeueReusableCell(withReuseIdentifier: "chartCollectionCellIdentifier", for: indexPath) as! ChartCollectionViewCell
+        let cell: WatchlistCardCollectionViewCell = CollectionView.dequeueReusableCell(withReuseIdentifier: "WatchlistCardCollectionCellIdentifier", for: indexPath) as! WatchlistCardCollectionViewCell
         
-        let chartData = swippeChartsdArray[indexPath.row]
-        cell.configure(withDataSource: chartData)
+        let card = cards[indexPath.row]
+        cell.configure(with: card)
         
         return cell
         
@@ -261,11 +254,11 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             
         } else {
             
-            let selectedObject = swippeChartsdArray[(self.CollectionView.indexPathsForSelectedItems!.first! as NSIndexPath).row]
+            let selectedObject = cards[(self.CollectionView.indexPathsForSelectedItems!.first! as NSIndexPath).row]
             self.CollectionView.deselectItem(at: indexPath, animated: false)
             
             guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("Can't Access Chart!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+                SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
                 return
             }
             
@@ -276,8 +269,8 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                     let stockObjects = try result()
                     for stockObject in stockObjects {
                         
-                        let chart = Chart(parseObject: stockObject)
-                        self.selectedChart = chart
+                        let card = Card(parseObject: stockObject)
+                        self.selectedChart = card
                         
                         self.performSegue(withIdentifier: "showChartDetail", sender: self)
                     }
@@ -306,18 +299,18 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         }
     }
     
-    func performDeletionOfObjects(_ selectedObjects: [ChartModel]) {
+    func performDeletionOfObjects(_ selectedCards: [Card]) {
         
         //Delete Objects From Parse, CoreData and DataSource(and collectionView)
-        deleteUserFromParseObjectLongedShortedColumn(selectedObjects)
+        deleteUserFromParseObjectLongedShortedColumn(selectedCards)
         
         ///TODO: Need to breka down deleteUserFromParseObjectLongedShortedColumn
     }
     
-    func deleteItemsFromDataSource(_ selectedObjects: [ChartModel]) {
+    func deleteItemsFromDataSource(_ selectedCards: [Card]) {
         
         // Delete from DataSource
-        self.swippeChartsdArray.removeObjectsInArray(selectedObjects)
+        self.cards.removeObjectsInArray(selectedCards)
         
         // Delete from CollectionView
         if let selectedIndexPaths = self.CollectionView.indexPathsForSelectedItems , selectedIndexPaths.count != 0 {
@@ -326,14 +319,13 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         
     }
     
-    func deleteFromCoreData(_ selectedObjects: [ChartModel]) {
+    func deleteFromCoreData(_ selectedCards: [Card]) {
         
         // Delete from Core Data and save
-        for (_, object) in selectedObjects.enumerated() {
-            
-            // Delete from Core Data
-            Constants.context.delete(object)
-            
+        for (_, card) in selectedCards.enumerated() {
+            if let cardModel = card.cardModel {
+                Constants.context.delete(cardModel)
+            }
         }
         
         do {
@@ -348,12 +340,12 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         }
     }
     
-    func deleteUserFromParseObjectLongedShortedColumn(_ selectedObjects: [ChartModel]) {
+    func deleteUserFromParseObjectLongedShortedColumn(_ selectedCards: [Card]) {
         
         guard Functions.isUserLoggedIn(presenting: self) else { return }
         guard let currentUser = PFUser.current() else { return }
         
-        let symbolStringArray: [String] = extractSymbolNames(selectedObjects)
+        let symbolStringArray: [String] = extractSymbolNames(selectedCards)
         
         QueryHelper.sharedInstance.queryStockObjectsFor(symbols: symbolStringArray) { (result) in
             
@@ -377,7 +369,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                                     
                                     let symbol = stockObject.object(forKey: "Symbol") as! String
                                     
-                                    if let selectedObjectModel = selectedObjects.find({ $0.symbol == symbol }), let userChoice = Constants.UserChoices(rawValue: selectedObjectModel.userChoice) {
+                                    if let selectedCard = selectedCards.find({ $0.symbol == symbol }), let cardModel = selectedCard.cardModel, let userChoice = Constants.UserChoices(rawValue: cardModel.userChoice) {
                                         
                                         switch userChoice {
                                             
@@ -398,13 +390,13 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                                 }
                                 
                                 // Delete from CoreData
-                                self.deleteFromCoreData(selectedObjects)
+                                self.deleteFromCoreData(selectedCards)
                                 
                                 // Remove from datasource and collectionView
                                 self.CollectionView.performBatchUpdates({ () -> Void in
                                     
                                     // Delete from Data Source & CollectionView
-                                    self.deleteItemsFromDataSource(selectedObjects)
+                                    self.deleteItemsFromDataSource(selectedCards)
                                     
                                     }, completion: { (finished: Bool) -> Void in
                                         
@@ -418,7 +410,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                                                 self.TrashButton.isEnabled = false
                                             }
                                             
-                                            if self.swippeChartsdArray.count == 0 {
+                                            if self.cards.count == 0 {
                                                 
                                                 self.EditButtonPressed(self)
                                                 self.EditButton.isEnabled = false
@@ -441,14 +433,11 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         }
     }
     
-    func extractSymbolNames (_ coreDataObjects: [ChartModel]) -> [String] {
+    func extractSymbolNames (_ coreDataObjects: [Card]) -> [String] {
         
         if coreDataObjects.isEmpty {
-            
             return []
-            
         } else {
-            
             return coreDataObjects.map { $0.symbol }
         }
     }
@@ -488,7 +477,7 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
         if segue.identifier == "showChartDetail" {
             
             let destinationView = segue.destination as! CardDetailTabBarController
-            destinationView.chart = selectedChart
+            destinationView.card = selectedChart
         }
     }
 }

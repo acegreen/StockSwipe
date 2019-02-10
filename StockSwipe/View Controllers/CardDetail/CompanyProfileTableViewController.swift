@@ -274,7 +274,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
                         
                         self.PELabel.text = eodFundamentalsResults.highlights.peRatio ?? "--"
                         self.marketCapLabel.text = (eodFundamentalsResults.highlights.marketCapitalization != nil) ? eodFundamentalsResults.highlights.marketCapitalization?.suffixNumber() : "--"
-                        self.EPSLabel.text =  eodFundamentalsResults.highlights.epsEstimateCurrentYear ?? "--"
+                        self.EPSLabel.text =  eodFundamentalsResults.highlights.eps ?? "--"
                         self.bookValueLabel.text = eodFundamentalsResults.highlights.bookValue ?? "--"
                         self.divYieldLabel.text =  eodFundamentalsResults.highlights.dividendYield ?? "--"
                         self.earningsDateLabel.text = eodFundamentalsResults.highlights.mostRecentQuarter ?? "--"
@@ -305,7 +305,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
         self.companyFundamentalsOperationQueue.addOperations([companyFundamentalsQperation], waitUntilFinished: false)
     }
 
-    // MARK: Analysts Rating Bar Chart Stuff
+    // MARK: Analysts Rating Bar Card Stuff
 
     func setChart(_ dataPoints: [String], values: [Double]) {
         
@@ -317,16 +317,16 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
         }
         
         let chartDataSet = BarChartDataSet(values: dataEntries, label: "Analysts Rating")
-        chartDataSet.colors = [Constants.stockSwipeGreenColor, outperformGreen, UIColor.yellow, UIColor.orange , UIColor.red]
-        chartDataSet.valueFont = UIFont(name: "HelveticaNeue", size: 15.0)!
+        chartDataSet.colors = [Constants.SSColors.green, outperformGreen, UIColor.yellow, UIColor.orange , UIColor.red]
+        chartDataSet.valueFont = Constants.SSFonts.standard
         chartDataSet.valueFormatter = ChartYValueFormatter(values: values)
         
         // X-Axis formatting
         ratingBarChartView.xAxis.labelPosition = .bottom
         ratingBarChartView.xAxis.granularity = 1
         ratingBarChartView.xAxis.drawGridLinesEnabled = false
-        ratingBarChartView.xAxis.labelFont = UIFont(name: "HelveticaNeue", size: 11.0)!
-        ratingBarChartView.xAxis.labelTextColor = Constants.stockSwipeFontColor
+        ratingBarChartView.xAxis.labelFont = Constants.SSFonts.makeFont(size:11)
+        ratingBarChartView.xAxis.labelTextColor = Constants.SSColors.grey
         ratingBarChartView.xAxis.valueFormatter = ChartXAxisFormatter(entries: ratingsType)
         
         // Left-Axis formatting
@@ -358,7 +358,7 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
         case input where input >= 1.0 && input <= 1.5:
             
             overallRating.text = "Buy"
-            overallRating.textColor = Constants.stockSwipeGreenColor
+            overallRating.textColor = Constants.SSColors.green
             
         case input where input > 1.5 && input <= 2.5:
             

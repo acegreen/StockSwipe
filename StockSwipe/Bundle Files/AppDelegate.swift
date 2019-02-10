@@ -100,13 +100,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Setup General Appearance
         UITabBar.appearance().barTintColor = UIColor.white
-        UITabBar.appearance().tintColor = Constants.stockSwipeGreenColor
+        UITabBar.appearance().tintColor = Constants.SSColors.green
         self.window?.backgroundColor = UIColor.white
         
         // Adding paging indicator
         let pageControl = UIPageControl.appearance()
         pageControl.pageIndicatorTintColor = UIColor.lightGray
-        pageControl.currentPageIndicatorTintColor = Constants.stockSwipeGreenColor
+        pageControl.currentPageIndicatorTintColor = Constants.SSColors.green
         pageControl.backgroundColor = UIColor.white
         
         // Track user
@@ -137,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
         case "stockswipe"?:
             
-            guard url.host == "chart", let window = self.window else { return true }
+            guard url.host == "card", let window = self.window else { return true }
             guard let symbolDict = url.parseQueryString(url.query!, firstSeperator: "&", secondSeperator: "=") else { return false }
             guard let symbol = symbolDict["symbol"] as? String else { return
                 //TO-DO: Alert user that symbol was not found
@@ -157,8 +157,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         mainTabBarController.dismiss(animated: false, completion: nil)
                     }
                     
-                    let chart = Chart(parseObject: stockObject)
-                    CardDetailTabBarController.chart = chart
+                    let card = Card(parseObject: stockObject)
+                    CardDetailTabBarController.card = card
                     mainTabBarController.present(CardDetailTabBarController, animated: true, completion: nil)
                     
                 } catch {
@@ -206,8 +206,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     mainTabBarController.dismiss(animated: false, completion: nil)
                 }
                 
-                let chart = Chart(parseObject: stockObject)
-                CardDetailTabBarController.chart = chart
+                let card = Card(parseObject: stockObject)
+                CardDetailTabBarController.card = card
                 mainTabBarController.present(CardDetailTabBarController, animated: true, completion: nil)
                 
             } catch {
@@ -315,7 +315,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let url = self.applicationDocumentsDirectory.appendingPathComponent("StockSwipe.sqlite")
         var failureReason = "There was an error creating or loading the application's saved data."
         do {
-            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: nil)
+            try coordinator.addPersistentStore(ofType: NSSQLiteStoreType, configurationName: nil, at: url, options: [NSMigratePersistentStoresAutomaticallyOption: true, NSInferMappingModelAutomaticallyOption: true])
+
         } catch {
             // Report any error we got.
             var dict = [String: AnyObject]()

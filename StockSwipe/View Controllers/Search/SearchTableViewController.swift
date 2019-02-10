@@ -20,7 +20,7 @@ class SearchTableViewController: UITableViewController {
         controller.definesPresentationContext = true
         controller.dimsBackgroundDuringPresentation = false
         controller.searchBar.searchBarStyle = .minimal
-        controller.searchBar.tintColor = Constants.stockSwipeGreenColor
+        controller.searchBar.tintColor = Constants.SSColors.green
         controller.searchBar.sizeToFit()
         return controller
     }()
@@ -221,8 +221,8 @@ class SearchTableViewController: UITableViewController {
         
         self.dismiss(animated: true) {
             let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
-            let chart = Chart(parseObject: stockObject)
-            CardDetailTabBarController.chart = chart
+            let card = Card(parseObject: stockObject)
+            CardDetailTabBarController.card = card
             
             UIApplication.topViewController()?.present(CardDetailTabBarController, animated: true, completion: nil)
         }
@@ -258,21 +258,21 @@ class SearchTableViewController: UITableViewController {
                 stockObjectAtIndex = recentSearches[cellIndex.row]
             }
             
-            let chart = Chart(parseObject: stockObjectAtIndex)
+            let card = Card(parseObject: stockObjectAtIndex)
             
-            QueryHelper.sharedInstance.queryChartImage(symbol: chart.symbol, completion: { (result) in
+            QueryHelper.sharedInstance.queryChartImage(symbol: card.symbol, completion: { (result) in
                 
                 do {
                     
                     let chartImage = try result()
-                    chart.image = chartImage
+//                    card.image = chartImage
                     
                 } catch {
                     //TODO: handle error
                 }
                 
                 DispatchQueue.main.async {
-                    Functions.promptAddToWatchlist(chart, registerChoice: true) { (choice) in }
+                    Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in }
                 }
             })
         }

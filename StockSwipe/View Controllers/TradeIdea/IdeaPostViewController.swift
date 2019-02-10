@@ -329,7 +329,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 self.textCountLabel.textColor = UIColor.red
                 postButton.isEnabled = false
             } else {
-                self.textCountLabel.textColor = Constants.stockSwipeFontColor
+                self.textCountLabel.textColor = Constants.SSColors.grey
                 
                 if (updatedText.filter{$0 != " "}.count > 0) {
                     postButton.isEnabled = true

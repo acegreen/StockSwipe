@@ -223,9 +223,9 @@ class Functions {
                         guard let eodFundamentalsResult = try eodFundamentalsResult() else { return completion({ throw QueryHelper.QueryError.errorParsingJSON }) }
                         let parseObject = PFObject(className: "Stocks")
                         parseObject["Symbol"] = symbol
-                        parseObject["Company"] = eodFundamentalsResult.general.name
-                        parseObject["Exchange"] = eodFundamentalsResult.general.exchange
-                        parseObject["Sector"] = eodFundamentalsResult.general.sector
+                        parseObject["Company"] = eodFundamentalsResult.general.name ?? ""
+                        parseObject["Exchange"] = eodFundamentalsResult.general.exchange ?? ""
+                        parseObject["Sector"] = eodFundamentalsResult.general.sector ?? "Other"
                         parseObject.saveInBackground()
                         
                         completion( { parseObject })

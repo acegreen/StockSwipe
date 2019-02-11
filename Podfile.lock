@@ -112,7 +112,7 @@ CHECKOUT OPTIONS:
     :commit: 388549d75f551ffaf9ce3b84147d764f49656fd3
     :git: https://github.com/huynguyencong/DataCache.git
   MDCSwipeToChoose:
-    :commit: 759f5060c350d533e046ef53f88515552278a706
+    :commit: 58bddcb06aa06e64b2980973efcd0ea78cf0d292
     :git: https://github.com/acegreen/MDCSwipeToChoose.git
   SKSplashView:
     :commit: c56a7cee52f75473117eb2597b1b160dd9915f22
@@ -145,4 +145,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 93df2c987e3b4e0dbe9c228fccd0aecbd3720eaf
 
-COCOAPODS: 1.6.0.rc.2
+COCOAPODS: 1.6.0

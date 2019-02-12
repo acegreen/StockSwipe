@@ -31,32 +31,6 @@ public class Card: NSObject {
 //        }
 //    }
     
-    init(cardModel: CardModel) {
-        
-        super.init()
-        
-        self.cardModel = cardModel
-        self.symbol = cardModel.symbol
-        self.companyName = cardModel.companyName
-        self.exchange = cardModel.exchange
-        
-        // Index to Spotlight
-        Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
-    }
-        
-    init(parseObject: PFObject) {
-        
-        super.init()
-        
-        self.parseObject = parseObject
-        self.symbol = parseObject.object(forKey: "Symbol") as? String
-        self.companyName = parseObject.object(forKey: "Company") as? String
-        self.exchange = parseObject.object(forKey: "Exchange") as? String
-        
-        // Index to Spotlight
-        Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
-    }
-    
     init(parseObject: PFObject, eodHistoricalData: [QueryHelper.EODHistoricalResult]?, eodFundamentalsData: QueryHelper.EODFundamentalsResult?) {
         
         super.init()
@@ -72,18 +46,6 @@ public class Card: NSObject {
         // Index to Spotlight
         Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
     }
-    
-    init(symbol: String!, companyName: String?) {
-        
-        super.init()
-        
-        self.symbol = symbol
-        self.companyName = companyName
-        
-        // Index to Spotlight
-        Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
-    }
-
     
     func checkNumberOfShorts(completion: ((Int) -> Void)?) {
         

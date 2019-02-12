@@ -220,11 +220,24 @@ class SearchTableViewController: UITableViewController {
     func presentChartDetail(_ stockObject: PFObject) {
         
         self.dismiss(animated: true) {
-            let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
-            let card = Card(parseObject: stockObject)
-            CardDetailTabBarController.card = card
             
-            UIApplication.topViewController()?.present(CardDetailTabBarController, animated: true, completion: nil)
+            let cardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
+            
+            Functions.makeCard(for: stockObject.object(forKey: "Symbol") as! String) { card in
+                do {
+                    let card = try card()
+                    DispatchQueue.main.async {
+                        cardDetailTabBarController.card = card
+                        UIApplication.topViewController()?.present(cardDetailTabBarController, animated: true, completion: nil)
+                    }
+                } catch {
+                    if let error = error as? QueryHelper.QueryError {
+                        DispatchQueue.main.async {
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
+                        }
+                    }
+                }
+            }
         }
     }
     
@@ -258,23 +271,20 @@ class SearchTableViewController: UITableViewController {
                 stockObjectAtIndex = recentSearches[cellIndex.row]
             }
             
-            let card = Card(parseObject: stockObjectAtIndex)
-            
-            QueryHelper.sharedInstance.queryChartImage(symbol: card.symbol, completion: { (result) in
-                
+            Functions.makeCard(for: stockObjectAtIndex.object(forKey: "Symbol") as! String) { card in
                 do {
-                    
-                    let chartImage = try result()
-//                    card.image = chartImage
-                    
+                    let card = try card()
+                    DispatchQueue.main.async {
+                        Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in }
+                    }
                 } catch {
-                    //TODO: handle error
+                    if let error = error as? QueryHelper.QueryError {
+                        DispatchQueue.main.async {
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
+                        }
+                    }
                 }
-                
-                DispatchQueue.main.async {
-                    Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in }
-                }
-            })
+            }
         }
     }
 }

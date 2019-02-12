@@ -265,41 +265,33 @@ class CompanyProfileTableViewController: UITableViewController, ChartDetailDeleg
     
         // Company Profile Query
         let companyFundamentalsQperation = BlockOperation { () -> Void in
-            QueryHelper.sharedInstance.queryEODFundamentals(for: self.symbol, completionHandler: { eodFundamentalsResults in
-                
-                do {
-                    guard let eodFundamentalsResults = try eodFundamentalsResults() else { return }
-                    
-                    DispatchQueue.main.async {
-                        
-                        self.PELabel.text = eodFundamentalsResults.highlights.peRatio ?? "--"
-                        self.marketCapLabel.text = (eodFundamentalsResults.highlights.marketCapitalization != nil) ? eodFundamentalsResults.highlights.marketCapitalization?.suffixNumber() : "--"
-                        self.EPSLabel.text =  eodFundamentalsResults.highlights.eps ?? "--"
-                        self.bookValueLabel.text = eodFundamentalsResults.highlights.bookValue ?? "--"
-                        self.divYieldLabel.text =  eodFundamentalsResults.highlights.dividendYield ?? "--"
-                        self.earningsDateLabel.text = eodFundamentalsResults.highlights.mostRecentQuarter ?? "--"
-                        self.EBITDALabel.text = eodFundamentalsResults.highlights.EBITDA != nil ? String(eodFundamentalsResults.highlights.EBITDA!.suffixNumber()) : "--"
-                        self.wallstreetTargetLabel.text = eodFundamentalsResults.highlights.wallStreetTargetPrice ?? "--"
-                        
-                        let fifyTwoWeekLow = eodFundamentalsResults.technicals.fiftyTwoWeekLow ?? ""
-                        let fifyTwoWeekHigh = eodFundamentalsResults.technicals.fiftyTwoWeekHigh ?? ""
-                        self.fiftyTwoWeekRange.text = fifyTwoWeekLow + " - " + fifyTwoWeekHigh
-                        self.fiftyMALabel.text = eodFundamentalsResults.technicals.fiftyDayMA ?? ""
-                        self.twoHundredMALabel.text = eodFundamentalsResults.technicals.twoHundredDayMA ?? ""
-                        self.betaLabel.text = eodFundamentalsResults.technicals.beta ?? ""
-                        self.shortRatioLabel.text = eodFundamentalsResults.technicals.shortRatio ?? ""
-                        
-                        self.sectorLabel.text = eodFundamentalsResults.general.sector ?? "--"
-                        self.industryLabel.text = eodFundamentalsResults.general.industry ?? "--"
-                        self.fulltimeEmployeesLabel.text = (eodFundamentalsResults.general.fullTimeEmployees != nil) ? String(eodFundamentalsResults.general.fullTimeEmployees!) : "--"
-                        self.exchangeLabel.text = eodFundamentalsResults.general.exchange ?? "--"
-                        self.summaryLabel.text = eodFundamentalsResults.general.description ?? "--"
-                    }
-                    
-                } catch {
-                    //TODO: handle error
-                }
-            })
+        
+            let parentTabBarController = self.tabBarController as! CardDetailTabBarController
+            
+            guard let card = parentTabBarController.card, let eodFundamentalsData = card.eodFundamentalsData else { return }
+            
+            self.PELabel.text = eodFundamentalsData.highlights.peRatio ?? "--"
+            self.marketCapLabel.text = (eodFundamentalsData.highlights.marketCapitalization != nil) ? eodFundamentalsData.highlights.marketCapitalization?.suffixNumber() : "--"
+            self.EPSLabel.text = eodFundamentalsData.highlights.eps ?? "--"
+            self.bookValueLabel.text = eodFundamentalsData.highlights.bookValue ?? "--"
+            self.divYieldLabel.text =  eodFundamentalsData.highlights.dividendYield ?? "--"
+            self.earningsDateLabel.text = eodFundamentalsData.highlights.mostRecentQuarter ?? "--"
+            self.EBITDALabel.text = eodFundamentalsData.highlights.EBITDA != nil ? String(eodFundamentalsData.highlights.EBITDA!.suffixNumber()) : "--"
+            self.wallstreetTargetLabel.text = eodFundamentalsData.highlights.wallStreetTargetPrice ?? "--"
+            
+            let fifyTwoWeekLow = eodFundamentalsData.technicals.fiftyTwoWeekLow ?? ""
+            let fifyTwoWeekHigh = eodFundamentalsData.technicals.fiftyTwoWeekHigh ?? ""
+            self.fiftyTwoWeekRange.text = fifyTwoWeekLow + " - " + fifyTwoWeekHigh
+            self.fiftyMALabel.text = eodFundamentalsData.technicals.fiftyDayMA ?? ""
+            self.twoHundredMALabel.text = eodFundamentalsData.technicals.twoHundredDayMA ?? ""
+            self.betaLabel.text = eodFundamentalsData.technicals.beta ?? ""
+            self.shortRatioLabel.text = eodFundamentalsData.technicals.shortRatio ?? ""
+            
+            self.sectorLabel.text = eodFundamentalsData.general.sector ?? "--"
+            self.industryLabel.text = eodFundamentalsData.general.industry ?? "--"
+            self.fulltimeEmployeesLabel.text = (eodFundamentalsData.general.fullTimeEmployees != nil) ? String(eodFundamentalsData.general.fullTimeEmployees!) : "--"
+            self.exchangeLabel.text = eodFundamentalsData.general.exchange ?? "--"
+            self.summaryLabel.text = eodFundamentalsData.general.description ?? "--"
         }
         companyFundamentalsQperation.queuePriority = .normal
         self.companyFundamentalsOperationQueue.addOperations([companyFundamentalsQperation], waitUntilFinished: false)

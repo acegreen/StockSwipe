@@ -35,7 +35,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     var blurView: UIVisualEffectView!
     
     var cards = [Card]()
-    var selectedChart: Card!
+    var selectedCard: Card!
     
     var cellWidth: CGFloat!
     var cellHeight: CGFloat!
@@ -197,15 +197,23 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     func reloadViewData() {
         
         // Get charts from CoreData
-        guard let coreDataCharts = Functions.getCardsFromCoreData() else { return }
-        cards = coreDataCharts
-        
-        // Enable edit button if array exists
-        if self.cards.count != 0 {
-            self.CollectionView.reloadData()
-            self.EditButton.isEnabled = true
-        } else if self.cards.count == 0 {
-            self.CollectionView.reloadEmptyDataSet()
+        Functions.makeCardsFromCoreData { cards in
+            do {
+                
+                let cards = try cards()
+                self.cards = cards
+                
+                // Enable edit button if array exists
+                if self.cards.count != 0 {
+                    self.CollectionView.reloadData()
+                    self.EditButton.isEnabled = true
+                } else if self.cards.count == 0 {
+                    self.CollectionView.reloadEmptyDataSet()
+                }
+                
+            } catch {
+                // TODO: handle error
+            }
         }
     }
     
@@ -254,35 +262,15 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             
         } else {
             
-            let selectedObject = cards[(self.CollectionView.indexPathsForSelectedItems!.first! as NSIndexPath).row]
-            self.CollectionView.deselectItem(at: indexPath, animated: false)
-            
             guard Functions.isConnectedToNetwork() else {
                 SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
                 return
             }
             
-            QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [selectedObject.symbol]) { (result) in
-                
-                do {
-                    
-                    let stockObjects = try result()
-                    for stockObject in stockObjects {
-                        
-                        let card = Card(parseObject: stockObject)
-                        self.selectedChart = card
-                        
-                        self.performSegue(withIdentifier: "showChartDetail", sender: self)
-                    }
-                    
-                } catch {
-                    if let error = error as? QueryHelper.QueryError {
-                        DispatchQueue.main.async {
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
-                        }
-                    }
-                }
-            }
+            let selectedCard = cards[(self.CollectionView.indexPathsForSelectedItems!.first! as NSIndexPath).row]
+            self.CollectionView.deselectItem(at: indexPath, animated: false)
+            self.selectedCard = selectedCard
+            self.performSegue(withIdentifier: "showChartDetail", sender: self)
         }
     }
     
@@ -352,7 +340,6 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             do {
                 
                 let stockObjects = try result()
-                
                 print("Successfully retrieved \(stockObjects.count) object")
                 
                 QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: stockObjects, activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: 0, limit: 0, includeKeys: nil, completion: { (result) in
@@ -475,9 +462,8 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         if segue.identifier == "showChartDetail" {
-            
             let destinationView = segue.destination as! CardDetailTabBarController
-            destinationView.card = selectedChart
+            destinationView.card = selectedCard
         }
     }
 }

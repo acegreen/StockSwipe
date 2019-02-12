@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.59" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.45"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -106,14 +106,14 @@
                                                             <rect key="frame" x="20" y="0.0" width="335" height="125"/>
                                                             <subviews>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="SPk-Ub-e3q">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="98.5" height="125"/>
+                                                                    <rect key="frame" x="0.0" y="12.5" width="98.5" height="100"/>
                                                                     <subviews>
                                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="255" verticalHuggingPriority="251" image="dollar_coin" translatesAutoresizingMaskIntoConstraints="NO" id="Wf9-yh-r9e">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="98.5" height="75"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="98.5" height="50"/>
                                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </imageView>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="p2d-FB-gC4">
-                                                                            <rect key="frame" x="0.0" y="80" width="98.5" height="45"/>
+                                                                            <rect key="frame" x="0.0" y="55" width="98.5" height="45"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BVv-Uf-co8">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="98.5" height="21"/>
@@ -135,14 +135,14 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="CGM-O8-NlC">
-                                                                    <rect key="frame" x="118.5" y="0.0" width="98" height="125"/>
+                                                                    <rect key="frame" x="118.5" y="12.5" width="98" height="100"/>
                                                                     <subviews>
                                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="255" verticalHuggingPriority="251" image="dollar-stacks" translatesAutoresizingMaskIntoConstraints="NO" id="Boa-TW-1go">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="98" height="75"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="98" height="50"/>
                                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </imageView>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="UNX-tS-4Gc">
-                                                                            <rect key="frame" x="0.0" y="80" width="98" height="45"/>
+                                                                            <rect key="frame" x="0.0" y="55" width="98" height="45"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xkr-Sf-k5e">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="98" height="21"/>
@@ -164,14 +164,14 @@
                                                                     </subviews>
                                                                 </stackView>
                                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Q2h-mE-vr5">
-                                                                    <rect key="frame" x="236.5" y="0.0" width="98.5" height="125"/>
+                                                                    <rect key="frame" x="236.5" y="12.5" width="98.5" height="100"/>
                                                                     <subviews>
                                                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="255" verticalHuggingPriority="251" image="mask" translatesAutoresizingMaskIntoConstraints="NO" id="X9F-yN-Uh3">
-                                                                            <rect key="frame" x="0.0" y="0.0" width="98.5" height="75"/>
+                                                                            <rect key="frame" x="0.0" y="0.0" width="98.5" height="50"/>
                                                                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                         </imageView>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="geu-hL-Px8">
-                                                                            <rect key="frame" x="0.0" y="80" width="98.5" height="45"/>
+                                                                            <rect key="frame" x="0.0" y="55" width="98.5" height="45"/>
                                                                             <subviews>
                                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vRl-DL-n85">
                                                                                     <rect key="frame" x="0.0" y="0.0" width="98.5" height="21"/>
@@ -228,9 +228,6 @@
                         <userDefinedRuntimeAttribute type="color" keyPath="endColor">
                             <color key="value" red="0.6588235294" green="0.87843137250000003" blue="0.38823529410000002" alpha="1" colorSpace="calibratedRGB"/>
                         </userDefinedRuntimeAttribute>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="10"/>
-                        </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </view>
             </subviews>
@@ -246,8 +243,8 @@
         </view>
     </objects>
     <resources>
-        <image name="dollar-stacks" width="180" height="180"/>
-        <image name="dollar_coin" width="75" height="75"/>
-        <image name="mask" width="75" height="75"/>
+        <image name="dollar-stacks" width="50" height="50"/>
+        <image name="dollar_coin" width="50" height="50"/>
+        <image name="mask" width="50" height="50"/>
     </resources>
 </document>

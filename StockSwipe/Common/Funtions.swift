@@ -57,12 +57,12 @@ class Functions {
             if SDiOSVersion.deviceVersion() == .iPadPro12Dot9Inch || SDiOSVersion.deviceVersion() == .iPadPro9Dot7Inch {
                 
                 cardWidth = 1200
-                cardHeight = (cardWidth * 0.60) + (Constants.chartImageTopPadding + Constants.informationViewHeight)
+                cardHeight = (cardWidth * 0.60)
                 
             } else {
                 
                 cardWidth = 900
-                cardHeight = (cardWidth * 0.60) + (Constants.chartImageTopPadding + Constants.informationViewHeight)
+                cardHeight = (cardWidth * 0.60)
             }
             
             numberOfCellsHorizontally = 2
@@ -154,17 +154,20 @@ class Functions {
             guard let cardModels =  results as? [CardModel] else { throw QueryHelper.QueryError.errorQueryingForCoreData }
             
             var cards = [Card]()
-            for cardModel in cardModels {
+            for (index, cardModel) in cardModels.enumerated() {
                 self.makeCard(for: cardModel.symbol) { card in
                     do {
                         let card = try card()
+                        card.cardModel = cardModel
                         cards.append(card)
                     } catch {
-                        completion({ throw error })
+                    }
+                    
+                    if index == cardModels.count - 1 {
+                        completion({ cards })
                     }
                 }
             }
-            completion({ cards })
             
         } catch {
             completion({ throw error })

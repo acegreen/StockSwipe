@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="QBj-Vy-z2e">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.59" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="QBj-Vy-z2e">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.45"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -96,7 +96,6 @@
                     <connections>
                         <outlet property="filterButton" destination="37b-Na-uh8" id="ji1-e4-6TB"/>
                         <outlet property="reloadButton" destination="wOl-0N-4o2" id="2yW-yV-7wR"/>
-                        <segue destination="Ghc-uj-GGW" kind="showDetail" identifier="ChartDetailSegueIdentifier" id="MTi-XS-N2s"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YEi-1J-g11" sceneMemberID="firstResponder"/>
@@ -171,12 +170,6 @@
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="15"/>
                                             </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
-                                                <real key="value" value="0.5"/>
-                                            </userDefinedRuntimeAttribute>
-                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
-                                                <color key="value" red="0.43529412150382996" green="0.44313725829124451" blue="0.47450980544090271" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
                                         <connections>
                                             <outlet property="cardView" destination="083-xc-znK" id="8F4-m1-oZG"/>
@@ -216,11 +209,11 @@
                             </barButtonItem>
                         </leftBarButtonItems>
                         <view key="titleView" contentMode="scaleToFill" id="qWB-de-rJ5">
-                            <rect key="frame" x="119" y="5.5" width="130.5" height="33"/>
+                            <rect key="frame" x="113" y="5.5" width="130.5" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stockswipe_logo_small" translatesAutoresizingMaskIntoConstraints="NO" id="tZG-zr-Fr2">
-                                    <rect key="frame" x="47" y="-2" width="37" height="37"/>
+                                    <rect key="frame" x="46.5" y="-2.5" width="37.5" height="38"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 </imageView>
                             </subviews>
@@ -251,7 +244,6 @@
                         <outlet property="SelectAllButton" destination="jV0-YY-20U" id="Siw-YQ-ruo"/>
                         <outlet property="TrashButton" destination="XAc-BX-hwa" id="qu7-Xf-2lT"/>
                         <outlet property="searchButton" destination="uWj-OT-rMy" id="xcZ-JT-DvG"/>
-                        <segue destination="Ghc-uj-GGW" kind="showDetail" identifier="showChartDetail" id="quK-gg-uD0"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DxK-Od-Ml5" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -287,7 +279,7 @@
                                     <containerView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="245" translatesAutoresizingMaskIntoConstraints="NO" id="1Bm-md-cLL">
                                         <rect key="frame" x="0.0" y="87" width="375" height="445"/>
                                         <connections>
-                                            <segue destination="3J4-RR-php" kind="embed" identifier="ChartDetailSegueIdentifier" id="qNh-SP-kzU"/>
+                                            <segue destination="3J4-RR-php" kind="embed" identifier="OverviewContainerEmbededSegueIdentifier" id="qNh-SP-kzU"/>
                                         </connections>
                                     </containerView>
                                 </subviews>
@@ -338,6 +330,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="carousel" destination="m8Q-IQ-VYt" id="yjM-Ea-02K"/>
+                        <segue destination="Ghc-uj-GGW" kind="show" identifier="ChartDetailSegueIdentifier" id="1vr-2W-UYK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LxW-jc-3oe" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1153,7 +1146,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="CardDetailTabBarController" storyboardName="CardDetail" id="Ghc-uj-GGW" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mOW-l9-OfD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2647" y="-1284"/>
+            <point key="canvasLocation" x="2374" y="-1804"/>
         </scene>
         <!--TradeIdeaDetailTableViewController-->
         <scene sceneID="WyY-5L-YPb">
@@ -1185,7 +1178,7 @@
                 <viewControllerPlaceholder storyboardName="Filter" id="xhj-hZ-9g4" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GHs-6F-QeE" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2176" y="-1179"/>
+            <point key="canvasLocation" x="2219" y="-1278"/>
         </scene>
         <!--Overview Container Page View Controller-->
         <scene sceneID="nbk-h0-CkJ">
@@ -1422,28 +1415,27 @@
     <resources>
         <image name="3_dots" width="25" height="25"/>
         <image name="5_star" width="25" height="25"/>
-        <image name="cards" width="12" height="12"/>
+        <image name="cards" width="25" height="25"/>
         <image name="dashboard" width="30" height="30"/>
         <image name="dummy_profile_male" width="25" height="25"/>
-        <image name="edit_pen" width="10.560000419616699" height="10.560000419616699"/>
+        <image name="edit_pen" width="22" height="22"/>
         <image name="email_feedback" width="25" height="25"/>
-        <image name="eye" width="14.399999618530273" height="14.399999618530273"/>
+        <image name="eye" width="30" height="30"/>
         <image name="facebook" width="25" height="25"/>
         <image name="faq" width="25" height="25"/>
-        <image name="filter" width="12" height="12"/>
+        <image name="filter" width="25" height="25"/>
         <image name="newspaper" width="25" height="25"/>
         <image name="notifications" width="25" height="25"/>
-        <image name="reload" width="10.560000419616699" height="10.560000419616699"/>
-        <image name="search" width="10.560000419616699" height="10.560000419616699"/>
+        <image name="reload" width="22" height="22"/>
+        <image name="search" width="22" height="22"/>
         <image name="share" width="25" height="25"/>
         <image name="stockswipe_logo_small" width="37.5" height="37.5"/>
-        <image name="trash" width="10.560000419616699" height="10.560000419616699"/>
+        <image name="trash" width="22" height="22"/>
         <image name="university" width="25" height="25"/>
         <image name="write" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="mpU-mH-Dfh"/>
-        <segue reference="quK-gg-uD0"/>
         <segue reference="GQg-ve-hgJ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.098039217293262482" green="0.78431373834609985" blue="0.098039217293262482" alpha="1" colorSpace="calibratedRGB"/>

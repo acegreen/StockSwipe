@@ -54,18 +54,16 @@ class WatchlistCardCollectionViewCell: UICollectionViewCell {
     override var isSelected: Bool {
         didSet {
             if self.isSelected {
-                
                 // Set self border to show selection
-                self.layer.cornerRadius = 7.5
+                self.layer.cornerRadius = 15
                 self.layer.borderWidth = 1.5
                 self.layer.borderColor = Constants.SSColors.grey.cgColor
                 
             } else {
-                
                 // Remove bold cell border
-                self.layer.cornerRadius = 7.5
-                self.layer.borderWidth = 0.5
-                self.layer.borderColor = Constants.SSColors.grey.cgColor
+                self.layer.cornerRadius = 15
+                self.layer.borderWidth = 0
+                self.layer.borderColor = UIColor.clear.cgColor
                 
             }
         }

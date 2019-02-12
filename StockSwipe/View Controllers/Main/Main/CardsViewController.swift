@@ -556,6 +556,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                 self.skipCardView()
             }
         }
+
     }
     
     func swapAndResizeCardView(_ CardView: SwipeCardView?) -> Void {

@@ -18,7 +18,6 @@ target 'StockSwipe' do
 
     # Analytics
     pod 'Crashlytics'
-    pod 'LaunchKit'
     pod 'ChimpKit'
     
     # Parse
@@ -46,6 +45,7 @@ target 'StockSwipe' do
     shared_pods
     
     # Retired
+    #pod 'LaunchKit'
     #pod 'PulsingHalo', :git => 'https://github.com/shu223/PulsingHalo.git'
     #pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift2'
     #pod 'ChameleonFramework/Swift'

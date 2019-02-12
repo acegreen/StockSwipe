@@ -9,7 +9,6 @@
 import UIKit
 import Parse
 import Crashlytics
-import LaunchKit
 import ChimpKit
 import SwiftyJSON
 
@@ -182,10 +181,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             viewController.present(self.logInViewController, animated: true, completion: nil)
             
         } else {
-            
-            LaunchKit.sharedInstance().setUserIdentifier(nil, email: nil, name: nil)
             SweetAlert().showAlert("No Action!", subTitle: "You are already Logged in", style: AlertStyle.none)
-            
             viewController.dismiss(animated: false, completion: nil)
         }
     }
@@ -202,10 +198,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         PFUser.logOutInBackground { (error) in
             
             if error == nil {
-                // register to LaunchKit
-                LaunchKit.sharedInstance().setUserIdentifier(nil, email: nil, name: nil)
-                SweetAlert().showAlert("Logged Out!", subTitle: "You are now logged out", style: AlertStyle.success)
-                
+                SweetAlert().showAlert("Logged Out!", subTitle: "You are now logged out", style: AlertStyle.success)                
                 self.loginDelegate?.didLogoutSuccessfully()
             }
         }
@@ -534,9 +527,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     currentInstallation["user"] = user
                     currentInstallation.saveInBackground()
                 }
-                
-                // register to LaunchKit
-                LaunchKit.sharedInstance().setUserIdentifier(user.objectId, email: user.email, name: user.username)
                 
                 // register to MailChimp
                 self.registerUserMailChimp(listID: "4266807125", firstName: firstName, lastName: lastName, username: user.username, email: user.email)

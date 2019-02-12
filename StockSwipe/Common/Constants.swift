@@ -98,9 +98,11 @@ class Constants {
     
     struct SSColors {
         static let grey: UIColor = UIColor(red: 111/255, green: 113/255, blue: 121/255, alpha: 1.0)
-        static let green: UIColor = UIColor(red: 25/255, green: 200/255, blue: 25/255, alpha: 1.0)
-        static let gold: UIColor = UIColor(red: 245, green: 192, blue: 24)
+        static let green: UIColor = UIColor(red: 86/255, green: 171/255, blue: 47/255, alpha: 1.0)
+        static let greenGradientStart: UIColor = UIColor(red: 86/255, green: 171/255, blue: 47/255, alpha: 1.0)
+        static let greenGradientEnd: UIColor = UIColor(red: 168/255, green: 224/255, blue: 99/255, alpha: 1.0)
         static let red: UIColor = UIColor(rgbValue: 0xFF3A2D)  // #FF3A2D - Flat red
+        static let gold: UIColor = UIColor(red: 245, green: 192, blue: 24)
     }
     
     enum APIKeys: String {

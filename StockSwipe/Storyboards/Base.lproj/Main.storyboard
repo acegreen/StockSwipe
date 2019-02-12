@@ -830,7 +830,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
-                                                    <color key="backgroundColor" red="0.098039215690000001" green="0.7843137255" blue="0.098039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="backgroundColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="bottom" secondItem="k29-Lj-VD6" secondAttribute="bottom" constant="71.5" id="C4d-It-6Y0"/>
                                                         <constraint firstItem="k29-Lj-VD6" firstAttribute="top" secondItem="sIa-uy-b0R" secondAttribute="top" constant="8" id="Gls-Sg-SPX"/>
@@ -891,7 +891,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="10" reuseIdentifier="NotificationCell" rowHeight="100" id="hb2-r8-mmm" customClass="NotificationCell" customModule="StockSwipe" customModuleProvider="target">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NotificationCell" rowHeight="100" id="hb2-r8-mmm" customClass="NotificationCell" customModule="StockSwipe" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="100"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hb2-r8-mmm" id="sTd-Xw-Osz">
@@ -1138,7 +1138,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="ProfileContainerController" storyboardName="Profile" referencedIdentifier="ProfileContainerController" id="plz-aC-Joh" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="haK-sp-A1I" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2323" y="407"/>
+            <point key="canvasLocation" x="2278" y="407"/>
         </scene>
         <!--CardDetail-->
         <scene sceneID="9vQ-Xu-Ecl">
@@ -1146,7 +1146,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="CardDetailTabBarController" storyboardName="CardDetail" id="Ghc-uj-GGW" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mOW-l9-OfD" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2374" y="-1804"/>
+            <point key="canvasLocation" x="2244" y="-1811"/>
         </scene>
         <!--TradeIdeaDetailTableViewController-->
         <scene sceneID="WyY-5L-YPb">
@@ -1162,7 +1162,7 @@
                 <viewControllerPlaceholder storyboardIdentifier="TradeIdeaPostNavigationController" storyboardName="TradeIdea" referencedIdentifier="TradeIdeaPostNavigationController" id="uJ2-SN-X8G" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uwX-6A-cWO" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2322" y="-2461"/>
+            <point key="canvasLocation" x="2195" y="-2349"/>
         </scene>
         <!--Search-->
         <scene sceneID="LhL-Iu-Que">
@@ -1170,7 +1170,7 @@
                 <viewControllerPlaceholder storyboardName="Search" id="REU-vL-EdZ" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QGX-Ly-cos" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2246" y="-1716"/>
+            <point key="canvasLocation" x="2134" y="-1694"/>
         </scene>
         <!--Filter-->
         <scene sceneID="q87-Fl-AhJ">
@@ -1306,7 +1306,7 @@
                                                         <color key="separatorColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         <prototypes>
-                                                            <tableViewCell contentMode="scaleToFill" selectionStyle="gray" indentationWidth="10" reuseIdentifier="TopNewsCell" id="ebJ-Wz-W4y" customClass="TopNewsCell" customModule="StockSwipe" customModuleProvider="target">
+                                                            <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TopNewsCell" id="ebJ-Wz-W4y" customClass="TopNewsCell" customModule="StockSwipe" customModuleProvider="target">
                                                                 <rect key="frame" x="0.0" y="28" width="355" height="100"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ebJ-Wz-W4y" id="JuJ-hi-XKX">
@@ -1435,8 +1435,8 @@
         <image name="write" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="mpU-mH-Dfh"/>
-        <segue reference="GQg-ve-hgJ"/>
+        <segue reference="xxP-uL-bqJ"/>
+        <segue reference="sLE-BL-QrO"/>
     </inferredMetricsTieBreakers>
-    <color key="tintColor" red="0.098039217293262482" green="0.78431373834609985" blue="0.098039217293262482" alpha="1" colorSpace="calibratedRGB"/>
+    <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
 </document>

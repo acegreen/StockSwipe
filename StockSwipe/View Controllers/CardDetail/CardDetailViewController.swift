@@ -22,7 +22,7 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var scrollView: UIScrollView!
 
-    @IBOutlet var summaryLabel: UITextView!
+    @IBOutlet var summaryLabel: UILabel!
     @IBOutlet var PELabel: UILabel!
     @IBOutlet var marketCapLabel: UILabel!
     @IBOutlet var EPSLabel: UILabel!
@@ -42,6 +42,10 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     @IBOutlet var industryLabel: UILabel!
     @IBOutlet var fulltimeEmployeesLabel: UILabel!
     @IBOutlet var exchangeLabel: UILabel!
+    
+    @IBAction func addToWatchlist(_ sender: Any) {
+        Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in }
+    }
     
     var card: Card! {
         didSet {

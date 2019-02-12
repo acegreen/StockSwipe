@@ -10,10 +10,6 @@ import UIKit
 import Parse
 import DataCache
 
-protocol SplashAnimationDelegate {
-    func didFinishLoading()
-}
-
 class OverviewViewController: UIViewController, SegueHandlerType {
     
     enum SegueIdentifier: String {
@@ -27,6 +23,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     var iCarouselTickers = ["^IXIC","^GSPC","^RUT","^VIX","^GDAXI","^FTSE","^FCHI","^N225","^HSI","^GSPTSE","CAD=X"]
     var tickers = [Ticker]()
+    var selectedCard: Card?
     
     var overviewVCOperationQueue: OperationQueue = OperationQueue()
     var carouselLastQueriedDate: Date!
@@ -92,7 +89,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         overviewVCOperationQueue.addOperations([marketCarouselOperation], waitUntilFinished: true)
         
         if firstLaunch {
-            
             let animationOperation = BlockOperation { () -> Void in
                 self.animationDelegate?.didFinishLoading()
             }
@@ -159,38 +155,14 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         switch segueIdentifier {
             
         case .ChartDetailSegueIdentifier:
-            
-            var symbol: String!
-            
-            switch sender {
-                
-            case is UIView:
-                
-                let destinationView = segue.destination as! CardDetailViewController
-                if tickers.get(carousel.index(ofItemView: sender as! UIView)) != nil {
-                    let tickerAtIndex = tickers[carousel.index(ofItemView: sender as! UIView)]
-                    symbol = tickerAtIndex.symbol
-                    
-                    Functions.makeCard(for: symbol) { card in
-                        
-                        do {
-                            let card = try card()
-                            destinationView.card = card
-                        } catch {
-                            // TODO: handle error
-                        }
-                    }
-                }
-                
-            default:
-                break
-            }
+            let destinationViewController = segue.destination as! UINavigationController
+            let cardDetailViewController = destinationViewController.viewControllers.first as! CardDetailViewController
+            cardDetailViewController.card = selectedCard
             
         case .PostIdeaSegueIdentifier:
             
             let destinationViewController = segue.destination as! UINavigationController
             let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
-            
             ideaPostViewController.tradeIdeaType = .new
 //            ideaPostViewController.delegate =  self
             
@@ -237,12 +209,24 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
     
     func carousel(_ carousel: iCarousel, didSelectItemAt index: Int) {
         
-        guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
-            return
-        }
-        
-//        performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: carousel.itemView(at: index))
+//        guard Functions.isConnectedToNetwork() else {
+//            SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+//            return
+//        }
+//        
+//        
+//        if let tickerAtIndex = tickers.get(index) {
+//            Functions.makeCard(for: tickerAtIndex.symbol) { card in
+//                do {
+//                    let card = try card()
+//                    self.selectedCard = card
+//                    self.performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: carousel.itemView(at: index))
+//                    
+//                } catch {
+//                    // TODO: handle error
+//                }
+//            }
+//        }
     }
     
     func carousel(_ carousel: iCarousel, valueFor option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {

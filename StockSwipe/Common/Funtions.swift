@@ -141,15 +141,17 @@ class Functions {
         }
     }
     
-    class func makeCardsFromCoreData(completion: @escaping (_ result: () throws -> [Card]) -> Void) -> Void {
+    class func makeCardsFromCoreData(symbols: [String]? = nil, completion: @escaping (_ result: () throws -> [Card]) -> Void) -> Void {
         
-        let chartFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Card")
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Card")
+        if let symbols = symbols {
+            request.predicate = NSPredicate(format: "symbol = %@", argumentArray: symbols)
+        }
         let sort = NSSortDescriptor(key: "dateChoosen", ascending: false)
-        let sortDescriptors = [sort]
-        chartFetchRequest.sortDescriptors = sortDescriptors
+        request.sortDescriptors = [sort]
         
         do {
-            let results = try Constants.context.fetch(chartFetchRequest)
+            let results = try Constants.context.fetch(request)
             
             guard let cardModels =  results as? [CardModel] else { throw QueryHelper.QueryError.errorQueryingForCoreData }
             
@@ -491,7 +493,7 @@ class Functions {
         
         DispatchQueue.main.async {
             
-            SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle:"SHORT", buttonColor:UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle: "SHORT", buttonColor:UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
                 
                 guard let topVC = UIApplication.topViewController(), Functions.isUserLoggedIn(presenting: topVC) else { return }
                 
@@ -502,6 +504,8 @@ class Functions {
                     }
                     
                     saveIntoCoreData(card, userChoice: .LONG)
+                    NotificationCenter.default.post(name: Notification.Name("AddToWatchlist"), object: nil, userInfo: ["symbol": card.symbol, "userChoice": Constants.UserChoices.LONG])
+                    
                     completion(.LONG)
                     
                 } else if isOtherButton {
@@ -511,6 +515,8 @@ class Functions {
                     }
                     
                     saveIntoCoreData(card, userChoice: .SHORT)
+                    NotificationCenter.default.post(name: Notification.Name("AddToWatchlist"), object: nil, userInfo: ["symbol": card.symbol, "userChoice": Constants.UserChoices.SHORT])
+                    
                     completion(.SHORT)
                 }
             }

@@ -64,7 +64,6 @@
 		238DB6E01D85A01F00082918 /* WatchlistCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C51D85A01F00082918 /* WatchlistCollectionViewController.swift */; };
 		238DB6E11D85A01F00082918 /* CardDetailTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C61D85A01F00082918 /* CardDetailTabBarController.swift */; };
 		238DB6E21D85A01F00082918 /* ChartWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C71D85A01F00082918 /* ChartWebViewController.swift */; };
-		238DB6E41D85A01F00082918 /* CompanyProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C91D85A01F00082918 /* CompanyProfileTableViewController.swift */; };
 		238DB6E51D85A01F00082918 /* FAQTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6CA1D85A01F00082918 /* FAQTableViewController.swift */; };
 		238DB6E61D85A01F00082918 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6CB1D85A01F00082918 /* FilterTableViewController.swift */; };
 		238DB6E71D85A01F00082918 /* IdeaPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6CC1D85A01F00082918 /* IdeaPostViewController.swift */; };
@@ -263,7 +262,6 @@
 		238DB6C51D85A01F00082918 /* WatchlistCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchlistCollectionViewController.swift; sourceTree = "<group>"; };
 		238DB6C61D85A01F00082918 /* CardDetailTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardDetailTabBarController.swift; sourceTree = "<group>"; };
 		238DB6C71D85A01F00082918 /* ChartWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartWebViewController.swift; sourceTree = "<group>"; };
-		238DB6C91D85A01F00082918 /* CompanyProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CompanyProfileTableViewController.swift; sourceTree = "<group>"; };
 		238DB6CA1D85A01F00082918 /* FAQTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQTableViewController.swift; sourceTree = "<group>"; };
 		238DB6CB1D85A01F00082918 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
 		238DB6CC1D85A01F00082918 /* IdeaPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdeaPostViewController.swift; sourceTree = "<group>"; };
@@ -614,7 +612,6 @@
 				238DB6C71D85A01F00082918 /* ChartWebViewController.swift */,
 				238DB6D91D85A01F00082918 /* TradeIdeasTableViewController.swift */,
 				238DB6D71D85A01F00082918 /* StreamTableViewController.swift */,
-				238DB6C91D85A01F00082918 /* CompanyProfileTableViewController.swift */,
 			);
 			path = CardDetail;
 			sourceTree = "<group>";
@@ -656,9 +653,9 @@
 			isa = PBXGroup;
 			children = (
 				23C221A21DC8E8C5003898E9 /* SwipeCardView.swift */,
+				23C221921DC8E8C5003898E9 /* WatchlistCardCollectionViewCell.swift */,
 				23C221901DC8E8C5003898E9 /* BlockButton.swift */,
 				23C221911DC8E8C5003898E9 /* BorderedLabel.swift */,
-				23C221921DC8E8C5003898E9 /* WatchlistCardCollectionViewCell.swift */,
 				23C221931DC8E8C5003898E9 /* CustomImagePickerController.swift */,
 				23C221941DC8E8C5003898E9 /* ExpandingCell.swift */,
 				23C221951DC8E8C5003898E9 /* FiltersCell.swift */,
@@ -1224,7 +1221,6 @@
 				238DB6E21D85A01F00082918 /* ChartWebViewController.swift in Sources */,
 				238DB6E01D85A01F00082918 /* WatchlistCollectionViewController.swift in Sources */,
 				236875B21B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m in Sources */,
-				238DB6E41D85A01F00082918 /* CompanyProfileTableViewController.swift in Sources */,
 				238DB6E91D85A01F00082918 /* MoreTableViewController.swift in Sources */,
 				238DB6EF1D85A01F00082918 /* ProfileTableViewController.swift in Sources */,
 				2347E61C1BD7FFD90036EA65 /* Ticker.swift in Sources */,
@@ -1385,7 +1381,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 422C898FA876840C7EB3FDD1 /* Pods-StockSwipeWidget.debug.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$inherited";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = $inherited;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEVELOPMENT_TEAM = 8T3W9YR268;
@@ -1411,7 +1407,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 302A57B5A56184CF31B8BD67 /* Pods-StockSwipeWidget.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$inherited";
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = $inherited;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";

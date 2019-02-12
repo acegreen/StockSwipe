@@ -46,12 +46,10 @@ final class PresentCardAnimator: NSObject, UIViewControllerAnimatedTransitioning
     }
 
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        // 1.
         return presentAnimationDuration
     }
 
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        // 2.
         transitionDriver = PresentCardTransitionDriver(params: params,
                                                        transitionContext: transitionContext,
                                                        baseAnimator: springAnimator)

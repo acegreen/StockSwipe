@@ -17,6 +17,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     
     enum SegueIdentifier: String {
         case ChartDetailSegueIdentifier = "ChartDetailSegueIdentifier"
+        case FilterSegueIdentifier = "FilterSegueIdentifier"
     }
     
     var url: URL!
@@ -156,7 +157,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         
         // GetObjects and make cards
         do {
-            try self.getObjectsAndMakecards()
+            try self.getObjectsAndMakeCards()
         } catch  {
             
             if let error = error as? QueryHelper.QueryError {
@@ -165,13 +166,12 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                 self.makeCardWithInformation(error)
                 
                 // Enable short/long buttons
-                //self.fadeInOutButton("In")
                 self.reloadFilterButtonsEnabled(true)
             }
         }
     }
     
-    func getObjectsAndMakecards() throws {
+    func getObjectsAndMakeCards() throws {
         
         guard Functions.isConnectedToNetwork() else {
             self.isGettingObjects = false
@@ -504,11 +504,8 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         
         if self.cards.count <= 10 && !self.isGettingObjects {
             
-            // GetObjects and make cards
             do {
-                
-                try self.getObjectsAndMakecards()
-                
+                try self.getObjectsAndMakeCards()
             } catch  {
                 
                 if let error = error as? QueryHelper.QueryError {
@@ -778,9 +775,19 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         
         switch segueIdentifier {
         case .ChartDetailSegueIdentifier:
-            guard let card: Card = self.cards.find({$0.symbol == self.firstCardView.card.symbol}) else { return }
+            
             let destinationView = segue.destination as! CardDetailTabBarController
-            destinationView.card = card
+            Functions.makeCard(for: self.firstCardView.card.symbol) { card in
+                
+                do {
+                    let card = try card()
+                    destinationView.card = card
+                } catch {
+                    // TODO: handle error
+                }
+            }
+            
+        default: break
         }
     }
     

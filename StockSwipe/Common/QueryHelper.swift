@@ -60,14 +60,11 @@ class QueryHelper {
         }
         
         static func decodeFrom(data: Data) throws -> [EODQuoteResult] {
-            var result: [EODQuoteResult] = []
             do {
-                result = try JSONDecoder().decode([EODQuoteResult].self, from: data)
+                return try JSONDecoder().decode([EODQuoteResult].self, from: data)
             } catch {
                 throw QueryError.errorParsingJSON
             }
-            
-            return result
         }
     }
     
@@ -125,14 +122,11 @@ class QueryHelper {
         }
         
         static func decodeFrom(data: Data) throws -> [EODHistoricalResult] {
-            var result: [EODHistoricalResult] = []
             do {
-                result = try JSONDecoder().decode([EODHistoricalResult].self, from: data)
+                return try JSONDecoder().decode([EODHistoricalResult].self, from: data)
             } catch {
                 throw QueryError.errorParsingJSON
             }
-            
-            return result
         }
     }
     
@@ -292,7 +286,7 @@ class QueryHelper {
             }
         }
         
-        static func decodeFrom(data: Data) throws -> EODFundamentalsResult? {
+        static func decodeFrom(data: Data) throws -> EODFundamentalsResult {
             do {
                 return try JSONDecoder().decode(EODFundamentalsResult.self, from: data)
             } catch {
@@ -306,6 +300,7 @@ class QueryHelper {
         case noExchangesOrSectorsSelected
         case ranOutOfChartCards
         case errorAccessingServer
+        case errorQueryingForCoreData
         case errorQueryingForData(error: Error)
         case queryDataEmpty
         case errorParsingJSON
@@ -323,6 +318,8 @@ class QueryHelper {
                 return "Temporarily out of Stock \n Check back soon!"
             case .errorAccessingServer:
                 return  "There was an error while accessing the server"
+            case .errorQueryingForCoreData:
+                return  "Oops! We ran into an issue querying for data"
             case .errorQueryingForData:
                 return  "Oops! We ran into an issue querying for data"
             case .queryDataEmpty:
@@ -468,7 +465,7 @@ class QueryHelper {
         }
     }
     
-    func queryEODFundamentals(for symbol: String, useCacheIfPossible: Bool = true, completionHandler: @escaping (_ eodQuoteResults: () throws -> (EODFundamentalsResult?)) -> Void) -> Void {
+    func queryEODFundamentals(for symbol: String, useCacheIfPossible: Bool = true, completionHandler: @escaping (_ eodQuoteResults: () throws -> (EODFundamentalsResult)) -> Void) -> Void {
         
         let query = "https://eodhistoricaldata.com/api/fundamentals/" + symbol +
             "?api_token=" + Constants.APIKeys.EodHistorcalData.key()
@@ -501,35 +498,6 @@ class QueryHelper {
             })
             task.resume()
         }
-    }
-    
-    func queryChartImage(symbol: String, completion: @escaping (_ result: () throws -> (UIImage)) -> Void) {
-        
-        guard let chartImageURL: URL = Functions.setImageURL(symbol) else {
-            
-            print("image URL is nil")
-            return completion({throw QueryError.urlEmpty})
-        }
-        
-        let chartImageSession = URLSession.shared
-        let task = chartImageSession.dataTask(with: chartImageURL, completionHandler: { (chartImagedata, response, error) -> Void in
-            
-            guard error == nil else {
-                return completion({throw QueryError.errorAccessingServer})
-            }
-            guard let chartImagedata = chartImagedata else {
-                return completion({throw QueryError.queryDataEmpty})
-            }
-            
-            guard let chartImage = UIImage(data: chartImagedata) else {
-                return completion({throw QueryError.chartImageCorrupt})
-            }
-            
-            completion({return (chartImage)})
-            
-        })
-        
-        task.resume()
     }
     
     func queryUserObjectsFor(usernames: [String], cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFUser])) -> Void) {

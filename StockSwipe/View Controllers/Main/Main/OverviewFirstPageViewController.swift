@@ -24,7 +24,6 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     var cloudWords = [CloudWord]()
     var tradeIdeas = [TradeIdea]()
     var topStories = [News]()
-    var charts = [Card]()
     
     var cloudFontName = "HelveticaNeue"
     
@@ -279,32 +278,9 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         
         self.cloudWords.removeAll()
         for (index, subJson) in trendingStocksJSON {
-            
-            if let card = (self.charts.find{ $0.symbol == subJson["symbol"].string }) {
-                self.charts.removeObject(card)
-            }
-            
             guard let symbol = subJson["symbol"].string, let wordCount = trendingStocksJSON.count - Int(index)! as? NSNumber else { continue }
             guard let cloudWord = CloudWord(word: symbol , wordCount: wordCount, wordColor: UIColor.white, wordTappable: true) else { continue }
             self.cloudWords.append(cloudWord)
-            
-            if let parseObject = (stockObjects.find{ $0["Symbol"] as? String == subJson["symbol"].string }) {
-                let card = Card(parseObject: parseObject)
-                self.charts.append(card)
-                
-            } else {
-                Functions.createParseObject(for: symbol) { object in
-                    do {
-                        
-                        let parseObject = try object()
-                        let card = Card(parseObject: parseObject)
-                        self.charts.append(card)
-                        
-                    } catch {
-                        //TODO: handle error
-                    }
-                }
-            }
         }
         
         self.layoutCloudWords(for: self.cloudView.bounds.size)
@@ -386,9 +362,17 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
             
             switch sender {
             case is UIButton:
-                symbol = (sender as! UIButton).currentTitle
+
                 let destinationView = segue.destination as! CardDetailTabBarController
-                destinationView.card = self.charts.find{ $0.symbol == symbol }
+                symbol = (sender as! UIButton).currentTitle
+                Functions.makeCard(for: symbol, completion: { card in
+                    do {
+                        let card = try card()
+                        destinationView.card = card
+                    } catch {
+                        //  TODO: handle error
+                    }
+                })
             default:
                 break
             }
@@ -498,10 +482,14 @@ extension OverviewFirstPageViewController: CloudLayoutOperationDelegate {
         if sender.state == UIGestureRecognizer.State.began {
             print("UIGestureRecognizer.State Began")
             
-            guard let card = (self.charts.find{ $0.symbol == (sender.view as! UIButton).currentTitle }) else { return }
-            
-            Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in
-            }
+            Functions.makeCard(for: (sender.view as! UIButton).currentTitle!, completion: { card in
+                do {
+                    let card = try card()
+                    Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in }
+                } catch {
+                    //  TODO: handle error
+                }
+            })
         }
     }
 }

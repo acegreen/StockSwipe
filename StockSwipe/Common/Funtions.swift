@@ -48,6 +48,172 @@ class Functions {
         return false
     }
     
+    class func setCardsSize() {
+        
+        switch UIDevice.current.userInterfaceIdiom {
+            
+        case .pad:
+            
+            if SDiOSVersion.deviceVersion() == .iPadPro12Dot9Inch || SDiOSVersion.deviceVersion() == .iPadPro9Dot7Inch {
+                
+                cardWidth = 1200
+                cardHeight = (cardWidth * 0.60) + (Constants.chartImageTopPadding + Constants.informationViewHeight)
+                
+            } else {
+                
+                cardWidth = 900
+                cardHeight = (cardWidth * 0.60) + (Constants.chartImageTopPadding + Constants.informationViewHeight)
+            }
+            
+            numberOfCellsHorizontally = 2
+            numberOfCellsVertically = 2
+            
+        default:
+            
+            cardWidth = UIScreen.main.bounds.width - 30
+            cardHeight = cardWidth * 1.3
+            numberOfCellsHorizontally = 1
+            
+            switch SDiOSVersion.deviceSize() {
+            case .Screen5Dot8inch, .Screen5Dot5inch, .Screen4Dot7inch:
+                numberOfCellsVertically = 3
+            default:
+                numberOfCellsVertically = 2
+            }
+        }
+    }
+    
+    class func setChartURL(_ symbol: String) -> URL {
+        
+        let formattedSymbol = symbol.URLEncodedString()!
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return URL(string: "http://45.55.137.153/?symbol=\(formattedSymbol)&interval=D")!
+        } else {
+            return URL(string: "http://45.55.137.153/mobile_white.html?symbol=\(formattedSymbol)&interval=D")!
+        }
+    }
+    
+    class func fetchParseObjectAndEODData(for symbol: String, completion: @escaping (_ result: () throws -> (parseObject: PFObject, eodHistoricalResult: [QueryHelper.EODHistoricalResult], eodFundamentalsResult: QueryHelper.EODFundamentalsResult)) -> Void) -> Void {
+        
+        self.getParseObject(symbol) { object in
+            do {
+                
+                guard let object = try object() else { throw QueryHelper.QueryError.parseObjectAlreadyExists }
+                
+                QueryHelper.sharedInstance.queryEODHistorical(for: symbol) { eodHistoricalResult in
+                    do {
+                        let eodHistoricalResult = try eodHistoricalResult()
+                        
+                        QueryHelper.sharedInstance.queryEODFundamentals(for: symbol, completionHandler: { eodFundamentalsResult in
+                            
+                            do {
+                                let eodFundamentalsResult = try eodFundamentalsResult()
+                                completion( { (object, eodHistoricalResult, eodFundamentalsResult) })
+                            } catch {
+                                completion({throw error})
+                            }
+                        })
+                        
+                    } catch {
+                        completion({throw error})
+                    }
+                }
+            } catch {
+                completion({throw error})
+            }
+        }
+    }
+    
+    class func makeCard(for symbol: String, completion: @escaping (_ result: () throws -> Card) -> Void) -> Void {
+        
+        self.fetchParseObjectAndEODData(for: symbol) { result in
+            do {
+                
+                let result = try result()
+                
+                let card = Card(parseObject: result.parseObject, eodHistoricalData: result.eodHistoricalResult, eodFundamentalsData: result.eodFundamentalsResult)
+                
+                completion({ card })
+                
+            } catch {
+                completion({throw error})
+            }
+        }
+    }
+    
+    class func makeCardsFromCoreData(completion: @escaping (_ result: () throws -> [Card]) -> Void) -> Void {
+        
+        let chartFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Card")
+        let sort = NSSortDescriptor(key: "dateChoosen", ascending: false)
+        let sortDescriptors = [sort]
+        chartFetchRequest.sortDescriptors = sortDescriptors
+        
+        do {
+            let results = try Constants.context.fetch(chartFetchRequest)
+            
+            guard let cardModels =  results as? [CardModel] else { throw QueryHelper.QueryError.errorQueryingForCoreData }
+            
+            var cards = [Card]()
+            for cardModel in cardModels {
+                self.makeCard(for: cardModel.symbol) { card in
+                    do {
+                        let card = try card()
+                        cards.append(card)
+                    } catch {
+                        completion({ throw error })
+                    }
+                }
+            }
+            completion({ cards })
+            
+        } catch {
+            completion({ throw error })
+        }
+    }
+    
+    class func createParseObject(for symbol: String, completion: @escaping (_ result: () throws -> PFObject) -> Void) -> Void {
+        
+        self.getParseObject(symbol) { object in
+            do {
+                
+                guard try object() == nil else { throw QueryHelper.QueryError.parseObjectAlreadyExists }
+                
+                QueryHelper.sharedInstance.queryEODFundamentals(for: symbol) { eodFundamentalsResult in
+                    
+                    do {
+                        let eodFundamentalsResult = try eodFundamentalsResult()
+                        let parseObject = PFObject(className: "Stocks")
+                        parseObject["Symbol"] = symbol
+                        parseObject["Company"] = eodFundamentalsResult.general.name ?? ""
+                        parseObject["Exchange"] = eodFundamentalsResult.general.exchange ?? ""
+                        parseObject["Sector"] = eodFundamentalsResult.general.sector ?? "Other"
+                        parseObject.saveInBackground()
+                        
+                        completion( { parseObject })
+                    } catch {
+                        completion({throw error})
+                    }
+                }
+            } catch {
+                completion({throw error})
+            }
+        }
+    }
+    
+    class func getParseObject(_ symbol: String, completion: @escaping (_ result: () throws -> PFObject?) -> Void) -> Void {
+        
+        QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [symbol]) { (result) in
+            
+            do {
+                let parseObject = try result().first
+                completion({ parseObject })
+                
+            } catch {
+                completion({throw error})
+            }
+        }
+    }
+    
     class func blockUser(_ user: PFUser, postAlert: Bool) {
         
         guard let currentUser = PFUser.current() else { return }
@@ -96,137 +262,6 @@ class Functions {
                 DispatchQueue.main.async {
                     SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
                 }
-            }
-        }
-    }
-    
-    class func setCardsSize() {
-        
-        switch UIDevice.current.userInterfaceIdiom {
-            
-        case .pad:
-            
-            if SDiOSVersion.deviceVersion() == .iPadPro12Dot9Inch || SDiOSVersion.deviceVersion() == .iPadPro9Dot7Inch {
-                
-                cardWidth = 1200
-                cardHeight = (cardWidth * 0.60) + (Constants.chartImageTopPadding + Constants.informationViewHeight)
-                
-            } else {
-                
-                cardWidth = 900
-                cardHeight = (cardWidth * 0.60) + (Constants.chartImageTopPadding + Constants.informationViewHeight)
-            }
-            
-            numberOfCellsHorizontally = 2
-            numberOfCellsVertically = 2
-            
-        default:
-            
-            cardWidth = UIScreen.main.bounds.width - 30
-            cardHeight = cardWidth * 1.3
-            numberOfCellsHorizontally = 1
-            
-            switch SDiOSVersion.deviceSize() {
-            case .Screen5Dot8inch, .Screen5Dot5inch, .Screen4Dot7inch:
-                numberOfCellsVertically = 3
-            default:
-                numberOfCellsVertically = 2
-            }
-        }
-    }
-    
-    class func setChartURL(_ symbol: String) -> URL {
-        
-        let formattedSymbol = symbol.URLEncodedString()!
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return URL(string: "http://45.55.137.153/?symbol=\(formattedSymbol)&interval=D")!
-        } else {
-            return URL(string: "http://45.55.137.153/mobile_white.html?symbol=\(formattedSymbol)&interval=D")!
-        }
-    }
-    
-    class func setImageURL(_ symbol: String) -> URL? {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D.png")
-        } else {
-            return URL(string: "http://45.55.137.153/images/symbol_" + symbol + "_interval_D_phone.png")
-        }
-    }
-    
-    class func getImage(_ imageURL: URL?, completion: @escaping (UIImage?) -> Void) {
-        guard let imageURL = imageURL else { return completion(nil) }
-        QueryHelper.sharedInstance.queryWith(queryString: imageURL.absoluteString, completionHandler: { (result) in
-            do {
-                let imageData  = try result()
-                completion(UIImage(data: imageData))
-            } catch {
-                // TODO: handle error
-            }
-        })
-    }
-    
-    class func fetchParseObjectAndEODData(for symbol: String, completion: @escaping (_ result: () throws -> (PFObject, QueryHelper.EODFundamentalsResult)) -> Void) -> Void {
-        
-        self.getParseObject(symbol) { object in
-            do {
-                
-                guard let object = try object() else { throw QueryHelper.QueryError.parseObjectAlreadyExists }
-                
-                QueryHelper.sharedInstance.queryEODFundamentals(for: symbol) { eodFundamentalsResult in
-                    
-                    do {
-                        guard let eodFundamentalsResult = try eodFundamentalsResult() else { return completion({ throw QueryHelper.QueryError.errorParsingJSON }) }
-                        
-                        completion( { (object, eodFundamentalsResult) })
-                    } catch {
-                        completion({throw error})
-                    }
-                }
-            } catch {
-                completion({throw error})
-            }
-        }
-    }
-    
-    class func createParseObject(for symbol: String, completion: @escaping (_ result: () throws -> PFObject) -> Void) -> Void {
-        
-        self.getParseObject(symbol) { object in
-            do {
-                
-                guard try object() == nil else { throw QueryHelper.QueryError.parseObjectAlreadyExists }
-                
-                QueryHelper.sharedInstance.queryEODFundamentals(for: symbol) { eodFundamentalsResult in
-                    
-                    do {
-                        guard let eodFundamentalsResult = try eodFundamentalsResult() else { return completion({ throw QueryHelper.QueryError.errorParsingJSON }) }
-                        let parseObject = PFObject(className: "Stocks")
-                        parseObject["Symbol"] = symbol
-                        parseObject["Company"] = eodFundamentalsResult.general.name ?? ""
-                        parseObject["Exchange"] = eodFundamentalsResult.general.exchange ?? ""
-                        parseObject["Sector"] = eodFundamentalsResult.general.sector ?? "Other"
-                        parseObject.saveInBackground()
-                        
-                        completion( { parseObject })
-                    } catch {
-                        completion({throw error})
-                    }
-                }
-            } catch {
-                completion({throw error})
-            }
-        }
-    }
-    
-    class func getParseObject(_ symbol: String, completion: @escaping (_ result: () throws -> PFObject?) -> Void) -> Void {
-        
-        QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [symbol]) { (result) in
-            
-            do {
-                let parseObject = try result().first
-                completion({ parseObject })
-                
-            } catch {
-                completion({throw error})
             }
         }
     }
@@ -377,39 +412,6 @@ class Functions {
             
             abort()
         }
-    }
-    
-    class func getCardsFromCoreData() -> [Card]? {
-        
-        let chartFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Card")
-        chartFetchRequest.entity = Constants.entity
-        
-        let sort = NSSortDescriptor(key: "dateChoosen", ascending: false)
-        let sortDescriptors = [sort]
-        
-        chartFetchRequest.sortDescriptors = sortDescriptors
-        
-        do {
-            let results = try Constants.context.fetch(chartFetchRequest)
-            
-            guard let cardModels =  results as? [CardModel] else { return nil }
-            let cards = cardModels.map({  Card(cardModel: $0) })
-            for card in cards {
-                if let cardModel = card.cardModel, let eodHistoricalData = try? QueryHelper.EODHistoricalResult.decodeFrom(data: cardModel.eodHistoricalData!) {
-                    card.eodHistoricalData = eodHistoricalData
-                }
-                if let cardModel = card.cardModel, let eodFundamentalsData = try? QueryHelper.EODFundamentalsResult.decodeFrom(data: cardModel.eodFundamentalsData!) {
-                    card.eodFundamentalsData = eodFundamentalsData
-                }
-            }
-            
-            return cards
-            
-        } catch let error as NSError {
-            print("Fetch failed: \(error.localizedDescription)")
-        }
-        
-        return nil
     }
     
     class func setupConfigParameter(_ parameter:String, completion: @escaping (_ parameterValue: Any?) -> Void) {

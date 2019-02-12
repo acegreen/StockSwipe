@@ -55,20 +55,13 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
             
             guard let resourceSpecifier = resourceSpecifier else { return false }
             
-            let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
+            let cardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
             
-            QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [resourceSpecifier]) { (result) in
-                
+            Functions.makeCard(for: resourceSpecifier) { card in
                 do {
-                    
-                    if let stockObject = try result().first {
-                        let card = Card(parseObject: stockObject)
-                        CardDetailTabBarController.card = card
-                        UIApplication.topViewController()?.present(CardDetailTabBarController, animated: true, completion: nil)
-                    } else {
-                        SweetAlert().showAlert("Uknown Symbol", subTitle: QueryHelper.QueryError.queryDataEmpty.message(), style: AlertStyle.warning)
-                    }
-                    
+                    let card = try card()
+                    cardDetailTabBarController.card = card
+                    UIApplication.topViewController()?.present(cardDetailTabBarController, animated: true, completion: nil)
                 } catch {
                     if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {

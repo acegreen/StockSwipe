@@ -27,7 +27,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     var iCarouselTickers = ["^IXIC","^GSPC","^RUT","^VIX","^GDAXI","^FTSE","^FCHI","^N225","^HSI","^GSPTSE","CAD=X"]
     var tickers = [Ticker]()
-    var cards = [Card]()
     
     var overviewVCOperationQueue: OperationQueue = OperationQueue()
     var carouselLastQueriedDate: Date!
@@ -145,15 +144,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     func updateCarousel(from eodQuoteResults: [QueryHelper.EODQuoteResult]) {
         
         self.tickers = Ticker.makeTickers(from: eodQuoteResults)
-        for ticker in tickers {
-            if let card = (self.cards.find{ $0.symbol == ticker.symbol}) {
-                self.cards.removeObject(card)
-            }
-            
-            let card = Card(symbol: ticker.symbol, companyName: ticker.companyName)
-            self.cards.append(card)
-        }
-        
         DispatchQueue.main.async {
             self.carousel.reloadData()
             NSLog("carousel completed on %@", Thread.isMainThread ? "main thread" : "other thread")
@@ -176,13 +166,21 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
             case is UIView:
                 
+                let destinationView = segue.destination as! CardDetailTabBarController
                 if tickers.get(carousel.index(ofItemView: sender as! UIView)) != nil {
                     let tickerAtIndex = tickers[carousel.index(ofItemView: sender as! UIView)]
                     symbol = tickerAtIndex.symbol
+                    
+                    Functions.makeCard(for: symbol) { card in
+                        
+                        do {
+                            let card = try card()
+                            destinationView.card = card
+                        } catch {
+                            // TODO: handle error
+                        }
+                    }
                 }
-                
-                let destinationView = segue.destination as! CardDetailTabBarController
-                destinationView.card = self.cards.find{ $0.symbol == symbol }
                 
             default:
                 break

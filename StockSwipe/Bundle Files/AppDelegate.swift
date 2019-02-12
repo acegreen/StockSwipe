@@ -144,11 +144,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 false
             }
             
-            QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [symbol], completion: { (result) in
+            Functions.makeCard(for: symbol) { card in
                 
                 do {
                     
-                    guard let stockObject = try result().first else { return }
+                    let card = try card()
                     
                     let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
                     let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
@@ -157,7 +157,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         mainTabBarController.dismiss(animated: false, completion: nil)
                     }
                     
-                    let card = Card(parseObject: stockObject)
                     CardDetailTabBarController.card = card
                     mainTabBarController.present(CardDetailTabBarController, animated: true, completion: nil)
                     
@@ -168,8 +167,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                         }
                     }
                 }
-                
-            })
+            }
             
             return true
         case "fb863699560384982"?:
@@ -193,11 +191,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             symbol = userInfo["symbol"] as? String
         }
         
-        QueryHelper.sharedInstance.queryStockObjectsFor(symbols: [symbol], completion: { (result) in
+        Functions.makeCard(for: symbol) { card in
             
             do {
                 
-                guard let stockObject = try result().first else { return }
+                let card = try card()
                 
                 let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
                 let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
@@ -206,7 +204,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     mainTabBarController.dismiss(animated: false, completion: nil)
                 }
                 
-                let card = Card(parseObject: stockObject)
                 CardDetailTabBarController.card = card
                 mainTabBarController.present(CardDetailTabBarController, animated: true, completion: nil)
                 
@@ -217,8 +214,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     }
                 }
             }
-            
-        })
+        }
         
         return true
     }

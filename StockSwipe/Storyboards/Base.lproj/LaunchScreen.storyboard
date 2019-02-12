@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MFp-PX-Fpe">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.59" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="MFp-PX-Fpe">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.45"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -17,7 +17,7 @@
                         <viewControllerLayoutGuide type="top" id="gYi-Rb-8Cg"/>
                         <viewControllerLayoutGuide type="bottom" id="DGQ-Tb-Qb3"/>
                     </layoutGuides>
-                    <view key="view" autoresizesSubviews="NO" contentMode="scaleToFill" id="hhu-pZ-40L" customClass="AGGradientView" customModule="StockSwipe" customModuleProvider="target">
+                    <view key="view" autoresizesSubviews="NO" contentMode="scaleToFill" id="hhu-pZ-40L">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
@@ -25,11 +25,11 @@
                                 <rect key="frame" x="112.5" y="258.5" width="150" height="150"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" red="0.098039215690000001" green="0.7843137255" blue="0.098039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="tintColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Wh5-um-u60" firstAttribute="centerX" secondItem="hhu-pZ-40L" secondAttribute="centerX" id="YMa-Kl-G7F"/>
-                            <constraint firstItem="Wh5-um-u60" firstAttribute="centerY" secondItem="hhu-pZ-40L" secondAttribute="centerY" id="tLX-ko-qjk"/>
+                            <constraint firstItem="Wh5-um-u60" firstAttribute="centerX" secondItem="hhu-pZ-40L" secondAttribute="centerX" id="MIC-xa-kZV"/>
+                            <constraint firstItem="Wh5-um-u60" firstAttribute="centerY" secondItem="hhu-pZ-40L" secondAttribute="centerY" id="MOW-ry-gKp"/>
                         </constraints>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="color" keyPath="startColor">
@@ -49,5 +49,5 @@
     <resources>
         <image name="stockswipe_logo" width="150" height="150"/>
     </resources>
-    <color key="tintColor" red="0.098039215690000001" green="0.84313725490000002" blue="0.098039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+    <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
 </document>

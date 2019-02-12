@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.59" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="jSu-zw-ob7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.59" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="M9z-OK-JZ7">
     <device id="retina6_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -106,7 +106,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x9B-7X-a3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3285" y="-972"/>
+            <point key="canvasLocation" x="3283" y="-999"/>
         </scene>
         <!--Empty Data Set Delegate-->
         <scene sceneID="v5a-KU-pGj">
@@ -135,7 +135,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NmI-D2-BrM" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3977" y="-972"/>
+            <point key="canvasLocation" x="3975" y="-999"/>
         </scene>
         <!--Chart-->
         <scene sceneID="2w9-iD-BTv">
@@ -739,6 +739,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rgA-G7-ft4"/>
                     </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="H68-og-7fT"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <size key="freeformSize" width="414" height="1200"/>
                     <connections>
                         <outlet property="EBITDALabel" destination="5Rc-Hh-IzR" id="jJk-Qy-0Wv"/>
@@ -766,7 +769,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vti-XO-m1Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2350.7246376811595" y="-640.17857142857144"/>
+            <point key="canvasLocation" x="2352" y="-625"/>
         </scene>
     </scenes>
     <resources>
@@ -777,5 +780,5 @@
         <image name="stream" width="25" height="25"/>
         <image name="x" width="16" height="16"/>
     </resources>
-    <color key="tintColor" red="0.098039217293262482" green="0.78431373834609985" blue="0.098039217293262482" alpha="1" colorSpace="calibratedRGB"/>
+    <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
 </document>

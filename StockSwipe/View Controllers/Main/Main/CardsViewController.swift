@@ -79,12 +79,15 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         }
     }
     
-    @IBAction func returnToMainviewController (_ segue:UIStoryboardSegue) {
+    @IBAction func unwindToOverviewController (_ segue:UIStoryboardSegue) {
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // register to listen to when AddToWatchlist happens
+        NotificationCenter.default.addObserver(self, selector: #selector(CardsViewController.addCardToWatchlist), name: Notification.Name("AddToWatchlist"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -142,6 +145,10 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         }
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     func reloadCardViews() {
         
         // Disable all buttons
@@ -164,6 +171,21 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                 
                 // Enable short/long buttons
                 self.reloadFilterButtonsEnabled(true)
+            }
+        }
+    }
+    
+    @objc func addCardToWatchlist(_ notification: Notification) {
+        guard let userChoice = notification.userInfo?["userChoice"] as? Constants.UserChoices else { return }
+            
+        DispatchQueue.main.async {
+            switch userChoice {
+            case .LONG:
+                self.longCardView()
+            case .SHORT:
+                self.shortCardView()
+            case .SKIP:
+                self.skipCardView()
             }
         }
     }
@@ -543,20 +565,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     }
     
     func viewDidGetLongPressed(_ view: UIView!) {
-        
-        guard let card: Card = self.cards.find({ $0.symbol == self.firstCardView.card.symbol }) else { return }
-        
-        Functions.promptAddToWatchlist(card, registerChoice: false) { (choice) in
-            switch choice {
-            case .LONG:
-                self.longCardView()
-            case .SHORT:
-                self.shortCardView()
-            case .SKIP:
-                self.skipCardView()
-            }
-        }
-
     }
     
     func swapAndResizeCardView(_ CardView: SwipeCardView?) -> Void {
@@ -569,6 +577,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         
         if firstCardView != nil {
             self.firstCardView.isUserInteractionEnabled = true
+            self.firstCardView.disabledHighlightedAnimation = true
         }
         
         self.resizeCardViews()
@@ -741,11 +750,8 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             return
         }
         
-        // Freeze highlighted state (or else it will bounce back)
-        self.firstCardView.freezeAnimations()
-        
         // Get current frame on screen
-        let currentCellFrame = self.firstCardView.layer.presentation()!.frame
+        let currentCellFrame = self.firstCardView.frame
         
         // Convert current frame to screen's coordinates
         let cardPresentationFrameOnScreen = self.firstCardView.superview!.convert(currentCellFrame, to: nil)
@@ -785,8 +791,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                 
                 DispatchQueue.main.async {
                     self.present(vc, animated: true, completion: {
-                        // Unfreeze
-                        self.firstCardView.unfreezeAnimations()
                     })
                 }
             } catch {

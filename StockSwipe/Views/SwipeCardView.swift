@@ -27,6 +27,7 @@ import UIKit
 import MDCSwipeToChoose
 import Charts
 
+@IBDesignable
 class SwipeCardView: MDCSwipeToChooseView {
     
     // Our custom view from the XIB file
@@ -106,7 +107,7 @@ class SwipeCardView: MDCSwipeToChooseView {
     
     private func makeChart() {
         
-        guard let card = card, let eodData = card.eodHistoricalData else { return }
+        guard let eodData = card.eodHistoricalData else { return }
         
         var xValues = [String]()
         var yValues = [Double]()
@@ -190,53 +191,45 @@ class SwipeCardView: MDCSwipeToChooseView {
         transform = .identity
     }
     
-    func freezeAnimations() {
-        disabledHighlightedAnimation = true
-        layer.removeAllAnimations()
-    }
-    
-    func unfreezeAnimations() {
-        disabledHighlightedAnimation = false
-    }
-    
     // Make it appears very responsive to touch
-//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesBegan(touches, with: event)
-//        animate(isHighlighted: true)
-//    }
-//    
-//    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesEnded(touches, with: event)
-//        animate(isHighlighted: false)
-//    }
-//    
-//    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        super.touchesCancelled(touches, with: event)
-//        animate(isHighlighted: false)
-//    }
-//    
-//    private func animate(isHighlighted: Bool, completion: ((Bool) -> Void)?=nil) {
-//        if disabledHighlightedAnimation {
-//            return
-//        }
-//        let animationOptions: UIView.AnimationOptions = Constants.isEnabledAllowsUserInteractionWhileHighlightingCard
-//            ? [.allowUserInteraction] : []
-//        if isHighlighted {
-//            UIView.animate(withDuration: 0.5,
-//                           delay: 0,
-//                           usingSpringWithDamping: 1,
-//                           initialSpringVelocity: 0,
-//                           options: animationOptions, animations: {
-//                            self.transform = .init(scaleX: Constants.cardHighlightedFactor, y: Constants.cardHighlightedFactor)
-//            }, completion: completion)
-//        } else {
-//            UIView.animate(withDuration: 0.5,
-//                           delay: 0,
-//                           usingSpringWithDamping: 1,
-//                           initialSpringVelocity: 0,
-//                           options: animationOptions, animations: {
-//                            self.transform = .identity
-//            }, completion: completion)
-//        }
-//    }
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        animate(isHighlighted: true)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        animate(isHighlighted: false)
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        animate(isHighlighted: false)
+    }
+    
+    private func animate(isHighlighted: Bool, completion: ((Bool) -> Void)? = nil) {
+        
+        guard !disabledHighlightedAnimation else { return }
+        
+        self.cornerRadius = 15
+        let animationOptions: UIView.AnimationOptions = Constants.isEnabledAllowsUserInteractionWhileHighlightingCard
+            ? [.allowUserInteraction] : []
+        if isHighlighted {
+            UIView.animate(withDuration: 3,
+                           delay: 0,
+                           usingSpringWithDamping: 1,
+                           initialSpringVelocity: 0,
+                           options: animationOptions, animations: {
+                            self.transform = .init(scaleX: Constants.cardHighlightedFactor, y: Constants.cardHighlightedFactor)
+            }, completion: completion)
+        } else {
+            UIView.animate(withDuration: 3,
+                           delay: 0,
+                           usingSpringWithDamping: 1,
+                           initialSpringVelocity: 0,
+                           options: animationOptions, animations: {
+                            self.transform = .identity
+            }, completion: completion)
+        }
+    }
 }

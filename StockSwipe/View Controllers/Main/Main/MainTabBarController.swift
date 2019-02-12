@@ -11,6 +11,10 @@ import Parse
 import BubbleTransition
 import SKSplashView
 
+protocol SplashAnimationDelegate {
+    func didFinishLoading()
+}
+
 class MainTabBarController: UITabBarController, PushNotificationDelegate, SplashAnimationDelegate {
     
     let transition = BubbleTransition()

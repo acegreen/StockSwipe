@@ -69,10 +69,8 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                 
                 self.TrashButton.isEnabled = false
                 
-                for indexPath in self.CollectionView.indexPathsForSelectedItems! {
-                    
+                for indexPath in self.CollectionView.indexPathsForSelectedItems! {                    
                     self.CollectionView.deselectItem(at: (indexPath), animated: false)
-                    
                 }
                 
                 // reload view
@@ -189,10 +187,18 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         }
         
         CollectionViewFlowLayout.itemSize = CGSize(width: cellWidth, height: cellHeight)
+        
+        self.reloadViewData()
+        
+        // register to listen to when AddToWatchlist happens
+        NotificationCenter.default.addObserver(self, selector: #selector(WatchlistCollectionViewController.addCardToWatchlist), name: Notification.Name("AddToWatchlist"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        reloadViewData()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     func reloadViewData() {
@@ -220,9 +226,29 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    @objc func addCardToWatchlist(_ notification: Notification) {
+        if let symbol = notification.userInfo?["symbol"] as? String {
+            
+            Functions.makeCardsFromCoreData(symbols: [symbol]) { cards in
+                do {
+                    let cards = try cards()
+                    self.cards.insert(contentsOf: cards, at: 0)
+                    
+                    DispatchQueue.main.async {
+                        // Enable edit button if array exists
+                        if self.cards.count != 0 {
+                            self.CollectionView.reloadData()
+                            self.EditButton.isEnabled = true
+                        } else if self.cards.count == 0 {
+                            self.CollectionView.reloadEmptyDataSet()
+                        }
+                    }
+                    
+                } catch {
+                    // TODO: handle error
+                }
+            }
+        }
     }
     
     // MARK: - Collection View Methods
@@ -466,9 +492,6 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
             return
         }
         
-        // Freeze highlighted state (or else it will bounce back)
-        cell.cardView.freezeAnimations()
-        
         // Get current frame on screen
         let currentCellFrame = cell.layer.presentation()!.frame
         
@@ -510,8 +533,6 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
                 
                 DispatchQueue.main.async {
                     self.present(vc, animated: true, completion: {
-                        // Unfreeze
-                        cell.cardView.unfreezeAnimations()
                     })
                 }
             } catch {

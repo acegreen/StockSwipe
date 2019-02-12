@@ -533,6 +533,7 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
                 
                 DispatchQueue.main.async {
                     self.present(vc, animated: true, completion: {
+                        vc.addToWatchlistButton.isHidden = true
                     })
                 }
             } catch {

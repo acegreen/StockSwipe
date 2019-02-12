@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		230428D41CA2E419009DDC21 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23332BA11CA08404006E4863 /* MainInterface.storyboard */; };
 		230428D51CA2E46C009DDC21 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23332BA41CA08416006E4863 /* TodayViewController.swift */; };
+		2307EB0E2213714100A098AC /* CardDetailContainerPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2307EB0D2213714100A098AC /* CardDetailContainerPageViewController.swift */; };
+		2307EB102213724300A098AC /* CardDetailFirstPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2307EB0F2213724300A098AC /* CardDetailFirstPageViewController.swift */; };
 		23142DC61D4FAF3A00F11531 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23142DC51D4FAF3A00F11531 /* News.swift */; };
 		231E89C01D28055C00CD009A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89BF1D28055C00CD009A /* User.swift */; };
 		232ECBD222120CFA00C30E46 /* StockSwipe.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBCF22120CFA00C30E46 /* StockSwipe.xcdatamodeld */; };
@@ -192,6 +194,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2307EB0D2213714100A098AC /* CardDetailContainerPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailContainerPageViewController.swift; sourceTree = "<group>"; };
+		2307EB0F2213724300A098AC /* CardDetailFirstPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailFirstPageViewController.swift; sourceTree = "<group>"; };
 		23142DC51D4FAF3A00F11531 /* News.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 		231E89BF1D28055C00CD009A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		232ECBD022120CFA00C30E46 /* StockSwipe v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StockSwipe v2.xcdatamodel"; sourceTree = "<group>"; };
@@ -1174,6 +1178,7 @@
 				23C221B71DC8E8C5003898E9 /* NoChartView.swift in Sources */,
 				23C221B41DC8E8C5003898E9 /* IdeaPostUITextView.swift in Sources */,
 				238DB6E11D85A01F00082918 /* CardDetailTabBarController.swift in Sources */,
+				2307EB0E2213714100A098AC /* CardDetailContainerPageViewController.swift in Sources */,
 				231E89C01D28055C00CD009A /* User.swift in Sources */,
 				23C925601B1A7D9400D17B70 /* Card.swift in Sources */,
 				238DB6EA1D85A01F00082918 /* NotificationCenterTableViewController.swift in Sources */,
@@ -1223,6 +1228,7 @@
 				236875B21B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m in Sources */,
 				238DB6E91D85A01F00082918 /* MoreTableViewController.swift in Sources */,
 				238DB6EF1D85A01F00082918 /* ProfileTableViewController.swift in Sources */,
+				2307EB102213724300A098AC /* CardDetailFirstPageViewController.swift in Sources */,
 				2347E61C1BD7FFD90036EA65 /* Ticker.swift in Sources */,
 				239EDA6F1BB025B0001CC63C /* Constants.swift in Sources */,
 				238DB6E61D85A01F00082918 /* FilterTableViewController.swift in Sources */,

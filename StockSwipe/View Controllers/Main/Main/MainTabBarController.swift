@@ -8,7 +8,6 @@
 
 import UIKit
 import Parse
-import LaunchKit
 import BubbleTransition
 import SKSplashView
 
@@ -77,13 +76,6 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
                     })
                 } else if SARate.sharedInstance().eventCount >= SARate.sharedInstance().eventsUntilPrompt {
                     SKStoreReviewController.requestReview()
-                } else {
-                    // Release notes on update
-                    LaunchKit.sharedInstance().presentAppReleaseNotesIfNeeded(from: self, completion: { (didPresent) -> Void in
-                        if didPresent {
-                            print("Woohoo, we showed the release notes card!")
-                        }
-                    })
                 }
             }
         }

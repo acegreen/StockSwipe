@@ -13,7 +13,6 @@ import Parse
 import Fabric
 import TwitterKit
 import Crashlytics
-import LaunchKit
 import ChimpKit
 
 protocol PushNotificationDelegate {
@@ -76,10 +75,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Intialize Fabric
         Fabric.with([Crashlytics.self()])
-        
-        // Initialize LaunchKit
-        LaunchKit.launch(withToken: Constants.APIKeys.LaunchKit.key())
-        //LaunchKit.sharedInstance().debugAlwaysPresentAppReleaseNotes = true
         
         // Intialize ChimpKit
         ChimpKit.shared().apiKey = Constants.APIKeys.ChimpKit.key()

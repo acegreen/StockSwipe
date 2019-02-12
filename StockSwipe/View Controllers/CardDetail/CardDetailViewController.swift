@@ -8,7 +8,11 @@
 
 import UIKit
 
-class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewDelegate {
+class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewDelegate, SegueHandlerType {
+    
+    enum SegueIdentifier: String {
+        case CardDetailContainerViewControllerSegue = "CardDetailContainerViewControllerSegue"
+    }
     
     // This constraint limits card content to not be covered by root view.
     // This is useful to make the card content expands when presenting,
@@ -21,29 +25,9 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     @IBOutlet weak var cardContentView: SwipeCardView!
     @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var scrollView: UIScrollView!
-
-    @IBOutlet var summaryLabel: UILabel!
-    @IBOutlet var PELabel: UILabel!
-    @IBOutlet var marketCapLabel: UILabel!
-    @IBOutlet var EPSLabel: UILabel!
-    @IBOutlet var bookValueLabel: UILabel!
-    @IBOutlet var divYieldLabel: UILabel!
-    @IBOutlet var earningsDateLabel: UILabel!
-    @IBOutlet var EBITDALabel: UILabel!
-    @IBOutlet var wallstreetTargetLabel: UILabel!
     
-    @IBOutlet var fiftyTwoWeekRange: UILabel!
-    @IBOutlet var fiftyMALabel: UILabel!
-    @IBOutlet var twoHundredMALabel: UILabel!
-    @IBOutlet var betaLabel: UILabel!
-    @IBOutlet var shortRatioLabel: UILabel!
-    
-    @IBOutlet var sectorLabel: UILabel!
-    @IBOutlet var industryLabel: UILabel!
-    @IBOutlet var fulltimeEmployeesLabel: UILabel!
-    @IBOutlet var exchangeLabel: UILabel!
-    
-    @IBAction func addToWatchlist(_ sender: Any) {
+    @IBOutlet var addToWatchlistButton: UIButton!
+    @IBAction func addToWatchlistButtonPressed(_ sender: Any) {
         Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in }
     }
     
@@ -111,34 +95,6 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     
         cardContentView.card = card
         cardContentView.setCardInfo()
-        self.loadInfo()
-    }
-    
-    func loadInfo() {
-        guard let eodFundamentalsData = card.eodFundamentalsData else { return }
-        
-        self.PELabel.text = eodFundamentalsData.highlights.peRatio ?? "--"
-        self.marketCapLabel.text = (eodFundamentalsData.highlights.marketCapitalization != nil) ? eodFundamentalsData.highlights.marketCapitalization?.suffixNumber() : "--"
-        self.EPSLabel.text = eodFundamentalsData.highlights.eps ?? "--"
-        self.bookValueLabel.text = eodFundamentalsData.highlights.bookValue ?? "--"
-        self.divYieldLabel.text =  eodFundamentalsData.highlights.dividendYield ?? "--"
-        self.earningsDateLabel.text = eodFundamentalsData.highlights.mostRecentQuarter ?? "--"
-        self.EBITDALabel.text = eodFundamentalsData.highlights.EBITDA != nil ? String(eodFundamentalsData.highlights.EBITDA!.suffixNumber()) : "--"
-        self.wallstreetTargetLabel.text = eodFundamentalsData.highlights.wallStreetTargetPrice ?? "--"
-        
-        let fifyTwoWeekLow = eodFundamentalsData.technicals.fiftyTwoWeekLow ?? ""
-        let fifyTwoWeekHigh = eodFundamentalsData.technicals.fiftyTwoWeekHigh ?? ""
-        self.fiftyTwoWeekRange.text = fifyTwoWeekLow + " - " + fifyTwoWeekHigh
-        self.fiftyMALabel.text = eodFundamentalsData.technicals.fiftyDayMA ?? "--"
-        self.twoHundredMALabel.text = eodFundamentalsData.technicals.twoHundredDayMA ?? "--"
-        self.betaLabel.text = eodFundamentalsData.technicals.beta ?? "--"
-        self.shortRatioLabel.text = eodFundamentalsData.technicals.shortRatio ?? "--"
-        
-        self.sectorLabel.text = eodFundamentalsData.general.sector ?? "--"
-        self.industryLabel.text = eodFundamentalsData.general.industry ?? "--"
-        self.fulltimeEmployeesLabel.text = (eodFundamentalsData.general.fullTimeEmployees != nil) ? String(eodFundamentalsData.general.fullTimeEmployees!) : "--"
-        self.exchangeLabel.text = eodFundamentalsData.general.exchange ?? "--"
-        self.summaryLabel.text = eodFundamentalsData.general.description ?? "--"
     }
     
     func didSuccessfullyDragDownToDismiss() {
@@ -278,6 +234,17 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     override var statusBarAnimatableConfig: StatusBarAnimatableConfig {
         return StatusBarAnimatableConfig(prefersHidden: true,
                                          animation: .slide)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let segueIdentifier = segueIdentifierForSegue(segue)
+        
+        switch segueIdentifier {
+        case .CardDetailContainerViewControllerSegue:
+            let cardDetailFirstPageViewController = segue.destination as! CardDetailContainerPageViewController
+            cardDetailFirstPageViewController.card = self.card
+        }
     }
 }
 

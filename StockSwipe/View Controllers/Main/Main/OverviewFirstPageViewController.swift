@@ -363,7 +363,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
             switch sender {
             case is UIButton:
 
-                let destinationView = segue.destination as! CardDetailTabBarController
+                let destinationView = segue.destination as! CardDetailViewController
                 symbol = (sender as! UIButton).currentTitle
                 Functions.makeCard(for: symbol, completion: { card in
                     do {
@@ -474,7 +474,7 @@ extension OverviewFirstPageViewController: CloudLayoutOperationDelegate {
             return
         }
         
-        performSegue(withIdentifier: "ChartDetailSegueIdentifier", sender: sender.view)
+//        performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: carousel.itemView(at: index))
     }
     
     @objc func wordLongPressed(_ sender: UILongPressGestureRecognizer) {

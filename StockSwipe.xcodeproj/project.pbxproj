@@ -12,6 +12,13 @@
 		23142DC61D4FAF3A00F11531 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23142DC51D4FAF3A00F11531 /* News.swift */; };
 		231E89C01D28055C00CD009A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89BF1D28055C00CD009A /* User.swift */; };
 		232ECBD222120CFA00C30E46 /* StockSwipe.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBCF22120CFA00C30E46 /* StockSwipe.xcdatamodeld */; };
+		232ECBD422125F8100C30E46 /* CardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBD322125F8100C30E46 /* CardDetailViewController.swift */; };
+		232ECBD6221260FA00C30E46 /* StatusBarAnimatableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBD5221260FA00C30E46 /* StatusBarAnimatableViewController.swift */; };
+		232ECBD82212611400C30E46 /* StatusBarAnimatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBD72212611400C30E46 /* StatusBarAnimatable.swift */; };
+		232ECBDD2212648B00C30E46 /* DismissCardAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBD92212648A00C30E46 /* DismissCardAnimator.swift */; };
+		232ECBDE2212648B00C30E46 /* CardTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDA2212648B00C30E46 /* CardTransition.swift */; };
+		232ECBDF2212648B00C30E46 /* CardPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDB2212648B00C30E46 /* CardPresentationController.swift */; };
+		232ECBE02212648B00C30E46 /* PresentCardAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDC2212648B00C30E46 /* PresentCardAnimator.swift */; };
 		2339B0A41B41A697009CE3EB /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 2339B0951B41A697009CE3EB /* LICENSE */; };
 		2339B0A51B41A697009CE3EB /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2339B0981B41A697009CE3EB /* iRate.bundle */; };
 		2339B0A61B41A697009CE3EB /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2339B09A1B41A697009CE3EB /* iRate.m */; };
@@ -115,7 +122,6 @@
 		23CCA6A31DA5D5E600EE4F09 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 238368661DA5CA7D0099123E /* WordCloud.framework */; };
 		23CCA6A41DA5D5E600EE4F09 /* WordCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 238368661DA5CA7D0099123E /* WordCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		23CE716D1C1215C800E87420 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE716C1C1215C800E87420 /* AdSupport.framework */; };
-		23D7602A1B629831009777E1 /* CustomSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23D760291B629831009777E1 /* CustomSegue.swift */; };
 		23E7F6A01BCB57A0009A016D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7F69F1BCB57A0009A016D /* NotificationCenter.framework */; };
 		23E7F6AA1BCB57A0009A016D /* StockSwipeWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 23E7F69E1BCB57A0009A016D /* StockSwipeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		23EA70101B119803008F6C12 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA700F1B119803008F6C12 /* AudioToolbox.framework */; };
@@ -140,7 +146,6 @@
 		23F374EA220F969B00593EFF /* Feedback.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23F374DF220F969B00593EFF /* Feedback.storyboard */; };
 		23F374EB220F969B00593EFF /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23F374E1220F969B00593EFF /* Profile.storyboard */; };
 		7888E1041B669C780087C255 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7602B1B62AC5B009777E1 /* CoreSpotlight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		7888E10A1B66D5880087C255 /* CustomUnwindSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7888E1091B66D5880087C255 /* CustomUnwindSegue.swift */; };
 		E5C3BFE4C3ECF902EB643B0B /* Pods_StockSwipe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BED1187118D34381FAD1EEC /* Pods_StockSwipe.framework */; };
 		E7FA3E9A20A4DF5709F2FA4C /* Pods_StockSwipeWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F9F5D5CA6A2A4EE014CA50 /* Pods_StockSwipeWidget.framework */; };
 /* End PBXBuildFile section */
@@ -192,6 +197,13 @@
 		231E89BF1D28055C00CD009A /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		232ECBD022120CFA00C30E46 /* StockSwipe v2.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = "StockSwipe v2.xcdatamodel"; sourceTree = "<group>"; };
 		232ECBD122120CFA00C30E46 /* StockSwipe.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = StockSwipe.xcdatamodel; sourceTree = "<group>"; };
+		232ECBD322125F8100C30E46 /* CardDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailViewController.swift; sourceTree = "<group>"; };
+		232ECBD5221260FA00C30E46 /* StatusBarAnimatableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarAnimatableViewController.swift; sourceTree = "<group>"; };
+		232ECBD72212611400C30E46 /* StatusBarAnimatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusBarAnimatable.swift; sourceTree = "<group>"; };
+		232ECBD92212648A00C30E46 /* DismissCardAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DismissCardAnimator.swift; sourceTree = "<group>"; };
+		232ECBDA2212648B00C30E46 /* CardTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardTransition.swift; sourceTree = "<group>"; };
+		232ECBDB2212648B00C30E46 /* CardPresentationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardPresentationController.swift; sourceTree = "<group>"; };
+		232ECBDC2212648B00C30E46 /* PresentCardAnimator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentCardAnimator.swift; sourceTree = "<group>"; };
 		232F5F981EE6E06C0046E16F /* StockSwipe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StockSwipe.entitlements; sourceTree = "<group>"; };
 		23332BA21CA08404006E4863 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = StockSwipeWidget/Base.lproj/MainInterface.storyboard; sourceTree = SOURCE_ROOT; };
 		23332BA41CA08416006E4863 /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TodayViewController.swift; path = StockSwipeWidget/TodayViewController.swift; sourceTree = SOURCE_ROOT; };
@@ -306,7 +318,6 @@
 		23CAE2651C2B46A800D15819 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		23CAE26C1C2CB41300D15819 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		23CE716C1C1215C800E87420 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
-		23D760291B629831009777E1 /* CustomSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomSegue.swift; sourceTree = "<group>"; };
 		23D7602B1B62AC5B009777E1 /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
 		23E7F69E1BCB57A0009A016D /* StockSwipeWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StockSwipeWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E7F69F1BCB57A0009A016D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
@@ -337,7 +348,6 @@
 		422C898FA876840C7EB3FDD1 /* Pods-StockSwipeWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipeWidget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipeWidget/Pods-StockSwipeWidget.debug.xcconfig"; sourceTree = "<group>"; };
 		5BED1187118D34381FAD1EEC /* Pods_StockSwipe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockSwipe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		62F9F5D5CA6A2A4EE014CA50 /* Pods_StockSwipeWidget.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_StockSwipeWidget.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		7888E1091B66D5880087C255 /* CustomUnwindSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomUnwindSegue.swift; sourceTree = "<group>"; };
 		8AC17DA01AC7366A004E6D2D /* StockSwipe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StockSwipe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CEDDC51E64E945056DDC5558 /* Pods-StockSwipe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipe.release.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipe/Pods-StockSwipe.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -599,6 +609,7 @@
 		238F077E220B5E9E001DA69C /* CardDetail */ = {
 			isa = PBXGroup;
 			children = (
+				232ECBD322125F8100C30E46 /* CardDetailViewController.swift */,
 				238DB6C61D85A01F00082918 /* CardDetailTabBarController.swift */,
 				238DB6C71D85A01F00082918 /* ChartWebViewController.swift */,
 				238DB6D91D85A01F00082918 /* TradeIdeasTableViewController.swift */,
@@ -686,7 +697,7 @@
 				2376E41E1C2B0D7A00B85656 /* QueryHelper.swift */,
 				238A11291C834A00002C1A73 /* ConcurrentOperation.swift */,
 				235805A9221096C6005C89DD /* Subclass */,
-				23EE133B1B7D0EFF00943AE4 /* Segues */,
+				23EE133B1B7D0EFF00943AE4 /* Transition */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -702,13 +713,17 @@
 			path = "/Users/AceGreen/Dropbox/iOS/Xcode Projects/StockSwipe/StockSwipeWidget";
 			sourceTree = "<absolute>";
 		};
-		23EE133B1B7D0EFF00943AE4 /* Segues */ = {
+		23EE133B1B7D0EFF00943AE4 /* Transition */ = {
 			isa = PBXGroup;
 			children = (
-				23D760291B629831009777E1 /* CustomSegue.swift */,
-				7888E1091B66D5880087C255 /* CustomUnwindSegue.swift */,
+				232ECBD72212611400C30E46 /* StatusBarAnimatable.swift */,
+				232ECBD5221260FA00C30E46 /* StatusBarAnimatableViewController.swift */,
+				232ECBDB2212648B00C30E46 /* CardPresentationController.swift */,
+				232ECBDA2212648B00C30E46 /* CardTransition.swift */,
+				232ECBD92212648A00C30E46 /* DismissCardAnimator.swift */,
+				232ECBDC2212648B00C30E46 /* PresentCardAnimator.swift */,
 			);
-			path = Segues;
+			path = Transition;
 			sourceTree = "<group>";
 		};
 		396D5A88566A826DCB501185 /* Pods */ = {
@@ -1150,12 +1165,14 @@
 				23CAE26D1C2CB41300D15819 /* Settings.swift in Sources */,
 				238DB6DD1D85A01F00082918 /* PageContentViewController.swift in Sources */,
 				235805A322105FDF005C89DD /* OverviewFirstPageViewController.swift in Sources */,
+				232ECBDF2212648B00C30E46 /* CardPresentationController.swift in Sources */,
 				23C221BB1DC8E8C5003898E9 /* SwipeCardView.swift in Sources */,
 				238DB6EC1D85A01F00082918 /* OverviewViewController.swift in Sources */,
 				235805A8221096B5005C89DD /* AGGradientView.swift in Sources */,
+				232ECBD82212611400C30E46 /* StatusBarAnimatable.swift in Sources */,
 				23C221C11DC8E8C5003898E9 /* UserCell.swift in Sources */,
+				232ECBE02212648B00C30E46 /* PresentCardAnimator.swift in Sources */,
 				23C221AB1DC8E8C5003898E9 /* WatchlistCardCollectionViewCell.swift in Sources */,
-				23D7602A1B629831009777E1 /* CustomSegue.swift in Sources */,
 				238DABC31BA664ED0079DAFC /* UIView+TLMotionEffect.m in Sources */,
 				238DB6F51D85A01F00082918 /* WebViewController.swift in Sources */,
 				2394DFAA1C8C691B0018A5A9 /* SweetAlert.swift in Sources */,
@@ -1167,7 +1184,9 @@
 				238DB6EA1D85A01F00082918 /* NotificationCenterTableViewController.swift in Sources */,
 				236280C21CB3FABF0022A129 /* TradeIdea.swift in Sources */,
 				23C221B81DC8E8C5003898E9 /* NotificationCell.swift in Sources */,
+				232ECBD422125F8100C30E46 /* CardDetailViewController.swift in Sources */,
 				23C221BC1DC8E8C5003898E9 /* TimeFormattedLabel.swift in Sources */,
+				232ECBD6221260FA00C30E46 /* StatusBarAnimatableViewController.swift in Sources */,
 				238DB6ED1D85A01F00082918 /* ProfileContainerController.swift in Sources */,
 				238DB6F41D85A01F00082918 /* TradeIdeasTableViewController.swift in Sources */,
 				238DB6E71D85A01F00082918 /* IdeaPostViewController.swift in Sources */,
@@ -1193,6 +1212,7 @@
 				23C221B21DC8E8C5003898E9 /* IdeaCell.swift in Sources */,
 				23B70D5B1B115BEF00FF2C04 /* CardModel.swift in Sources */,
 				233C7D541CB210B6006A014A /* Protocols.swift in Sources */,
+				232ECBDE2212648B00C30E46 /* CardTransition.swift in Sources */,
 				23C221BD1DC8E8C5003898E9 /* TintableButton.swift in Sources */,
 				2376E41F1C2B0D7A00B85656 /* QueryHelper.swift in Sources */,
 				235805A122105F53005C89DD /* OverviewContainerPageViewController.swift in Sources */,
@@ -1207,13 +1227,13 @@
 				238DB6E01D85A01F00082918 /* WatchlistCollectionViewController.swift in Sources */,
 				236875B21B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m in Sources */,
 				238DB6E41D85A01F00082918 /* CompanyProfileTableViewController.swift in Sources */,
-				7888E10A1B66D5880087C255 /* CustomUnwindSegue.swift in Sources */,
 				238DB6E91D85A01F00082918 /* MoreTableViewController.swift in Sources */,
 				238DB6EF1D85A01F00082918 /* ProfileTableViewController.swift in Sources */,
 				2347E61C1BD7FFD90036EA65 /* Ticker.swift in Sources */,
 				239EDA6F1BB025B0001CC63C /* Constants.swift in Sources */,
 				238DB6E61D85A01F00082918 /* FilterTableViewController.swift in Sources */,
 				232ECBD222120CFA00C30E46 /* StockSwipe.xcdatamodeld in Sources */,
+				232ECBDD2212648B00C30E46 /* DismissCardAnimator.swift in Sources */,
 				23C221C51DC8ECF9003898E9 /* ChartYAxisFormatter.swift in Sources */,
 				238A112A1C834A00002C1A73 /* ConcurrentOperation.swift in Sources */,
 				23C221AF1DC8E8C5003898E9 /* FollowButton.swift in Sources */,
@@ -1378,7 +1398,7 @@
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = StockSwipeWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = AG.StockSwipe.StockSwipeWidget;
@@ -1405,7 +1425,7 @@
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = StockSwipeWidget/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @executable_path/../../Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = AG.StockSwipe.StockSwipeWidget;
@@ -1548,7 +1568,7 @@
 					"$(PROJECT_DIR)/Frameworks/WordCloud",
 				);
 				INFOPLIST_FILE = "StockSwipe/Bundle Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = YES;
@@ -1586,7 +1606,7 @@
 				);
 				GCC_OPTIMIZATION_LEVEL = 3;
 				INFOPLIST_FILE = "StockSwipe/Bundle Files/Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;

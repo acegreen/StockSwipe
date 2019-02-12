@@ -16,7 +16,6 @@ import Crashlytics
 class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHandlerType {
     
     enum SegueIdentifier: String {
-        case ChartDetailSegueIdentifier = "ChartDetailSegueIdentifier"
         case FilterSegueIdentifier = "FilterSegueIdentifier"
     }
     
@@ -40,9 +39,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     var fourthCardView: SwipeCardView!
     var informationCardView: UIView!
     
-    var blureffect: UIBlurEffect!
-    var blurView: UIVisualEffectView!
-    
     let chartOffsetsX: CGFloat = 10
     let chartOffsetsY: CGFloat = 10
     var thresholdX: CGFloat = 0.75
@@ -50,6 +46,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     let buttonCircleLineWidth: CGFloat = 2.0
     
     let options = MDCSwipeToChooseViewOptions()
+    private var transition: CardTransition?
     
     lazy var halo: NVActivityIndicatorView! = {
         let frame = CGRect(x: self.view.bounds.midX - self.view.bounds.height / 4 , y: self.view.bounds.midY - self.view.bounds.height / 4, width: self.view.bounds.height / 2, height: self.view.bounds.height / 2)
@@ -542,15 +539,10 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     }
     
     func viewDidGetTapped(_ view: UIView!) {
-        
-        print("View did get tapped")
-        
         self.performCustomSegue()
     }
     
     func viewDidGetLongPressed(_ view: UIView!) {
-        
-        print("View did get long pressed")
         
         guard let card: Card = self.cards.find({ $0.symbol == self.firstCardView.card.symbol }) else { return }
         
@@ -575,9 +567,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         self.fourthCardView = nil
         
         if firstCardView != nil {
-            
             self.firstCardView.isUserInteractionEnabled = true
-            
         }
         
         self.resizeCardViews()
@@ -645,32 +635,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         print("includedExchanges:", includedExchanges)
         print("includedSectors:", includedSectors)
     }
-    
-    //    func nightModeToggle() {
-    //
-    //        nightModeButton.selected = !nightModeButton.selected
-    //
-    //        if nightModeButton.selected {
-    //
-    //            print("nightMode")
-    //
-    ////            let superview = self.view.superview
-    ////            self.view.removeFromSuperview()
-    ////            self.view = nil
-    ////            superview!.addSubview(self.view)
-    ////
-    //            // Replace blur effect
-    //            blureffect = UIBlurEffect(style: .Dark)
-    //            blurView = UIVisualEffectView(effect: blureffect)
-    //            self.viewWillAppear(false)
-    //
-    //        } else {
-    //
-    //            print("dayMode")
-    //
-    //        }
-    //
-    //    }
     
     func reloadFilterButtonsEnabled (_ state: Bool) {
         
@@ -769,28 +733,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     
     // MARK: - Segue
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        let segueIdentifier = segueIdentifierForSegue(segue)
-        
-        switch segueIdentifier {
-        case .ChartDetailSegueIdentifier:
-            
-            let destinationView = segue.destination as! CardDetailTabBarController
-            Functions.makeCard(for: self.firstCardView.card.symbol) { card in
-                
-                do {
-                    let card = try card()
-                    destinationView.card = card
-                } catch {
-                    // TODO: handle error
-                }
-            }
-            
-        default: break
-        }
-    }
-    
     func performCustomSegue() {
         
         guard Functions.isConnectedToNetwork() else {
@@ -798,7 +740,58 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             return
         }
         
-        self.performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: self)
+        // Freeze highlighted state (or else it will bounce back)
+        self.firstCardView.freezeAnimations()
+        
+        // Get current frame on screen
+        let currentCellFrame = self.firstCardView.layer.presentation()!.frame
+        
+        // Convert current frame to screen's coordinates
+        let cardPresentationFrameOnScreen = self.firstCardView.superview!.convert(currentCellFrame, to: nil)
+        
+        // Get card frame without transform in screen's coordinates  (for the dismissing back later to original location)
+        let cardFrameWithoutTransform = { () -> CGRect in
+            let center = self.firstCardView.center
+            let size = self.firstCardView.bounds.size
+            let r = CGRect(
+                x: center.x - size.width / 2,
+                y: center.y - size.height / 2,
+                width: size.width,
+                height: size.height
+            )
+            return self.firstCardView.superview!.convert(r, to: nil)
+        }()
+        
+        Functions.makeCard(for: self.firstCardView.card.symbol) { card in
+            
+            do {
+                
+                let card = try card()
+                
+                // Set up card detail view controller
+                let vc = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+                vc.card = card
+                vc.unhighlightedCard = card // Keep the original one to restore when dismiss
+                let params = CardTransition.Params(fromCardFrame: cardPresentationFrameOnScreen,
+                                                   fromCardFrameWithoutTransform: cardFrameWithoutTransform,
+                                                   fromCell: self.firstCardView!)
+                self.transition = CardTransition(params: params)
+                vc.transitioningDelegate = self.transition
+                
+                // If `modalPresentationStyle` is not `.fullScreen`, this should be set to true to make status bar depends on presented vc.
+                vc.modalPresentationCapturesStatusBarAppearance = true
+                vc.modalPresentationStyle = .custom
+                
+                DispatchQueue.main.async {
+                    self.present(vc, animated: true, completion: {
+                        // Unfreeze
+                        self.firstCardView.unfreezeAnimations()
+                    })
+                }
+            } catch {
+                // TODO: handle error
+            }
+        }
     }
     
     //    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue? {

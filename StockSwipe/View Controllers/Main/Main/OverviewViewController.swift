@@ -166,7 +166,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
             case is UIView:
                 
-                let destinationView = segue.destination as! CardDetailTabBarController
+                let destinationView = segue.destination as! CardDetailViewController
                 if tickers.get(carousel.index(ofItemView: sender as! UIView)) != nil {
                     let tickerAtIndex = tickers[carousel.index(ofItemView: sender as! UIView)]
                     symbol = tickerAtIndex.symbol
@@ -242,7 +242,7 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
             return
         }
         
-        performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: carousel.itemView(at: index))
+//        performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: carousel.itemView(at: index))
     }
     
     func carousel(_ carousel: iCarousel, valueFor option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {

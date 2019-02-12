@@ -31,14 +31,13 @@ protocol ChartCollectionCellDelegate {
 
 class WatchlistCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    var blureffect: UIBlurEffect!
-    var blurView: UIVisualEffectView!
-    
     var cards = [Card]()
     var selectedCard: Card!
     
     var cellWidth: CGFloat!
     var cellHeight: CGFloat!
+    
+    private var transition: CardTransition?
     
     @IBOutlet var navigationBar: UINavigationBar!
     
@@ -173,6 +172,8 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        CollectionView.delaysContentTouches = false
+        
         // setup CollectionViewLayout
         CollectionViewFlowLayout.minimumInteritemSpacing = 10
         CollectionViewFlowLayout.minimumLineSpacing = 10
@@ -180,7 +181,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             cellWidth = (self.view.bounds.width - 30) / numberOfCellsHorizontally
-            cellHeight = (cellWidth * 0.60) + Constants.chartImageTopPadding + Constants.informationViewHeight
+            cellHeight = (cellWidth * 0.60)
             
         } else {
             cellWidth = cardWidth / numberOfCellsHorizontally
@@ -203,12 +204,14 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                 let cards = try cards()
                 self.cards = cards
                 
-                // Enable edit button if array exists
-                if self.cards.count != 0 {
-                    self.CollectionView.reloadData()
-                    self.EditButton.isEnabled = true
-                } else if self.cards.count == 0 {
-                    self.CollectionView.reloadEmptyDataSet()
+                DispatchQueue.main.async {
+                    // Enable edit button if array exists
+                    if self.cards.count != 0 {
+                        self.CollectionView.reloadData()
+                        self.EditButton.isEnabled = true
+                    } else if self.cards.count == 0 {
+                        self.CollectionView.reloadEmptyDataSet()
+                    }
                 }
                 
             } catch {
@@ -225,15 +228,11 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     // MARK: - Collection View Methods
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        
         return 1
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
         return cards.count
-        
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -249,7 +248,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        print("cell selected")
+        let cell = collectionView.cellForItem(at: indexPath) as! WatchlistCardCollectionViewCell
         
         if self.isEditing {
             
@@ -270,7 +269,8 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             let selectedCard = cards[(self.CollectionView.indexPathsForSelectedItems!.first! as NSIndexPath).row]
             self.CollectionView.deselectItem(at: indexPath, animated: false)
             self.selectedCard = selectedCard
-            self.performSegue(withIdentifier: "showChartDetail", sender: self)
+            
+            performCustomSegue(cell: cell, card: selectedCard)
         }
     }
     
@@ -457,13 +457,66 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
         
     }
     
-    // MARK: - Segue stuff
+    // MARK: - Segue
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    func performCustomSegue(cell: WatchlistCardCollectionViewCell, card: Card) {
         
-        if segue.identifier == "showChartDetail" {
-            let destinationView = segue.destination as! CardDetailTabBarController
-            destinationView.card = selectedCard
+        guard Functions.isConnectedToNetwork() else {
+            SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+            return
+        }
+        
+        // Freeze highlighted state (or else it will bounce back)
+        cell.cardView.freezeAnimations()
+        
+        // Get current frame on screen
+        let currentCellFrame = cell.layer.presentation()!.frame
+        
+        // Convert current frame to screen's coordinates
+        let cardPresentationFrameOnScreen = cell.superview!.convert(currentCellFrame, to: nil)
+        
+        // Get card frame without transform in screen's coordinates  (for the dismissing back later to original location)
+        let cardFrameWithoutTransform = { () -> CGRect in
+            let center = cell.center
+            let size = cell.bounds.size
+            let r = CGRect(
+                x: center.x - size.width / 2,
+                y: center.y - size.height / 2,
+                width: size.width,
+                height: size.height
+            )
+            return cell.superview!.convert(r, to: nil)
+        }()
+        
+        Functions.makeCard(for: card.symbol) { card in
+            
+            do {
+                
+                let card = try card()
+                
+                // Set up card detail view controller
+                let vc = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+                vc.card = card
+                vc.unhighlightedCard = card // Keep the original one to restore when dismiss
+                let params = CardTransition.Params(fromCardFrame: cardPresentationFrameOnScreen,
+                                                   fromCardFrameWithoutTransform: cardFrameWithoutTransform,
+                                                   fromCell: cell.cardView)
+                self.transition = CardTransition(params: params)
+                vc.transitioningDelegate = self.transition
+                
+                // If `modalPresentationStyle` is not `.fullScreen`, this should be set to true to make status bar depends on presented vc.
+                vc.modalPresentationCapturesStatusBarAppearance = true
+                vc.modalPresentationStyle = .custom
+                
+                DispatchQueue.main.async {
+                    self.present(vc, animated: true, completion: {
+                        // Unfreeze
+                        cell.cardView.unfreezeAnimations()
+                    })
+                }
+            } catch {
+                // TODO: handle error
+            }
         }
     }
 }

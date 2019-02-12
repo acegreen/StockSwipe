@@ -28,8 +28,8 @@ class CardDetailFirstPageViewController: UIViewController {
     
     @IBOutlet var sectorLabel: UILabel!
     @IBOutlet var industryLabel: UILabel!
-    @IBOutlet var fulltimeEmployeesLabel: UILabel!
     @IBOutlet var exchangeLabel: UILabel!
+    @IBOutlet var fulltimeEmployeesLabel: UILabel!
     
     var card: Card!
     

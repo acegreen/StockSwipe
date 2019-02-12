@@ -55,6 +55,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
             
             guard let resourceSpecifier = resourceSpecifier else { return false }
             
+            // TODO: change segue
             let cardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
             
             Functions.makeCard(for: resourceSpecifier) { card in

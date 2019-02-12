@@ -209,24 +209,32 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
     
     func carousel(_ carousel: iCarousel, didSelectItemAt index: Int) {
         
-//        guard Functions.isConnectedToNetwork() else {
-//            SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
-//            return
-//        }
-//        
-//        
-//        if let tickerAtIndex = tickers.get(index) {
-//            Functions.makeCard(for: tickerAtIndex.symbol) { card in
-//                do {
-//                    let card = try card()
-//                    self.selectedCard = card
-//                    self.performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: carousel.itemView(at: index))
-//                    
-//                } catch {
-//                    // TODO: handle error
-//                }
-//            }
-//        }
+        guard Functions.isConnectedToNetwork() else {
+            SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+            return
+        }
+        
+        
+        if let tickerAtIndex = tickers.get(index) {
+            Functions.makeCard(for: tickerAtIndex.symbol) { card in
+                do {
+                    let card = try card()
+                    self.selectedCard = card
+                    
+                    func frontCardViewFrame() -> CGRect {
+                        return CGRect(x: self.view.bounds.midX - (cardWidth / 2), y: self.view.bounds.midY - (cardHeight / 2), width: cardWidth, height: cardHeight)
+                    }
+                    
+                    let frame = frontCardViewFrame()
+                    let tempView = SwipeCardView(frame: frame, card: card, options: nil)
+                    
+                    self.performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: carousel.itemView(at: index))
+                    
+                } catch {
+                    // TODO: handle error
+                }
+            }
+        }
     }
     
     func carousel(_ carousel: iCarousel, valueFor option: iCarouselOption, withDefault value: CGFloat) -> CGFloat {

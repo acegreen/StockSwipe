@@ -347,6 +347,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                     
                     self.view.addSubview(self.firstCardView)
                     self.firstCardView.isUserInteractionEnabled = true
+                    self.firstCardView.disabledHighlightedAnimation = true
                     self.firstCardView.transform = CGAffineTransform(rotationAngle: 30.toRadians())
                     
                     UIView.animate(withDuration: 0.5, delay: 0.0, options: UIView.AnimationOptions(), animations: { () -> Void in
@@ -575,10 +576,11 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         self.thirdCardView = self.fourthCardView
         self.fourthCardView = nil
         
-        if firstCardView != nil {
-            self.firstCardView.isUserInteractionEnabled = true
+        if self.firstCardView != nil {
             self.firstCardView.disabledHighlightedAnimation = true
+            self.firstCardView.isUserInteractionEnabled = true
         }
+
         
         self.resizeCardViews()
     }

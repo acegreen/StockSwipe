@@ -50,7 +50,6 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         let parentTabBarController = self.tabBarController as? CardDetailTabBarController
         symbol = parentTabBarController?.symbol
         companyName = parentTabBarController?.companyName
-        stockObject = parentTabBarController?.card.parseObject
         
         // title
         if companyName != nil {

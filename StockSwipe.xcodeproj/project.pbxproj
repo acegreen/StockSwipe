@@ -96,7 +96,6 @@
 		23C221AD1DC8E8C5003898E9 /* ExpandingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221941DC8E8C5003898E9 /* ExpandingCell.swift */; };
 		23C221AE1DC8E8C5003898E9 /* FiltersCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221951DC8E8C5003898E9 /* FiltersCell.swift */; };
 		23C221AF1DC8E8C5003898E9 /* FollowButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221961DC8E8C5003898E9 /* FollowButton.swift */; };
-		23C221B01DC8E8C5003898E9 /* GradientAnimationImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221971DC8E8C5003898E9 /* GradientAnimationImage.swift */; };
 		23C221B11DC8E8C5003898E9 /* iCarouselTickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221981DC8E8C5003898E9 /* iCarouselTickerView.swift */; };
 		23C221B21DC8E8C5003898E9 /* IdeaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221991DC8E8C5003898E9 /* IdeaCell.swift */; };
 		23C221B31DC8E8C5003898E9 /* IdeaPostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2219A1DC8E8C5003898E9 /* IdeaPostButton.swift */; };
@@ -296,7 +295,6 @@
 		23C221941DC8E8C5003898E9 /* ExpandingCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExpandingCell.swift; sourceTree = "<group>"; };
 		23C221951DC8E8C5003898E9 /* FiltersCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersCell.swift; sourceTree = "<group>"; };
 		23C221961DC8E8C5003898E9 /* FollowButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FollowButton.swift; sourceTree = "<group>"; };
-		23C221971DC8E8C5003898E9 /* GradientAnimationImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GradientAnimationImage.swift; sourceTree = "<group>"; };
 		23C221981DC8E8C5003898E9 /* iCarouselTickerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = iCarouselTickerView.swift; sourceTree = "<group>"; };
 		23C221991DC8E8C5003898E9 /* IdeaCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdeaCell.swift; sourceTree = "<group>"; };
 		23C2219A1DC8E8C5003898E9 /* IdeaPostButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdeaPostButton.swift; sourceTree = "<group>"; };
@@ -403,6 +401,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2307EB112213724F00A098AC /* Temp */ = {
+			isa = PBXGroup;
+			children = (
+				238DB6C61D85A01F00082918 /* CardDetailTabBarController.swift */,
+				238DB6C71D85A01F00082918 /* ChartWebViewController.swift */,
+				238DB6D91D85A01F00082918 /* TradeIdeasTableViewController.swift */,
+				238DB6D71D85A01F00082918 /* StreamTableViewController.swift */,
+			);
+			path = Temp;
+			sourceTree = "<group>";
+		};
 		2339B0941B41A697009CE3EB /* SARate-master */ = {
 			isa = PBXGroup;
 			children = (
@@ -612,10 +621,9 @@
 			isa = PBXGroup;
 			children = (
 				232ECBD322125F8100C30E46 /* CardDetailViewController.swift */,
-				238DB6C61D85A01F00082918 /* CardDetailTabBarController.swift */,
-				238DB6C71D85A01F00082918 /* ChartWebViewController.swift */,
-				238DB6D91D85A01F00082918 /* TradeIdeasTableViewController.swift */,
-				238DB6D71D85A01F00082918 /* StreamTableViewController.swift */,
+				2307EB0D2213714100A098AC /* CardDetailContainerPageViewController.swift */,
+				2307EB0F2213724300A098AC /* CardDetailFirstPageViewController.swift */,
+				2307EB112213724F00A098AC /* Temp */,
 			);
 			path = CardDetail;
 			sourceTree = "<group>";
@@ -664,7 +672,6 @@
 				23C221941DC8E8C5003898E9 /* ExpandingCell.swift */,
 				23C221951DC8E8C5003898E9 /* FiltersCell.swift */,
 				23C221961DC8E8C5003898E9 /* FollowButton.swift */,
-				23C221971DC8E8C5003898E9 /* GradientAnimationImage.swift */,
 				23C221981DC8E8C5003898E9 /* iCarouselTickerView.swift */,
 				23C221991DC8E8C5003898E9 /* IdeaCell.swift */,
 				23C221A81DC8E8C5003898E9 /* UserCell.swift */,
@@ -1195,7 +1202,6 @@
 				238C1AFA1C8C65D6009F9CC1 /* AppDelegate.swift in Sources */,
 				238DB6F21D85A01F00082918 /* StreamTableViewController.swift in Sources */,
 				23C221BA1DC8E8C5003898E9 /* SuperUITextView.swift in Sources */,
-				23C221B01DC8E8C5003898E9 /* GradientAnimationImage.swift in Sources */,
 				238DB6F01D85A01F00082918 /* SearchTableViewController.swift in Sources */,
 				2347E6151BD7C4A20036EA65 /* iCarousel.m in Sources */,
 				238DB6DC1D85A01F00082918 /* LoginViewController.swift in Sources */,

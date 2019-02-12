@@ -221,6 +221,7 @@ class SearchTableViewController: UITableViewController {
         
         self.dismiss(animated: true) {
             
+            // TODO: change segue
             let cardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
             
             Functions.makeCard(for: stockObject.object(forKey: "Symbol") as! String) { card in

@@ -196,25 +196,31 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZNa-1b-py7">
                                                 <rect key="frame" x="0.0" y="548.33333333333337" width="414" height="722.00000000000011"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18u-aV-Moh">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2XC-IZ-wpG">
                                                         <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
-                                                        <color key="backgroundColor" red="0.96078431610000004" green="0.75294119120000003" blue="0.094117648900000003" alpha="1" colorSpace="calibratedRGB"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="height" constant="50" id="7mH-nX-SPF"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
-                                                        <state key="normal" title="Add To Watchlist">
-                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        </state>
-                                                        <userDefinedRuntimeAttributes>
-                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                <real key="value" value="20"/>
-                                                            </userDefinedRuntimeAttribute>
-                                                        </userDefinedRuntimeAttributes>
-                                                        <connections>
-                                                            <action selector="addToWatchlistButtonPressed:" destination="jSu-zw-ob7" eventType="touchUpInside" id="26R-T5-s5w"/>
-                                                        </connections>
-                                                    </button>
+                                                        <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18u-aV-Moh">
+                                                                <rect key="frame" x="82" y="0.0" width="250" height="50"/>
+                                                                <color key="backgroundColor" red="0.96078431610000004" green="0.75294119120000003" blue="0.094117648900000003" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="50" id="7mH-nX-SPF"/>
+                                                                    <constraint firstAttribute="width" constant="250" id="HIc-WW-cMV"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                                <state key="normal" title="Add To Watchlist">
+                                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                </state>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                        <real key="value" value="20"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="addToWatchlistButtonPressed:" destination="jSu-zw-ob7" eventType="touchUpInside" id="26R-T5-s5w"/>
+                                                                </connections>
+                                                            </button>
+                                                        </subviews>
+                                                    </stackView>
                                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fnz-UD-0nI">
                                                         <rect key="frame" x="0.0" y="60" width="414" height="662"/>
                                                         <connections>
@@ -290,11 +296,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="yNk-XF-dGb">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="yNk-XF-dGb">
                                 <rect key="frame" x="10" y="10" width="394" height="842"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="bHZ-De-6Aj">
-                                        <rect key="frame" x="0.0" y="0.0" width="394" height="138.66666666666666"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="bHZ-De-6Aj">
+                                        <rect key="frame" x="0.0" y="0.0" width="394" height="391.66666666666669"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Summary" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cm2-Lw-yig">
                                                 <rect key="frame" x="0.0" y="0.0" width="394" height="28.666666666666668"/>
@@ -305,19 +311,16 @@
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
                                                 </variation>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="--" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kWt-sD-hkL">
-                                                <rect key="frame" x="0.0" y="38.666666666666657" width="394" height="100"/>
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="245" text="--" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kWt-sD-hkL">
+                                                <rect key="frame" x="0.0" y="38.666666666666657" width="394" height="353"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="jCu-Ff-u1g"/>
-                                                </constraints>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                             </textView>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="vDi-kV-yC2">
-                                        <rect key="frame" x="0.0" y="243" width="394" height="139.33333333333337"/>
+                                        <rect key="frame" x="0.0" y="411.66666666666669" width="394" height="139.33333333333331"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Highlights" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6S7-U0-2o2">
                                                 <rect key="frame" x="0.0" y="0.0" width="394" height="28.666666666666668"/>
@@ -329,7 +332,7 @@
                                                 </variation>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="tXS-Ao-nPw">
-                                                <rect key="frame" x="0.0" y="38.666666666666686" width="394" height="17.666666666666671"/>
+                                                <rect key="frame" x="0.0" y="38.666666666666629" width="394" height="17.666666666666671"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Jhb-es-YQl">
                                                         <rect key="frame" x="0.0" y="0.0" width="189.66666666666666" height="17.666666666666668"/>
@@ -427,7 +430,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="6Vz-iX-hl9">
-                                                <rect key="frame" x="0.0" y="94" width="394" height="17.666666666666671"/>
+                                                <rect key="frame" x="0.0" y="93.999999999999943" width="394" height="17.666666666666671"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Has-jg-rBS">
                                                         <rect key="frame" x="0.0" y="0.0" width="189.66666666666666" height="17.666666666666668"/>
@@ -527,7 +530,7 @@
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="dZi-sR-l4N">
-                                        <rect key="frame" x="0.0" y="486.66666666666669" width="394" height="111.66666666666669"/>
+                                        <rect key="frame" x="0.0" y="571" width="394" height="111.66666666666663"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="751" text="Technicals" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PxP-Ti-ty8">
                                                 <rect key="frame" x="0.0" y="0.0" width="394" height="28.666666666666668"/>
@@ -539,7 +542,7 @@
                                                 </variation>
                                             </label>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="lS9-p6-Sns">
-                                                <rect key="frame" x="0.0" y="38.666666666666686" width="394" height="17.666666666666671"/>
+                                                <rect key="frame" x="0.0" y="38.666666666666629" width="394" height="17.666666666666671"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="52w Range" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="dj4-GJ-hdH">
                                                         <rect key="frame" x="0.0" y="0.0" width="75.666666666666671" height="17.666666666666668"/>
@@ -561,7 +564,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Vnc-UP-a3g">
-                                                <rect key="frame" x="0.0" y="66.333333333333314" width="394" height="17.666666666666671"/>
+                                                <rect key="frame" x="0.0" y="66.333333333333371" width="394" height="17.666666666666671"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Sa0-wb-kfa">
                                                         <rect key="frame" x="0.0" y="0.0" width="189.66666666666666" height="17.666666666666668"/>
@@ -610,7 +613,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="3nN-NZ-5Xu">
-                                                <rect key="frame" x="0.0" y="93.999999999999943" width="394" height="17.666666666666671"/>
+                                                <rect key="frame" x="0.0" y="94" width="394" height="17.666666666666671"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="7Dh-dW-f2h">
                                                         <rect key="frame" x="0.0" y="0.0" width="189.66666666666666" height="17.666666666666668"/>
@@ -782,10 +785,10 @@
                         <outlet property="bookValueLabel" destination="rNu-TZ-xTH" id="cy9-rf-VD3"/>
                         <outlet property="divYieldLabel" destination="Qej-SL-dZ1" id="Kzv-AF-hIc"/>
                         <outlet property="earningsDateLabel" destination="aWP-6l-npJ" id="3dT-hY-DA3"/>
-                        <outlet property="exchangeLabel" destination="fIp-mz-KQj" id="Sdt-6U-EHk"/>
+                        <outlet property="exchangeLabel" destination="uNs-ab-BP5" id="1zO-rt-QlI"/>
                         <outlet property="fiftyMALabel" destination="5Ug-6o-YEo" id="LfG-Vu-EHs"/>
                         <outlet property="fiftyTwoWeekRange" destination="ODx-C2-ulf" id="jKY-eZ-Uu5"/>
-                        <outlet property="fulltimeEmployeesLabel" destination="uNs-ab-BP5" id="xEj-hr-2wB"/>
+                        <outlet property="fulltimeEmployeesLabel" destination="fIp-mz-KQj" id="YPx-BP-o9J"/>
                         <outlet property="industryLabel" destination="2L5-Up-Y3Z" id="OPA-fj-bUH"/>
                         <outlet property="marketCapLabel" destination="dqG-Oe-Uo2" id="lWW-aW-PJz"/>
                         <outlet property="sectorLabel" destination="Auq-ZJ-EZt" id="m1j-mJ-bLt"/>

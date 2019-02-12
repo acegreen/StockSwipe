@@ -145,6 +145,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     
                     let card = try card()
                     
+                    // TODO: change segue
                     let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
                     let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
                     
@@ -192,6 +193,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 let card = try card()
                 
+                // TODO: change segue
                 let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
                 let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
                 

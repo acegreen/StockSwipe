@@ -55,14 +55,17 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
             
             guard let resourceSpecifier = resourceSpecifier else { return false }
             
-            // TODO: change segue
-            let cardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
-            
             Functions.makeCard(for: resourceSpecifier) { card in
                 do {
                     let card = try card()
-                    cardDetailTabBarController.card = card
-                    UIApplication.topViewController()?.present(cardDetailTabBarController, animated: true, completion: nil)
+                    
+                    let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+                    cardDetailViewController.card = card
+                    cardDetailViewController.forceDisableDragDownToDismiss = true
+                    
+                    DispatchQueue.main.async {
+                        UIApplication.topViewController()?.present(cardDetailViewController, animated: true, completion: nil)
+                    }
                 } catch {
                     if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {

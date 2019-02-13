@@ -771,32 +771,25 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             return self.firstCardView.superview!.convert(r, to: nil)
         }()
         
-        Functions.makeCard(for: self.firstCardView.card.symbol) { card in
+        if let selectedCard = cards.find({ $0.symbol == self.firstCardView.card.symbol }) {
             
-            do {
-                
-                let card = try card()
-                
-                // Set up card detail view controller
-                let vc = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
-                vc.card = card
-                vc.unhighlightedCard = card // Keep the original one to restore when dismiss
-                let params = CardTransition.Params(fromCardFrame: cardPresentationFrameOnScreen,
-                                                   fromCardFrameWithoutTransform: cardFrameWithoutTransform,
-                                                   fromCell: self.firstCardView!)
-                self.transition = CardTransition(params: params)
-                vc.transitioningDelegate = self.transition
-                
-                // If `modalPresentationStyle` is not `.fullScreen`, this should be set to true to make status bar depends on presented vc.
-                vc.modalPresentationCapturesStatusBarAppearance = true
-                vc.modalPresentationStyle = .custom
-                
-                DispatchQueue.main.async {
-                    self.present(vc, animated: true, completion: {
-                    })
-                }
-            } catch {
-                // TODO: handle error
+            // Set up card detail view controller
+            let vc = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+            vc.card = selectedCard
+            vc.unhighlightedCard = selectedCard // Keep the original one to restore when dismiss
+            let params = CardTransition.Params(fromCardFrame: cardPresentationFrameOnScreen,
+                                               fromCardFrameWithoutTransform: cardFrameWithoutTransform,
+                                               fromCell: self.firstCardView!)
+            self.transition = CardTransition(params: params)
+            vc.transitioningDelegate = self.transition
+            
+            // If `modalPresentationStyle` is not `.fullScreen`, this should be set to true to make status bar depends on presented vc.
+            vc.modalPresentationCapturesStatusBarAppearance = true
+            vc.modalPresentationStyle = .custom
+            
+            DispatchQueue.main.async {
+                self.present(vc, animated: true, completion: {
+                })
             }
         }
     }

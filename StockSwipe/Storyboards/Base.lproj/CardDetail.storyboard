@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.59" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="M9z-OK-JZ7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.59" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jSu-zw-ob7">
     <device id="retina6_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -18,157 +18,6 @@
         </array>
     </customFonts>
     <scenes>
-        <!--Card-->
-        <scene sceneID="4GG-Hz-9lg">
-            <objects>
-                <viewController storyboardIdentifier="ChartWebViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="P2a-aq-sxG" customClass="ChartWebViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="uuk-VA-MtU">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="725"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <viewLayoutGuide key="safeArea" id="IdO-6n-jEt"/>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" title="Card" id="Pw1-w5-NhU">
-                        <barButtonItem key="leftBarButtonItem" image="x" id="Uwf-HF-d9y">
-                            <connections>
-                                <action selector="xButtonPressed:" destination="P2a-aq-sxG" id="qeE-5c-wzu"/>
-                            </connections>
-                        </barButtonItem>
-                        <rightBarButtonItems>
-                            <barButtonItem enabled="NO" image="camera" id="n4G-eE-aBm">
-                                <connections>
-                                    <action selector="actionButtonPressed:" destination="P2a-aq-sxG" id="myU-iP-Ifl"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="add_watchlist_small" id="3ie-7c-NvY">
-                                <connections>
-                                    <action selector="addToWatchlistAction:" destination="P2a-aq-sxG" id="eVu-BP-1pH"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
-                    </navigationItem>
-                    <connections>
-                        <outlet property="actionButton" destination="n4G-eE-aBm" id="2So-do-Tti"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="QEr-9Z-PN6" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3978" y="-1792"/>
-        </scene>
-        <!--Card Detail Tab Bar Controller-->
-        <scene sceneID="DmS-J5-13e">
-            <objects>
-                <tabBarController storyboardIdentifier="CardDetailTabBarController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="M9z-OK-JZ7" customClass="CardDetailTabBarController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationItem key="navigationItem" id="nI7-qv-QNi"/>
-                    <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
-                    <splitViewDetailSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="YIM-7m-xoD">
-                        <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <color key="selectedImageTintColor" red="0.098039217293262482" green="0.84313726425170898" blue="0.098039217293262482" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </tabBar>
-                    <connections>
-                        <segue destination="UPa-iY-1wx" kind="relationship" relationship="viewControllers" id="7xd-B5-lib"/>
-                        <segue destination="qRO-im-ijF" kind="relationship" relationship="viewControllers" id="ty2-eV-4z3"/>
-                    </connections>
-                </tabBarController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="SLI-j9-3LT" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2351" y="-1416"/>
-        </scene>
-        <!--Stream-->
-        <scene sceneID="iyu-gg-0VQ">
-            <objects>
-                <navigationController id="XXv-M8-Uix" sceneMemberID="viewController">
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <tabBarItem key="tabBarItem" title="Stream" image="stream" id="c4s-xZ-oTW"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="o3D-6i-LNH">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <textAttributes key="titleTextAttributes">
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                            <color key="textColor" red="0.43529412150382996" green="0.44313725829124451" blue="0.47450980544090271" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </textAttributes>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Gdo-Ou-Tk7" kind="relationship" relationship="rootViewController" id="hhs-VV-KlS"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="x9B-7X-a3b" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3283" y="-999"/>
-        </scene>
-        <!--Empty Data Set Delegate-->
-        <scene sceneID="v5a-KU-pGj">
-            <objects>
-                <tableViewController storyboardIdentifier="StreamTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Gdo-Ou-Tk7" customClass="StreamTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="cfV-D5-LmB">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <sections/>
-                        <connections>
-                            <outlet property="dataSource" destination="Gdo-Ou-Tk7" id="cc1-kE-Arf"/>
-                            <outlet property="delegate" destination="Gdo-Ou-Tk7" id="YAh-4Y-hA3"/>
-                            <outlet property="emptyDataSetDelegate" destination="Gdo-Ou-Tk7" id="1f6-B6-pHn"/>
-                            <outlet property="emptyDataSetSource" destination="Gdo-Ou-Tk7" id="xfh-o1-zrI"/>
-                        </connections>
-                    </tableView>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <navigationItem key="navigationItem" title="Stream" id="zE8-eV-qub">
-                        <barButtonItem key="leftBarButtonItem" image="x" id="zfG-xH-3rU">
-                            <connections>
-                                <action selector="xButtonPressed:" destination="Gdo-Ou-Tk7" id="oyZ-gp-het"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="NmI-D2-BrM" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3975" y="-999"/>
-        </scene>
-        <!--Chart-->
-        <scene sceneID="2w9-iD-BTv">
-            <objects>
-                <navigationController autoresizesArchivedViewToFullSize="NO" automaticallyAdjustsScrollViewInsets="NO" id="UPa-iY-1wx" sceneMemberID="viewController">
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <tabBarItem key="tabBarItem" title="Chart" image="chart" id="Q4U-Dw-7pb"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="Hzc-4U-zB4">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <textAttributes key="titleTextAttributes">
-                            <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
-                            <color key="textColor" red="0.43529412150382996" green="0.44313725829124451" blue="0.47450980544090271" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </textAttributes>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="P2a-aq-sxG" kind="relationship" relationship="rootViewController" id="Xzo-5l-NRJ"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4er-Mn-yXw" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3284" y="-1793"/>
-        </scene>
-        <!--TradeIdea-->
-        <scene sceneID="Beg-sI-JzV">
-            <objects>
-                <viewControllerPlaceholder storyboardName="TradeIdea" id="qRO-im-ijF" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Item" id="0cP-mI-2XN"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="a6v-3b-ePs" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="3253" y="-1416"/>
-        </scene>
         <!--Card Detail View Controller-->
         <scene sceneID="JQV-97-X80">
             <objects>
@@ -181,20 +30,41 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="1200"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Xn-wT-6RA" userLabel="ContentView">
-                                        <rect key="frame" x="0.0" y="0.0" width="414" height="1270.3333333333333"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="1280.3333333333333"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9In-5b-v3e" customClass="SwipeCardView" customModule="StockSwipe" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="0.0" width="414" height="538.33333333333337"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xmc-NR-M3T">
+                                                        <rect key="frame" x="366" y="20" width="28" height="28"/>
+                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="28" id="eDH-Ok-fjm"/>
+                                                            <constraint firstAttribute="height" constant="28" id="rxL-Z2-mFb"/>
+                                                        </constraints>
+                                                        <state key="normal" image="x"/>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="14"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="xPressed:" destination="jSu-zw-ob7" eventType="touchUpInside" id="mDC-F9-bsc"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
+                                                    <constraint firstAttribute="trailing" secondItem="xmc-NR-M3T" secondAttribute="trailing" constant="20" id="50q-Km-Ogc"/>
                                                     <constraint firstAttribute="height" secondItem="9In-5b-v3e" secondAttribute="width" multiplier="1.3:1" priority="999" id="QaM-Vq-OGV"/>
+                                                    <constraint firstItem="xmc-NR-M3T" firstAttribute="top" secondItem="9In-5b-v3e" secondAttribute="top" constant="20" id="Tyx-dM-ZB9"/>
                                                 </constraints>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="image" keyPath="backgroundImage" value="img1.png"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZNa-1b-py7">
-                                                <rect key="frame" x="0.0" y="548.33333333333337" width="414" height="722.00000000000011"/>
+                                                <rect key="frame" x="0.0" y="558.33333333333337" width="414" height="722.00000000000011"/>
                                                 <subviews>
                                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2XC-IZ-wpG">
                                                         <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
@@ -235,7 +105,7 @@
                                             <constraint firstItem="9In-5b-v3e" firstAttribute="top" secondItem="5Xn-wT-6RA" secondAttribute="top" priority="999" id="0Rz-4L-zA1"/>
                                             <constraint firstAttribute="bottom" secondItem="ZNa-1b-py7" secondAttribute="bottom" id="aHM-xT-2su"/>
                                             <constraint firstAttribute="trailing" secondItem="ZNa-1b-py7" secondAttribute="trailing" id="cX2-Re-s2n"/>
-                                            <constraint firstItem="ZNa-1b-py7" firstAttribute="top" secondItem="9In-5b-v3e" secondAttribute="bottom" constant="10" id="lBe-hr-fya"/>
+                                            <constraint firstItem="ZNa-1b-py7" firstAttribute="top" secondItem="9In-5b-v3e" secondAttribute="bottom" constant="20" id="lBe-hr-fya"/>
                                             <constraint firstItem="ZNa-1b-py7" firstAttribute="leading" secondItem="5Xn-wT-6RA" secondAttribute="leading" id="oFF-cL-nRZ"/>
                                             <constraint firstItem="9In-5b-v3e" firstAttribute="leading" secondItem="5Xn-wT-6RA" secondAttribute="leading" id="pHl-P4-vuz"/>
                                             <constraint firstAttribute="trailing" secondItem="9In-5b-v3e" secondAttribute="trailing" id="xVC-cN-Rqe"/>
@@ -266,7 +136,13 @@
                         <viewLayoutGuide key="safeArea" id="rgA-G7-ft4"/>
                     </view>
                     <toolbarItems/>
-                    <navigationItem key="navigationItem" id="H68-og-7fT"/>
+                    <navigationItem key="navigationItem" id="H68-og-7fT">
+                        <barButtonItem key="leftBarButtonItem" image="x" id="jqA-ih-T5H">
+                            <connections>
+                                <action selector="xPressed:" destination="jSu-zw-ob7" id="BBr-P5-V0C"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <size key="freeformSize" width="414" height="1200"/>
                     <connections>
@@ -278,7 +154,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vti-XO-m1Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2352" y="-625"/>
+            <point key="canvasLocation" x="2354" y="-589"/>
         </scene>
         <!--Card Detail Container Page View Controller-->
         <scene sceneID="u4s-p7-JRz">
@@ -286,7 +162,7 @@
                 <pageViewController autoresizesArchivedViewToFullSize="NO" transitionStyle="scroll" navigationOrientation="horizontal" spineLocation="none" id="NUG-p7-Hy8" customClass="CardDetailContainerPageViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="23Q-xq-f9i" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3283" y="-346"/>
+            <point key="canvasLocation" x="3271" y="-589"/>
         </scene>
         <!--Card Detail First Page View Controller-->
         <scene sceneID="BqI-P8-8cL">
@@ -311,7 +187,7 @@
                                                     <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="28"/>
                                                 </variation>
                                             </label>
-                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="245" text="--" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="kWt-sD-hkL">
+                                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" verticalHuggingPriority="245" editable="NO" text="--" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kWt-sD-hkL">
                                                 <rect key="frame" x="0.0" y="38.666666666666657" width="394" height="353"/>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -800,15 +676,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Rp-0M-KQf" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3974" y="-346"/>
+            <point key="canvasLocation" x="4081" y="-589"/>
         </scene>
     </scenes>
     <resources>
-        <image name="add_watchlist_small" width="22" height="22"/>
-        <image name="camera" width="22" height="22"/>
-        <image name="chart" width="25" height="25"/>
         <image name="img1.png" width="16" height="16"/>
-        <image name="stream" width="25" height="25"/>
         <image name="x" width="16" height="16"/>
     </resources>
     <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>

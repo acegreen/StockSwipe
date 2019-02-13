@@ -211,11 +211,11 @@ class SwipeCardView: MDCSwipeToChooseView {
         
         guard !disabledHighlightedAnimation else { return }
         
-        self.cornerRadius = 15
         let animationOptions: UIView.AnimationOptions = Constants.isEnabledAllowsUserInteractionWhileHighlightingCard
             ? [.allowUserInteraction] : []
         if isHighlighted {
-            UIView.animate(withDuration: 3,
+            self.cornerRadius = 15
+            UIView.animate(withDuration: 1,
                            delay: 0,
                            usingSpringWithDamping: 1,
                            initialSpringVelocity: 0,
@@ -223,7 +223,7 @@ class SwipeCardView: MDCSwipeToChooseView {
                             self.transform = .init(scaleX: Constants.cardHighlightedFactor, y: Constants.cardHighlightedFactor)
             }, completion: completion)
         } else {
-            UIView.animate(withDuration: 3,
+            UIView.animate(withDuration: 1,
                            delay: 0,
                            usingSpringWithDamping: 1,
                            initialSpringVelocity: 0,

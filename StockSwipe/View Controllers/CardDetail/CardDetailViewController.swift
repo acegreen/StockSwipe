@@ -31,6 +31,26 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in }
     }
     
+    @IBAction func xPressed(_ sender: Any) {
+        
+        if !forceDisableDragDownToDismiss {
+            dismissalAnimator = createInteractiveDismissalAnimatorIfNeeded(targetAnimatedView: self.view,
+                                                                           targetShrinkScale: 0.86,
+                                                                           targetCornerRadius: Constants.cardCornerRadius,
+                                                                           progress: 100)
+            
+            // Disable gesture until reverse closing animation finishes.
+            dismissalAnimator!.addCompletion { [unowned self] (pos) in
+                self.didCancelDismissalTransition()
+                self.dismiss(animated: true, completion: nil)
+            }
+            dismissalAnimator!.startAnimation()
+            
+        } else {
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
     var card: Card! {
         didSet {
             if self.cardContentView != nil {
@@ -49,6 +69,7 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     }
     
     var draggingDownToDismiss = false
+    var forceDisableDragDownToDismiss = false
     
     final class DismissalPanGesture: UIPanGestureRecognizer {}
     final class DismissalScreenEdgePanGesture: UIScreenEdgePanGestureRecognizer {}
@@ -80,18 +101,20 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         scrollView.contentInsetAdjustmentBehavior = .never
 //        cardContentView.setFontState(isHighlighted: isFontStateHighlighted)
         
-        dismissalPanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
-        dismissalPanGesture.delegate = self
-        dismissalScreenEdgePanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
-        dismissalScreenEdgePanGesture.delegate = self
-        
-        // Make drag down/scroll pan gesture waits til screen edge pan to fail first to begin
-        dismissalPanGesture.require(toFail: dismissalScreenEdgePanGesture)
-        scrollView.panGestureRecognizer.require(toFail: dismissalScreenEdgePanGesture)
+        if !forceDisableDragDownToDismiss {
+            dismissalPanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
+            dismissalPanGesture.delegate = self
+            //        dismissalScreenEdgePanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
+            //        dismissalScreenEdgePanGesture.delegate = self
+            
+            // Make drag down/scroll pan gesture waits til screen edge pan to fail first to begin
+            dismissalPanGesture.require(toFail: dismissalScreenEdgePanGesture)
+            //        scrollView.panGestureRecognizer.require(toFail: dismissalScreenEdgePanGesture)
         
         loadViewIfNeeded()
         view.addGestureRecognizer(dismissalPanGesture)
-        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
+//        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
+        }
     
         cardContentView.card = card
         cardContentView.setCardInfo()
@@ -113,6 +136,21 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     
     var interactiveStartingPoint: CGPoint?
     var dismissalAnimator: UIViewPropertyAnimator?
+    
+    func createInteractiveDismissalAnimatorIfNeeded(targetAnimatedView: UIView, targetShrinkScale: CGFloat, targetCornerRadius: CGFloat, progress: CGFloat) -> UIViewPropertyAnimator {
+        if let animator = dismissalAnimator {
+            return animator
+        } else {
+            let animator = UIViewPropertyAnimator(duration: 0, curve: .linear, animations: {
+                targetAnimatedView.transform = .init(scaleX: targetShrinkScale, y: targetShrinkScale)
+                targetAnimatedView.layer.cornerRadius = targetCornerRadius
+            })
+            animator.isReversed = false
+            animator.pauseAnimation()
+            animator.fractionComplete = progress
+            return animator
+        }
+    }
     
     // This handles both screen edge and dragdown pan. As screen edge pan is a subclass of pan gesture, this input param works.
     @objc func handleDismissalPan(gesture: UIPanGestureRecognizer) {
@@ -139,28 +177,18 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         let targetShrinkScale: CGFloat = 0.86
         let targetCornerRadius: CGFloat = Constants.cardCornerRadius
         
-        func createInteractiveDismissalAnimatorIfNeeded() -> UIViewPropertyAnimator {
-            if let animator = dismissalAnimator {
-                return animator
-            } else {
-                let animator = UIViewPropertyAnimator(duration: 0, curve: .linear, animations: {
-                    targetAnimatedView.transform = .init(scaleX: targetShrinkScale, y: targetShrinkScale)
-                    targetAnimatedView.layer.cornerRadius = targetCornerRadius
-                })
-                animator.isReversed = false
-                animator.pauseAnimation()
-                animator.fractionComplete = progress
-                return animator
-            }
-        }
-        
         switch gesture.state {
         case .began:
-            dismissalAnimator = createInteractiveDismissalAnimatorIfNeeded()
+            dismissalAnimator = createInteractiveDismissalAnimatorIfNeeded(targetAnimatedView: targetAnimatedView,
+                                                                           targetShrinkScale: targetShrinkScale,
+                                                                           targetCornerRadius: targetCornerRadius,
+                                                                           progress: progress)
             
         case .changed:
-            dismissalAnimator = createInteractiveDismissalAnimatorIfNeeded()
-            
+            dismissalAnimator = createInteractiveDismissalAnimatorIfNeeded(targetAnimatedView: targetAnimatedView,
+                                                                           targetShrinkScale: targetShrinkScale,
+                                                                           targetCornerRadius: targetCornerRadius,
+                                                                           progress: progress)
             let actualProgress = progress
             let isDismissalSuccess = actualProgress >= 1.0
             

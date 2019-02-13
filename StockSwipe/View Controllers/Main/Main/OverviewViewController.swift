@@ -23,7 +23,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     var iCarouselTickers = ["^IXIC","^GSPC","^RUT","^VIX","^GDAXI","^FTSE","^FCHI","^N225","^HSI","^GSPTSE","CAD=X"]
     var tickers = [Ticker]()
-    var selectedCard: Card?
     
     var overviewVCOperationQueue: OperationQueue = OperationQueue()
     var carouselLastQueriedDate: Date!
@@ -155,9 +154,9 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         switch segueIdentifier {
             
         case .ChartDetailSegueIdentifier:
-            let destinationViewController = segue.destination as! UINavigationController
-            let cardDetailViewController = destinationViewController.viewControllers.first as! CardDetailViewController
-            cardDetailViewController.card = selectedCard
+            let cardDetailViewController = segue.destination as! CardDetailViewController
+            cardDetailViewController.card = sender as? Card
+            cardDetailViewController.forceDisableDragDownToDismiss = true
             
         case .PostIdeaSegueIdentifier:
             
@@ -219,17 +218,10 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
             Functions.makeCard(for: tickerAtIndex.symbol) { card in
                 do {
                     let card = try card()
-                    self.selectedCard = card
                     
-                    func frontCardViewFrame() -> CGRect {
-                        return CGRect(x: self.view.bounds.midX - (cardWidth / 2), y: self.view.bounds.midY - (cardHeight / 2), width: cardWidth, height: cardHeight)
+                    DispatchQueue.main.async {
+                        self.performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: card)
                     }
-                    
-                    let frame = frontCardViewFrame()
-                    let tempView = SwipeCardView(frame: frame, card: card, options: nil)
-                    
-                    self.performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: carousel.itemView(at: index))
-                    
                 } catch {
                     // TODO: handle error
                 }

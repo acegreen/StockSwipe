@@ -221,15 +221,16 @@ class SearchTableViewController: UITableViewController {
         
         self.dismiss(animated: true) {
             
-            // TODO: change segue
-            let cardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
-            
             Functions.makeCard(for: stockObject.object(forKey: "Symbol") as! String) { card in
                 do {
                     let card = try card()
+                
+                    let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+                    cardDetailViewController.card = card
+                    cardDetailViewController.forceDisableDragDownToDismiss = true
+                    
                     DispatchQueue.main.async {
-                        cardDetailTabBarController.card = card
-                        UIApplication.topViewController()?.present(cardDetailTabBarController, animated: true, completion: nil)
+                        UIApplication.topViewController()?.present(cardDetailViewController, animated: true, completion: nil)
                     }
                 } catch {
                     if let error = error as? QueryHelper.QueryError {

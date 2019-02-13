@@ -280,7 +280,7 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
 extension TradeIdeasTableViewController: IdeaPostDelegate {
     
     internal func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
-            
+        
         let indexPath = IndexPath(row: 0, section: 0)
         self.tradeIdeas.insert(tradeIdea, at: 0)
         self.tableView.insertRows(at: [indexPath], with: .automatic)
@@ -327,9 +327,9 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
         return false
     }
     
-//    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
-//        return UIImage(assetIdentifier: .noIdeaBulbImage)
-//    }
+    //    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage! {
+    //        return UIImage(assetIdentifier: .noIdeaBulbImage)
+    //    }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         

@@ -305,6 +305,7 @@ class QueryHelper {
         case queryDataEmpty
         case errorParsingJSON
         case parseObjectAlreadyExists
+        case objectDoesntExists
         case chartImageCorrupt
         case urlEmpty
         
@@ -327,7 +328,9 @@ class QueryHelper {
             case .errorParsingJSON:
                 return "Oops! We ran into an issue querying for data"
             case .parseObjectAlreadyExists:
-                return "This object already exists in our databse"
+                return "This symbol already exists in our databse"
+            case .objectDoesntExists:
+                return "This symbol doesn't exist in our database"
             case .chartImageCorrupt:
                 return "Oops! We ran into an issue querying for data"
             case .urlEmpty:

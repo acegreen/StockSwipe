@@ -456,6 +456,8 @@ extension OverviewFirstPageViewController: CloudLayoutOperationDelegate {
             return
         }
         
+        self.cloudView.isUserInteractionEnabled = false
+        
         if let symbol = (sender.view as? UIButton)?.currentTitle {
             Functions.makeCard(for: symbol) { card in
                 do {
@@ -466,8 +468,14 @@ extension OverviewFirstPageViewController: CloudLayoutOperationDelegate {
                     }
                     
                 } catch {
-                    // TODO: handle error
+                    if let error = error as? QueryHelper.QueryError {
+                        DispatchQueue.main.async {
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
+                        }
+                    }
                 }
+                
+                self.cloudView.isUserInteractionEnabled = true
             }
         }
     }

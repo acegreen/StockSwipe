@@ -11,7 +11,7 @@ import DZNEmptyDataSet
 import SwiftyJSON
 import Parse
 
-class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate, CellType, SegueHandlerType {
+class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandlerType {
     
     enum CellIdentifier: String {
         case IdeaCell = "IdeaCell"
@@ -22,8 +22,6 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
         case PostIdeaSegueIdentifier = "PostIdeaSegueIdentifier"
     }
     
-    var symbol: String!
-    var companyName: String!
     var stockObject: PFObject?
     
     var tradeIdeas = [TradeIdea]()
@@ -47,16 +45,12 @@ class TradeIdeasTableViewController: UITableViewController, ChartDetailDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let parentTabBarController = self.tabBarController as? CardDetailTabBarController
-        symbol = parentTabBarController?.symbol
-        companyName = parentTabBarController?.companyName
-        
         // title
-        if companyName != nil {
-            self.navigationItem.title = companyName
-        } else {
-            self.navigationItem.title = symbol
-        }
+//        if companyName != nil {
+//            self.navigationItem.title = companyName
+//        } else {
+//            self.navigationItem.title = symbol
+//        }
         
         // Hide post button if symbol is not available
         if self.stockObject == nil {
@@ -346,7 +340,8 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
         paragraphStyle.lineBreakMode = NSLineBreakMode.byWordWrapping
         paragraphStyle.alignment = NSTextAlignment.center
         
-        let symbolText = (self.symbol != nil) ? "for \(self.symbol)" : ""
+        let symbol = self.stockObject?.object(forKey: "Symbol")
+        let symbolText = symbol != nil ? "for \(symbol)" : ""
         let attributedDescription: NSAttributedString!
         attributedDescription = NSAttributedString(string: "Be the first to post an idea " + symbolText, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18), NSAttributedString.Key.paragraphStyle: paragraphStyle])
         

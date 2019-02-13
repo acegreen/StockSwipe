@@ -31,12 +31,16 @@ class CardDetailFirstPageViewController: UIViewController {
     @IBOutlet var exchangeLabel: UILabel!
     @IBOutlet var fulltimeEmployeesLabel: UILabel!
     
-    var card: Card!
+    var card: Card! {
+        didSet {
+            if self.view != nil {
+                self.loadInfo()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.loadInfo()
     }
     
     override func viewWillAppear(_ animated: Bool) {

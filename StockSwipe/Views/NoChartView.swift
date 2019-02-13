@@ -50,7 +50,7 @@ class NoChartView: UIView {
         
         self.backgroundColor = UIColor.white
         self.layer.masksToBounds = false;
-        self.layer.cornerRadius = 15.0
+        self.layer.cornerRadius = Constants.cardCornerRadius
         self.layer.borderWidth = 1.0
         self.layer.borderColor = UIColor.gray.cgColor
 

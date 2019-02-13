@@ -131,7 +131,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="300" height="333"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="083-xc-znK" customClass="SwipeCardView" customModule="StockSwipe" customModuleProvider="target">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="083-xc-znK" customClass="CardView" customModule="StockSwipe" customModuleProvider="target">
                                                     <rect key="frame" x="0.0" y="0.0" width="300" height="333"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </view>
@@ -1435,7 +1435,7 @@
         <image name="write" width="25" height="25"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="xxP-uL-bqJ"/>
+        <segue reference="mpU-mH-Dfh"/>
         <segue reference="sLE-BL-QrO"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>

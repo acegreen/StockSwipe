@@ -52,7 +52,7 @@
 		2375FE721D85A45A0049D297 /* NotificationPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2375FE711D85A45A0049D297 /* NotificationPreferences.plist */; };
 		2376E41F1C2B0D7A00B85656 /* QueryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2376E41E1C2B0D7A00B85656 /* QueryHelper.swift */; };
 		2378B58A1B115FB3002ACFDC /* StockSwipeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2378B5891B115FB3002ACFDC /* StockSwipeTests.swift */; };
-		2382B69E2210F28E00209EAF /* SwipeCardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2382B69D2210F28E00209EAF /* SwipeCardView.xib */; };
+		2382B69E2210F28E00209EAF /* CardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2382B69D2210F28E00209EAF /* CardView.xib */; };
 		23875DF81B11752600966012 /* Funtions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23875DF71B11752600966012 /* Funtions.swift */; };
 		238A112A1C834A00002C1A73 /* ConcurrentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238A11291C834A00002C1A73 /* ConcurrentOperation.swift */; };
 		238C1AFA1C8C65D6009F9CC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C1AF61C8C65D6009F9CC1 /* AppDelegate.swift */; };
@@ -64,8 +64,6 @@
 		238DB6DE1D85A01F00082918 /* BlockedAccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C31D85A01F00082918 /* BlockedAccountsTableViewController.swift */; };
 		238DB6DF1D85A01F00082918 /* CardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C41D85A01F00082918 /* CardsViewController.swift */; };
 		238DB6E01D85A01F00082918 /* WatchlistCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C51D85A01F00082918 /* WatchlistCollectionViewController.swift */; };
-		238DB6E11D85A01F00082918 /* CardDetailTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C61D85A01F00082918 /* CardDetailTabBarController.swift */; };
-		238DB6E21D85A01F00082918 /* ChartWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C71D85A01F00082918 /* ChartWebViewController.swift */; };
 		238DB6E51D85A01F00082918 /* FAQTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6CA1D85A01F00082918 /* FAQTableViewController.swift */; };
 		238DB6E61D85A01F00082918 /* FilterTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6CB1D85A01F00082918 /* FilterTableViewController.swift */; };
 		238DB6E71D85A01F00082918 /* IdeaPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6CC1D85A01F00082918 /* IdeaPostViewController.swift */; };
@@ -79,9 +77,7 @@
 		238DB6EF1D85A01F00082918 /* ProfileTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6D41D85A01F00082918 /* ProfileTableViewController.swift */; };
 		238DB6F01D85A01F00082918 /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6D51D85A01F00082918 /* SearchTableViewController.swift */; };
 		238DB6F11D85A01F00082918 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6D61D85A01F00082918 /* SettingsTableViewController.swift */; };
-		238DB6F21D85A01F00082918 /* StreamTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6D71D85A01F00082918 /* StreamTableViewController.swift */; };
 		238DB6F31D85A01F00082918 /* TradeIdeaDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6D81D85A01F00082918 /* TradeIdeaDetailTableViewController.swift */; };
-		238DB6F41D85A01F00082918 /* TradeIdeasTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6D91D85A01F00082918 /* TradeIdeasTableViewController.swift */; };
 		238DB6F51D85A01F00082918 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6DA1D85A01F00082918 /* WebViewController.swift */; };
 		2394DFAA1C8C691B0018A5A9 /* SweetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2394DFA91C8C691B0018A5A9 /* SweetAlert.swift */; };
 		239A3E491BAA1CCF00894D1E /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239A3E481BAA1CCF00894D1E /* JavaScriptCore.framework */; };
@@ -122,6 +118,7 @@
 		23CCA6A31DA5D5E600EE4F09 /* WordCloud.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 238368661DA5CA7D0099123E /* WordCloud.framework */; };
 		23CCA6A41DA5D5E600EE4F09 /* WordCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 238368661DA5CA7D0099123E /* WordCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		23CE716D1C1215C800E87420 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE716C1C1215C800E87420 /* AdSupport.framework */; };
+		23E038102214592A00E23CFD /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E0380F2214592A00E23CFD /* CardView.swift */; };
 		23E7F6A01BCB57A0009A016D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7F69F1BCB57A0009A016D /* NotificationCenter.framework */; };
 		23E7F6AA1BCB57A0009A016D /* StockSwipeWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 23E7F69E1BCB57A0009A016D /* StockSwipeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		23EA70101B119803008F6C12 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA700F1B119803008F6C12 /* AudioToolbox.framework */; };
@@ -247,7 +244,7 @@
 		2378B5851B115FB3002ACFDC /* StockSwipeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StockSwipeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2378B5881B115FB3002ACFDC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2378B5891B115FB3002ACFDC /* StockSwipeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StockSwipeTests.swift; sourceTree = "<group>"; };
-		2382B69D2210F28E00209EAF /* SwipeCardView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = SwipeCardView.xib; path = StockSwipe/Storyboards/SwipeCardView.xib; sourceTree = SOURCE_ROOT; };
+		2382B69D2210F28E00209EAF /* CardView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = CardView.xib; path = StockSwipe/Views/CardView.xib; sourceTree = SOURCE_ROOT; };
 		238368661DA5CA7D0099123E /* WordCloud.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WordCloud.framework; sourceTree = "<group>"; };
 		23875DF71B11752600966012 /* Funtions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Funtions.swift; sourceTree = "<group>"; };
 		238A11291C834A00002C1A73 /* ConcurrentOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConcurrentOperation.swift; sourceTree = "<group>"; };
@@ -263,8 +260,6 @@
 		238DB6C31D85A01F00082918 /* BlockedAccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedAccountsTableViewController.swift; sourceTree = "<group>"; };
 		238DB6C41D85A01F00082918 /* CardsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardsViewController.swift; sourceTree = "<group>"; };
 		238DB6C51D85A01F00082918 /* WatchlistCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchlistCollectionViewController.swift; sourceTree = "<group>"; };
-		238DB6C61D85A01F00082918 /* CardDetailTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardDetailTabBarController.swift; sourceTree = "<group>"; };
-		238DB6C71D85A01F00082918 /* ChartWebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartWebViewController.swift; sourceTree = "<group>"; };
 		238DB6CA1D85A01F00082918 /* FAQTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FAQTableViewController.swift; sourceTree = "<group>"; };
 		238DB6CB1D85A01F00082918 /* FilterTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FilterTableViewController.swift; sourceTree = "<group>"; };
 		238DB6CC1D85A01F00082918 /* IdeaPostViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdeaPostViewController.swift; sourceTree = "<group>"; };
@@ -278,9 +273,7 @@
 		238DB6D41D85A01F00082918 /* ProfileTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileTableViewController.swift; sourceTree = "<group>"; };
 		238DB6D51D85A01F00082918 /* SearchTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
 		238DB6D61D85A01F00082918 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
-		238DB6D71D85A01F00082918 /* StreamTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StreamTableViewController.swift; sourceTree = "<group>"; };
 		238DB6D81D85A01F00082918 /* TradeIdeaDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeIdeaDetailTableViewController.swift; sourceTree = "<group>"; };
-		238DB6D91D85A01F00082918 /* TradeIdeasTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeIdeasTableViewController.swift; sourceTree = "<group>"; };
 		238DB6DA1D85A01F00082918 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
 		2394DFA91C8C691B0018A5A9 /* SweetAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SweetAlert.swift; sourceTree = "<group>"; };
 		239A3E481BAA1CCF00894D1E /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -319,6 +312,7 @@
 		23CAE26C1C2CB41300D15819 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		23CE716C1C1215C800E87420 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		23D7602B1B62AC5B009777E1 /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
+		23E0380F2214592A00E23CFD /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		23E7F69E1BCB57A0009A016D /* StockSwipeWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StockSwipeWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		23E7F69F1BCB57A0009A016D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		23E7F6A71BCB57A0009A016D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = StockSwipeWidget/Info.plist; sourceTree = "<group>"; };
@@ -401,17 +395,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2307EB112213724F00A098AC /* Temp */ = {
-			isa = PBXGroup;
-			children = (
-				238DB6C61D85A01F00082918 /* CardDetailTabBarController.swift */,
-				238DB6C71D85A01F00082918 /* ChartWebViewController.swift */,
-				238DB6D91D85A01F00082918 /* TradeIdeasTableViewController.swift */,
-				238DB6D71D85A01F00082918 /* StreamTableViewController.swift */,
-			);
-			path = Temp;
-			sourceTree = "<group>";
-		};
 		2339B0941B41A697009CE3EB /* SARate-master */ = {
 			isa = PBXGroup;
 			children = (
@@ -554,7 +537,6 @@
 				23F374D1220F969A00593EFF /* Filter.storyboard */,
 				23F374D7220F969A00593EFF /* Search.storyboard */,
 				23F374DF220F969B00593EFF /* Feedback.storyboard */,
-				2382B69D2210F28E00209EAF /* SwipeCardView.xib */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -623,7 +605,6 @@
 				232ECBD322125F8100C30E46 /* CardDetailViewController.swift */,
 				2307EB0D2213714100A098AC /* CardDetailContainerPageViewController.swift */,
 				2307EB0F2213724300A098AC /* CardDetailFirstPageViewController.swift */,
-				2307EB112213724F00A098AC /* Temp */,
 			);
 			path = CardDetail;
 			sourceTree = "<group>";
@@ -664,6 +645,8 @@
 		23C2218F1DC8E8C5003898E9 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2382B69D2210F28E00209EAF /* CardView.xib */,
+				23E0380F2214592A00E23CFD /* CardView.swift */,
 				23C221A21DC8E8C5003898E9 /* SwipeCardView.swift */,
 				23C221921DC8E8C5003898E9 /* WatchlistCardCollectionViewCell.swift */,
 				23C221901DC8E8C5003898E9 /* BlockButton.swift */,
@@ -992,7 +975,7 @@
 				2375FE6E1D85A39A0049D297 /* StockExchangePreferences_CA.plist in Resources */,
 				2339B0AC1B41A697009CE3EB /* star@2x.png in Resources */,
 				2339B0A51B41A697009CE3EB /* iRate.bundle in Resources */,
-				2382B69E2210F28E00209EAF /* SwipeCardView.xib in Resources */,
+				2382B69E2210F28E00209EAF /* CardView.xib in Resources */,
 				23F374E6220F969B00593EFF /* Search.storyboard in Resources */,
 				2339B0A91B41A697009CE3EB /* star-gray.png in Resources */,
 				2339B0AA1B41A697009CE3EB /* star-gray@2x.png in Resources */,
@@ -1184,7 +1167,6 @@
 				2394DFAA1C8C691B0018A5A9 /* SweetAlert.swift in Sources */,
 				23C221B71DC8E8C5003898E9 /* NoChartView.swift in Sources */,
 				23C221B41DC8E8C5003898E9 /* IdeaPostUITextView.swift in Sources */,
-				238DB6E11D85A01F00082918 /* CardDetailTabBarController.swift in Sources */,
 				2307EB0E2213714100A098AC /* CardDetailContainerPageViewController.swift in Sources */,
 				231E89C01D28055C00CD009A /* User.swift in Sources */,
 				23C925601B1A7D9400D17B70 /* Card.swift in Sources */,
@@ -1195,12 +1177,10 @@
 				23C221BC1DC8E8C5003898E9 /* TimeFormattedLabel.swift in Sources */,
 				232ECBD6221260FA00C30E46 /* StatusBarAnimatableViewController.swift in Sources */,
 				238DB6ED1D85A01F00082918 /* ProfileContainerController.swift in Sources */,
-				238DB6F41D85A01F00082918 /* TradeIdeasTableViewController.swift in Sources */,
 				238DB6E71D85A01F00082918 /* IdeaPostViewController.swift in Sources */,
 				238DB6EE1D85A01F00082918 /* ProfileDetailTableViewController.swift in Sources */,
 				23C221C31DC8E8D7003898E9 /* ChartXAxisFormatter.swift in Sources */,
 				238C1AFA1C8C65D6009F9CC1 /* AppDelegate.swift in Sources */,
-				238DB6F21D85A01F00082918 /* StreamTableViewController.swift in Sources */,
 				23C221BA1DC8E8C5003898E9 /* SuperUITextView.swift in Sources */,
 				238DB6F01D85A01F00082918 /* SearchTableViewController.swift in Sources */,
 				2347E6151BD7C4A20036EA65 /* iCarousel.m in Sources */,
@@ -1229,9 +1209,9 @@
 				239C3E481F65FECE00D1B422 /* FeedbackMainViewController.swift in Sources */,
 				238DB6DE1D85A01F00082918 /* BlockedAccountsTableViewController.swift in Sources */,
 				23C221C01DC8E8C5003898E9 /* TransparentView.swift in Sources */,
-				238DB6E21D85A01F00082918 /* ChartWebViewController.swift in Sources */,
 				238DB6E01D85A01F00082918 /* WatchlistCollectionViewController.swift in Sources */,
 				236875B21B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m in Sources */,
+				23E038102214592A00E23CFD /* CardView.swift in Sources */,
 				238DB6E91D85A01F00082918 /* MoreTableViewController.swift in Sources */,
 				238DB6EF1D85A01F00082918 /* ProfileTableViewController.swift in Sources */,
 				2307EB102213724300A098AC /* CardDetailFirstPageViewController.swift in Sources */,

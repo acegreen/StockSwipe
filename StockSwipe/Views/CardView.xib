@@ -18,7 +18,7 @@
         </array>
     </customFonts>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SwipeCardView" customModule="StockSwipe" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardView" customModule="StockSwipe" customModuleProvider="target">
             <connections>
                 <outlet property="chartView" destination="TDA-4q-lon" id="YkE-wD-vpP"/>
                 <outlet property="companyNameLabel" destination="Vmg-63-FIw" id="0p7-Ty-wdc"/>

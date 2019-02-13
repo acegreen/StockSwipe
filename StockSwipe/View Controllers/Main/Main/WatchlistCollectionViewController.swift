@@ -518,7 +518,7 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
             vc.unhighlightedCard = selectedCard // Keep the original one to restore when dismiss
             let params = CardTransition.Params(fromCardFrame: cardPresentationFrameOnScreen,
                                                fromCardFrameWithoutTransform: cardFrameWithoutTransform,
-                                               fromCell: cell.cardView)
+                                               fromCell: cell)
             self.transition = CardTransition(params: params)
             vc.transitioningDelegate = self.transition
             

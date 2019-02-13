@@ -13,7 +13,7 @@ final class DismissCardAnimator: NSObject, UIViewControllerAnimatedTransitioning
     struct Params {
         let fromCardFrame: CGRect
         let fromCardFrameWithoutTransform: CGRect
-        let fromCell: UIView
+        let fromCell: ResetAbleTransform
     }
     
     let relativeDurationBeforeNonInteractive: TimeInterval = 0.5
@@ -33,9 +33,9 @@ final class DismissCardAnimator: NSObject, UIViewControllerAnimatedTransitioning
     func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
         let ctx = transitionContext
         let container = ctx.containerView
-        let screens: (cardDetail: CardDetailViewController, home: MainTabBarController) = (
+        let screens: (cardDetail: CardDetailViewController, home: UIViewController) = (
             ctx.viewController(forKey: .from)! as! CardDetailViewController,
-            ctx.viewController(forKey: .to)! as! MainTabBarController
+            ctx.viewController(forKey: .to)!
         )
 
         let cardDetailView = ctx.view(forKey: .from)!

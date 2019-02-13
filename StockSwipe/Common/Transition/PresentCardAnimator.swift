@@ -14,7 +14,7 @@ final class PresentCardAnimator: NSObject, UIViewControllerAnimatedTransitioning
 
     struct Params {
         let fromCardFrame: CGRect
-        let fromCell: SwipeCardView
+        let fromCell: ResetAbleTransform
     }
 
     private let presentAnimationDuration: TimeInterval
@@ -72,8 +72,8 @@ final class PresentCardTransitionDriver {
     init(params: PresentCardAnimator.Params, transitionContext: UIViewControllerContextTransitioning, baseAnimator: UIViewPropertyAnimator) {
         let ctx = transitionContext
         let container = ctx.containerView
-        let screens: (home: MainTabBarController, cardDetail: CardDetailViewController) = (
-            ctx.viewController(forKey: .from)! as! MainTabBarController,
+        let screens: (home: UIViewController, cardDetail: CardDetailViewController) = (
+            ctx.viewController(forKey: .from)!,
             ctx.viewController(forKey: .to)! as! CardDetailViewController
         )
 

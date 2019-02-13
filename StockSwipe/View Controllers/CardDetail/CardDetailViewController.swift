@@ -23,7 +23,6 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     @IBOutlet weak var cardBottomToRootBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet weak var cardContentView: SwipeCardView!
-    @IBOutlet weak var textView: UITextView!
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet var addToWatchlistButton: UIButton!
@@ -31,7 +30,7 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in }
     }
     
-    @IBAction func xPressed(_ sender: Any) {
+    @IBAction func xPressed(_ sender: UIButton) {
         
         if !forceDisableDragDownToDismiss {
             dismissalAnimator = createInteractiveDismissalAnimatorIfNeeded(targetAnimatedView: self.view,
@@ -49,13 +48,14 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         } else {
             self.dismiss(animated: true, completion: nil)
         }
+        
+        sender.isHidden = true
     }
     
     var card: Card! {
         didSet {
-            if self.cardContentView != nil {
+            if self.view != nil {
                 cardContentView.card = card
-                cardContentView.setCardInfo()
             }
         }
     }
@@ -89,17 +89,8 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        if Constants.isEnabledDebugAnimatingViews {
-            scrollView.layer.borderWidth = 3
-            scrollView.layer.borderColor = UIColor.green.cgColor
-            
-            scrollView.subviews.first!.layer.borderWidth = 3
-            scrollView.subviews.first!.layer.borderColor = UIColor.purple.cgColor
-        }
-        
         scrollView.delegate = self
         scrollView.contentInsetAdjustmentBehavior = .never
-//        cardContentView.setFontState(isHighlighted: isFontStateHighlighted)
         
         if !forceDisableDragDownToDismiss {
             dismissalPanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
@@ -111,13 +102,11 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
             dismissalPanGesture.require(toFail: dismissalScreenEdgePanGesture)
             //        scrollView.panGestureRecognizer.require(toFail: dismissalScreenEdgePanGesture)
         
-        loadViewIfNeeded()
-        view.addGestureRecognizer(dismissalPanGesture)
-//        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
+            view.addGestureRecognizer(dismissalPanGesture)
+            //        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
         }
     
-        cardContentView.card = card
-        cardContentView.setCardInfo()
+        loadViewIfNeeded()
     }
     
     func didSuccessfullyDragDownToDismiss() {
@@ -243,7 +232,7 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if draggingDownToDismiss || (scrollView.isTracking && scrollView.contentOffset.y < 0) {
+        if draggingDownToDismiss || (scrollView.isTracking && scrollView.contentOffset.y < 0 && !forceDisableDragDownToDismiss) {
             draggingDownToDismiss = true
             scrollView.contentOffset = .zero
         }

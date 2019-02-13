@@ -22,3 +22,11 @@ protocol DetectTags { }
 protocol ReusableView: class {}
 
 protocol Tintable { }
+
+protocol NibLoadable where Self: UIView {
+    func fromNib() -> UIView?
+}
+
+protocol ResetAbleTransform where Self: UIView  {
+    func resetTransform()
+}

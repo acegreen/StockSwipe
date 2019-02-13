@@ -9,12 +9,14 @@
 import UIKit
 import QuartzCore
 
-class WatchlistCardCollectionViewCell: UICollectionViewCell {
+class WatchlistCardCollectionViewCell: UICollectionViewCell, ResetAbleTransform {
     
     let overlayWidth:  CGFloat = 100.0
     let overlayHeight: CGFloat = 50.0
+
+    var disabledHighlightedAnimation = false
     
-    @IBOutlet weak var cardView: SwipeCardView!
+    @IBOutlet weak var cardView: CardView!
     @IBOutlet weak var overlayLabel: UILabel!
     
     func configure(with card: Card) {
@@ -23,10 +25,6 @@ class WatchlistCardCollectionViewCell: UICollectionViewCell {
         let companyName = card.companyName
         
         self.cardView.card = card
-        self.cardView.symbolLabel.text = "\(symbol)"
-        self.cardView.companyNameLabel.text = "\(companyName)"
-        self.cardView.exchangeLabel.text = "\(card.exchange)"
-        self.cardView.setCardInfo()
         
         guard let cardModel = card.cardModel, let userChoice = Constants.UserChoices(rawValue: cardModel.userChoice) else { return }
         
@@ -55,18 +53,69 @@ class WatchlistCardCollectionViewCell: UICollectionViewCell {
         didSet {
             if self.isSelected {
                 // Set self border to show selection
-                self.layer.cornerRadius = 15
                 self.layer.borderWidth = 1.5
                 self.layer.borderColor = Constants.SSColors.grey.cgColor
                 
             } else {
                 // Remove bold cell border
-                self.layer.cornerRadius = 15
                 self.layer.borderWidth = 0
                 self.layer.borderColor = UIColor.clear.cgColor
                 
             }
         }
     }
-
+    
+    func freezeAnimations() {
+        disabledHighlightedAnimation = true
+        layer.removeAllAnimations()
+    }
+    
+    func unfreezeAnimations() {
+        disabledHighlightedAnimation = false
+    }
+    
+    func resetTransform() {
+        transform = .identity
+    }
+    
+    // Make it appears very responsive to touch
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        animate(isHighlighted: true)
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        animate(isHighlighted: false)
+    }
+    
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        animate(isHighlighted: false)
+    }
+    
+    private func animate(isHighlighted: Bool, completion: ((Bool) -> Void)? = nil) {
+        
+        guard !disabledHighlightedAnimation else { return }
+        
+        let animationOptions: UIView.AnimationOptions = Constants.isEnabledAllowsUserInteractionWhileHighlightingCard
+            ? [.allowUserInteraction] : []
+        if isHighlighted {
+            UIView.animate(withDuration: 1,
+                           delay: 0,
+                           usingSpringWithDamping: 1,
+                           initialSpringVelocity: 0,
+                           options: animationOptions, animations: {
+                            self.transform = .init(scaleX: Constants.cardHighlightedFactor, y: Constants.cardHighlightedFactor)
+            }, completion: completion)
+        } else {
+            UIView.animate(withDuration: 1,
+                           delay: 0,
+                           usingSpringWithDamping: 1,
+                           initialSpringVelocity: 0,
+                           options: animationOptions, animations: {
+                            self.transform = .identity
+            }, completion: completion)
+        }
+    }
 }

@@ -191,9 +191,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
                 let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
-                cardDetailViewController.card = card
                 cardDetailViewController.forceDisableDragDownToDismiss = true
                 DispatchQueue.main.async {
+                    cardDetailViewController.card = card
                     if mainTabBarController.presentationController != nil {
                         mainTabBarController.dismiss(animated: false, completion: nil)
                     }

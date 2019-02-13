@@ -79,6 +79,7 @@
 		238DB6F11D85A01F00082918 /* SettingsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6D61D85A01F00082918 /* SettingsTableViewController.swift */; };
 		238DB6F31D85A01F00082918 /* TradeIdeaDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6D81D85A01F00082918 /* TradeIdeaDetailTableViewController.swift */; };
 		238DB6F51D85A01F00082918 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6DA1D85A01F00082918 /* WebViewController.swift */; };
+		239083EF22148E4300C3A809 /* TradeIdeaTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239083EE22148E4300C3A809 /* TradeIdeaTableViewController.swift */; };
 		2394DFAA1C8C691B0018A5A9 /* SweetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2394DFA91C8C691B0018A5A9 /* SweetAlert.swift */; };
 		239A3E491BAA1CCF00894D1E /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 239A3E481BAA1CCF00894D1E /* JavaScriptCore.framework */; };
 		239C3E481F65FECE00D1B422 /* FeedbackMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 239C3E471F65FECE00D1B422 /* FeedbackMainViewController.swift */; };
@@ -275,6 +276,7 @@
 		238DB6D61D85A01F00082918 /* SettingsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsTableViewController.swift; sourceTree = "<group>"; };
 		238DB6D81D85A01F00082918 /* TradeIdeaDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeIdeaDetailTableViewController.swift; sourceTree = "<group>"; };
 		238DB6DA1D85A01F00082918 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		239083EE22148E4300C3A809 /* TradeIdeaTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TradeIdeaTableViewController.swift; sourceTree = "<group>"; };
 		2394DFA91C8C691B0018A5A9 /* SweetAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SweetAlert.swift; sourceTree = "<group>"; };
 		239A3E481BAA1CCF00894D1E /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		239C3E471F65FECE00D1B422 /* FeedbackMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackMainViewController.swift; sourceTree = "<group>"; };
@@ -613,6 +615,7 @@
 			isa = PBXGroup;
 			children = (
 				238DB6CC1D85A01F00082918 /* IdeaPostViewController.swift */,
+				239083EE22148E4300C3A809 /* TradeIdeaTableViewController.swift */,
 				238DB6D81D85A01F00082918 /* TradeIdeaDetailTableViewController.swift */,
 			);
 			path = TradeIdea;
@@ -1169,6 +1172,7 @@
 				23C221B41DC8E8C5003898E9 /* IdeaPostUITextView.swift in Sources */,
 				2307EB0E2213714100A098AC /* CardDetailContainerPageViewController.swift in Sources */,
 				231E89C01D28055C00CD009A /* User.swift in Sources */,
+				239083EF22148E4300C3A809 /* TradeIdeaTableViewController.swift in Sources */,
 				23C925601B1A7D9400D17B70 /* Card.swift in Sources */,
 				238DB6EA1D85A01F00082918 /* NotificationCenterTableViewController.swift in Sources */,
 				236280C21CB3FABF0022A129 /* TradeIdea.swift in Sources */,

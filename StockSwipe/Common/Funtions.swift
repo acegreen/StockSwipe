@@ -98,7 +98,7 @@ class Functions {
         self.getParseObject(symbol) { object in
             do {
                 
-                guard let object = try object() else { throw QueryHelper.QueryError.parseObjectAlreadyExists }
+                guard let object = try object() else { throw QueryHelper.QueryError.objectDoesntExists }
                 
                 QueryHelper.sharedInstance.queryEODHistorical(for: symbol) { eodHistoricalResult in
                     do {

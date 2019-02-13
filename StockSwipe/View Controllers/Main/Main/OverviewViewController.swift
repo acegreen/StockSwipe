@@ -213,6 +213,7 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
             return
         }
         
+        self.carousel.isUserInteractionEnabled = false
         
         if let tickerAtIndex = tickers.get(index) {
             Functions.makeCard(for: tickerAtIndex.symbol) { card in
@@ -223,8 +224,14 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
                         self.performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: card)
                     }
                 } catch {
-                    // TODO: handle error
+                    if let error = error as? QueryHelper.QueryError {
+                        DispatchQueue.main.async {
+                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
+                        }
+                    }
                 }
+                
+                self.carousel.isUserInteractionEnabled = true
             }
         }
     }

@@ -357,25 +357,9 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         switch segueIdentifier {
             
         case .ChartDetailSegueIdentifier:
-            
-            var symbol: String!
-            
-            switch sender {
-            case is UIButton:
-
-                let destinationView = segue.destination as! CardDetailViewController
-                symbol = (sender as! UIButton).currentTitle
-                Functions.makeCard(for: symbol, completion: { card in
-                    do {
-                        let card = try card()
-                        destinationView.card = card
-                    } catch {
-                        //  TODO: handle error
-                    }
-                })
-            default:
-                break
-            }
+            let cardDetailViewController = segue.destination as! CardDetailViewController
+            cardDetailViewController.card = sender as? Card
+            cardDetailViewController.forceDisableDragDownToDismiss = true
         }
     }
 }
@@ -468,13 +452,24 @@ extension OverviewFirstPageViewController: CloudLayoutOperationDelegate {
     @objc func wordTapped(_ sender: UITapGestureRecognizer) {
         
         guard Functions.isConnectedToNetwork() else {
-            
             SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
-            
             return
         }
         
-//        performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: carousel.itemView(at: index))
+        if let symbol = (sender.view as? UIButton)?.currentTitle {
+            Functions.makeCard(for: symbol) { card in
+                do {
+                    let card = try card()
+                    
+                    DispatchQueue.main.async {
+                        self.performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: card)
+                    }
+                    
+                } catch {
+                    // TODO: handle error
+                }
+            }
+        }
     }
     
     @objc func wordLongPressed(_ sender: UILongPressGestureRecognizer) {

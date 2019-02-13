@@ -225,7 +225,7 @@ class Constants {
     }
     
     static let cardHighlightedFactor: CGFloat = 0.96
-    static let cardCornerRadius: CGFloat = 16
+    static let cardCornerRadius: CGFloat = 15
     static let dismissalAnimationDuration = 0.60
 
     enum CardVerticalExpandingStyle {

@@ -140,22 +140,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             
             Functions.makeCard(for: symbol) { card in
-                
                 do {
-                    
                     let card = try card()
                     
-                    // TODO: change segue
-                    let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
                     let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
-                    
-                    if mainTabBarController.presentationController != nil {
-                        mainTabBarController.dismiss(animated: false, completion: nil)
+                    let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+                    cardDetailViewController.card = card
+                    cardDetailViewController.forceDisableDragDownToDismiss = true
+                    DispatchQueue.main.async {
+                        if mainTabBarController.presentationController != nil {
+                            mainTabBarController.dismiss(animated: false, completion: nil)
+                        }
+
+                        mainTabBarController.present(cardDetailViewController, animated: true, completion: nil)
                     }
-                    
-                    CardDetailTabBarController.card = card
-                    mainTabBarController.present(CardDetailTabBarController, animated: true, completion: nil)
-                    
                 } catch {
                     if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {
@@ -188,22 +186,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         Functions.makeCard(for: symbol) { card in
-            
             do {
-                
                 let card = try card()
                 
-                // TODO: change segue
-                let CardDetailTabBarController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailTabBarController") as! CardDetailTabBarController
                 let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
-                
-                if mainTabBarController.presentationController != nil {
-                    mainTabBarController.dismiss(animated: false, completion: nil)
+                let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+                cardDetailViewController.card = card
+                cardDetailViewController.forceDisableDragDownToDismiss = true
+                DispatchQueue.main.async {
+                    if mainTabBarController.presentationController != nil {
+                        mainTabBarController.dismiss(animated: false, completion: nil)
+                    }
+                    
+                    mainTabBarController.present(cardDetailViewController, animated: true, completion: nil)
                 }
-                
-                CardDetailTabBarController.card = card
-                mainTabBarController.present(CardDetailTabBarController, animated: true, completion: nil)
-                
             } catch {
                 if let error = error as? QueryHelper.QueryError {
                     DispatchQueue.main.async {

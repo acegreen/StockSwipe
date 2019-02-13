@@ -124,6 +124,28 @@ class Functions {
         }
     }
     
+    class func fetchEODData(for symbol: String, completion: @escaping (_ result: () throws -> (eodHistoricalResult: [QueryHelper.EODHistoricalResult], eodFundamentalsResult: QueryHelper.EODFundamentalsResult)) -> Void) -> Void {
+        
+        QueryHelper.sharedInstance.queryEODHistorical(for: symbol) { eodHistoricalResult in
+            do {
+                let eodHistoricalResult = try eodHistoricalResult()
+                
+                QueryHelper.sharedInstance.queryEODFundamentals(for: symbol, completionHandler: { eodFundamentalsResult in
+                    
+                    do {
+                        let eodFundamentalsResult = try eodFundamentalsResult()
+                        completion( { (eodHistoricalResult, eodFundamentalsResult) })
+                    } catch {
+                        completion({throw error})
+                    }
+                })
+                
+            } catch {
+                completion({throw error})
+            }
+        }
+    }
+    
     class func makeCard(for symbol: String, completion: @escaping (_ result: () throws -> Card) -> Void) -> Void {
         
         self.fetchParseObjectAndEODData(for: symbol) { result in

@@ -511,33 +511,25 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
             return cell.superview!.convert(r, to: nil)
         }()
         
-        Functions.makeCard(for: card.symbol) { card in
+        if let selectedCard = cards.find({ $0.symbol == card.symbol }) {
             
-            do {
-                
-                let card = try card()
-                
-                // Set up card detail view controller
-                let vc = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
-                vc.card = card
-                vc.unhighlightedCard = card // Keep the original one to restore when dismiss
-                let params = CardTransition.Params(fromCardFrame: cardPresentationFrameOnScreen,
-                                                   fromCardFrameWithoutTransform: cardFrameWithoutTransform,
-                                                   fromCell: cell.cardView)
-                self.transition = CardTransition(params: params)
-                vc.transitioningDelegate = self.transition
-                
-                // If `modalPresentationStyle` is not `.fullScreen`, this should be set to true to make status bar depends on presented vc.
-                vc.modalPresentationCapturesStatusBarAppearance = true
-                vc.modalPresentationStyle = .custom
-                
-                DispatchQueue.main.async {
-                    self.present(vc, animated: true, completion: {
-                        vc.addToWatchlistButton.isHidden = true
-                    })
-                }
-            } catch {
-                // TODO: handle error
+            let vc = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+            vc.card = selectedCard
+            vc.unhighlightedCard = selectedCard // Keep the original one to restore when dismiss
+            let params = CardTransition.Params(fromCardFrame: cardPresentationFrameOnScreen,
+                                               fromCardFrameWithoutTransform: cardFrameWithoutTransform,
+                                               fromCell: cell.cardView)
+            self.transition = CardTransition(params: params)
+            vc.transitioningDelegate = self.transition
+            
+            // If `modalPresentationStyle` is not `.fullScreen`, this should be set to true to make status bar depends on presented vc.
+            vc.modalPresentationCapturesStatusBarAppearance = true
+            vc.modalPresentationStyle = .custom
+            
+            DispatchQueue.main.async {
+                self.present(vc, animated: true, completion: {
+                    vc.addToWatchlistButton.isHidden = true
+                })
             }
         }
     }

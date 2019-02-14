@@ -224,7 +224,7 @@ class Constants {
         }
     }
     
-    static let cardHighlightedFactor: CGFloat = 0.96
+    static let cardHighlightedFactor: CGFloat = 0.95
     static let cardCornerRadius: CGFloat = 15
     static let dismissalAnimationDuration = 0.60
 

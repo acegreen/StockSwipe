@@ -183,27 +183,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         threeDotsAlert.view.tintColor = Constants.SSColors.green
     }
     
-    @objc func handleProfileGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
-        
-        let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
-        
-        if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == userName) {
-            profileContainerController.user = self.tradeIdea.user
-        } else if (tapGestureRecognizer.view == nestedUserAvatar || tapGestureRecognizer.view == nestedUsername ) {
-            profileContainerController.user = self.nestedTradeIdea?.user
-        }
-        
-        UIApplication.topViewController()?.show(profileContainerController, sender: self)
-    }
-    
-    @objc func handleTradeIdeaGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
-        
-        let tradeIdeaDetailTableViewController = Constants.Storyboards.tradeIdeaStoryboard.instantiateViewController(withIdentifier: "TradeIdeaDetailTableViewController") as! TradeIdeaDetailTableViewController
-        tradeIdeaDetailTableViewController.tradeIdea = self.nestedTradeIdea
-        
-        UIApplication.topViewController()?.show(tradeIdeaDetailTableViewController, sender: self)
-    }
-    
     func configureCell(with tradeIdea: TradeIdea, timeFormat: Constants.TimeFormat) {
         
         self.tradeIdea = tradeIdea
@@ -290,52 +269,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleTradeIdeaGestureRecognizer(_:)))
             self.nestedTradeIdeaStack.addGestureRecognizer(tapGestureRecognizerNestedUsername)
         }
-    }
-    
-    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
-        
-        if tradeIdeaTyp == .reshare {
-            registerReshare(on: self.reshareButton)
-        }
-        
-        guard let currentUser = PFUser.current() , currentUser.objectId != self.tradeIdea.user.objectId else { return }
-        
-        // Send push
-        switch tradeIdeaTyp {
-        case .new:
-            
-            return
-            
-        case .reply:
-            
-            #if DEBUG
-                print("send push didn't happen in debug")
-            #else
-                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":tradeIdea.parseObject.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": "@\(currentUser.username!) replied:\n" + tradeIdea.ideaDescription])
-            #endif
-            
-        case .reshare:
-            
-            #if DEBUG
-                print("send push didn't happen in debug")
-            #else
-                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n" + self.tradeIdea.ideaDescription])
-            #endif
-        }
-        
-        self.delegate?.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaTyp)
-    }
-    
-    func ideaDeleted(with tradeIdeaObject: PFObject) {
-        print("ideaDeleted")
-        
-        self.delegate?.ideaDeleted(with: tradeIdeaObject)
-    }
-    
-    func ideaUpdated(with tradeIdea: TradeIdea) {
-        print("ideaModified")
-        
-        self.delegate?.ideaUpdated(with: tradeIdea)
     }
     
     func checkMore() {
@@ -575,6 +508,77 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             return blockUser
         }
+    }
+    
+    // MARK: IdeaPostDelegate
+    
+    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
+        
+        if tradeIdeaTyp == .reshare {
+            registerReshare(on: self.reshareButton)
+        }
+        
+        guard let currentUser = PFUser.current() , currentUser.objectId != self.tradeIdea.user.objectId else { return }
+        
+        // Send push
+        switch tradeIdeaTyp {
+        case .new:
+            
+            return
+            
+        case .reply:
+            
+            #if DEBUG
+            print("send push didn't happen in debug")
+            #else
+            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":tradeIdea.parseObject.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": "@\(currentUser.username!) replied:\n" + tradeIdea.ideaDescription])
+            #endif
+            
+        case .reshare:
+            
+            #if DEBUG
+            print("send push didn't happen in debug")
+            #else
+            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.tradeIdea.user.objectId!, "tradeIdeaObjectId":self.tradeIdea.parseObject.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n" + self.tradeIdea.ideaDescription])
+            #endif
+        }
+        
+        self.delegate?.ideaPosted(with: tradeIdea, tradeIdeaTyp: tradeIdeaTyp)
+    }
+    
+    func ideaDeleted(with tradeIdeaObject: PFObject) {
+        print("ideaDeleted")
+        
+        self.delegate?.ideaDeleted(with: tradeIdeaObject)
+    }
+    
+    func ideaUpdated(with tradeIdea: TradeIdea) {
+        print("ideaModified")
+        
+        self.delegate?.ideaUpdated(with: tradeIdea)
+    }
+    
+    // MAKR: Gesture
+    
+    @objc func handleProfileGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
+        
+        let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
+        
+        if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == userName) {
+            profileContainerController.user = self.tradeIdea.user
+        } else if (tapGestureRecognizer.view == nestedUserAvatar || tapGestureRecognizer.view == nestedUsername ) {
+            profileContainerController.user = self.nestedTradeIdea?.user
+        }
+        
+        UIApplication.topViewController()?.show(profileContainerController, sender: self)
+    }
+    
+    @objc func handleTradeIdeaGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
+        
+        let tradeIdeaDetailTableViewController = Constants.Storyboards.tradeIdeaStoryboard.instantiateViewController(withIdentifier: "TradeIdeaDetailTableViewController") as! TradeIdeaDetailTableViewController
+        tradeIdeaDetailTableViewController.tradeIdea = self.nestedTradeIdea
+        
+        UIApplication.topViewController()?.show(tradeIdeaDetailTableViewController, sender: self)
     }
 }
 

@@ -32,7 +32,6 @@ protocol ChartCollectionCellDelegate {
 class WatchlistCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var cards = [Card]()
-    var selectedCard: Card!
     
     var cellWidth: CGFloat!
     var cellHeight: CGFloat!
@@ -78,7 +77,6 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             }
             
             self.EditButton.image = UIImage(named: "edit_pen")
-            
         }
     }
     
@@ -280,9 +278,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             
             // Check if selection count is greater than 0, then enable trash button
             if self.CollectionView.indexPathsForSelectedItems!.count != 0 {
-                
                 self.TrashButton.isEnabled = true
-                
             }
             
         } else {
@@ -294,7 +290,6 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             
             let selectedCard = cards[(self.CollectionView.indexPathsForSelectedItems!.first! as NSIndexPath).row]
             self.CollectionView.deselectItem(at: indexPath, animated: false)
-            self.selectedCard = selectedCard
             
             performCustomSegue(cell: cell, card: selectedCard)
         }
@@ -316,45 +311,6 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     func performDeletionOfObjects(_ selectedCards: [Card]) {
         
         //Delete Objects From Parse, CoreData and DataSource(and collectionView)
-        deleteUserFromParseObjectLongedShortedColumn(selectedCards)
-        
-        ///TODO: Need to breka down deleteUserFromParseObjectLongedShortedColumn
-    }
-    
-    func deleteItemsFromDataSource(_ selectedCards: [Card]) {
-        
-        // Delete from DataSource
-        self.cards.removeObjectsInArray(selectedCards)
-        
-        // Delete from CollectionView
-        if let selectedIndexPaths = self.CollectionView.indexPathsForSelectedItems , selectedIndexPaths.count != 0 {
-            self.CollectionView.deleteItems(at: selectedIndexPaths)
-        }
-        
-    }
-    
-    func deleteFromCoreData(_ selectedCards: [Card]) {
-        
-        // Delete from Core Data and save
-        for (_, card) in selectedCards.enumerated() {
-            if let cardModel = card.cardModel {
-                Constants.context.delete(cardModel)
-            }
-        }
-        
-        do {
-            
-            try Constants.context.save()
-            
-        } catch let error as NSError {
-            
-            print("Fetch failed: \(error.localizedDescription)")
-            
-            abort()
-        }
-    }
-    
-    func deleteUserFromParseObjectLongedShortedColumn(_ selectedCards: [Card]) {
         
         guard Functions.isUserLoggedIn(presenting: self) else { return }
         guard let currentUser = PFUser.current() else { return }
@@ -411,29 +367,26 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                                     // Delete from Data Source & CollectionView
                                     self.deleteItemsFromDataSource(selectedCards)
                                     
-                                    }, completion: { (finished: Bool) -> Void in
+                                }, completion: { (finished: Bool) -> Void in
+                                    
+                                    if finished == true {
                                         
-                                        if finished == true {
-                                            
-                                            // reload view
-                                            self.CollectionView.reloadData()
-                                            
-                                            if self.CollectionView.indexPathsForSelectedItems!.count == 0  {
-                                                
-                                                self.TrashButton.isEnabled = false
-                                            }
-                                            
-                                            if self.cards.count == 0 {
-                                                
-                                                self.EditButtonPressed(self)
-                                                self.EditButton.isEnabled = false
-                                                
-                                                self.CollectionView.reloadEmptyDataSet()
-                                            }
-                                            
+                                        // reload view
+                                        self.CollectionView.reloadData()
+                                        
+                                        if self.CollectionView.indexPathsForSelectedItems!.count == 0  {
+                                            self.TrashButton.isEnabled = false
                                         }
+                                        
+                                        if self.cards.count == 0 {
+                                            self.EditButtonPressed(self)
+                                            self.EditButton.isEnabled = false
+                                            self.CollectionView.reloadEmptyDataSet()
+                                        }
+                                    }
+                                    
+                                    self.EditButtonPressed(self)
                                 })
-
                             }
                         })
                     } catch {
@@ -443,6 +396,39 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             } catch {
                 //TODO: handle error
             }
+        }
+    }
+    
+    func deleteItemsFromDataSource(_ selectedCards: [Card]) {
+        
+        // Delete from DataSource
+        self.cards.removeObjectsInArray(selectedCards)
+        
+        // Delete from CollectionView
+        if let selectedIndexPaths = self.CollectionView.indexPathsForSelectedItems , selectedIndexPaths.count != 0 {
+            self.CollectionView.deleteItems(at: selectedIndexPaths)
+        }
+        
+    }
+    
+    func deleteFromCoreData(_ selectedCards: [Card]) {
+        
+        // Delete from Core Data and save
+        for (_, card) in selectedCards.enumerated() {
+            if let cardModel = card.cardModel {
+                Constants.context.delete(cardModel)
+            }
+        }
+        
+        do {
+            
+            try Constants.context.save()
+            
+        } catch let error as NSError {
+            
+            print("Fetch failed: \(error.localizedDescription)")
+            
+            abort()
         }
     }
     
@@ -491,7 +477,7 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
             SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
             return
         }
-        
+    
         // Get current frame on screen
         let currentCellFrame = cell.layer.presentation()!.frame
         
@@ -511,26 +497,22 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
             return cell.superview!.convert(r, to: nil)
         }()
         
-        if let selectedCard = cards.find({ $0.symbol == card.symbol }) {
-            
-            let vc = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
-            vc.card = selectedCard
-            vc.unhighlightedCard = selectedCard // Keep the original one to restore when dismiss
-            let params = CardTransition.Params(fromCardFrame: cardPresentationFrameOnScreen,
-                                               fromCardFrameWithoutTransform: cardFrameWithoutTransform,
-                                               fromCell: cell)
-            self.transition = CardTransition(params: params)
-            vc.transitioningDelegate = self.transition
-            
-            // If `modalPresentationStyle` is not `.fullScreen`, this should be set to true to make status bar depends on presented vc.
-            vc.modalPresentationCapturesStatusBarAppearance = true
-            vc.modalPresentationStyle = .custom
-            
-            DispatchQueue.main.async {
-                self.present(vc, animated: true, completion: {
-                    vc.addToWatchlistButton.isHidden = true
-                })
-            }
+        let vc = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+        vc.card = card
+        let params = CardTransition.Params(fromCardFrame: cardPresentationFrameOnScreen,
+                                           fromCardFrameWithoutTransform: cardFrameWithoutTransform,
+                                           fromCell: cell)
+        self.transition = CardTransition(params: params)
+        vc.transitioningDelegate = self.transition
+        
+        // If `modalPresentationStyle` is not `.fullScreen`, this should be set to true to make status bar depends on presented vc.
+        vc.modalPresentationCapturesStatusBarAppearance = true
+        vc.modalPresentationStyle = .custom
+        
+        DispatchQueue.main.async {
+            self.present(vc, animated: true, completion: {
+                vc.addToWatchlistButton.isHidden = true
+            })
         }
     }
 }

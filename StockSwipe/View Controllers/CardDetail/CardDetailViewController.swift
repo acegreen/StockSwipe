@@ -33,21 +33,16 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     @IBOutlet var xButton: UIButton!
     @IBAction func xButtonPressed(_ sender: UIButton) {
         
-        if !forceDisableDragDownToDismiss {
-            dismissalAnimator = createInteractiveDismissalAnimatorIfNeeded(targetAnimatedView: self.view,
-                                                                           targetShrinkScale: 0.86,
-                                                                           targetCornerRadius: Constants.cardCornerRadius,
-                                                                           progress: 100)
-            
-            // Disable gesture until reverse closing animation finishes.
-            dismissalAnimator!.addCompletion { [unowned self] (pos) in
-                self.didSuccessfullyDragDownToDismiss()
-            }
-            dismissalAnimator!.startAnimation()
-            
-        } else {
-            self.dismiss(animated: true, completion: nil)
+        dismissalAnimator = createInteractiveDismissalAnimatorIfNeeded(targetAnimatedView: self.view,
+                                                                       targetShrinkScale: Constants.cardHighlightedFactor,
+                                                                       targetCornerRadius: Constants.cardCornerRadius,
+                                                                       progress: 100)
+        
+        // Disable gesture until reverse closing animation finishes.
+        dismissalAnimator!.addCompletion { [unowned self] (pos) in
+            self.didSuccessfullyDragDownToDismiss()
         }
+        dismissalAnimator!.startAnimation()
     }
     
     var card: Card! {
@@ -57,8 +52,6 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
             }
         }
     }
-    
-    var unhighlightedCard: Card!
     
     var isFontStateHighlighted: Bool = true {
         didSet {
@@ -89,26 +82,23 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         
         scrollView.delegate = self
         scrollView.contentInsetAdjustmentBehavior = .never
+    
+        dismissalPanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
+        dismissalPanGesture.delegate = self
+        //        dismissalScreenEdgePanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
+        //        dismissalScreenEdgePanGesture.delegate = self
         
-        if !forceDisableDragDownToDismiss {
-            dismissalPanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
-            dismissalPanGesture.delegate = self
-            //        dismissalScreenEdgePanGesture.addTarget(self, action: #selector(handleDismissalPan(gesture:)))
-            //        dismissalScreenEdgePanGesture.delegate = self
-            
-            // Make drag down/scroll pan gesture waits til screen edge pan to fail first to begin
-            dismissalPanGesture.require(toFail: dismissalScreenEdgePanGesture)
-            //        scrollView.panGestureRecognizer.require(toFail: dismissalScreenEdgePanGesture)
+        // Make drag down/scroll pan gesture waits til screen edge pan to fail first to begin
+        dismissalPanGesture.require(toFail: dismissalScreenEdgePanGesture)
+        //        scrollView.panGestureRecognizer.require(toFail: dismissalScreenEdgePanGesture)
         
-            view.addGestureRecognizer(dismissalPanGesture)
-            //        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
-        }
+        view.addGestureRecognizer(dismissalPanGesture)
+        //        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
     
         loadViewIfNeeded()
     }
     
     func didSuccessfullyDragDownToDismiss() {
-        card = unhighlightedCard
         xButton.isHidden = true
         dismiss(animated: true)
     }
@@ -162,7 +152,7 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         
         let currentLocation = gesture.location(in: nil)
         let progress = isScreenEdgePan ? (gesture.translation(in: targetAnimatedView).x / 100) : (currentLocation.y - startingPoint.y) / 100
-        let targetShrinkScale: CGFloat = 0.86
+        let targetShrinkScale: CGFloat = Constants.cardHighlightedFactor
         let targetCornerRadius: CGFloat = Constants.cardCornerRadius
         
         switch gesture.state {

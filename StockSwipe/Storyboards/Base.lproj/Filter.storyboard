@@ -72,7 +72,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Filters" id="wUb-3k-aSS">
-                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="hmi-uW-qNT">
+                        <barButtonItem key="leftBarButtonItem" image="x" id="hmi-uW-qNT">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <segue destination="2G0-Mb-pYH" kind="unwind" unwindAction="unwindToOverviewController:" id="dNP-mU-hiA"/>
@@ -86,5 +86,8 @@
             <point key="canvasLocation" x="-270" y="-2035"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="x" width="16" height="16"/>
+    </resources>
     <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
 </document>

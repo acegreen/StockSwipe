@@ -780,7 +780,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             // Set up card detail view controller
             let vc = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
             vc.card = selectedCard
-            vc.unhighlightedCard = selectedCard // Keep the original one to restore when dismiss
             let params = CardTransition.Params(fromCardFrame: cardPresentationFrameOnScreen,
                                                fromCardFrameWithoutTransform: cardFrameWithoutTransform,
                                                fromCell: self.firstCardView!)

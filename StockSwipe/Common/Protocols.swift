@@ -23,10 +23,10 @@ protocol ReusableView: class {}
 
 protocol Tintable { }
 
-protocol NibLoadable where Self: UIView {
+protocol NibLoadable: UIView {
     func fromNib() -> UIView?
 }
 
-protocol ResetAbleTransform where Self: UIView  {
+protocol ResetAbleTransform: UIView  {
     func resetTransform()
 }

@@ -586,7 +586,7 @@ extension OverviewFirstPageViewController: UITableViewDelegate, UITableViewDataS
         var attributedTitle: NSAttributedString!
         
         if scrollView == latestNewsTableView {
-            attributedTitle = NSAttributedString(string: "No News", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
+            attributedTitle = NSAttributedString(string: "News", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
         }
         
         return attributedTitle

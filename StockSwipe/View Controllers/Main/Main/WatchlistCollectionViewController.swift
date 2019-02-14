@@ -466,7 +466,7 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
-        let attributedTitle: NSAttributedString = NSAttributedString(string: "No Cards", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
+        let attributedTitle: NSAttributedString = NSAttributedString(string: "Watchlist", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
         
         return attributedTitle
     }
@@ -477,7 +477,7 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
         paragraphStyle.lineBreakMode = NSLineBreakMode.byWordWrapping
         paragraphStyle.alignment = NSTextAlignment.center
         
-        let attributedDescription: NSAttributedString = NSAttributedString(string: "You can add charts by swiping the cards LEFT or RIGHT", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18), NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        let attributedDescription: NSAttributedString = NSAttributedString(string: "You can add cards by taping the Add To Watchlist button or long pressing a cloud symbol", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18), NSAttributedString.Key.paragraphStyle: paragraphStyle])
         
         return attributedDescription
         

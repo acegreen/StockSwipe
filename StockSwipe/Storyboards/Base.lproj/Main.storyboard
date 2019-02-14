@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.59" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="QBj-Vy-z2e">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.59" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QBj-Vy-z2e">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.45"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -50,10 +51,6 @@
         <scene sceneID="yVL-Sy-Pi7">
             <objects>
                 <viewController storyboardIdentifier="CardsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6le-Go-Bct" customClass="CardsViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xNa-Ti-lwN"/>
-                        <viewControllerLayoutGuide type="bottom" id="G9G-gt-Exk"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="YIy-RZ-b57">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -63,6 +60,7 @@
                             <userLayoutGuide location="243" affinity="minY"/>
                         </userGuides>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="cfv-oz-XX7"/>
                     </view>
                     <navigationItem key="navigationItem" id="7q6-Qq-lsr">
                         <barButtonItem key="leftBarButtonItem" image="filter" id="37b-Na-uh8">
@@ -106,10 +104,6 @@
         <scene sceneID="Khs-IF-XGI">
             <objects>
                 <viewController automaticallyAdjustsScrollViewInsets="NO" id="jII-rT-QY5" customClass="WatchlistCollectionViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="43v-wj-0RO"/>
-                        <viewControllerLayoutGuide type="bottom" id="Btx-E1-Gta"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="xa7-d4-5DP">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -187,11 +181,12 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="her-8B-2ID" firstAttribute="top" secondItem="43v-wj-0RO" secondAttribute="bottom" id="1XJ-yo-SYB"/>
-                            <constraint firstAttribute="trailing" secondItem="her-8B-2ID" secondAttribute="trailing" id="ON1-5M-yjf"/>
-                            <constraint firstItem="Btx-E1-Gta" firstAttribute="top" secondItem="her-8B-2ID" secondAttribute="bottom" id="XWg-iR-1Eg"/>
-                            <constraint firstItem="her-8B-2ID" firstAttribute="leading" secondItem="xa7-d4-5DP" secondAttribute="leading" id="ibc-O4-RNc"/>
+                            <constraint firstItem="her-8B-2ID" firstAttribute="top" secondItem="uiQ-4B-xGf" secondAttribute="top" id="1XJ-yo-SYB"/>
+                            <constraint firstItem="uiQ-4B-xGf" firstAttribute="trailing" secondItem="her-8B-2ID" secondAttribute="trailing" id="ON1-5M-yjf"/>
+                            <constraint firstItem="uiQ-4B-xGf" firstAttribute="bottom" secondItem="her-8B-2ID" secondAttribute="bottom" id="XWg-iR-1Eg"/>
+                            <constraint firstItem="her-8B-2ID" firstAttribute="leading" secondItem="uiQ-4B-xGf" secondAttribute="leading" id="ibc-O4-RNc"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="uiQ-4B-xGf"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="vcx-5W-xl4">
@@ -254,10 +249,6 @@
         <scene sceneID="Gqv-4a-ddJ">
             <objects>
                 <viewController storyboardIdentifier="OverviewViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="t9f-yg-JgX" customClass="OverviewViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="3nr-cE-U41"/>
-                        <viewControllerLayoutGuide type="bottom" id="yyC-gj-N77"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="MzL-Rp-J2a">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -287,11 +278,12 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="cDR-vp-Ncz" firstAttribute="leading" secondItem="MzL-Rp-J2a" secondAttribute="leading" id="UVZ-Xt-pMA"/>
-                            <constraint firstAttribute="trailing" secondItem="cDR-vp-Ncz" secondAttribute="trailing" id="j7O-2W-PhG"/>
-                            <constraint firstItem="yyC-gj-N77" firstAttribute="top" secondItem="cDR-vp-Ncz" secondAttribute="bottom" id="mjm-FG-zIc"/>
-                            <constraint firstItem="cDR-vp-Ncz" firstAttribute="top" secondItem="3nr-cE-U41" secondAttribute="bottom" constant="-22" id="yhF-5N-0UO"/>
+                            <constraint firstItem="cDR-vp-Ncz" firstAttribute="leading" secondItem="i9L-Ez-yan" secondAttribute="leading" id="UVZ-Xt-pMA"/>
+                            <constraint firstItem="i9L-Ez-yan" firstAttribute="trailing" secondItem="cDR-vp-Ncz" secondAttribute="trailing" id="j7O-2W-PhG"/>
+                            <constraint firstItem="i9L-Ez-yan" firstAttribute="bottom" secondItem="cDR-vp-Ncz" secondAttribute="bottom" id="mjm-FG-zIc"/>
+                            <constraint firstItem="cDR-vp-Ncz" firstAttribute="top" secondItem="i9L-Ez-yan" secondAttribute="top" constant="-22" id="yhF-5N-0UO"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="i9L-Ez-yan"/>
                     </view>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" id="rDy-93-T1s">
@@ -1192,10 +1184,6 @@
         <scene sceneID="MWs-kU-Eru">
             <objects>
                 <viewController storyboardIdentifier="OverviewFirstPageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rTU-kZ-4r8" customClass="OverviewFirstPageViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Wf9-Yb-MJh"/>
-                        <viewControllerLayoutGuide type="bottom" id="Gru-c1-OxX"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="C2V-Me-918">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1387,11 +1375,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="ctE-JQ-q5I" secondAttribute="trailing" constant="10" id="FQb-NW-lAo"/>
-                            <constraint firstItem="ctE-JQ-q5I" firstAttribute="leading" secondItem="C2V-Me-918" secondAttribute="leading" constant="10" id="HNq-jO-1MZ"/>
+                            <constraint firstItem="uUj-bU-OE1" firstAttribute="trailing" secondItem="ctE-JQ-q5I" secondAttribute="trailing" constant="10" id="FQb-NW-lAo"/>
+                            <constraint firstItem="ctE-JQ-q5I" firstAttribute="leading" secondItem="uUj-bU-OE1" secondAttribute="leading" constant="10" id="HNq-jO-1MZ"/>
                             <constraint firstAttribute="bottom" secondItem="ctE-JQ-q5I" secondAttribute="bottom" constant="10" id="NcX-PB-mCF"/>
                             <constraint firstItem="ctE-JQ-q5I" firstAttribute="top" secondItem="C2V-Me-918" secondAttribute="top" constant="5" id="rKN-b6-PJf"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="uUj-bU-OE1"/>
                     </view>
                     <connections>
                         <outlet property="cloudView" destination="1gu-wg-TU4" id="Gp2-R3-S11"/>
@@ -1436,7 +1425,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="mpU-mH-Dfh"/>
-        <segue reference="sLE-BL-QrO"/>
+        <segue reference="GQg-ve-hgJ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
 </document>

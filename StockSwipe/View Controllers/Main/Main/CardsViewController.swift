@@ -39,6 +39,26 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     var fourthCardView: SwipeCardView!
     var informationCardView: UIView!
     
+    var frontCardViewFrame: CGRect {
+        return CGRect(x: self.view.bounds.midX - (cardWidth / 2), y: self.view.bounds.midY - (cardHeight / 2), width: cardWidth, height: cardHeight)
+    }
+    
+    var middleCardViewFrame: CGRect {
+        let frontFrame:CGRect = frontCardViewFrame
+        return CGRect(x: frontFrame.origin.x + chartOffsetsX, y: frontFrame.origin.y + chartOffsetsY, width: frontFrame.width - (chartOffsetsX * 2), height: frontFrame.height)
+    }
+    
+    var backCardViewFrame: CGRect {
+        let middleFrame:CGRect = middleCardViewFrame
+        return CGRect(x: middleFrame.origin.x + chartOffsetsX, y: middleFrame.origin.y + chartOffsetsY, width: middleFrame.width - (chartOffsetsX * 2), height: middleFrame.height)
+        
+    }
+    
+    var fourthCardViewFrame: CGRect {
+        let thirdFrame:CGRect = backCardViewFrame
+        return CGRect(x: thirdFrame.origin.x + chartOffsetsX, y: thirdFrame.origin.y, width: thirdFrame.width - (chartOffsetsX * 2), height: thirdFrame.height)
+    }
+    
     let chartOffsetsX: CGFloat = 10
     let chartOffsetsY: CGFloat = 10
     var thresholdX: CGFloat = 0.75
@@ -92,6 +112,9 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        // check device orientation
+        Functions.setCardsSize()
         
         // Get Parse Objects and Make cards
         if self.cards.count <= 10 && !self.isGettingObjects {
@@ -102,25 +125,25 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                 
                 if self.secondCardView != nil {
                     
-                    let frame:CGRect = self.middleCardViewFrame()
+                    let frame:CGRect = self.middleCardViewFrame
                     self.secondCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-((state?.thresholdRatio)! * 10), width: frame.width, height: frame.height)
                 }
                 
                 if self.thirdCardView != nil {
                     
-                    let frame:CGRect = self.backCardViewFrame()
+                    let frame:CGRect = self.backCardViewFrame
                     self.thirdCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-((state?.thresholdRatio)! * 8), width: frame.width, height: frame.height)
                 }
                 
                 if self.fourthCardView != nil {
                     
-                    let frame:CGRect = self.backCardViewFrame()
+                    let frame:CGRect = self.backCardViewFrame
                     self.fourthCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-(state?.thresholdRatio)!, width: frame.width, height: frame.height)
                 }
                 
                 if self.informationCardView != nil {
                     
-                    let frame:CGRect = self.backCardViewFrame()
+                    let frame:CGRect = self.backCardViewFrame
                     self.informationCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-(state?.thresholdRatio)!, width: frame.width, height: frame.height)
                 }
             }
@@ -143,6 +166,13 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                 self.reloadCardViews()
             })
         }
+    }
+    
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        Functions.setCardsSize()
+//        self.makeCardViews()
     }
     
     deinit {
@@ -341,7 +371,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             // Display First Card
             if self.firstCardView == nil {
                 
-                self.firstCardView = self.popChartViewWithFrame(CardPosition.firstCard , frame: CGRect(x: self.view.bounds.width + self.frontCardViewFrame().width, y: self.navigationController!.navigationBar.frame.height + 50, width: cardWidth, height: cardHeight))
+                self.firstCardView = self.popChartViewWithFrame(CardPosition.firstCard , frame: CGRect(x: self.view.bounds.width + self.frontCardViewFrame.width, y: self.navigationController!.navigationBar.frame.height + 50, width: cardWidth, height: cardHeight))
                 
                 if self.firstCardView != nil {
                     
@@ -352,14 +382,14 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                     UIView.animate(withDuration: 0.5, delay: 0.0, options: UIView.AnimationOptions(), animations: { () -> Void in
                         
                         self.firstCardView.transform = CGAffineTransform(rotationAngle: 0.toRadians())
-                        self.firstCardView.frame = self.frontCardViewFrame()
+                        self.firstCardView.frame = self.frontCardViewFrame
                         
                         }, completion: { (finished) -> Void in
                             
                             Functions.showPopTipOnceForKey("TAP_CARD_TIP_SHOWN", userDefaults: Constants.userDefaults,
                                                            popTipText: NSLocalizedString("Tap a card to view more details", comment: ""),
                                                            inView: self.view,
-                                                           fromFrame: self.frontCardViewFrame(), direction: .up, color: Constants.SSColors.green)
+                                                           fromFrame: self.frontCardViewFrame, direction: .up, color: Constants.SSColors.green)
                             
                     })
                 }
@@ -368,7 +398,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             // Display Second Card
             if self.secondCardView == nil {
                 
-                self.secondCardView = self.popChartViewWithFrame(CardPosition.secondCard, frame: CGRect(x: 0 - self.frontCardViewFrame().width, y: self.frontCardViewFrame().origin.y + self.chartOffsetsY, width: self.frontCardViewFrame().width - (self.chartOffsetsX * 2), height: self.frontCardViewFrame().height))
+                self.secondCardView = self.popChartViewWithFrame(CardPosition.secondCard, frame: CGRect(x: 0 - self.backCardViewFrame.width, y: self.backCardViewFrame.origin.y + self.chartOffsetsY, width: self.backCardViewFrame.width - (self.chartOffsetsX * 2), height: self.backCardViewFrame.height))
                 
                 if self.secondCardView != nil {
                     
@@ -379,7 +409,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                     UIView.animate(withDuration: 0.5, delay: 0.0, options: UIView.AnimationOptions(), animations: { () -> Void in
                         
                         self.secondCardView.transform = CGAffineTransform(rotationAngle: 0.toRadians())
-                        self.secondCardView.frame = self.middleCardViewFrame()
+                        self.secondCardView.frame = self.middleCardViewFrame
                         
                         }, completion: { (finished) -> Void in
                     })
@@ -390,7 +420,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             // Display Third Card
             if self.thirdCardView == nil {
                 
-                self.thirdCardView = self.popChartViewWithFrame(CardPosition.thirdCard, frame: CGRect(x: self.middleCardViewFrame().origin.x + self.chartOffsetsX, y: self.view.bounds.height + self.middleCardViewFrame().height, width: self.middleCardViewFrame().width - (self.chartOffsetsX * 2), height: self.middleCardViewFrame().height))
+                self.thirdCardView = self.popChartViewWithFrame(CardPosition.thirdCard, frame: CGRect(x: self.middleCardViewFrame.origin.x + self.chartOffsetsX, y: self.view.bounds.height + self.middleCardViewFrame.height, width: self.middleCardViewFrame.width - (self.chartOffsetsX * 2), height: self.middleCardViewFrame.height))
                 
                 if self.thirdCardView != nil {
                     
@@ -399,13 +429,13 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                     
                     UIView.animate(withDuration: 0.5, delay: 0.0, options: UIView.AnimationOptions(), animations: { () -> Void in
                         
-                        self.thirdCardView.frame = self.backCardViewFrame()
+                        self.thirdCardView.frame = self.backCardViewFrame
                         
                         }, completion: { (finished) -> Void in
                             
                             if self.fourthCardView == nil  {
                                 
-                                self.fourthCardView = self.popChartViewWithFrame(CardPosition.fourthCard, frame: self.fourthCardViewFrame())
+                                self.fourthCardView = self.popChartViewWithFrame(CardPosition.fourthCard, frame: self.fourthCardViewFrame)
                                 
                                 if self.thirdCardView != nil && self.fourthCardView != nil {
                                     
@@ -414,7 +444,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                                 }
                             }
                     })
-                    
                 }
             }
         }
@@ -428,7 +457,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             
             guard self.informationCardView == nil else { return }
             
-            self.informationCardView = NoChartView(frame: self.backCardViewFrame(), text: error.message())
+            self.informationCardView = NoChartView(frame: self.backCardViewFrame, text: error.message())
             
             self.view.addSubview(self.informationCardView)
             self.view.sendSubviewToBack(self.informationCardView)
@@ -512,7 +541,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         // make card views
         if self.fourthCardView == nil  {
             
-            self.fourthCardView = self.popChartViewWithFrame(CardPosition.fourthCard, frame: self.fourthCardViewFrame())
+            self.fourthCardView = self.popChartViewWithFrame(CardPosition.fourthCard, frame: self.fourthCardViewFrame)
             
             if self.thirdCardView != nil && self.fourthCardView != nil {
                 
@@ -549,13 +578,13 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         
         if self.secondCardView != nil {
             
-            let frame:CGRect = self.frontCardViewFrame()
+            let frame:CGRect = self.frontCardViewFrame
             self.secondCardView.frame = CGRect(x: frame.origin.x + chartOffsetsX, y: frame.origin.y + chartOffsetsY, width: frame.width - (chartOffsetsX * 2), height: frame.height)
         }
         
         if self.thirdCardView != nil {
             
-            let frame:CGRect = self.middleCardViewFrame()
+            let frame:CGRect = self.middleCardViewFrame
             self.thirdCardView.frame = CGRect(x: frame.origin.x + chartOffsetsX, y: frame.origin.y + chartOffsetsY, width: frame.width - (chartOffsetsX * 2), height: frame.height)
         }
     }
@@ -589,30 +618,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         } else {
             return nil
         }
-    }
-    
-    func frontCardViewFrame() -> CGRect {
-        return CGRect(x: self.view.bounds.midX - (cardWidth / 2), y: self.view.bounds.midY - (cardHeight / 2), width: cardWidth, height: cardHeight)
-    }
-    
-    func middleCardViewFrame() ->CGRect {
-        
-        let frontFrame:CGRect = frontCardViewFrame()
-        return CGRect(x: frontFrame.origin.x + chartOffsetsX, y: frontFrame.origin.y + chartOffsetsY, width: frontFrame.width - (chartOffsetsX * 2), height: frontFrame.height)
-    }
-    
-    func backCardViewFrame() ->CGRect {
-        
-        let middleFrame:CGRect = middleCardViewFrame()
-        return CGRect(x: middleFrame.origin.x + chartOffsetsX, y: middleFrame.origin.y + chartOffsetsY, width: middleFrame.width - (chartOffsetsX * 2), height: middleFrame.height)
-        
-    }
-    
-    func fourthCardViewFrame() ->CGRect {
-        
-        let thirdFrame:CGRect = backCardViewFrame()
-        return CGRect(x: thirdFrame.origin.x + chartOffsetsX, y: thirdFrame.origin.y, width: thirdFrame.width - (chartOffsetsX * 2), height: thirdFrame.height)
-        
     }
     
     func shortCardView() {
@@ -666,21 +671,21 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             // resize the middle card as it becomes top view.
             if self.firstCardView != nil {
                 UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                    self.firstCardView.frame = self.frontCardViewFrame()
+                    self.firstCardView.frame = self.frontCardViewFrame
                 })
             }
             
             // resize the second as it becomes middle view.
             if self.secondCardView != nil {
                 UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                    self.secondCardView.frame = self.middleCardViewFrame()
+                    self.secondCardView.frame = self.middleCardViewFrame
                 })
             }
             
             // resize the back card as it becomes middle view.
             if self.thirdCardView != nil {
                 UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                    self.thirdCardView.frame = self.backCardViewFrame()
+                    self.thirdCardView.frame = self.backCardViewFrame
                     //                self.thirdCardView.layer.shadowOpacity = 0.0
                 })
             }
@@ -688,7 +693,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             // resize information card if it exits
             if self.informationCardView != nil {
                 UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                    self.informationCardView.frame = self.backCardViewFrame()
+                    self.informationCardView.frame = self.backCardViewFrame
                 })
             }
         }

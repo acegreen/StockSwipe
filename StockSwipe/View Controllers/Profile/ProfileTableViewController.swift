@@ -1136,13 +1136,13 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
         
         switch selectedSegmentIndex {
         case .zero:
-            attributedTitle = NSAttributedString(string: "No Trade Ideas", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
+            attributedTitle = NSAttributedString(string: "Ideas", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
         case .one:
-            attributedTitle = NSAttributedString(string: "Not Following Anyone", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
+            attributedTitle = NSAttributedString(string: "Following", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
         case .two:
-            attributedTitle = NSAttributedString(string: "No Followers Yet", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
+            attributedTitle = NSAttributedString(string: "Followers", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
         case .three:
-            attributedTitle = NSAttributedString(string: "No Trade Ideas Liked", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
+            attributedTitle = NSAttributedString(string: "Ideas Liked", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
         }
         
         return attributedTitle

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.59" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jSu-zw-ob7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jSu-zw-ob7">
     <device id="retina6_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.45"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -56,7 +56,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                                 <connections>
-                                                    <action selector="xPressed:" destination="jSu-zw-ob7" eventType="touchUpInside" id="mDC-F9-bsc"/>
+                                                    <action selector="xButtonPressed:" destination="jSu-zw-ob7" eventType="touchUpInside" id="7Me-KV-jSM"/>
                                                 </connections>
                                             </button>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ZNa-1b-py7">
@@ -148,6 +148,7 @@
                         <outlet property="cardBottomToRootBottomConstraint" destination="FmB-HH-NoN" id="HIf-89-tKv"/>
                         <outlet property="cardContentView" destination="9In-5b-v3e" id="yxb-Oy-S7m"/>
                         <outlet property="scrollView" destination="0VL-kZ-etH" id="Zz4-j2-xEz"/>
+                        <outlet property="xButton" destination="xmc-NR-M3T" id="Wyr-89-FLV"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vti-XO-m1Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -679,7 +680,7 @@
     </scenes>
     <resources>
         <image name="img1.png" width="16" height="16"/>
-        <image name="x" width="16" height="16"/>
+        <image name="x" width="11.520000457763672" height="11.520000457763672"/>
     </resources>
     <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
 </document>

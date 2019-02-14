@@ -329,7 +329,7 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
         
         let attributedTitle: NSAttributedString!
         
-        attributedTitle = NSAttributedString(string: "No Ideas", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
+        attributedTitle = NSAttributedString(string: "Ideas", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
         
         return attributedTitle
     }

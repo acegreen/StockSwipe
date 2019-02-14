@@ -54,16 +54,8 @@ class Functions {
             
         case .pad:
             
-            if SDiOSVersion.deviceVersion() == .iPadPro12Dot9Inch || SDiOSVersion.deviceVersion() == .iPadPro9Dot7Inch {
-                
-                cardWidth = 1200
-                cardHeight = (cardWidth * 0.60)
-                
-            } else {
-                
-                cardWidth = 900
-                cardHeight = (cardWidth * 0.60)
-            }
+            cardWidth = UIScreen.main.bounds.width - 60
+            cardHeight = cardWidth
             
             numberOfCellsHorizontally = 2
             numberOfCellsVertically = 2

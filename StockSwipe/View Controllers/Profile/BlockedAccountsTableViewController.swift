@@ -92,7 +92,7 @@ extension BlockedAccountsTableViewController: DZNEmptyDataSetSource, DZNEmptyDat
  
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
-        let attributedTitle = NSAttributedString(string: "No blocked accounts", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
+        let attributedTitle = NSAttributedString(string: "Blocked Accounts", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
 
         return attributedTitle
     }

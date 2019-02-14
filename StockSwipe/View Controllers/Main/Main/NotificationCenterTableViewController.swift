@@ -281,7 +281,7 @@ extension NotificationCenterTableViewController: DZNEmptyDataSetSource, DZNEmpty
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
         let attributedTitle: NSAttributedString!
-        attributedTitle = NSAttributedString(string: "Nothing New", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
+        attributedTitle = NSAttributedString(string: "Notifications", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
         return attributedTitle
     }
     

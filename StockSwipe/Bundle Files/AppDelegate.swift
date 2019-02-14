@@ -83,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Register for Google App Indexing
         //GSDAppIndexing.sharedInstance().registerApp(iTunesID)
         
-        // check device
+        // check device orientation
         Functions.setCardsSize()
         
         // setup user defaults

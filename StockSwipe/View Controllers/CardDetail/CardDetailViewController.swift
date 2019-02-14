@@ -30,7 +30,8 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in }
     }
     
-    @IBAction func xPressed(_ sender: UIButton) {
+    @IBOutlet var xButton: UIButton!
+    @IBAction func xButtonPressed(_ sender: UIButton) {
         
         if !forceDisableDragDownToDismiss {
             dismissalAnimator = createInteractiveDismissalAnimatorIfNeeded(targetAnimatedView: self.view,
@@ -40,16 +41,13 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
             
             // Disable gesture until reverse closing animation finishes.
             dismissalAnimator!.addCompletion { [unowned self] (pos) in
-                self.didCancelDismissalTransition()
-                self.dismiss(animated: true, completion: nil)
+                self.didSuccessfullyDragDownToDismiss()
             }
             dismissalAnimator!.startAnimation()
             
         } else {
             self.dismiss(animated: true, completion: nil)
         }
-        
-        sender.isHidden = true
     }
     
     var card: Card! {
@@ -111,6 +109,7 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     
     func didSuccessfullyDragDownToDismiss() {
         card = unhighlightedCard
+        xButton.isHidden = true
         dismiss(animated: true)
     }
     

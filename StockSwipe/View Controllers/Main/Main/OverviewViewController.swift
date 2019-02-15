@@ -14,7 +14,7 @@ import Reachability
 class OverviewViewController: UIViewController, SegueHandlerType {
     
     enum SegueIdentifier: String {
-        case ChartDetailSegueIdentifier = "ChartDetailSegueIdentifier"
+        case CardDetailSegueIdentifier = "CardDetailSegueIdentifier"
         case SearchSegueIdentifier = "SearchSegueIdentifier"
         case PostIdeaSegueIdentifier = "PostIdeaSegueIdentifier"
         case OverviewContainerEmbededSegueIdentifier = "OverviewContainerEmbededSegueIdentifier"
@@ -164,7 +164,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         
         switch segueIdentifier {
             
-        case .ChartDetailSegueIdentifier:
+        case .CardDetailSegueIdentifier:
             let cardDetailViewController = segue.destination as! CardDetailViewController
             cardDetailViewController.card = sender as? Card
             cardDetailViewController.forceDisableDragDownToDismiss = true
@@ -232,7 +232,7 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
                     let card = try card()
                     
                     DispatchQueue.main.async {
-                        self.performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: card)
+                        self.performSegueWithIdentifier(.CardDetailSegueIdentifier, sender: card)
                     }
                 } catch {
                     if let error = error as? QueryHelper.QueryError {

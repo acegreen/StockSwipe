@@ -85,9 +85,11 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                     let userObject = try result().first
                     if let userObject = userObject {
                         let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
-                        profileContainerController.user = User(userObject: userObject)
                         
-                        UIApplication.topViewController()?.show(profileContainerController, sender: self)
+                        DispatchQueue.main.async {
+                            profileContainerController.user = User(userObject: userObject)
+                            UIApplication.topViewController()?.show(profileContainerController, sender: self)
+                        }
                     }
                     
                 } catch {

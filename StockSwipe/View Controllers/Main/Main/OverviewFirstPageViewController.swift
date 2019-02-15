@@ -18,7 +18,7 @@ import Reachability
 class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     
     enum SegueIdentifier: String {
-        case ChartDetailSegueIdentifier = "ChartDetailSegueIdentifier"
+        case CardDetailSegueIdentifier = "CardDetailSegueIdentifier"
     }
     
     var cloudWords = [CloudWord]()
@@ -280,7 +280,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         
         switch segueIdentifier {
             
-        case .ChartDetailSegueIdentifier:
+        case .CardDetailSegueIdentifier:
             let cardDetailViewController = segue.destination as! CardDetailViewController
             cardDetailViewController.card = sender as? Card
             cardDetailViewController.forceDisableDragDownToDismiss = true
@@ -388,7 +388,7 @@ extension OverviewFirstPageViewController: CloudLayoutOperationDelegate {
                     let card = try card()
                     
                     DispatchQueue.main.async {
-                        self.performSegueWithIdentifier(.ChartDetailSegueIdentifier, sender: card)
+                        self.performSegueWithIdentifier(.CardDetailSegueIdentifier, sender: card)
                     }
                     
                 } catch {

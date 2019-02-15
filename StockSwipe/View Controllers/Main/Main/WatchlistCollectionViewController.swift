@@ -55,15 +55,12 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     @IBAction func EditButtonPressed(_ sender: AnyObject) {
         
         if self.EditButton.image == UIImage(named: "edit_pen") {
-            
             setEditing(true, animated: false)
-            
             self.EditButton.image = UIImage(named: "edit_checkmark")
             
         } else {
             
             setEditing(false, animated: false)
-            
             if self.CollectionView.indexPathsForSelectedItems!.count != 0 {
                 
                 self.TrashButton.isEnabled = false

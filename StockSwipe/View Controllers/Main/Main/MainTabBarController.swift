@@ -50,7 +50,6 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
     
     func didReceivePushNotification(_ userInfo: [AnyHashable: Any]) {
         
-        // Handle received remote notification
         if let notificationTitle = userInfo["title"] as? String {
             if notificationTitle == "Follower Notification" || notificationTitle == "Trade Idea Reply Notification" || notificationTitle == "Trade Idea Like Notification" || notificationTitle == "Trade Idea Reshare Notification" {
                 self.tabBar.items?[3].badgeValue = "1"

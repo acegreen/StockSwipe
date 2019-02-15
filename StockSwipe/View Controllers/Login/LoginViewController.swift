@@ -413,6 +413,14 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         } else {
             
             user["full_name"] = user.username
+            user["follower_notification"] = true
+            user["mention_notification"] = true
+            user["newTradeIdea_notification"] = true
+            user["replyTradeIdea_notification"] = true
+            user["likeTradeIdea_notification"] = true
+            user["reshareTradeIdea_notification"] = true
+            user["swipe_addToWatchlist"] = false
+            
             saveUser(user, firstName: nil, lastName: nil)
         }
     }

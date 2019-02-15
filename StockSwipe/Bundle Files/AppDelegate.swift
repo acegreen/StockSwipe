@@ -234,8 +234,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         self.pushDelegate?.didReceivePushNotification(userInfo)
         
-        //PFPush.handlePush(userInfo)
-        
         if application.applicationState == UIApplication.State.inactive {
             PFAnalytics.trackAppOpened(withRemoteNotificationPayload: userInfo)
         }
@@ -275,6 +273,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             currentInstallation.badge = 0
             currentInstallation.saveEventually()
         }
+        UIApplication.shared.applicationIconBadgeNumber = 0
     }
     
     func applicationWillTerminate(_ application: UIApplication) {

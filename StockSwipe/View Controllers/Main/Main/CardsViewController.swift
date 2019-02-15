@@ -190,16 +190,18 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     }
     
     @objc func addCardToWatchlist(_ notification: Notification) {
-        guard let userChoice = notification.userInfo?["userChoice"] as? Constants.UserChoices else { return }
+        guard let card = notification.userInfo?["card"] as? Card else { return }
             
         DispatchQueue.main.async {
-            switch userChoice {
-            case .LONG:
+            switch card.userChoice {
+            case .LONG?:
                 self.longCardView()
-            case .SHORT:
+            case .SHORT?:
                 self.shortCardView()
-            case .SKIP:
+            case .SKIP?:
                 self.skipCardView()
+            case .none:
+                break
             }
         }
     }
@@ -490,7 +492,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             Functions.registerUserChoice(chartChosen, with: .SHORT)
             
             if Constants.swipeAddToWatchlist {
-                Functions.saveIntoCoreData(chartChosen, userChoice: .SHORT)
+                Functions.registerAddToWatchlist(chartChosen, with: .SHORT)
             }
             
             // log swipe
@@ -501,7 +503,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             Functions.registerUserChoice(chartChosen, with: .LONG)
             
             if Constants.swipeAddToWatchlist {
-                Functions.saveIntoCoreData(chartChosen, userChoice: .LONG)
+                Functions.registerAddToWatchlist(chartChosen, with: .LONG)
             }
             
             // log swipe

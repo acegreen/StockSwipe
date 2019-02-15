@@ -226,10 +226,10 @@ class SearchTableViewController: UITableViewController {
                     let card = try card()
                 
                     let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
-                    cardDetailViewController.card = card
                     cardDetailViewController.forceDisableDragDownToDismiss = true
                     
                     DispatchQueue.main.async {
+                        cardDetailViewController.card = card
                         UIApplication.topViewController()?.present(cardDetailViewController, animated: true, completion: nil)
                     }
                 } catch {

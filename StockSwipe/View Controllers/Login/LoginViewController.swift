@@ -63,9 +63,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         self.pageViewController.didMove(toParent: self)
         
         if PFUser.current() != nil {
-            
             self.dismiss(animated: false, completion: nil)
-            
         }
     }
     

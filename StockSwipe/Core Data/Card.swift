@@ -18,10 +18,12 @@ public class Card: NSObject {
     var shortCount: Int = 0 
     var longCount: Int = 0
     
-    var parseObject: PFObject?
     var eodHistoricalData: [QueryHelper.EODHistoricalResult]?
     var eodFundamentalsData: QueryHelper.EODFundamentalsResult?
-    var cardModel: CardModel?
+    
+    var userChoice: Constants.UserChoices?
+    
+    var parseObject: PFObject?
     
 //    var searchDescription: String {
 //        if self.shortCount > 0 || self.shortCount > 0 {
@@ -31,7 +33,7 @@ public class Card: NSObject {
 //        }
 //    }
     
-    init(parseObject: PFObject, eodHistoricalData: [QueryHelper.EODHistoricalResult]?, eodFundamentalsData: QueryHelper.EODFundamentalsResult?) {
+    init(parseObject: PFObject, eodHistoricalData: [QueryHelper.EODHistoricalResult]?, eodFundamentalsData: QueryHelper.EODFundamentalsResult?, userChoice: Constants.UserChoices? = nil) {
         
         super.init()
     
@@ -42,6 +44,8 @@ public class Card: NSObject {
         self.symbol = parseObject.object(forKey: "Symbol") as? String
         self.companyName = parseObject.object(forKey: "Company") as? String
         self.exchange = parseObject.object(forKey: "Exchange") as? String
+        
+        self.userChoice = userChoice
         
         // Index to Spotlight
         Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")

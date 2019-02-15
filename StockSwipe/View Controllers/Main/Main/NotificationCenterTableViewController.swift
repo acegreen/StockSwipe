@@ -10,6 +10,7 @@ import UIKit
 import DZNEmptyDataSet
 import SwiftyJSON
 import Parse
+import Reachability
 
 class NotificationCenterTableViewController: UITableViewController, CellType, SegueHandlerType {
     
@@ -26,6 +27,8 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     var isQueryingForActivities = false
     var notificationsLastRefreshDate: Date?
     
+    private let reachability = Reachability()
+    
     @IBAction func xButtonPressed(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -38,21 +41,20 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.handleReachability()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        getNotifications(queryType: .new)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
         
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    deinit {
+        self.reachability?.stopNotifier()
     }
     
     func getNotifications(queryType: QueryHelper.QueryType) {
@@ -94,7 +96,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
                 guard activityObjects.count > 0 else {
                     
                     DispatchQueue.main.async {
-                        self.tableView.reloadEmptyDataSet()
+                        self.tableView.reloadData()
                         if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
                         } else if self.footerActivityIndicator?.isAnimating == true {
@@ -292,5 +294,25 @@ extension NotificationCenterTableViewController: DZNEmptyDataSetSource, DZNEmpty
         
         return attributedDescription
         
+    }
+}
+
+extension NotificationCenterTableViewController {
+    
+    // MARK: handle reachability
+    
+    func handleReachability() {
+        self.reachability?.whenReachable = { reachability in
+            self.getNotifications(queryType: .new)
+        }
+        
+        self.reachability?.whenUnreachable = { _ in
+        }
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
     }
 }

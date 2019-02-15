@@ -105,7 +105,7 @@ import Charts
         lineDataSet.lineWidth = 3.0
         
         lineDataSet.drawCirclesEnabled = false
-        //            lineDataSet.circleRadius = 6.0
+        lineDataSet.circleRadius = 6.0
         lineDataSet.fillAlpha = 65 / 255.0
         lineDataSet.fillColor = UIColor.clear
         lineDataSet.highlightColor = UIColor.white

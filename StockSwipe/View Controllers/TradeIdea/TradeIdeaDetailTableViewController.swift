@@ -9,6 +9,7 @@
 import UIKit
 import SwiftyJSON
 import Parse
+import Reachability
 
 class TradeIdeaDetailTableViewController: UITableViewController, CellType, SegueHandlerType {
     
@@ -30,6 +31,8 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     
     let queue = DispatchQueue(label: "Query Queue")
     
+    let reachability = Reachability()
+    
     @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
     
     @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
@@ -42,15 +45,6 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if self.replyTradeIdeas.count  == 0 {
-            getReplyTradeIdeas(queryType: .new)
-        }
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     func getReplyTradeIdeas(queryType: QueryHelper.QueryType) {
@@ -90,7 +84,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
                     self.isQueryingForReplyTradeIdeas = false
                     
                     DispatchQueue.main.async {
-                        self.tableView.reloadEmptyDataSet()
+                        self.tableView.reloadData()
                         if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
                         } else if self.footerActivityIndicator?.isAnimating == true {
@@ -282,5 +276,27 @@ extension TradeIdeaDetailTableViewController: IdeaPostDelegate {
         }
         
         self.delegate?.ideaUpdated(with: tradeIdea)
+    }
+}
+
+extension TradeIdeaDetailTableViewController {
+    
+    // MARK: handle reachability
+    
+    func handleReachability() {
+        self.reachability?.whenReachable = { reachability in
+            if self.replyTradeIdeas.count  == 0 {
+                self.getReplyTradeIdeas(queryType: .new)
+            }
+        }
+        
+        self.reachability?.whenUnreachable = { _ in
+        }
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
     }
 }

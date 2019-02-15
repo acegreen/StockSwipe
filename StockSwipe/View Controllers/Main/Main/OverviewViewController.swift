@@ -9,6 +9,7 @@
 import UIKit
 import Parse
 import DataCache
+import Reachability
 
 class OverviewViewController: UIViewController, SegueHandlerType {
     
@@ -26,10 +27,12 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     var overviewVCOperationQueue: OperationQueue = OperationQueue()
     var carouselLastQueriedDate: Date!
+
     var isQueryingForiCarousel = false
-    
-    var queryTimer: Timer!
+    var queryTimer: Timer?
     let QUERY_INTERVAL: Double = 60 // 5 minutes
+    
+    let reachability = Reachability()
     
     @IBOutlet var carousel : iCarousel!
     
@@ -40,8 +43,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         carousel.type = .linear
         carousel.contentOffset = CGSize(width: 0, height: 10)
         
-        self.loadViewData(firstLaunch: true)
-        self.scheduleQueryTimer()
+        self.handleReachability()
         
         // register for foreground notificaions so we can refresh views
         NotificationCenter.default.addObserver(self, selector: #selector(OverviewViewController.applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -55,22 +57,18 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     deinit {
         overviewVCOperationQueue.cancelAllOperations()
-        
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        self.reachability?.stopNotifier()
+        self.queryTimer?.invalidate()
     }
     
     @objc func applicationWillEnterForeground() {
-        self.loadViewData()
-        self.scheduleQueryTimer()
+        self.handleReachability()
     }
     
     @objc func applicationsDidEnterBackground() {
-        self.queryTimer.invalidate()
+        self.reachability?.stopNotifier()
+        self.queryTimer?.invalidate()
     }
     
     private func scheduleQueryTimer() {
@@ -79,7 +77,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         })
     }
     
-    private func loadViewData(firstLaunch: Bool = false) {
+    private func loadViewData() {
         
         let marketCarouselOperation = BlockOperation { () -> Void in
             self.queryCarouselTickers()
@@ -87,22 +85,26 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         marketCarouselOperation.queuePriority = .normal
         overviewVCOperationQueue.addOperations([marketCarouselOperation], waitUntilFinished: true)
         
-        if firstLaunch {
+        self.scheduleQueryTimer()
+    }
+    
+    private func loadCachedData() {
+        if let carouselCacheData = DataCache.instance.readData(forKey: "CAROUSELCACHEDATA") {
+            self.updateCarousel(from: try! QueryHelper.EODQuoteResult.decodeFrom(data: carouselCacheData))
+        }
+        
+        if self.carouselLastQueriedDate == nil {
             let animationOperation = BlockOperation { () -> Void in
                 self.animationDelegate?.didFinishLoading()
             }
             animationOperation.queuePriority = .normal
-            overviewVCOperationQueue.addOperation(animationOperation)
+            self.overviewVCOperationQueue.addOperation(animationOperation)
         }
     }
     
     func queryCarouselTickers() {
         
-        if carouselLastQueriedDate == nil || !Functions.isConnectedToNetwork() {
-            if let carouselCacheData = DataCache.instance.readData(forKey: "CAROUSELCACHEDATA") {
-                updateCarousel(from: try! QueryHelper.EODQuoteResult.decodeFrom(data: carouselCacheData))
-            }
-        } else if carouselLastQueriedDate != nil {
+        if carouselLastQueriedDate != nil {
             let timeSinceLastRefresh = Date().timeIntervalSince(carouselLastQueriedDate)
             guard timeSinceLastRefresh > QUERY_INTERVAL else {
                 return
@@ -126,6 +128,15 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                     let eodResults = try eodQuoteResults()
                     DataCache.instance.write(data: eodResults.1, forKey: "CAROUSELCACHEDATA")
                     self.updateCarousel(from: eodResults.0)
+                    
+                    if self.carouselLastQueriedDate == nil {
+                        let animationOperation = BlockOperation { () -> Void in
+                            self.animationDelegate?.didFinishLoading()
+                        }
+                        animationOperation.queuePriority = .normal
+                        self.overviewVCOperationQueue.addOperation(animationOperation)
+                    }
+                    
                     self.carouselLastQueriedDate = Date()
                 } catch {
                     //TODO: handle error
@@ -248,6 +259,27 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
     }
 }
 
+extension OverviewViewController {
+    
+    // MARK: handle reachability
+    
+    func handleReachability() {
+        self.reachability?.whenReachable = { reachability in
+            self.loadViewData()
+        }
+        
+        self.reachability?.whenUnreachable = { _ in
+            self.loadCachedData()
+        }
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+    }
+}
+
 //extension OverviewViewController: IdeaPostDelegate {
 //        
 //    internal func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
@@ -258,7 +290,7 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
 //            self.tradeIdeas.insert(tradeIdea, at: 0)
 //            self.latestTradeIdeasTableView.insertRows(at: [indexPath], with: .automatic)
 //
-//            self.latestTradeIdeasTableView.reloadEmptyDataSet()
+//            self.latestTradeIdeasTableView.reloadData()
 //        }
 //    }
 //
@@ -278,7 +310,7 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
 //        }
 //
 //        if tradeIdeas.count == 0 {
-//            self.latestTradeIdeasTableView.reloadEmptyDataSet()
+//            self.latestTradeIdeasTableView.reloadData()
 //        }
 //    }
 //

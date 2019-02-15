@@ -10,6 +10,7 @@ import UIKit
 import DZNEmptyDataSet
 import SwiftyJSON
 import Parse
+import Reachability
 
 class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandlerType {
     
@@ -29,6 +30,8 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
     var tradeIdeasLastRefreshDate: Date!
     
     let queue = DispatchQueue(label: "Query Queue")
+    
+    let reachability = Reachability()
     
     @IBAction func xButtonPressed(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)
@@ -56,19 +59,16 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
         if self.stockObject == nil {
             tradeIdeaPostButton.isEnabled = false
         }
+        
+        self.handleReachability()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if self.tradeIdeas.count  == 0 {
-            getTradeIdeas(queryType: .new)
-        }
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    deinit {
+        self.reachability?.stopNotifier()
     }
     
     func getTradeIdeas(queryType: QueryHelper.QueryType) {
@@ -105,19 +105,12 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
                 
                 let activityObjects = try result()
                 
-                var tradeIdeaObjects = [PFObject]()
-                for activityObject in activityObjects {
-                    if let tradeIdeaObject = activityObject["tradeIdea"] as? PFObject {
-                        tradeIdeaObjects.append(tradeIdeaObject)
-                    }
-                }
-                
-                guard tradeIdeaObjects.count > 0 else {
+                guard activityObjects.count > 0 else {
                     
                     self.isQueryingForTradeIdeas = false
                     
                     DispatchQueue.main.async {
-                        self.tableView.reloadEmptyDataSet()
+                        self.tableView.reloadData()
                         if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
                         } else if self.footerActivityIndicator?.isAnimating == true {
@@ -129,6 +122,13 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
                     self.tradeIdeasLastRefreshDate = Date()
                     
                     return
+                }
+                
+                var tradeIdeaObjects = [PFObject]()
+                for activityObject in activityObjects {
+                    if let tradeIdeaObject = activityObject["tradeIdea"] as? PFObject {
+                        tradeIdeaObjects.append(tradeIdeaObject)
+                    }
                 }
                 
                 let tradeIdeas = TradeIdea.makeTradeIdeas(from: tradeIdeaObjects)
@@ -279,7 +279,7 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
         self.tradeIdeas.insert(tradeIdea, at: 0)
         self.tableView.insertRows(at: [indexPath], with: .automatic)
         
-        self.tableView.reloadEmptyDataSet()
+        self.tableView.reloadData()
     }
     
     internal func ideaDeleted(with parseObject: PFObject) {
@@ -298,7 +298,7 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
         }
         
         if tradeIdeas.count == 0 {
-            self.tableView.reloadEmptyDataSet()
+            self.tableView.reloadData()
         }
     }
     
@@ -341,11 +341,33 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
         paragraphStyle.alignment = NSTextAlignment.center
         
         let symbol = self.stockObject?.object(forKey: "Symbol")
-        let symbolText = symbol != nil ? "for \(symbol)" : ""
+        let symbolText = symbol != nil ? "for \(symbol!)" : ""
         let attributedDescription: NSAttributedString!
         attributedDescription = NSAttributedString(string: "Be the first to post an idea " + symbolText, attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 18), NSAttributedString.Key.paragraphStyle: paragraphStyle])
         
         return attributedDescription
         
+    }
+}
+
+extension TradeIdeasTableViewController {
+    
+    // MARK: handle reachability
+    
+    func handleReachability() {
+        self.reachability?.whenReachable = { reachability in
+            if self.tradeIdeas.count  == 0 {
+                self.getTradeIdeas(queryType: .new)
+            }
+        }
+        
+        self.reachability?.whenUnreachable = { _ in
+        }
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
     }
 }

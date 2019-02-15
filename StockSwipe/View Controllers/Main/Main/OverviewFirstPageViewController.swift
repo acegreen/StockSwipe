@@ -13,7 +13,7 @@ import SwiftyJSON
 import DataCache
 import SWXMLHash
 import DZNEmptyDataSet
-import NVActivityIndicatorView
+import Reachability
 
 class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     
@@ -40,8 +40,10 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     
     var topStoriesRefreshControl = UIRefreshControl()
     
-    var queryTimer: Timer!
+    var queryTimer: Timer?
     let QUERY_INTERVAL: Double = 60 // 5 minutes
+
+    let reachability = Reachability()
     
     @IBOutlet var cloudView: UIView!
     
@@ -56,8 +58,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         topStoriesRefreshControl.addTarget(self, action: #selector(OverviewFirstPageViewController.refreshTopStories(_:)), for: .valueChanged)
         self.latestNewsTableView.addSubview(topStoriesRefreshControl)
         
-        self.loadViewData(firstLaunch: true)
-        self.scheduleQueryTimer()
+        self.handleReachability()
         
         // register for foreground notificaions so we can refresh views
         NotificationCenter.default.addObserver(self, selector: #selector(OverviewFirstPageViewController.applicationWillEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -72,8 +73,9 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     deinit {
         cloudLayoutOperationQueue.cancelAllOperations()
         overviewVCOperationQueue.cancelAllOperations()
-        
         NotificationCenter.default.removeObserver(self)
+        self.reachability?.stopNotifier()
+        self.queryTimer?.invalidate()
     }
     
     override func didReceiveMemoryWarning() {
@@ -82,12 +84,12 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     }
     
     @objc func applicationWillEnterForeground() {
-        self.loadViewData()
-        self.scheduleQueryTimer()
+        self.handleReachability()
     }
     
     @objc func applicationsDidEnterBackground() {
-        self.queryTimer.invalidate()
+        self.reachability?.stopNotifier()
+        self.queryTimer?.invalidate()
     }
     
     private func scheduleQueryTimer() {
@@ -96,7 +98,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         })
     }
     
-    private func loadViewData(firstLaunch: Bool = false) {
+    private func loadViewData() {
         
         let trendingCloudOperation = BlockOperation { () -> Void in
             self.queryStockTwitsTrendingStocks()
@@ -109,37 +111,26 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         topStoriesOperation.queuePriority = .normal
         
         overviewVCOperationQueue.addOperations([trendingCloudOperation, topStoriesOperation], waitUntilFinished: true)
+        
+        self.scheduleQueryTimer()
+    }
+    
+    private func loadCachedData() {
+        
+        if let trendingStocksData = DataCache.instance.readData(forKey: "TRENDINGSTOCKSCACHEDATA"), let trendingStocksJSON = try? JSON(data: trendingStocksData)["symbols"] {
+            self.createCloudWords(trendingStocksJSON)
+        }
+        
+        if let topStoriesCacheData = DataCache.instance.readData(forKey: "TOPSTORIESCACHEDATA") {
+            self.updateTopStories(topStoriesCacheData)
+        }
     }
     
     func queryStockTwitsTrendingStocks() {
         
-        if cloudWords.count == 0 && stockTwitsLastQueriedDate == nil {
-            
-            let noInternetSentence = "The cloud is empty weird indeed could not grab Any trending stocks"
-            let breakupSentence = noInternetSentence.components(separatedBy: " ")
-            
-            for (index, word) in breakupSentence.enumerated() {
-                if let cloudWord = CloudWord(word: word, wordCount: (breakupSentence.count - Int(index)) as NSNumber, wordColor: UIColor.gray, wordTappable: false) {
-                    self.cloudWords.append(cloudWord)
-                }
-            }
-            
-            self.cloudWords.removeAll()
-            
-            DispatchQueue.main.async {
-                self.layoutCloudWords(for: self.cloudView.bounds.size)
-            }
-        }
-        
-        guard Functions.isConnectedToNetwork() else { return }
-        
-        if stockTwitsLastQueriedDate != nil && self.cloudWords.count > 0 {
-            
+        if stockTwitsLastQueriedDate != nil {
             let timeSinceLastRefresh = Date().timeIntervalSince(stockTwitsLastQueriedDate)
-            
-            guard timeSinceLastRefresh > QUERY_INTERVAL else {
-                return
-            }
+            guard timeSinceLastRefresh > QUERY_INTERVAL else { return }
         }
         
         NSLog("refreshing cloud on %@", Thread.isMainThread ? "main thread" : "other thread")
@@ -149,27 +140,12 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         QueryHelper.sharedInstance.queryStockTwitsTrendingStocks { (trendingStocksData) in
             
             do {
-                
                 let trendingStocksData = try trendingStocksData()
                 let trendingStocksJSON = try JSON(data: trendingStocksData)["symbols"]
                 
                 DataCache.instance.write(data: trendingStocksData, forKey: "TRENDINGSTOCKSCACHEDATA")
-                QueryHelper.sharedInstance.queryStockObjectsFor(symbols: trendingStocksJSON.map { $0.1 }.map{ $0["symbol"].string! }, completion: { (result) in
-                    
-                    self.isQueryingForTrendingStocks = false
-                    
-                    do {
-                        
-                        // print(trendingStocksJSON)
-                        
-                        let stockObjects = try result()
-                        self.createCloudWords(trendingStocksJSON, stockObjects: stockObjects)
-                        self.stockTwitsLastQueriedDate = Date()
-                        
-                    } catch {
-                        //TODO: handle error
-                    }
-                })
+                self.createCloudWords(trendingStocksJSON)
+                self.stockTwitsLastQueriedDate = Date()
                 
             } catch {
                 //TODO: handle error
@@ -177,61 +153,9 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         }
     }
     
-    //    func queryTradeIdeas() {
-    //
-    //        guard Functions.isConnectedToNetwork() else { return }
-    //
-    //        if tradeIdeasLastQueriedDate != nil && self.tradeIdeas.count > 0 {
-    //
-    //            let timeSinceLastRefresh = Date().timeIntervalSince(tradeIdeasLastQueriedDate)
-    //
-    //            guard timeSinceLastRefresh > QUERY_INTERVAL else {
-    //                DispatchQueue.main.async {
-    //                    if self.tradeIdeasRefreshControl.isRefreshing == true {
-    //                        self.tradeIdeasRefreshControl.endRefreshing()
-    //                    }
-    //                }
-    //                return
-    //            }
-    //        }
-    //
-    //        isQueryingForTradeIdeas = true
-    //
-    //        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue], skip: nil, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"]) { (result) in
-    //
-    //            do {
-    //
-    //                let activityObjects = try result()
-    //
-    //                var tradeIdeaObjects = [PFObject]()
-    //                for activityObject in activityObjects {
-    //                    if let tradeIdeaObject = activityObject["tradeIdea"] as? PFObject {
-    //                        tradeIdeaObjects.append(tradeIdeaObject)
-    //                    }
-    //                }
-    //
-    //                self.updateTradeIdeas(tradeIdeaObjects)
-    //                self.tradeIdeasLastQueriedDate = Date()
-    //
-    //            } catch {
-    //
-    //                //TODO: Show sweet alert with Error.message()
-    //                DispatchQueue.main.async {
-    //                    if self.tradeIdeasRefreshControl.isRefreshing == true {
-    //                        self.tradeIdeasRefreshControl.endRefreshing()
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    
     func queryTopStories() {
         
-        if topStoriesLastQueriedDate == nil || !Functions.isConnectedToNetwork() {
-            if let topStoriesCacheData = DataCache.instance.readData(forKey: "TOPSTORIESCACHEDATA") {
-                self.updateTopStories(topStoriesCacheData)
-            }
-        } else if topStoriesLastQueriedDate != nil {
+        if topStoriesLastQueriedDate != nil {
             
             let timeSinceLastRefresh = Date().timeIntervalSince(topStoriesLastQueriedDate)
             
@@ -272,9 +196,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         }
     }
     
-    func createCloudWords(_ trendingStocksJSON: JSON, stockObjects: [PFObject]) {
-        
-        let stockNames = trendingStocksJSON.map { $0.1 }.map{ $0["symbol"].string! }
+    func createCloudWords(_ trendingStocksJSON: JSON) {
         
         self.cloudWords.removeAll()
         for (index, subJson) in trendingStocksJSON {
@@ -283,7 +205,9 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
             self.cloudWords.append(cloudWord)
         }
         
-        self.layoutCloudWords(for: self.cloudView.bounds.size)
+        DispatchQueue.main.async {
+            self.layoutCloudWords(for: self.cloudView.bounds.size)
+        }
     }
     
     func updateTopStories(_ result: Data) {
@@ -590,5 +514,26 @@ extension OverviewFirstPageViewController: UITableViewDelegate, UITableViewDataS
         }
         
         return attributedTitle
+    }
+}
+
+extension OverviewFirstPageViewController {
+    
+    // MARK: handle reachability
+    
+    func handleReachability() {
+        self.reachability?.whenReachable = { reachability in
+            self.loadViewData()
+        }
+        
+        self.reachability?.whenUnreachable = { _ in
+            self.loadCachedData()
+        }
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
     }
 }

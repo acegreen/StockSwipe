@@ -65,8 +65,6 @@ class Constants {
     static let context: NSManagedObjectContext = appDel.managedObjectContext
     static let entity = NSEntityDescription.entity(forEntityName: "Card", in: context)
     
-    static let reachability = Reachability()
-    
     static let okAlertAction = UIAlertAction(title: "Ok", style: .default, handler:{ (ACTION :UIAlertAction!)in })
     static let settingsAlertAction: UIAlertAction = UIAlertAction(title: "Settings", style: .default, handler: { (action: UIAlertAction!) in
         UIApplication.shared.open(settingsURL!, options: [:], completionHandler: nil)

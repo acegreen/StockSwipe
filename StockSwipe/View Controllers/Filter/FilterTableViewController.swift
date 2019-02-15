@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol FilterDelegate {
+    func filtersChanged()
+}
+
 class FilterTableViewController: UITableViewController, CellType {
 
     enum CellIdentifier: String {
@@ -22,7 +26,6 @@ class FilterTableViewController: UITableViewController, CellType {
         super.viewWillAppear(animated)
         
         if UIDevice.current.userInterfaceIdiom == .pad {
-            
             self.navigationItem.leftBarButtonItem = nil
         }
     }
@@ -87,11 +90,8 @@ class FilterTableViewController: UITableViewController, CellType {
         }
         
         if Constants.userDefaults.bool(forKey: "\(cell.textLabel!.text!)".uppercased()) == true {
-            
             cell.accessoryType = .checkmark
-            
         } else {
-            
             cell.accessoryType = .none
         }
         
@@ -103,17 +103,11 @@ class FilterTableViewController: UITableViewController, CellType {
         if let cell = tableView.cellForRow(at: indexPath) {
             
             if cell.accessoryType == .checkmark {
-                
                 cell.accessoryType = .none
-                
                 saveUserDefaults(false, cell: cell)
-                
             } else {
-                
                 cell.accessoryType = .checkmark
-                
                 saveUserDefaults(true, cell: cell)
-                
             }
         }
     }
@@ -123,23 +117,16 @@ class FilterTableViewController: UITableViewController, CellType {
         if let cell = tableView.cellForRow(at: indexPath) {
             
             if cell.accessoryType == .checkmark {
-                
                 cell.accessoryType = .none
-                
                 saveUserDefaults(false, cell: cell)
-                
             } else {
-                
                 cell.accessoryType = .checkmark
-                
                 saveUserDefaults(true, cell: cell)
-                
             }
         }
     }
     
     func saveUserDefaults(_ value: Bool, cell: UITableViewCell) {
-        
         Constants.userDefaults.set(value, forKey: "\(cell.textLabel!.text!)".uppercased())
         print("value for \(cell.textLabel!.text!)", Constants.userDefaults.bool(forKey: "\(cell.textLabel!.text)") as Bool)
         

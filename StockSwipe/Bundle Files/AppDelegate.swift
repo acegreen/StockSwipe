@@ -121,6 +121,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         }
         
+        // TODO: migrateFromCoreData is temporary and should be removed later
+        self.migrateFromCoreData { }
+        
         return true
     }
     
@@ -331,6 +334,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }()
     
     // MARK: - Core Data Saving support
+
+    func migrateFromCoreData(completion: @escaping () -> Void) {
+        
+        func deleteFromCoreData(_ selectedCards: [Card]) {
+            // Delete from Core Data and save
+            for (_, card) in selectedCards.enumerated() {
+                
+                do {
+                    
+                    let cardModels = try Functions.fetchFromCoreData(symbols: [card.symbol])
+                    for cardModel in cardModels {
+                        Constants.context.delete(cardModel)
+                    }
+                    
+                    do {
+                        try Constants.context.save()
+                    } catch {
+                        print("Fetch failed: \(error.localizedDescription)")
+                    }
+                    
+                } catch {
+                    
+                }
+            }
+        }
+        
+        Functions.makeCardsFromCoreData { cards in
+            
+            do {
+                let cards = try cards()
+                let _ = cards.map { Functions.registerAddToWatchlist($0, with: $0.userChoice!) }
+                deleteFromCoreData(cards)
+                
+            } catch {
+            }
+            
+            completion()
+        }
+    }
     
     func saveContext() {
         if managedObjectContext.hasChanges {

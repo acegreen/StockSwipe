@@ -138,14 +138,14 @@ class Functions {
         }
     }
     
-    class func makeCard(for symbol: String, completion: @escaping (_ result: () throws -> Card) -> Void) -> Void {
+    class func makeCard(for symbol: String, userChoice: Constants.UserChoices? = nil, completion: @escaping (_ result: () throws -> Card) -> Void) -> Void {
         
         self.fetchParseObjectAndEODData(for: symbol) { result in
             do {
                 
                 let result = try result()
                 
-                let card = Card(parseObject: result.parseObject, eodHistoricalData: result.eodHistoricalResult, eodFundamentalsData: result.eodFundamentalsResult)
+                let card = Card(parseObject: result.parseObject, eodHistoricalData: result.eodHistoricalResult, eodFundamentalsData: result.eodFundamentalsResult, userChoice: userChoice)
                 
                 completion({ card })
                 
@@ -157,28 +157,20 @@ class Functions {
     
     class func makeCardsFromCoreData(symbols: [String]? = nil, completion: @escaping (_ result: () throws -> [Card]) -> Void) -> Void {
         
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "Card")
-        if let symbols = symbols {
-            request.predicate = NSPredicate(format: "symbol = %@", argumentArray: symbols)
-        }
-        let sort = NSSortDescriptor(key: "dateChoosen", ascending: false)
-        request.sortDescriptors = [sort]
-        
         do {
-            let results = try Constants.context.fetch(request)
             
-            guard let cardModels =  results as? [CardModel] else { throw QueryHelper.QueryError.errorQueryingForCoreData }
-            
+            let cardModels = try fetchFromCoreData(symbols: symbols)
             var cards = [Card]()
             for (index, cardModel) in cardModels.enumerated() {
-                self.makeCard(for: cardModel.symbol) { card in
+                self.makeCard(for: cardModel.symbol, userChoice: Constants.UserChoices(rawValue: cardModel.userChoice)) { card in
                     do {
                         let card = try card()
-                        card.cardModel = cardModel
                         cards.append(card)
                     } catch {
+                        print("error", error.localizedDescription)
                     }
                     
+                    // TODO: this isn't a good implementation, needs rework
                     if index == cardModels.count - 1 {
                         completion({ cards })
                     }
@@ -370,22 +362,94 @@ class Functions {
                 //TODO: handle error
             }
             
-            print("\(choice)", card)
+            print("registerUserChoice", card)
+        }
+    }
+    
+    class func registerAddToWatchlist(_ card: Card, with choice: Constants.UserChoices) {
+        
+        guard let currentUser = PFUser.current() else { return }
+        guard let parseObject = card.parseObject else {
+            SweetAlert().showAlert("Stock Unknown", subTitle: "We couldn't find this symbol in our database", style: AlertStyle.warning)
+            return
+        }
+        
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.AddToWatchlistLong.rawValue, Constants.ActivityType.AddToWatchlistShort.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
+            
+            do {
+                
+                let activityObjects = try result()
+                
+                if let firstActivityObject = activityObjects.first {
+                    
+                    switch choice {
+                    case .LONG:
+                        firstActivityObject["activityType"] = Constants.ActivityType.AddToWatchlistLong.rawValue
+                        card.userChoice = .LONG
+                    case .SHORT:
+                        firstActivityObject["activityType"] = Constants.ActivityType.AddToWatchlistShort.rawValue
+                        card.userChoice = .SHORT
+                    default:
+                        break
+                    }
+                    
+                    firstActivityObject.saveEventually()
+                    
+                } else if activityObjects.isEmpty {
+                    
+                    let activityObject = PFObject(className: "Activity")
+                    activityObject["fromUser"] = currentUser
+                    activityObject["stock"] = parseObject
+                    
+                    switch choice {
+                    case .LONG:
+                        activityObject["activityType"] = Constants.ActivityType.AddToWatchlistLong.rawValue
+                        card.userChoice = .LONG
+                    case .SHORT:
+                        activityObject["activityType"] = Constants.ActivityType.AddToWatchlistShort.rawValue
+                        card.userChoice = .SHORT
+                    default:
+                        break
+                    }
+                    
+                    activityObject.saveEventually()
+                }
+                
+                NotificationCenter.default.post(name: Notification.Name("AddToWatchlist"), object: nil, userInfo: ["card": card])
+                
+                // Increment eventCount
+                Functions.incrementEventCount()
+                
+            } catch {
+                //TODO: handle error
+            }
+            
+            print("registerAddToWatchlist", card)
+        }
+    }
+    
+    class func fetchFromCoreData(symbols: [String]?) throws -> [CardModel] {
+    
+        let chartFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Card")
+        if let symbols = symbols {
+            chartFetchRequest.predicate = NSPredicate(format: "symbol = %@", argumentArray: symbols)
+        }
+        chartFetchRequest.returnsObjectsAsFaults = false
+        
+        do {
+            return try Constants.context.fetch(chartFetchRequest) as! [CardModel]
+        } catch {
+            throw error
         }
     }
     
     class func saveIntoCoreData(_ card: Card, userChoice: Constants.UserChoices) {
         
-        let chartFetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "Card")
-        chartFetchRequest.predicate = NSPredicate(format: "symbol == %@", card.symbol)
-        chartFetchRequest.fetchLimit = 1
-        chartFetchRequest.returnsObjectsAsFaults = false
-        
         do {
             
-            let fetchedObjectArray:[CardModel] = try Constants.context.fetch(chartFetchRequest) as! [CardModel]
+            let fetchedObjects = try fetchFromCoreData(symbols: [card.symbol])
             
-            if fetchedObjectArray.count == 0 {
+            if fetchedObjects.count == 0 {
                 let newChart = CardModel(entity: Constants.entity!, insertInto: Constants.context)
                 newChart.symbol = card.symbol
                 newChart.companyName = card.companyName
@@ -400,10 +464,10 @@ class Functions {
                 newChart.userChoice = userChoice.rawValue
                 newChart.dateChoosen = Date()
                 
-            } else if fetchedObjectArray.count > 0 {
-                let fetchedObject: NSManagedObject = fetchedObjectArray.first!
+            } else if fetchedObjects.count > 0 {
+                let fetchedObject: NSManagedObject = fetchedObjects.first!
                 fetchedObject.setValue(card.symbol, forKey: "symbol")
-                fetchedObject.setValue(card.companyName, forKey: "symbol")
+                fetchedObject.setValue(card.companyName, forKey: "companyName")
                 if card.eodHistoricalData != nil, let eodHistoricalData = try? QueryHelper.EODHistoricalResult.encodeFrom(eodHistoricalResults: card.eodHistoricalData!) {
                     fetchedObject.setValue(eodHistoricalData, forKey: "eodHistoricalData")
                 }
@@ -416,20 +480,16 @@ class Functions {
                 fetchedObject.setValue(Date(), forKey: "dateChoosen")
             }
             
+            do {
+                try Constants.context.save()
+            } catch let error as NSError {
+                print("Fetch failed: \(error.localizedDescription)")
+                abort()
+            }
+            
         } catch let error as NSError {
             //TODO: handle error
             print("Fetch failed: \(error.localizedDescription)")
-        }
-        
-        do {
-            
-            try Constants.context.save()
-            
-        } catch let error as NSError {
-            
-            print("Fetch failed: \(error.localizedDescription)")
-            
-            abort()
         }
     }
     
@@ -507,29 +567,27 @@ class Functions {
         
         DispatchQueue.main.async {
             
-            SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle: "SHORT", buttonColor:UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle: "SHORT", buttonColor: UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
                 
                 guard let topVC = UIApplication.topViewController(), Functions.isUserLoggedIn(presenting: topVC) else { return }
                 
                 if !isOtherButton {
                     
                     if registerChoice {
-                        Functions.registerUserChoice(card, with: .LONG)
+                        registerUserChoice(card, with: .LONG)
                     }
                     
-                    saveIntoCoreData(card, userChoice: .LONG)
-                    NotificationCenter.default.post(name: Notification.Name("AddToWatchlist"), object: nil, userInfo: ["symbol": card.symbol, "userChoice": Constants.UserChoices.LONG])
+                    registerAddToWatchlist(card, with: .LONG)
                     
                     completion(.LONG)
                     
                 } else if isOtherButton {
                     
                     if registerChoice {
-                        Functions.registerUserChoice(card, with: .SHORT)
+                        registerUserChoice(card, with: .SHORT)
                     }
                     
-                    saveIntoCoreData(card, userChoice: .SHORT)
-                    NotificationCenter.default.post(name: Notification.Name("AddToWatchlist"), object: nil, userInfo: ["symbol": card.symbol, "userChoice": Constants.UserChoices.SHORT])
+                    registerAddToWatchlist(card, with: .SHORT)
                     
                     completion(.SHORT)
                 }

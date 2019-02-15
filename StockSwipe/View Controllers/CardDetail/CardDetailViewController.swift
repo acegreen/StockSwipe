@@ -89,13 +89,26 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         //        dismissalScreenEdgePanGesture.delegate = self
         
         // Make drag down/scroll pan gesture waits til screen edge pan to fail first to begin
-        dismissalPanGesture.require(toFail: dismissalScreenEdgePanGesture)
+        //        dismissalPanGesture.require(toFail: dismissalScreenEdgePanGesture)
         //        scrollView.panGestureRecognizer.require(toFail: dismissalScreenEdgePanGesture)
         
         view.addGestureRecognizer(dismissalPanGesture)
         //        view.addGestureRecognizer(dismissalScreenEdgePanGesture)
     
         loadViewIfNeeded()
+        
+        // register to listen to when AddToWatchlist happens
+        NotificationCenter.default.addObserver(self, selector: #selector(CardDetailViewController.addCardToWatchlist), name: Notification.Name("AddToWatchlist"), object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func addCardToWatchlist(_ notification: Notification) {
+        if let card = notification.userInfo?["card"] as? Card {
+            self.card = card
+        }
     }
     
     func didSuccessfullyDragDownToDismiss() {

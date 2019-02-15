@@ -16,6 +16,7 @@ import Charts
     @IBOutlet weak var exchangeLabel: UILabel!
     
     @IBOutlet weak var chartView: LineChartView!
+    @IBOutlet weak var overlayLabel: UILabel!
     
     @IBOutlet weak var highlightOneImageView: UIImageView!
     @IBOutlet weak var highlightOneTitleLabel: UILabel!
@@ -55,6 +56,29 @@ import Charts
         self.symbolLabel.text = card.symbol
         self.companyNameLabel.text = card.companyName
         self.exchangeLabel.text = card.exchange
+        
+        guard let userChoice = card.userChoice else { return }
+        
+        switch userChoice {
+            
+        case .SHORT:
+            self.overlayLabel.layer.borderColor = UIColor.red.cgColor
+            self.overlayLabel.text = "\(Constants.UserChoices.SHORT.rawValue)"
+            self.overlayLabel.textColor = UIColor.red
+            self.overlayLabel.transform = CGAffineTransform.identity.rotated(by: 15.toRadians())
+            self.overlayLabel.isHidden = false
+        case .LONG:
+            self.overlayLabel.layer.borderColor = Constants.SSColors.green.cgColor
+            self.overlayLabel.text = "\(Constants.UserChoices.LONG.rawValue)"
+            self.overlayLabel.textColor = Constants.SSColors.green
+            self.overlayLabel.transform = CGAffineTransform.identity.rotated(by: -15.toRadians())
+            self.overlayLabel.isHidden = false
+        case .SKIP:
+            self.overlayLabel.isHidden = true
+        }
+        
+        self.overlayLabel.layer.borderWidth = 3.0
+        self.overlayLabel.layer.cornerRadius = 7.5
     }
     
     private func makeChart() {

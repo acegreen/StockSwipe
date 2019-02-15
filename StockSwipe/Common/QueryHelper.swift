@@ -505,10 +505,6 @@ class QueryHelper {
     
     func queryUserObjectsFor(usernames: [String], cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFUser])) -> Void) {
         
-//        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw QueryError.noInternetConnection})
-//        }
-        
         let usernamesLowercase = usernames.map { ($0.lowercased()) }
         
         let userQuery = PFUser.query()
@@ -531,10 +527,6 @@ class QueryHelper {
     
     func queryStockObjectsFor(symbols: [String], cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
-//        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw QueryError.noInternetConnection})
-//        }
-        
         let mappedSymbols = symbols.map ({ $0.uppercased() })
         
         let stockQuery = PFQuery(className:"Stocks")
@@ -556,10 +548,6 @@ class QueryHelper {
     }
     
     func queryTradeIdeaObjectsFor(key: String?, object: PFObject?, skip: Int?, limit: Int?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
-        
-//        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw QueryError.noInternetConnection})
-//        }
         
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
         tradeIdeaQuery.cachePolicy = cachePolicy
@@ -618,10 +606,6 @@ class QueryHelper {
     
     func countTradeIdeasFor(key: String, object: PFObject, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
-//        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw QueryError.noInternetConnection})
-//        }
-        
         let tradeIdeaQuery = PFQuery(className:"TradeIdea")
         tradeIdeaQuery.cachePolicy = cachePolicy
         
@@ -651,10 +635,6 @@ class QueryHelper {
     }
     
     func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stocks: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
-        
-//        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw QueryError.noInternetConnection})
-//        }
         
         let activityQuery = PFQuery(className:"Activity")
         activityQuery.cachePolicy = cachePolicy
@@ -729,10 +709,6 @@ class QueryHelper {
     
     func countActivityFor(fromUser: PFUser?, toUser: PFUser?, tradeIdea: PFObject?, stock: PFObject?, activityType: String?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
-//        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw QueryError.noInternetConnection})
-//        }
-        
         let activityQuery = PFQuery(className:"Activity")
         activityQuery.cachePolicy = cachePolicy
         activityQuery.order(byDescending: "createdAt")
@@ -773,10 +749,6 @@ class QueryHelper {
     }
     
     func queryActivityForUser(user: PFUser, skip: Int?, limit: Int?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
-        
-//        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw QueryError.noInternetConnection})
-//        }
         
         let activityQuery = PFQuery(className:"Activity")
         activityQuery.cachePolicy = cachePolicy
@@ -827,10 +799,6 @@ class QueryHelper {
     }
     
     func queryActivityForFollowing(fromUser: PFUser, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
-        
-//        guard Functions.isConnectedToNetwork() else {
-//            return completion({throw QueryError.noInternetConnection})
-//        }
         
         let followActivityQuery = PFQuery(className:"Activity")
         followActivityQuery.cachePolicy = cachePolicy

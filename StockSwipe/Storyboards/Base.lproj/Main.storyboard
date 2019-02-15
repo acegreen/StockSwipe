@@ -85,15 +85,9 @@
                                 <constraint firstItem="Egx-MD-FHl" firstAttribute="centerY" secondItem="Ua7-OO-X1I" secondAttribute="centerY" id="K7d-7j-9up"/>
                             </constraints>
                         </view>
-                        <barButtonItem key="rightBarButtonItem" image="reload" id="wOl-0N-4o2">
-                            <connections>
-                                <action selector="reloadButtonPressed:" destination="6le-Go-Bct" id="psH-JR-UvC"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="filterButton" destination="37b-Na-uh8" id="ji1-e4-6TB"/>
-                        <outlet property="reloadButton" destination="wOl-0N-4o2" id="2yW-yV-7wR"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YEi-1J-g11" sceneMemberID="firstResponder"/>
@@ -204,11 +198,11 @@
                             </barButtonItem>
                         </leftBarButtonItems>
                         <view key="titleView" contentMode="scaleToFill" id="qWB-de-rJ5">
-                            <rect key="frame" x="107" y="5.5" width="130.5" height="33"/>
+                            <rect key="frame" x="113" y="5.5" width="130.5" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stockswipe_logo_small" translatesAutoresizingMaskIntoConstraints="NO" id="tZG-zr-Fr2">
-                                    <rect key="frame" x="46.5" y="-2.5" width="37.5" height="38"/>
+                                    <rect key="frame" x="57.5" y="8.5" width="16" height="16"/>
                                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 </imageView>
                             </subviews>
@@ -1415,7 +1409,6 @@
         <image name="filter" width="25" height="25"/>
         <image name="newspaper" width="25" height="25"/>
         <image name="notifications" width="25" height="25"/>
-        <image name="reload" width="22" height="22"/>
         <image name="search" width="22" height="22"/>
         <image name="share" width="25" height="25"/>
         <image name="stockswipe_logo_small" width="37.5" height="37.5"/>

@@ -11,6 +11,7 @@ import QuartzCore
 import CoreData
 import Parse
 import DZNEmptyDataSet
+import Reachability
 
 protocol ChartCollectionCellDataSource {
     var symbol: String { get }
@@ -31,12 +32,14 @@ protocol ChartCollectionCellDelegate {
 
 class WatchlistCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    var cards = [Card]()
+    private var cards = [Card]()
     
-    var cellWidth: CGFloat!
-    var cellHeight: CGFloat!
+    private var cellWidth: CGFloat!
+    private var cellHeight: CGFloat!
     
     private var transition: CardTransition?
+    
+    let reachability = Reachability()
     
     @IBOutlet var navigationBar: UINavigationBar!
     
@@ -51,7 +54,6 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     @IBOutlet var CollectionViewFlowLayout: UICollectionViewFlowLayout!
     
     @IBOutlet var EditButton: UIBarButtonItem!
-    
     @IBAction func EditButtonPressed(_ sender: AnyObject) {
         
         if self.EditButton.image == UIImage(named: "edit_pen") {
@@ -183,16 +185,18 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         
         CollectionViewFlowLayout.itemSize = CGSize(width: cellWidth, height: cellHeight)
         
-        self.reloadViewData()
+        self.handleReachability()
         
         // register to listen to when AddToWatchlist happens
         NotificationCenter.default.addObserver(self, selector: #selector(WatchlistCollectionViewController.addCardToWatchlist), name: Notification.Name("AddToWatchlist"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
     }
     
     deinit {
+        self.reachability?.stopNotifier()
         NotificationCenter.default.removeObserver(self)
     }
     
@@ -211,7 +215,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                         self.CollectionView.reloadData()
                         self.EditButton.isEnabled = true
                     } else if self.cards.count == 0 {
-                        self.CollectionView.reloadEmptyDataSet()
+                        self.CollectionView.reloadData()
                     }
                 }
                 
@@ -235,7 +239,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                             self.CollectionView.reloadData()
                             self.EditButton.isEnabled = true
                         } else if self.cards.count == 0 {
-                            self.CollectionView.reloadEmptyDataSet()
+                            self.CollectionView.reloadData()
                         }
                     }
                     
@@ -378,7 +382,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                                         if self.cards.count == 0 {
                                             self.EditButtonPressed(self)
                                             self.EditButton.isEnabled = false
-                                            self.CollectionView.reloadEmptyDataSet()
+                                            self.CollectionView.reloadData()
                                         }
                                     }
                                     
@@ -510,6 +514,26 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
             self.present(vc, animated: true, completion: {
                 vc.addToWatchlistButton.isHidden = true
             })
+        }
+    }
+}
+
+extension WatchlistCollectionViewController {
+    
+    // MARK: handle reachability
+    
+    func handleReachability() {
+        self.reachability?.whenReachable = { reachability in
+            self.reloadViewData()
+        }
+        
+        self.reachability?.whenUnreachable = { _ in
+        }
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            print("Unable to start notifier")
         }
     }
 }

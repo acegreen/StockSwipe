@@ -10,6 +10,7 @@ import UIKit
 import Parse
 import DZNEmptyDataSet
 import Crashlytics
+import Reachability
 
 protocol ProfileTableVieDelegate {
     func subScrollViewDidScroll(_ scrollView: UIScrollView)
@@ -54,6 +55,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     var likedTradeIdeasLastRefreshDate: Date!
         
     var selectedSegmentIndex: ProfileContainerController.SegmentIndex = ProfileContainerController.SegmentIndex(rawValue: 0)!
+    
+    let reachability = Reachability()
     
     @IBOutlet var headerView: UIView!
     @IBOutlet var avatarImage:UIImageView!
@@ -194,18 +197,15 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         getProfile()
         
-        //        Functions.setupConfigParameter("TRADEIDEAQUERYLIMIT") { (parameterValue) -> Void in
-        //            self.tradeIdeaQueryLimit = parameterValue as? Int ?? 25
-        //            self.getTradeIdeas()
-        //        }
+        self.handleReachability()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        if self.tradeIdeas.count  == 0 {
-            getTradeIdeas(queryType: .new)
-        }
+    }
+    
+    deinit {
+        self.reachability?.stopNotifier()
     }
     
     func subDidSelectSegment(_ segmentedControl: UISegmentedControl) {
@@ -265,7 +265,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     
     func getTradeIdeas(queryType: QueryHelper.QueryType) {
         
-        guard !isQueryingForTradeIdeas || !isQueryingForLikedTradeIdeas else { return }
         guard !isCurrentUserBlocked else { return }
         guard let userObject = self.user?.userObject else { return }
         
@@ -307,7 +306,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         self.isQueryingForTradeIdeas = false
                         
                         DispatchQueue.main.async {
-                            self.tableView.reloadEmptyDataSet()
+                            self.tableView.reloadData()
                             if self.refreshControl?.isRefreshing == true {
                                 self.refreshControl?.endRefreshing()
                             } else if self.footerActivityIndicator?.isAnimating == true {
@@ -391,7 +390,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
             if queryType == .update {
                 mostRecentRefreshDate = likedTradeIdeasLastRefreshDate
-            }else if queryType == .older {
+            } else if queryType == .older {
                 skip = self.likedTradeIdeas.count
             }
             
@@ -415,7 +414,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         self.isQueryingForLikedTradeIdeas = false
                         
                         DispatchQueue.main.async {
-                            self.tableView.reloadEmptyDataSet()
+                            self.tableView.reloadData()
                             if self.refreshControl?.isRefreshing == true {
                                 self.refreshControl?.endRefreshing()
                             } else if self.footerActivityIndicator?.isAnimating == true {
@@ -540,7 +539,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     self.isQueryingForFollowing = false
                     
                     DispatchQueue.main.async {
-                        self.tableView.reloadEmptyDataSet()
+                        self.tableView.reloadData()
                         if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
                         } else if self.footerActivityIndicator?.isAnimating == true {
@@ -663,7 +662,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     self.isQueryingForFollowers = false
                     
                     DispatchQueue.main.async {
-                        self.tableView.reloadEmptyDataSet()
+                        self.tableView.reloadData()
                         if self.refreshControl?.isRefreshing == true {
                             self.refreshControl?.endRefreshing()
                         } else if self.footerActivityIndicator?.isAnimating == true {
@@ -754,14 +753,14 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             sender.buttonState = FollowButton.state.disabled
             self.isCurrentUserBlocked = true
             self.shouldShowProfileAnyway = false
-            self.tableView.reloadEmptyDataSet()
+            self.tableView.reloadData()
             return
         }
         
         if let blocked_users = currentUser["blocked_users"] as? [PFUser] , blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
             sender.buttonState = FollowButton.state.blocked
             self.isUserBlocked = true
-            self.tableView.reloadEmptyDataSet()
+            self.tableView.reloadData()
             return
         }
         
@@ -996,7 +995,7 @@ extension ProfileTableViewController: IdeaPostDelegate {
             self.tradeIdeas.insert(tradeIdea, at: 0)
             self.tableView.insertRows(at: [indexPath], with: .automatic)
             
-            self.tableView.reloadEmptyDataSet()
+            self.tableView.reloadData()
         }
     }
     
@@ -1018,7 +1017,7 @@ extension ProfileTableViewController: IdeaPostDelegate {
         }
         
         if tradeIdeas.count == 0 {
-            self.tableView.reloadEmptyDataSet()
+            self.tableView.reloadData()
         }
     }
 
@@ -1173,4 +1172,26 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
     //        shouldShowProfile = true
     //        self.refreshControlAction(self.refreshControl!)
     //    }
+}
+
+extension ProfileTableViewController {
+    
+    // MARK: handle reachability
+    
+    func handleReachability() {
+        self.reachability?.whenReachable = { reachability in
+            if self.tradeIdeas.count  == 0 {
+                self.getTradeIdeas(queryType: .new)
+            }
+        }
+        
+        self.reachability?.whenUnreachable = { _ in
+        }
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+    }
 }

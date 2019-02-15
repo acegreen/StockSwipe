@@ -50,7 +50,7 @@ PODS:
 DEPENDENCIES:
   - AMPopTip
   - BubbleTransition
-  - Charts
+  - Charts (= 3.2.1)
   - ChimpKit
   - Crashlytics
   - DataCache (from `https://github.com/huynguyencong/DataCache.git`)
@@ -137,6 +137,6 @@ SPEC CHECKSUMS:
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: 2406ba2663d37cfa3389dd3b19a04eb983ba5f12
+PODFILE CHECKSUM: 879f5e59658cb8daaaaae4761c95ba0046024409
 
 COCOAPODS: 1.6.0

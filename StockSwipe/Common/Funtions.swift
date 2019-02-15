@@ -17,15 +17,15 @@ import Crashlytics
 import SafariServices
 import SwiftyJSON
 import AMPopTip
-import NVActivityIndicatorView
+import Reachability
 
 class Functions {
     
     class func isConnectedToNetwork() -> Bool {
-        if Constants.reachability?.connection == .none {
-            return false
-        } else {
+        if Reachability()?.isReachable == true {
             return true
+        } else {
+            return false
         }
     }
     

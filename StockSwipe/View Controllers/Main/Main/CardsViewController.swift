@@ -10,8 +10,9 @@ import CoreData
 import CoreSpotlight
 import MDCSwipeToChoose
 import Parse
-import NVActivityIndicatorView
 import Crashlytics
+import NVActivityIndicatorView
+import Reachability
 
 class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHandlerType {
     
@@ -68,6 +69,8 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     let options = MDCSwipeToChooseViewOptions()
     private var transition: CardTransition?
     
+    let reachability = Reachability()
+    
     lazy var halo: NVActivityIndicatorView! = {
         let frame = CGRect(x: self.view.bounds.midX - self.view.bounds.height / 4 , y: self.view.bounds.midY - self.view.bounds.height / 4, width: self.view.bounds.height / 2, height: self.view.bounds.height / 2)
         return NVActivityIndicatorView(frame: frame, type: .ballScaleMultiple, color: UIColor.lightGray)
@@ -82,29 +85,42 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     }
     
     @IBOutlet var filterButton: UIBarButtonItem!
-    @IBOutlet var reloadButton: UIBarButtonItem!
-    
-    @IBAction func reloadButtonPressed(_ sender: AnyObject) {
-        
-        guard !Functions.isConnectedToNetwork() && self.cards.count != 0 else {
-            self.reloadCardViews()
-            return
-        }
-        
-        SweetAlert().showAlert("Reload?", subTitle: "Reloading with no internet will cause you to lose your loaded cards", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Cancel", buttonColor: UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: "Reload", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
-            
-            if !isOtherButton {
-                self.reloadCardViews()
-            }
-        }
-    }
-    
+
     @IBAction func unwindToOverviewController (_ segue:UIStoryboardSegue) {
         
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // Initial cards config
+        self.options.delegate = self
+        self.options.onPan = { state -> Void in
+            
+            if self.secondCardView != nil {
+                let frame: CGRect = self.middleCardViewFrame
+                self.secondCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-((state?.thresholdRatio)! * 10), width: frame.width, height: frame.height)
+            }
+            
+            if self.thirdCardView != nil {
+                
+                let frame: CGRect = self.backCardViewFrame
+                self.thirdCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-((state?.thresholdRatio)! * 8), width: frame.width, height: frame.height)
+            }
+            
+            if self.fourthCardView != nil {
+                
+                let frame: CGRect = self.backCardViewFrame
+                self.fourthCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-(state?.thresholdRatio)!, width: frame.width, height: frame.height)
+            }
+            
+            if self.informationCardView != nil {
+                let frame: CGRect = self.backCardViewFrame
+                self.informationCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-(state?.thresholdRatio)!, width: frame.width, height: frame.height)
+            }
+        }
+        
+        self.handleReachability()
         
         // register to listen to when AddToWatchlist happens
         NotificationCenter.default.addObserver(self, selector: #selector(CardsViewController.addCardToWatchlist), name: Notification.Name("AddToWatchlist"), object: nil)
@@ -115,57 +131,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
 
         // check device orientation
         Functions.setCardsSize()
-        
-        // Get Parse Objects and Make cards
-        if self.cards.count <= 10 && !self.isGettingObjects {
-            
-            // Initial config
-            self.options.delegate = self
-            self.options.onPan = { state -> Void in
-                
-                if self.secondCardView != nil {
-                    
-                    let frame:CGRect = self.middleCardViewFrame
-                    self.secondCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-((state?.thresholdRatio)! * 10), width: frame.width, height: frame.height)
-                }
-                
-                if self.thirdCardView != nil {
-                    
-                    let frame:CGRect = self.backCardViewFrame
-                    self.thirdCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-((state?.thresholdRatio)! * 8), width: frame.width, height: frame.height)
-                }
-                
-                if self.fourthCardView != nil {
-                    
-                    let frame:CGRect = self.backCardViewFrame
-                    self.fourthCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-(state?.thresholdRatio)!, width: frame.width, height: frame.height)
-                }
-                
-                if self.informationCardView != nil {
-                    
-                    let frame:CGRect = self.backCardViewFrame
-                    self.informationCardView.frame = CGRect(x: frame.origin.x, y: frame.origin.y-(state?.thresholdRatio)!, width: frame.width, height: frame.height)
-                }
-            }
-            
-            guard Functions.isConnectedToNetwork() else {
-                self.reloadCardViews()
-                return
-            }
-            
-            Functions.setupConfigParameter("THRESHOLDX", completion: { (parameterValue) -> Void in
-                
-                if parameterValue != nil {
-                    self.thresholdX = parameterValue as! CGFloat
-                }
-                
-                self.options.threshold = (self.view.bounds.width / 2) * self.thresholdX
-                print("threshold:",self.options.threshold)
-                
-                // GetObjects and make cards
-                self.reloadCardViews()
-            })
-        }
     }
     
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
@@ -177,6 +142,15 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+        self.reachability?.stopNotifier()
+    }
+    
+    @objc func applicationWillEnterForeground() {
+        self.handleReachability()
+    }
+    
+    @objc func applicationsDidEnterBackground() {
+        self.reachability?.stopNotifier()
     }
     
     func reloadCardViews() {
@@ -189,20 +163,30 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         // Check and remove subviews
         self.removalAllCards()
         
-        // GetObjects and make cards
-        do {
-            try self.getObjectsAndMakeCards()
-        } catch  {
-            
-            if let error = error as? QueryHelper.QueryError {
-                
-                // Make information card
-                self.makeCardWithInformation(error)
-                
-                // Enable short/long buttons
-                self.reloadFilterButtonsEnabled(true)
+        Functions.setupConfigParameter("THRESHOLDX", completion: { (parameterValue) -> Void in
+
+            if parameterValue != nil {
+                self.thresholdX = parameterValue as! CGFloat
             }
-        }
+            
+            self.options.threshold = (self.view.bounds.width / 2) * self.thresholdX
+            print("threshold:",self.options.threshold)
+
+            // GetObjects and make cards
+            do {
+                try self.getObjectsAndMakeCards()
+            } catch  {
+                
+                if let error = error as? QueryHelper.QueryError {
+                    
+                    // Make information card
+                    self.makeCardWithInformation(error)
+                    
+                    // Enable short/long buttons
+                    self.reloadFilterButtonsEnabled(true)
+                }
+            }
+        })
     }
     
     @objc func addCardToWatchlist(_ notification: Notification) {
@@ -457,7 +441,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             
             guard self.informationCardView == nil else { return }
             
-            self.informationCardView = NoChartView(frame: self.backCardViewFrame, text: error.message())
+            self.informationCardView = NoChartView(frame: self.frontCardViewFrame, text: error.message())
             
             self.view.addSubview(self.informationCardView)
             self.view.sendSubviewToBack(self.informationCardView)
@@ -655,10 +639,8 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         
         DispatchQueue.main.async {
             if state {
-                self.reloadButton.isEnabled = true
                 self.filterButton.isEnabled = true
             } else {
-                self.reloadButton.isEnabled = false
                 self.filterButton.isEnabled = false
             }
         }
@@ -754,7 +736,6 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
             return
         }
-        
                 
         // Get current frame on screen
         let currentCellFrame = self.firstCardView.frame
@@ -803,4 +784,25 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     //        return segue
     //
     //    }
+}
+
+extension CardsViewController {
+    
+    // MARK: handle reachability
+    
+    func handleReachability() {
+        self.reachability?.whenReachable = { reachability in
+            self.reloadCardViews()
+        }
+        
+        self.reachability?.whenUnreachable = { _ in
+            self.makeCardWithInformation(QueryHelper.QueryError.noInternetConnection)
+        }
+        
+        do {
+            try reachability?.startNotifier()
+        } catch {
+            print("Unable to start notifier")
+        }
+    }
 }

@@ -100,16 +100,20 @@ class ProfileDetailTableViewController: UITableViewController {
     private func getProfileDetails() {
         
         guard let user = user else { return }
-        user.getAvatar { (profileImage) in
-            DispatchQueue.main.async {
-                self.userAvatarImageView.image = profileImage
+        user.fetchUserInBackground { user in
+            self.user = user
+            
+            user?.getAvatar { (profileImage) in
+                DispatchQueue.main.async {
+                    self.userAvatarImageView.image = profileImage
+                    self.fullnameTextField.text = user?.fullname
+                    self.userBioTextView.text = user?.bio
+                    self.userLocationTextField.text = user?.location
+                    self.userWebsiteTextField.text = user?.website
+
+                }
             }
         }
-        self.fullnameTextField.text = user.fullname
-        self.userBioTextView.text = user.bio
-        self.userLocationTextField.text = user.location
-        self.userWebsiteTextField.text = user.website
-
     }
     
     @objc func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {

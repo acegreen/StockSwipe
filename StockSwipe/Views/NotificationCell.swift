@@ -30,9 +30,9 @@ class NotificationCell: UITableViewCell {
         let user = User(userObject: pfUser)
 
         user.fetchUserInBackground { (user) in
-            self.fullname.text = user?.fullname
             user?.getAvatar { (avatar) in
                 DispatchQueue.main.async {
+                    self.fullname.text = user?.fullname
                     self.userAvatar.image = avatar
                 }
             }

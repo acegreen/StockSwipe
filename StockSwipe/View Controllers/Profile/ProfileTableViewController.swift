@@ -253,17 +253,17 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         user.fetchUserInBackground { (user) in
             
             self.user = user
-            self.fullNameLabel.text = user?.fullname
-            self.usernameLabel.text = user?.username
             
             user?.getAvatar { (avatar) in
                 DispatchQueue.main.async {
+                    self.fullNameLabel.text = user?.fullname
+                    self.usernameLabel.text = user?.username
                     self.avatarImage.image = avatar
+                    
+                    self.checkProfileButtonSettings()
+                    self.checkFollow(self.followButton)
                 }
             }
-            
-            self.checkProfileButtonSettings()
-            self.checkFollow(self.followButton)
         }
     }
     

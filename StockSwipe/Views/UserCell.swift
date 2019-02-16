@@ -30,11 +30,10 @@ class UserCell: UITableViewCell {
         user.fetchUserInBackground { (user) in
             self.user = user
             
-            self.fullname.text = self.user.fullname
-            self.username.text = self.user.username
-            
             self.user.getAvatar({ (image) in
                 DispatchQueue.main.async {
+                    self.fullname.text = self.user.fullname
+                    self.username.text = self.user.username
                     self.userAvatar.image = image
                 }
             })

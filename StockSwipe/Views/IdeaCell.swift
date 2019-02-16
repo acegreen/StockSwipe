@@ -213,16 +213,13 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
         
         tradeIdea.user.fetchUserInBackground { (user) in
-            
-            self.userName.text = tradeIdea.user.fullname
-            
-            if self.userTag != nil {
-                self.userTag.text = tradeIdea.user.username
-            }
-            
             tradeIdea.user.getAvatar({ (image) in
                 DispatchQueue.main.async {
                     self.userAvatar.image = image
+                    self.userName.text = tradeIdea.user.fullname
+                    if self.userTag != nil {
+                        self.userTag.text = tradeIdea.user.username
+                    }
                 }
             })
             
@@ -253,16 +250,13 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
         
         nestedTradeIdea.user.fetchUserInBackground { (user) in
-            
-            self.nestedUsername.text = nestedTradeIdea.user.fullname
-            
-            if self.nestedUserTag != nil {
-                self.nestedUserTag.text = nestedTradeIdea.user.username
-            }
-            
             nestedTradeIdea.user.getAvatar({ (image) in
                 DispatchQueue.main.async {
                     self.nestedUserAvatar.image = image
+                    self.nestedUsername.text = nestedTradeIdea.user.fullname
+                    if self.nestedUserTag != nil {
+                        self.nestedUserTag.text = nestedTradeIdea.user.username
+                    }
                 }
             })
             

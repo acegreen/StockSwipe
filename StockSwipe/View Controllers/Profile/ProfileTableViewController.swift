@@ -331,8 +331,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         case .new:
                             
                             self.tradeIdeas = tradeIdeas
-                            
-                            // reload table
                             self.tableView.reloadData()
                             
                         case .older:
@@ -439,8 +437,6 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                         case .new:
                             
                             self.likedTradeIdeas = likedTradeIdeas
-                            
-                            // reload table
                             self.tableView.reloadData()
                             
                         case .older:
@@ -768,7 +764,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -934,9 +930,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         if let blocked_users = currentUser!["blocked_users"] as? [PFUser], let blockedUser = blocked_users .find({ $0.objectId == user.objectId }) {
             
             let unblockUser = UIAlertAction(title: "Unblock", style: .default) { action in
-                
                 currentUser!.remove(blockedUser, forKey: "blocked_users")
-                
                 currentUser!.saveEventually()
             }
             

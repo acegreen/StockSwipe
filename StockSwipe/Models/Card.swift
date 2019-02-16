@@ -55,12 +55,11 @@ public class Card: NSObject {
         
         guard let parseObject = self.parseObject else { return }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockShort.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockShort.rawValue], completion: { (result) in
             
             do {
                 
-                let activityObjects = try result()
-                self.shortCount = activityObjects.count
+                self.shortCount = try result()
                 
             } catch {
                 //TODO: handle error
@@ -76,12 +75,11 @@ public class Card: NSObject {
         
         guard let parseObject = self.parseObject else { return }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue], completion: { (result) in
             
             do {
                 
-                let activityObjects = try result()
-                self.longCount = activityObjects.count
+                self.longCount = try result()
                 
             } catch {
                 //TODO: handle error

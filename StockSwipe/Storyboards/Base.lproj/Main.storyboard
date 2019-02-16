@@ -345,7 +345,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="UQb-fp-nZR">
                                                     <rect key="frame" x="36" y="10" width="303" height="60"/>
                                                     <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_profile_male" translatesAutoresizingMaskIntoConstraints="NO" id="NNt-5r-8jH">
+                                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_profile_male" translatesAutoresizingMaskIntoConstraints="NO" id="NNt-5r-8jH">
                                                             <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="60" id="4Nr-bA-rr9"/>
@@ -871,7 +871,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ja8-Um-56z">
                                                     <rect key="frame" x="0.0" y="0.0" width="355" height="79.5"/>
                                                     <subviews>
-                                                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_profile_male" translatesAutoresizingMaskIntoConstraints="NO" id="NaZ-cO-UDs">
+                                                        <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_profile_male" translatesAutoresizingMaskIntoConstraints="NO" id="NaZ-cO-UDs">
                                                             <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
                                                             <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             <gestureRecognizers/>
@@ -1394,7 +1394,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="mpU-mH-Dfh"/>
-        <segue reference="GQg-ve-hgJ"/>
+        <segue reference="sLE-BL-QrO"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
 </document>

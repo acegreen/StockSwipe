@@ -212,7 +212,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.ideaTime.text = nsPublishedDate.formattedAsTimeAgo()
         }
         
-        tradeIdea.user.fetchUserIfNeeded { (user) in
+        tradeIdea.user.fetchUserInBackground { (user) in
             
             self.userName.text = tradeIdea.user.fullname
             
@@ -252,7 +252,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.nestedIdeaDescription = nil
         }
         
-        nestedTradeIdea.user.fetchUserIfNeeded { (user) in
+        nestedTradeIdea.user.fetchUserInBackground { (user) in
             
             self.nestedUsername.text = nestedTradeIdea.user.fullname
             

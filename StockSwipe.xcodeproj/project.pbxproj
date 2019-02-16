@@ -793,7 +793,7 @@
 			children = (
 				238C1AF51C8C65D6009F9CC1 /* Bundle Files */,
 				2375FE621D85A39A0049D297 /* Resources */,
-				8AC17DCA1AC73735004E6D2D /* Core Data */,
+				8AC17DCA1AC73735004E6D2D /* Models */,
 				23CAE2691C2CB21B00D15819 /* Common */,
 				238C1AFD1C8C6600009F9CC1 /* Storyboards */,
 				8AC17DC91AC7372D004E6D2D /* View Controllers */,
@@ -817,7 +817,7 @@
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
-		8AC17DCA1AC73735004E6D2D /* Core Data */ = {
+		8AC17DCA1AC73735004E6D2D /* Models */ = {
 			isa = PBXGroup;
 			children = (
 				23C9255F1B1A7D9400D17B70 /* Card.swift */,
@@ -828,7 +828,7 @@
 				23B70D5A1B115BEF00FF2C04 /* CardModel.swift */,
 				232ECBCF22120CFA00C30E46 /* StockSwipe.xcdatamodeld */,
 			);
-			path = "Core Data";
+			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

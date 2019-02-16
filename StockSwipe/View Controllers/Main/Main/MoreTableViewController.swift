@@ -12,7 +12,7 @@ import Crashlytics
 import Parse
 import FBSDKShareKit
 
-class MoreTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, SegueHandlerType, CellType, LoginDelegate {
+class MoreTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, SegueHandlerType, CellType {
     
     enum SegueIdentifier: String {
         
@@ -48,34 +48,23 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     
     func updateProfile(completion: @escaping () -> Void) {
         
-        guard PFUser.current() != nil else {
-            
+        guard let currentUser = PFUser.current(), currentUser.isAuthenticated else {
             self.profileAvatarImage.image = UIImage(assetIdentifier: .UserDummyImage)
             self.profileLabel.text = "My Profile"
             return
         }
-        
-        guard let currentUser = PFUser.current() , currentUser.isAuthenticated else { return }
 
         self.currentUser = User(userObject: currentUser)
-        self.profileLabel.text = self.currentUser.fullname
-        self.currentUser.getAvatar { (avatar) in
+        self.currentUser?.fetchUserInBackground({ user in
             DispatchQueue.main.async {
-                self.profileAvatarImage.image = self.currentUser.avtar
+                self.profileLabel.text = user?.fullname
+                self.currentUser?.getAvatar { (avatar) in
+                    DispatchQueue.main.async {
+                        self.profileAvatarImage.image = user?.avtar
+                    }
+                }
             }
-        }
-    }
-    
-    // MARK: - LoginDelegate methods
-    
-    func didLoginSuccessfully() {
-        self.updateProfile { 
-            self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: self)
-        }
-    }
-    
-    func didLogoutSuccessfully() {
-        updateProfile { }
+        })
     }
     
     // MARK: - Table view data source
@@ -219,7 +208,9 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             if let currentUser = PFUser.current() {
                 
                 let profileContainerController = segue.destination as! ProfileContainerController
+                profileContainerController
                 profileContainerController.loginDelegate = self
+                profileContainerController.profileChangeDelegate = self
                 profileContainerController.user = self.currentUser
             }
             
@@ -259,6 +250,26 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         self.dismiss(animated: true, completion: nil)
     }
 }
+
+extension MoreTableViewController: LoginDelegate, ProfileDetailTableViewControllerDelegate {
+    
+    // MARK: - LoginDelegate & ProfileDetailTableViewControllerDelegate
+    
+    func didLoginSuccessfully() {
+        self.updateProfile {
+            self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: self)
+        }
+    }
+    
+    func didLogoutSuccessfully() {
+        updateProfile { }
+    }
+    
+    func userProfileChanged(newUser: User) {
+        updateProfile { }
+    }
+}
+
 
 extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
     

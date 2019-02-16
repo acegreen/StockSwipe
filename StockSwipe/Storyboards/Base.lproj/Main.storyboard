@@ -1365,8 +1365,8 @@
         <!--CardDetail-->
         <scene sceneID="IRl-dy-Uvr">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4Ky-me-hk9" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewControllerPlaceholder storyboardName="CardDetail" id="uTB-8S-fQg" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="4Ky-me-hk9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3903" y="-2072"/>
         </scene>

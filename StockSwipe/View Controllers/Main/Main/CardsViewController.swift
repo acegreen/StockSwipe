@@ -95,6 +95,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         
         // Initial cards config
         self.options.delegate = self
+        self.options.longColor = Constants.SSColors.green
         self.options.onPan = { state -> Void in
             
             if self.secondCardView != nil {

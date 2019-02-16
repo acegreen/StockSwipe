@@ -707,7 +707,7 @@
                             <outlet property="delegate" destination="SwJ-BE-bY3" id="OaZ-Qe-Wvi"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="nHp-Q1-PeX">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="nHp-Q1-PeX">
                         <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title=" " id="Rd7-kO-dKj"/>
                         <view key="titleView" contentMode="scaleToFill" id="khL-Xk-2XV">
@@ -950,7 +950,7 @@
                             <outlet property="emptyDataSetSource" destination="1jo-v2-shl" id="In4-CG-rNp"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" id="BoH-eW-ady">
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="always" id="BoH-eW-ady">
                         <nil key="title"/>
                         <barButtonItem key="backBarButtonItem" title=" " id="Txk-U3-XDE"/>
                         <view key="titleView" contentMode="scaleToFill" id="Rgf-gW-T6b">

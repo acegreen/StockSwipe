@@ -45,6 +45,15 @@ public class User: NSObject {
         }
     }
     
+    func fetchIfNeededInBackground(_ completion: @escaping (User?) -> Void) {
+        
+        userObject.fetchIfNeededInBackground() { (userObject, error) in
+            guard let userObject = userObject as? PFUser else { return completion(nil) }
+            self.updateObject(userObject: userObject)
+            completion(self)
+        }
+    }
+    
     func getAvatar(_ completion: @escaping (UIImage?) -> Void) {
         
         if let profileImage = self.userObject["profile_image"] as? PFFileObject {
@@ -97,7 +106,7 @@ public class User: NSObject {
     
     func getFollowingCount(_ completion: @escaping (_ countString: String) -> Void) {
         
-        QueryHelper.sharedInstance.countActivityFor(fromUser: userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
+        QueryHelper.sharedInstance.countActivityFor(fromUser: userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue]) { (result) in
             
             do {
                 
@@ -114,7 +123,7 @@ public class User: NSObject {
     
     func getFollowersCount(_ completion: @escaping (_ countString: String) -> Void) {
         
-        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: userObject, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.Follow.rawValue) { (result) in
+        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue]) { (result) in
             
             do {
                 
@@ -131,7 +140,7 @@ public class User: NSObject {
     
     func getLikedIdeasCount(_ completion: @escaping (_ countString: String) -> Void) {
         
-        QueryHelper.sharedInstance.countActivityFor(fromUser: userObject, toUser: nil, tradeIdea: nil, stock: nil, activityType: Constants.ActivityType.TradeIdeaLike.rawValue, completion: { (result) in
+        QueryHelper.sharedInstance.countActivityFor(fromUser: userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], completion: { (result) in
             
             do {
                 

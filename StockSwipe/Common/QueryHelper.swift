@@ -707,7 +707,7 @@ class QueryHelper {
         }
     }
     
-    func countActivityFor(fromUser: PFUser?, toUser: PFUser?, tradeIdea: PFObject?, stock: PFObject?, activityType: String?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
+    func countActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stocks: [PFObject]?, activityType: [String]?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
         let activityQuery = PFQuery(className:"Activity")
         activityQuery.cachePolicy = cachePolicy
@@ -725,16 +725,20 @@ class QueryHelper {
             activityQuery.whereKey("toUser", equalTo: toUser)
         }
         
+        if let originalTradeIdea = originalTradeIdea {
+            activityQuery.whereKey("originalTradeIdea", equalTo: originalTradeIdea)
+        }
+        
         if let tradeIdea = tradeIdea {
             activityQuery.whereKey("tradeIdea", equalTo: tradeIdea)
         }
         
-        if let stock = stock {
-            activityQuery.whereKey("stock", equalTo: stock)
+        if let stocks = stocks {
+            activityQuery.whereKey("stock", containedIn: stocks)
         }
         
         if let activityType = activityType {
-            activityQuery.whereKey("activityType", equalTo: activityType)
+            activityQuery.whereKey("activityType", containedIn: activityType)
         }
         
         activityQuery.countObjectsInBackground { (count, error) in

@@ -27,16 +27,18 @@ class UserCell: UITableViewCell {
 
     func configureCell(with user: User) {
         
-        self.user = user
-
-        self.fullname.text = self.user.fullname
-        self.username.text = self.user.username
-        
-        self.user.getAvatar({ (image) in
-            DispatchQueue.main.async {
-                self.userAvatar.image = image
-            }
-        })
+        user.fetchUserInBackground { (user) in
+            self.user = user
+            
+            self.fullname.text = self.user.fullname
+            self.username.text = self.user.username
+            
+            self.user.getAvatar({ (image) in
+                DispatchQueue.main.async {
+                    self.userAvatar.image = image
+                }
+            })
+        }
         
         self.checkBlock(self.blockButton)
     }

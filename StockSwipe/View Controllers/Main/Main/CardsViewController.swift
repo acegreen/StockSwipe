@@ -581,6 +581,19 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     }
     
     func viewDidGetLongPressed(_ view: UIView!) {
+        
+        guard let card: Card = self.cards.find({ $0.symbol == self.firstCardView.card.symbol }) else { return }
+        
+        Functions.promptAddToWatchlist(card, registerChoice: false) { (choice) in
+            switch choice {
+            case .LONG:
+                self.longCardView()
+            case .SHORT:
+                self.shortCardView()
+            case .SKIP:
+                self.skipCardView()
+            }
+        }
     }
     
     func swapAndResizeCardView(_ CardView: SwipeCardView?) -> Void {

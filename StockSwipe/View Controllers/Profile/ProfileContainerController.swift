@@ -42,6 +42,7 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
     
     var delegate: SubSegmentedControlDelegate!
     var loginDelegate: LoginDelegate?
+    var profileChangeDelegate: ProfileDetailTableViewControllerDelegate?
     
     var user: User?
     var isCurrentUserBlocked: Bool = false
@@ -165,10 +166,19 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
         if segue.identifier == "embedProfile" {
             let profileVC = segue.destination as! ProfileTableViewController
             self.delegate = profileVC
-            profileVC.delegate = self
+            profileVC.profileTableDelegate = self
+            profileVC.profileChangeDelegate = self
             profileVC.loginDelegate = self
             profileVC.user = user
         }
+    }
+}
+
+extension ProfileContainerController: ProfileDetailTableViewControllerDelegate {
+    
+    func userProfileChanged(newUser: User) {
+        self.user = newUser
+        self.profileChangeDelegate?.userProfileChanged(newUser: newUser)
     }
 }
 

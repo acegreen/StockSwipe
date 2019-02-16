@@ -34,36 +34,39 @@ public class User: NSObject {
         super.init()
         
         self.userObject = userObject
-
-        self.fetchUserIfNeeded { _ in }
     }
     
-    func fetchUserIfNeeded(_ completion: @escaping (User?) -> Void) {
+    func fetchUserInBackground(_ completion: @escaping (User?) -> Void) {
         
-        userObject.fetchIfNeededInBackground { (userObject, error) in
-            
+        userObject.fetchInBackground { (userObject, error) in
             guard let userObject = userObject as? PFUser else { return completion(nil) }
-            
             self.updateObject(userObject: userObject)
-            
             completion(self)
         }
     }
     
     func getAvatar(_ completion: @escaping (UIImage?) -> Void) {
         
-        if let profileImageURL = self.profile_image_url {
+        if let profileImage = self.userObject["profile_image"] as? PFFileObject {
+            
+            profileImage.getDataInBackground { (data, error) in
+                if let avatarData = data, let image = UIImage(data: avatarData) {
+                    self.avtar = image
+                }
+                
+                completion(self.avtar)
+            }
+                
+        } else if let profileImageURL = self.profile_image_url {
             
             QueryHelper.sharedInstance.queryWith(queryString: profileImageURL, useCacheIfPossible: true, completionHandler: { (result) in
                 
                 do {
                     
                     let avatarData  = try result()
-                    
                     if let image = UIImage(data: avatarData) {
                         self.avtar = image 
                     }
-                    
                     completion(self.avtar)
                     
                 } catch {

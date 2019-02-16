@@ -31,8 +31,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         case EditProfileSegueIdentifier = "EditProfileSegueIdentifier"
     }
     
-    var delegate: ProfileTableVieDelegate!
+    var profileTableDelegate: ProfileTableVieDelegate?
     var loginDelegate: LoginDelegate?
+    var profileChangeDelegate: ProfileDetailTableViewControllerDelegate?
     
     var user: User?
     var isCurrentUserBlocked: Bool = false
@@ -174,7 +175,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         self.registerFollow(sender)
     }
     
-    @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
+    @IBAction func refreshControlAction(_ sender: UIRefreshControl?) {
         
         switch selectedSegmentIndex {
         case .zero:
@@ -187,7 +188,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             getTradeIdeas(queryType: .update)
         }
         
-        self.delegate?.didRefreshProfileTableView()
+        self.profileTableDelegate?.didRefreshProfileTableView()
     }
     
     @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
@@ -195,8 +196,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getProfile()
-        
+        self.getProfile()
         self.handleReachability()
     }
     
@@ -234,15 +234,15 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     }
     
     override func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        self.delegate?.subScrollViewDidScroll(scrollView)
+        self.profileTableDelegate?.subScrollViewDidScroll(scrollView)
     }
     
     func checkProfileButtonSettings() {
         if user?.objectId == PFUser.current()?.objectId {
             followButton.isHidden = true
-//            editProfileButton.isHidden = false
+            editProfileButton.isHidden = false
         } else {
-//            editProfileButton.isHidden = true
+            editProfileButton.isHidden = true
         }
     }
     
@@ -250,16 +250,20 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         guard let user = user else { return }
         
-        checkProfileButtonSettings()
-        checkFollow(self.followButton)
-        
-        self.fullNameLabel.text = user.fullname
-        self.usernameLabel.text = user.username
-        
-        user.getAvatar { (avatar) in
-            DispatchQueue.main.async {
-                self.avatarImage.image = avatar
+        user.fetchUserInBackground { (user) in
+            
+            self.user = user
+            self.fullNameLabel.text = user?.fullname
+            self.usernameLabel.text = user?.username
+            
+            user?.getAvatar { (avatar) in
+                DispatchQueue.main.async {
+                    self.avatarImage.image = avatar
+                }
             }
+            
+            self.checkProfileButtonSettings()
+            self.checkFollow(self.followButton)
         }
     }
     
@@ -975,6 +979,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         case .EditProfileSegueIdentifier:
             let navigationController = segue.destination as! UINavigationController
             let profileDetailViewController = navigationController.viewControllers.first as! ProfileDetailTableViewController
+            profileDetailViewController.delegate = self
             
             profileDetailViewController.user = self.user
             
@@ -982,6 +987,17 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         case .SettingsSegueIdentifier:
             break
         }
+    }
+}
+
+extension ProfileTableViewController: ProfileDetailTableViewControllerDelegate {
+    
+    func userProfileChanged(newUser: User) {
+        self.user = newUser
+        self.getProfile()
+        self.tableView.reloadData()
+        
+        self.profileChangeDelegate?.userProfileChanged(newUser: newUser)
     }
 }
 
@@ -1180,7 +1196,7 @@ extension ProfileTableViewController {
     
     func handleReachability() {
         self.reachability?.whenReachable = { reachability in
-            if self.tradeIdeas.count  == 0 {
+            if self.tradeIdeas.count == 0 {
                 self.getTradeIdeas(queryType: .new)
             }
         }

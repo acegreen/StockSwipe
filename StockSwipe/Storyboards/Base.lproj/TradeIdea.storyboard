@@ -263,16 +263,6 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Trade Ideas" id="oWU-eV-j40">
                         <barButtonItem key="backBarButtonItem" title=" " id="pNp-1v-SPK"/>
-                        <barButtonItem key="leftBarButtonItem" image="x" id="QEH-Uu-qCS">
-                            <connections>
-                                <action selector="xButtonPressed:" destination="7sr-cl-tCf" id="D6N-tf-j6s"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" image="write" id="pke-Cq-q83">
-                            <connections>
-                                <segue destination="FYz-cJ-H4G" kind="showDetail" identifier="PostIdeaSegueIdentifier" id="6fl-lE-RKH"/>
-                            </connections>
-                        </barButtonItem>
                     </navigationItem>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="pBy-Fz-CkI">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -294,7 +284,6 @@
                     </refreshControl>
                     <connections>
                         <outlet property="footerActivityIndicator" destination="OK2-ZX-j7n" id="cG0-h2-L3O"/>
-                        <outlet property="tradeIdeaPostButton" destination="pke-Cq-q83" id="0rr-hw-NwI"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uGm-Kw-EZU" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -304,7 +293,7 @@
         <!--Trade Ideas-->
         <scene sceneID="7tq-9A-m65">
             <objects>
-                <navigationController id="Xji-gg-Vpm" sceneMemberID="viewController">
+                <navigationController useStoryboardIdentifierAsRestorationIdentifier="YES" id="Xji-gg-Vpm" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="Trade Ideas" image="idea_bulb" id="kez-Ip-hge"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="c1Z-H4-Rnx">
                         <rect key="frame" x="0.0" y="20" width="375" height="44"/>
@@ -321,7 +310,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="J5Y-Yl-F8Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3285" y="-1668"/>
+            <point key="canvasLocation" x="3234" y="-1668"/>
         </scene>
         <!--Trade Ideas-->
         <scene sceneID="my8-vW-JHS">
@@ -932,7 +921,6 @@
         <image name="reply_big" width="25" height="25"/>
         <image name="reshare" width="18" height="18"/>
         <image name="reshare_big" width="25" height="25"/>
-        <image name="write" width="25" height="25"/>
         <image name="x" width="16" height="16"/>
     </resources>
     <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>

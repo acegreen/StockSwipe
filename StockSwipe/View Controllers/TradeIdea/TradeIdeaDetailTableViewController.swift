@@ -45,6 +45,8 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
     func getReplyTradeIdeas(queryType: QueryHelper.QueryType) {

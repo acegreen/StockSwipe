@@ -82,8 +82,16 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         let marketCarouselOperation = BlockOperation { () -> Void in
             self.queryCarouselTickers()
         }
-        marketCarouselOperation.queuePriority = .normal
+        marketCarouselOperation.queuePriority = .veryHigh
         overviewVCOperationQueue.addOperations([marketCarouselOperation], waitUntilFinished: true)
+        
+        if self.carouselLastQueriedDate == nil {
+            let animationOperation = BlockOperation { () -> Void in
+                self.animationDelegate?.didFinishLoading()
+            }
+            animationOperation.queuePriority = .high
+            self.overviewVCOperationQueue.addOperation(animationOperation)
+        }
         
         self.scheduleQueryTimer()
     }
@@ -128,15 +136,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                     let eodResults = try eodQuoteResults()
                     DataCache.instance.write(data: eodResults.1, forKey: "CAROUSELCACHEDATA")
                     self.updateCarousel(from: eodResults.0)
-                    
-                    if self.carouselLastQueriedDate == nil {
-                        let animationOperation = BlockOperation { () -> Void in
-                            self.animationDelegate?.didFinishLoading()
-                        }
-                        animationOperation.queuePriority = .normal
-                        self.overviewVCOperationQueue.addOperation(animationOperation)
-                    }
-                    
                     self.carouselLastQueriedDate = Date()
                 } catch {
                     //TODO: handle error

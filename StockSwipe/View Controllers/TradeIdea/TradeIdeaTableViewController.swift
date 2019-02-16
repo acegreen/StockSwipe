@@ -41,8 +41,6 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
         self.getTradeIdeas(queryType: .update)
     }
     
-    @IBOutlet var tradeIdeaPostButton: UIBarButtonItem!
-    
     @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
@@ -54,11 +52,6 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
 //        } else {
 //            self.navigationItem.title = symbol
 //        }
-        
-        // Hide post button if symbol is not available
-        if self.stockObject == nil {
-            tradeIdeaPostButton.isEnabled = false
-        }
         
         self.handleReachability()
     }

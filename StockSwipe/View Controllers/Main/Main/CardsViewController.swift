@@ -191,7 +191,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     }
     
     @objc func addCardToWatchlist(_ notification: Notification) {
-        guard let card = notification.userInfo?["card"] as? Card else { return }
+        guard let card = notification.userInfo?["card"] as? Card, self.firstCardView.card.symbol == card.symbol else { return }
             
         DispatchQueue.main.async {
             switch card.userChoice {

@@ -28,7 +28,6 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     var cloudFontName = "HelveticaNeue"
     
     var stockTwitsLastQueriedDate: Date!
-    var tradeIdeasLastQueriedDate: Date!
     var topStoriesLastQueriedDate: Date!
     
     var isQueryingForTrendingStocks = false
@@ -99,12 +98,17 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     }
     
     private func loadViewData() {
-        
+        if self.stockTwitsLastQueriedDate == nil {
+            let loadCachedDataOperation = BlockOperation { () -> Void in
+                self.loadCachedData()
+            }
+            loadCachedDataOperation.queuePriority = .veryHigh
+            overviewVCOperationQueue.addOperation(loadCachedDataOperation)
+        }
         let trendingCloudOperation = BlockOperation { () -> Void in
             self.queryStockTwitsTrendingStocks()
         }
         trendingCloudOperation.queuePriority = .high
-        
         let topStoriesOperation = BlockOperation { () -> Void in
             self.queryTopStories()
         }
@@ -116,7 +120,6 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     }
     
     private func loadCachedData() {
-        
         if let trendingStocksData = DataCache.instance.readData(forKey: "TRENDINGSTOCKSCACHEDATA"), let trendingStocksJSON = try? JSON(data: trendingStocksData)["symbols"] {
             self.createCloudWords(trendingStocksJSON)
         }
@@ -508,7 +511,6 @@ extension OverviewFirstPageViewController: UITableViewDelegate, UITableViewDataS
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         
         var attributedTitle: NSAttributedString!
-        
         if scrollView == latestNewsTableView {
             attributedTitle = NSAttributedString(string: "News", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
         }

@@ -75,13 +75,12 @@
                         <barButtonItem key="leftBarButtonItem" image="x" id="hmi-uW-qNT">
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
-                                <segue destination="2G0-Mb-pYH" kind="unwind" unwindAction="unwindToOverviewController:" id="dNP-mU-hiA"/>
+                                <action selector="xButtonPressed:" destination="j28-xd-Eb1" id="P8g-PR-zIZ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3Za-eL-g7O" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <exit id="2G0-Mb-pYH" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="-270" y="-2035"/>
         </scene>

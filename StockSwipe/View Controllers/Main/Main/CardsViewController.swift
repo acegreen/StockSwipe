@@ -794,12 +794,24 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         }
     }
     
-    //    override func segueForUnwindingToViewController(toViewController: UIViewController, fromViewController: UIViewController, identifier: String?) -> UIStoryboardSegue? {
-    //
-    //        let segue = CustomUnwindSegue(identifier: identifier, source: fromViewController, destination: toViewController)
-    //        return segue
-    //
-    //    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+       
+        let segueIdentifier = segueIdentifierForSegue(segue)
+        
+        switch segueIdentifier {
+            
+        case .FilterSegueIdentifier:
+            let destinationViewController = segue.destination as! UINavigationController
+            let filterTableViewController = destinationViewController.viewControllers.first as! FilterTableViewController
+            filterTableViewController.delegate = self
+        }
+    }
+}
+
+extension CardsViewController: FilterDelegate {
+    func filtersChanged() {
+        self.reloadCardViews()
+    }
 }
 
 extension CardsViewController {

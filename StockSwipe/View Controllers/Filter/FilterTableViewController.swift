@@ -13,6 +13,18 @@ protocol FilterDelegate {
 }
 
 class FilterTableViewController: UITableViewController, CellType {
+    
+    var delegate: FilterDelegate?
+    
+    fileprivate var didFilterChange = false
+    
+    @IBAction func xButtonPressed(_ sender: AnyObject) {
+        self.dismiss(animated: true, completion: nil)
+        
+        if didFilterChange {
+            self.delegate?.filtersChanged()
+        }
+    }
 
     enum CellIdentifier: String {
         case FiltersCell = "FiltersCell"
@@ -33,7 +45,6 @@ class FilterTableViewController: UITableViewController, CellType {
     // MARK: - Table view data source
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-
         return 2
     }
 
@@ -43,10 +54,8 @@ class FilterTableViewController: UITableViewController, CellType {
         switch section {
         case 0:
             return Constants.Symbol.Exchange.allExchanges.count
-            
         case 1:
             return Constants.Symbol.Sector.allSectors.count
-            
         default:
             return 0
         }
@@ -68,7 +77,6 @@ class FilterTableViewController: UITableViewController, CellType {
     }
     
     override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        
         if let view = view as? UITableViewHeaderFooterView {
             view.textLabel!.textColor = UIColor.gray
         }
@@ -109,6 +117,7 @@ class FilterTableViewController: UITableViewController, CellType {
                 cell.accessoryType = .checkmark
                 saveUserDefaults(true, cell: cell)
             }
+            self.didFilterChange = true
         }
     }
     
@@ -123,6 +132,7 @@ class FilterTableViewController: UITableViewController, CellType {
                 cell.accessoryType = .checkmark
                 saveUserDefaults(true, cell: cell)
             }
+            self.didFilterChange = true
         }
     }
     

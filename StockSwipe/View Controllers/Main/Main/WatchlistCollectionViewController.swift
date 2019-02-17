@@ -303,7 +303,8 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                 return
             }
             
-            let selectedCard = cards[(self.CollectionView.indexPathsForSelectedItems!.first! as NSIndexPath).row]
+            guard let firstSelectedIndexPath = self.CollectionView.indexPathsForSelectedItems?.first else { return }
+            let selectedCard = cards[firstSelectedIndexPath.row]
             self.CollectionView.deselectItem(at: indexPath, animated: false)
             
             performCustomSegue(cell: cell, card: selectedCard)
@@ -311,13 +312,9 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        
-        print("cell de-selected")
-        
         if self.isEditing  {
-            
             // Check if selection count is greater than 0, then enable trash button
-            if self.CollectionView.indexPathsForSelectedItems!.count == 0  {
+            if self.CollectionView.indexPathsForSelectedItems?.count == 0  {
                 self.TrashButton.isEnabled = false
             }
         }

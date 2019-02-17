@@ -78,7 +78,13 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     }
     
     private func loadViewData() {
-        
+        if self.carouselLastQueriedDate == nil {
+            let loadCachedDataOperation = BlockOperation { () -> Void in
+                self.loadCachedData()
+            }
+            loadCachedDataOperation.queuePriority = .veryHigh
+            overviewVCOperationQueue.addOperation(loadCachedDataOperation)
+        }
         let marketCarouselOperation = BlockOperation { () -> Void in
             self.queryCarouselTickers()
         }
@@ -86,11 +92,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         overviewVCOperationQueue.addOperations([marketCarouselOperation], waitUntilFinished: true)
         
         if self.carouselLastQueriedDate == nil {
-            let animationOperation = BlockOperation { () -> Void in
-                self.animationDelegate?.didFinishLoading()
-            }
-            animationOperation.queuePriority = .high
-            self.overviewVCOperationQueue.addOperation(animationOperation)
+            self.animationDelegate?.didFinishLoading()
         }
         
         self.scheduleQueryTimer()
@@ -102,11 +104,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
         }
         
         if self.carouselLastQueriedDate == nil {
-            let animationOperation = BlockOperation { () -> Void in
-                self.animationDelegate?.didFinishLoading()
-            }
-            animationOperation.queuePriority = .normal
-            self.overviewVCOperationQueue.addOperation(animationOperation)
+            self.animationDelegate?.didFinishLoading()
         }
     }
     

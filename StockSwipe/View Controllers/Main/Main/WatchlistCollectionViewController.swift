@@ -87,10 +87,10 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             return
         }
         
-        guard let selectedCards = (self.CollectionView.indexPathsForSelectedItems?.map{cards[($0 as NSIndexPath).row]}), let cards = selectedCards as? [Card] else { return }
+        guard let selectedIndexes = self.CollectionView.indexPathsForSelectedItems?.map({ $0.row }) else { return }
         
         // Delete user from Parse (for the object were the user has Longed/Shorted)
-        performDeletionOfObjects(cards)
+        performDeletionOfObjects(selectedIndexes)
     }
     
     @IBAction func SelectAllButtonPressed(_ sender: AnyObject) {
@@ -194,7 +194,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     @objc func addCardToWatchlist(_ notification: Notification) {
         
         if let card = notification.userInfo?["card"] as? Card, let index = cards.index(of: card) {
-            self.removeItemsFromDataSource(at: index)
+            self.removeItemFromDataSource(at: index)
         }
         
         guard let currentUser = PFUser.current(), let card = notification.userInfo?["card"] as? Card else { return }
@@ -285,7 +285,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     
     func reloadViewData() {
         guard let currentUser = PFUser.current() else { return }
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.AddToWatchlistLong.rawValue, Constants.ActivityType.AddToWatchlistShort.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.AddToWatchlistLong.rawValue, Constants.ActivityType.AddToWatchlistShort.rawValue], skip: nil, limit: nil, includeKeys: ["stock"], completion: { (result) in
             
             do {
                 
@@ -307,100 +307,72 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         })
     }
     
-    func performDeletionOfObjects(_ selectedCards: [Card]) {
+    func performDeletionOfObjects(_ selectedIndexes: [Int]) {
         
         //Delete Objects From Parse and DataSource(and collectionView)
         
         guard Functions.isUserLoggedIn(presenting: self) else { return }
         guard let currentUser = PFUser.current() else { return }
         
-        let symbolStringArray: [String] = extractSymbolNames(selectedCards)
+        guard let cards = cards as? [Card] else { return }
+        let selectedCards = selectedIndexes.map { cards[$0] }
+        let activityObjectsToDelete = selectedIndexes.map { self.activityObjects[$0] }
         
-        QueryHelper.sharedInstance.queryStockObjectsFor(symbols: symbolStringArray) { (result) in
+        PFObject.deleteAll(inBackground: activityObjectsToDelete, block: { (success, error) in
             
-            do {
+            if success {
                 
-                let stockObjects = try result()
-                print("Successfully retrieved \(stockObjects.count) object")
-                
-                QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: stockObjects, activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue, Constants.ActivityType.AddToWatchlistLong.rawValue, Constants.ActivityType.AddToWatchlistShort.rawValue], skip: 0, limit: 0, includeKeys: nil, completion: { (result) in
+                for selectedCard in selectedCards {
                     
-                    do {
-                        
-                        let activityObjects = try result()
-                        
-                        PFObject.deleteAll(inBackground: activityObjects, block: { (success, error) in
-                            
-                            if success {
-                                
-                                for stockObject: PFObject in stockObjects {
-                                    
-                                    let symbol = stockObject["Symbol"] as! String
-                                    
-                                    if let selectedCard = selectedCards.find({ $0.symbol == symbol }), let userChoice = selectedCard.userChoice {
-                                        
-                                        switch userChoice {
-                                        case .LONG:
-                                            stockObject.incrementKey("longCount", byAmount: -1)
-                                        case .SHORT:
-                                            stockObject.incrementKey("shortCount", byAmount: -1)
-                                        default:
-                                            break
-                                        }
-                                        
-                                        stockObject.saveEventually()
-                                    }
-                                }
-                                
-                                // Remove from datasource and collectionView
-                                self.CollectionView.performBatchUpdates({ () -> Void in
-                                    
-                                    // Delete from Data Source & CollectionView
-                                    self.deleteItemsFromDataSource(selectedCards)
-                                    
-                                }, completion: { (finished: Bool) -> Void in
-                                    
-                                    if finished == true {
-                                        
-                                        // reload view
-                                        self.CollectionView.reloadData()
-                                        
-                                        if self.CollectionView.indexPathsForSelectedItems!.count == 0  {
-                                            self.TrashButton.isEnabled = false
-                                        }
-                                        
-                                        if self.cards.count == 0 {
-                                            self.EditButtonPressed(self)
-                                            self.EditButton.isEnabled = false
-                                            self.CollectionView.reloadData()
-                                        }
-                                    }
-                                    
-                                    self.EditButtonPressed(self)
-                                })
-                            }
-                        })
-                    } catch {
-                        //TODO: handle error
+                    guard let userChoice = selectedCard.userChoice else { return }
+                    
+                    switch userChoice {
+                    case .LONG:
+                        selectedCard.parseObject.incrementKey("longCount", byAmount: -1)
+                    case .SHORT:
+                        selectedCard.parseObject.incrementKey("shortCount", byAmount: -1)
+                    default:
+                        break
                     }
+                    
+                    selectedCard.parseObject.saveEventually()
+                }
+                
+                // Remove from datasource and collectionView
+                self.CollectionView.performBatchUpdates({ () -> Void in
+                    
+                    // Delete from Data Source & CollectionView
+                    self.deleteItemsFromDataSource(selectedIndexes)
+                    
+                }, completion: { (finished: Bool) -> Void in
+                    
+                    if finished == true {
+                        
+                        // reload view
+                        self.CollectionView.reloadData()
+                        
+                        if self.CollectionView.indexPathsForSelectedItems!.count == 0  {
+                            self.TrashButton.isEnabled = false
+                        }
+                        
+                        if self.cards.count == 0 {
+                            self.EditButtonPressed(self)
+                            self.EditButton.isEnabled = false
+                            self.CollectionView.reloadData()
+                        }
+                    }
+                    
+                    self.EditButtonPressed(self)
                 })
-            } catch {
-                //TODO: handle error
             }
-        }
+        })
     }
     
-    func removeItemsFromDataSource(at index: Int) {
-        self.activityObjects.remove(at: index)
-        self.cards.remove(at: index)
-    }
-    
-    func deleteItemsFromDataSource(_ selectedCards: [Card]) {
+    func deleteItemsFromDataSource(_ selectedIndexes: [Int]) {
         
         // Delete from DataSource
-        selectedCards.forEach { card in
-            guard let index = self.cards.index(of: card) else { return }
-            self.removeItemsFromDataSource(at: index)
+        selectedIndexes.forEach { index in
+            self.removeItemFromDataSource(at: index)
         }
         
         // Delete from CollectionView
@@ -409,13 +381,9 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         }
     }
     
-    func extractSymbolNames (_ coreDataObjects: [Card]) -> [String] {
-        
-        if coreDataObjects.isEmpty {
-            return []
-        } else {
-            return coreDataObjects.map { $0.symbol }
-        }
+    func removeItemFromDataSource(at index: Int) {
+        self.activityObjects.remove(at: index)
+        self.cards.remove(at: index)
     }
 }
 
@@ -434,45 +402,35 @@ extension WatchlistCollectionViewController: UICollectionViewDataSourcePrefetchi
     func fetch(forItemAtIndex index: Int) {
         
         guard let currentUser = PFUser.current() else { return }
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.AddToWatchlistLong.rawValue, Constants.ActivityType.AddToWatchlistShort.rawValue], skip: index, limit: 1, includeKeys: ["stock"], completion: { (result) in
-            
-            do {
+        let activityObject = self.activityObjects[index]
+        if let stockObject = activityObject["stock"] as? PFObject, let activityType = activityObject["activityType"] as? String {
+            Functions.fetchEODData(for: stockObject["Symbol"] as! String, completion: { result in
                 
-                guard let activityObject = try result().first else { return }
-                
-                if let stockObject = activityObject["stock"] as? PFObject, let activityType = activityObject["activityType"] as? String {
-                    Functions.fetchEODData(for: stockObject["Symbol"] as! String, completion: { result in
-                        
-                        do {
-                            let result = try result()
-                            
-                            let card = Card(parseObject: stockObject, eodHistoricalData: result.eodHistoricalResult, eodFundamentalsData: result.eodFundamentalsResult)
-                            
-                            let activityType = Constants.ActivityType(rawValue: activityType)
-                            
-                            switch activityType {
-                            case .AddToWatchlistLong?:
-                                card.userChoice = .LONG
-                            case .AddToWatchlistShort?:
-                                card.userChoice = .SHORT
-                            default: break
-                            }
-                            self.cards[index] = card
-                            
-                            DispatchQueue.main.async {
-                                let indexPath = IndexPath(row: index, section: 0)
-                                self.CollectionView.reloadItems(at: [indexPath])
-                            }
-                        } catch {
-                            //TODO: handle error
-                        }
-                    })
+                do {
+                    let result = try result()
+                    
+                    let card = Card(parseObject: stockObject, eodHistoricalData: result.eodHistoricalResult, eodFundamentalsData: result.eodFundamentalsResult)
+                    
+                    let activityType = Constants.ActivityType(rawValue: activityType)
+                    
+                    switch activityType {
+                    case .AddToWatchlistLong?:
+                        card.userChoice = .LONG
+                    case .AddToWatchlistShort?:
+                        card.userChoice = .SHORT
+                    default: break
+                    }
+                    self.cards[index] = card
+                    
+                    DispatchQueue.main.async {
+                        let indexPath = IndexPath(row: index, section: 0)
+                        self.CollectionView.reloadItems(at: [indexPath])
+                    }
+                } catch {
+                    //TODO: handle error
                 }
-                
-            } catch {
-                //TODO: handle error
-            }
-        })
+            })
+        }
     }
 }
 

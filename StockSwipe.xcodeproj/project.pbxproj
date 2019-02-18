@@ -98,7 +98,6 @@
 		23C221B31DC8E8C5003898E9 /* IdeaPostButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2219A1DC8E8C5003898E9 /* IdeaPostButton.swift */; };
 		23C221B41DC8E8C5003898E9 /* IdeaPostUITextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2219B1DC8E8C5003898E9 /* IdeaPostUITextView.swift */; };
 		23C221B51DC8E8C5003898E9 /* ImageLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2219C1DC8E8C5003898E9 /* ImageLabelView.swift */; };
-		23C221B61DC8E8C5003898E9 /* NewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2219D1DC8E8C5003898E9 /* NewsCell.swift */; };
 		23C221B71DC8E8C5003898E9 /* NoChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2219E1DC8E8C5003898E9 /* NoChartView.swift */; };
 		23C221B81DC8E8C5003898E9 /* NotificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C2219F1DC8E8C5003898E9 /* NotificationCell.swift */; };
 		23C221B91DC8E8C5003898E9 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221A01DC8E8C5003898E9 /* SearchTableViewCell.swift */; };
@@ -108,7 +107,7 @@
 		23C221BD1DC8E8C5003898E9 /* TintableButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221A41DC8E8C5003898E9 /* TintableButton.swift */; };
 		23C221BE1DC8E8C5003898E9 /* TintableLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221A51DC8E8C5003898E9 /* TintableLabel.swift */; };
 		23C221BF1DC8E8C5003898E9 /* TopNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221A61DC8E8C5003898E9 /* TopNewsCell.swift */; };
-		23C221C01DC8E8C5003898E9 /* TransparentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221A71DC8E8C5003898E9 /* TransparentView.swift */; };
+		23C221C01DC8E8C5003898E9 /* AGTransparentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221A71DC8E8C5003898E9 /* AGTransparentView.swift */; };
 		23C221C11DC8E8C5003898E9 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221A81DC8E8C5003898E9 /* UserCell.swift */; };
 		23C221C31DC8E8D7003898E9 /* ChartXAxisFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221C21DC8E8D7003898E9 /* ChartXAxisFormatter.swift */; };
 		23C221C51DC8ECF9003898E9 /* ChartYAxisFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23C221C41DC8ECF9003898E9 /* ChartYAxisFormatter.swift */; };
@@ -295,7 +294,6 @@
 		23C2219A1DC8E8C5003898E9 /* IdeaPostButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdeaPostButton.swift; sourceTree = "<group>"; };
 		23C2219B1DC8E8C5003898E9 /* IdeaPostUITextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdeaPostUITextView.swift; sourceTree = "<group>"; };
 		23C2219C1DC8E8C5003898E9 /* ImageLabelView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageLabelView.swift; sourceTree = "<group>"; };
-		23C2219D1DC8E8C5003898E9 /* NewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewsCell.swift; sourceTree = "<group>"; };
 		23C2219E1DC8E8C5003898E9 /* NoChartView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoChartView.swift; sourceTree = "<group>"; };
 		23C2219F1DC8E8C5003898E9 /* NotificationCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationCell.swift; sourceTree = "<group>"; };
 		23C221A01DC8E8C5003898E9 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
@@ -305,7 +303,7 @@
 		23C221A41DC8E8C5003898E9 /* TintableButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TintableButton.swift; sourceTree = "<group>"; };
 		23C221A51DC8E8C5003898E9 /* TintableLabel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TintableLabel.swift; sourceTree = "<group>"; };
 		23C221A61DC8E8C5003898E9 /* TopNewsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopNewsCell.swift; sourceTree = "<group>"; };
-		23C221A71DC8E8C5003898E9 /* TransparentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransparentView.swift; sourceTree = "<group>"; };
+		23C221A71DC8E8C5003898E9 /* AGTransparentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AGTransparentView.swift; sourceTree = "<group>"; };
 		23C221A81DC8E8C5003898E9 /* UserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		23C221C21DC8E8D7003898E9 /* ChartXAxisFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartXAxisFormatter.swift; sourceTree = "<group>"; };
 		23C221C41DC8ECF9003898E9 /* ChartYAxisFormatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChartYAxisFormatter.swift; sourceTree = "<group>"; };
@@ -454,6 +452,7 @@
 			isa = PBXGroup;
 			children = (
 				235805A7221096B5005C89DD /* AGGradientView.swift */,
+				23C221A71DC8E8C5003898E9 /* AGTransparentView.swift */,
 			);
 			path = Subclass;
 			sourceTree = "<group>";
@@ -652,28 +651,26 @@
 				23E0380F2214592A00E23CFD /* CardView.swift */,
 				23C221A21DC8E8C5003898E9 /* SwipeCardView.swift */,
 				23C221921DC8E8C5003898E9 /* WatchlistCardCollectionViewCell.swift */,
+				23C221991DC8E8C5003898E9 /* IdeaCell.swift */,
+				23C221A81DC8E8C5003898E9 /* UserCell.swift */,
+				23C2219F1DC8E8C5003898E9 /* NotificationCell.swift */,
+				23C221951DC8E8C5003898E9 /* FiltersCell.swift */,
+				23C221A61DC8E8C5003898E9 /* TopNewsCell.swift */,
+				23C221941DC8E8C5003898E9 /* ExpandingCell.swift */,
+				23C221A11DC8E8C5003898E9 /* SuperUITextView.swift */,
 				23C221901DC8E8C5003898E9 /* BlockButton.swift */,
 				23C221911DC8E8C5003898E9 /* BorderedLabel.swift */,
 				23C221931DC8E8C5003898E9 /* CustomImagePickerController.swift */,
-				23C221941DC8E8C5003898E9 /* ExpandingCell.swift */,
-				23C221951DC8E8C5003898E9 /* FiltersCell.swift */,
 				23C221961DC8E8C5003898E9 /* FollowButton.swift */,
 				23C221981DC8E8C5003898E9 /* iCarouselTickerView.swift */,
-				23C221991DC8E8C5003898E9 /* IdeaCell.swift */,
-				23C221A81DC8E8C5003898E9 /* UserCell.swift */,
 				23C2219A1DC8E8C5003898E9 /* IdeaPostButton.swift */,
 				23C2219B1DC8E8C5003898E9 /* IdeaPostUITextView.swift */,
 				23C2219C1DC8E8C5003898E9 /* ImageLabelView.swift */,
-				23C2219D1DC8E8C5003898E9 /* NewsCell.swift */,
 				23C2219E1DC8E8C5003898E9 /* NoChartView.swift */,
-				23C2219F1DC8E8C5003898E9 /* NotificationCell.swift */,
 				23C221A01DC8E8C5003898E9 /* SearchTableViewCell.swift */,
-				23C221A11DC8E8C5003898E9 /* SuperUITextView.swift */,
 				23C221A31DC8E8C5003898E9 /* TimeFormattedLabel.swift */,
 				23C221A41DC8E8C5003898E9 /* TintableButton.swift */,
 				23C221A51DC8E8C5003898E9 /* TintableLabel.swift */,
-				23C221A61DC8E8C5003898E9 /* TopNewsCell.swift */,
-				23C221A71DC8E8C5003898E9 /* TransparentView.swift */,
 				23C221C21DC8E8D7003898E9 /* ChartXAxisFormatter.swift */,
 				23C221C41DC8ECF9003898E9 /* ChartYAxisFormatter.swift */,
 			);
@@ -1191,7 +1188,6 @@
 				238DB6DC1D85A01F00082918 /* LoginViewController.swift in Sources */,
 				238DB6E51D85A01F00082918 /* FAQTableViewController.swift in Sources */,
 				23C221B11DC8E8C5003898E9 /* iCarouselTickerView.swift in Sources */,
-				23C221B61DC8E8C5003898E9 /* NewsCell.swift in Sources */,
 				23C221BE1DC8E8C5003898E9 /* TintableLabel.swift in Sources */,
 				23C221AC1DC8E8C5003898E9 /* CustomImagePickerController.swift in Sources */,
 				238DB6E81D85A01F00082918 /* MainTabBarController.swift in Sources */,
@@ -1212,7 +1208,7 @@
 				238DB6DF1D85A01F00082918 /* CardsViewController.swift in Sources */,
 				239C3E481F65FECE00D1B422 /* FeedbackMainViewController.swift in Sources */,
 				238DB6DE1D85A01F00082918 /* BlockedAccountsTableViewController.swift in Sources */,
-				23C221C01DC8E8C5003898E9 /* TransparentView.swift in Sources */,
+				23C221C01DC8E8C5003898E9 /* AGTransparentView.swift in Sources */,
 				238DB6E01D85A01F00082918 /* WatchlistCollectionViewController.swift in Sources */,
 				236875B21B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m in Sources */,
 				23E038102214592A00E23CFD /* CardView.swift in Sources */,

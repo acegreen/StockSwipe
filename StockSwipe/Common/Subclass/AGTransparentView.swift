@@ -1,5 +1,5 @@
 //
-//  TransparentView.swift
+//  AGTransparentView.swift
 //  StockSwipe
 //
 //  Created by Ace Green on 4/4/16.
@@ -10,7 +10,7 @@ import UIKit
 import Foundation
 
 @IBDesignable
-class TransparentView: UIView {
+class AGTransparentView: UIView {
     
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         

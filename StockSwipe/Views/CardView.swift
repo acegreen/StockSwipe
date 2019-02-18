@@ -82,7 +82,6 @@ import Charts
         var xValues = [String]()
         var yValues = [Double]()
         for (key, value) in eodData.enumerated() {
-            
             if let adjustedClose = value.adjustedCloseValue {
                 xValues.append(String(key))
                 yValues.append(adjustedClose)

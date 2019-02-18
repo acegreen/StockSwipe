@@ -31,14 +31,7 @@ class SwipeCardView: MDCSwipeToChooseView, ResetAbleTransform {
     
     // Our custom view from the XIB file
     var cardView: CardView!
-    var card: Card! {
-        didSet {
-            if self.cardView != nil {
-                self.cardView.card = card
-            }
-        }
-    }
-    
+
     var disabledHighlightedAnimation = false
     
     required init?(coder aDecoder: NSCoder) {
@@ -49,12 +42,21 @@ class SwipeCardView: MDCSwipeToChooseView, ResetAbleTransform {
     
     init(frame: CGRect, card: Card, options: MDCSwipeToChooseViewOptions?) {
         super.init(frame: frame, options: options)
-        self.card = card
         
         loadCardViewFromNib()
-        self.cardView.card = card
-        
+        self.cardView.configure(with: card)
+
         self.addCenterMotionEffectsXY(withOffset: motionOffset)
+    }
+    
+    func configureCardView(with card: Card) {
+        if self.cardView != nil {
+            self.cardView.configure(with: card)
+        }
+    }
+    
+    func clear() {
+        self.cardView.clear()
     }
     
     func loadCardViewFromNib() {

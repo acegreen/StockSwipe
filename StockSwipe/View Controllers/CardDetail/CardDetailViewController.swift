@@ -48,7 +48,7 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     var card: Card! {
         didSet {
             if self.view != nil {
-                cardContentView.card = card
+                self.cardContentView.configureCardView(with: card)
             }
         }
     }

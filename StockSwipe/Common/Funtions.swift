@@ -393,7 +393,12 @@ class Functions {
                         break
                     }
                     
-                    firstActivityObject.saveEventually()
+                    firstActivityObject.saveEventually { (success, error) in
+                        if success {
+                            NotificationCenter.default.post(name: Notification.Name("AddToWatchlist"), object: nil, userInfo: ["card": card])
+                        }
+                        print("registerAddToWatchlist", card)
+                    }
                     
                 } else if activityObjects.isEmpty {
                     
@@ -412,10 +417,14 @@ class Functions {
                         break
                     }
                     
-                    activityObject.saveEventually()
+                    activityObject.saveEventually { (success, error) in
+                        if success {
+                            NotificationCenter.default.post(name: Notification.Name("AddToWatchlist"), object: nil, userInfo: ["card": card])
+                        }
+                        print("registerAddToWatchlist", card)
+                    }
                 }
                 
-                NotificationCenter.default.post(name: Notification.Name("AddToWatchlist"), object: nil, userInfo: ["card": card])
                 
                 // Increment eventCount
                 Functions.incrementEventCount()
@@ -424,7 +433,6 @@ class Functions {
                 //TODO: handle error
             }
             
-            print("registerAddToWatchlist", card)
         }
     }
     

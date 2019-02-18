@@ -19,7 +19,11 @@ class WatchlistCardCollectionViewCell: UICollectionViewCell, ResetAbleTransform 
     @IBOutlet weak var cardView: CardView!
     
     func configure(with card: Card) {
-        self.cardView.card = card
+        self.cardView.configure(with: card)
+    }
+    
+    func clear() {
+        self.cardView.clear()
     }
     
     override var isSelected: Bool {

@@ -45,6 +45,20 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         dismissalAnimator!.startAnimation()
     }
     
+    @IBOutlet var shareButton: UIButton!
+    @IBAction func shareButtonPressed(_ sender: Any) {
+        guard let symbol = self.card.symbol else { return }
+        let textToShare = "Discovered $" + symbol + " #StockSwipe" + " stockswipe://card?symbol=\(symbol)"
+        let cardImage = UIImage(view: self.cardContentView)
+        
+        Functions.presentActivityVC(textToShare, imageToShare: cardImage, url: Constants.appLinkURL!, sender: self.shareButton, vc: self, completion: { (activity, success, items, error) -> Void in
+            
+            if success {
+                SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
+            }
+        })
+    }
+    
     var card: Card! {
         didSet {
             if self.view != nil {

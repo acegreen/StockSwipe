@@ -314,8 +314,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         guard Functions.isUserLoggedIn(presenting: self) else { return }
         guard let currentUser = PFUser.current() else { return }
         
-        guard let cards = cards as? [Card] else { return }
-        let selectedCards = selectedIndexes.map { cards[$0] }
+        guard let selectedCards = selectedIndexes.map({ cards[$0] }) as? [Card] else { return }
         let activityObjectsToDelete = selectedIndexes.map { self.activityObjects[$0] }
         
         PFObject.deleteAll(inBackground: activityObjectsToDelete, block: { (success, error) in

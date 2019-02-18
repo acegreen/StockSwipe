@@ -549,6 +549,8 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             self.logInViewController.dismiss(animated: true, completion: { () -> Void in
                 self.dismiss(animated: true, completion: nil)
                 SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.success)
+                
+                NotificationCenter.default.post(name: Notification.Name("UserLoggedIn"), object: nil, userInfo: ["user": user])
             })
         })
     }

@@ -43,6 +43,8 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         super.viewDidLoad()
         
         self.handleReachability()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(WatchlistCollectionViewController.userLoggedIn), name: Notification.Name("UserLoggedIn"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -55,6 +57,10 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         
     deinit {
         self.reachability?.stopNotifier()
+    }
+    
+    @objc func userLoggedIn(_ notification: Notification) {
+        self.getNotifications(queryType: .new)
     }
     
     func getNotifications(queryType: QueryHelper.QueryType) {

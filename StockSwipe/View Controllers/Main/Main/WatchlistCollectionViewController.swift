@@ -178,6 +178,8 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         
         // register to listen to when AddToWatchlist happens
         NotificationCenter.default.addObserver(self, selector: #selector(WatchlistCollectionViewController.addCardToWatchlist), name: Notification.Name("AddToWatchlist"), object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(WatchlistCollectionViewController.userLoggedIn), name: Notification.Name("UserLoggedIn"), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -215,6 +217,10 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
                 //TODO: handle error
             }
         })
+    }
+    
+    @objc func userLoggedIn(_ notification: Notification) {
+        self.reloadViewData()
     }
     
     // MARK: - Collection View Methods

@@ -409,7 +409,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
 //        }
             
         } else {
-            
             user["full_name"] = user.username
             user["follower_notification"] = true
             user["mention_notification"] = true
@@ -436,7 +435,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             return
             
         } else {
-            
             // Show Error Alert
             SweetAlert().showAlert("Logged Failed!", subTitle: error?.localizedDescription, style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                 
@@ -483,29 +481,31 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         }
     }
     
-    func signUpViewController(signUpController: PFSignUpViewController, didSignUpUser user: PFUser) {
+    func signUpViewController(_ signUpController: PFSignUpViewController, didSignUp user: PFUser) {
         
-        let dismissAlertAction = UIAlertAction(title: "Ok", style: .default, handler:{ (ACTION :UIAlertAction!) in
-            signUpController.dismiss(animated: true, completion: nil)
-        })
+        //        let dismissAlertAction = UIAlertAction(title: "Ok", style: .default, handler:{ (ACTION :UIAlertAction!) in
+        //            signUpController.dismiss(animated: true, completion: nil)
+        //        })
+        //
+        //        signUpController.present(Functions.displayAlert("Sign Up Complete!", message: "We have sent you a verification email - you must verify your email to continue.", Action1: dismissAlertAction, Action2: nil), animated: true, completion: nil)
         
-        self.logInViewController.dismiss(animated: true, completion: { () -> Void in
-            
-            self.dismiss(animated: true, completion: nil)
-            
-            signUpController.present(Functions.displayAlert("Sign Up Complete!", message: "We have sent you a verification email - you must verify your email to continue.", Action1: dismissAlertAction, Action2: nil), animated: true, completion: nil)
-        })
+        user["full_name"] = user.username
+        user["follower_notification"] = true
+        user["mention_notification"] = true
+        user["newTradeIdea_notification"] = true
+        user["replyTradeIdea_notification"] = true
+        user["likeTradeIdea_notification"] = true
+        user["reshareTradeIdea_notification"] = true
+        user["swipe_addToWatchlist"] = false
         
+        saveUser(user, firstName: nil, lastName: nil)
     }
     
-    func signUpViewController(signUpController: PFSignUpViewController, didFailToSignUpWithError error: NSError?) {
-        
+    func signUpViewController(_ signUpController: PFSignUpViewController, didFailToSignUpWithError error: Error?) {
         print("Failed to sign up")
-        
     }
     
-    func signUpViewControllerDidCancelSignUp(signUpController: PFSignUpViewController) {
-        
+    func signUpViewControllerDidCancelSignUp(_ signUpController: PFSignUpViewController) {
         print("User dismissed sign up")
     }
     
@@ -545,6 +545,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 
             }
             
+            self.signUpViewController.dismiss(animated: true, completion: nil)
             self.logInViewController.dismiss(animated: true, completion: { () -> Void in
                 self.dismiss(animated: true, completion: nil)
                 SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.success)

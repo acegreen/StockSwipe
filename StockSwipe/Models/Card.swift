@@ -23,7 +23,7 @@ public class Card: NSObject {
     
     var userChoice: Constants.UserChoices?
     
-    var parseObject: PFObject?
+    var parseObject: PFObject!
     
 //    var searchDescription: String {
 //        if self.shortCount > 0 || self.shortCount > 0 {
@@ -32,6 +32,10 @@ public class Card: NSObject {
 //            return companyName
 //        }
 //    }
+    
+    convenience init(parseObject: PFObject) {
+        self.init(parseObject: parseObject, eodHistoricalData: nil, eodFundamentalsData: nil)
+    }
     
     init(parseObject: PFObject, eodHistoricalData: [QueryHelper.EODHistoricalResult]?, eodFundamentalsData: QueryHelper.EODFundamentalsResult?, userChoice: Constants.UserChoices? = nil) {
         

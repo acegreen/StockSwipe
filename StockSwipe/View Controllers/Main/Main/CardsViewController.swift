@@ -191,7 +191,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     }
     
     @objc func addCardToWatchlist(_ notification: Notification) {
-        guard let card = notification.userInfo?["card"] as? Card, self.firstCardView.card.symbol == card.symbol else { return }
+        guard let card = notification.userInfo?["card"] as? Card, let firstCard = self.cards.first, firstCard.symbol == card.symbol else { return }
             
         DispatchQueue.main.async {
             switch card.userChoice {
@@ -485,7 +485,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     // This is called when a user swipes the view in a direction.
     func view(_ view: UIView, wasChosenWith wasChosenWithDirection: MDCSwipeDirection) -> Void {
         
-        guard let chartChosen: Card = self.cards.find({ $0.symbol == self.firstCardView.card.symbol }) else { return }
+        guard let chartChosen = self.cards.first else { return }
        
         // Register choice
         if wasChosenWithDirection == MDCSwipeDirection.left {
@@ -582,7 +582,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     
     func viewDidGetLongPressed(_ view: UIView!) {
         
-        guard let card: Card = self.cards.find({ $0.symbol == self.firstCardView.card.symbol }) else { return }
+        guard let card: Card = self.cards.first else { return }
         
         Functions.promptAddToWatchlist(card, registerChoice: false) { (choice) in
             switch choice {
@@ -772,7 +772,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             return self.firstCardView.superview!.convert(r, to: nil)
         }()
         
-        if let selectedCard = cards.find({ $0.symbol == self.firstCardView.card.symbol }) {
+        if let selectedCard = cards.first {
             
             // Set up card detail view controller
             let vc = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController

@@ -30,12 +30,6 @@ import Charts
     @IBOutlet weak var highlightThreeTitleLabel: UILabel!
     @IBOutlet weak var highlightThreeSubtitleLabel: UILabel!
     
-    var card: Card! {
-        didSet {
-            self.setCardInfo()
-        }
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         fromNib()
@@ -46,13 +40,13 @@ import Charts
         fromNib()
     }
     
-    private func setCardInfo() {
-        self.setInfo()
-        self.setHighlights()
-        self.makeChart()
+    func configure(with card: Card) {
+        self.setInfo(with: card)
+        self.setHighlights(with: card)
+        self.makeChart(with: card)
     }
     
-    private func setInfo() {
+    private func setInfo(with card: Card) {
         self.symbolLabel.text = card.symbol
         self.companyNameLabel.text = card.companyName
         self.exchangeLabel.text = card.exchange
@@ -81,7 +75,7 @@ import Charts
         self.overlayLabel.layer.cornerRadius = 7.5
     }
     
-    private func makeChart() {
+    private func makeChart(with card: Card) {
         
         guard let eodData = card.eodHistoricalData else { return }
         
@@ -98,9 +92,9 @@ import Charts
         setChart(xValues, values: yValues)
     }
     
-    private func setHighlights() {
+    private func setHighlights(with card: Card) {
         
-        guard let eodFundamentalsData = self.card.eodFundamentalsData else { return }
+        guard let eodFundamentalsData = card.eodFundamentalsData else { return }
         
         self.highlightOneTitleLabel.text = "PE"
         self.highlightOneSubtitleLabel.text = eodFundamentalsData.highlights.peRatio != nil ? String(Double(eodFundamentalsData.highlights.peRatio!)!.roundTo(2)) : "--"
@@ -141,6 +135,7 @@ import Charts
         //            let marker: BalloonMarker = BalloonMarker(color: UIColor.white, font: UIFont.systemFont(ofSize: 12.0), insets: UIEdgeInsetsMake(8.0, 8.0, 20.0, 8.0))
         //            marker.minimumSize = CGSize(width: 40.0, height: 40.0)
         
+        chartView.noDataTextColor = UIColor.white
         chartView.xAxis.enabled = false
         chartView.xAxis.drawGridLinesEnabled = false
         chartView.leftAxis.enabled = false
@@ -155,5 +150,18 @@ import Charts
         
         chartView.data = chartDataSet
         chartView.animate(xAxisDuration: 1.0, yAxisDuration: 0)
+    }
+    
+    func clear() {
+        self.symbolLabel.text = "Symbol"
+        self.companyNameLabel.text = "Company Name"
+        self.exchangeLabel.text = "Exchange"
+        self.chartView.clear()
+        self.overlayLabel.text = ""
+        self.overlayLabel.isHidden = true
+        
+        self.highlightOneSubtitleLabel.text = "--"
+        self.highlightTwoSubtitleLabel.text = "--"
+        self.highlightThreeSubtitleLabel.text = "--"
     }
 }

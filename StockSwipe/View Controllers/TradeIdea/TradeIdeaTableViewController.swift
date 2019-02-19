@@ -25,7 +25,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
     
     var stockObject: PFObject?
     
-    var tradeIdeas = [TradeIdea]()
+    var activities = [Activity]()
     var isQueryingForTradeIdeas = false
     var tradeIdeasLastRefreshDate: Date!
     
@@ -38,7 +38,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
     }
     
     @IBAction func refreshControlAction(_ sender: UIRefreshControl) {
-        self.getTradeIdeas(queryType: .update)
+        self.getActivities(queryType: .update)
     }
     
     @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
@@ -64,7 +64,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
         self.reachability?.stopNotifier()
     }
     
-    func getTradeIdeas(queryType: QueryHelper.QueryType) {
+    func getActivities(queryType: QueryHelper.QueryType) {
         
         guard !isQueryingForTradeIdeas else { return }
         
@@ -82,7 +82,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
                 self.footerActivityIndicator.startAnimating()
             }
             
-            skip = self.tradeIdeas.count
+            skip = self.activities.count
             
         case .update:
             queryOrder = .ascending
@@ -90,18 +90,18 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
         }
         
         let stockObjectArray: [PFObject]? = self.stockObject != nil ? [self.stockObject!] : nil
-        let activityType: Constants.ActivityType = self.stockObject != nil ? Constants.ActivityType.Mention : Constants.ActivityType.TradeIdeaNew
+        let activityType = self.stockObject != nil ? [Constants.ActivityType.Mention.rawValue] : [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue]
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: stockObjectArray, activityType: [activityType.rawValue], skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: stockObjectArray, activityType: activityType, skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
-                let activityObjects = try result()
+                guard let activityObjects = try result() as? [Activity] else { return }
                 
                 guard activityObjects.count > 0 else {
-                    
+
                     self.isQueryingForTradeIdeas = false
-                    
+
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                         if self.refreshControl?.isRefreshing == true {
@@ -110,69 +110,60 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
                             self.footerActivityIndicator.stopAnimating()
                         }
                     }
-                    
+
                     self.updateRefreshDate()
                     self.tradeIdeasLastRefreshDate = Date()
-                    
+
                     return
                 }
-                
-                var tradeIdeaObjects = [PFObject]()
-                for activityObject in activityObjects {
-                    if let tradeIdeaObject = activityObject["tradeIdea"] as? PFObject {
-                        tradeIdeaObjects.append(tradeIdeaObject)
-                    }
-                }
-                
-                let tradeIdeas = TradeIdea.makeTradeIdeas(from: tradeIdeaObjects)
-                
+
                 DispatchQueue.main.async {
-                    
+
                     switch queryType {
                     case .new:
-                        
-                        self.tradeIdeas = tradeIdeas
-                        
+
+                        self.activities = activityObjects
+
                         // reload table
                         self.tableView.reloadData()
-                        
+
                     case .older:
-                        
+
                         // append more trade ideas
-                        let currentCount = self.tradeIdeas.count
-                        self.tradeIdeas += tradeIdeas
-                        
+                        let currentCount = self.activities.count
+                        self.activities += activityObjects
+
                         // insert cell in tableview
                         self.tableView.beginUpdates()
-                        for (i,_) in tradeIdeas.enumerated() {
+                        for (i,_) in activityObjects.enumerated() {
                             let indexPath = IndexPath(row: currentCount + i, section: 0)
                             self.tableView.insertRows(at: [indexPath], with: .none)
                         }
                         self.tableView.endUpdates()
-                        
+
                     case .update:
-                        
+
                         // append more trade ideas
                         self.tableView.beginUpdates()
-                        for tradeIdea in tradeIdeas {
-                            self.tradeIdeas.insert(tradeIdea, at: 0)
+                        for activity in activityObjects {
+                            self.activities.insert(activity, at: 0)
                             let indexPath = IndexPath(row: 0, section: 0)
                             self.tableView.insertRows(at: [indexPath], with: .none)
                         }
                         self.tableView.endUpdates()
                     }
-                    
+
                     // end refresh and add time stamp
                     if self.refreshControl?.isRefreshing == true {
                         self.refreshControl?.endRefreshing()
                     } else if self.footerActivityIndicator.isAnimating == true {
                         self.footerActivityIndicator.stopAnimating()
                     }
-                    
+
                     self.updateRefreshDate()
                     self.tradeIdeasLastRefreshDate = Date()
                 }
-                
+
                 self.isQueryingForTradeIdeas = false
                 
             } catch {
@@ -207,7 +198,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tradeIdeas.count
+        return activities.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -222,8 +213,8 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
         
-        guard let tradeIdeaAtIndex = self.tradeIdeas.get(indexPath.row) else { return cell }
-        cell.configureCell(with: tradeIdeaAtIndex, timeFormat: .short)
+        guard let activityAtIndex = self.activities.get(indexPath.row) else { return cell }
+        cell.configureCell(with: activityAtIndex, timeFormat: .short)
         cell.delegate = self
         
         return cell
@@ -234,7 +225,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
         if offset >= 0 && offset <= 5 {
             // This is the last cell so get more data
-            self.getTradeIdeas(queryType: .older)
+            self.getActivities(queryType: .older)
         }
     }
     
@@ -250,7 +241,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
             destinationViewController.delegate = self
             
             guard let cell = sender as? IdeaCell else { return }
-            destinationViewController.tradeIdea = cell.tradeIdea
+            destinationViewController.activity = cell.activity
             
         case .PostIdeaSegueIdentifier:
             
@@ -266,37 +257,29 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
 
 extension TradeIdeasTableViewController: IdeaPostDelegate {
     
-    internal func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
+    internal func ideaPosted(with activity: Activity, tradeIdeaTyp: Constants.TradeIdeaType) {
         
         let indexPath = IndexPath(row: 0, section: 0)
-        self.tradeIdeas.insert(tradeIdea, at: 0)
+        self.activities.insert(activity, at: 0)
         self.tableView.insertRows(at: [indexPath], with: .automatic)
-        
-        self.tableView.reloadData()
     }
     
-    internal func ideaDeleted(with parseObject: PFObject) {
+    internal func ideaDeleted(with activity: Activity) {
         
-        if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
-            
-            if let reshareOf = tradeIdea.nestedTradeIdea, let reshareTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == reshareOf.parseObject.objectId })  {
-                
-                let indexPath = IndexPath(row: self.tradeIdeas.index(of: reshareTradeIdea)!, section: 0)
-                self.tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
-            
-            let indexPath = IndexPath(row: self.tradeIdeas.index(of: tradeIdea)!, section: 0)
-            self.tradeIdeas.removeObject(tradeIdea)
+        if let activity = self.activities.find ({ $0.objectId == activity.objectId }), let index = self.activities.index(of: activity) {
+            let indexPath = IndexPath(row: index, section: 0)
+            self.activities.removeObject(activity)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
-        
-        if tradeIdeas.count == 0 {
+
+        if activities.count == 0 {
             self.tableView.reloadData()
         }
     }
     
-    internal func ideaUpdated(with tradeIdea: TradeIdea) {
-        if let currentTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == tradeIdea.parseObject.objectId }), let index = self.tradeIdeas.index(of: currentTradeIdea) {
+    internal func ideaUpdated(with activity: Activity) {
+        
+        if let activity = self.activities.find ({ $0.objectId == activity.objectId }), let index = self.activities.index(of: activity) {
             let indexPath = IndexPath(row: index, section: 0)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }
@@ -308,7 +291,7 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
 extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
     func emptyDataSetShouldDisplay(_ scrollView: UIScrollView!) -> Bool {
-        if !isQueryingForTradeIdeas && tradeIdeas.count == 0 {
+        if !isQueryingForTradeIdeas && activities.count == 0 {
             return true
         }
         return false
@@ -349,8 +332,8 @@ extension TradeIdeasTableViewController {
     
     func handleReachability() {
         self.reachability?.whenReachable = { reachability in
-            if self.tradeIdeas.count  == 0 {
-                self.getTradeIdeas(queryType: .new)
+            if self.activities.count  == 0 {
+                self.getActivities(queryType: .new)
             }
         }
         

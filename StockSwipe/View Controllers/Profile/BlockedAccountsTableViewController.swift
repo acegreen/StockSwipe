@@ -34,11 +34,8 @@ class BlockedAccountsTableViewController: UITableViewController, SegueHandlerTyp
     
     func setupAccounts() {
         guard let currentUser = PFUser.current() else { return }
-        guard let blockedUsersObjects = currentUser["blocked_users"] as? [PFUser] else { return }
-        
-        blockedUsers = blockedUsersObjects.map({
-            User(userObject: $0)
-        })
+        guard let blockedUsersObjects = currentUser["blocked_users"] as? [User] else { return }
+        blockedUsers = blockedUsersObjects
         
         self.tableView.reloadData()
     }

@@ -17,7 +17,7 @@ class ProfileDetailTableViewController: UITableViewController {
     
     var delegate: ProfileDetailTableViewControllerDelegate?
     
-    var user: User?
+    var user: User!
     
     let imagePicker = CustomImagePickerController()
     
@@ -39,8 +39,7 @@ class ProfileDetailTableViewController: UITableViewController {
     
     @IBAction func saveButtonPressed(_ sender: Any) {
         
-        guard let currentUser = PFUser.current() else { return }
-        let tempUser = currentUser
+        let tempUser = user!
         
         if self.userProfilePictureChanged {
             let imageData = self.userAvatarImageView.image!.pngData()
@@ -48,15 +47,15 @@ class ProfileDetailTableViewController: UITableViewController {
             
             parseImageFile?.saveInBackground(block: { (success, error) -> Void in
                 if success {
-                    currentUser["profile_image"] = parseImageFile
-                    currentUser["full_name"] = self.fullnameTextField.text
-                    currentUser["fullname_lowercase"] = self.fullnameTextField.text?.lowercased()
-                    currentUser["bio"] = self.userBioTextView.text
-                    currentUser["location"] = self.userLocationTextField.text
-                    currentUser["website"] = self.userWebsiteTextField.text
-                    currentUser.saveEventually { (success, error) in
-                        if self.didUserProfileChange(previousUser: tempUser, newUser: currentUser) {
-                            self.delegate?.userProfileChanged(newUser: User(userObject: currentUser))
+                    self.user["profile_image"] = parseImageFile
+                    self.user["full_name"] = self.fullnameTextField.text
+                    self.user["fullname_lowercase"] = self.fullnameTextField.text?.lowercased()
+                    self.user["bio"] = self.userBioTextView.text
+                    self.user["location"] = self.userLocationTextField.text
+                    self.user["website"] = self.userWebsiteTextField.text
+                    self.user.saveEventually { (success, error) in
+                        if self.didUserProfileChange(previousUser: tempUser, newUser: self.user) {
+                            self.delegate?.userProfileChanged(newUser: self.user)
                         }
                     }
                 } else {
@@ -64,14 +63,14 @@ class ProfileDetailTableViewController: UITableViewController {
                 }
             })
         } else {
-            currentUser["full_name"] = self.fullnameTextField.text
-            currentUser["fullname_lowercase"] = self.fullnameTextField.text?.lowercased()
-            currentUser["bio"] = self.userBioTextView.text
-            currentUser["location"] = self.userLocationTextField.text
-            currentUser["website"] = self.userWebsiteTextField.text
-            currentUser.saveEventually({ (success, error) in
-                if self.didUserProfileChange(previousUser: tempUser, newUser: currentUser) {
-                    self.delegate?.userProfileChanged(newUser: User(userObject: currentUser))
+            self.user["full_name"] = self.fullnameTextField.text
+            self.user["fullname_lowercase"] = self.fullnameTextField.text?.lowercased()
+            self.user["bio"] = self.userBioTextView.text
+            self.user["location"] = self.userLocationTextField.text
+            self.user["website"] = self.userWebsiteTextField.text
+            self.user.saveEventually({ (success, error) in
+                if self.didUserProfileChange(previousUser: tempUser, newUser: self.user) {
+                    self.delegate?.userProfileChanged(newUser: self.user)
                 }
             })
         }
@@ -94,25 +93,19 @@ class ProfileDetailTableViewController: UITableViewController {
         self.userAvatarImageView.addGestureRecognizer(tapGestureRecognizerMainAvatar)
     }
     
-    private func didUserProfileChange(previousUser: PFUser, newUser: PFUser) -> Bool {
+    private func didUserProfileChange(previousUser: User, newUser: User) -> Bool {
         return previousUser == newUser
     }
     
     private func getProfileDetails() {
         
-        guard let user = user else { return }
-        user.fetchUserInBackground { user in
-            self.user = user
-            
-            user?.getAvatar { (profileImage) in
-                DispatchQueue.main.async {
-                    self.userAvatarImageView.image = profileImage
-                    self.fullnameTextField.text = user?.fullname
-                    self.userBioTextView.text = user?.bio
-                    self.userLocationTextField.text = user?.location
-                    self.userWebsiteTextField.text = user?.website
-
-                }
+        user?.getAvatar { (profileImage) in
+            DispatchQueue.main.async {
+                self.userAvatarImageView.image = profileImage
+                self.fullnameTextField.text = self.user?.full_name
+                self.userBioTextView.text = self.user?.bio
+                self.userLocationTextField.text = self.user?.location
+                self.userWebsiteTextField.text = self.user?.website
             }
         }
     }

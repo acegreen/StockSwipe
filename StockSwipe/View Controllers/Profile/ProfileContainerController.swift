@@ -44,7 +44,7 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
     var loginDelegate: LoginDelegate?
     var profileChangeDelegate: ProfileDetailTableViewControllerDelegate?
     
-    var user: User?
+    var user: User!
     var isCurrentUserBlocked: Bool = false
     var isUserBlocked: Bool = false
     var shouldShowProfile: Bool = true
@@ -56,7 +56,6 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
         segmentedControl.layer.zPosition = 1
         
         checkBlocked()
-        
         layoutSegementedControl()
     }
 
@@ -75,16 +74,14 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
     
     func checkBlocked() {
         
-        guard let currentUser = PFUser.current() else { return }
-        guard let userObject = self.user?.userObject else { return }
-        
-        if let users_blocked_users = userObject["blocked_users"] as? [PFUser] , users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
+        guard let currentUser = User.current() else { return }
+        if let users_blocked_users = user.blocked_users, users_blocked_users.find({ $0.objectId == currentUser.objectId }) != nil {
             self.isCurrentUserBlocked = true
             self.shouldShowProfile = false
             return
         }
         
-        if let blocked_users = currentUser["blocked_users"] as? [PFUser] , blocked_users.find({ $0.objectId == userObject.objectId }) != nil {
+        if let blocked_users = user.blocked_users, blocked_users.find({ $0.objectId == user.objectId }) != nil {
             self.isUserBlocked = true
             return
         }
@@ -113,51 +110,51 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
         ]
         
         user.getIdeasCount({ (countString) in
-            
+
             attributedTitle = NSAttributedString(string: countString, attributes: titleAttrsDictionary)
             attributedSubtitle = NSAttributedString(string: "Ideas", attributes: subTitleAttrsDictionary)
-            
+
             let mutableAttString = NSMutableAttributedString()
             mutableAttString.append(attributedTitle)
             mutableAttString.append(NSAttributedString(string: "\n", attributes: nil))
             mutableAttString.append(attributedSubtitle)
-            
+
             self.segmentedControl.segmentWithMultilineAttributedTitle(mutableAttString, atIndex: 0, animated: true)
         })
-        
+
         user.getFollowingCount({ (countString) in
             attributedTitle = NSAttributedString(string: countString, attributes: titleAttrsDictionary)
             attributedSubtitle = NSAttributedString(string: "Following", attributes: subTitleAttrsDictionary)
-            
+
             let mutableAttString = NSMutableAttributedString()
             mutableAttString.append(attributedTitle)
             mutableAttString.append(NSAttributedString(string: "\n", attributes: nil))
             mutableAttString.append(attributedSubtitle)
-            
+
             self.segmentedControl.segmentWithMultilineAttributedTitle(mutableAttString, atIndex: 1, animated: true)
         })
-        
+
         user.getFollowersCount({ (countString) in
             attributedTitle = NSAttributedString(string: countString, attributes: titleAttrsDictionary)
             attributedSubtitle = NSAttributedString(string: "Followers", attributes: subTitleAttrsDictionary)
-            
+
             let mutableAttString = NSMutableAttributedString()
             mutableAttString.append(attributedTitle)
             mutableAttString.append(NSAttributedString(string: "\n", attributes: nil))
             mutableAttString.append(attributedSubtitle)
-            
+
             self.segmentedControl.segmentWithMultilineAttributedTitle(mutableAttString, atIndex: 2, animated: true)
         })
-        
+
         user.getLikedIdeasCount({ (countString) in
             attributedTitle = NSAttributedString(string: countString, attributes: titleAttrsDictionary)
             attributedSubtitle = NSAttributedString(string: "Liked", attributes: subTitleAttrsDictionary)
-            
+
             let mutableAttString = NSMutableAttributedString()
             mutableAttString.append(attributedTitle)
             mutableAttString.append(NSAttributedString(string: "\n", attributes: nil))
             mutableAttString.append(attributedSubtitle)
-            
+
             self.segmentedControl.segmentWithMultilineAttributedTitle(mutableAttString, atIndex: 3, animated: true)
         })
     }

@@ -507,7 +507,7 @@ class QueryHelper {
         
         let usernamesLowercase = usernames.map { ($0.lowercased()) }
         
-        let userQuery = PFUser.query()
+        let userQuery = User.query()
         userQuery?.cachePolicy = cachePolicy
         userQuery?.whereKey("username_lowercase", containedIn: usernamesLowercase)
         userQuery?.findObjectsInBackground { (objects, error) -> Void in
@@ -529,7 +529,7 @@ class QueryHelper {
         
         let mappedSymbols = symbols.map ({ $0.uppercased() })
         
-        let stockQuery = PFQuery(className:"Stocks")
+        let stockQuery = Stock.query()!
         stockQuery.cachePolicy = cachePolicy
         stockQuery.whereKey("Symbol", containedIn: mappedSymbols)
         stockQuery.findObjectsInBackground { (objects, error) -> Void in
@@ -549,7 +549,7 @@ class QueryHelper {
     
     func queryTradeIdeaObjectsFor(key: String?, object: PFObject?, skip: Int?, limit: Int?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
-        let tradeIdeaQuery = PFQuery(className:"TradeIdea")
+        let tradeIdeaQuery = TradeIdea.query()!
         tradeIdeaQuery.cachePolicy = cachePolicy
     
         switch order {
@@ -606,7 +606,7 @@ class QueryHelper {
     
     func countTradeIdeasFor(key: String, object: PFObject, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
-        let tradeIdeaQuery = PFQuery(className:"TradeIdea")
+        let tradeIdeaQuery = TradeIdea.query()!
         tradeIdeaQuery.cachePolicy = cachePolicy
         
         tradeIdeaQuery.whereKey(key, equalTo: object)
@@ -634,9 +634,9 @@ class QueryHelper {
         }
     }
     
-    func queryActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stocks: [PFObject]?, activityType: [String]? , skip: Int?, limit: Int?, includeKeys: [String]?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryActivityFor(fromUser: PFUser? = nil, toUser: PFUser? = nil, originalTradeIdea: PFObject? = nil, tradeIdea: PFObject? = nil, stocks: [PFObject]? = nil, activityType: [String]? = nil, skip: Int? = nil, limit: Int? = nil, includeKeys: [String]? = nil, selectKeys: [String]? = nil, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
-        let activityQuery = PFQuery(className:"Activity")
+        let activityQuery = Activity.query()!
         activityQuery.cachePolicy = cachePolicy
         
         switch order {
@@ -652,6 +652,10 @@ class QueryHelper {
         
         if let includeKeys = includeKeys {
             activityQuery.includeKeys(includeKeys)
+        }
+        
+        if let selectKeys = selectKeys {
+            activityQuery.selectKeys(selectKeys)
         }
         
         if let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
@@ -709,7 +713,7 @@ class QueryHelper {
     
     func countActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stocks: [PFObject]?, activityType: [String]?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
-        let activityQuery = PFQuery(className:"Activity")
+        let activityQuery = Activity.query()!
         activityQuery.cachePolicy = cachePolicy
         activityQuery.order(byDescending: "createdAt")
         
@@ -754,7 +758,7 @@ class QueryHelper {
     
     func queryActivityForUser(user: PFUser, skip: Int?, limit: Int?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
-        let activityQuery = PFQuery(className:"Activity")
+        let activityQuery = Activity.query()!
         activityQuery.cachePolicy = cachePolicy
         
         switch order {
@@ -804,7 +808,7 @@ class QueryHelper {
     
     func queryActivityForFollowing(fromUser: PFUser, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
-        let followActivityQuery = PFQuery(className:"Activity")
+        let followActivityQuery = Activity.query()!
         followActivityQuery.cachePolicy = cachePolicy
         
         followActivityQuery.whereKey("fromUser", equalTo: fromUser)

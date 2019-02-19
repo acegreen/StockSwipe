@@ -179,7 +179,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             let destinationViewController = segue.destination as! UINavigationController
             let ideaPostViewController = destinationViewController.viewControllers.first as! IdeaPostViewController
             ideaPostViewController.tradeIdeaType = .new
-//            ideaPostViewController.delegate =  self
+            ideaPostViewController.delegate =  self
             
         case .SearchSegueIdentifier, .OverviewContainerEmbededSegueIdentifier:
             break
@@ -285,44 +285,17 @@ extension OverviewViewController {
     }
 }
 
-//extension OverviewViewController: IdeaPostDelegate {
-//        
-//    internal func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType) {
-//
-//        if tradeIdeaTyp == .new {
-//
-//            let indexPath = IndexPath(row: 0, section: 0)
-//            self.tradeIdeas.insert(tradeIdea, at: 0)
-//            self.latestTradeIdeasTableView.insertRows(at: [indexPath], with: .automatic)
-//
-//            self.latestTradeIdeasTableView.reloadData()
-//        }
-//    }
-//
-//    internal func ideaDeleted(with parseObject: PFObject) {
-//
-//        if let tradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == parseObject.objectId }) {
-//
-//            if let reshareOf = tradeIdea.nestedTradeIdea, let reshareTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == reshareOf.parseObject.objectId })  {
-//
-//                let indexPath = IndexPath(row: self.tradeIdeas.index(of: reshareTradeIdea)!, section: 0)
-//                self.latestTradeIdeasTableView.reloadRows(at: [indexPath], with: .automatic)
-//            }
-//
-//            let indexPath = IndexPath(row: self.tradeIdeas.index(of: tradeIdea)!, section: 0)
-//            self.tradeIdeas.removeObject(tradeIdea)
-//            self.latestTradeIdeasTableView.deleteRows(at: [indexPath], with: .automatic)
-//        }
-//
-//        if tradeIdeas.count == 0 {
-//            self.latestTradeIdeasTableView.reloadData()
-//        }
-//    }
-//
-//    internal func ideaUpdated(with tradeIdea: TradeIdea) {
-//        if let currentTradeIdea = self.tradeIdeas.find ({ $0.parseObject.objectId == tradeIdea.parseObject.objectId }), let index = self.tradeIdeas.index(of: currentTradeIdea) {
-//            let indexPath = IndexPath(row: index, section: 0)
-//            self.latestTradeIdeasTableView.reloadRows(at: [indexPath], with: .none)
-//        }
-//    }
-//}
+extension OverviewViewController: IdeaPostDelegate {
+
+    internal func ideaPosted(with activity: Activity, tradeIdeaTyp: Constants.TradeIdeaType) {
+        
+    }
+    
+    internal func ideaDeleted(with activity: Activity) {
+        
+    }
+    
+    internal func ideaUpdated(with activity: Activity) {
+        
+    }
+}

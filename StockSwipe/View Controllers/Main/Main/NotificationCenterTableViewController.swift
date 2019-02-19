@@ -23,7 +23,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         case ProfileSegueIdentifier = "ProfileSegueIdentifier"
     }
     
-    var notifications = [PFObject]()
+    var notifications = [Activity]()
     var isQueryingForActivities = false
     var notificationsLastRefreshDate: Date?
     
@@ -97,7 +97,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             
             do {
                 
-                let activityObjects = try result()
+                guard let activityObjects = try result() as? [Activity] else { return }
                 
                 guard activityObjects.count > 0 else {
                     
@@ -222,15 +222,13 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         switch activityType {
         case .Follow:
             
-            guard let userObjectAtIndexPath = activityAtIndexPath.object(forKey: "fromUser") as? PFUser else { return }
-            let user = User(userObject: userObjectAtIndexPath)
-            self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: user)
+            guard let userAtIndexPath = activityAtIndexPath.object(forKey: "fromUser") as? User else { return }
+            self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: userAtIndexPath)
             
         case .Mention, .TradeIdeaNew, .TradeIdeaLike, .TradeIdeaReply, .TradeIdeaReshare:
 
-            guard let tradeIdeaAtIndexPath = activityAtIndexPath.object(forKey: "tradeIdea") as? PFObject else { return }
-            let tradeIdea = TradeIdea(parseObject: tradeIdeaAtIndexPath)
-            self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tradeIdea)
+            guard let tradeIdeaAtIndexPath = activityAtIndexPath.object(forKey: "tradeIdea") as? TradeIdea else { return }
+            self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tradeIdeaAtIndexPath)
             
         case .Block, .StockLong, .StockShort, .AddToWatchlistLong, .AddToWatchlistShort:
             break
@@ -255,7 +253,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             
         case .TradeIdeaDetailSegueIdentifier:
             let destinationViewController = segue.destination as! TradeIdeaDetailTableViewController
-            destinationViewController.tradeIdea = sender as? TradeIdea
+            destinationViewController.activity = sender as? Activity
             
         case .ProfileSegueIdentifier:
             let profileViewController = segue.destination as! ProfileContainerController

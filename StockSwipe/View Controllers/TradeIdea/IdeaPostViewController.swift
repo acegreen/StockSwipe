@@ -11,9 +11,9 @@ import Parse
 import Crashlytics
 
 protocol IdeaPostDelegate {
-    func ideaPosted(with tradeIdea: TradeIdea, tradeIdeaTyp: Constants.TradeIdeaType)
-    func ideaDeleted(with tradeIdeaObject: PFObject)
-    func ideaUpdated(with tradeIdea: TradeIdea)
+    func ideaPosted(with activity: Activity, tradeIdeaTyp: Constants.TradeIdeaType)
+    func ideaDeleted(with activity: Activity)
+    func ideaUpdated(with activity: Activity)
 }
 
 class IdeaPostViewController: UIViewController, UITextViewDelegate {
@@ -63,31 +63,31 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         
         let (cashtags, mentions, hashtags) = self.ideaTextView.detectTags()
         
-        let tradeIdeaObject = PFObject(className: "TradeIdea")
+        let tradeIdeaObject = TradeIdea()
         tradeIdeaObject["user"] = currentUser
-        tradeIdeaObject["description"] = self.textToPost
+        tradeIdeaObject["ideaDescription"] = self.textToPost
         
-        let activityObject = PFObject(className: "Activity")
+        let activityObject = Activity()
         activityObject["fromUser"] = currentUser
         activityObject["tradeIdea"] = tradeIdeaObject
         
         if tradeIdeaType == .reply, let originalTradeIdea = self.originalTradeIdea {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaReply.rawValue
-            activityObject["toUser"] = originalTradeIdea.user.userObject
-            activityObject["originalTradeIdea"] = originalTradeIdea.parseObject
-            tradeIdeaObject["reply_to"] = originalTradeIdea.parseObject
+            activityObject["toUser"] = originalTradeIdea.user
+            activityObject["originalTradeIdea"] = originalTradeIdea
+            tradeIdeaObject["reply_to"] = originalTradeIdea
         } else if tradeIdeaType == .reshare, let originalTradeIdea = self.originalTradeIdea {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaReshare.rawValue
-            activityObject["toUser"] = originalTradeIdea.user.userObject
-            activityObject["originalTradeIdea"] = originalTradeIdea.parseObject
-            tradeIdeaObject["reshare_of"] = originalTradeIdea.parseObject
+            activityObject["toUser"] = originalTradeIdea.user
+            activityObject["originalTradeIdea"] = originalTradeIdea
+            tradeIdeaObject["reshare_of"] = originalTradeIdea
         } else {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaNew.rawValue
         }
         
         activityObject.saveEventually()
         
-        // query all the Stocks mentioned & add them to tradIdeaObject
+        // query all the Stocks mentioned & add them to tradeIdeaObject
         QueryHelper.sharedInstance.queryStockObjectsFor(symbols: cashtags, completion: { (result) in
             
             do {
@@ -96,7 +96,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 tradeIdeaObject["stocks"] = stockObjects
                 
                 for stockObject in stockObjects {
-                    let activityObject = PFObject(className: "Activity")
+                    let activityObject = Activity()
                     activityObject["fromUser"] = currentUser
                     activityObject["tradeIdea"] = tradeIdeaObject
                     activityObject["stock"] = stockObject
@@ -125,7 +125,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                         continue
                     }
                     
-                    let activityObject = PFObject(className: "Activity")
+                    let activityObject = Activity()
                     activityObject["fromUser"] = currentUser
                     activityObject["tradeIdea"] = tradeIdeaObject
                     activityObject["toUser"] = userObject
@@ -146,7 +146,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         // record all hashtag
         for hashtag in hashtags {
             
-            let activityObject = PFObject(className: "Activity")
+            let activityObject = Activity()
             activityObject["fromUser"] = currentUser
             activityObject["tradeIdea"] = tradeIdeaObject
             activityObject["hashtag"] = hashtag
@@ -155,7 +155,6 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         }
         
         tradeIdeaObject["hashtags"] = hashtags
-        
         tradeIdeaObject.saveEventually({ (success, error) in
             
             if success {
@@ -163,14 +162,13 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 // log trade idea
                 Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText, "User": PFUser.current()?.username ?? "N/A", "Description": self.ideaTextView.text, "Activity Type": activityObject["activityType"],"App Version": Constants.AppVersion])
                 
-                let newTradeIdea = TradeIdea(parseObject: tradeIdeaObject)
-                self.delegate?.ideaPosted(with: newTradeIdea, tradeIdeaTyp: self.tradeIdeaType)
+                self.delegate?.ideaPosted(with: activityObject, tradeIdeaTyp: self.tradeIdeaType)
                 
                 if self.tradeIdeaType == .new {
                     #if DEBUG
                         print("send push didn't happen in debug")
                     #else
-                        Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId": currentUser.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n" + newTradeIdea.ideaDescription])
+                        Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId": currentUser.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": "@\(currentUser.username!) posted:\n" + tradeIdeaObject.ideaDescription])
                     #endif
                 }
                 
@@ -214,7 +212,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         if tradeIdeaType == .new, let stockObject = self.stockObject {
             self.prefillText = "$" + (stockObject.object(forKey: "Symbol") as! String)
         } else if tradeIdeaType == .reply, let originalTradeIdea = self.originalTradeIdea {
-            self.prefillText = originalTradeIdea.user.username
+            self.prefillText = originalTradeIdea.user.username ?? ""
         } else if tradeIdeaType == .reshare && self.originalTradeIdea != nil {
             
         }

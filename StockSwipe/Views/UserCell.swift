@@ -27,17 +27,14 @@ class UserCell: UITableViewCell {
 
     func configureCell(with user: User) {
         
-        user.fetchUserInBackground { (user) in
-            self.user = user
-            
-            self.user.getAvatar({ (image) in
-                DispatchQueue.main.async {
-                    self.fullname.text = self.user.fullname
-                    self.username.text = self.user.username
-                    self.userAvatar.image = image
-                }
-            })
-        }
+        self.user = user
+        self.user.getAvatar({ (image) in
+            DispatchQueue.main.async {
+                self.fullname.text = self.user.full_name
+                self.username.text = self.user.username
+                self.userAvatar.image = image
+            }
+        })
         
         self.checkBlock(self.blockButton)
     }
@@ -82,6 +79,6 @@ class UserCell: UITableViewCell {
             return
         }
     
-        Functions.blockUser(self.user.userObject, postAlert: true)
+        Functions.blockUser(self.user, postAlert: true)
     }
 }

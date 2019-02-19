@@ -104,9 +104,7 @@ class SearchTableViewController: UITableViewController {
         if let objectAtIndex = objectAtIndex, objectAtIndex.isKind(of: PFUser.self) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
-            let user = User(userObject: objectAtIndex as! PFUser)
-            
-            cell.configureCell(with: user)
+            cell.configureCell(with: objectAtIndex as! User)
             
             return cell
             
@@ -145,7 +143,7 @@ class SearchTableViewController: UITableViewController {
         self.updateUserRecentSearch(objectAtIndex)
         
         if objectAtIndex.isKind(of: PFUser.self) {
-            presentProfile(objectAtIndex as! PFUser)
+            presentProfile(objectAtIndex as! User)
         } else {
             presentChartDetail(objectAtIndex)
         }
@@ -243,11 +241,10 @@ class SearchTableViewController: UITableViewController {
         }
     }
     
-    func presentProfile(_ user: PFUser) {
+    func presentProfile(_ user: User) {
         
         self.dismiss(animated: true) {
             let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
-            let user = User(userObject: user)
             profileContainerController.user = user
             
             UIApplication.topViewController()?.show(profileContainerController, sender: self)

@@ -26,24 +26,24 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
         }
     }
     
-    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-        // location of the tap
-        var location = point
-        location.x -= self.textContainerInset.left
-        location.y -= self.textContainerInset.top
-        
-        // find the character that's been tapped
-        let characterIndex = self.layoutManager.characterIndex(for: location, in: self.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
-        if characterIndex < self.textStorage.length - 1 {
-            // if the character is a link, handle the tap as UITextView normally would
-            if (self.textStorage.attribute(NSAttributedString.Key.link, at: characterIndex, effectiveRange: nil) != nil) {
-                return self
-            }
-        }
-        
-        // otherwise return nil so the tap goes on to the next receiver
-        return nil
-    }
+//    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+//        // location of the tap
+//        var location = point
+//        location.x -= self.textContainerInset.left
+//        location.y -= self.textContainerInset.top
+//        
+//        // find the character that's been tapped
+//        let characterIndex = self.layoutManager.characterIndex(for: location, in: self.textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+//        if characterIndex < self.textStorage.length - 1 {
+//            // if the character is a link, handle the tap as UITextView normally would
+//            if (self.textStorage.attribute(NSAttributedString.Key.link, at: characterIndex, effectiveRange: nil) != nil) {
+//                return self
+//            }
+//        }
+//        
+//        // otherwise return nil so the tap goes on to the next receiver
+//        return nil
+//    }
     
     // TextView Delegates
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange) -> Bool {
@@ -82,14 +82,12 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
             QueryHelper.sharedInstance.queryUserObjectsFor(usernames: [resourceSpecifier], completion: { (result) in
                 
                 do {
-                    let userObject = try result().first
-                    if let userObject = userObject {
-                        let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
-                        
-                        DispatchQueue.main.async {
-                            profileContainerController.user = User(userObject: userObject)
-                            UIApplication.topViewController()?.show(profileContainerController, sender: self)
-                        }
+                    guard let userObject = try result().first as? User else { return }
+                    let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
+                    
+                    DispatchQueue.main.async {
+                        profileContainerController.user = userObject
+                        UIApplication.topViewController()?.show(profileContainerController, sender: self)
                     }
                     
                 } catch {

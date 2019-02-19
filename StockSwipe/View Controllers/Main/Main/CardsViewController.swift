@@ -25,7 +25,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     
     var isGettingObjects: Bool = false
     
-    var parseObjects = [PFObject]()
+    var stockObjects = [Stock]()
     var includedExchanges = [AnyObject]()
     var includedSectors = [AnyObject]()
     
@@ -241,8 +241,8 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                 
                 do {
                     
-                    guard let results = try result() else { return }
-                    self.parseObjects += results
+                    guard let results = try result() as? [Stock] else { return }
+                    self.stockObjects += results
                     
                     self.makeChart(results, completion: { (result) -> Void in
                         
@@ -311,7 +311,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     
     // Mark - Get Charts
     
-    func makeChart(_ objects: [PFObject], completion: @escaping (_ result: () throws -> Void) -> Void) -> Void {
+    func makeChart(_ objects: [Stock], completion: @escaping (_ result: () throws -> Void) -> Void) -> Void {
         
         guard objects.count != 0  else {
            return completion({throw QueryHelper.QueryError.ranOutOfChartCards})
@@ -519,7 +519,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         // Create NSUserActivity
         Functions.createNSUserActivity(chartChosen, domainIdentifier: "com.stockswipe.stocksSwiped")
 
-        self.parseObjects.removeObject(chartChosen.parseObject!)
+        self.stockObjects.removeObject(chartChosen.parseObject!)
         self.cards.removeObject(chartChosen)
             
         // Swap and resize cards after each choice made
@@ -731,7 +731,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         
         // Empty Data sources
         self.cards.removeAll()
-        self.parseObjects.removeAll()
+        self.stockObjects.removeAll()
     }
     
     func activityIndicator(state: Bool) {

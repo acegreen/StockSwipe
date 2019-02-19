@@ -11,30 +11,28 @@ import Parse
 
 class NotificationCell: UITableViewCell {
     
-    var activity: PFObject!
+    var activity: Activity!
     
     @IBOutlet var userAvatar: UIImageView!
     @IBOutlet var fullname: UILabel!
     @IBOutlet var notificationDesc: SuperUITextView!
     @IBOutlet var notificationTime: UILabel!
     
-    func configureCell(_ activity: PFObject?) {
+    func configureCell(_ activity: Activity?) {
         
         guard let activity = activity else { return }
         self.activity = activity
         
-        self.notificationDesc.text = stringForActivityType(activity.object(forKey: "activityType") as! String)
+        self.notificationDesc.text = stringForActivityType(activity.activityType)
         self.notificationTime.text = (activity.createdAt as NSDate?)?.formattedAsTimeAgoShort()
         
-        guard let pfUser = activity.object(forKey: "fromUser") as? PFUser else { return }
-        let user = User(userObject: pfUser)
-
-        user.fetchUserInBackground { (user) in
-            user?.getAvatar { (avatar) in
-                DispatchQueue.main.async {
-                    self.fullname.text = user?.fullname
-                    self.userAvatar.image = avatar
-                }
+        guard let user = activity.fromUser as? User else { return }
+        self.fullname.text = user.full_name
+        
+        user.getAvatar { (avatar) in
+            DispatchQueue.main.async {
+                self.fullname.text = user.full_name
+                self.userAvatar.image = avatar
             }
         }
     }
@@ -62,7 +60,7 @@ class NotificationCell: UITableViewCell {
         let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
         
         if (tapGestureRecognizer.view == userAvatar || tapGestureRecognizer.view == fullname) {
-            profileContainerController.user = User(userObject: self.activity.object(forKey: "fromUser") as! PFUser)
+            profileContainerController.user = activity.fromUser
         }
         
         UIApplication.topViewController()?.show(profileContainerController, sender: self)

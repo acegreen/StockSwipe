@@ -57,6 +57,8 @@
 		238A112A1C834A00002C1A73 /* ConcurrentOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238A11291C834A00002C1A73 /* ConcurrentOperation.swift */; };
 		238C1AFA1C8C65D6009F9CC1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238C1AF61C8C65D6009F9CC1 /* AppDelegate.swift */; };
 		238C1AFB1C8C65D6009F9CC1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 238C1AF81C8C65D6009F9CC1 /* Images.xcassets */; };
+		238D674E221C4F380085B8F8 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D674D221C4F380085B8F8 /* Activity.swift */; };
+		238D6750221C53FB0085B8F8 /* Stock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238D674F221C53FB0085B8F8 /* Stock.swift */; };
 		238DABC31BA664ED0079DAFC /* UIView+TLMotionEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 238DABC21BA664ED0079DAFC /* UIView+TLMotionEffect.m */; };
 		238DB6DB1D85A01F00082918 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6BE1D85A01F00082918 /* FeedbackViewController.swift */; };
 		238DB6DC1D85A01F00082918 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C01D85A01F00082918 /* LoginViewController.swift */; };
@@ -252,6 +254,8 @@
 		238C1AF71C8C65D6009F9CC1 /* BridgingHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BridgingHeader.h; sourceTree = "<group>"; };
 		238C1AF81C8C65D6009F9CC1 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		238C1AF91C8C65D6009F9CC1 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		238D674D221C4F380085B8F8 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
+		238D674F221C53FB0085B8F8 /* Stock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stock.swift; sourceTree = "<group>"; };
 		238DABC11BA664ED0079DAFC /* UIView+TLMotionEffect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+TLMotionEffect.h"; sourceTree = "<group>"; };
 		238DABC21BA664ED0079DAFC /* UIView+TLMotionEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+TLMotionEffect.m"; sourceTree = "<group>"; };
 		238DB6BE1D85A01F00082918 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
@@ -818,7 +822,9 @@
 			isa = PBXGroup;
 			children = (
 				23C9255F1B1A7D9400D17B70 /* Card.swift */,
+				238D674D221C4F380085B8F8 /* Activity.swift */,
 				236280C11CB3FABF0022A129 /* TradeIdea.swift */,
+				238D674F221C53FB0085B8F8 /* Stock.swift */,
 				231E89BF1D28055C00CD009A /* User.swift */,
 				2347E61B1BD7FFD80036EA65 /* Ticker.swift */,
 				23142DC51D4FAF3A00F11531 /* News.swift */,
@@ -1160,6 +1166,7 @@
 				235805A8221096B5005C89DD /* AGGradientView.swift in Sources */,
 				232ECBD82212611400C30E46 /* StatusBarAnimatable.swift in Sources */,
 				23C221C11DC8E8C5003898E9 /* UserCell.swift in Sources */,
+				238D6750221C53FB0085B8F8 /* Stock.swift in Sources */,
 				232ECBE02212648B00C30E46 /* PresentCardAnimator.swift in Sources */,
 				23C221AB1DC8E8C5003898E9 /* WatchlistCardCollectionViewCell.swift in Sources */,
 				238DABC31BA664ED0079DAFC /* UIView+TLMotionEffect.m in Sources */,
@@ -1172,6 +1179,7 @@
 				239083EF22148E4300C3A809 /* TradeIdeaTableViewController.swift in Sources */,
 				23C925601B1A7D9400D17B70 /* Card.swift in Sources */,
 				238DB6EA1D85A01F00082918 /* NotificationCenterTableViewController.swift in Sources */,
+				238D674E221C4F380085B8F8 /* Activity.swift in Sources */,
 				236280C21CB3FABF0022A129 /* TradeIdea.swift in Sources */,
 				23C221B81DC8E8C5003898E9 /* NotificationCell.swift in Sources */,
 				232ECBD422125F8100C30E46 /* CardDetailViewController.swift in Sources */,

@@ -145,7 +145,7 @@ class Functions {
                 
                 let result = try result()
                 
-                let card = Card(parseObject: result.parseObject, eodHistoricalData: result.eodHistoricalResult, eodFundamentalsData: result.eodFundamentalsResult, userChoice: userChoice)
+                let card = Card(parseObject: result.parseObject as! Stock, eodHistoricalData: result.eodHistoricalResult, eodFundamentalsData: result.eodFundamentalsResult, userChoice: userChoice)
                 
                 completion({ card })
                 

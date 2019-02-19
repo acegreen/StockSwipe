@@ -32,7 +32,7 @@ protocol ChartCollectionCellDelegate {
 
 class WatchlistCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    private var activityObjects = [PFObject]()
+    private var activityObjects = [Activity]()
     private var cards = [Card?]()
     
     private var cellWidth: CGFloat!
@@ -202,7 +202,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             
             do {
                 
-                guard let firstActivity = try result().first else { return }
+                guard let firstActivity = try result().first as? Activity else { return }
                 self.activityObjects.insert(firstActivity, at: 0)
                 self.cards.insert(card, at: 0)
                 
@@ -289,9 +289,10 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             
             do {
                 
+                guard let activityObjects = try result() as? [Activity] else { return }
                 self.activityObjects.removeAll()
                 self.cards.removeAll()
-                self.activityObjects += try result()
+                self.activityObjects += activityObjects
                 self.cards = Array(repeating: nil, count: self.activityObjects.count)
                 
                 DispatchQueue.main.async {
@@ -317,22 +318,6 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         PFObject.deleteAll(inBackground: activityObjectsToDelete, block: { (success, error) in
             
             if success {
-                
-                for selectedCard in selectedCards {
-                    
-                    guard let userChoice = selectedCard.userChoice else { return }
-                    
-                    switch userChoice {
-                    case .LONG:
-                        selectedCard.parseObject.incrementKey("longCount", byAmount: -1)
-                    case .SHORT:
-                        selectedCard.parseObject.incrementKey("shortCount", byAmount: -1)
-                    default:
-                        break
-                    }
-                    
-                    selectedCard.parseObject.saveEventually()
-                }
                 
                 // Remove from datasource and collectionView
                 self.CollectionView.performBatchUpdates({ () -> Void in
@@ -397,7 +382,7 @@ extension WatchlistCollectionViewController: UICollectionViewDataSourcePrefetchi
     
     func fetch(forItemAtIndex index: Int) {
         let activityObject = self.activityObjects[index]
-        if let stockObject = activityObject["stock"] as? PFObject, let activityType = activityObject["activityType"] as? String {
+        if let stockObject = activityObject.stock, let activityType = activityObject.activityType as? String {
             Functions.fetchEODData(for: stockObject["Symbol"] as! String, completion: { result in
                 
                 do {

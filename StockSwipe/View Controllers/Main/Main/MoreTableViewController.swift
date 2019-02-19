@@ -48,21 +48,23 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
     
     func updateProfile(completion: @escaping () -> Void) {
         
-        guard let currentUser = PFUser.current(), currentUser.isAuthenticated else {
+        guard let currentUser = User.current(), currentUser.isAuthenticated else {
             self.profileAvatarImage.image = UIImage(assetIdentifier: .UserDummyImage)
             self.profileLabel.text = "My Profile"
             return
         }
-
-        self.currentUser = User(userObject: currentUser)
-        self.currentUser?.fetchUserInBackground({ user in
-            self.currentUser?.getAvatar { (avatar) in
+        
+        self.currentUser = currentUser
+        currentUser.fetchInBackground { (user, error) in
+            guard let user = user as? User else { return }
+            self.currentUser = user
+            currentUser.getAvatar { (avatar) in
                 DispatchQueue.main.async {
-                    self.profileLabel.text = user?.fullname
-                    self.profileAvatarImage.image = user?.avtar
+                    self.profileLabel.text = user.full_name
+                    self.profileAvatarImage.image = user.avtar
                 }
             }
-        })
+        }
     }
     
     // MARK: - Table view data source

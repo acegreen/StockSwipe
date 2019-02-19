@@ -23,7 +23,7 @@ public class Card: NSObject {
     
     var userChoice: Constants.UserChoices?
     
-    var parseObject: PFObject!
+    var parseObject: Stock!
     
 //    var searchDescription: String {
 //        if self.shortCount > 0 || self.shortCount > 0 {
@@ -33,11 +33,11 @@ public class Card: NSObject {
 //        }
 //    }
     
-    convenience init(parseObject: PFObject) {
+    convenience init(parseObject: Stock) {
         self.init(parseObject: parseObject, eodHistoricalData: nil, eodFundamentalsData: nil)
     }
     
-    init(parseObject: PFObject, eodHistoricalData: [QueryHelper.EODHistoricalResult]?, eodFundamentalsData: QueryHelper.EODFundamentalsResult?, userChoice: Constants.UserChoices? = nil) {
+    init(parseObject: Stock, eodHistoricalData: [QueryHelper.EODHistoricalResult]?, eodFundamentalsData: QueryHelper.EODFundamentalsResult?, userChoice: Constants.UserChoices? = nil) {
         
         super.init()
     
@@ -55,45 +55,45 @@ public class Card: NSObject {
         Functions.addToSpotlight(self, domainIdentifier: "com.stockswipe.stocksQueried")
     }
     
-    func checkNumberOfShorts(completion: ((Int) -> Void)?) {
-        
-        guard let parseObject = self.parseObject else { return }
-        
-        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockShort.rawValue], completion: { (result) in
-            
-            do {
-                
-                self.shortCount = try result()
-                
-            } catch {
-                //TODO: handle error
-            }
-            
-            if let completion = completion {
-                completion(self.shortCount)
-            }
-        })
-    }
-    
-    func checkNumberOfLongs(completion: ((Int) -> Void)?) {
-        
-        guard let parseObject = self.parseObject else { return }
-        
-        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue], completion: { (result) in
-            
-            do {
-                
-                self.longCount = try result()
-                
-            } catch {
-                //TODO: handle error
-            }
-            
-            if let completion = completion {
-                completion(self.longCount)
-            }
-        })
-    }
+//    func checkNumberOfShorts(completion: ((Int) -> Void)?) {
+//
+//        guard let parseObject = self.parseObject else { return }
+//
+//        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockShort.rawValue], completion: { (result) in
+//
+//            do {
+//
+//                self.shortCount = try result()
+//
+//            } catch {
+//                //TODO: handle error
+//            }
+//
+//            if let completion = completion {
+//                completion(self.shortCount)
+//            }
+//        })
+//    }
+//
+//    func checkNumberOfLongs(completion: ((Int) -> Void)?) {
+//
+//        guard let parseObject = self.parseObject else { return }
+//
+//        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue], completion: { (result) in
+//
+//            do {
+//
+//                self.longCount = try result()
+//
+//            } catch {
+//                //TODO: handle error
+//            }
+//
+//            if let completion = completion {
+//                completion(self.longCount)
+//            }
+//        })
+//    }
 }
 
 //extension Card: Equatable {}
@@ -104,7 +104,7 @@ public class Card: NSObject {
 //        lhs.image == rhs.image &&
 //        lhs.shorts == rhs.shorts &&
 //        lhs.longs == rhs.longs &&
-//        lhs.parseObject == rhs.parseObject
+//        lhs == rhs
 //    
 //    return areEqual
 //}

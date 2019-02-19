@@ -33,11 +33,13 @@ import Charts
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         fromNib()
+        setChartGeneralAppearance()
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         fromNib()
+        setChartGeneralAppearance()
     }
     
     func configure(with card: Card) {
@@ -134,17 +136,6 @@ import Charts
         //            let marker: BalloonMarker = BalloonMarker(color: UIColor.white, font: UIFont.systemFont(ofSize: 12.0), insets: UIEdgeInsetsMake(8.0, 8.0, 20.0, 8.0))
         //            marker.minimumSize = CGSize(width: 40.0, height: 40.0)
         
-        chartView.noDataTextColor = UIColor.white
-        chartView.xAxis.enabled = false
-        chartView.xAxis.drawGridLinesEnabled = false
-        chartView.leftAxis.enabled = false
-        chartView.leftAxis.drawGridLinesEnabled = false
-        chartView.rightAxis.enabled = false
-        chartView.rightAxis.drawGridLinesEnabled = false
-        chartView.drawBordersEnabled = false
-        chartView.drawGridBackgroundEnabled = false
-        chartView.isUserInteractionEnabled = false
-        chartView.legend.enabled = false
         //            chartView.marker = marker
         
         chartView.data = chartDataSet
@@ -162,5 +153,21 @@ import Charts
         self.highlightOneSubtitleLabel.text = "--"
         self.highlightTwoSubtitleLabel.text = "--"
         self.highlightThreeSubtitleLabel.text = "--"
+    }
+    
+    private func setChartGeneralAppearance() {
+        chartView.noDataText = "No card data available"
+        chartView.noDataFont = Constants.SSFonts.medium
+        chartView.noDataTextColor = UIColor.white
+        chartView.xAxis.enabled = false
+        chartView.xAxis.drawGridLinesEnabled = false
+        chartView.leftAxis.enabled = false
+        chartView.leftAxis.drawGridLinesEnabled = false
+        chartView.rightAxis.enabled = false
+        chartView.rightAxis.drawGridLinesEnabled = false
+        chartView.drawBordersEnabled = false
+        chartView.drawGridBackgroundEnabled = false
+        chartView.isUserInteractionEnabled = false
+        chartView.legend.enabled = false
     }
 }

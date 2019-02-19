@@ -84,7 +84,7 @@ class ProfileDetailTableViewController: UITableViewController {
 
         // A little trick to get rid of uitableview lines
         tableView.tableFooterView = UIView()
-        userBioTextView.textContainerInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        userBioTextView.textContainerInset = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
         
         // Fill in profile info
         getProfileDetails()

@@ -84,8 +84,9 @@ class Constants {
     }
     
     struct SSFonts {
-        static let small = UIFont(name: "HelveticaNeue", size: 11)!
         static let standard = UIFont(name: "HelveticaNeue", size: 15)!
+        static let small = UIFont(name: "HelveticaNeue", size: 12)!
+        static let medium = UIFont(name: "HelveticaNeue", size: 20)!
         static let large = UIFont(name: "HelveticaNeue", size: 25)!
         static let xl = UIFont(name: "HelveticaNeue", size: 45)!
         

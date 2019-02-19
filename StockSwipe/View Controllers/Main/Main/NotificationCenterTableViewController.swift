@@ -122,8 +122,6 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
                     case .new:
                         
                         self.notifications = activityObjects
-                        
-                        // reload table
                         self.tableView.reloadData()
                         
                     case .older:

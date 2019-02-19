@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Parse
+import Crashlytics
 
 class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewDelegate, SegueHandlerType {
     
@@ -54,7 +56,18 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         Functions.presentActivityVC(textToShare, imageToShare: cardImage, url: Constants.appLinkURL!, sender: self.shareButton, vc: self, completion: { (activity, success, items, error) -> Void in
             
             if success {
+                
                 SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
+                
+                // log shared successfully
+                Answers.logShare(withMethod: "\(activity!)",
+                    contentName: symbol + " Card Shared",
+                    contentType: "Share",
+                    contentId: nil,
+                    customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                
+            } else if error != nil {
+                SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
             }
         })
     }

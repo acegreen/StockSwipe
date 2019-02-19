@@ -26,12 +26,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <view key="tableHeaderView" opaque="NO" contentMode="scaleToFill" id="aRf-7p-R4R">
+                        <view key="tableHeaderView" opaque="NO" contentMode="scaleToFill" misplaced="YES" id="aRf-7p-R4R">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="225"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_profile_male" translatesAutoresizingMaskIntoConstraints="NO" id="yR8-KQ-gl1">
-                                    <rect key="frame" x="25" y="27.5" width="80" height="80"/>
+                                    <rect key="frame" x="25" y="1" width="80" height="80"/>
                                     <color key="tintColor" red="0.43529412150382996" green="0.44313725829124451" blue="0.47450980544090271" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="yR8-KQ-gl1" secondAttribute="height" multiplier="1:1" id="bDB-WM-GX0"/>
@@ -50,13 +50,13 @@
                                     </userDefinedRuntimeAttributes>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@JohnDoe" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kre-p4-MTd">
-                                    <rect key="frame" x="30" y="141" width="80" height="20.5"/>
+                                    <rect key="frame" x="30" y="114.5" width="80" height="20.5"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                     <color key="textColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="8C8-5j-Pg8">
-                                    <rect key="frame" x="372" y="50" width="22" height="35"/>
+                                    <rect key="frame" x="372" y="23.5" width="22" height="35"/>
                                     <userGuides>
                                         <userLayoutGuide location="19" affinity="minY"/>
                                     </userGuides>
@@ -116,7 +116,7 @@
                                     </subviews>
                                 </stackView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="John Doe" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yau-Wk-age">
-                                    <rect key="frame" x="30" y="117" width="91.5" height="24"/>
+                                    <rect key="frame" x="30" y="90.5" width="91.5" height="24"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
                                     <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
@@ -537,7 +537,7 @@
                                                         </label>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add your name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2bk-G7-u9Z">
                                                             <rect key="frame" x="80" y="0.0" width="294" height="29.5"/>
-                                                            <color key="textColor" red="0.098039217289999994" green="0.78431373829999995" blue="0.098039217289999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="textColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                             <textInputTraits key="textInputTraits" textContentType="name"/>
                                                         </textField>
@@ -612,7 +612,7 @@
                                                         </label>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add your location" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="j7U-l7-J8Q">
                                                             <rect key="frame" x="80" y="0.0" width="294" height="39.5"/>
-                                                            <color key="textColor" red="0.098039217293262482" green="0.78431373834609985" blue="0.098039217293262482" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="textColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                             <textInputTraits key="textInputTraits" textContentType="location"/>
                                                         </textField>
@@ -648,7 +648,7 @@
                                                         </label>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add your website" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yPH-gb-T2D">
                                                             <rect key="frame" x="80" y="0.0" width="294" height="39.5"/>
-                                                            <color key="textColor" red="0.098039217289999994" green="0.78431373829999995" blue="0.098039217289999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                            <color key="textColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                             <textInputTraits key="textInputTraits" textContentType="url"/>
                                                         </textField>

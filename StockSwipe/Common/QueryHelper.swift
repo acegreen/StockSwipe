@@ -359,7 +359,7 @@ class QueryHelper {
             let task = session.dataTask(with: queryUrl, completionHandler: { (queryData, response, error) -> Void in
                 
                 guard error == nil else { return completionHandler({ throw QueryError.errorQueryingForData(error: error!) }) }
-                guard queryData != nil, let queryData = queryData else {
+                guard let queryData = queryData else {
                     return completionHandler({throw QueryError.queryDataEmpty})
                 }
                 
@@ -377,7 +377,7 @@ class QueryHelper {
             let task = trendingStocksSession.dataTask(with: trendingStocksUrl, completionHandler: { (trendingStocksData, response, error) -> Void in
                 
                 guard error == nil else { return completionHandler({ throw QueryError.errorQueryingForData(error: error!) }) }
-                guard trendingStocksData != nil, let trendingStocksData = trendingStocksData else {
+                guard let trendingStocksData = trendingStocksData else {
                     return completionHandler({ throw QueryError.queryDataEmpty })
                 }
                 

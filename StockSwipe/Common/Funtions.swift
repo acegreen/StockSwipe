@@ -245,7 +245,7 @@ class Functions {
                     }
                 }
                 
-                QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -257,7 +257,7 @@ class Functions {
                     }
                 })
                 
-                QueryHelper.sharedInstance.queryActivityFor(fromUser: user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+                QueryHelper.sharedInstance.queryActivityFor(fromUser: user, toUser: currentUser, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
                     
                     do {
                         
@@ -285,7 +285,7 @@ class Functions {
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.StockLong.rawValue, Constants.ActivityType.StockShort.rawValue], skip: nil, limit: 1, includeKeys: nil) { (result) in
             
             do {
                 
@@ -307,7 +307,7 @@ class Functions {
                             
                             firstActivityObject["activityType"] = Constants.ActivityType.StockLong.rawValue
                             
-                            if card.shortCount > 1 {
+                            if card.shortCount > 0 {
                                 card.shortCount -= 1
                             }
                             card.longCount += 1
@@ -316,7 +316,7 @@ class Functions {
                             
                             firstActivityObject["activityType"] = Constants.ActivityType.StockShort.rawValue
                             
-                            if card.longCount > 1 {
+                            if card.longCount > 0 {
                                 card.longCount -= 1
                             }
                             card.shortCount += 1
@@ -374,7 +374,7 @@ class Functions {
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.AddToWatchlistLong.rawValue, Constants.ActivityType.AddToWatchlistShort.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: [parseObject], activityType: [Constants.ActivityType.AddToWatchlistLong.rawValue, Constants.ActivityType.AddToWatchlistShort.rawValue], skip: nil, limit: 1, includeKeys: nil) { (result) in
             
             do {
                 

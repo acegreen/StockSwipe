@@ -169,29 +169,29 @@ class SearchTableViewController: UITableViewController {
         
         guard let currentUser = PFUser.current() else { return }
         self.recentSearches.removeAll()
-        if let currentUserRecentSearches = currentUser["recentSearches"] as? [PFObject] {
-            let recentSearchFilteredBySymbols = currentUserRecentSearches.filter { !$0.isKind(of: PFUser.self) }
-            let recentSearchFilteredByUsers = currentUserRecentSearches.filter { $0.isKind(of: PFUser.self) }
+        guard let currentUserRecentSearches = currentUser["recentSearches"] as? [PFObject] else { return }
+        let recentSearchFilteredBySymbols = currentUserRecentSearches.filter { !$0.isKind(of: PFUser.self) }
+        let recentSearchFilteredByUsers = currentUserRecentSearches.filter { $0.isKind(of: PFUser.self) }
+        
+        // This is a hack since there is a bug (might have been fixed in newer parse server) where you can't fetch two things of PFObject
+        // eg PFUser & PFObject
+        PFObject.fetchAllIfNeeded(inBackground: recentSearchFilteredBySymbols) { (currentUserRecentSearches, error) in
+            
+            if let currentUserRecentSearches = currentUserRecentSearches as? [PFObject] {
+                self.recentSearches += currentUserRecentSearches
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+            }
             
             // This is a hack since there is a bug (might have been fixed in newer parse server) where you can't fetch two things of PFObject
             // eg PFUser & PFObject
-            PFObject.fetchAllIfNeeded(inBackground: recentSearchFilteredBySymbols) { (currentUserRecentSearches, error) in
+            PFObject.fetchAllIfNeeded(inBackground: recentSearchFilteredByUsers) { (currentUserRecentSearches, error) in
                 
                 if let currentUserRecentSearches = currentUserRecentSearches as? [PFObject] {
                     self.recentSearches += currentUserRecentSearches
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
-                    }
-                }
-                
-                
-                PFObject.fetchAllIfNeeded(inBackground: recentSearchFilteredByUsers) { (currentUserRecentSearches, error) in
-                    
-                    if let currentUserRecentSearches = currentUserRecentSearches as? [PFObject] {
-                        self.recentSearches += currentUserRecentSearches
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                        }
                     }
                 }
             }
@@ -224,7 +224,7 @@ class SearchTableViewController: UITableViewController {
             Functions.makeCard(for: stockObject.object(forKey: "Symbol") as! String) { card in
                 do {
                     let card = try card()
-                
+                    
                     let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
                     cardDetailViewController.forceDisableDragDownToDismiss = true
                     
@@ -246,7 +246,7 @@ class SearchTableViewController: UITableViewController {
     func presentProfile(_ user: PFUser) {
         
         self.dismiss(animated: true) {
-        let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
+            let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
             let user = User(userObject: user)
             profileContainerController.user = user
             

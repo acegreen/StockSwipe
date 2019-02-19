@@ -310,10 +310,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     func performDeletionOfObjects(_ selectedIndexes: [Int]) {
         
         //Delete Objects From Parse and DataSource(and collectionView)
-        
         guard Functions.isUserLoggedIn(presenting: self) else { return }
-        guard let currentUser = PFUser.current() else { return }
-        
         guard let selectedCards = selectedIndexes.map({ cards[$0] }) as? [Card] else { return }
         let activityObjectsToDelete = selectedIndexes.map { self.activityObjects[$0] }
         
@@ -399,8 +396,6 @@ extension WatchlistCollectionViewController: UICollectionViewDataSourcePrefetchi
     }
     
     func fetch(forItemAtIndex index: Int) {
-        
-        guard let currentUser = PFUser.current() else { return }
         let activityObject = self.activityObjects[index]
         if let stockObject = activityObject["stock"] as? PFObject, let activityType = activityObject["activityType"] as? String {
             Functions.fetchEODData(for: stockObject["Symbol"] as! String, completion: { result in

@@ -304,7 +304,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         if let tradeIdeaObject = tradeIdea.parseObject {
             
-            QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: tradeIdeaObject, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: tradeIdeaObject, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
                 
                 do {
                     
@@ -314,7 +314,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                         
                         activityObject?.deleteInBackground(block: { (success, error) in
                             
-                            if self.tradeIdea.likeCount > 1 {
+                            if self.tradeIdea.likeCount > 0 {
                                 self.tradeIdea.likeCount -= 1
                             }
                             self.tradeIdea.isLikedByCurrentUser = false
@@ -413,7 +413,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         if let tradeIdeaObject = tradeIdea.parseObject {
             
-            QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: self.tradeIdea.user.userObject, originalTradeIdea: self.tradeIdea.parseObject, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: self.tradeIdea.user.userObject, originalTradeIdea: self.tradeIdea.parseObject, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
                 
                 do {
                     
@@ -442,7 +442,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                                 }
                             }
                             
-                            if self.tradeIdea.reshareCount > 1 {
+                            if self.tradeIdea.reshareCount > 0 {
                                 self.tradeIdea.reshareCount -= 1
                             }
                             self.tradeIdea.isResharedByCurrentUser = false

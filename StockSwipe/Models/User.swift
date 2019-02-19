@@ -62,7 +62,6 @@ public class User: NSObject {
                 if let avatarData = data, let image = UIImage(data: avatarData) {
                     self.avtar = image
                 }
-                
                 completion(self.avtar)
             }
                 

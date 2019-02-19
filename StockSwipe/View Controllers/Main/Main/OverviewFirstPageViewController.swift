@@ -54,6 +54,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         super.viewDidLoad()
         
         self.latestNewsTableView.tableFooterView = UIView(frame: CGRect.zero)
+        topStoriesRefreshControl.tintColor = UIColor.white
         topStoriesRefreshControl.addTarget(self, action: #selector(OverviewFirstPageViewController.refreshTopStories(_:)), for: .valueChanged)
         self.latestNewsTableView.addSubview(topStoriesRefreshControl)
         
@@ -92,6 +93,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     }
     
     private func scheduleQueryTimer() {
+        self.queryTimer?.invalidate()
         self.queryTimer = Timer.scheduledTimer(withTimeInterval: QUERY_INTERVAL, repeats: true, block: { timer in
             self.loadViewData()
         })
@@ -105,6 +107,8 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
             loadCachedDataOperation.queuePriority = .veryHigh
             overviewVCOperationQueue.addOperation(loadCachedDataOperation)
         }
+        
+        guard Functions.isConnectedToNetwork() else { return }
         let trendingCloudOperation = BlockOperation { () -> Void in
             self.queryStockTwitsTrendingStocks()
         }
@@ -144,11 +148,12 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
             
             do {
                 let trendingStocksData = try trendingStocksData()
-                let trendingStocksJSON = try JSON(data: trendingStocksData)["symbols"]
+                guard let trendingStocksJSON = try? JSON(data: trendingStocksData)["symbols"] else { return }
                 
                 DataCache.instance.write(data: trendingStocksData, forKey: "TRENDINGSTOCKSCACHEDATA")
                 self.createCloudWords(trendingStocksJSON)
                 self.stockTwitsLastQueriedDate = Date()
+                self.isQueryingForTrendingStocks = false
                 
             } catch {
                 //TODO: handle error
@@ -177,7 +182,6 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         isQueryingForTopStories = true
         
         let queryString = "http://feeds.reuters.com/reuters/businessNews?format=xml"
-        
         QueryHelper.sharedInstance.queryWith(queryString: queryString) { (result) -> Void in
             
             do {

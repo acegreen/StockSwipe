@@ -57,7 +57,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         let tradeIdeaPostNavigationController = Constants.Storyboards.mainStoryboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
         let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
         
-        ideaPostViewController.originalTradeIdea = self.activity.tradeIdea
+        ideaPostViewController.activity = self.activity
         ideaPostViewController.tradeIdeaType = .reply
         ideaPostViewController.delegate =  self
         
@@ -72,7 +72,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             let tradeIdeaPostNavigationController = Constants.Storyboards.mainStoryboard.instantiateViewController(withIdentifier: "TradeIdeaPostNavigationController") as! UINavigationController
             let ideaPostViewController = tradeIdeaPostNavigationController.viewControllers.first as! IdeaPostViewController
             
-            ideaPostViewController.originalTradeIdea = self.activity.tradeIdea
+            ideaPostViewController.activity = self.activity
             ideaPostViewController.tradeIdeaType = .reshare
             ideaPostViewController.delegate =  self
             
@@ -152,19 +152,20 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         if let user = User.current(), self.activity.fromUser.objectId == user.objectId  {
             let deleteIdea = UIAlertAction(title: "Delete Idea", style: .default) { action in
                 
-                QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.activity.tradeIdea, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue, Constants.ActivityType.TradeIdeaLike.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.Mention.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
-                    
-                    do {
-                        
-                        let activityObjects = try result()
-                        PFObject.deleteAll(inBackground: activityObjects)
-                        
-                    } catch {
-                        //TODO: handle error
-                    }
-                })
+//                QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self.activity.tradeIdea, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue, Constants.ActivityType.TradeIdeaLike.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.Mention.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+//                    
+//                    do {
+//                        
+//                        let activityObjects = try result()
+//                        PFObject.deleteAll(inBackground: activityObjects)
+//                        
+//                    } catch {
+//                        //TODO: handle error
+//                    }
+//                })
                 
                 self.activity.deleteEventually()
+                self.activity.tradeIdea?.deleteEventually()
                 self.delegate?.ideaDeleted(with: self.activity)
             }
             threeDotsAlert.addAction(deleteIdea)
@@ -220,7 +221,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                 self.userAvatar.image = image
                 self.userName.text = user.full_name
                 if self.userTag != nil {
-                    self.userTag.text = user.username
+                    self.userTag.text = user.usertag
                 }
             }
         })
@@ -237,7 +238,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard nestedTradeIdeaView != nil else { return }
         
-        guard let nestedTradeIdea = nestedTradeIdea else {
+        guard let nestedTradeIdea = nestedTradeIdea, Constants.ActivityType(rawValue: activity.activityType) != .TradeIdeaReply else {
             self.nestedTradeIdeaView.isHidden = true
             return
         }
@@ -412,36 +413,34 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             do {
                 
-                let activityObject = try result().first
-                
-                if activityObject != nil {
-                    activityObject?.deleteInBackground(block: { (success, error) in
-                        QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "reshare_of", object: self.activity.tradeIdea, skip: 0, limit: 1) { (result) in
-                            
-                            do {
-                                
-                                let tradeIdeasObjects = try result().first
-                                
-                                tradeIdeasObjects?.deleteInBackground(block: { (success, error) in
-                                    
-                                    if success {
-                                        self.delegate?.ideaUpdated(with: self.activity)
-                                        return
-                                    }
-                                })
-                                
-                            } catch {
-                                //TODO: Show sweet alert with Error.message()
-                            }
-                        }
+                guard let activityObject = try result().first as? Activity else { return }
+
+                activityObject.deleteInBackground(block: { (success, error) in
+                    QueryHelper.sharedInstance.queryTradeIdeaObjectsFor(key: "tradeIdea", object: self.activity.originalTradeIdea, skip: nil, limit: 1) { (result) in
                         
-                        if let tradeIdea = self.activity.tradeIdea, tradeIdea.reshareCount > 0 {
-                            self.activity.tradeIdea?.reshareCount -= 1
+                        do {
+                            
+                            let tradeIdeasObjects = try result().first
+                            tradeIdeasObjects?.deleteInBackground(block: { (success, error) in
+                                
+                                if success {
+                                    self.delegate?.ideaDeleted(with: activityObject)
+                                    self.delegate?.ideaUpdated(with: self.activity)
+                                    return
+                                }
+                            })
+                            
+                        } catch {
+                            //TODO: Show sweet alert with Error.message()
                         }
-                        self.activity.tradeIdea?.isResharedByCurrentUser = false
-                        self.updateReshare(sender: sender)
-                    })
-                }
+                    }
+                    
+                    if let tradeIdea = self.activity.tradeIdea, tradeIdea.reshareCount > 0 {
+                        self.activity.tradeIdea?.reshareCount -= 1
+                    }
+                    self.activity.tradeIdea?.isResharedByCurrentUser = false
+                    self.updateReshare(sender: sender)
+                })
                 
             } catch {
                 //TODO: handle error
@@ -505,6 +504,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             registerReshare(on: self.reshareButton)
         }
         
+        self.delegate?.ideaPosted(with: activity, tradeIdeaTyp: tradeIdeaTyp)
+        
         guard let currentUser = User.current() , currentUser.objectId != self.activity.fromUser.objectId else { return }
         
         // Send push
@@ -532,8 +533,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": tradeIdea.user.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n" + tradeIdea.ideaDescription])
             #endif
         }
-        
-        self.delegate?.ideaPosted(with: activity, tradeIdeaTyp: tradeIdeaTyp)
     }
     
     func ideaDeleted(with activity: Activity) {

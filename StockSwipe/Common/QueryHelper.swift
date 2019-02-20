@@ -619,7 +619,6 @@ class QueryHelper {
             
             let subTradeIdeaQuery = PFUser.query()
             subTradeIdeaQuery?.whereKey("blocked_users", notEqualTo: currentUser)
-            
             tradeIdeaQuery.whereKey("user", matchesQuery: subTradeIdeaQuery!)
         }
         

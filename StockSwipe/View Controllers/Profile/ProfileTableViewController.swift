@@ -299,9 +299,9 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             }
             
             isQueryingForTradeIdeas = true
-            let activityTypes = [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue]
+            let activityTypes = [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue]
             
-            QueryHelper.sharedInstance.queryActivityFor(fromUser: self.user, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: activityTypes, skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], selectKeys: nil, order: queryOrder, creationDate: nil, cachePolicy: .networkElseCache) { result in
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: self.user, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: activityTypes, skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], selectKeys: nil, order: queryOrder, creationDate: mostRecentRefreshDate, cachePolicy: .networkElseCache) { result in
                 
                 do {
                     
@@ -969,7 +969,9 @@ extension ProfileTableViewController: IdeaPostDelegate {
     
     internal func ideaPosted(with activity: Activity, tradeIdeaTyp: Constants.TradeIdeaType) {
         
-        if selectedSegmentIndex == .zero && self.user?.objectId == PFUser.current()?.objectId {
+        guard tradeIdeaTyp != .reply else { return }
+        
+        if selectedSegmentIndex == .zero && self.user?.objectId == User.current()?.objectId {
 
             let indexPath = IndexPath(row: 0, section: 0)
             self.tradeIdeaActivities.insert(activity, at: 0)
@@ -983,7 +985,7 @@ extension ProfileTableViewController: IdeaPostDelegate {
         
         if selectedSegmentIndex == .zero, let activity = self.tradeIdeaActivities.find ({ $0.objectId == activity.objectId }), let index = self.tradeIdeaActivities.index(of: activity) {
             let indexPath = IndexPath(row: index, section: 0)
-            self.tradeIdeaActivities.remove(at: index)
+            self.tradeIdeaActivities.removeObject(activity)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
 

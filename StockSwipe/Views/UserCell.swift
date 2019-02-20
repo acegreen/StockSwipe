@@ -31,7 +31,7 @@ class UserCell: UITableViewCell {
         self.user.getAvatar({ (image) in
             DispatchQueue.main.async {
                 self.fullname.text = self.user.full_name
-                self.username.text = self.user.username
+                self.username.text = user.usertag
                 self.userAvatar.image = image
             }
         })

@@ -40,7 +40,7 @@ public class TradeIdea: PFObject, PFSubclassing {
                 self.likeCount = activityObjects.count
                 
                 if let currentUser = User.current() {
-                    self.isLikedByCurrentUser =  activityObjects.contains { $0.fromUser.objectId == currentUser.objectId }
+                    self.isLikedByCurrentUser = activityObjects.contains { $0.fromUser.objectId == currentUser.objectId }
                 }
                 
                 if let completion = completion {

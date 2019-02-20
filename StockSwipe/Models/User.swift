@@ -40,6 +40,10 @@ public class User: PFUser {
     private(set) var followersCount: Int = 0
     private(set) var likedIdeasCount: Int = 0
     
+    var usertag: String {
+        return (self.username != nil) ? "@" + self.username! : ""
+    }
+    
     func getAvatar(_ completion: @escaping (UIImage?) -> Void) {
         
 //        if let profileImage = self.profile_image {

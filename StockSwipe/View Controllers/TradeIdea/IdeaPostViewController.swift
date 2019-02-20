@@ -29,7 +29,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     }
     
     var stockObject: PFObject?
-    var originalTradeIdea: TradeIdea?
+    var activity: Activity?
     var tradeIdeaType: Constants.TradeIdeaType = .new
     
     var delegate: IdeaPostDelegate!
@@ -71,14 +71,14 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         activityObject["fromUser"] = currentUser
         activityObject["tradeIdea"] = tradeIdeaObject
         
-        if tradeIdeaType == .reply, let originalTradeIdea = self.originalTradeIdea {
+        if tradeIdeaType == .reply, let originalTradeIdea = self.activity?.tradeIdea {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaReply.rawValue
-            activityObject["toUser"] = originalTradeIdea.user
+            activityObject["toUser"] = self.activity?.fromUser
             activityObject["originalTradeIdea"] = originalTradeIdea
             tradeIdeaObject["reply_to"] = originalTradeIdea
-        } else if tradeIdeaType == .reshare, let originalTradeIdea = self.originalTradeIdea {
+        } else if tradeIdeaType == .reshare, let originalTradeIdea = self.activity?.tradeIdea {
             activityObject["activityType"] = Constants.ActivityType.TradeIdeaReshare.rawValue
-            activityObject["toUser"] = originalTradeIdea.user
+            activityObject["toUser"] = self.activity?.fromUser
             activityObject["originalTradeIdea"] = originalTradeIdea
             tradeIdeaObject["reshare_of"] = originalTradeIdea
         } else {
@@ -121,7 +121,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 for userObject in userObjects {
                     
                     // Avoid creating an activity when self is mentioned
-                    guard userObject.objectId != self.originalTradeIdea?.user.objectId else {
+                    guard userObject.objectId != self.activity?.fromUser.objectId else {
                         continue
                     }
                     
@@ -160,7 +160,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             if success {
                 
                 // log trade idea
-                Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText, "User": PFUser.current()?.username ?? "N/A", "Description": self.ideaTextView.text, "Activity Type": activityObject["activityType"],"App Version": Constants.AppVersion])
+                Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText, "User": User.current()?.username ?? "N/A", "Description": self.ideaTextView.text, "Activity Type": activityObject["activityType"],"App Version": Constants.AppVersion])
                 
                 self.delegate?.ideaPosted(with: activityObject, tradeIdeaTyp: self.tradeIdeaType)
                 
@@ -211,9 +211,9 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
         // prefill text
         if tradeIdeaType == .new, let stockObject = self.stockObject {
             self.prefillText = "$" + (stockObject.object(forKey: "Symbol") as! String)
-        } else if tradeIdeaType == .reply, let originalTradeIdea = self.originalTradeIdea {
-            self.prefillText = originalTradeIdea.user.username ?? ""
-        } else if tradeIdeaType == .reshare && self.originalTradeIdea != nil {
+        } else if tradeIdeaType == .reply, let originalTradeIdea = self.activity?.tradeIdea {
+            self.prefillText = self.activity?.fromUser.usertag ?? ""
+        } else if tradeIdeaType == .reshare && self.activity?.tradeIdea != nil {
             
         }
         

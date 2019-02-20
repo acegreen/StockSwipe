@@ -90,9 +90,9 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
         }
         
         let stockObjectArray: [PFObject]? = self.stockObject != nil ? [self.stockObject!] : nil
-        let activityType = self.stockObject != nil ? [Constants.ActivityType.Mention.rawValue] : [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue]
+        let activityTypes = self.stockObject != nil ? [Constants.ActivityType.Mention.rawValue] : [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue]
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: stockObjectArray, activityType: activityType, skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: stockObjectArray, activityType: activityTypes, skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -259,6 +259,8 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
     
     internal func ideaPosted(with activity: Activity, tradeIdeaTyp: Constants.TradeIdeaType) {
         
+        guard tradeIdeaTyp != .reply else { return }
+        
         let indexPath = IndexPath(row: 0, section: 0)
         self.activities.insert(activity, at: 0)
         self.tableView.insertRows(at: [indexPath], with: .automatic)
@@ -267,6 +269,7 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
     internal func ideaDeleted(with activity: Activity) {
         
         if let activity = self.activities.find ({ $0.objectId == activity.objectId }), let index = self.activities.index(of: activity) {
+            
             let indexPath = IndexPath(row: index, section: 0)
             self.activities.removeObject(activity)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)

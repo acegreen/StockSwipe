@@ -120,15 +120,14 @@ import Charts
         lineDataSet.drawValuesEnabled = false
         lineDataSet.axisDependency = .left
         lineDataSet.setColor(UIColor.white)
-        lineDataSet.setCircleColor(UIColor.white)
         lineDataSet.lineWidth = 3.0
-        
-        lineDataSet.drawCirclesEnabled = false
         lineDataSet.circleRadius = 6.0
         lineDataSet.fillAlpha = 65 / 255.0
         lineDataSet.fillColor = UIColor.clear
         lineDataSet.highlightColor = UIColor.white
         lineDataSet.drawCircleHoleEnabled = true
+        lineDataSet.setCircleColor(UIColor.white)
+        lineDataSet.drawCirclesEnabled = false
         
         let chartDataSet = LineChartData()
         chartDataSet.addDataSet(lineDataSet)

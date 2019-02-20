@@ -617,9 +617,9 @@
 		238F077F220B5EF4001DA69C /* TradeIdea */ = {
 			isa = PBXGroup;
 			children = (
-				238DB6CC1D85A01F00082918 /* IdeaPostViewController.swift */,
 				239083EE22148E4300C3A809 /* TradeIdeaTableViewController.swift */,
 				238DB6D81D85A01F00082918 /* TradeIdeaDetailTableViewController.swift */,
+				238DB6CC1D85A01F00082918 /* IdeaPostViewController.swift */,
 			);
 			path = TradeIdea;
 			sourceTree = "<group>";

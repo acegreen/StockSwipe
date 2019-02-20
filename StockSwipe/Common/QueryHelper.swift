@@ -340,7 +340,7 @@ class QueryHelper {
     }
     
     static let sharedInstance = QueryHelper()
-    static let tradeIdeaQueryLimit = 25
+    static let queryLimit = 25
 
     func queryWith(queryString: String, useCacheIfPossible: Bool = false, completionHandler: @escaping (_ result: () throws -> Data) -> Void) -> Void {
         

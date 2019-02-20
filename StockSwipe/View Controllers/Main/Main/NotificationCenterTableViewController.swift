@@ -88,7 +88,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             mostRecentRefreshDate = notificationsLastRefreshDate
         }
         
-        QueryHelper.sharedInstance.queryActivityForUser(user: currentUser, skip: skip, limit: QueryHelper.tradeIdeaQueryLimit, order: queryOrder, creationDate: mostRecentRefreshDate) { (result) in
+        QueryHelper.sharedInstance.queryActivityForUser(user: currentUser, skip: skip, limit: QueryHelper.queryLimit, order: queryOrder, creationDate: mostRecentRefreshDate) { (result) in
         
             self.isQueryingForActivities = false
             
@@ -217,18 +217,29 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let activityAtIndexPath = notifications[indexPath.row]
-        guard let activityType = Constants.ActivityType(rawValue: activityAtIndexPath.object(forKey: "activityType") as! String) else { return }
+        guard let activityType = Constants.ActivityType(rawValue: activityAtIndexPath.activityType) else { return }
         
         switch activityType {
         case .Follow:
             
-            guard let userAtIndexPath = activityAtIndexPath.object(forKey: "fromUser") as? User else { return }
+            let userAtIndexPath = activityAtIndexPath.fromUser
             self.performSegueWithIdentifier(.ProfileSegueIdentifier, sender: userAtIndexPath)
             
         case .Mention, .TradeIdeaNew, .TradeIdeaLike, .TradeIdeaReply, .TradeIdeaReshare:
-
-            guard let tradeIdeaAtIndexPath = activityAtIndexPath.object(forKey: "tradeIdea") as? TradeIdea else { return }
-            self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: tradeIdeaAtIndexPath)
+            
+            let activityType = [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue]
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: activityAtIndexPath.toUser, toUser: nil, originalTradeIdea: nil, tradeIdea: activityAtIndexPath.tradeIdea, stocks: nil, activityType: activityType, skip: nil, limit: 1, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], selectKeys: nil, order: .descending, completion: { (result) in
+                
+                do {
+                    
+                    guard let activityObject = try result().first as? Activity else { return }
+                    DispatchQueue.main.async {
+                        self.performSegueWithIdentifier(.TradeIdeaDetailSegueIdentifier, sender: activityObject)
+                    }
+                } catch {
+                    // TODO: handle error
+                }
+            })
             
         case .Block, .StockLong, .StockShort, .AddToWatchlistLong, .AddToWatchlistShort:
             break

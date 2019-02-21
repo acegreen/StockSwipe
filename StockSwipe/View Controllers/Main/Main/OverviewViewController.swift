@@ -30,7 +30,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
 
     var isQueryingForiCarousel = false
     var queryTimer: Timer?
-    let QUERY_INTERVAL: Double = 60 // 5 minutes
+    let QUERY_INTERVAL: Double = 60
     
     let reachability = Reachability()
     
@@ -63,11 +63,15 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     }
     
     @objc func applicationWillEnterForeground() {
-        self.handleReachability()
+        self.scheduleQueryTimer()
+        
+        let timeSinceLastRefresh = Date().timeIntervalSince(carouselLastQueriedDate)
+        if timeSinceLastRefresh > QUERY_INTERVAL {
+            self.queryTimer?.fire()
+        }
     }
     
     @objc func applicationsDidEnterBackground() {
-        self.reachability?.stopNotifier()
         self.queryTimer?.invalidate()
     }
     
@@ -118,13 +122,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     
     func queryCarouselTickers() {
         
-        if carouselLastQueriedDate != nil {
-            let timeSinceLastRefresh = Date().timeIntervalSince(carouselLastQueriedDate)
-            guard timeSinceLastRefresh > QUERY_INTERVAL else {
-                return
-            }
-        }
-        
         NSLog("refreshing carousel on %@", Thread.isMainThread ? "main thread" : "other thread")
         
         // Setup config parameters
@@ -146,7 +143,6 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 } catch {
                     //TODO: handle error
                 }
-                
                 self.isQueryingForiCarousel = false
             })
         }

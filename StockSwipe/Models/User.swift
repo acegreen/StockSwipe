@@ -78,7 +78,8 @@ public class User: PFUser {
 
     func getIdeasCount(_ completion: @escaping (_ countString: String) -> Void) {
         
-        QueryHelper.sharedInstance.countTradeIdeasFor(key: "user", object: self) { (result) in
+        let activityTypes = [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue]
+        QueryHelper.sharedInstance.countActivityFor(fromUser: self, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: activityTypes) { (result) in
             
             do {
                 

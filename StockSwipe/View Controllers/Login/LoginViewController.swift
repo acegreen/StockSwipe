@@ -217,7 +217,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             }
             
             return false
-            
         }
     }
     
@@ -225,105 +224,116 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         
         if PFTwitterUtils.isLinked(with: user) {
             
-            let verify = URL(string: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&skip_status=true")
-            let request = NSMutableURLRequest(url: verify!)
-            PFTwitterUtils.twitter()!.sign(request)
-            var response: URLResponse?
-            
-            do {
+            if user.isNew {
                 
-                let data = try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning: &response)
-                let result = try JSON(data: data)
+                let verify = URL(string: "https://api.twitter.com/1.1/account/verify_credentials.json?include_email=true&skip_status=true")
+                let request = NSMutableURLRequest(url: verify!)
+                PFTwitterUtils.twitter()!.sign(request)
+                var response: URLResponse?
                 
-                var firstName: String?
-                var lastName: String?
-                
-                if let twitterUsername = PFTwitterUtils.twitter()?.screenName {
-                    user.username = twitterUsername
-                    user["username_lowercase"] = user.username!.lowercased()
-                }
-                
-                if let twitterName = result["name"].string {
-                    user["full_name"] = twitterName
+                do {
                     
-                    firstName = twitterName.components(separatedBy: " ").first
-                    lastName = twitterName.components(separatedBy: " ").last
+                    let data = try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning: &response)
+                    let result = try JSON(data: data)
                     
-                } else {
-                    user["full_name"] = PFTwitterUtils.twitter()?.screenName
+                    var firstName: String?
+                    var lastName: String?
+                    
+                    if let twitterUsername = PFTwitterUtils.twitter()?.screenName {
+                        user.username = twitterUsername
+                        user["username_lowercase"] = user.username!.lowercased()
+                    }
+                    
+                    if let twitterName = result["name"].string {
+                        user["full_name"] = twitterName
+                        
+                        firstName = twitterName.components(separatedBy: " ").first
+                        lastName = twitterName.components(separatedBy: " ").last
+                        
+                    } else {
+                        user["full_name"] = PFTwitterUtils.twitter()?.screenName
+                    }
+                    user["fullname_lowercase"] = (user["full_name"] as AnyObject).lowercased
+                    
+                    if let twitterEmail = result["email"].string {
+                        user.email = twitterEmail
+                    }
+                    
+                    //                if let twitterID = result["id_str"].string {
+                    //                    user["twitter_id"] = twitterID
+                    //                }
+                    
+                    if let location = result["location"].string {
+                        user["location"] = location
+                    }
+                    
+                    if let profilePictureURL = result["profile_image_url_https"].url?.absoluteString {
+                        user["profile_image_url"] = profilePictureURL.replacingOccurrences(of: "_normal", with: "")
+                    }
+                    
+                    if let profileBannerURL = result["profile_banner_url"].url?.absoluteString {
+                        user["profile_banner_url"] = profileBannerURL
+                    }
+                    
+                    if let website = result["entities"]["url"]["urls"][0]["expanded_url"].url?.absoluteString {
+                        user["website"] = website
+                    }
+                    
+                    if let website_raw = result["url"].string {
+                        user["website_raw"] = [website_raw]
+                    }
+                    
+                    if let bio = result["description"].string {
+                        user["bio"] = bio
+                    }
+                    
+                    if let socialmedia_verified = result["verified"].bool {
+                        user["socialmedia_verified"] = socialmedia_verified
+                    }
+                    
+                    user["follower_notification"] = true
+                    user["mention_notification"] = true
+                    user["newTradeIdea_notification"] = true
+                    user["replyTradeIdea_notification"] = true
+                    user["likeTradeIdea_notification"] = true
+                    user["reshareTradeIdea_notification"] = true
+                    user["swipe_addToWatchlist"] = false
+                    
+                    self.saveUser(user, firstName: firstName, lastName: lastName)
+                    
+                } catch let error as NSError {
+                    
+                    // failure
+                    print("Fetch failed: \(error.localizedDescription)")
                 }
-                user["fullname_lowercase"] = (user["full_name"] as AnyObject).lowercased
                 
-                if let twitterEmail = result["email"].string {
-                    user.email = twitterEmail
-                }
-                
-                //                if let twitterID = result["id_str"].string {
-                //                    user["twitter_id"] = twitterID
-                //                }
-                
-                if let location = result["location"].string {
-                    user["location"] = location
-                }
-                
-                if let profilePictureURL = result["profile_image_url_https"].url?.absoluteString {
-                    user["profile_image_url"] = profilePictureURL.replacingOccurrences(of: "_normal", with: "")
-                }
-                
-                if let profileBannerURL = result["profile_banner_url"].url?.absoluteString {
-                    user["profile_banner_url"] = profileBannerURL
-                }
-                
-                if let website = result["entities"]["url"]["urls"][0]["expanded_url"].url?.absoluteString {
-                    user["website"] = website
-                }
-                
-                if let website_raw = result["url"].string {
-                    user["website_raw"] = [website_raw]
-                }
-                
-                if let bio = result["description"].string {
-                    user["bio"] = bio
-                }
-                
-                if let socialmedia_verified = result["verified"].bool {
-                    user["socialmedia_verified"] = socialmedia_verified
-                }
-                
-                user["follower_notification"] = true
-                user["mention_notification"] = true
-                user["newTradeIdea_notification"] = true
-                user["replyTradeIdea_notification"] = true
-                user["likeTradeIdea_notification"] = true
-                user["reshareTradeIdea_notification"] = true
-                user["swipe_addToWatchlist"] = false
-                
-                self.saveUser(user, firstName: firstName, lastName: lastName)
-                
-            } catch let error as NSError {
-                
-                // failure
-                print("Fetch failed: \(error.localizedDescription)")
+            } else {
+                // TODO: handle old user
+                self.dismissVC(user: user)
             }
             
         } else if PFFacebookUtils.isLinked(with: user) {
             
-            // Get user email
-            if let accessToken = FBSDKAccessToken.current() {
+            if user.isNew {
                 
-                let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,id,name,first_name,last_name,picture,verified"], tokenString: accessToken.tokenString, version: nil, httpMethod: "GET")
-                
-                req?.start(completionHandler: { (connection, object, error) in
+                if let accessToken = FBSDKAccessToken.current() {
                     
-                    do {
+                    guard let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,id,name,first_name,last_name,picture,verified"], tokenString: accessToken.tokenString, version: nil, httpMethod: "GET") else { return }
+                    
+                    req.start(completionHandler: { (connection, object, error) in
                         
-                        var firstName: String?
-                        var lastName: String?
-                        
-                        if error == nil {
+                        do {
                             
+                            var firstName: String?
+                            var lastName: String?
+                            
+                            guard error == nil else {
+                                print("Fetch failed: \(error!.localizedDescription)")
+                                return
+                            }
+                                
+                            guard object != nil else { return }
                             let result = try JSON(object)
-                            guard result != nil else { return }
                             
                             print(result)
                             
@@ -387,15 +397,15 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                             user["swipe_addToWatchlist"] = false
                             
                             self.saveUser(user, firstName: firstName, lastName: lastName)
-                            
-                        } else {
-                            // failure
-                            print("Fetch failed: \(error?.localizedDescription)")
+                        } catch {
+                            //TODO: handle error
                         }
-                    } catch {
-                        //TODO: handle error
-                    }
-                })
+                    })
+                }
+                
+            } else {
+                // TODO: handle old user
+                self.dismissVC(user: user)
             }
             
 //        } else if user.value(forKey: "emailVerified") as? Bool == true {
@@ -537,14 +547,25 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 // register to MailChimp
                 self.registerUserMailChimp(listID: "4266807125", firstName: firstName, lastName: lastName, username: user.username, email: user.email)
                 
-                // send delegate info
-                self.loginDelegate?.didLoginSuccessfully()
+                // dismissVC
+                self.dismissVC(user: user)
                 
-                // Log Login
+                // log Login
                 Answers.logLogin(withMethod: ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter).accountTypeDescription, success: 1, customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
                 
+            } else {
+                print(error?.localizedDescription)
+                self.handleUserAlreadyExists(error: error!, user: user)
             }
-            
+        })
+    }
+    
+    func dismissVC(user: PFUser) {
+    
+        // send delegate info
+        self.loginDelegate?.didLoginSuccessfully()
+        
+        DispatchQueue.main.async {
             self.signUpViewController.dismiss(animated: true, completion: nil)
             self.logInViewController.dismiss(animated: true, completion: { () -> Void in
                 self.dismiss(animated: true, completion: nil)
@@ -552,6 +573,20 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 
                 NotificationCenter.default.post(name: Notification.Name("UserLoggedIn"), object: nil, userInfo: ["user": user])
             })
-        })
+        }
+    }
+    
+    func handleUserAlreadyExists(error: Error, user: PFUser) {
+        let originalError = error
+        
+        PFCloud.callFunction(inBackground: "deleteUserWithObjectID", withParameters: ["objectID": user.objectId]) { (results, error) in }
+        PFUser.logOutInBackground { (error) in
+            if error == nil {
+                DispatchQueue.main.async {
+                    SweetAlert().showAlert("Login Clash!", subTitle: originalError.localizedDescription, style: AlertStyle.warning, dismissTime: 5.0)
+                }
+                self.loginDelegate?.didLogoutSuccessfully()
+            }
+        }
     }
 }

@@ -40,7 +40,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     var topStoriesRefreshControl = UIRefreshControl()
     
     var queryTimer: Timer?
-    let QUERY_INTERVAL: Double = 60 // 5 minutes
+    let QUERY_INTERVAL: Double = 60
 
     let reachability = Reachability()
     
@@ -84,11 +84,15 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     }
     
     @objc func applicationWillEnterForeground() {
-        self.handleReachability()
+        self.scheduleQueryTimer()
+        
+        let timeSinceLastRefresh = Date().timeIntervalSince(stockTwitsLastQueriedDate)
+        if timeSinceLastRefresh > QUERY_INTERVAL {
+            self.queryTimer?.fire()
+        }
     }
     
     @objc func applicationsDidEnterBackground() {
-        self.reachability?.stopNotifier()
         self.queryTimer?.invalidate()
     }
     
@@ -135,11 +139,6 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     
     func queryStockTwitsTrendingStocks() {
         
-        if stockTwitsLastQueriedDate != nil {
-            let timeSinceLastRefresh = Date().timeIntervalSince(stockTwitsLastQueriedDate)
-            guard timeSinceLastRefresh > QUERY_INTERVAL else { return }
-        }
-        
         NSLog("refreshing cloud on %@", Thread.isMainThread ? "main thread" : "other thread")
         
         isQueryingForTrendingStocks = true
@@ -153,29 +152,15 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
                 DataCache.instance.write(data: trendingStocksData, forKey: "TRENDINGSTOCKSCACHEDATA")
                 self.createCloudWords(trendingStocksJSON)
                 self.stockTwitsLastQueriedDate = Date()
-                self.isQueryingForTrendingStocks = false
                 
             } catch {
                 //TODO: handle error
             }
+            self.isQueryingForTrendingStocks = false
         }
     }
     
     func queryTopStories() {
-        
-        if topStoriesLastQueriedDate != nil {
-            
-            let timeSinceLastRefresh = Date().timeIntervalSince(topStoriesLastQueriedDate)
-            
-            guard timeSinceLastRefresh > QUERY_INTERVAL else {
-                DispatchQueue.main.async {
-                    if self.topStoriesRefreshControl.isRefreshing == true {
-                        self.topStoriesRefreshControl.endRefreshing()
-                    }
-                }
-                return
-            }
-        }
         
         NSLog("refreshing top stories on %@", Thread.isMainThread ? "main thread" : "other thread")
         
@@ -198,7 +183,6 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
                     print(error)
                 }
             }
-            
             self.isQueryingForTopStories = false
         }
     }

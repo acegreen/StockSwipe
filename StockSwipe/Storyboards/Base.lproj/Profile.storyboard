@@ -156,8 +156,8 @@
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="249.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <userGuides>
-                                        <userLayoutGuide location="42" affinity="minY"/>
-                                        <userLayoutGuide location="35" affinity="minY"/>
+                                        <userLayoutGuide location="40" affinity="minY"/>
+                                        <userLayoutGuide location="27" affinity="minY"/>
                                         <userLayoutGuide location="40" affinity="minY"/>
                                     </userGuides>
                                     <subviews>
@@ -184,7 +184,7 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="4AL-fJ-B94">
                                                             <rect key="frame" x="0.0" y="0.0" width="314" height="21.5"/>
                                                             <subviews>
-                                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="256" verticalHuggingPriority="251" horizontalCompressionResistancePriority="755" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tbg-hX-sry">
+                                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="251" horizontalCompressionResistancePriority="755" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tbg-hX-sry">
                                                                     <rect key="frame" x="0.0" y="0.0" width="96" height="21.5"/>
                                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
                                                                     <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -196,9 +196,9 @@
                                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
-                                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Idea Time" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="FKq-1v-w5x">
+                                                                <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="755" text="Idea Time" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="FKq-1v-w5x">
                                                                     <rect key="frame" x="183.5" y="0.0" width="130.5" height="21.5"/>
-                                                                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
                                                                     <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>

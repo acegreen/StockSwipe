@@ -299,7 +299,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             }
             
             isQueryingForTradeIdeas = true
-            let activityTypes = [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue]
+            let activityTypes = [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue]
             
             QueryHelper.sharedInstance.queryActivityFor(fromUser: self.user, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: activityTypes, skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], selectKeys: nil, order: queryOrder, creationDate: mostRecentRefreshDate, cachePolicy: .networkElseCache) { result in
                 

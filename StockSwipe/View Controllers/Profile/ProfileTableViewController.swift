@@ -301,7 +301,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             isQueryingForTradeIdeas = true
             let activityTypes = [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue]
             
-            QueryHelper.sharedInstance.queryActivityFor(fromUser: self.user, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: activityTypes, skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], selectKeys: nil, order: queryOrder, creationDate: mostRecentRefreshDate, cachePolicy: .networkElseCache) { result in
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: self.user, toUser: nil, originalTradeIdeas: nil, tradeIdeas: nil, stocks: nil, activityType: activityTypes, skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], selectKeys: nil, order: queryOrder, creationDate: mostRecentRefreshDate, cachePolicy: .networkElseCache) { result in
                 
                 do {
                     
@@ -398,76 +398,97 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             
             isQueryingForLikedTradeIdeas = true
             
-            QueryHelper.sharedInstance.queryActivityFor(fromUser: userObject, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: userObject, toUser: nil, originalTradeIdeas: nil, tradeIdeas: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: skip, limit: QueryHelper.queryLimit, includeKeys: nil, order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
                 
                 do {
                     
-                    guard let activityObjects = try result() as? [Activity] else { return }
+                    guard let likedActivityObjects = try result() as? [Activity], let likedTradeIdeas = likedActivityObjects.map({ $0.tradeIdea }) as? [TradeIdea] else { return }
+                    
+                    QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdeas: nil, tradeIdeas: likedTradeIdeas, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue], skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
 
-                    guard activityObjects.count > 0 else {
-
-                        self.isQueryingForLikedTradeIdeas = false
-
-                        DispatchQueue.main.async {
-                            self.tableView.reloadData()
-                            if self.refreshControl?.isRefreshing == true {
-                                self.refreshControl?.endRefreshing()
-                            } else if self.footerActivityIndicator?.isAnimating == true {
-                                self.footerActivityIndicator.stopAnimating()
+                        do {
+                            
+                            guard let activityObjects = try result() as? [Activity] else { return }
+                            
+                            guard activityObjects.count > 0 else {
+                                
+                                self.isQueryingForLikedTradeIdeas = false
+                                
+                                DispatchQueue.main.async {
+                                    self.tableView.reloadData()
+                                    if self.refreshControl?.isRefreshing == true {
+                                        self.refreshControl?.endRefreshing()
+                                    } else if self.footerActivityIndicator?.isAnimating == true {
+                                        self.footerActivityIndicator.stopAnimating()
+                                    }
+                                }
+                                self.updateRefreshDate()
+                                self.likedTradeIdeasLastRefreshDate = Date()
+                                
+                                return
                             }
-                        }
-                        self.updateRefreshDate()
-                        self.likedTradeIdeasLastRefreshDate = Date()
-
-                        return
-                    }
-
-                    DispatchQueue.main.async {
-
-                        switch queryType {
-                        case .new:
-
-                            self.likedTradeIdeasActivities = activityObjects
-                            self.tableView.reloadData()
-
-                        case .older:
-
-                            // append more trade ideas
-                            let currentCount = self.likedTradeIdeasActivities.count
-                            self.likedTradeIdeasActivities += activityObjects
-
-                            // insert cell in tableview
-                            self.tableView.beginUpdates()
-                            for (i,_) in activityObjects.enumerated() {
-                                let indexPath = IndexPath(row: currentCount + i, section: 0)
-                                self.tableView.insertRows(at: [indexPath], with: .none)
+                            
+                            DispatchQueue.main.async {
+                                
+                                switch queryType {
+                                case .new:
+                                    
+                                    self.likedTradeIdeasActivities = activityObjects
+                                    self.tableView.reloadData()
+                                    
+                                case .older:
+                                    
+                                    // append more trade ideas
+                                    let currentCount = self.likedTradeIdeasActivities.count
+                                    self.likedTradeIdeasActivities += activityObjects
+                                    
+                                    // insert cell in tableview
+                                    self.tableView.beginUpdates()
+                                    for (i,_) in activityObjects.enumerated() {
+                                        let indexPath = IndexPath(row: currentCount + i, section: 0)
+                                        self.tableView.insertRows(at: [indexPath], with: .none)
+                                    }
+                                    self.tableView.endUpdates()
+                                    
+                                case .update:
+                                    
+                                    // add more trade ideas to the top
+                                    self.tableView.beginUpdates()
+                                    for likedTradeIdea in activityObjects {
+                                        self.likedTradeIdeasActivities.insert(likedTradeIdea, at: 0)
+                                        let indexPath = IndexPath(row: 0, section: 0)
+                                        self.tableView.insertRows(at: [indexPath], with: .none)
+                                    }
+                                    self.tableView.endUpdates()
+                                }
+                                
+                                // end refresh and add time stamp
+                                if self.refreshControl?.isRefreshing == true {
+                                    self.refreshControl?.endRefreshing()
+                                } else if self.footerActivityIndicator.isAnimating == true {
+                                    self.footerActivityIndicator.stopAnimating()
+                                }
+                                
+                                self.updateRefreshDate()
+                                self.likedTradeIdeasLastRefreshDate = Date()
                             }
-                            self.tableView.endUpdates()
+                            
+                            self.isQueryingForLikedTradeIdeas = false
+                            
+                        } catch {
 
-                        case .update:
-
-                            // add more trade ideas to the top
-                            self.tableView.beginUpdates()
-                            for likedTradeIdea in activityObjects {
-                                self.likedTradeIdeasActivities.insert(likedTradeIdea, at: 0)
-                                let indexPath = IndexPath(row: 0, section: 0)
-                                self.tableView.insertRows(at: [indexPath], with: .none)
+                            // TODO: handle error
+                            DispatchQueue.main.async {
+                                if self.refreshControl?.isRefreshing == true {
+                                    self.refreshControl?.endRefreshing()
+                                } else if self.footerActivityIndicator?.isAnimating == true {
+                                    self.footerActivityIndicator.stopAnimating()
+                                }
                             }
-                            self.tableView.endUpdates()
+                            
+                            self.isQueryingForLikedTradeIdeas = false
                         }
-
-                        // end refresh and add time stamp
-                        if self.refreshControl?.isRefreshing == true {
-                            self.refreshControl?.endRefreshing()
-                        } else if self.footerActivityIndicator.isAnimating == true {
-                            self.footerActivityIndicator.stopAnimating()
-                        }
-
-                        self.updateRefreshDate()
-                        self.likedTradeIdeasLastRefreshDate = Date()
-                    }
-
-                    self.isQueryingForLikedTradeIdeas = false
+                    })
                     
                 } catch {
                     
@@ -512,7 +533,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         isQueryingForFollowing = true
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: user, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["toUser"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: user, toUser: nil, originalTradeIdeas: nil, tradeIdeas: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["toUser"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -626,7 +647,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         isQueryingForFollowers = true
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["fromUser"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: user, originalTradeIdeas: nil, tradeIdeas: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["fromUser"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -737,7 +758,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
             return
         }
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: userObject, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: userObject, originalTradeIdeas: nil, tradeIdeas: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -792,12 +813,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         sender.isEnabled = false
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: user, originalTradeIdea: nil, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: user, originalTradeIdeas: nil, tradeIdeas: nil, stocks: nil, activityType: [Constants.ActivityType.Follow.rawValue], skip: nil, limit: nil, includeKeys: nil) { (result) in
             
             do {
                 
                 let activityObject = try result()
-                
                 if activityObject.first == nil {
 
                     let activityObject = PFObject(className: "Activity")

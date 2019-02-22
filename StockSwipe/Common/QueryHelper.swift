@@ -633,7 +633,7 @@ class QueryHelper {
         }
     }
     
-    func queryActivityFor(fromUser: PFUser? = nil, toUser: PFUser? = nil, originalTradeIdea: PFObject? = nil, tradeIdea: PFObject? = nil, stocks: [PFObject]? = nil, activityType: [String]? = nil, skip: Int? = nil, limit: Int? = nil, includeKeys: [String]? = nil, selectKeys: [String]? = nil, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryActivityFor(fromUser: PFUser? = nil, toUser: PFUser? = nil, originalTradeIdeas: [PFObject]? = nil, tradeIdeas: [PFObject]? = nil, stocks: [PFObject]? = nil, activityType: [String]? = nil, skip: Int? = nil, limit: Int? = nil, includeKeys: [String]? = nil, selectKeys: [String]? = nil, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         let activityQuery = Activity.query()!
         activityQuery.cachePolicy = cachePolicy
@@ -669,12 +669,12 @@ class QueryHelper {
             activityQuery.whereKey("toUser", equalTo: toUser)
         }
         
-        if let originalTradeIdea = originalTradeIdea {
-            activityQuery.whereKey("originalTradeIdea", equalTo: originalTradeIdea)
+        if let originalTradeIdeas = originalTradeIdeas {
+            activityQuery.whereKey("originalTradeIdea", containedIn: originalTradeIdeas)
         }
         
-        if let tradeIdea = tradeIdea {
-            activityQuery.whereKey("tradeIdea", equalTo: tradeIdea)
+        if let tradeIdeas = tradeIdeas {
+            activityQuery.whereKey("tradeIdea", containedIn: tradeIdeas)
         }
         
         if let stocks = stocks {

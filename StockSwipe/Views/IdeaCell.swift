@@ -270,8 +270,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     }
     
     func checkMore() {
+       
         guard let _ = PFUser.current() else {
-            
             if threeDotsStack != nil && threeDotsStack.isDescendant(of: self) {
                 threeDotsStack.isHidden = true
             }
@@ -304,11 +304,10 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             return
         }
         
-        guard self.activity != nil else { return }
-        
+        guard let tradeIdea = self.activity.tradeIdea else { return }
         sender.isEnabled = false
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: self.activity.tradeIdea, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdeas: nil, tradeIdeas: [tradeIdea], stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -407,9 +406,10 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             return
         }
         
+        guard let tradeIdea = self.activity.tradeIdea else { return }
         sender.isEnabled = false
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: self.activity.fromUser, originalTradeIdea: self.activity.tradeIdea, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: currentUser, toUser: self.activity.fromUser, originalTradeIdeas: [tradeIdea], tradeIdeas: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: 1, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -565,7 +565,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         let tradeIdeaDetailTableViewController = Constants.Storyboards.tradeIdeaStoryboard.instantiateViewController(withIdentifier: "TradeIdeaDetailTableViewController") as! TradeIdeaDetailTableViewController
         
         guard let originalTradeIdea = self.activity.originalTradeIdea else { return }
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: originalTradeIdea.user, toUser: nil, originalTradeIdea: nil, tradeIdea: originalTradeIdea, stocks: nil, activityType: nil, skip: nil, limit: 1, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], selectKeys: nil, order: .descending, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: originalTradeIdea.user, toUser: nil, originalTradeIdeas: nil, tradeIdeas: [originalTradeIdea], stocks: nil, activityType: nil, skip: nil, limit: 1, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], selectKeys: nil, order: .descending, completion: { (result) in
             
             do {
                 

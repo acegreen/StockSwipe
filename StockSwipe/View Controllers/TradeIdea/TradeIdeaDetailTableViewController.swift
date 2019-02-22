@@ -75,8 +75,9 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             mostRecentRefreshDate = replyTradeIdeasLastRefreshDate
         }
         
+        guard let tradeIdea = self.activity.tradeIdea else { return }
         let activityTypes = [Constants.ActivityType.TradeIdeaReply.rawValue]
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: self.activity.tradeIdea, tradeIdea: nil, stocks: nil, activityType: activityTypes, skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdeas: [tradeIdea], tradeIdeas: nil, stocks: nil, activityType: activityTypes, skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 

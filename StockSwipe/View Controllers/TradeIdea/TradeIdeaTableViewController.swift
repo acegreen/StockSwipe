@@ -92,7 +92,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
         let stockObjectArray: [PFObject]? = self.stockObject != nil ? [self.stockObject!] : nil
         let activityTypes = self.stockObject != nil ? [Constants.ActivityType.Mention.rawValue] : [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue]
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: stockObjectArray, activityType: activityTypes, skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdeas: nil, tradeIdeas: nil, stocks: stockObjectArray, activityType: activityTypes, skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
             
             do {
                 
@@ -123,8 +123,6 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
                     case .new:
 
                         self.activities = activityObjects
-
-                        // reload table
                         self.tableView.reloadData()
 
                     case .older:

@@ -32,7 +32,7 @@ public class TradeIdea: PFObject, PFSubclassing {
     
     func checkNumberOfLikes(completion: ((Int) -> Void)?) {
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, selectKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdeas: nil, tradeIdeas: [self], stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, selectKeys: nil, completion: { (result) in
             
             do {
                 
@@ -43,19 +43,19 @@ public class TradeIdea: PFObject, PFSubclassing {
                     self.isLikedByCurrentUser = activityObjects.contains { $0.fromUser.objectId == currentUser.objectId }
                 }
                 
-                if let completion = completion {
-                    completion(self.likeCount)
-                }
-                
             } catch {
                 //TODO: handle error
+            }
+            
+            if let completion = completion {
+                completion(self.likeCount)
             }
         })
     }
     
     func checkNumberOfReshares(completion: ((Int) -> Void)?) {
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: self, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdeas: [self], tradeIdeas: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
             
             do {
                 
@@ -68,6 +68,7 @@ public class TradeIdea: PFObject, PFSubclassing {
                 
             } catch {
                 //TODO: handle error
+                print(error.localizedDescription)
             }
             
             if let completion = completion {

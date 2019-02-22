@@ -227,8 +227,9 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             
         case .Mention, .TradeIdeaNew, .TradeIdeaLike, .TradeIdeaReply, .TradeIdeaReshare:
             
+            guard let tradeIdeaAtIndex = activityAtIndexPath.tradeIdea else { return }
             let activityType = [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue]
-            QueryHelper.sharedInstance.queryActivityFor(fromUser: activityAtIndexPath.toUser, toUser: nil, originalTradeIdea: nil, tradeIdea: activityAtIndexPath.tradeIdea, stocks: nil, activityType: activityType, skip: nil, limit: 1, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], selectKeys: nil, order: .descending, completion: { (result) in
+            QueryHelper.sharedInstance.queryActivityFor(fromUser: activityAtIndexPath.toUser, toUser: nil, originalTradeIdeas: nil, tradeIdeas: [tradeIdeaAtIndex], stocks: nil, activityType: activityType, skip: nil, limit: 1, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], selectKeys: nil, order: .descending, completion: { (result) in
                 
                 do {
                     

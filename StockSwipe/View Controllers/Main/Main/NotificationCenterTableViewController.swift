@@ -49,6 +49,10 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        if self.notifications.count != 0 {
+            self.getNotifications(queryType: .update)
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {

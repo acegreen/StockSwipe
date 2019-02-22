@@ -85,7 +85,8 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     
     @objc func applicationWillEnterForeground() {
         self.scheduleQueryTimer()
-        
+
+        guard (stockTwitsLastQueriedDate) != nil else { return }
         let timeSinceLastRefresh = Date().timeIntervalSince(stockTwitsLastQueriedDate)
         if timeSinceLastRefresh > QUERY_INTERVAL {
             self.queryTimer?.fire()

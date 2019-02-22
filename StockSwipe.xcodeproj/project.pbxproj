@@ -109,7 +109,6 @@
 		23CCA6A41DA5D5E600EE4F09 /* WordCloud.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 238368661DA5CA7D0099123E /* WordCloud.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		23CE716D1C1215C800E87420 /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23CE716C1C1215C800E87420 /* AdSupport.framework */; };
 		23E038102214592A00E23CFD /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23E0380F2214592A00E23CFD /* CardView.swift */; };
-		23E7F6A01BCB57A0009A016D /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E7F69F1BCB57A0009A016D /* NotificationCenter.framework */; };
 		23E7F6AA1BCB57A0009A016D /* StockSwipeWidget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 23E7F69E1BCB57A0009A016D /* StockSwipeWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		23EA70101B119803008F6C12 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA700F1B119803008F6C12 /* AudioToolbox.framework */; };
 		23EA70121B11980A008F6C12 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23EA70111B11980A008F6C12 /* CFNetwork.framework */; };
@@ -288,10 +287,10 @@
 		23CAE2651C2B46A800D15819 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		23CAE26C1C2CB41300D15819 /* Settings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		23CE716C1C1215C800E87420 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		23D441E82221EDE50031D0A5 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		23D7602B1B62AC5B009777E1 /* CoreSpotlight.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreSpotlight.framework; path = System/Library/Frameworks/CoreSpotlight.framework; sourceTree = SDKROOT; };
 		23E0380F2214592A00E23CFD /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		23E7F69E1BCB57A0009A016D /* StockSwipeWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = StockSwipeWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
-		23E7F69F1BCB57A0009A016D /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		23E7F6A71BCB57A0009A016D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = StockSwipeWidget/Info.plist; sourceTree = "<group>"; };
 		23EA700F1B119803008F6C12 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		23EA70111B11980A008F6C12 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -336,7 +335,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				23CCA6A01DA5D0CA00EE4F09 /* WordCloud.framework in Frameworks */,
-				23E7F6A01BCB57A0009A016D /* NotificationCenter.framework in Frameworks */,
 				E7FA3E9A20A4DF5709F2FA4C /* Pods_StockSwipeWidget.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -679,6 +677,7 @@
 				23EA700F1B119803008F6C12 /* AudioToolbox.framework */,
 				239A3E481BAA1CCF00894D1E /* JavaScriptCore.framework */,
 				23D7602B1B62AC5B009777E1 /* CoreSpotlight.framework */,
+				23D441E82221EDE50031D0A5 /* UserNotifications.framework */,
 				2339B0AE1B41A6CB009CE3EB /* MessageUI.framework */,
 				233BFDC31B1A28A3008B39ED /* CoreData.framework */,
 				23EA70251B11985A008F6C12 /* Accounts.framework */,
@@ -693,7 +692,6 @@
 				23EA70271B119861008F6C12 /* Social.framework */,
 				23EA701D1B119831008F6C12 /* StoreKit.framework */,
 				23EA701F1B119839008F6C12 /* SystemConfiguration.framework */,
-				23E7F69F1BCB57A0009A016D /* NotificationCenter.framework */,
 				23CE716C1C1215C800E87420 /* AdSupport.framework */,
 				5BED1187118D34381FAD1EEC /* Pods_StockSwipe.framework */,
 				62F9F5D5CA6A2A4EE014CA50 /* Pods_StockSwipeWidget.framework */,

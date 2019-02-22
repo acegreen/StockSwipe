@@ -9,6 +9,7 @@ import UIKit
 import CoreData
 import CoreSpotlight
 import MobileCoreServices
+import UserNotifications
 import Parse
 import Fabric
 import TwitterKit
@@ -97,6 +98,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
             if (preBackgroundPush || oldPushHandlerOnly || pushPayload) {
                 PFAnalytics.trackAppOpened(launchOptions: launchOptions)
+            }
+            
+            // notify delegate on app launch
+            let notificationOption = launchOptions?[.remoteNotification]
+            if let notification = notificationOption as? [String: AnyObject],
+                let aps = notification["aps"] as? [String: AnyObject] {
+                self.pushDelegate?.didReceivePushNotification(aps)
             }
         }
         
@@ -194,33 +202,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
-        
-        if let currentInstallation = PFInstallation.current() {
-            currentInstallation.setDeviceTokenFrom(deviceToken)
-            currentInstallation.saveInBackground()
-        }
-    }
-    
-    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        
-        let error = error as NSError
-        if error.code == 3010 {
-            print("Push notifications are not supported in the iOS Simulator.")
-        } else {
-            print("application:didFailToRegisterForRemoteNotificationsWithError: %@", error)
-        }
-    }
-    
-    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable: Any]) {
-        
-        self.pushDelegate?.didReceivePushNotification(userInfo)
-        
-        if application.applicationState == UIApplication.State.inactive {
-            PFAnalytics.trackAppOpened(withRemoteNotificationPayload: userInfo)
-        }
-    }
-    
     func applicationWillResignActive(_ application: UIApplication) {
         
         
@@ -229,15 +210,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationDidEnterBackground(_ application: UIApplication) {
         
         // Register for Push Notitications
-        if application.responds(to: #selector(UIApplication.registerUserNotificationSettings(_:))) {
-            let userNotificationTypes: UIUserNotificationType = [.alert, .badge, .sound]
-            let settings = UIUserNotificationSettings(types: userNotificationTypes, categories: nil)
-            application.registerUserNotificationSettings(settings)
-            application.registerForRemoteNotifications()
-            
-        } else {
-            application.registerForRemoteNotifications()
-        }
+        self.registerForPushNotifications()
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -262,6 +235,56 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
         // Saves changes in the application's managed object context before the application terminates.
         self.saveContext()
+    }
+    
+    // MARK: Notifications
+    
+    func registerForPushNotifications() {
+        UNUserNotificationCenter.current()
+            .requestAuthorization(options: [.alert, .sound, .badge]) {
+                granted, error in
+                print("Permission granted: \(granted)")
+                guard granted else { return }
+                self.getNotificationSettings()
+        }
+    }
+    
+    func getNotificationSettings() {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            print("Notification settings: \(settings)")
+            guard settings.authorizationStatus == .authorized else { return }
+            DispatchQueue.main.async {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        }
+    }
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        if let currentInstallation = PFInstallation.current() {
+            currentInstallation.setDeviceTokenFrom(deviceToken)
+            currentInstallation.saveInBackground()
+        }
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        let error = error as NSError
+        if error.code == 3010 {
+            print("Push notifications are not supported in the iOS Simulator.")
+        } else {
+            print("application:didFailToRegisterForRemoteNotificationsWithError: %@", error)
+        }
+    }
+
+    func application(_ application: UIApplication, didReceiveRemoteNotification userInfo: [AnyHashable : Any], fetchCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        
+        if let notification = userInfo as? [String: AnyObject],
+            let aps = notification["aps"] as? [String: AnyObject] {
+            self.pushDelegate?.didReceivePushNotification(aps)
+        }
+        
+        if application.applicationState == UIApplication.State.inactive {
+            PFAnalytics.trackAppOpened(withRemoteNotificationPayload: userInfo)
+        }
     }
     
     // MARK: - Core Data stack

@@ -50,7 +50,7 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
     
     func didReceivePushNotification(_ userInfo: [AnyHashable: Any]) {
         
-        if let notificationTitle = userInfo["title"] as? String {
+        if let alert = userInfo["alert"] as? [String: Any], let notificationTitle = alert["title"] as? String {
             if notificationTitle == "Follower Notification" || notificationTitle == "Trade Idea Reply Notification" || notificationTitle == "Trade Idea Like Notification" || notificationTitle == "Trade Idea Reshare Notification" {
                 self.tabBar.items?[3].badgeValue = "1"
             }
@@ -77,7 +77,7 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
                     self.present(logInViewcontroller, animated: true, completion: {
                         Constants.userDefaults.set(true, forKey: "TUTORIAL_SHOWN")
                     })
-                } else if SARate.sharedInstance().eventCount >= SARate.sharedInstance().eventsUntilPrompt {
+                } else {
                     SKStoreReviewController.requestReview()
                 }
             }

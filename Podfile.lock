@@ -1,5 +1,5 @@
 PODS:
-  - AMPopTip (3.5.0)
+  - AMPopTip (3.6.0)
   - Bolts (1.9.0):
     - Bolts/AppLinks (= 1.9.0)
     - Bolts/Tasks (= 1.9.0)
@@ -114,7 +114,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/acegreen/SKSplashView.git
 
 SPEC CHECKSUMS:
-  AMPopTip: 871ae0570b68fe396e714922b3f7d8ed6a36bb71
+  AMPopTip: ebfa860ade372f383e8b3500d3101e8c4a4f73ce
   Bolts: ac6567323eac61e203f6a9763667d0f711be34c8
   BubbleTransition: 2f112cc19772d9ab199bc850de92f5eb34744bce
   Charts: f122fb70b19847fa5817d018b77d6c5a2296ab25
@@ -139,4 +139,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 879f5e59658cb8daaaaae4761c95ba0046024409
 
-COCOAPODS: 1.6.0
+COCOAPODS: 1.7.0.beta.1

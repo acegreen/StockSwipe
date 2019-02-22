@@ -65,6 +65,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     @objc func applicationWillEnterForeground() {
         self.scheduleQueryTimer()
         
+        guard carouselLastQueriedDate != nil else { return }
         let timeSinceLastRefresh = Date().timeIntervalSince(carouselLastQueriedDate)
         if timeSinceLastRefresh > QUERY_INTERVAL {
             self.queryTimer?.fire()
@@ -91,21 +92,12 @@ class OverviewViewController: UIViewController, SegueHandlerType {
             overviewVCOperationQueue.addOperation(loadCachedDataOperation)
         }
         
-        guard Functions.isConnectedToNetwork() else {
-            if self.carouselLastQueriedDate == nil {
-                self.animationDelegate?.didFinishLoading()
-            }
-            return
-        }
+        guard Functions.isConnectedToNetwork() else { return }
         let marketCarouselOperation = BlockOperation { () -> Void in
             self.queryCarouselTickers()
         }
         marketCarouselOperation.queuePriority = .veryHigh
         overviewVCOperationQueue.addOperations([marketCarouselOperation], waitUntilFinished: true)
-        
-        if self.carouselLastQueriedDate == nil {
-            self.animationDelegate?.didFinishLoading()
-        }
         
         self.scheduleQueryTimer()
     }

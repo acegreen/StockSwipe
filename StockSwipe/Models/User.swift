@@ -17,8 +17,8 @@ public class User: PFUser {
     @NSManaged var bio: String?
     @NSManaged var website: String?
     @NSManaged var recentSearches: [PFObject]?
-    @NSManaged var profile_image_url: String?
     @NSManaged var profile_image: PFFileObject?
+    @NSManaged var profile_image_url: String?
     @NSManaged var blocked_users: [PFUser]?
     @NSManaged var location: String?
     
@@ -33,8 +33,7 @@ public class User: PFUser {
     @NSManaged var mention_notification: Bool
     @NSManaged var swipe_addToWatchlist: Bool
     
-    var avtar: UIImage! = UIImage(named: "dummy_profile_male")
-    
+    private(set) var avtar: UIImage?
     private(set) var ideasCount: Int = 0
     private(set) var followingCount: Int = 0
     private(set) var followersCount: Int = 0
@@ -45,35 +44,23 @@ public class User: PFUser {
     }
     
     func getAvatar(_ completion: @escaping (UIImage?) -> Void) {
-        
-//        if let profileImage = self.profile_image {
-//
-//            profileImage.getDataInBackground { (data, error) in
-//                if let avatarData = data, let image = UIImage(data: avatarData) {
-//                    self.avtar = image
-//                }
-//                completion(self.avtar)
-//            }
-//
-//        } else
-        if let profileImageURL = self.profile_image_url {
-            
-            QueryHelper.sharedInstance.queryWith(queryString: profileImageURL, useCacheIfPossible: true, completionHandler: { (result) in
-                do {
-                    
-                    let avatarData  = try result()
-                    if let image = UIImage(data: avatarData) {
-                        self.avtar = image
-                    }
-                    completion(self.avtar)
-                    
-                } catch {
+        guard self.avtar == nil else {
+            completion(self.avtar)
+            return
+        }
+        QueryHelper.sharedInstance.queryWith(queryString: self.profile_image?.url ?? profile_image_url ?? "", useCacheIfPossible: true, completionHandler: { (result) in
+            do {
+                
+                let avatarData  = try result()
+                if let image = UIImage(data: avatarData) {
+                    self.avtar = image
                     completion(self.avtar)
                 }
-            })
-        } else {
-            completion(self.avtar)
-        }
+            } catch {
+                self.avtar = UIImage(named: "dummy_profile_male")
+                completion(self.avtar)
+            }
+        })
     }
 
     func getIdeasCount(_ completion: @escaping (_ countString: String) -> Void) {

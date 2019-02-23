@@ -28,10 +28,10 @@ class UserCell: UITableViewCell {
     func configureCell(with user: User) {
         
         self.user = user
+        self.fullname.text = self.user.full_name
+        self.username.text = user.usertag
         self.user.getAvatar({ (image) in
             DispatchQueue.main.async {
-                self.fullname.text = self.user.full_name
-                self.username.text = user.usertag
                 self.userAvatar.image = image
             }
         })

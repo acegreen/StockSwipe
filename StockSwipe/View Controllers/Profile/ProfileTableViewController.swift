@@ -250,22 +250,23 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         guard let user = user else { return }
         
-        user.fetchInBackground { (user, error) in
+        user.fetchIfNeededInBackground { (user, error) in
             
             guard let user = user as? User else { return }
             self.user = user
-            
+            DispatchQueue.main.async {
+                self.fullNameLabel.text = user.full_name
+                self.usernameLabel.text = user.username
+            }
             user.getAvatar { (avatar) in
                 DispatchQueue.main.async {
-                    self.fullNameLabel.text = user.full_name
-                    self.usernameLabel.text = user.username
                     self.avatarImage.image = avatar
-                    
-                    self.checkProfileButtonSettings()
-                    self.checkFollow(self.followButton)
                 }
             }
         }
+        
+        self.checkProfileButtonSettings()
+        self.checkFollow(self.followButton)
     }
     
     func getTradeIdeas(queryType: QueryHelper.QueryType) {

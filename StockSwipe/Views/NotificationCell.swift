@@ -28,10 +28,8 @@ class NotificationCell: UITableViewCell {
         
         guard let user = activity.fromUser as? User else { return }
         self.fullname.text = user.full_name
-        
         user.getAvatar { (avatar) in
             DispatchQueue.main.async {
-                self.fullname.text = user.full_name
                 self.userAvatar.image = avatar
             }
         }

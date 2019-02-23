@@ -42,10 +42,9 @@ class ProfileDetailTableViewController: UITableViewController {
         let tempUser = user!
         
         if self.userProfilePictureChanged {
-            let imageData = self.userAvatarImageView.image!.pngData()
-            let parseImageFile = PFFileObject(name: "profile_image.png", data: imageData!)
-            
-            parseImageFile?.saveInBackground(block: { (success, error) -> Void in
+            guard let imageData = self.userAvatarImageView.image?.pngData() else { return }
+            let parseImageFile = PFFileObject(data: imageData, contentType: "image/png")
+            parseImageFile.saveInBackground(block: { (success, error) in
                 if success {
                     self.user["profile_image"] = parseImageFile
                     self.user["full_name"] = self.fullnameTextField.text
@@ -98,16 +97,11 @@ class ProfileDetailTableViewController: UITableViewController {
     }
     
     private func getProfileDetails() {
-        
-        user?.getAvatar { (profileImage) in
-            DispatchQueue.main.async {
-                self.userAvatarImageView.image = profileImage
-                self.fullnameTextField.text = self.user?.full_name
-                self.userBioTextView.text = self.user?.bio
-                self.userLocationTextField.text = self.user?.location
-                self.userWebsiteTextField.text = self.user?.website
-            }
-        }
+        self.userAvatarImageView.image = self.user.avtar
+        self.fullnameTextField.text = self.user?.full_name
+        self.userBioTextView.text = self.user?.bio
+        self.userLocationTextField.text = self.user?.location
+        self.userWebsiteTextField.text = self.user?.website
     }
     
     @objc func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {

@@ -55,12 +55,15 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         }
         
         self.currentUser = currentUser
-        currentUser.fetchInBackground { (user, error) in
+        currentUser.fetchIfNeededInBackground() { (user, error) in
             guard let user = user as? User else { return }
             self.currentUser = user
+            DispatchQueue.main.async {
+                self.profileLabel.text = user.full_name
+            }
+
             currentUser.getAvatar { (avatar) in
                 DispatchQueue.main.async {
-                    self.profileLabel.text = user.full_name
                     self.profileAvatarImage.image = user.avtar
                 }
             }

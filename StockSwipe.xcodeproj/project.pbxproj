@@ -21,16 +21,6 @@
 		232ECBDE2212648B00C30E46 /* CardTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDA2212648B00C30E46 /* CardTransition.swift */; };
 		232ECBDF2212648B00C30E46 /* CardPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDB2212648B00C30E46 /* CardPresentationController.swift */; };
 		232ECBE02212648B00C30E46 /* PresentCardAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDC2212648B00C30E46 /* PresentCardAnimator.swift */; };
-		2339B0A41B41A697009CE3EB /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 2339B0951B41A697009CE3EB /* LICENSE */; };
-		2339B0A51B41A697009CE3EB /* iRate.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 2339B0981B41A697009CE3EB /* iRate.bundle */; };
-		2339B0A61B41A697009CE3EB /* iRate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2339B09A1B41A697009CE3EB /* iRate.m */; };
-		2339B0A71B41A697009CE3EB /* SARate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2339B09C1B41A697009CE3EB /* SARate.m */; };
-		2339B0A81B41A697009CE3EB /* SARateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2339B09E1B41A697009CE3EB /* SARateViewController.m */; };
-		2339B0A91B41A697009CE3EB /* star-gray.png in Resources */ = {isa = PBXBuildFile; fileRef = 2339B09F1B41A697009CE3EB /* star-gray.png */; };
-		2339B0AA1B41A697009CE3EB /* star-gray@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2339B0A01B41A697009CE3EB /* star-gray@2x.png */; };
-		2339B0AB1B41A697009CE3EB /* star.png in Resources */ = {isa = PBXBuildFile; fileRef = 2339B0A11B41A697009CE3EB /* star.png */; };
-		2339B0AC1B41A697009CE3EB /* star@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2339B0A21B41A697009CE3EB /* star@2x.png */; };
-		2339B0AD1B41A697009CE3EB /* SARate.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 2339B0A31B41A697009CE3EB /* SARate.podspec */; };
 		2339B0AF1B41A6CB009CE3EB /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2339B0AE1B41A6CB009CE3EB /* MessageUI.framework */; };
 		233BFDC41B1A28A3008B39ED /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233BFDC31B1A28A3008B39ED /* CoreData.framework */; };
 		233C7D541CB210B6006A014A /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233C7D531CB210B6006A014A /* Protocols.swift */; };
@@ -43,8 +33,6 @@
 		235EFFF61D33E3A90082B888 /* LoginViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 235EFFF51D33E3A90082B888 /* LoginViewControllerTests.swift */; };
 		236280C21CB3FABF0022A129 /* TradeIdea.swift in Sources */ = {isa = PBXBuildFile; fileRef = 236280C11CB3FABF0022A129 /* TradeIdea.swift */; };
 		236875B21B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m in Sources */ = {isa = PBXBuildFile; fileRef = 236875B11B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m */; };
-		2375FE6B1D85A39A0049D297 /* KaushanScript.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2375FE641D85A39A0049D297 /* KaushanScript.ttf */; };
-		2375FE6C1D85A39A0049D297 /* Lato-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2375FE651D85A39A0049D297 /* Lato-Light.ttf */; };
 		2375FE6D1D85A39A0049D297 /* GeneralPreferences.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2375FE671D85A39A0049D297 /* GeneralPreferences.plist */; };
 		2375FE6E1D85A39A0049D297 /* StockExchangePreferences_CA.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2375FE681D85A39A0049D297 /* StockExchangePreferences_CA.plist */; };
 		2375FE6F1D85A39A0049D297 /* StockExchangePreferences_US.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2375FE691D85A39A0049D297 /* StockExchangePreferences_US.plist */; };
@@ -208,19 +196,6 @@
 		232F5F981EE6E06C0046E16F /* StockSwipe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StockSwipe.entitlements; sourceTree = "<group>"; };
 		23332BA21CA08404006E4863 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = StockSwipeWidget/Base.lproj/MainInterface.storyboard; sourceTree = SOURCE_ROOT; };
 		23332BA41CA08416006E4863 /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TodayViewController.swift; path = StockSwipeWidget/TodayViewController.swift; sourceTree = SOURCE_ROOT; };
-		2339B0951B41A697009CE3EB /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		2339B0981B41A697009CE3EB /* iRate.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = iRate.bundle; sourceTree = "<group>"; };
-		2339B0991B41A697009CE3EB /* iRate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = iRate.h; sourceTree = "<group>"; };
-		2339B09A1B41A697009CE3EB /* iRate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = iRate.m; sourceTree = "<group>"; };
-		2339B09B1B41A697009CE3EB /* SARate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SARate.h; sourceTree = "<group>"; };
-		2339B09C1B41A697009CE3EB /* SARate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SARate.m; sourceTree = "<group>"; };
-		2339B09D1B41A697009CE3EB /* SARateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SARateViewController.h; sourceTree = "<group>"; };
-		2339B09E1B41A697009CE3EB /* SARateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SARateViewController.m; sourceTree = "<group>"; };
-		2339B09F1B41A697009CE3EB /* star-gray.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star-gray.png"; sourceTree = "<group>"; };
-		2339B0A01B41A697009CE3EB /* star-gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star-gray@2x.png"; sourceTree = "<group>"; };
-		2339B0A11B41A697009CE3EB /* star.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = star.png; sourceTree = "<group>"; };
-		2339B0A21B41A697009CE3EB /* star@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "star@2x.png"; sourceTree = "<group>"; };
-		2339B0A31B41A697009CE3EB /* SARate.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = SARate.podspec; sourceTree = "<group>"; };
 		2339B0AE1B41A6CB009CE3EB /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		233BFDC31B1A28A3008B39ED /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		233C7D531CB210B6006A014A /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
@@ -235,8 +210,6 @@
 		236280C11CB3FABF0022A129 /* TradeIdea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TradeIdea.swift; sourceTree = "<group>"; };
 		236875B01B9DDAC4003D0C21 /* NSDate+NVTimeAgo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+NVTimeAgo.h"; sourceTree = "<group>"; };
 		236875B11B9DDAC4003D0C21 /* NSDate+NVTimeAgo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+NVTimeAgo.m"; sourceTree = "<group>"; };
-		2375FE641D85A39A0049D297 /* KaushanScript.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = KaushanScript.ttf; sourceTree = "<group>"; };
-		2375FE651D85A39A0049D297 /* Lato-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Light.ttf"; sourceTree = "<group>"; };
 		2375FE671D85A39A0049D297 /* GeneralPreferences.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = GeneralPreferences.plist; sourceTree = "<group>"; };
 		2375FE681D85A39A0049D297 /* StockExchangePreferences_CA.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = StockExchangePreferences_CA.plist; sourceTree = "<group>"; };
 		2375FE691D85A39A0049D297 /* StockExchangePreferences_US.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = StockExchangePreferences_US.plist; sourceTree = "<group>"; };
@@ -399,42 +372,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2339B0941B41A697009CE3EB /* SARate-master */ = {
-			isa = PBXGroup;
-			children = (
-				2339B0951B41A697009CE3EB /* LICENSE */,
-				2339B0961B41A697009CE3EB /* SARate */,
-				2339B0A31B41A697009CE3EB /* SARate.podspec */,
-			);
-			path = "SARate-master";
-			sourceTree = "<group>";
-		};
-		2339B0961B41A697009CE3EB /* SARate */ = {
-			isa = PBXGroup;
-			children = (
-				2339B0971B41A697009CE3EB /* iRate */,
-				2339B09B1B41A697009CE3EB /* SARate.h */,
-				2339B09C1B41A697009CE3EB /* SARate.m */,
-				2339B09D1B41A697009CE3EB /* SARateViewController.h */,
-				2339B09E1B41A697009CE3EB /* SARateViewController.m */,
-				2339B09F1B41A697009CE3EB /* star-gray.png */,
-				2339B0A01B41A697009CE3EB /* star-gray@2x.png */,
-				2339B0A11B41A697009CE3EB /* star.png */,
-				2339B0A21B41A697009CE3EB /* star@2x.png */,
-			);
-			path = SARate;
-			sourceTree = "<group>";
-		};
-		2339B0971B41A697009CE3EB /* iRate */ = {
-			isa = PBXGroup;
-			children = (
-				2339B0981B41A697009CE3EB /* iRate.bundle */,
-				2339B0991B41A697009CE3EB /* iRate.h */,
-				2339B09A1B41A697009CE3EB /* iRate.m */,
-			);
-			path = iRate;
-			sourceTree = "<group>";
-		};
 		2343B6111C8361CF008BF2CA /* WordCloud */ = {
 			isa = PBXGroup;
 			children = (
@@ -482,8 +419,6 @@
 		2375FE631D85A39A0049D297 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				2375FE641D85A39A0049D297 /* KaushanScript.ttf */,
-				2375FE651D85A39A0049D297 /* Lato-Light.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -740,7 +675,6 @@
 				2347E6121BD7C4A20036EA65 /* iCarousel */,
 				238DABC01BA664E00079DAFC /* TLMotionEffect */,
 				236875AF1B9DDAB7003D0C21 /* NSDate-Time-Ago */,
-				2339B0941B41A697009CE3EB /* SARate-master */,
 				23CAE2651C2B46A800D15819 /* LocalAuthentication.framework */,
 				23EA700F1B119803008F6C12 /* AudioToolbox.framework */,
 				239A3E481BAA1CCF00894D1E /* JavaScriptCore.framework */,
@@ -970,29 +904,20 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2339B0AD1B41A697009CE3EB /* SARate.podspec in Resources */,
 				2375FE6F1D85A39A0049D297 /* StockExchangePreferences_US.plist in Resources */,
 				235805A622107F80005C89DD /* TradeIdea.storyboard in Resources */,
 				23F374E8220F969B00593EFF /* Login.storyboard in Resources */,
-				2339B0AB1B41A697009CE3EB /* star.png in Resources */,
-				2339B0A41B41A697009CE3EB /* LICENSE in Resources */,
 				23F374E9220F969B00593EFF /* Main.storyboard in Resources */,
 				2375FE701D85A39A0049D297 /* StockSectorPreferences.plist in Resources */,
 				2375FE6E1D85A39A0049D297 /* StockExchangePreferences_CA.plist in Resources */,
-				2339B0AC1B41A697009CE3EB /* star@2x.png in Resources */,
-				2339B0A51B41A697009CE3EB /* iRate.bundle in Resources */,
 				2382B69E2210F28E00209EAF /* CardView.xib in Resources */,
 				23F374E6220F969B00593EFF /* Search.storyboard in Resources */,
-				2339B0A91B41A697009CE3EB /* star-gray.png in Resources */,
-				2339B0AA1B41A697009CE3EB /* star-gray@2x.png in Resources */,
 				238C1AFB1C8C65D6009F9CC1 /* Images.xcassets in Resources */,
 				23F374E5220F969B00593EFF /* CardDetail.storyboard in Resources */,
 				23F374EA220F969B00593EFF /* Feedback.storyboard in Resources */,
 				23F374E7220F969B00593EFF /* LaunchScreen.storyboard in Resources */,
 				2375FE721D85A45A0049D297 /* NotificationPreferences.plist in Resources */,
 				23F374EB220F969B00593EFF /* Profile.storyboard in Resources */,
-				2375FE6B1D85A39A0049D297 /* KaushanScript.ttf in Resources */,
-				2375FE6C1D85A39A0049D297 /* Lato-Light.ttf in Resources */,
 				23F374E3220F969B00593EFF /* Filter.storyboard in Resources */,
 				2375FE6D1D85A39A0049D297 /* GeneralPreferences.plist in Resources */,
 			);
@@ -1148,7 +1073,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2339B0A71B41A697009CE3EB /* SARate.m in Sources */,
 				23C221AE1DC8E8C5003898E9 /* FiltersCell.swift in Sources */,
 				239EDA6D1BB0258B001CC63C /* Pimps.swift in Sources */,
 				23C221B31DC8E8C5003898E9 /* IdeaPostButton.swift in Sources */,
@@ -1201,7 +1125,6 @@
 				238DB6E81D85A01F00082918 /* MainTabBarController.swift in Sources */,
 				238DB6F11D85A01F00082918 /* SettingsTableViewController.swift in Sources */,
 				23C221AA1DC8E8C5003898E9 /* BorderedLabel.swift in Sources */,
-				2339B0A61B41A697009CE3EB /* iRate.m in Sources */,
 				23C221BF1DC8E8C5003898E9 /* TopNewsCell.swift in Sources */,
 				23C221B21DC8E8C5003898E9 /* IdeaCell.swift in Sources */,
 				23B70D5B1B115BEF00FF2C04 /* CardModel.swift in Sources */,
@@ -1231,7 +1154,6 @@
 				23C221C51DC8ECF9003898E9 /* ChartYAxisFormatter.swift in Sources */,
 				238A112A1C834A00002C1A73 /* ConcurrentOperation.swift in Sources */,
 				23C221AF1DC8E8C5003898E9 /* FollowButton.swift in Sources */,
-				2339B0A81B41A697009CE3EB /* SARateViewController.m in Sources */,
 				23C221B91DC8E8C5003898E9 /* SearchTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

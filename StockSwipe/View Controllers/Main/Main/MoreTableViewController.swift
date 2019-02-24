@@ -113,7 +113,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                 return
             }
             
-            iRate.sharedInstance().openRatingsPageInAppStore()
+            UIApplication.shared.open(Constants.appReviewURL)
             
         case .GiveFeedbackCell:
             

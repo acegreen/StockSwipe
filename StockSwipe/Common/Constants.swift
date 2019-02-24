@@ -47,8 +47,8 @@ class Constants {
     
     static let appLinkURL = URL(string: "https://itunes.apple.com/us/app/stockswipe-probably-funnest/id1009599685?ls=1&mt=8")
     static let facebookAppLink = URL(string: "https://fb.me/1156458804442388")
-    static let appURL = URL(string: "itms-apps://itunes.apple.com/app/id1009599685")
-    static let appReviewURL = URL(string: "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=1009599685")
+    static let appURL = URL(string: "itms-apps://itunes.apple.com/app/id1009599685")!
+    static let appReviewURL = URL(string: "itms-apps://itunes.apple.com/app/id1009599685?action=write-review")!
     static let settingsURL = URL(string: UIApplication.openSettingsURLString)
     static let publicationURL = URL(string: "https://medium.com/stockswipe-trade-ideas")
     

@@ -179,9 +179,6 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             }
         })
         
-        // Increment eventCount
-        Functions.incrementEventCount()
-        
         DispatchQueue.main.async {
             self.dismiss(animated: true, completion: nil)
         }

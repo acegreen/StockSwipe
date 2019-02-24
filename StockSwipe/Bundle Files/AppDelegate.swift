@@ -25,27 +25,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     var pushDelegate: PushNotificationDelegate?
     
-    override init() {
-        AppDelegate.setupSARate()
-    }
-    
-    class func setupSARate() {
-        
-        //configure
-        SARate.sharedInstance().minAppStoreRaiting = 4
-        SARate.sharedInstance().eventsUntilPrompt = 25
-        SARate.sharedInstance().daysUntilPrompt = 7
-        SARate.sharedInstance().remindPeriod = 0
-        
-        SARate.sharedInstance().email = Constants.appEmail
-        SARate.sharedInstance().emailSubject = "StockSwipe Feedback/Bug"
-        SARate.sharedInstance().emailText = "Hello StockSwipe Team, </br> </br> </br> </br> </br> - - - - - - - - - - - - - - - - - - - - - </br>" + Constants.emailDiagnosticInfo
-        
-        SARate.sharedInstance().previewMode = false
-        SARate.sharedInstance().verboseLogging = false
-        SARate.sharedInstance().promptAtLaunch = false
-    }
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // Override point for customization after application launch.
         

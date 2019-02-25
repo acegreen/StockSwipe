@@ -224,13 +224,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                 self.userTag.text = user.usertag
             }
         }
-        user.getAvatar({ (image) in
+        user.getAvatar({ (avatar) in
             DispatchQueue.main.async {
-                if let image = image {
-                    self.userAvatar.image = image
-                } else {
-                    self.userAvatar.image = UIImage(named: "dummy_profile_male")
-                }
+                self.userAvatar.image = avatar
             }
         })
         
@@ -267,13 +263,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                     self.nestedUserTag.text = nestedTradeIdea.user.username
                 }
             }
-            user.getAvatar({ (image) in
+            user.getAvatar({ (avatar) in
                 DispatchQueue.main.async {
-                    if let image = image {
-                        self.nestedUserAvatar.image = image
-                    } else {
-                        self.nestedUserAvatar.image = UIImage(named: "dummy_profile_male")
-                    }
+                    self.nestedUserAvatar.image = avatar
                 }
             })
             

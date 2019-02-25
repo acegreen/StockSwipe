@@ -33,7 +33,7 @@ public class User: PFUser {
     @NSManaged var mention_notification: Bool
     @NSManaged var swipe_addToWatchlist: Bool
     
-    private(set) var avtar: UIImage?
+    private(set) var avtar = UIImage(named: "dummy_profile_male")!
     private(set) var ideasCount: Int = 0
     private(set) var followingCount: Int = 0
     private(set) var followersCount: Int = 0
@@ -43,9 +43,9 @@ public class User: PFUser {
         return (self.username != nil) ? "@" + self.username! : ""
     }
     
-    func getAvatar(_ completion: @escaping (UIImage?) -> Void) {
+    func getAvatar(_ completion: @escaping (UIImage) -> Void) {
         guard self.profile_image?.url != nil || profile_image_url != nil else {
-            completion(nil)
+            completion(self.avtar)
             return
         }
         QueryHelper.sharedInstance.queryWith(queryString: self.profile_image?.url ?? profile_image_url ?? "", useCacheIfPossible: true, completionHandler: { (result) in
@@ -54,12 +54,12 @@ public class User: PFUser {
                 let avatarData  = try result()
                 if let image = UIImage(data: avatarData) {
                     self.avtar = image
-                    completion(image)
+                    completion(self.avtar)
                 } else {
-                    completion(nil)
+                    completion(self.avtar)
                 }
             } catch {
-                completion(nil)
+                completion(self.avtar)
             }
         })
     }

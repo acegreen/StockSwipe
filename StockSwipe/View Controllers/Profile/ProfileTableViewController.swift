@@ -60,7 +60,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     let reachability = Reachability()
     
     @IBOutlet var headerView: UIView!
-    @IBOutlet var avatarImage:UIImageView!
+    @IBOutlet var avatarImage: UIImageView!
     @IBOutlet var fullNameLabel: UILabel!
     @IBOutlet var usernameLabel: UILabel!
     

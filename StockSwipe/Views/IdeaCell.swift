@@ -215,7 +215,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.ideaTime.text = nsPublishedDate.formattedAsTimeAgo()
         }
         
-        guard let user =  user else { return }
+        guard let user =  user else {
+            return
+        }
         DispatchQueue.main.async {
             self.userName.text = user.full_name
             if self.userTag != nil {
@@ -224,7 +226,11 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
         user.getAvatar({ (image) in
             DispatchQueue.main.async {
-                self.userAvatar.image = image
+                if let image = image {
+                    self.userAvatar.image = image
+                } else {
+                    self.userAvatar.image = UIImage(named: "dummy_profile_male")
+                }
             }
         })
         
@@ -263,7 +269,11 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             }
             user.getAvatar({ (image) in
                 DispatchQueue.main.async {
-                    self.nestedUserAvatar.image = image
+                    if let image = image {
+                        self.nestedUserAvatar.image = image
+                    } else {
+                        self.nestedUserAvatar.image = UIImage(named: "dummy_profile_male")
+                    }
                 }
             })
             

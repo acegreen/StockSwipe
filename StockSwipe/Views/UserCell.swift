@@ -32,7 +32,11 @@ class UserCell: UITableViewCell {
         self.username.text = user.usertag
         self.user.getAvatar({ (image) in
             DispatchQueue.main.async {
-                self.userAvatar.image = image
+                if let image = image {
+                    self.userAvatar.image = image
+                } else {
+                    self.userAvatar.image = UIImage(named: "dummy_profile_male")
+                }
             }
         })
         

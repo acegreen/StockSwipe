@@ -193,7 +193,7 @@ class Functions {
                     
                     do {
                         let eodFundamentalsResult = try eodFundamentalsResult()
-                        let parseObject = PFObject(className: "Stocks")
+                        let parseObject = Stock()
                         parseObject["Symbol"] = symbol
                         parseObject["Company"] = eodFundamentalsResult.general.name ?? ""
                         parseObject["Exchange"] = eodFundamentalsResult.general.exchange ?? ""
@@ -329,7 +329,7 @@ class Functions {
                     
                 } else if activityObjects.isEmpty {
                     
-                    let activityObject = PFObject(className: "Activity")
+                    let activityObject = Activity()
                     activityObject["fromUser"] = currentUser
                     activityObject["stock"] = parseObject
                     
@@ -399,7 +399,7 @@ class Functions {
                     
                 } else if activityObjects.isEmpty {
                     
-                    let activityObject = PFObject(className: "Activity")
+                    let activityObject = Activity()
                     activityObject["fromUser"] = currentUser
                     activityObject["stock"] = parseObject
                     

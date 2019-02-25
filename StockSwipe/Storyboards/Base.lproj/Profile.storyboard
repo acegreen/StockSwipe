@@ -547,10 +547,10 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cag-lG-mCa">
-                                                    <rect key="frame" x="20" y="10" width="374" height="29.5"/>
+                                                    <rect key="frame" x="20" y="10" width="374" height="39.5"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Td6-Fq-9zm">
-                                                            <rect key="frame" x="0.0" y="0.0" width="80" height="29.5"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="80" height="39.5"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="width" constant="80" id="CMp-M4-fJa"/>
                                                             </constraints>
@@ -559,7 +559,7 @@
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                         <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Add your name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2bk-G7-u9Z">
-                                                            <rect key="frame" x="80" y="0.0" width="294" height="29.5"/>
+                                                            <rect key="frame" x="80" y="0.0" width="294" height="39.5"/>
                                                             <color key="textColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                                                             <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
                                                             <textInputTraits key="textInputTraits" textContentType="name"/>
@@ -570,7 +570,7 @@
                                             <constraints>
                                                 <constraint firstItem="Cag-lG-mCa" firstAttribute="top" secondItem="DiZ-P3-lgp" secondAttribute="top" constant="10" id="Ci3-Ji-kJF"/>
                                                 <constraint firstItem="Cag-lG-mCa" firstAttribute="leading" secondItem="DiZ-P3-lgp" secondAttribute="leading" constant="20" id="Fe7-eP-doh"/>
-                                                <constraint firstAttribute="bottom" secondItem="Cag-lG-mCa" secondAttribute="bottom" constant="20" id="FmG-rq-YJz"/>
+                                                <constraint firstAttribute="bottom" secondItem="Cag-lG-mCa" secondAttribute="bottom" constant="10" id="FmG-rq-YJz"/>
                                                 <constraint firstAttribute="trailing" secondItem="Cag-lG-mCa" secondAttribute="trailing" constant="20" id="gLL-cG-W4F"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -790,7 +790,7 @@
             <objects>
                 <tableViewController id="XHG-nM-Qe0" customClass="SettingsTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="y7J-cH-0Ho">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="720"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -926,7 +926,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="BlockedAccountsTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BlL-G5-xOf" customClass="BlockedAccountsTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="OZv-K0-jeH">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="720"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
@@ -1075,7 +1075,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NotificationsTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nVq-GI-b18" customClass="NotificationsTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="60" sectionHeaderHeight="10" sectionFooterHeight="10" id="JLV-Nq-oct">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="720"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1440,7 +1440,7 @@
         <image name="x" width="16" height="16"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="5hk-aD-U7Z"/>
+        <segue reference="RSU-eq-W9K"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
 </document>

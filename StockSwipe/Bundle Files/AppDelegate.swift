@@ -39,6 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             $0.server = "http://45.55.137.153:1337/parse"
         }
         Parse.initialize(with: configuration)
+        let defaultACL = PFACL()
+        defaultACL.hasPublicReadAccess = true
+        defaultACL.hasPublicWriteAccess = false
+        PFACL.setDefault(defaultACL, withAccessForCurrentUser: true)
         
         // [Optional] Track statistics around application opens.
         PFAnalytics.trackAppOpened(launchOptions: launchOptions)

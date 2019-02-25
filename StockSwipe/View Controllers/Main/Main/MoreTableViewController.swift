@@ -64,7 +64,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
 
             currentUser.getAvatar { (avatar) in
                 DispatchQueue.main.async {
-                    self.profileAvatarImage.image = user.avtar
+                    self.profileAvatarImage.image = avatar
                 }
             }
         }

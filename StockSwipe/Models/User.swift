@@ -44,8 +44,8 @@ public class User: PFUser {
     }
     
     func getAvatar(_ completion: @escaping (UIImage?) -> Void) {
-        guard self.avtar == nil else {
-            completion(self.avtar)
+        guard self.profile_image?.url != nil || profile_image_url != nil else {
+            completion(nil)
             return
         }
         QueryHelper.sharedInstance.queryWith(queryString: self.profile_image?.url ?? profile_image_url ?? "", useCacheIfPossible: true, completionHandler: { (result) in
@@ -54,11 +54,12 @@ public class User: PFUser {
                 let avatarData  = try result()
                 if let image = UIImage(data: avatarData) {
                     self.avtar = image
-                    completion(self.avtar)
+                    completion(image)
+                } else {
+                    completion(nil)
                 }
             } catch {
-                self.avtar = UIImage(named: "dummy_profile_male")
-                completion(self.avtar)
+                completion(nil)
             }
         })
     }

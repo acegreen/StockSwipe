@@ -250,18 +250,13 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
         guard let user = user else { return }
         
-        user.fetchIfNeededInBackground { (user, error) in
-            
-            guard let user = user as? User else { return }
-            self.user = user
+        DispatchQueue.main.async {
+            self.fullNameLabel.text = user.full_name
+            self.usernameLabel.text = user.usertag
+        }
+        user.getAvatar { (avatar) in
             DispatchQueue.main.async {
-                self.fullNameLabel.text = user.full_name
-                self.usernameLabel.text = user.username
-            }
-            user.getAvatar { (avatar) in
-                DispatchQueue.main.async {
-                    self.avatarImage.image = avatar
-                }
+                self.avatarImage.image = avatar
             }
         }
         
@@ -821,7 +816,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                 let activityObject = try result()
                 if activityObject.first == nil {
 
-                    let activityObject = PFObject(className: "Activity")
+                    let activityObject = Activity()
                     activityObject["fromUser"] = currentUser
                     activityObject["toUser"] = self.user
                     activityObject["activityType"] = Constants.ActivityType.Follow.rawValue

@@ -151,7 +151,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 } catch {
                     if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
+                            Functions.showNotificationBanner(title: nil, subtitle: error.message(), style: .warning)
                         }
                     }
                 }
@@ -197,7 +197,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             } catch {
                 if let error = error as? QueryHelper.QueryError {
                     DispatchQueue.main.async {
-                        SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
+                        Functions.showNotificationBanner(title: nil, subtitle: error.message(), style: .warning)
                     }
                 }
             }

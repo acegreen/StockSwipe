@@ -45,7 +45,7 @@ class FeedbackViewController: UIViewController, MFMailComposeViewControllerDeleg
             
         } else {
             
-            SweetAlert().showAlert("No email account found", subTitle: "Please add an email acount in your mail app", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "No email account found", subtitle: "Please add an email acount in your mail app", style: .warning)
             
         }
     }

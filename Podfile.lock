@@ -22,7 +22,11 @@ PODS:
     - FBSDKCoreKit
   - FBSDKShareKit (4.40.0):
     - FBSDKCoreKit
+  - MarqueeLabel/Swift (3.2.0)
   - MDCSwipeToChoose (0.2.4)
+  - NotificationBannerSwift (2.0.1):
+    - MarqueeLabel/Swift (~> 3.2.0)
+    - SnapKit (~> 4.2.0)
   - NVActivityIndicatorView (4.6.1):
     - NVActivityIndicatorView/Presenter (= 4.6.1)
   - NVActivityIndicatorView/Presenter (4.6.1)
@@ -41,6 +45,7 @@ PODS:
   - ReachabilitySwift (4.3.0)
   - SDVersion (4.3.2)
   - SKSplashView (0.1.2)
+  - SnapKit (4.2.0)
   - SwiftyJSON (4.2.0)
   - SWXMLHash (4.7.6)
   - TwitterCore (3.2.0)
@@ -59,6 +64,7 @@ DEPENDENCIES:
   - FBSDKLoginKit
   - FBSDKShareKit
   - MDCSwipeToChoose (from `https://github.com/acegreen/MDCSwipeToChoose.git`)
+  - NotificationBannerSwift
   - NVActivityIndicatorView
   - Parse
   - Parse/FacebookUtils
@@ -84,10 +90,13 @@ SPEC REPOS:
     - FBSDKCoreKit
     - FBSDKLoginKit
     - FBSDKShareKit
+    - MarqueeLabel
+    - NotificationBannerSwift
     - NVActivityIndicatorView
     - Parse
     - ReachabilitySwift
     - SDVersion
+    - SnapKit
     - SwiftyJSON
     - SWXMLHash
     - TwitterCore
@@ -126,17 +135,20 @@ SPEC CHECKSUMS:
   FBSDKCoreKit: ae214474b25033399c131dc81d258e412582a2ba
   FBSDKLoginKit: 7a1e411d46acc8834588eca437daf34de42e1d52
   FBSDKShareKit: 0e45916f4150da485928ae2a17ca021950b194f5
+  MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
+  NotificationBannerSwift: 007774aa590cc9680647b92b2f217bef5c00c32c
   NVActivityIndicatorView: 4ca19fccc84595a78957336a086d00a49be6ce61
   Parse: 3b31a3dd1777b07ee7f0caee32fafbff544483a5
   ReachabilitySwift: 408477d1b6ed9779dba301953171e017c31241f3
   SDVersion: 18f32c835c1543611fcfae3c6accd9a04b90597e
   SKSplashView: c65333b6707be6f237d09e7c8977941114b0a70d
+  SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
   SWXMLHash: f6e0933ce74f2626669dc544851bc9fc1941670d
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 
-PODFILE CHECKSUM: 879f5e59658cb8daaaaae4761c95ba0046024409
+PODFILE CHECKSUM: 5c6ac7c9cff2e0b1224fadcd40aa2043cd2e74d8
 
 COCOAPODS: 1.7.0.beta.1

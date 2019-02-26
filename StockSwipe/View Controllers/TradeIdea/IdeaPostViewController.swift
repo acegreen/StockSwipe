@@ -48,10 +48,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     
     @IBAction func postButttonPressed(_ sender: AnyObject) {
         
-        guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
-            return
-        }
+        guard Functions.isConnectedToNetwork() else { return }
         guard let currentUser = PFUser.current() else {
             Functions.isUserLoggedIn(presenting: self)
             return
@@ -174,7 +171,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                 
             } else {
                 DispatchQueue.main.async {
-                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
+                    Functions.showNotificationBanner(title: nil, subtitle: error?.localizedDescription, style: .warning)
                 }
             }
         })

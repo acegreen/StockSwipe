@@ -18,6 +18,7 @@ import SafariServices
 import SwiftyJSON
 import AMPopTip
 import Reachability
+import NotificationBannerSwift
 
 class Functions {
     
@@ -25,6 +26,7 @@ class Functions {
         if Reachability()?.isReachable == true {
             return true
         } else {
+            showNotificationBanner(title: "No Internet Connection", subtitle: "Make sure your device is connected to the internet", style: .warning)
             return false
         }
     }
@@ -241,7 +243,7 @@ class Functions {
                 if postAlert == true {
                     
                     DispatchQueue.main.async {
-                        SweetAlert().showAlert("Blocked", subTitle: "", style: AlertStyle.success)
+                        Functions.showNotificationBanner(title: "Blocked", subtitle: "", style: .success)
                     }
                 }
                 
@@ -271,7 +273,7 @@ class Functions {
                 
             } else {
                 DispatchQueue.main.async {
-                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
+                    Functions.showNotificationBanner(title: nil, subtitle: error?.localizedDescription, style: .warning)
                 }
             }
         }
@@ -281,7 +283,7 @@ class Functions {
         
         guard let currentUser = PFUser.current() else { return }
         guard let parseObject = card.parseObject else {
-            SweetAlert().showAlert("Stock Unknown", subTitle: "We couldn't find this symbol in our database", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "Stock Unknown", subtitle: "We couldn't find this symbol in our database", style: .warning)
             return
         }
         
@@ -367,7 +369,7 @@ class Functions {
         
         guard let currentUser = PFUser.current() else { return }
         guard let parseObject = card.parseObject else {
-            SweetAlert().showAlert("Stock Unknown", subTitle: "We couldn't find this symbol in our database", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "Stock Unknown", subtitle: "We couldn't find this symbol in our database", style: .warning)
             return
         }
         
@@ -561,7 +563,7 @@ class Functions {
     class func promptAddToWatchlist(_ card: Card, registerChoice: Bool, completion: @escaping (Constants.UserChoices) -> Void)  {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Add To Watchlist!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "Can't Add To Watchlist!", subtitle: "Make sure your device is connected\nto the internet", style: .warning)
             return
         }
         
@@ -594,6 +596,11 @@ class Functions {
                 }
             }
         }
+    }
+    
+    class func showNotificationBanner(title: String?, subtitle: String?, style: BannerStyle) {
+        let banner = NotificationBanner(title: title, subtitle: subtitle, style: style)
+        banner.show()
     }
     
     class func showPopTipOnceForKey(_ key: String, userDefaults: UserDefaults, popTipText text: String, inView view: UIView, fromFrame frame: CGRect, direction: PopTipDirection = .down, color: UIColor = .darkGray) -> PopTip? {
@@ -687,7 +694,7 @@ class Functions {
         }
         
         guard objectsToShare.count != 0 else {
-            SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
+            Functions.showNotificationBanner(title: "Error!", subtitle: "Something went wrong", style: .danger)
             return completion(nil, false, nil, nil)
         }
         
@@ -713,7 +720,7 @@ class Functions {
     
     class func presentSafariBrowser(with url: URL!, readerMode: Bool = true) {
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Open Url!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "Can't Open Url!", subtitle: "Make sure your device is connected\nto the internet", style: .warning)
             return
         }
         

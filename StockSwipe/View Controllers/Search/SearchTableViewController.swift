@@ -233,7 +233,7 @@ class SearchTableViewController: UITableViewController {
                 } catch {
                     if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
+                            Functions.showNotificationBanner(title: nil, subtitle: error.message(), style: .warning)
                         }
                     }
                 }
@@ -255,7 +255,7 @@ class SearchTableViewController: UITableViewController {
         
         if sender.state == UIGestureRecognizer.State.began {
             guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("Can't Add To Watchlist!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+                Functions.showNotificationBanner(title: "Can't Add To Watchlist!", subtitle: "Make sure your device is connected\nto the internet", style: .warning)
                 return
             }
             
@@ -279,7 +279,7 @@ class SearchTableViewController: UITableViewController {
                 } catch {
                     if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
+                            Functions.showNotificationBanner(title: nil, subtitle: error.message(), style: .warning)
                         }
                     }
                 }

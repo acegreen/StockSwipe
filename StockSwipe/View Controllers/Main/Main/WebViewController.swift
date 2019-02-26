@@ -36,7 +36,7 @@ class WebViewController: UIViewController {
             
             if success {
                 
-                SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
+                Functions.showNotificationBanner(title: "Success!", subtitle: nil, style: .success)
                 
                 // log shared successfully
                 Answers.logShare(withMethod: "\(activity!)",
@@ -48,8 +48,7 @@ class WebViewController: UIViewController {
                 //"Installation ID":PFInstallation.currentInstallation()!.installationId,
                 
             } else if error != nil {
-                
-                SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
+                Functions.showNotificationBanner(title: "Error!", subtitle: "Something went wrong", style: .danger)
             }
             
         }
@@ -106,7 +105,7 @@ extension WebViewController: WKNavigationDelegate {
     
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         print("error:", error.localizedDescription)
-        SweetAlert().showAlert("Something went wrong while loading", subTitle: "Please try again", style: AlertStyle.warning)
+        Functions.showNotificationBanner(title: "Something went wrong while loading", subtitle: "Please try again", style: .warning)
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {

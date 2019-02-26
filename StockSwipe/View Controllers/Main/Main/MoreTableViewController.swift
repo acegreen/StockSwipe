@@ -85,10 +85,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             
         case .FAQCell:
             
-            guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
-                return
-            }
+            guard Functions.isConnectedToNetwork() else { return }
             
             self.performSegueWithIdentifier(.FAQSegueIdentifier, sender: self)
             
@@ -99,17 +96,13 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             
         case .PublicationCell:
             
-            guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
-                return
-            }
+            guard Functions.isConnectedToNetwork() else { return }
             
             Functions.presentSafariBrowser(with: Constants.publicationURL)
             
         case .WriteReviewCell:
             
             guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
                 return
             }
             
@@ -117,10 +110,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             
         case .GiveFeedbackCell:
             
-            guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
-                return
-            }
+            guard Functions.isConnectedToNetwork() else { return }
             
             if MFMailComposeViewController.canSendMail() {
                 
@@ -135,25 +125,19 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                 
             } else {
                 
-                SweetAlert().showAlert("No email account found", subTitle: "Please add an email acount in your mail app", style: AlertStyle.warning)
+                Functions.showNotificationBanner(title: "No email account found", subtitle: "Please add an email acount in your mail app", style: .warning)
                 
             }
             
         case .InviteFacebookCell:
             
-            guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
-                return
-            }
+            guard Functions.isConnectedToNetwork() else { return }
             
             presentFacebookInvite()
             
         case .ShareCell:
             
-            guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
-                return
-            }
+            guard Functions.isConnectedToNetwork() else { return }
             
             let textToShare: String = "Checkout StockSwipe, it's like Tinder for stocks!"
             
@@ -184,7 +168,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                 
                 if success {
                     
-                    SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
+                    Functions.showNotificationBanner(title: "Success!", subtitle: nil, style: .success)
                     
                     // log shared successfully
                     Answers.logShare(withMethod: "\(activity!)",
@@ -194,8 +178,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                         customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
                     
                 } else if error != nil {
-                    
-                    SweetAlert().showAlert("Error!", subTitle: "That didn't go through", style: AlertStyle.error)
+                    Functions.showNotificationBanner(title: "Error!", subtitle: "That didn't go through", style: .danger)
                 }
             }
         }

@@ -15,6 +15,7 @@ target 'StockSwipe' do
     pod 'SWXMLHash'
     pod 'DataCache', :git => 'https://github.com/huynguyencong/DataCache.git'
     pod 'ReachabilitySwift'
+    pod 'NotificationBannerSwift'
 
     # Analytics
     pod 'Crashlytics'

@@ -83,7 +83,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     @IBAction func TrashButtonPressed(_ sender: AnyObject) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Delete!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "Can't Delete!", subtitle: "Make sure your device is connected\nto the internet", style: .warning)
             return
         }
         
@@ -262,7 +262,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         } else {
             
             guard Functions.isConnectedToNetwork() else {
-                SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+                Functions.showNotificationBanner(title: "Can't Access Card!", subtitle: "Make sure your device is connected\nto the internet", style: .warning)
                 return
             }
             
@@ -445,7 +445,7 @@ extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyData
     func performCustomSegue(cell: WatchlistCardCollectionViewCell, card: Card) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "Can't Access Card!", subtitle: "Make sure your device is connected\nto the internet", style: .warning)
             return
         }
     

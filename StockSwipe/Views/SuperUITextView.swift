@@ -69,7 +69,7 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                 } catch {
                     if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
+                            Functions.showNotificationBanner(title: nil, subtitle: error.message(), style: .warning)
                         }
                     }
                 }
@@ -93,14 +93,14 @@ class SuperUITextView: UITextView, UITextViewDelegate, DetectTags {
                 } catch {
                     if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
+                            Functions.showNotificationBanner(title: nil, subtitle: error.message(), style: .warning)
                         }
                     }
                 }
             })
             
         case "hash"?:
-            SweetAlert().showAlert("Coming Soon!", subTitle: "hashtags will be supported soon", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "Coming Soon!", subtitle: "hashtags will be supported soon", style: .warning)
             
         default:
             Functions.presentSafariBrowser(with: URL)

@@ -21,7 +21,6 @@ class NotificationsTableViewController: UITableViewController {
     @IBAction func followerNotificationSwitch(_ sender: UISwitch) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.warning)
             sender.isOn = !sender.isOn
             return
         }
@@ -42,7 +41,6 @@ class NotificationsTableViewController: UITableViewController {
     @IBAction func mentionNotificationSwitch(_ sender: UISwitch) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.warning)
             sender.isOn = !sender.isOn
             return
         }
@@ -63,7 +61,6 @@ class NotificationsTableViewController: UITableViewController {
     @IBAction func TradeIdeaPostedNotificationSwitch(_ sender: UISwitch) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.warning)
             sender.isOn = !sender.isOn
             return
         }
@@ -84,7 +81,6 @@ class NotificationsTableViewController: UITableViewController {
     @IBAction func repliesNotificationSwitch(_ sender: UISwitch) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.warning)
             sender.isOn = !sender.isOn
             return
         }
@@ -105,7 +101,6 @@ class NotificationsTableViewController: UITableViewController {
     @IBAction func likesNotificationSwitch(_ sender: UISwitch) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.warning)
             sender.isOn = !sender.isOn
             return
         }
@@ -126,7 +121,6 @@ class NotificationsTableViewController: UITableViewController {
     @IBAction func reshareNotificationSwitch(_ sender: UISwitch) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Change This!", subTitle: "We need an internet connection to set this", style: AlertStyle.warning)
             sender.isOn = !sender.isOn
             return
         }

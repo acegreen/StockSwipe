@@ -114,12 +114,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                             
                             if success {
                                 DispatchQueue.main.async {
-                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.success)
+                                    Functions.showNotificationBanner(title: "Reported", subtitle: "", style: .success)
                                 }
                                 
                             } else {
                                 DispatchQueue.main.async {
-                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
+                                    Functions.showNotificationBanner(title: nil, subtitle: error?.localizedDescription, style: .warning)
                                 }
                             }
                         })
@@ -134,12 +134,12 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                             
                             if success {
                                 DispatchQueue.main.async {
-                                    SweetAlert().showAlert("Reported", subTitle: "", style: AlertStyle.success)
+                                    Functions.showNotificationBanner(title: "Reported", subtitle: "", style: .success)
                                 }
                                 
                             } else {
                                 DispatchQueue.main.async {
-                                    SweetAlert().showAlert("Something Went Wrong!", subTitle: error?.localizedDescription, style: AlertStyle.warning)
+                                    Functions.showNotificationBanner(title: nil, subtitle: error?.localizedDescription, style: .warning)
                                 }
                             }
                         })

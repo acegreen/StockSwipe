@@ -57,7 +57,7 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
             
             if success {
                 
-                SweetAlert().showAlert("Success!", subTitle: nil, style: AlertStyle.success)
+               Functions.showNotificationBanner(title: "Success!", subtitle: nil, style: .success)
                 
                 // log shared successfully
                 Answers.logShare(withMethod: "\(activity!)",
@@ -67,7 +67,7 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
                     customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
                 
             } else if error != nil {
-                SweetAlert().showAlert("Error!", subTitle: "Something went wrong", style: AlertStyle.error)
+                Functions.showNotificationBanner(title: "Error!", subtitle: "Something went wrong", style: .danger)
             }
         })
     }

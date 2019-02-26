@@ -144,7 +144,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     func logIn(_ viewController: UIViewController) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "No Internet Connection", subtitle: "Make sure your device is connected to the internet", style: .warning)
             return
         }
         
@@ -179,7 +179,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             viewController.present(self.logInViewController, animated: true, completion: nil)
             
         } else {
-            SweetAlert().showAlert("No Action!", subTitle: "You are already Logged in", style: AlertStyle.none)
+            Functions.showNotificationBanner(title: "No Action!", subtitle: "You are already Logged in", style: .none)
             viewController.dismiss(animated: false, completion: nil)
         }
     }
@@ -187,7 +187,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     func logOut() {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "No Internet Connection", subtitle: "Make sure your device is connected to the internet", style: .warning)
             return
         }
         
@@ -196,7 +196,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         PFUser.logOutInBackground { (error) in
             
             if error == nil {
-                SweetAlert().showAlert("Logged Out!", subTitle: "You are now logged out", style: AlertStyle.success)                
+                Functions.showNotificationBanner(title: "Logged Out!", subtitle: "You are now logged out", style: .success)
                 self.loginDelegate?.didLogoutSuccessfully()
             }
         }
@@ -205,16 +205,14 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     func log(_ logInController: PFLogInViewController, shouldBeginLogInWithUsername username: String, password: String) -> Bool {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet.", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
-            }
+            Functions.showNotificationBanner(title: "No Internet Connection", subtitle: "Make sure your device is connected to the internet.", style: .warning)
             return false
         }
         
         if !username.isEmpty && !password.isEmpty {
             return true
         } else {
-            SweetAlert().showAlert("Missing Information", subTitle: "Please enter both your username & password", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
-            }
+            Functions.showNotificationBanner(title: "Missing Information", subtitle: "Please enter both your username & password", style: .warning)
             
             return false
         }
@@ -439,16 +437,12 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         if !Functions.isConnectedToNetwork() {
             
             // Show Error Alert
-            SweetAlert().showAlert("No Internet Connection", subTitle: "Make sure your device is connected to the internet", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
-                
-            }
+            Functions.showNotificationBanner(title: "No Internet Connection", subtitle: "Make sure your device is connected to the internet", style: .warning)
             return
             
         } else {
             // Show Error Alert
-            SweetAlert().showAlert("Logged Failed!", subTitle: error?.localizedDescription, style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Ok", buttonColor:UIColor(rgbValue: 0xD0D0D0) , otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
-                
-            }
+            Functions.showNotificationBanner(title: "Logged Failed!", subtitle: error?.localizedDescription, style: .warning)
         }
     }
     
@@ -569,7 +563,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             self.signUpViewController.dismiss(animated: true, completion: nil)
             self.logInViewController.dismiss(animated: true, completion: { () -> Void in
                 self.dismiss(animated: true, completion: nil)
-                SweetAlert().showAlert("Logged In!", subTitle: "You are now Logged in", style: AlertStyle.success)
+                Functions.showNotificationBanner(title: "Logged In!", subtitle: "You are now Logged in", style: .success)
                 
                 NotificationCenter.default.post(name: Notification.Name("UserLoggedIn"), object: nil, userInfo: ["user": user])
             })
@@ -583,7 +577,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         PFUser.logOutInBackground { (error) in
             if error == nil {
                 DispatchQueue.main.async {
-                    SweetAlert().showAlert("Login Clash!", subTitle: originalError.localizedDescription, style: AlertStyle.warning, dismissTime: 5.0)
+                    Functions.showNotificationBanner(title: "Login Clash!", subtitle: originalError.localizedDescription, style: .warning)
                 }
                 self.loginDelegate?.didLogoutSuccessfully()
             }

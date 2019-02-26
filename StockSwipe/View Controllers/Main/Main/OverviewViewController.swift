@@ -213,7 +213,7 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
     func carousel(_ carousel: iCarousel, didSelectItemAt index: Int) {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "Can't Access Card!", subtitle: "Make sure your device is connected\nto the internet", style: .warning)
             return
         }
         
@@ -230,7 +230,7 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
                 } catch {
                     if let error = error as? QueryHelper.QueryError {
                         DispatchQueue.main.async {
-                            SweetAlert().showAlert("Something Went Wrong!", subTitle: error.message(), style: AlertStyle.warning)
+                            Functions.showNotificationBanner(title: nil, subtitle: error.message(), style: .warning)
                         }
                     }
                 }

@@ -749,7 +749,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     func performCustomSegue() {
         
         guard Functions.isConnectedToNetwork() else {
-            SweetAlert().showAlert("Can't Access Card!", subTitle: "Make sure your device is connected\nto the internet", style: AlertStyle.warning)
+            Functions.showNotificationBanner(title: "Can't Access Card!", subtitle: "Make sure your device is connected\nto the internet", style: .warning)
             return
         }
                 

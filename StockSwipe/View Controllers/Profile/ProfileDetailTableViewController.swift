@@ -106,10 +106,10 @@ class ProfileDetailTableViewController: UITableViewController {
     
     @objc func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
-        imagePicker.allowsEditing = false
+        imagePicker.allowsEditing = true
         imagePicker.sourceType = .photoLibrary
-        imagePicker.delegate = self
         imagePicker.modalPresentationStyle = .currentContext
+        imagePicker.delegate = self
         
         present(imagePicker, animated: true, completion: nil)
     }
@@ -119,7 +119,7 @@ class ProfileDetailTableViewController: UITableViewController {
 extension ProfileDetailTableViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let pickedImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+        if let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             userAvatarImageView.image = pickedImage
             self.userProfilePictureChanged = true
             

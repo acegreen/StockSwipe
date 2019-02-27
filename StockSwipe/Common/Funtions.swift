@@ -599,7 +599,25 @@ class Functions {
     }
     
     class func showNotificationBanner(title: String?, subtitle: String?, style: BannerStyle) {
-        let banner = NotificationBanner(title: title, subtitle: subtitle, style: style)
+        class CustomBannerColors: BannerColorsProtocol {
+            
+            internal func color(for style: BannerStyle) -> UIColor {
+                switch style {
+                case .danger:
+                    return Constants.SSColors.red
+                case .info:
+                    return Constants.SSColors.grey
+                case .none:
+                    return UIColor.clear
+                case .success:
+                    return Constants.SSColors.green
+                case .warning:
+                    return Constants.SSColors.gold
+                }
+            }
+            
+        }
+        let banner = NotificationBanner(title: title, subtitle: subtitle, style: style, colors: CustomBannerColors())
         banner.show()
     }
     

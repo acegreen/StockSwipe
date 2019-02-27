@@ -78,13 +78,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         Constants.swipeAddToWatchlist = PFUser.current()?.object(forKey: "swipe_addToWatchlist") as? Bool ?? Constants.userDefaults.bool(forKey: "SWIPE_ADD_TO_WATCHLIST")
         
         // Setup General Appearance
-        UITabBar.appearance().barTintColor = UIColor.white
-        UITabBar.appearance().tintColor = Constants.SSColors.green
+//        UITabBar.appearance().barTintColor = UIColor.white
+//        UITabBar.appearance().tintColor = Constants.SSColors.green
         self.window?.backgroundColor = UIColor.white
         
         // Adding paging indicator
         let pageControl = UIPageControl.appearance()
-        pageControl.pageIndicatorTintColor = UIColor.lightGray
+        pageControl.pageIndicatorTintColor = Constants.SSColors.lightGrey
         pageControl.currentPageIndicatorTintColor = Constants.SSColors.green
         pageControl.backgroundColor = UIColor.white
         

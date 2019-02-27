@@ -96,7 +96,8 @@ class Constants {
     }
     
     struct SSColors {
-        static let grey: UIColor = UIColor(red: 111/255, green: 113/255, blue: 121/255, alpha: 1.0)
+        static let grey: UIColor = UIColor(red: 92/255, green: 92/255, blue: 102/255, alpha: 1.0)
+        static let lightGrey: UIColor = UIColor(red: 170/255, green: 170/255, blue: 170/255, alpha: 1.0)
         static let green: UIColor = UIColor(red: 86/255, green: 171/255, blue: 47/255, alpha: 1.0)
         static let greenGradientStart: UIColor = UIColor(red: 168/255, green: 224/255, blue: 99/255, alpha: 1.0)
         static let greenGradientEnd: UIColor = UIColor(red: 86/255, green: 171/255, blue: 47/255, alpha: 1.0)

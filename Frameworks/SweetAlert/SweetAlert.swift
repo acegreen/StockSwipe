@@ -27,15 +27,15 @@ open class SweetAlert: UIViewController {
     var kMaxWidth: CGFloat = 320.0
     let kButtonHeight: CGFloat = 35.0
     var textViewHeight: CGFloat = 100.0
-    let kTitleHeight:CGFloat = 30.0
-    var strongSelf:SweetAlert?
+    let kTitleHeight: CGFloat = 30.0
+    var strongSelf: SweetAlert?
     var contentView = UIView()
     var titleLabel: UILabel = UILabel()
     var buttons = [UIButton]()
     var dismissView: UIView?
     var dismissButton: UIButton!
     var animatedView: AnimatableView?
-    var imageView:UIImageView?
+    var imageView: UIImageView?
     var activityIndicatorView: UIActivityIndicatorView?
     var subTitleTextView = UITextView()
     var userAction:((_ isOtherButton: Bool) -> Void)? = nil
@@ -71,6 +71,7 @@ open class SweetAlert: UIViewController {
         contentView.layer.borderWidth = 0.5
         contentView.addSubview(titleLabel)
         contentView.addSubview(subTitleTextView)
+        contentView.tintColor = Constants.SSColors.grey
         contentView.backgroundColor = UIColor(rgbValue: 0xFFFFFF)
         contentView.layer.borderColor = UIColor(rgbValue: 0xCCCCCC).cgColor
         view.addSubview(contentView)

@@ -50,10 +50,9 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
     
     func didReceivePushNotification(_ userInfo: [AnyHashable: Any]) {
         
-        if let alert = userInfo["alert"] as? [String: Any], let notificationTitle = alert["title"] as? String {
-            if notificationTitle == "Follower Notification" || notificationTitle == "Trade Idea Reply Notification" || notificationTitle == "Trade Idea Like Notification" || notificationTitle == "Trade Idea Reshare Notification" {
-                self.tabBar.items?[3].badgeValue = "1"
-            }
+        if let alert = userInfo["alert"] as? [String: Any], let notificationTitle = alert["title"] as? String, let notificationBody = alert["body"] as? String {
+            self.tabBar.items?[3].badgeValue = "1"
+            Functions.showNotificationBanner(title: notificationTitle, subtitle: notificationBody, style: .info)
         }
     }
     
@@ -64,6 +63,7 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
         let backgroundColor: UIColor = Constants.SSColors.green
         self.splashView = SKSplashView(splashIcon: splashIcon, backgroundColor: backgroundColor, animationType: .none)
         //self.splashView.delegate = self
+        self.splashView.tintColor = UIColor.white
         splashView.animationDuration = 0.50
         self.view.addSubview(splashView)
     }

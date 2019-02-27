@@ -234,9 +234,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     let data = try NSURLConnection.sendSynchronousRequest(request as URLRequest, returning: &response)
                     let result = try JSON(data: data)
                     
-                    var firstName: String?
-                    var lastName: String?
-                    
                     if let twitterUsername = PFTwitterUtils.twitter()?.screenName {
                         user.username = twitterUsername
                         user["username_lowercase"] = user.username!.lowercased()
@@ -244,9 +241,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     
                     if let twitterName = result["name"].string {
                         user["full_name"] = twitterName
-                        
-                        firstName = twitterName.components(separatedBy: " ").first
-                        lastName = twitterName.components(separatedBy: " ").last
                         
                     } else {
                         user["full_name"] = PFTwitterUtils.twitter()?.screenName
@@ -297,7 +291,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     user["reshareTradeIdea_notification"] = true
                     user["swipe_addToWatchlist"] = false
                     
-                    self.saveUser(user, firstName: firstName, lastName: lastName)
+                    self.saveUser(user)
                     
                 } catch let error as NSError {
                     
@@ -306,7 +300,8 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 }
                 
             } else {
-                // TODO: handle old user
+                // register user and dismiss
+                self.registerUser(user: user)
                 self.dismissVC(user: user)
             }
             
@@ -321,9 +316,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                     req.start(completionHandler: { (connection, object, error) in
                         
                         do {
-                            
-                            var firstName: String?
-                            var lastName: String?
                             
                             guard error == nil else {
                                 print("Fetch failed: \(error!.localizedDescription)")
@@ -342,9 +334,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                                 
                                 user["full_name"] = facebookNameFromName
                                 user["fullname_lowercase"] = (user["full_name"] as AnyObject).lowercased
-                                
-                                firstName = facebookNameFromName.components(separatedBy: " ").first
-                                lastName = facebookNameFromName.components(separatedBy: " ").last
                                 
                             } else if let facebookNameFromEmail = result["email"].string {
                                 
@@ -394,7 +383,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                             user["reshareTradeIdea_notification"] = true
                             user["swipe_addToWatchlist"] = false
                             
-                            self.saveUser(user, firstName: firstName, lastName: lastName)
+                            self.saveUser(user)
                         } catch {
                             //TODO: handle error
                         }
@@ -402,7 +391,8 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 }
                 
             } else {
-                // TODO: handle old user
+                // register user and dismiss
+                self.registerUser(user: user)
                 self.dismissVC(user: user)
             }
             
@@ -426,7 +416,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
             user["reshareTradeIdea_notification"] = true
             user["swipe_addToWatchlist"] = false
             
-            saveUser(user, firstName: nil, lastName: nil)
+            saveUser(user)
         }
     }
     
@@ -502,7 +492,7 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         user["reshareTradeIdea_notification"] = true
         user["swipe_addToWatchlist"] = false
         
-        saveUser(user, firstName: nil, lastName: nil)
+        saveUser(user)
     }
     
     func signUpViewController(_ signUpController: PFSignUpViewController, didFailToSignUpWithError error: Error?) {
@@ -513,11 +503,11 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         print("User dismissed sign up")
     }
     
-    func registerUserMailChimp(listID: String, firstName: String?, lastName: String?, username: String?, email: String?) {
+    func registerUserMailChimp(listID: String, firstname: String?, lastname: String?, username: String?, email: String?) {
         
         guard let username = username, let email = email else { return }
         
-        let params:[String: Any] = ["id": listID, "email": ["email": email], "merge_vars": ["FNAME": firstName ?? "", "LNAME": lastName ?? "", "username": username], "double_optin": false]
+        let params:[String: Any] = ["id": listID, "email": ["email": email], "merge_vars": ["FNAME": firstname ?? "", "LNAME": lastname ?? "", "username": username], "double_optin": false]
         ChimpKit.shared().callApiMethod("lists/subscribe", withParams: params, andCompletionHandler: {(response, data, error) -> Void in
             if let httpResponse = response as? HTTPURLResponse {
                 print("ChimpKit response:", httpResponse)
@@ -526,20 +516,14 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     }
     
     // MARK: User functions
-    func saveUser(_ user: PFUser, firstName: String?, lastName: String?) {
+    func saveUser(_ user: PFUser) {
         
         user.saveInBackground(block: { (success, error) in
             
             if success {
                 
-                // register current installation
-                if let currentInstallation = PFInstallation.current() {
-                    currentInstallation["user"] = user
-                    currentInstallation.saveInBackground()
-                }
-                
-                // register to MailChimp
-                self.registerUserMailChimp(listID: "4266807125", firstName: firstName, lastName: lastName, username: user.username, email: user.email)
+                // register user
+                self.registerUser(user: user)
                 
                 // dismissVC
                 self.dismissVC(user: user)
@@ -552,6 +536,20 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
                 self.handleUserAlreadyExists(error: error!, user: user)
             }
         })
+    }
+    
+    func registerUser(user: PFUser) {
+        // register current installation
+        if let currentInstallation = PFInstallation.current() {
+            currentInstallation["user"] = user
+            currentInstallation.saveInBackground()
+        }
+        
+        let firstname = (user as? User)?.full_name?.components(separatedBy: " ").first
+        let lastname = (user as? User)?.full_name?.components(separatedBy: " ").last
+        
+        // register to MailChimp
+        self.registerUserMailChimp(listID: "4266807125", firstname: firstname, lastname: lastname, username: user.username, email: user.email)
     }
     
     func dismissVC(user: PFUser) {

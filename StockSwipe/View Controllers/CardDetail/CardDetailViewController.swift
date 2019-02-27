@@ -27,11 +27,6 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
     @IBOutlet weak var cardContentView: SwipeCardView!
     @IBOutlet weak var scrollView: UIScrollView!
     
-    @IBOutlet var addToWatchlistButton: UIButton!
-    @IBAction func addToWatchlistButtonPressed(_ sender: Any) {
-        Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in }
-    }
-    
     @IBOutlet var xButton: UIButton!
     @IBAction func xButtonPressed(_ sender: UIButton) {
         
@@ -45,6 +40,15 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
             self.didSuccessfullyDragDownToDismiss()
         }
         dismissalAnimator!.startAnimation()
+    }
+    
+    @IBAction func tradeItAction(_ sender: Any) {
+        
+    }
+    
+    @IBOutlet var addToWatchlistButton: UIButton!
+    @IBAction func addToWatchlistButtonPressed(_ sender: Any) {
+        Functions.promptAddToWatchlist(card, registerChoice: true) { (choice) in }
     }
     
     @IBOutlet var shareButton: UIButton!

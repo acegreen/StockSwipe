@@ -1,3 +1,6 @@
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/tradingticket/SpecRepo'
+
 platform :ios, '11.0'
 use_frameworks!
 
@@ -16,6 +19,7 @@ target 'StockSwipe' do
     pod 'DataCache', :git => 'https://github.com/huynguyencong/DataCache.git'
     pod 'ReachabilitySwift'
     pod 'NotificationBannerSwift'
+    pod 'TradeItIosTicketSDK2'
 
     # Analytics
     pod 'Firebase/Core'

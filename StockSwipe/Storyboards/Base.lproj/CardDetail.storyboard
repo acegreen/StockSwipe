@@ -64,20 +64,39 @@
                                                     <action selector="xButtonPressed:" destination="jSu-zw-ob7" eventType="touchUpInside" id="7Me-KV-jSM"/>
                                                 </connections>
                                             </button>
-                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="ZNa-1b-py7">
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="ZNa-1b-py7">
                                                 <rect key="frame" x="0.0" y="558.33333333333337" width="414" height="712.00000000000011"/>
                                                 <subviews>
-                                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0qn-ku-5Yh">
-                                                        <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Wcb-sl-NV0">
+                                                        <rect key="frame" x="29.666666666666657" y="0.0" width="355" height="50"/>
                                                         <subviews>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ST5-K8-xgO">
+                                                                <rect key="frame" x="0.0" y="0.0" width="94" height="50"/>
+                                                                <color key="backgroundColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="50" id="wOA-dr-qSS"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="22"/>
+                                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
+                                                                <state key="normal" title="Trade"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                        <real key="value" value="20"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="tradeItAction:" destination="jSu-zw-ob7" eventType="touchUpInside" id="vYW-ez-fVA"/>
+                                                                </connections>
+                                                            </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="18u-aV-Moh">
-                                                                <rect key="frame" x="97" y="0.0" width="220" height="50"/>
+                                                                <rect key="frame" x="104" y="0.0" width="191" height="50"/>
                                                                 <color key="backgroundColor" red="0.96078431610000004" green="0.75294119120000003" blue="0.094117648900000003" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <constraints>
                                                                     <constraint firstAttribute="height" constant="50" id="7mH-nX-SPF"/>
-                                                                    <constraint firstAttribute="width" constant="220" id="HIc-WW-cMV"/>
                                                                 </constraints>
                                                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="20"/>
+                                                                <inset key="contentEdgeInsets" minX="20" minY="0.0" maxX="20" maxY="0.0"/>
                                                                 <state key="normal" title="Add To Watchlist">
                                                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 </state>
@@ -90,42 +109,27 @@
                                                                     <action selector="addToWatchlistButtonPressed:" destination="jSu-zw-ob7" eventType="touchUpInside" id="26R-T5-s5w"/>
                                                                 </connections>
                                                             </button>
-                                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Wcb-sl-NV0">
-                                                                <rect key="frame" x="337" y="0.0" width="57" height="50"/>
-                                                                <subviews>
-                                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XBe-3D-eda">
-                                                                        <rect key="frame" x="3.6666666666666856" y="0.0" width="50" height="50"/>
-                                                                        <color key="backgroundColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
-                                                                        <constraints>
-                                                                            <constraint firstAttribute="height" constant="50" id="CFr-oJ-Ulu"/>
-                                                                            <constraint firstAttribute="width" constant="50" id="OVW-K9-JEH"/>
-                                                                        </constraints>
-                                                                        <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
-                                                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                                        <state key="normal" image="share"/>
-                                                                        <userDefinedRuntimeAttributes>
-                                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                                                <real key="value" value="25"/>
-                                                                            </userDefinedRuntimeAttribute>
-                                                                        </userDefinedRuntimeAttributes>
-                                                                        <connections>
-                                                                            <action selector="shareButtonPressed:" destination="jSu-zw-ob7" eventType="touchUpInside" id="dd6-gL-DQf"/>
-                                                                        </connections>
-                                                                    </button>
-                                                                </subviews>
-                                                            </stackView>
+                                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XBe-3D-eda">
+                                                                <rect key="frame" x="305" y="0.0" width="50" height="50"/>
+                                                                <color key="backgroundColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="height" constant="50" id="CFr-oJ-Ulu"/>
+                                                                    <constraint firstAttribute="width" constant="50" id="s9a-pN-obo"/>
+                                                                </constraints>
+                                                                <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="18"/>
+                                                                <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                <state key="normal" image="share"/>
+                                                                <userDefinedRuntimeAttributes>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                        <real key="value" value="25"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                </userDefinedRuntimeAttributes>
+                                                                <connections>
+                                                                    <action selector="shareButtonPressed:" destination="jSu-zw-ob7" eventType="touchUpInside" id="dd6-gL-DQf"/>
+                                                                </connections>
+                                                            </button>
                                                         </subviews>
-                                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                        <constraints>
-                                                            <constraint firstItem="Wcb-sl-NV0" firstAttribute="top" secondItem="0qn-ku-5Yh" secondAttribute="top" id="Dc9-Gg-9KS"/>
-                                                            <constraint firstItem="Wcb-sl-NV0" firstAttribute="leading" secondItem="18u-aV-Moh" secondAttribute="trailing" constant="20" id="Ofo-CK-wyp"/>
-                                                            <constraint firstAttribute="trailing" secondItem="Wcb-sl-NV0" secondAttribute="trailing" constant="20" id="Rct-3D-0jB"/>
-                                                            <constraint firstItem="18u-aV-Moh" firstAttribute="centerY" secondItem="0qn-ku-5Yh" secondAttribute="centerY" id="UNj-gc-l30"/>
-                                                            <constraint firstAttribute="bottom" secondItem="18u-aV-Moh" secondAttribute="bottom" id="aSR-LZ-0WQ"/>
-                                                            <constraint firstItem="18u-aV-Moh" firstAttribute="top" secondItem="0qn-ku-5Yh" secondAttribute="top" id="pEJ-BB-Ks8"/>
-                                                            <constraint firstItem="18u-aV-Moh" firstAttribute="centerX" secondItem="0qn-ku-5Yh" secondAttribute="centerX" id="sjw-TW-7Pl"/>
-                                                        </constraints>
-                                                    </view>
+                                                    </stackView>
                                                     <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fnz-UD-0nI">
                                                         <rect key="frame" x="0.0" y="50" width="414" height="662"/>
                                                         <connections>

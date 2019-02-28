@@ -33,7 +33,17 @@ public class User: PFUser {
     @NSManaged var mention_notification: Bool
     @NSManaged var swipe_addToWatchlist: Bool
     
-    private(set) var avtar = UIImage(named: "dummy_profile_male")!
+    lazy var profileImageURL: URL? = {
+        if let profile_image = self.profile_image, let urlString = profile_image.url {
+            return URL(string: urlString)
+        } else if let profile_image_url = profile_image_url {
+            return URL(string: profile_image_url)
+        }
+        return nil
+    }()
+
+    
+    private(set) var avatar = UIImage(named: "dummy_profile_male")!
     private(set) var ideasCount: Int = 0
     private(set) var followingCount: Int = 0
     private(set) var followersCount: Int = 0
@@ -44,22 +54,22 @@ public class User: PFUser {
     }
     
     func getAvatar(_ completion: @escaping (UIImage) -> Void) {
-        guard self.profile_image?.url != nil || profile_image_url != nil else {
-            completion(self.avtar)
+        guard let profileImageURL = profileImageURL else {
+            completion(self.avatar)
             return
         }
-        QueryHelper.sharedInstance.queryWith(queryString: self.profile_image?.url ?? profile_image_url ?? "", useCacheIfPossible: true, completionHandler: { (result) in
+        QueryHelper.sharedInstance.queryWith(queryString: profileImageURL.absoluteString, useCacheIfPossible: true, completionHandler: { (result) in
             do {
                 
                 let avatarData  = try result()
                 if let image = UIImage(data: avatarData) {
-                    self.avtar = image
-                    completion(self.avtar)
+                    self.avatar = image
+                    completion(self.avatar)
                 } else {
-                    completion(self.avtar)
+                    completion(self.avatar)
                 }
             } catch {
-                completion(self.avtar)
+                completion(self.avatar)
             }
         })
     }

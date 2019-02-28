@@ -63,7 +63,7 @@ class BlockedAccountsTableViewController: UITableViewController, SegueHandlerTyp
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as UserCell
-        cell.configureCell(with: blockedUsers[indexPath.row])
+        cell.user = blockedUsers[indexPath.row]
 
         return cell
     }

@@ -11,31 +11,39 @@ import Parse
 
 class NotificationCell: UITableViewCell {
     
-    var activity: Activity!
+    var activity: Activity! {
+        didSet {
+            self.fullname.text = activity.fromUser.full_name
+            self.notificationDesc.text = stringForActivityType(activity.activityType)
+            self.notificationTime.text = (activity.createdAt as NSDate?)?.formattedAsTimeAgoShort()
+            task?.resume()
+        }
+    }
+    fileprivate var task: URLSessionTask? {
+        guard let profileImageURL = activity.fromUser.profileImageURL else { return nil }
+        return URLSession.shared.dataTask(with: profileImageURL) { (data, response, error) in
+            DispatchQueue.main.async {
+                if let data = data, let image = UIImage(data: data) {
+                    self.userAvatar.image = image
+                } else {
+                    self.userAvatar.image = UIImage(named: "dummy_profile_male")!
+                }
+            }
+        }
+    }
     
     @IBOutlet var userAvatar: UIImageView!
     @IBOutlet var fullname: UILabel!
     @IBOutlet var notificationDesc: SuperUITextView!
     @IBOutlet var notificationTime: UILabel!
     
-    func configureCell(_ activity: Activity?) {
-        
-        guard let activity = activity else { return }
-        self.activity = activity
-        
-        self.notificationDesc.text = stringForActivityType(activity.activityType)
-        self.notificationTime.text = (activity.createdAt as NSDate?)?.formattedAsTimeAgoShort()
-        
-        guard let user = activity.fromUser as? User else { return }
-        self.fullname.text = user.full_name
-        user.getAvatar { (avatar) in
-            DispatchQueue.main.async {
-                self.userAvatar.image = avatar
-            }
-        }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+//        self.task?.cancel()
+        self.clear()
     }
     
-    func stringForActivityType(_ activityType: String) -> String? {
+    private func stringForActivityType(_ activityType: String) -> String? {
         if (activityType == Constants.ActivityType.Follow.rawValue) {
             return "started following you"
         } else if (activityType == Constants.ActivityType.TradeIdeaNew.rawValue) {
@@ -53,7 +61,7 @@ class NotificationCell: UITableViewCell {
         }
     }
     
-    func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
+    private func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
         let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
         
@@ -62,5 +70,12 @@ class NotificationCell: UITableViewCell {
         }
         
         UIApplication.topViewController()?.show(profileContainerController, sender: self)
+    }
+    
+    private func clear() {
+        self.userAvatar.image = UIImage(named: "dummy_profile_male")!
+        self.fullname.text = "John Doe"
+        self.notificationDesc.text = "Notification Description"
+        self.notificationTime.text = "Just now"
     }
 }

@@ -755,7 +755,7 @@ class QueryHelper {
         }
     }
     
-    func queryActivityForUser(user: PFUser, skip: Int?, limit: Int?, order: QueryOrder = .descending, creationDate: Date? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func queryActivityForUser(user: PFUser, skip: Int?, limit: Int?, order: QueryOrder = .descending, creationDate: Date? = nil, includeKeys: [String]? = nil, selectKeys: [String]? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
         
         let activityQuery = Activity.query()!
         activityQuery.cachePolicy = cachePolicy
@@ -769,6 +769,14 @@ class QueryHelper {
         
         if let creationDate = creationDate {
             activityQuery.whereKey("createdAt", greaterThan: creationDate)
+        }
+        
+        if let includeKeys = includeKeys {
+            activityQuery.includeKeys(includeKeys)
+        }
+        
+        if let selectKeys = selectKeys {
+            activityQuery.selectKeys(selectKeys)
         }
         
         activityQuery.whereKey("fromUser", notEqualTo: user)

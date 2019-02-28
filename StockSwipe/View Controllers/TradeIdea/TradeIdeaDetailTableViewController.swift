@@ -208,12 +208,13 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         
         if indexPath.section == 0 {
             cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            cell.configureCell(with: self.activity, timeFormat: .long)
+            cell.activity = self.activity
+            cell.timeFormat = .long
             cell.delegate = self
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: "ReplyIdeaCell", for: indexPath) as? IdeaCell
             guard let replyActivityAtIndex = self.replyActivities.get(indexPath.row) else { return cell }
-            cell.configureCell(with: replyActivityAtIndex, timeFormat: .short)
+            cell.activity = replyActivityAtIndex
             cell.delegate = self
         }
         

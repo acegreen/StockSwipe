@@ -400,7 +400,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     
                     guard let likedActivityObjects = try result() as? [Activity], let likedTradeIdeas = likedActivityObjects.map({ $0.tradeIdea }) as? [TradeIdea] else { return }
                     
-                    QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdeas: nil, tradeIdeas: likedTradeIdeas, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue], skip: skip, limit: QueryHelper.queryLimit, includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], order: queryOrder, creationDate: mostRecentRefreshDate, completion: { (result) in
+                    QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdeas: nil, tradeIdeas: likedTradeIdeas, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue, Constants.ActivityType.TradeIdeaReply.rawValue], includeKeys: ["tradeIdea", "fromUser", "originalTradeIdea"], order: queryOrder, completion: { (result) in
 
                         do {
                             
@@ -1054,28 +1054,23 @@ extension ProfileTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDele
         switch selectedSegmentIndex {
         case .zero:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            guard let tradeIdeaActivityAtIndex = self.tradeIdeaActivities.get(indexPath.row) else { return cell }
-            cell.configureCell(with: tradeIdeaActivityAtIndex, timeFormat: .short)
+            cell.activity = tradeIdeaActivities[indexPath.row]
             cell.delegate = self
             return cell
         case .one:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as UserCell
-            cell.configureCell(with: followingUserActivities[indexPath.row])
+            cell.user = followingUserActivities[indexPath.row]
             return cell
         case .two:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as UserCell
-            cell.configureCell(with: followerUsersActivities[indexPath.row])
+            cell.user = followerUsersActivities[indexPath.row]
             return cell
         case .three:
             let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-            guard let likedTradeIdeaAtIndex = self.likedTradeIdeasActivities.get(indexPath.row) else { return cell }
-            cell.configureCell(with: likedTradeIdeaAtIndex, timeFormat: .short)
+            cell.activity = likedTradeIdeasActivities[indexPath.row]
             cell.delegate = self
             return cell
-            return cell
         }
-        
-        return UITableViewCell()
     }
     
     // DZNEmptyDataSet delegate functions

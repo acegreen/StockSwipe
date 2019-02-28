@@ -18,7 +18,43 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     var delegate: IdeaPostDelegate!
     
-    var activity: Activity!
+    var activity: Activity! {
+        didSet {
+            self.configureMain(activity.tradeIdea, user: activity.fromUser)
+            self.configureNested(activity.originalTradeIdea)
+            
+            guard let tradeIdea = self.activity.tradeIdea else { return }
+            self.checkLike(tradeIdea, sender: self.likeButton)
+            self.checkReshare(tradeIdea, sender: self.reshareButton)
+            self.checkMore()
+        }
+    }
+    fileprivate var userAvatarTask: URLSessionTask? {
+        guard let profileImageURL = activity.fromUser.profileImageURL else { return nil }
+        return URLSession.shared.dataTask(with: profileImageURL) { (data, response, error) in
+            DispatchQueue.main.async {
+                if let data = data, let image = UIImage(data: data) {
+                    self.userAvatar.image = image
+                } else {
+                    self.userAvatar.image = UIImage(named: "dummy_profile_male")!
+                }
+            }
+        }
+    }
+    fileprivate var nestedUserAvatarTask: URLSessionTask? {
+        guard let profileImageURL = activity.originalTradeIdea?.user.profileImageURL else { return nil }
+        return URLSession.shared.dataTask(with: profileImageURL) { (data, response, error) in
+            DispatchQueue.main.async {
+                if let data = data, let image = UIImage(data: data) {
+                    self.nestedUserAvatar.image = image
+                } else {
+                    self.nestedUserAvatar.image = UIImage(named: "dummy_profile_male")!
+                }
+            }
+        }
+    }
+    
+    var timeFormat = Constants.TimeFormat.short
     
     @IBOutlet var userAvatar: UIImageView!
     
@@ -90,8 +126,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             return
         }
         
-        guard let activity = activity else { return }
-        
         let threeDotsAlert = UIAlertController()
         threeDotsAlert.modalPresentationStyle = .popover
         
@@ -100,7 +134,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             let reportIdea = UIAlertAction(title: "Report", style: .default) { action in
                 
-                SweetAlert().showAlert("Report \(activity.fromUser.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor(rgbValue: 0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Report \(self.activity.fromUser.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor(rgbValue: 0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
                     
                     if !isOtherButton {
                         
@@ -185,19 +219,14 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         threeDotsAlert.view.tintColor = Constants.SSColors.green
     }
     
-    func configureCell(with activity: Activity, timeFormat: Constants.TimeFormat) {
-        
-        self.activity = activity
-        self.configureMain(activity.tradeIdea, user: activity.fromUser, timeFormat: timeFormat)
-        self.configureNested(activity.originalTradeIdea)
-        
-        guard let tradeIdea = self.activity.tradeIdea else { return }
-        self.checkLike(tradeIdea, sender: self.likeButton)
-        self.checkReshare(tradeIdea, sender: self.reshareButton)
-        self.checkMore()
+    override func prepareForReuse() {
+        super.prepareForReuse()
+//        self.userAvatarTask?.cancel()
+//        self.nestedUserAvatarTask?.cancel()
+        self.clear()
     }
     
-    func configureMain(_ tradeIdea: TradeIdea?, user: User?, timeFormat: Constants.TimeFormat) {
+    private func configureMain(_ tradeIdea: TradeIdea?, user: User) {
         
         guard let tradeIdea = tradeIdea else { return }
         
@@ -215,20 +244,14 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.ideaTime.text = nsPublishedDate.formattedAsTimeAgo()
         }
         
-        guard let user =  user else {
-            return
-        }
         DispatchQueue.main.async {
             self.userName.text = user.full_name
             if self.userTag != nil {
                 self.userTag.text = user.usertag
             }
         }
-        user.getAvatar({ (avatar) in
-            DispatchQueue.main.async {
-                self.userAvatar.image = avatar
-            }
-        })
+        
+        self.userAvatarTask?.resume()
         
         // Add Gesture Recognizers
         let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleProfileGestureRecognizer))
@@ -238,7 +261,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         self.userName.addGestureRecognizer(tapGestureRecognizerUsername)
     }
     
-    func configureNested(_ nestedTradeIdea: TradeIdea?) {
+    private func configureNested(_ nestedTradeIdea: TradeIdea?) {
         
         guard nestedTradeIdeaView != nil else { return }
         
@@ -257,24 +280,23 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         nestedTradeIdea.user.fetchIfNeededInBackground { (user, error) in
             guard let user = user as? User else { return }
+            self.activity.originalTradeIdea?.user = user
+            
             DispatchQueue.main.async {
                 self.nestedUsername.text = nestedTradeIdea.user.full_name
                 if self.nestedUserTag != nil {
                     self.nestedUserTag.text = nestedTradeIdea.user.username
                 }
             }
-            user.getAvatar({ (avatar) in
-                DispatchQueue.main.async {
-                    self.nestedUserAvatar.image = avatar
-                }
-            })
+
+            self.nestedUserAvatarTask?.resume()
             
             let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleTradeIdeaGestureRecognizer(_:)))
             self.nestedTradeIdeaView.addGestureRecognizer(tapGestureRecognizerNestedUsername)
         }
     }
     
-    func checkMore() {
+    private func checkMore() {
        
         guard let _ = PFUser.current() else {
             if threeDotsStack != nil && threeDotsStack.isDescendant(of: self) {
@@ -284,7 +306,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
     }
     
-    func checkLike(_ tradeIdea: TradeIdea, sender: UIButton?) {
+    private func checkLike(_ tradeIdea: TradeIdea, sender: UIButton?) {
         
         tradeIdea.checkNumberOfLikes { likeCount in
             DispatchQueue.main.async {
@@ -302,7 +324,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
     }
     
-    func registerLike(on sender: UIButton) {
+    private func registerLike(on sender: UIButton) {
         
         guard let currentUser = PFUser.current() else {
             Functions.isUserLoggedIn(presenting: UIApplication.topViewController()!)
@@ -361,7 +383,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         })
     }
     
-    func updateLike(sender: UIButton) {
+    private func updateLike(sender: UIButton) {
         
         guard let tradeIdea = self.activity.tradeIdea else { return }
         
@@ -380,7 +402,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
     }
     
-    func checkReshare(_ tradeIdea: TradeIdea, sender: UIButton?) {
+    private func checkReshare(_ tradeIdea: TradeIdea, sender: UIButton?) {
         
         tradeIdea.checkNumberOfReshares { (reshares) in
             DispatchQueue.main.async {
@@ -396,7 +418,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
     }
     
-    func registerReshare(on sender: UIButton) {
+    private func registerReshare(on sender: UIButton) {
         
         self.activity.tradeIdea?.reshareCount += 1
         self.activity.tradeIdea?.isResharedByCurrentUser = true
@@ -404,7 +426,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         self.updateReshare(sender: sender)
     }
     
-    func registerUnshare(sender: UIButton) {
+    private func registerUnshare(sender: UIButton) {
         
         guard let currentUser = User.current() else {
             Functions.isUserLoggedIn(presenting: UIApplication.topViewController()!)
@@ -453,7 +475,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         })
     }
     
-    func updateReshare(sender: UIButton) {
+    private func updateReshare(sender: UIButton) {
         
         DispatchQueue.main.async {
             if let reshareCount = self.activity.tradeIdea?.reshareCount, reshareCount > 0 {
@@ -470,7 +492,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
     }
     
-    func blockAction(_ user: PFUser) -> UIAlertAction {
+    private func blockAction(_ user: PFUser) -> UIAlertAction {
         
         let currentUser = PFUser.current()
         
@@ -499,6 +521,19 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             return blockUser
         }
+    }
+    
+    private func clear() {
+        self.userAvatar.image = UIImage(named: "dummy_profile_male")!
+        self.userName.text = "John Doe"
+        self.userTag.text = "@JohnDoe"
+        self.ideaDescription.text = "Idea Description"
+        self.ideaTime.text = "Just now"
+        self.nestedUserAvatar.image = UIImage(named: "dummy_profile_male")!
+        self.nestedUsername.text = "John Doe"
+        self.nestedUserTag.text = "@JohnDoe"
+        self.nestedIdeaDescription.text = "Idea Description"
+        self.nestedTradeIdeaView.isHidden = true
     }
     
     // MARK: IdeaPostDelegate

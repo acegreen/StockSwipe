@@ -212,7 +212,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
         
         guard let activityAtIndex = self.activities.get(indexPath.row) else { return cell }
-        cell.configureCell(with: activityAtIndex, timeFormat: .short)
+        cell.activity = activityAtIndex
         cell.delegate = self
         
         return cell

@@ -103,7 +103,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
     }
     
     private func loadCachedData() {
-        if let carouselCacheData = DataCache.instance.readData(forKey: "CAROUSELCACHEDATA") {
+        if let carouselCacheData = DataCache.instance.readData(forKey: Constants.CacheKey.Carousel.key()) {
             self.updateCarousel(from: try! QueryHelper.EODQuoteResult.decodeFrom(data: carouselCacheData))
         }
         
@@ -129,7 +129,7 @@ class OverviewViewController: UIViewController, SegueHandlerType {
                 
                 do {
                     let eodResults = try eodQuoteResults()
-                    DataCache.instance.write(data: eodResults.1, forKey: "CAROUSELCACHEDATA")
+                    DataCache.instance.write(data: eodResults.1, forKey: Constants.CacheKey.Carousel.key())
                     self.updateCarousel(from: eodResults.0)
                     self.carouselLastQueriedDate = Date()
                 } catch {

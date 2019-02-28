@@ -129,11 +129,11 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     }
     
     private func loadCachedData() {
-        if let trendingStocksData = DataCache.instance.readData(forKey: "TRENDINGSTOCKSCACHEDATA"), let trendingStocksJSON = try? JSON(data: trendingStocksData)["symbols"] {
+        if let trendingStocksData = DataCache.instance.readData(forKey: Constants.CacheKey.Cloud.key()), let trendingStocksJSON = try? JSON(data: trendingStocksData)["symbols"] {
             self.createCloudWords(trendingStocksJSON)
         }
         
-        if let topStoriesCacheData = DataCache.instance.readData(forKey: "TOPSTORIESCACHEDATA") {
+        if let topStoriesCacheData = DataCache.instance.readData(forKey: Constants.CacheKey.TopStories.key()) {
             self.updateTopStories(topStoriesCacheData)
         }
     }
@@ -150,7 +150,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
                 let trendingStocksData = try trendingStocksData()
                 guard let trendingStocksJSON = try? JSON(data: trendingStocksData)["symbols"] else { return }
                 
-                DataCache.instance.write(data: trendingStocksData, forKey: "TRENDINGSTOCKSCACHEDATA")
+                DataCache.instance.write(data: trendingStocksData, forKey: Constants.CacheKey.Cloud.key())
                 self.createCloudWords(trendingStocksJSON)
                 self.stockTwitsLastQueriedDate = Date()
                 
@@ -174,7 +174,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
                 
                 let result = try result()
                 
-                DataCache.instance.write(data: result, forKey: "TOPSTORIESCACHEDATA")
+                DataCache.instance.write(data: result, forKey: Constants.CacheKey.TopStories.key())
                 self.updateTopStories(result)
                 self.topStoriesLastQueriedDate = Date()
                 

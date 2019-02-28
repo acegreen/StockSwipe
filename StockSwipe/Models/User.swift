@@ -55,29 +55,32 @@ public class User: PFUser {
     }
     
     func getAvatar(_ completion: @escaping (UIImage) -> Void) {
-        if let userAvatarCacheData = DataCache.instance.readData(forKey: "USERAVATAR_\(self.objectId)"), let avatar = UIImage(data: userAvatarCacheData) {
-            self.avatar = avatar
+        if let objectId = self.objectId, let userAvatarCachedImage = DataCache.instance.readImageForKey(key: Constants.CacheKey.UserAvatar(objectId: objectId).key()) {
+            self.avatar = userAvatarCachedImage
             completion(self.avatar)
-        }
-        guard let profileImageURL = profileImageURL else {
-            completion(self.avatar)
-            return
-        }
-        QueryHelper.sharedInstance.queryWith(queryString: profileImageURL.absoluteString, useCacheIfPossible: true, completionHandler: { (result) in
-            do {
-                
-                let avatarData  = try result()
-                if let image = UIImage(data: avatarData) {
-                    self.avatar = image
-                    DataCache.instance.write(data: avatarData, forKey: "USERAVATAR_\(self.objectId)")
-                    completion(self.avatar)
-                } else {
+        } else {
+            guard let profileImageURL = profileImageURL else {
+                completion(self.avatar)
+                return
+            }
+            QueryHelper.sharedInstance.queryWith(queryString: profileImageURL.absoluteString, useCacheIfPossible: true, completionHandler: { (result) in
+
+                do {
+                    let avatarData  = try result()
+                    if let userAvatarImage = UIImage(data: avatarData) {
+                        self.avatar = userAvatarImage
+                        if let objectId = self.objectId {
+                            DataCache.instance.write(image: userAvatarImage, forKey: Constants.CacheKey.UserAvatar(objectId: objectId).key())
+                        }
+                        completion(self.avatar)
+                    } else {
+                        completion(self.avatar)
+                    }
+                } catch {
                     completion(self.avatar)
                 }
-            } catch {
-                completion(self.avatar)
-            }
-        })
+            })
+        }
     }
 
     func getIdeasCount(_ completion: @escaping (_ countString: String) -> Void) {

@@ -196,7 +196,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.getProfile()
+        self.updateProfile()
         self.handleReachability()
     }
     
@@ -246,22 +246,25 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         }
     }
     
-    func getProfile() {
+    func updateProfile() {
         
-        guard let user = user else { return }
-        
-        DispatchQueue.main.async {
-            self.fullNameLabel.text = user.full_name
-            self.usernameLabel.text = user.usertag
-        }
-        user.getAvatar { (avatar) in
+        user.fetchIfNeededInBackground { (user, error) in
+            guard let user = user as? User else { return }
+            
             DispatchQueue.main.async {
-                self.avatarImage.image = avatar
+                self.fullNameLabel.text = user.full_name
+                self.usernameLabel.text = user.usertag
             }
+            
+            user.getAvatar { (avatar) in
+                DispatchQueue.main.async {
+                    self.avatarImage.image = avatar
+                }
+            }
+            
+            self.checkProfileButtonSettings()
+            self.checkFollow(self.followButton)
         }
-        
-        self.checkProfileButtonSettings()
-        self.checkFollow(self.followButton)
     }
     
     func getTradeIdeas(queryType: QueryHelper.QueryType) {
@@ -867,7 +870,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
     }
     
     func didLoginSuccessfully() {
-        self.getProfile()
+        self.updateProfile()
         self.loginDelegate?.didLoginSuccessfully()
     }
     
@@ -972,12 +975,11 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
 
 extension ProfileTableViewController: ProfileDetailTableViewControllerDelegate {
     
-    func userProfileChanged(newUser: User) {
-        self.user = newUser
-        self.getProfile()
+    func userProfileChanged() {
+        self.updateProfile()
         self.tableView.reloadData()
         
-        self.profileChangeDelegate?.userProfileChanged(newUser: newUser)
+        self.profileChangeDelegate?.userProfileChanged()
     }
 }
 

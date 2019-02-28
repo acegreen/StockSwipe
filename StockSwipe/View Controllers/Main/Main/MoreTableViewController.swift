@@ -251,7 +251,7 @@ extension MoreTableViewController: LoginDelegate, ProfileDetailTableViewControll
         updateProfile { }
     }
     
-    func userProfileChanged(newUser: User) {
+    func userProfileChanged() {
         updateProfile { }
     }
 }

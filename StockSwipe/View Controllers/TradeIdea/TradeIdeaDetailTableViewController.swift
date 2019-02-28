@@ -224,7 +224,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         
         let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
-        if offset >= 0 && offset <= 5 {
+        if offset >= -1 && offset <= 5 {
             // This is the last cell so get more data
             self.getReplyTradeIdeas(queryType: .older)
         }

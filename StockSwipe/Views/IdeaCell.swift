@@ -29,30 +29,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             self.checkMore()
         }
     }
-    fileprivate var userAvatarTask: URLSessionTask? {
-        guard let profileImageURL = activity.fromUser.profileImageURL else { return nil }
-        return URLSession.shared.dataTask(with: profileImageURL) { (data, response, error) in
-            DispatchQueue.main.async {
-                if let data = data, let image = UIImage(data: data) {
-                    self.userAvatar.image = image
-                } else {
-                    self.userAvatar.image = UIImage(named: "dummy_profile_male")!
-                }
-            }
-        }
-    }
-    fileprivate var nestedUserAvatarTask: URLSessionTask? {
-        guard let profileImageURL = activity.originalTradeIdea?.user.profileImageURL else { return nil }
-        return URLSession.shared.dataTask(with: profileImageURL) { (data, response, error) in
-            DispatchQueue.main.async {
-                if let data = data, let image = UIImage(data: data) {
-                    self.nestedUserAvatar.image = image
-                } else {
-                    self.nestedUserAvatar.image = UIImage(named: "dummy_profile_male")!
-                }
-            }
-        }
-    }
     
     var timeFormat = Constants.TimeFormat.short
     
@@ -251,7 +227,11 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             }
         }
         
-        self.userAvatarTask?.resume()
+        self.activity.fromUser.getAvatar { avatar in
+            DispatchQueue.main.async {
+                self.userAvatar.image = avatar
+            }
+        }
         
         // Add Gesture Recognizers
         let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleProfileGestureRecognizer))
@@ -289,7 +269,11 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                 }
             }
 
-            self.nestedUserAvatarTask?.resume()
+            user.getAvatar { avatar in
+                DispatchQueue.main.async {
+                    self.userAvatar.image = avatar
+                }
+            }
             
             let tapGestureRecognizerNestedUsername = UITapGestureRecognizer(target: self, action: #selector(IdeaCell.handleTradeIdeaGestureRecognizer(_:)))
             self.nestedTradeIdeaView.addGestureRecognizer(tapGestureRecognizerNestedUsername)

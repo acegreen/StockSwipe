@@ -16,17 +16,9 @@ class NotificationCell: UITableViewCell {
             self.fullname.text = activity.fromUser.full_name
             self.notificationDesc.text = stringForActivityType(activity.activityType)
             self.notificationTime.text = (activity.createdAt as NSDate?)?.formattedAsTimeAgoShort()
-            task?.resume()
-        }
-    }
-    fileprivate var task: URLSessionTask? {
-        guard let profileImageURL = activity.fromUser.profileImageURL else { return nil }
-        return URLSession.shared.dataTask(with: profileImageURL) { (data, response, error) in
-            DispatchQueue.main.async {
-                if let data = data, let image = UIImage(data: data) {
-                    self.userAvatar.image = image
-                } else {
-                    self.userAvatar.image = UIImage(named: "dummy_profile_male")!
+            self.activity.fromUser.getAvatar { avatar in
+                DispatchQueue.main.async {
+                    self.userAvatar.image = avatar
                 }
             }
         }
@@ -39,7 +31,6 @@ class NotificationCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-//        self.task?.cancel()
         self.clear()
     }
     

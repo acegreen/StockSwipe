@@ -8,6 +8,7 @@
 
 import UIKit
 import Parse
+import DataCache
 
 public class User: PFUser {
 
@@ -54,6 +55,10 @@ public class User: PFUser {
     }
     
     func getAvatar(_ completion: @escaping (UIImage) -> Void) {
+        if let userAvatarCacheData = DataCache.instance.readData(forKey: "USERAVATAR_\(self.objectId)"), let avatar = UIImage(data: userAvatarCacheData) {
+            self.avatar = avatar
+            completion(self.avatar)
+        }
         guard let profileImageURL = profileImageURL else {
             completion(self.avatar)
             return
@@ -64,6 +69,7 @@ public class User: PFUser {
                 let avatarData  = try result()
                 if let image = UIImage(data: avatarData) {
                     self.avatar = image
+                    DataCache.instance.write(data: avatarData, forKey: "USERAVATAR_\(self.objectId)")
                     completion(self.avatar)
                 } else {
                     completion(self.avatar)

@@ -15,20 +15,12 @@ class UserCell: UITableViewCell {
         didSet {
             self.fullname.text = self.user.full_name
             self.username.text = user.usertag
-            task?.resume()
-            self.checkBlock(self.blockButton)
-        }
-    }
-    fileprivate var task: URLSessionTask? {
-        guard let profileImageURL = user.profileImageURL else { return nil }
-        return URLSession.shared.dataTask(with: profileImageURL) { (data, response, error) in
-            DispatchQueue.main.async {
-                if let data = data, let image = UIImage(data: data) {
-                    self.userAvatar.image = image
-                } else {
-                    self.userAvatar.image = UIImage(named: "dummy_profile_male")!
+            self.user.getAvatar { avatar in
+                DispatchQueue.main.async {
+                    self.userAvatar.image = avatar
                 }
             }
+            self.checkBlock(self.blockButton)
         }
     }
     
@@ -46,7 +38,6 @@ class UserCell: UITableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-//        self.task?.cancel()
         self.clear()
     }
     

@@ -104,7 +104,7 @@ class SearchTableViewController: UITableViewController {
         if let objectAtIndex = objectAtIndex, objectAtIndex.isKind(of: PFUser.self) {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: "UserCell", for: indexPath) as! UserCell
-            cell.configureCell(with: objectAtIndex as! User)
+            cell.user = objectAtIndex as! User
             
             return cell
             

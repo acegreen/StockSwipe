@@ -50,7 +50,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if self.notifications.count != 0 {
+        if self.notifications.count != 0 && self.tabBarItem.badgeValue != "0" {
             self.getNotifications(queryType: .update)
         }
     }
@@ -92,7 +92,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
             mostRecentRefreshDate = notificationsLastRefreshDate
         }
         
-        QueryHelper.sharedInstance.queryActivityForUser(user: currentUser, skip: skip, limit: QueryHelper.queryLimit, order: queryOrder, creationDate: mostRecentRefreshDate) { (result) in
+        QueryHelper.sharedInstance.queryActivityForUser(user: currentUser, skip: skip, limit: QueryHelper.queryLimit, order: queryOrder,  creationDate: mostRecentRefreshDate, includeKeys: ["tradeIdea", "fromUser", "toUser"]) { (result) in
         
             self.isQueryingForActivities = false
             
@@ -213,8 +213,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as NotificationCell
-        cell.configureCell(notifications[indexPath.row])
-        
+        cell.activity = notifications[indexPath.row]
         return cell
     }
     

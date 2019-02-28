@@ -97,7 +97,7 @@ class ProfileDetailTableViewController: UITableViewController {
     }
     
     private func getProfileDetails() {
-        self.userAvatarImageView.image = self.user.avtar
+        self.userAvatarImageView.image = self.user.avatar
         self.fullnameTextField.text = self.user?.full_name
         self.userBioTextView.text = self.user?.bio
         self.userLocationTextField.text = self.user?.location

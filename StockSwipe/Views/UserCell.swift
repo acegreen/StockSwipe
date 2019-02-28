@@ -11,7 +11,26 @@ import Parse
 
 class UserCell: UITableViewCell {
     
-    var user: User!
+    var user: User! {
+        didSet {
+            self.fullname.text = self.user.full_name
+            self.username.text = user.usertag
+            task?.resume()
+            self.checkBlock(self.blockButton)
+        }
+    }
+    fileprivate var task: URLSessionTask? {
+        guard let profileImageURL = user.profileImageURL else { return nil }
+        return URLSession.shared.dataTask(with: profileImageURL) { (data, response, error) in
+            DispatchQueue.main.async {
+                if let data = data, let image = UIImage(data: data) {
+                    self.userAvatar.image = image
+                } else {
+                    self.userAvatar.image = UIImage(named: "dummy_profile_male")!
+                }
+            }
+        }
+    }
     
     @IBOutlet fileprivate weak var userAvatar: UIImageView!
     
@@ -24,22 +43,14 @@ class UserCell: UITableViewCell {
     @IBAction func blockButton(_ sender: BlockButton) {
         registerBlock(sender)
     }
-
-    func configureCell(with user: User) {
-        
-        self.user = user
-        self.fullname.text = self.user.full_name
-        self.username.text = user.usertag
-        self.user.getAvatar({ (avatar) in
-            DispatchQueue.main.async {
-                self.userAvatar.image = avatar
-            }
-        })
-        
-        self.checkBlock(self.blockButton)
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+//        self.task?.cancel()
+        self.clear()
     }
     
-    func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
+    private func handleGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {
         
         let profileContainerController = Constants.Storyboards.profileStoryboard.instantiateViewController(withIdentifier: "ProfileContainerController") as! ProfileContainerController
         
@@ -50,14 +61,12 @@ class UserCell: UITableViewCell {
         UIApplication.topViewController()?.show(profileContainerController, sender: self)
     }
     
-    func checkBlock(_ sender: BlockButton?) {
+    private func checkBlock(_ sender: BlockButton?) {
         
         guard let sender = sender else { return }
         
         guard let currentUser = PFUser.current() else { return }
         guard let user = self.user else { return }
-        
-        print(currentUser["blocked_users"] as? [PFUser])
         
         if let blocked_users = currentUser["blocked_users"] as? [PFUser] , blocked_users.find({ $0.objectId == user.objectId }) != nil {
             sender.buttonState = BlockButton.state.blocked
@@ -65,7 +74,7 @@ class UserCell: UITableViewCell {
         }
     }
     
-    func registerBlock(_ sender: BlockButton) {
+    private func registerBlock(_ sender: BlockButton) {
         
         guard let currentUser = PFUser.current() else { return }
         
@@ -80,5 +89,11 @@ class UserCell: UITableViewCell {
         }
     
         Functions.blockUser(self.user, postAlert: true)
+    }
+    
+    private func clear() {
+        self.userAvatar.image = UIImage(named: "dummy_profile_male")!
+        self.fullname.text = "John Doe"
+        self.username.text = "@JohnDoe"
     }
 }

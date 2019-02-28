@@ -8,9 +8,10 @@
 
 import UIKit
 import Parse
+import DataCache
 
 protocol ProfileDetailTableViewControllerDelegate {
-    func userProfileChanged(newUser: User)
+    func userProfileChanged()
 }
 
 class ProfileDetailTableViewController: UITableViewController {
@@ -39,13 +40,20 @@ class ProfileDetailTableViewController: UITableViewController {
     
     @IBAction func saveButtonPressed(_ sender: Any) {
         
-        let tempUser = user!
+        guard self.user == PFUser.current() else {
+            Functions.showNotificationBanner(title: "User not logged in", subtitle: "Only the logged in user info can be changed", style: .warning)
+            self.dismiss(animated: true, completion: nil)
+            return
+        }
         
         if self.userProfilePictureChanged {
             guard let imageData = self.userAvatarImageView.image?.pngData() else { return }
             let parseImageFile = PFFileObject(data: imageData, contentType: "image/png")
             parseImageFile.saveInBackground(block: { (success, error) in
                 if success {
+                    if let objectId = self.user.objectId, let userAvatarImage = self.userAvatarImageView.image {
+                        DataCache.instance.write(image: userAvatarImage, forKey: Constants.CacheKey.UserAvatar(objectId: objectId).key())
+                    }
                     self.user["profile_image"] = parseImageFile
                     self.user["full_name"] = self.fullnameTextField.text
                     self.user["fullname_lowercase"] = self.fullnameTextField.text?.lowercased()
@@ -53,9 +61,7 @@ class ProfileDetailTableViewController: UITableViewController {
                     self.user["location"] = self.userLocationTextField.text
                     self.user["website"] = self.userWebsiteTextField.text
                     self.user.saveEventually { (success, error) in
-                        if self.didUserProfileChange(previousUser: tempUser, newUser: self.user) {
-                            self.delegate?.userProfileChanged(newUser: self.user)
-                        }
+                        self.delegate?.userProfileChanged()
                     }
                 } else {
                     // TODO: show alert with error
@@ -68,9 +74,7 @@ class ProfileDetailTableViewController: UITableViewController {
             self.user["location"] = self.userLocationTextField.text
             self.user["website"] = self.userWebsiteTextField.text
             self.user.saveEventually({ (success, error) in
-                if self.didUserProfileChange(previousUser: tempUser, newUser: self.user) {
-                    self.delegate?.userProfileChanged(newUser: self.user)
-                }
+                self.delegate?.userProfileChanged()
             })
         }
         
@@ -90,10 +94,6 @@ class ProfileDetailTableViewController: UITableViewController {
         // Add Gesture Recognizers
         let tapGestureRecognizerMainAvatar = UITapGestureRecognizer(target: self, action: #selector(ProfileDetailTableViewController.handleGestureRecognizer))
         self.userAvatarImageView.addGestureRecognizer(tapGestureRecognizerMainAvatar)
-    }
-    
-    private func didUserProfileChange(previousUser: User, newUser: User) -> Bool {
-        return previousUser == newUser
     }
     
     private func getProfileDetails() {

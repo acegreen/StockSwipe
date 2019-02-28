@@ -173,9 +173,8 @@ class ProfileContainerController: UIViewController, UIScrollViewDelegate, Profil
 
 extension ProfileContainerController: ProfileDetailTableViewControllerDelegate {
     
-    func userProfileChanged(newUser: User) {
-        self.user = newUser
-        self.profileChangeDelegate?.userProfileChanged(newUser: newUser)
+    func userProfileChanged() {
+        self.profileChangeDelegate?.userProfileChanged()
     }
 }
 

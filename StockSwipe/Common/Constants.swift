@@ -226,6 +226,26 @@ class Constants {
         }
     }
     
+    enum CacheKey {
+        case Carousel
+        case Cloud
+        case TopStories
+        case UserAvatar(objectId: String)
+        
+        public func key() -> String {
+            switch self {
+            case .Carousel:
+                return "CAROUSELCACHEDATA"
+            case .Cloud:
+                return "TRENDINGSTOCKSCACHEDATA"
+            case .TopStories:
+                return "TOPSTORIESCACHEDATA"
+            case .UserAvatar(let objectId):
+                return "USERAVATARCACHE_" + objectId
+            }
+        }
+    }
+    
     static let cardHighlightedFactor: CGFloat = 0.95
     static let cardCornerRadius: CGFloat = 15
     static let dismissalAnimationDuration = 0.60

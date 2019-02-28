@@ -271,7 +271,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
 
             user.getAvatar { avatar in
                 DispatchQueue.main.async {
-                    self.userAvatar.image = avatar
+                    self.nestedUserAvatar.image = avatar
                 }
             }
             

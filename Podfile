@@ -11,7 +11,7 @@ target 'StockSwipe' do
     pod 'MDCSwipeToChoose', :git => 'https://github.com/acegreen/MDCSwipeToChoose.git'
     pod 'SDVersion'
     pod 'DZNEmptyDataSet'
-    pod 'Charts', '3.2.1'
+    pod 'Charts'
     pod 'SWXMLHash'
     pod 'DataCache', :git => 'https://github.com/huynguyencong/DataCache.git'
     pod 'ReachabilitySwift'

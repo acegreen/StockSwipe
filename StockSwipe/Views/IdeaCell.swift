@@ -195,13 +195,6 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         threeDotsAlert.view.tintColor = Constants.SSColors.green
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-//        self.userAvatarTask?.cancel()
-//        self.nestedUserAvatarTask?.cancel()
-        self.clear()
-    }
-    
     private func configureMain(_ tradeIdea: TradeIdea?, user: User) {
         
         guard let tradeIdea = tradeIdea else { return }
@@ -507,7 +500,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
     }
     
-    private func clear() {
+    func clear() {
         self.userAvatar.image = UIImage(named: "dummy_profile_male")!
         self.userName.text = "John Doe"
         self.userTag.text = "@JohnDoe"

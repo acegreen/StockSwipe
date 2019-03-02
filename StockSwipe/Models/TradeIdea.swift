@@ -32,16 +32,11 @@ public class TradeIdea: PFObject, PFSubclassing {
     
     func checkNumberOfLikes(completion: ((Int) -> Void)?) {
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdeas: nil, tradeIdeas: [self], stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], skip: nil, limit: nil, includeKeys: nil, selectKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: self, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], completion: { (result) in
             
             do {
-                
-                guard let activityObjects = try result() as? [Activity] else { return }
-                self.likeCount = activityObjects.count
-                
-                if let currentUser = User.current() {
-                    self.isLikedByCurrentUser = activityObjects.contains { $0.fromUser.objectId == currentUser.objectId }
-                }
+                let count = try result()
+                self.likeCount = count
                 
             } catch {
                 //TODO: handle error
@@ -51,29 +46,47 @@ public class TradeIdea: PFObject, PFSubclassing {
                 completion(self.likeCount)
             }
         })
+        
+        if let currentUser = User.current() {
+            QueryHelper.sharedInstance.countActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: self, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], limit: 1, completion: { (result) in
+                
+                do {
+                    let count = try result()
+                    self.isLikedByCurrentUser = count > 0
+                } catch {
+                    //TODO: handle error
+                }
+            })
+        }
     }
     
     func checkNumberOfReshares(completion: ((Int) -> Void)?) {
         
-        QueryHelper.sharedInstance.queryActivityFor(fromUser: nil, toUser: nil, originalTradeIdeas: [self], tradeIdeas: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], skip: nil, limit: nil, includeKeys: nil, completion: { (result) in
+        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: self, tradeIdea: nil, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], limit: nil, completion: { (result) in
             
             do {
-                
-                guard let activityObjects = try result() as? [Activity] else { return }
-                self.reshareCount = activityObjects.count
-                
-                if let currentUser = PFUser.current() {
-                    self.isResharedByCurrentUser = activityObjects.contains { $0.fromUser.objectId == currentUser.objectId }
-                }
-                
+                let count = try result()
+                self.reshareCount = count
             } catch {
                 //TODO: handle error
-                print(error.localizedDescription)
             }
             
             if let completion = completion {
                 completion(self.reshareCount)
             }
         })
+        
+        
+        if let currentUser = User.current() {
+            QueryHelper.sharedInstance.countActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: self, tradeIdea: self, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], limit: 1, completion: { (result) in
+                
+                do {
+                    let count = try result()
+                    self.isResharedByCurrentUser = count > 0
+                } catch {
+                    //TODO: handle error
+                }
+            })
+        }
     }
 }

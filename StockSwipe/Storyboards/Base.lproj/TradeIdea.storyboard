@@ -282,6 +282,7 @@
                             <outlet property="delegate" destination="7sr-cl-tCf" id="ToG-m7-PnT"/>
                             <outlet property="emptyDataSetDelegate" destination="7sr-cl-tCf" id="6sG-O9-cwV"/>
                             <outlet property="emptyDataSetSource" destination="7sr-cl-tCf" id="tDm-mA-j2N"/>
+                            <outlet property="prefetchDataSource" destination="7sr-cl-tCf" id="43f-cz-Zpt"/>
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Trade Ideas" largeTitleDisplayMode="always" id="oWU-eV-j40">

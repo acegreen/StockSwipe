@@ -25,13 +25,12 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
     
     var stockObject: PFObject?
     
-    var activities = [Activity]()
-    var isQueryingForTradeIdeas = false
-    var tradeIdeasLastRefreshDate: Date!
+    private var activities = [Activity]()
+    private var isQueryingForTradeIdeas = false
+    private var tradeIdeasLastRefreshDate: Date!
+    private var totalActivityCount = 0
     
-    let queue = DispatchQueue(label: "Query Queue")
-    
-    let reachability = Reachability()
+    private let reachability = Reachability()
     
     @IBAction func xButtonPressed(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)
@@ -53,6 +52,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
 //            self.navigationItem.title = symbol
 //        }
         
+        self.countActivities()
         self.handleReachability()
     }
     
@@ -62,6 +62,22 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
     
     deinit {
         self.reachability?.stopNotifier()
+    }
+    
+    func countActivities() {
+        
+        let stockObjectArray: [PFObject]? = self.stockObject != nil ? [self.stockObject!] : nil
+        let activityTypes = self.stockObject != nil ? [Constants.ActivityType.Mention.rawValue] : [Constants.ActivityType.TradeIdeaNew.rawValue, Constants.ActivityType.TradeIdeaReshare.rawValue]
+        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: nil, tradeIdea: nil, stocks: stockObjectArray, activityType: activityTypes, completion: { (result) in
+            
+            do {
+                
+                self.totalActivityCount = try result()
+                
+            } catch {
+                // TODO: handle error
+            }
+        })
     }
     
     func getActivities(queryType: QueryHelper.QueryType) {
@@ -128,27 +144,19 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
                     case .older:
 
                         // append more trade ideas
-                        let currentCount = self.activities.count
                         self.activities += activityObjects
 
                         // insert cell in tableview
-                        self.tableView.beginUpdates()
-                        for (i,_) in activityObjects.enumerated() {
-                            let indexPath = IndexPath(row: currentCount + i, section: 0)
-                            self.tableView.insertRows(at: [indexPath], with: .none)
-                        }
-                        self.tableView.endUpdates()
+                        let indexPathsToReload = self.visibleIndexPathsToReload(intersecting: self.calculateIndexPathsToReload(from: activityObjects, queryType: queryType))
+                        self.tableView.reloadRows(at: indexPathsToReload, with: .automatic)
 
                     case .update:
 
-                        // append more trade ideas
-                        self.tableView.beginUpdates()
-                        for activity in activityObjects {
-                            self.activities.insert(activity, at: 0)
-                            let indexPath = IndexPath(row: 0, section: 0)
-                            self.tableView.insertRows(at: [indexPath], with: .none)
-                        }
-                        self.tableView.endUpdates()
+                        // insert more trade ideas
+                       self.activities.insert(contentsOf: activityObjects, at: 0)
+                        
+                        let indexPathsToReload = self.visibleIndexPathsToReload(intersecting: self.calculateIndexPathsToReload(from: activityObjects, queryType: queryType))
+                       self.tableView.reloadRows(at: indexPathsToReload, with: .automatic)
                     }
 
                     // end refresh and add time stamp
@@ -159,7 +167,6 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
                     }
 
                     self.updateRefreshDate()
-                    self.tradeIdeasLastRefreshDate = Date()
                 }
 
                 self.isQueryingForTradeIdeas = false
@@ -180,7 +187,8 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
     
     func updateRefreshDate() {
         
-        let title: String = "Last Update: " + (Date() as NSDate).formattedAsTimeAgo()
+        self.tradeIdeasLastRefreshDate = Date()
+        let title: String = "Last Update: " + (self.tradeIdeasLastRefreshDate as NSDate).formattedAsTimeAgo()
         let attrsDictionary = [
             NSAttributedString.Key.foregroundColor : UIColor.white
         ]
@@ -196,7 +204,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return activities.count
+        return totalActivityCount
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -210,21 +218,16 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as IdeaCell
-        
         guard let activityAtIndex = self.activities.get(indexPath.row) else { return cell }
-        cell.activity = activityAtIndex
-        cell.delegate = self
+        
+        if isLoadingCell(for: indexPath) {
+            cell.clear()
+        } else {
+            cell.activity = activityAtIndex
+            cell.delegate = self
+        }
         
         return cell
-    }
-    
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-        let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
-        if offset >= -1 && offset <= 5 {
-            // This is the last cell so get more data
-            self.getActivities(queryType: .older)
-        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -253,23 +256,67 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
     }
 }
 
+// MARK: - UITableViewDataSourcePrefetching
+
+extension TradeIdeasTableViewController: UITableViewDataSourcePrefetching {
+    
+    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+        print("prefetchRowsAt \(indexPaths)")
+        if indexPaths.contains(where: isLoadingCell) {
+            self.getActivities(queryType: .older)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cancelPrefetchingForRowsAt indexPaths: [IndexPath]) {
+        print("cancelPrefetchingForRowsAt \(indexPaths)")
+    }
+}
+
+private extension TradeIdeasTableViewController {
+    func isLoadingCell(for indexPath: IndexPath) -> Bool {
+        return indexPath.row >= self.activities.count
+    }
+    
+    func visibleIndexPathsToReload(intersecting indexPaths: [IndexPath]) -> [IndexPath] {
+        let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows ?? []
+        let indexPathsIntersection = Set(indexPathsForVisibleRows).intersection(indexPaths)
+        return Array(indexPathsIntersection)
+    }
+    
+    private func calculateIndexPathsToReload(from newActivities: [Activity], queryType: QueryHelper.QueryType) -> [IndexPath] {
+        
+        switch queryType {
+        case .older:
+            let startIndex = activities.count - newActivities.count
+            let endIndex = startIndex + newActivities.count
+            return (startIndex..<endIndex).map { IndexPath(row: $0, section: 1) }
+        case .update, .new:
+            let startIndex = 0
+            let endIndex = startIndex + newActivities.count
+            return (startIndex..<endIndex).map { IndexPath(row: $0, section: 1) }
+        }
+    }
+}
+
+// MARK: - IdeaPostDelegate
+
 extension TradeIdeasTableViewController: IdeaPostDelegate {
     
     internal func ideaPosted(with activity: Activity, tradeIdeaTyp: Constants.TradeIdeaType) {
         
         guard tradeIdeaTyp != .reply else { return }
-        
         let indexPath = IndexPath(row: 0, section: 0)
         self.activities.insert(activity, at: 0)
+        self.totalActivityCount += 1
         self.tableView.insertRows(at: [indexPath], with: .automatic)
     }
     
     internal func ideaDeleted(with activity: Activity) {
         
         if let activity = self.activities.find ({ $0.objectId == activity.objectId }), let index = self.activities.index(of: activity) {
-            
             let indexPath = IndexPath(row: index, section: 0)
             self.activities.removeObject(activity)
+            self.totalActivityCount -= 1
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
 
@@ -279,7 +326,6 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
     }
     
     internal func ideaUpdated(with activity: Activity) {
-        
         if let activity = self.activities.find ({ $0.objectId == activity.objectId }), let index = self.activities.index(of: activity) {
             let indexPath = IndexPath(row: index, section: 0)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
@@ -303,11 +349,8 @@ extension TradeIdeasTableViewController: DZNEmptyDataSetSource, DZNEmptyDataSetD
     //    }
     
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
-        
         let attributedTitle: NSAttributedString!
-        
         attributedTitle = NSAttributedString(string: "Ideas", attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 24)])
-        
         return attributedTitle
     }
     

@@ -340,7 +340,7 @@ class QueryHelper {
     }
     
     static let sharedInstance = QueryHelper()
-    static let queryLimit = 25
+    static let queryLimit = 50
 
     func queryWith(queryString: String, useCacheIfPossible: Bool = false, completionHandler: @escaping (_ result: () throws -> Data) -> Void) -> Void {
         
@@ -563,8 +563,6 @@ class QueryHelper {
             tradeIdeaQuery.whereKey("createdAt", greaterThan: creationDate)
         }
         
-        tradeIdeaQuery.includeKeys(["user", "reshare_of"])
-        
         if let key = key, let object = object {
             tradeIdeaQuery.whereKey(key, equalTo: object)
         }
@@ -710,7 +708,7 @@ class QueryHelper {
         }
     }
     
-    func countActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stocks: [PFObject]?, activityType: [String]?, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
+    func countActivityFor(fromUser: PFUser?, toUser: PFUser?, originalTradeIdea: PFObject?, tradeIdea: PFObject?, stocks: [PFObject]?, activityType: [String]?, limit: Int? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
         let activityQuery = Activity.query()!
         activityQuery.cachePolicy = cachePolicy
@@ -742,6 +740,10 @@ class QueryHelper {
         
         if let activityType = activityType {
             activityQuery.whereKey("activityType", containedIn: activityType)
+        }
+        
+        if let limit = limit, limit > 0 {
+            activityQuery.limit = limit
         }
         
         activityQuery.countObjectsInBackground { (count, error) in
@@ -782,7 +784,6 @@ class QueryHelper {
         activityQuery.whereKey("fromUser", notEqualTo: user)
         activityQuery.whereKey("toUser", equalTo: user)
         activityQuery.whereKeyExists("fromUser")
-        activityQuery.includeKeys(["fromUser", "toUser", "tradeIdea", "stock"])
         
         if let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             activityQuery.whereKey("fromUser", notContainedIn: blockedUsers)
@@ -813,39 +814,31 @@ class QueryHelper {
         }
     }
     
-    func queryActivityForFollowing(fromUser: PFUser, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> ([PFObject])) -> Void) {
+    func countActivityForUser(user: PFUser, limit: Int? = nil, cachePolicy: PFCachePolicy = .networkElseCache, completion: @escaping (_ result: () throws -> (Int)) -> Void) {
         
-        let followActivityQuery = Activity.query()!
-        followActivityQuery.cachePolicy = cachePolicy
-        
-        followActivityQuery.whereKey("fromUser", equalTo: fromUser)
-        followActivityQuery.whereKeyExists("toUser")
-        followActivityQuery.whereKey("activityType", equalTo: Constants.ActivityType.Follow.rawValue)
-        
-        let activityQuery = PFQuery(className:"Activity")
+        let activityQuery = Activity.query()!
         activityQuery.cachePolicy = cachePolicy
-        activityQuery.order(byDescending: "createdAt")
         
-        activityQuery.whereKey("fromUser", notEqualTo: fromUser)
-        activityQuery.whereKey("fromUser", matchesKey: "fromUser", in: followActivityQuery)
-        activityQuery.includeKeys(["fromUser", "toUser", "tradeIdea", "stock"])
+        activityQuery.whereKey("fromUser", notEqualTo: user)
+        activityQuery.whereKey("toUser", equalTo: user)
+        activityQuery.whereKeyExists("fromUser")
         
         if let currentUser = PFUser.current(), let blockedUsers = currentUser["blocked_users"] as? [PFUser] {
             activityQuery.whereKey("fromUser", notContainedIn: blockedUsers)
         }
         
-        activityQuery.findObjectsInBackground { (objects, error) -> Void in
+        if let limit = limit, limit > 0 {
+            activityQuery.limit = limit
+        }
+        
+        activityQuery.countObjectsInBackground { (count, error) in
             
             guard error == nil else {
                 return completion({throw QueryError.errorQueryingForData(error: error! )})
             }
             
-            guard let objects = objects else {
-                return completion({throw QueryError.queryDataEmpty})
-            }
-            
-            completion({return (objects)})
-            
+            let count = Int(count)
+            completion({return (count)})
         }
     }
 }

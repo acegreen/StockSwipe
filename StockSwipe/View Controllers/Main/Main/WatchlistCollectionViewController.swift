@@ -32,7 +32,7 @@ protocol ChartCollectionCellDelegate {
 
 class WatchlistCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    private var activityObjects = [Activity]()
+    private var activities = [Activity]()
     private var cards = [Card?]()
     
     private var cellWidth: CGFloat!
@@ -203,7 +203,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             do {
                 
                 guard let firstActivity = try result().first as? Activity else { return }
-                self.activityObjects.insert(firstActivity, at: 0)
+                self.activities.insert(firstActivity, at: 0)
                 self.cards.insert(card, at: 0)
                 
                 DispatchQueue.main.async {
@@ -230,7 +230,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return activityObjects.count
+        return self.activities.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -290,10 +290,10 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
             do {
                 
                 guard let activityObjects = try result() as? [Activity] else { return }
-                self.activityObjects.removeAll()
+                self.activities.removeAll()
                 self.cards.removeAll()
-                self.activityObjects += activityObjects
-                self.cards = Array(repeating: nil, count: self.activityObjects.count)
+                self.activities += activityObjects
+                self.cards = Array(repeating: nil, count: self.activities.count)
                 
                 DispatchQueue.main.async {
                     self.CollectionView.reloadData()
@@ -313,7 +313,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         //Delete Objects From Parse and DataSource(and collectionView)
         guard Functions.isUserLoggedIn(presenting: self) else { return }
         guard let selectedCards = selectedIndexes.map({ cards[$0] }) as? [Card] else { return }
-        let activityObjectsToDelete = selectedIndexes.map { self.activityObjects[$0] }
+        let activityObjectsToDelete = selectedIndexes.map { self.activities[$0] }
         
         PFObject.deleteAll(inBackground: activityObjectsToDelete, block: { (success, error) in
             
@@ -363,12 +363,13 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     }
     
     func removeItemFromDataSource(at index: Int) {
-        self.activityObjects.remove(at: index)
+        self.activities.remove(at: index)
         self.cards.remove(at: index)
     }
 }
 
 // MARK: - UITableViewDataSourcePrefetching
+
 extension WatchlistCollectionViewController: UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
@@ -381,8 +382,8 @@ extension WatchlistCollectionViewController: UICollectionViewDataSourcePrefetchi
     }
     
     func fetch(forItemAtIndex index: Int) {
-        let activityObject = self.activityObjects[index]
-        if let stockObject = activityObject.stock, let activityType = activityObject.activityType as? String {
+        let activityObject = self.activities[index]
+        if let stockObject = activityObject.stock {
             Functions.fetchEODData(for: stockObject["Symbol"] as! String, completion: { result in
                 
                 do {
@@ -390,7 +391,7 @@ extension WatchlistCollectionViewController: UICollectionViewDataSourcePrefetchi
                     
                     let card = Card(parseObject: stockObject, eodHistoricalData: result.eodHistoricalResult, eodFundamentalsData: result.eodFundamentalsResult)
                     
-                    let activityType = Constants.ActivityType(rawValue: activityType)
+                    let activityType = Constants.ActivityType(rawValue: activityObject.activityType)
                     
                     switch activityType {
                     case .AddToWatchlistLong?:
@@ -413,9 +414,11 @@ extension WatchlistCollectionViewController: UICollectionViewDataSourcePrefetchi
     }
 }
 
+// MARK: - DZNEmptyDataSet delegate functions
+
 extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
     
-    // DZNEmptyDataSet delegate functions
+
     
 //    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage!{
 //        return UIImage(assetIdentifier: .ideaGuyImage)

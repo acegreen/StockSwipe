@@ -23,9 +23,10 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         case ProfileSegueIdentifier = "ProfileSegueIdentifier"
     }
     
-    var notifications = [Activity]()
-    var isQueryingForActivities = false
-    var notificationsLastRefreshDate: Date?
+    private var notifications = [Activity]()
+    private var isQueryingForActivities = false
+    private var notificationsLastRefreshDate: Date?
+    private var totalNotificationActivityCount = 0
     
     private let reachability = Reachability()
     
@@ -42,6 +43,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.countActivities()
         self.handleReachability()
         
         NotificationCenter.default.addObserver(self, selector: #selector(WatchlistCollectionViewController.userLoggedIn), name: Notification.Name("UserLoggedIn"), object: nil)
@@ -50,7 +52,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if self.notifications.count != 0 && self.tabBarItem.badgeValue != "0" {
+        if self.notifications.count != 0 && self.tabBarItem.badgeValue != nil {
             self.getNotifications(queryType: .update)
         }
     }
@@ -65,6 +67,22 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     
     @objc func userLoggedIn(_ notification: Notification) {
         self.getNotifications(queryType: .new)
+    }
+    
+    func countActivities() {
+        
+        guard let currentUser = PFUser.current() else { return }
+
+        QueryHelper.sharedInstance.countActivityForUser(user: currentUser) { (result) in
+            
+            do {
+                
+                self.totalNotificationActivityCount = try result()
+                
+            } catch {
+                // TODO: handle error
+            }
+        }
     }
     
     func getNotifications(queryType: QueryHelper.QueryType) {
@@ -131,26 +149,18 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
                     case .older:
                         
                         // append more trade ideas
-                        let currentCount = self.notifications.count
                         self.notifications += activityObjects
                         
                         // insert cell in tableview
-                        self.tableView.beginUpdates()
-                        for (i,_) in activityObjects.enumerated() {
-                            let indexPath = IndexPath(row: currentCount + i, section: 0)
-                            self.tableView.insertRows(at: [indexPath], with: .none)
-                        }
-                        self.tableView.endUpdates()
+                        let indexPathsToReload = self.visibleIndexPathsToReload(intersecting: self.calculateIndexPathsToReload(from: self.notifications, queryType: queryType))
+                        self.tableView.reloadRows(at: indexPathsToReload, with: .automatic)
                         
                     case .update:
                         
-                        self.tableView.beginUpdates()
-                        for activityObnject in activityObjects {
-                            self.notifications.insert(activityObnject, at: 0)
-                            let indexPath = IndexPath(row: 0, section: 0)
-                            self.tableView.insertRows(at: [indexPath], with: .none)
-                        }
-                        self.tableView.endUpdates()
+                        self.notifications.insert(contentsOf: activityObjects, at: 0)
+                        
+                        let indexPathsToReload = self.visibleIndexPathsToReload(intersecting: self.calculateIndexPathsToReload(from: self.notifications, queryType: queryType))
+                        self.tableView.reloadRows(at: indexPathsToReload, with: .automatic)
                     }
                 }
                 
@@ -193,13 +203,11 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     // MARK: - Table view data source
     
     override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return notifications.count
+        return totalNotificationActivityCount
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -213,7 +221,11 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(forIndexPath: indexPath) as NotificationCell
-        cell.activity = notifications[indexPath.row]
+        if isLoadingCell(for: indexPath) {
+            cell.clear()
+        } else {
+            cell.activity = notifications[indexPath.row]
+        }
         return cell
     }
     
@@ -250,15 +262,6 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         }
     }
     
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-        let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
-        if offset >= -1 && offset <= 5 {
-            // This is the last cell so get more data
-            self.getNotifications(queryType: .older)
-        }
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
         let segueIdentifier = segueIdentifierForSegue(segue)
@@ -273,6 +276,32 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
         case .ProfileSegueIdentifier:
             let profileViewController = segue.destination as! ProfileContainerController
             profileViewController.user = sender as? User
+        }
+    }
+}
+
+private extension NotificationCenterTableViewController {
+    func isLoadingCell(for indexPath: IndexPath) -> Bool {
+        return indexPath.row >= self.notifications.count
+    }
+    
+    func visibleIndexPathsToReload(intersecting indexPaths: [IndexPath]) -> [IndexPath] {
+        let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows ?? []
+        let indexPathsIntersection = Set(indexPathsForVisibleRows).intersection(indexPaths)
+        return Array(indexPathsIntersection)
+    }
+    
+    private func calculateIndexPathsToReload(from newActivities: [Activity], queryType: QueryHelper.QueryType) -> [IndexPath] {
+        
+        switch queryType {
+        case .older:
+            let startIndex = notifications.count - newActivities.count
+            let endIndex = startIndex + newActivities.count
+            return (startIndex..<endIndex).map { IndexPath(row: $0, section: 1) }
+        case .update, .new:
+            let startIndex = 0
+            let endIndex = startIndex + newActivities.count
+            return (startIndex..<endIndex).map { IndexPath(row: $0, section: 1) }
         }
     }
 }

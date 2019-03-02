@@ -63,7 +63,7 @@ class NotificationCell: UITableViewCell {
         UIApplication.topViewController()?.show(profileContainerController, sender: self)
     }
     
-    private func clear() {
+    func clear() {
         self.userAvatar.image = UIImage(named: "dummy_profile_male")!
         self.fullname.text = "John Doe"
         self.notificationDesc.text = "Notification Description"

@@ -25,13 +25,12 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     var delegate: IdeaPostDelegate!
     
     var activity: Activity!
-    var replyActivities = [Activity]()
-    var isQueryingForReplyTradeIdeas = false
-    var replyTradeIdeasLastRefreshDate: Date!
+    private var replyActivities = [Activity]()
+    private var isQueryingForReplyTradeIdeas = false
+    private var replyTradeIdeasLastRefreshDate: Date!
+    private var totalReplyActivityCount = 0
     
-    let queue = DispatchQueue(label: "Query Queue")
-    
-    let reachability = Reachability()
+    private let reachability = Reachability()
     
     @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
     
@@ -42,6 +41,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.countReplyActivities()
         self.handleReachability()
     }
     
@@ -49,6 +49,23 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         super.viewWillAppear(animated)
         
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    
+    func countReplyActivities() {
+        
+        guard let tradeIdea = self.activity.tradeIdea else { return }
+        let activityTypes = [Constants.ActivityType.TradeIdeaReply.rawValue]
+        QueryHelper.sharedInstance.countActivityFor(fromUser: nil, toUser: nil, originalTradeIdea: tradeIdea, tradeIdea: nil, stocks: nil, activityType: activityTypes, completion: { (result) in
+            
+            do {
+                
+                self.totalReplyActivityCount = try result()
+                
+            } catch {
+                // TODO: handle error
+            }
+        })
     }
     
     func getReplyTradeIdeas(queryType: QueryHelper.QueryType) {
@@ -106,34 +123,26 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
 
                     switch queryType {
                     case .new:
-
+                        
                         self.replyActivities = replyActivitiesObjects
                         self.tableView.reloadData()
-
+                        
                     case .older:
-
+                        
                         // append more trade ideas
-                        let currentCount = self.replyActivities.count
                         self.replyActivities += replyActivitiesObjects
-
+                        
                         // insert cell in tableview
-                        self.tableView.beginUpdates()
-                        for (i,_) in replyActivitiesObjects.enumerated() {
-                            let indexPath = IndexPath(row: currentCount + i, section: 1)
-                            self.tableView.insertRows(at: [indexPath], with: .none)
-                        }
-                        self.tableView.endUpdates()
-
+                        let indexPathsToReload = self.visibleIndexPathsToReload(intersecting: self.calculateIndexPathsToReload(from: replyActivitiesObjects, queryType: queryType))
+                        self.tableView.reloadRows(at: indexPathsToReload, with: .automatic)
+                        
                     case .update:
-
-                        // append more trade ideas
-                        self.tableView.beginUpdates()
-                        for replyTradeIdea in replyActivitiesObjects {
-                            self.replyActivities.insert(replyTradeIdea, at: 0)
-                            let indexPath = IndexPath(row: 0, section: 1)
-                            self.tableView.insertRows(at: [indexPath], with: .none)
-                        }
-                        self.tableView.endUpdates()
+                        
+                        // insert more trade ideas
+                        self.replyActivities.insert(contentsOf: replyActivitiesObjects, at: 0)
+                        
+                        let indexPathsToReload = self.visibleIndexPathsToReload(intersecting: self.calculateIndexPathsToReload(from: replyActivitiesObjects, queryType: queryType))
+                        self.tableView.reloadRows(at: indexPathsToReload, with: .automatic)
                     }
 
                     // end refresh and add time stamp
@@ -186,7 +195,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
             return 1
         }
         
-        return replyActivities.count
+        return totalReplyActivityCount
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -214,20 +223,16 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
         } else {
             cell = tableView.dequeueReusableCell(withIdentifier: "ReplyIdeaCell", for: indexPath) as? IdeaCell
             guard let replyActivityAtIndex = self.replyActivities.get(indexPath.row) else { return cell }
-            cell.activity = replyActivityAtIndex
-            cell.delegate = self
+            
+            if isLoadingCell(for: indexPath) {
+                cell.clear()
+            } else {
+                cell.activity = replyActivityAtIndex
+                cell.delegate = self
+            }
         }
         
         return cell
-    }
-    
-    override func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
-        let offset = (scrollView.contentOffset.y - (scrollView.contentSize.height - scrollView.frame.size.height))
-        if offset >= -1 && offset <= 5 {
-            // This is the last cell so get more data
-            self.getReplyTradeIdeas(queryType: .older)
-        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -247,6 +252,32 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     }
 }
 
+private extension TradeIdeaDetailTableViewController {
+    func isLoadingCell(for indexPath: IndexPath) -> Bool {
+        return indexPath.row >= self.replyActivities.count
+    }
+    
+    func visibleIndexPathsToReload(intersecting indexPaths: [IndexPath]) -> [IndexPath] {
+        let indexPathsForVisibleRows = tableView.indexPathsForVisibleRows ?? []
+        let indexPathsIntersection = Set(indexPathsForVisibleRows).intersection(indexPaths)
+        return Array(indexPathsIntersection)
+    }
+    
+    private func calculateIndexPathsToReload(from newActivities: [Activity], queryType: QueryHelper.QueryType) -> [IndexPath] {
+        
+        switch queryType {
+        case .older:
+            let startIndex = replyActivities.count - newActivities.count
+            let endIndex = startIndex + newActivities.count
+            return (startIndex..<endIndex).map { IndexPath(row: $0, section: 1) }
+        case .update, .new:
+            let startIndex = 0
+            let endIndex = startIndex + newActivities.count
+            return (startIndex..<endIndex).map { IndexPath(row: $0, section: 1) }
+        }
+    }
+}
+
 extension TradeIdeaDetailTableViewController: IdeaPostDelegate {
     
     internal func ideaPosted(with activity: Activity, tradeIdeaTyp: Constants.TradeIdeaType) {
@@ -254,6 +285,7 @@ extension TradeIdeaDetailTableViewController: IdeaPostDelegate {
         if tradeIdeaTyp == .reply && activity.originalTradeIdea?.objectId == self.activity.tradeIdea?.objectId {
             let indexPath = IndexPath(row: 0, section: 1)
             self.replyActivities.insert(activity, at: 0)
+            self.totalReplyActivityCount += 1
             self.tableView.insertRows(at: [indexPath], with: .automatic)
         }
 
@@ -264,9 +296,10 @@ extension TradeIdeaDetailTableViewController: IdeaPostDelegate {
         
         if activity.objectId == self.activity.objectId {
             self.navigationController?.popViewController(animated: true)
-        } else if let activity = self.replyActivities.find ({ $0.objectId == activity.objectId }), let index = self.replyActivities.index(of: activity) {
+        } else if let activity = self.replyActivities.find ({ $0.objectId == activity.objectId }) {
             let indexPath = IndexPath(row: 0, section: 1)
             self.replyActivities.removeObject(activity)
+            self.totalReplyActivityCount -= 1
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
         }
         
@@ -279,7 +312,7 @@ extension TradeIdeaDetailTableViewController: IdeaPostDelegate {
     
     internal func ideaUpdated(with activity: Activity) {
         
-        if let currentActivity = self.replyActivities.find ({ $0.objectId == activity.objectId }), let index = self.replyActivities.index(of: currentActivity) {
+        if let currentActivity = self.replyActivities.find ({ $0.objectId == activity.objectId }) {
             let indexPath = IndexPath(row: 0, section: 1)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }

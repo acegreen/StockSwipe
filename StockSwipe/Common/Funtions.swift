@@ -200,6 +200,10 @@ class Functions {
                         parseObject["Company"] = eodFundamentalsResult.general.name ?? ""
                         parseObject["Exchange"] = eodFundamentalsResult.general.exchange ?? ""
                         parseObject["Sector"] = eodFundamentalsResult.general.sector ?? "Other"
+                        let newACL = PFACL()
+                        newACL.hasPublicReadAccess = true
+                        newACL.hasPublicWriteAccess = false
+                        parseObject.acl = newACL
                         parseObject.saveInBackground()
                         
                         completion( { parseObject })

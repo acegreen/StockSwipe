@@ -22,7 +22,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CardView" customModule="StockSwipe" customModuleProvider="target">
             <connections>
                 <outlet property="chartView" destination="TDA-4q-lon" id="YkE-wD-vpP"/>
-                <outlet property="companyNameLabel" destination="Vmg-63-FIw" id="0p7-Ty-wdc"/>
+                <outlet property="companyNameAndSymbolLabel" destination="Vmg-63-FIw" id="6jw-Sl-abt"/>
+                <outlet property="currentPriceLabel" destination="JcJ-hj-Byv" id="zck-tg-8zO"/>
                 <outlet property="exchangeLabel" destination="sec-va-60I" id="zkq-8g-RRY"/>
                 <outlet property="highlightOneImageView" destination="Wf9-yh-r9e" id="fpt-eT-Rwj"/>
                 <outlet property="highlightOneSubtitleLabel" destination="KTS-ir-DQE" id="ZrP-3U-xDw"/>
@@ -34,7 +35,6 @@
                 <outlet property="highlightTwoSubtitleLabel" destination="UQc-zP-DOo" id="hPw-iE-SwT"/>
                 <outlet property="highlightTwoTitleLabel" destination="xkr-Sf-k5e" id="jiM-3O-AWI"/>
                 <outlet property="overlayLabel" destination="gwX-Ma-EXQ" id="bKE-o0-aib"/>
-                <outlet property="symbolLabel" destination="7FT-KS-CcV" id="Isq-DQ-E9F"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -54,16 +54,16 @@
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="muG-zo-qm3">
                                             <rect key="frame" x="10" y="10" width="355" height="90.5"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="Symbol" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="7FT-KS-CcV">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Vmg-63-FIw">
                                                     <rect key="frame" x="0.0" y="0.0" width="355" height="36"/>
-                                                    <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="22"/>
+                                                    <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="20"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                     <variation key="heightClass=regular-widthClass=regular">
-                                                        <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="26"/>
+                                                        <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="24"/>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Vmg-63-FIw">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="Company Name" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JcJ-hj-Byv">
                                                     <rect key="frame" x="0.0" y="41" width="355" height="23.5"/>
                                                     <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="20"/>
                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>

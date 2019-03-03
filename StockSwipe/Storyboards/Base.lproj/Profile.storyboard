@@ -26,12 +26,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <view key="tableHeaderView" opaque="NO" contentMode="scaleToFill" id="aRf-7p-R4R">
+                        <view key="tableHeaderView" opaque="NO" contentMode="scaleToFill" misplaced="YES" id="aRf-7p-R4R">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="225"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_profile_male" translatesAutoresizingMaskIntoConstraints="NO" id="yR8-KQ-gl1">
-                                    <rect key="frame" x="25" y="27.5" width="80" height="80"/>
+                                    <rect key="frame" x="25" y="1" width="80" height="80"/>
                                     <color key="tintColor" red="0.43529412150382996" green="0.44313725829124451" blue="0.47450980544090271" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="yR8-KQ-gl1" secondAttribute="height" multiplier="1:1" id="bDB-WM-GX0"/>
@@ -50,13 +50,13 @@
                                     </userDefinedRuntimeAttributes>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="@JohnDoe" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kre-p4-MTd">
-                                    <rect key="frame" x="30" y="141" width="80" height="20.5"/>
+                                    <rect key="frame" x="30" y="114.5" width="80" height="20.5"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Light" family="Helvetica Neue" pointSize="17"/>
                                     <color key="textColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <stackView opaque="NO" contentMode="scaleToFill" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="8C8-5j-Pg8">
-                                    <rect key="frame" x="372" y="50" width="22" height="35"/>
+                                    <rect key="frame" x="372" y="23.5" width="22" height="35"/>
                                     <userGuides>
                                         <userLayoutGuide location="19" affinity="minY"/>
                                     </userGuides>
@@ -116,7 +116,7 @@
                                     </subviews>
                                 </stackView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="John Doe" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yau-Wk-age">
-                                    <rect key="frame" x="30" y="117" width="91.5" height="24"/>
+                                    <rect key="frame" x="30" y="90.5" width="91.5" height="24"/>
                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="20"/>
                                     <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
@@ -134,12 +134,12 @@
                                 <constraint firstItem="yR8-KQ-gl1" firstAttribute="centerY" secondItem="aRf-7p-R4R" secondAttribute="centerY" multiplier="0.6" id="isN-aH-wXS"/>
                             </constraints>
                         </view>
-                        <view key="tableFooterView" contentMode="scaleToFill" id="4zA-rY-JdR">
+                        <view key="tableFooterView" contentMode="scaleToFill" misplaced="YES" id="4zA-rY-JdR">
                             <rect key="frame" x="0.0" y="597" width="414" height="44"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="GNC-a4-Kcy">
-                                    <rect key="frame" x="197" y="12" width="20" height="20"/>
+                                    <rect key="frame" x="197" y="-10" width="20" height="20"/>
                                 </activityIndicatorView>
                             </subviews>
                             <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
@@ -501,7 +501,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="ProfileDetailTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="oun-jb-v51" customClass="ProfileDetailTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="60" sectionHeaderHeight="28" sectionFooterHeight="28" id="uwF-o1-OmL">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="720"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -510,7 +510,7 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dummy_profile_male" translatesAutoresizingMaskIntoConstraints="NO" id="gyi-a2-UyK">
-                                    <rect key="frame" x="20" y="-91" width="120" height="120"/>
+                                    <rect key="frame" x="20" y="-3" width="120" height="120"/>
                                     <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <constraints>
                                         <constraint firstAttribute="width" secondItem="gyi-a2-UyK" secondAttribute="height" multiplier="1:1" id="RxR-VO-EZG"/>
@@ -790,7 +790,7 @@
             <objects>
                 <tableViewController id="XHG-nM-Qe0" customClass="SettingsTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="y7J-cH-0Ho">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="720"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -926,7 +926,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="BlockedAccountsTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BlL-G5-xOf" customClass="BlockedAccountsTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="OZv-K0-jeH">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="720"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <prototypes>
@@ -1075,7 +1075,7 @@
             <objects>
                 <tableViewController storyboardIdentifier="NotificationsTableViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nVq-GI-b18" customClass="NotificationsTableViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="60" sectionHeaderHeight="10" sectionFooterHeight="10" id="JLV-Nq-oct">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="720"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -1442,5 +1442,5 @@
     <inferredMetricsTieBreakers>
         <segue reference="RSU-eq-W9K"/>
     </inferredMetricsTieBreakers>
-    <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+    <color key="tintColor" name="green"/>
 </document>

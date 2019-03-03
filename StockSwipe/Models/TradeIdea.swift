@@ -38,26 +38,38 @@ public class TradeIdea: PFObject, PFSubclassing {
                 let count = try result()
                 self.likeCount = count
                 
+                
+                if let currentUser = User.current() {
+                    QueryHelper.sharedInstance.countActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: self, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], limit: 1, completion: { (result) in
+                        
+                        do {
+                            let count = try result()
+                            self.isLikedByCurrentUser = count > 0
+                            
+                            if let completion = completion {
+                                completion(self.likeCount)
+                            }
+                            
+                        } catch {
+                            //TODO: handle error
+                            if let completion = completion {
+                                completion(self.likeCount)
+                            }
+                        }
+                    })
+                } else {
+                    if let completion = completion {
+                        completion(self.likeCount)
+                    }
+                }
+                
             } catch {
                 //TODO: handle error
-            }
-            
-            if let completion = completion {
-                completion(self.likeCount)
+                if let completion = completion {
+                    completion(self.likeCount)
+                }
             }
         })
-        
-        if let currentUser = User.current() {
-            QueryHelper.sharedInstance.countActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: nil, tradeIdea: self, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaLike.rawValue], limit: 1, completion: { (result) in
-                
-                do {
-                    let count = try result()
-                    self.isLikedByCurrentUser = count > 0
-                } catch {
-                    //TODO: handle error
-                }
-            })
-        }
     }
     
     func checkNumberOfReshares(completion: ((Int) -> Void)?) {
@@ -67,26 +79,36 @@ public class TradeIdea: PFObject, PFSubclassing {
             do {
                 let count = try result()
                 self.reshareCount = count
+                
+                if let currentUser = User.current() {
+                    QueryHelper.sharedInstance.countActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: self, tradeIdea: self, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], limit: 1, completion: { (result) in
+                        
+                        do {
+                            let count = try result()
+                            self.isResharedByCurrentUser = count > 0
+                            
+                            if let completion = completion {
+                                completion(self.reshareCount)
+                            }
+                        } catch {
+                            //TODO: handle error
+                            if let completion = completion {
+                                completion(self.reshareCount)
+                            }
+                        }
+                    })
+                } else {
+                    if let completion = completion {
+                        completion(self.reshareCount)
+                    }
+                }
+                
             } catch {
                 //TODO: handle error
-            }
-            
-            if let completion = completion {
-                completion(self.reshareCount)
+                if let completion = completion {
+                    completion(self.reshareCount)
+                }
             }
         })
-        
-        
-        if let currentUser = User.current() {
-            QueryHelper.sharedInstance.countActivityFor(fromUser: currentUser, toUser: nil, originalTradeIdea: self, tradeIdea: self, stocks: nil, activityType: [Constants.ActivityType.TradeIdeaReshare.rawValue], limit: 1, completion: { (result) in
-                
-                do {
-                    let count = try result()
-                    self.isResharedByCurrentUser = count > 0
-                } catch {
-                    //TODO: handle error
-                }
-            })
-        }
     }
 }

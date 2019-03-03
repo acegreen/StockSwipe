@@ -163,5 +163,5 @@
         <image name="dummy_profile_male" width="25" height="25"/>
         <image name="x" width="16" height="16"/>
     </resources>
-    <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
+    <color key="tintColor" name="green"/>
 </document>

@@ -9,10 +9,11 @@
 import UIKit
 import Charts
 
-@IBDesignable final class CardView: UIView, NibLoadable {
+@IBDesignable
+final class CardView: UIView, NibLoadable {
     
-    @IBOutlet weak var symbolLabel: UILabel!
-    @IBOutlet weak var companyNameLabel: UILabel!
+    @IBOutlet weak var companyNameAndSymbolLabel: UILabel!
+    @IBOutlet weak var currentPriceLabel: UILabel!
     @IBOutlet weak var exchangeLabel: UILabel!
     
     @IBOutlet weak var chartView: LineChartView!
@@ -49,8 +50,18 @@ import Charts
     }
     
     private func setInfo(with card: Card) {
-        self.symbolLabel.text = card.symbol
-        self.companyNameLabel.text = card.companyName
+        if let companyName = card.companyName {
+            self.companyNameAndSymbolLabel.text = companyName + " " + "(\(card.symbol!))"
+        } else {
+            self.companyNameAndSymbolLabel.text = card.symbol
+
+        }
+        
+        if let currencySymbol = card.eodFundamentalsData?.general.currencySymbol, let adjustedCloseString = card.eodHistoricalData?.last?.adjustedClose, let adjustedCloseRounded = Double(adjustedCloseString)?.roundTo(2) {
+            self.currentPriceLabel.text = currencySymbol + String(adjustedCloseRounded)
+        } else {
+            self.currentPriceLabel.text = "--"
+        }
         self.exchangeLabel.text = card.exchange
         
         guard let userChoice = card.userChoice else { return }
@@ -142,8 +153,8 @@ import Charts
     }
     
     func clear() {
-        self.symbolLabel.text = "Symbol"
-        self.companyNameLabel.text = "Company Name"
+        self.companyNameAndSymbolLabel.text = "Company Name"
+        self.currentPriceLabel.text = "$0.00"
         self.exchangeLabel.text = "Exchange"
         self.chartView.clear()
         self.overlayLabel.text = ""

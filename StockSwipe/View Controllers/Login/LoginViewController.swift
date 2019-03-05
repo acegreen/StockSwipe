@@ -17,14 +17,11 @@ protocol LoginDelegate {
     func didLogoutSuccessfully()
 }
 
-class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
+class LoginViewController: UIViewController, PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate {
     
     static let sharedInstance = LoginViewController()
     
     var loginDelegate: LoginDelegate?
-    
-    var pageViewController: UIPageViewController!
-    var pageImages: NSArray!
     
     var logInViewController: PFLogInViewController!
     var signUpViewController: PFSignUpViewController!
@@ -34,33 +31,15 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     }
     
     @IBAction func notNowButtonPressed(_ sender: AnyObject) {
-        
         self.dismiss(animated: false, completion: nil)
     }
     
     override var shouldAutorotate : Bool {
-        
         return true
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        self.pageImages = NSArray(objects: "page1", "page2", "page3", "page4", "page5")
-        self.pageViewController = Constants.Storyboards.loginStoryboard.instantiateViewController(withIdentifier: "PageViewController") as! UIPageViewController
-        self.pageViewController.dataSource = self
-        
-        let startVC = self.viewControllerAtIndex(0) as PageContentViewController
-        
-        let viewControllers = NSArray(object: startVC)
-        self.pageViewController.setViewControllers(viewControllers as! [PageContentViewController], direction: .forward, animated: true, completion: nil)
-        self.pageViewController.view.frame = CGRect(x: 0, y: 30, width: self.view.frame.width, height: self.view.frame.size.height * 0.80)
-        
-        self.addChild(self.pageViewController)
-        
-        self.view.addSubview(self.pageViewController.view)
-        
-        self.pageViewController.didMove(toParent: self)
         
         if PFUser.current() != nil {
             self.dismiss(animated: false, completion: nil)
@@ -69,74 +48,6 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(true)
-        
-        
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    // Mark - UIPageViewController and delegate functions
-    
-    func viewControllerAtIndex(_ index: Int) -> PageContentViewController {
-        
-        if ((self.pageImages.count == 0) || (index >= self.pageImages.count)) {
-            return PageContentViewController()
-        }
-        
-        let vc: PageContentViewController = Constants.Storyboards.loginStoryboard.instantiateViewController(withIdentifier: "PageContentViewController") as! PageContentViewController
-        
-        vc.imageFile = self.pageImages[index] as? String
-        vc.pageIndex = index
-        
-        return vc
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        
-        let vc = viewController as! PageContentViewController
-        
-        var index = vc.pageIndex as Int
-        
-        if (index == 0 || index == NSNotFound) {
-            return nil
-        }
-        
-        index -= 1
-        
-        return self.viewControllerAtIndex(index)
-        
-    }
-    
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        
-        let vc = viewController as! PageContentViewController
-        
-        var index = vc.pageIndex as Int
-        
-        if (index == NSNotFound) {
-            return nil
-        }
-        
-        index += 1
-        
-        if (index == self.pageImages.count) {
-            return nil
-        }
-        
-        return self.viewControllerAtIndex(index)
-        
-    }
-    
-    func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return self.pageImages.count
-    }
-    
-    
-    func presentationIndex(for pageViewController: UIPageViewController) -> Int {
-        return 0        
     }
     
     // Mark - Parse Login
@@ -582,3 +493,5 @@ class LoginViewController: UIViewController, UIPageViewControllerDataSource, PFL
         }
     }
 }
+
+// Mark - UIPageViewController and delegate functions

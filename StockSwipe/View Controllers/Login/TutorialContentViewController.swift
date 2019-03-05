@@ -1,5 +1,5 @@
 //
-//  PageContentViewController.swift
+//  TutorialContentViewController.swift
 //  StockSwipe
 //
 //  Created by Ace Green on 2015-10-10.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PageContentViewController: UIViewController {
+class TutorialContentViewController: UIViewController {
     
     var pageIndex: Int!
     var imageFile: String!
@@ -16,9 +16,7 @@ class PageContentViewController: UIViewController {
     @IBOutlet var imageView: UIImageView!
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
         self.imageView.image = UIImage(named: self.imageFile)
-        
     }
 }

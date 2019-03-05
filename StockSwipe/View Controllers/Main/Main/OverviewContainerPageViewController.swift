@@ -10,6 +10,16 @@ import UIKit
 import DataCache
 import SafariServices
 
+protocol OverviewContainerPageViewControllerDelegate: class {
+    
+    func overviewPageViewController(overviewPageViewController: OverviewContainerPageViewController,
+                                    didUpdatePageCount count: Int)
+    
+    func overviewPageViewController(overviewPageViewController: OverviewContainerPageViewController,
+                                    didUpdatePageIndex index: Int)
+    
+}
+
 class OverviewContainerPageViewController: UIPageViewController {
     
     weak var overviewDelegate: OverviewContainerPageViewControllerDelegate?
@@ -55,9 +65,6 @@ class OverviewContainerPageViewController: UIPageViewController {
                            direction: direction,
                            animated: true,
                            completion: { (finished) -> Void in
-                            // Setting the view controller programmatically does not fire
-                            // any delegate methods, so we have to manually notify the
-                            // 'overviewDelegate' of the new index.
                             self.notifyOverviewDelegateOfNewIndex()
         })
     }
@@ -71,6 +78,7 @@ class OverviewContainerPageViewController: UIPageViewController {
 }
 
 // MARK: UIPageViewControllerDataSource
+
 extension OverviewContainerPageViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController,
@@ -80,9 +88,6 @@ extension OverviewContainerPageViewController: UIPageViewControllerDataSource {
         }
         
         let previousIndex = viewControllerIndex - 1
-        
-        // User is on the first view controller and swiped left to loop to
-        // the last view controller.
         guard previousIndex >= 0 else {
             return orderedViewControllers.last
         }
@@ -102,9 +107,7 @@ extension OverviewContainerPageViewController: UIPageViewControllerDataSource {
         
         let nextIndex = viewControllerIndex + 1
         let orderedViewControllersCount = orderedViewControllers.count
-        
-        // User is on the last view controller and swiped right to loop to
-        // the first view controller.
+
         guard orderedViewControllersCount != nextIndex else {
             return orderedViewControllers.first
         }
@@ -120,21 +123,11 @@ extension OverviewContainerPageViewController: UIPageViewControllerDataSource {
 
 extension OverviewContainerPageViewController: UIPageViewControllerDelegate {
     
-    func pageViewController(pageViewController: UIPageViewController,
+    func pageViewController(_ pageViewController: UIPageViewController,
                             didFinishAnimating finished: Bool,
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
         notifyOverviewDelegateOfNewIndex()
     }
-    
-}
-
-protocol OverviewContainerPageViewControllerDelegate: class {
-
-    func overviewPageViewController(overviewPageViewController: OverviewContainerPageViewController,
-                                    didUpdatePageCount count: Int)
-    
-    func overviewPageViewController(overviewPageViewController: OverviewContainerPageViewController,
-                                    didUpdatePageIndex index: Int)
     
 }

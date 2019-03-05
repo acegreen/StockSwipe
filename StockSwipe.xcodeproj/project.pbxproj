@@ -21,6 +21,7 @@
 		232ECBDE2212648B00C30E46 /* CardTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDA2212648B00C30E46 /* CardTransition.swift */; };
 		232ECBDF2212648B00C30E46 /* CardPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDB2212648B00C30E46 /* CardPresentationController.swift */; };
 		232ECBE02212648B00C30E46 /* PresentCardAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDC2212648B00C30E46 /* PresentCardAnimator.swift */; };
+		23345A31222ED33B00F02D27 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23345A30222ED33B00F02D27 /* TutorialPageViewController.swift */; };
 		2339B0AF1B41A6CB009CE3EB /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2339B0AE1B41A6CB009CE3EB /* MessageUI.framework */; };
 		233BFDC41B1A28A3008B39ED /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233BFDC31B1A28A3008B39ED /* CoreData.framework */; };
 		233C7D541CB210B6006A014A /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233C7D531CB210B6006A014A /* Protocols.swift */; };
@@ -50,7 +51,7 @@
 		238DABC31BA664ED0079DAFC /* UIView+TLMotionEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 238DABC21BA664ED0079DAFC /* UIView+TLMotionEffect.m */; };
 		238DB6DB1D85A01F00082918 /* FeedbackViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6BE1D85A01F00082918 /* FeedbackViewController.swift */; };
 		238DB6DC1D85A01F00082918 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C01D85A01F00082918 /* LoginViewController.swift */; };
-		238DB6DD1D85A01F00082918 /* PageContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C11D85A01F00082918 /* PageContentViewController.swift */; };
+		238DB6DD1D85A01F00082918 /* TutorialContentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C11D85A01F00082918 /* TutorialContentViewController.swift */; };
 		238DB6DE1D85A01F00082918 /* BlockedAccountsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C31D85A01F00082918 /* BlockedAccountsTableViewController.swift */; };
 		238DB6DF1D85A01F00082918 /* CardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C41D85A01F00082918 /* CardsViewController.swift */; };
 		238DB6E01D85A01F00082918 /* WatchlistCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 238DB6C51D85A01F00082918 /* WatchlistCollectionViewController.swift */; };
@@ -195,6 +196,7 @@
 		232F5F981EE6E06C0046E16F /* StockSwipe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StockSwipe.entitlements; sourceTree = "<group>"; };
 		23332BA21CA08404006E4863 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = StockSwipeWidget/Base.lproj/MainInterface.storyboard; sourceTree = SOURCE_ROOT; };
 		23332BA41CA08416006E4863 /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TodayViewController.swift; path = StockSwipeWidget/TodayViewController.swift; sourceTree = SOURCE_ROOT; };
+		23345A30222ED33B00F02D27 /* TutorialPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
 		2339B0AE1B41A6CB009CE3EB /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		233BFDC31B1A28A3008B39ED /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		233C7D531CB210B6006A014A /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
@@ -232,7 +234,7 @@
 		238DABC21BA664ED0079DAFC /* UIView+TLMotionEffect.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+TLMotionEffect.m"; sourceTree = "<group>"; };
 		238DB6BE1D85A01F00082918 /* FeedbackViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedbackViewController.swift; sourceTree = "<group>"; };
 		238DB6C01D85A01F00082918 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
-		238DB6C11D85A01F00082918 /* PageContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageContentViewController.swift; sourceTree = "<group>"; };
+		238DB6C11D85A01F00082918 /* TutorialContentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialContentViewController.swift; sourceTree = "<group>"; };
 		238DB6C31D85A01F00082918 /* BlockedAccountsTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedAccountsTableViewController.swift; sourceTree = "<group>"; };
 		238DB6C41D85A01F00082918 /* CardsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardsViewController.swift; sourceTree = "<group>"; };
 		238DB6C51D85A01F00082918 /* WatchlistCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WatchlistCollectionViewController.swift; sourceTree = "<group>"; };
@@ -500,8 +502,9 @@
 		238DB6BF1D85A01F00082918 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				238DB6C11D85A01F00082918 /* PageContentViewController.swift */,
 				238DB6C01D85A01F00082918 /* LoginViewController.swift */,
+				23345A30222ED33B00F02D27 /* TutorialPageViewController.swift */,
+				238DB6C11D85A01F00082918 /* TutorialContentViewController.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -1086,7 +1089,7 @@
 				23875DF81B11752600966012 /* Funtions.swift in Sources */,
 				23C221B51DC8E8C5003898E9 /* ImageLabelView.swift in Sources */,
 				23CAE26D1C2CB41300D15819 /* Settings.swift in Sources */,
-				238DB6DD1D85A01F00082918 /* PageContentViewController.swift in Sources */,
+				238DB6DD1D85A01F00082918 /* TutorialContentViewController.swift in Sources */,
 				235805A322105FDF005C89DD /* OverviewFirstPageViewController.swift in Sources */,
 				232ECBDF2212648B00C30E46 /* CardPresentationController.swift in Sources */,
 				23C221BB1DC8E8C5003898E9 /* SwipeCardView.swift in Sources */,
@@ -1123,6 +1126,7 @@
 				2347E6151BD7C4A20036EA65 /* iCarousel.m in Sources */,
 				238DB6DC1D85A01F00082918 /* LoginViewController.swift in Sources */,
 				238DB6E51D85A01F00082918 /* FAQTableViewController.swift in Sources */,
+				23345A31222ED33B00F02D27 /* TutorialPageViewController.swift in Sources */,
 				23C221B11DC8E8C5003898E9 /* iCarouselTickerView.swift in Sources */,
 				23C221BE1DC8E8C5003898E9 /* TintableLabel.swift in Sources */,
 				23C221AC1DC8E8C5003898E9 /* CustomImagePickerController.swift in Sources */,

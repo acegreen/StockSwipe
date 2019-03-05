@@ -6,16 +6,19 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "5.5-inch (iPhone 6+) - Screenshot 3.jpg",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
+      "filename" : "tutorial-page-4-iPad.jpg",
       "scale" : "3x"
     }
   ],
   "info" : {
     "version" : 1,
     "author" : "xcode"
+  },
+  "properties" : {
+    "template-rendering-intent" : "original"
   }
 }

@@ -15,9 +15,9 @@ import FBSDKShareKit
 class MoreTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, SegueHandlerType, CellType {
     
     enum SegueIdentifier: String {
-        
-        case FAQSegueIdentifier = "FAQSegueIdentifier"
         case ProfileSegueIdentifier = "ProfileSegueIdentifier"
+        case FAQSegueIdentifier = "FAQSegueIdentifier"
+        case TutorialPageViewControllerSegueIdentifier = "TutorialPageViewControllerSegueIdentifier"
     }
     
     enum CellIdentifier: String {
@@ -91,9 +91,8 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             
         case .TutorialCell:
             
-            let logInViewcontroller = LoginViewController.sharedInstance
-            self.show(logInViewcontroller, sender: self)
-            
+            self.performSegueWithIdentifier(.TutorialPageViewControllerSegueIdentifier, sender: self)
+
         case .PublicationCell:
             
             guard Functions.isConnectedToNetwork() else { return }
@@ -194,13 +193,12 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
             if let currentUser = PFUser.current() {
                 
                 let profileContainerController = segue.destination as! ProfileContainerController
-                profileContainerController
                 profileContainerController.loginDelegate = self
                 profileContainerController.profileChangeDelegate = self
                 profileContainerController.user = self.currentUser
             }
             
-        case .FAQSegueIdentifier:
+        case .FAQSegueIdentifier, .TutorialPageViewControllerSegueIdentifier:
             break
         }
     }

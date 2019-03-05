@@ -166,7 +166,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             cellWidth = (self.view.bounds.width - 30) / numberOfCellsHorizontally
-            cellHeight = (cellWidth * 0.60)
+            cellHeight = cellWidth
             
         } else {
             cellWidth = cardWidth / numberOfCellsHorizontally

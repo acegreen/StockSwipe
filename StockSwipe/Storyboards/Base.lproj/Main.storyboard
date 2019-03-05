@@ -180,7 +180,7 @@
                             </barButtonItem>
                         </leftBarButtonItems>
                         <view key="titleView" contentMode="scaleToFill" id="qWB-de-rJ5">
-                            <rect key="frame" x="113" y="5.5" width="130.5" height="33"/>
+                            <rect key="frame" x="107" y="5.5" width="130.5" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stockswipe_logo_small" translatesAutoresizingMaskIntoConstraints="NO" id="tZG-zr-Fr2">
@@ -1342,7 +1342,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
-                                <variation key="heightClass=regular-widthClass=regular" axis="horizontal" distribution="fillEqually" spacing="5"/>
+                                <variation key="heightClass=regular-widthClass=regular" distribution="fillEqually" spacing="5"/>
                             </stackView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

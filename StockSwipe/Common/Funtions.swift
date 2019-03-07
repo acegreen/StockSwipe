@@ -574,7 +574,7 @@ class Functions {
         
         DispatchQueue.main.async {
             
-            SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle: "SHORT", buttonColor: UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade?", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle: "SHORT", buttonColor: UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
                 
                 guard let topVC = UIApplication.topViewController(), Functions.isUserLoggedIn(presenting: topVC) else { return }
                 

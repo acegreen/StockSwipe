@@ -47,6 +47,13 @@ class CardDetailFirstPageViewController: UIViewController {
         super.viewWillAppear(animated)
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        // adjust summaryTextview so it starts at the top
+        self.summaryTextview.setContentOffset(CGPoint.zero, animated: false)
+    }
+    
     func loadInfo() {
         guard let eodFundamentalsData = card.eodFundamentalsData else { return }
         

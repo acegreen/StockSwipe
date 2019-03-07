@@ -53,7 +53,7 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
         let textToShare = "Discovered $" + symbol + " #StockSwipe" + " stockswipe://card?symbol=\(symbol)"
         let cardImage = UIImage(view: self.cardContentView)
         
-        Functions.presentActivityVC(textToShare, imageToShare: cardImage, url: Constants.appLinkURL!, sender: self.shareButton, vc: self, completion: { (activity, success, items, error) -> Void in
+        Functions.presentActivityVC(textToShare, imageToShare: cardImage, url: nil, sender: self.shareButton, vc: self, completion: { (activity, success, items, error) -> Void in
             
             if success {
                 

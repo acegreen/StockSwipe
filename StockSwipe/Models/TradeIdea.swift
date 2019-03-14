@@ -12,7 +12,7 @@ import Parse
 public class TradeIdea: PFObject, PFSubclassing {
     
     @NSManaged var user: User!
-    @NSManaged var ideaDescription: String!
+    @NSManaged var ideaDescription: String?
     @NSManaged var liked_by: [User]?
     @NSManaged var reshared_by: [TradeIdea]?
     @NSManaged var reshare_of: TradeIdea?

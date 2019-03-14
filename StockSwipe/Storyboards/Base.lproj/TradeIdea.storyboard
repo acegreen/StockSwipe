@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Xji-gg-Vpm">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Xji-gg-Vpm">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.47"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
@@ -285,8 +285,14 @@
                             <outlet property="prefetchDataSource" destination="7sr-cl-tCf" id="43f-cz-Zpt"/>
                         </connections>
                     </tableView>
+                    <toolbarItems/>
                     <navigationItem key="navigationItem" title="Trade Ideas" largeTitleDisplayMode="always" id="oWU-eV-j40">
                         <barButtonItem key="backBarButtonItem" title=" " id="pNp-1v-SPK"/>
+                        <barButtonItem key="rightBarButtonItem" image="write" id="oUQ-Q0-50c">
+                            <connections>
+                                <segue destination="FYz-cJ-H4G" kind="presentation" identifier="PostIdeaSegueIdentifier" modalPresentationStyle="formSheet" id="RXA-9W-6Nf"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <refreshControl key="refreshControl" opaque="NO" multipleTouchEnabled="YES" contentMode="center" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="pBy-Fz-CkI">
                         <rect key="frame" x="0.0" y="0.0" width="1000" height="1000"/>
@@ -961,6 +967,7 @@
         <image name="reply_big" width="25" height="25"/>
         <image name="reshare" width="18" height="18"/>
         <image name="reshare_big" width="25" height="25"/>
+        <image name="write" width="25" height="25"/>
         <image name="x" width="16" height="16"/>
     </resources>
     <color key="tintColor" name="green"/>

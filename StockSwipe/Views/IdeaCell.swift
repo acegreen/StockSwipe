@@ -199,11 +199,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         
         guard let tradeIdea = tradeIdea else { return }
         
-        if !tradeIdea.ideaDescription.isEmpty {
-            self.ideaDescription.text = tradeIdea.ideaDescription
-        } else {
-            self.ideaDescription.text = nil
-        }
+        self.ideaDescription.text = tradeIdea.ideaDescription
         
         let nsPublishedDate = tradeIdea.createdAt as! NSDate
         switch timeFormat {
@@ -244,12 +240,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
         
         self.nestedTradeIdeaView.isHidden = false
-        
-        if !nestedTradeIdea.ideaDescription.isEmpty {
-            self.nestedIdeaDescription.text = nestedTradeIdea.ideaDescription
-        } else {
-            self.nestedIdeaDescription = nil
-        }
+        self.nestedIdeaDescription.text = nestedTradeIdea.ideaDescription
         
         nestedTradeIdea.user.fetchIfNeededInBackground { (user, error) in
             guard let user = user as? User else { return }
@@ -347,7 +338,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                                 #if DEBUG
                                 print("send push didn't happen in debug")
                                 #else
-                                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.activity.fromUser.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": "@\(currentUser.username!) liked:\n" + tradeIdea.ideaDescription])
+                                let message = tradeIdea.ideaDescription != nil ? "@\(currentUser.username!) liked:\n" + tradeIdea.ideaDescription! : "@\(currentUser.username!) liked"
+                                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.activity.fromUser.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": message])
                                 #endif
                             }
                         }
@@ -539,7 +531,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             #if DEBUG
             print("send push didn't happen in debug")
             #else
-            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": tradeIdea.user.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": "@\(currentUser.username!) replied:\n" + tradeIdea.ideaDescription])
+            let message = tradeIdea.ideaDescription != nil ? "@\(currentUser.username!) replied:\n" + tradeIdea.ideaDescription! : "@\(currentUser.username!) replied"
+            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": tradeIdea.user.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": message])
             #endif
             
         case .reshare:
@@ -547,7 +540,8 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             #if DEBUG
             print("send push didn't happen in debug")
             #else
-            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": tradeIdea.user.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": "@\(currentUser.username!) reshared:\n" + tradeIdea.ideaDescription])
+            let message = tradeIdea.ideaDescription != nil ? "@\(currentUser.username!) reshared:\n" + tradeIdea.ideaDescription! : "@\(currentUser.username!) reshared"
+            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": tradeIdea.user.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": message])
             #endif
         }
     }
@@ -574,7 +568,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             profileContainerController.user = self.activity.fromUser
         }
         
-        UIApplication.topViewController()?.show(profileContainerController, sender: self)
+        DispatchQueue.main.async {
+            UIApplication.topViewController()?.show(profileContainerController, sender: self)
+        }
     }
     
     @objc func handleTradeIdeaGestureRecognizer(_ tapGestureRecognizer: UITapGestureRecognizer) {

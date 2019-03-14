@@ -20,7 +20,7 @@ class CardDetailContainerPageViewController: UIPageViewController {
         let navigationController = Constants.Storyboards.tradeIdeaStoryboard.instantiateInitialViewController() as! UINavigationController
         let tradeIdeasTableViewController = navigationController.viewControllers.first as! TradeIdeasTableViewController
         tradeIdeasTableViewController.stockObject = card.parseObject
-        return [cardDetailFirstPageViewController,navigationController ]
+        return [cardDetailFirstPageViewController, navigationController]
     }()
     
     override func viewDidLoad() {

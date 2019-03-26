@@ -16,13 +16,13 @@ PODS:
   - DataCache (1.4)
   - DZNEmptyDataSet (1.8.1)
   - Fabric (1.9.0)
-  - FBSDKCoreKit (4.40.0):
+  - FBSDKCoreKit (4.42.0):
     - Bolts (~> 1.9)
-  - FBSDKLoginKit (4.40.0):
+  - FBSDKLoginKit (4.42.0):
     - FBSDKCoreKit
-  - FBSDKShareKit (4.40.0):
+  - FBSDKShareKit (4.42.0):
     - FBSDKCoreKit
-  - MarqueeLabel/Swift (3.2.0)
+  - MarqueeLabel/Swift (3.2.1)
   - MDCSwipeToChoose (0.2.4)
   - NotificationBannerSwift (2.0.1):
     - MarqueeLabel/Swift (~> 3.2.0)
@@ -47,7 +47,7 @@ PODS:
   - SKSplashView (0.1.2)
   - SnapKit (4.2.0)
   - SwiftyJSON (4.2.0)
-  - SWXMLHash (4.7.6)
+  - SWXMLHash (4.8.0)
   - TwitterCore (3.2.0)
   - TwitterKit (3.4.2):
     - TwitterCore (>= 3.2.0)
@@ -132,10 +132,10 @@ SPEC CHECKSUMS:
   DataCache: 58345b1a6c12fed9919fe4c00716ede7bc7e8142
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Fabric: f988e33c97f08930a413e08123064d2e5f68d655
-  FBSDKCoreKit: ae214474b25033399c131dc81d258e412582a2ba
-  FBSDKLoginKit: 7a1e411d46acc8834588eca437daf34de42e1d52
-  FBSDKShareKit: 0e45916f4150da485928ae2a17ca021950b194f5
-  MarqueeLabel: 440a502b91a9179bd98f9fff00ba1150650a1c0e
+  FBSDKCoreKit: aa42f1c384775f8b075f53a43080474278e9701d
+  FBSDKLoginKit: 373830c68aa48c9e8f0bfed93a3e32d2ca8963a0
+  FBSDKShareKit: 387749259d79e4070ebb304b3fd256e4b4bc4298
+  MarqueeLabel: 2daf039bf916937c8a4c9adfc13577cc5e51b4ce
   MDCSwipeToChoose: 0b76254bd803600be2a7430029bfdbec27785e27
   NotificationBannerSwift: 007774aa590cc9680647b92b2f217bef5c00c32c
   NVActivityIndicatorView: 4ca19fccc84595a78957336a086d00a49be6ce61
@@ -145,7 +145,7 @@ SPEC CHECKSUMS:
   SKSplashView: c65333b6707be6f237d09e7c8977941114b0a70d
   SnapKit: fe8a619752f3f27075cc9a90244d75c6c3f27e2a
   SwiftyJSON: c4bcba26dd9ec7a027fc8eade48e2c911f229e96
-  SWXMLHash: f6e0933ce74f2626669dc544851bc9fc1941670d
+  SWXMLHash: 6d0ab74fef35f99156945c8bfe86dd7ead0822aa
   TwitterCore: 8cbc9ad34d91c63a0035ea05bfbfc0d7ca72a28c
   TwitterKit: 5e4f41d70b9abdb41df5467f52d7aa2c0fd26ebb
 

@@ -193,7 +193,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     
     @objc func addCardToWatchlist(_ notification: Notification) {
         
-        if let card = notification.userInfo?["card"] as? Card, let index = cards.index(of: card) {
+        if let card = notification.userInfo?["card"] as? Card, let index = cards.firstIndex(of: card) {
             self.removeItemFromDataSource(at: index)
         }
         

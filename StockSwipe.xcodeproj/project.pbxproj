@@ -22,6 +22,7 @@
 		232ECBDF2212648B00C30E46 /* CardPresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDB2212648B00C30E46 /* CardPresentationController.swift */; };
 		232ECBE02212648B00C30E46 /* PresentCardAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDC2212648B00C30E46 /* PresentCardAnimator.swift */; };
 		23345A31222ED33B00F02D27 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23345A30222ED33B00F02D27 /* TutorialPageViewController.swift */; };
+		2338A6D4225A72C400B129BB /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2338A6D3225A72C400B129BB /* NotificationCenter.framework */; };
 		2339B0AF1B41A6CB009CE3EB /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2339B0AE1B41A6CB009CE3EB /* MessageUI.framework */; };
 		233BFDC41B1A28A3008B39ED /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233BFDC31B1A28A3008B39ED /* CoreData.framework */; };
 		233C7D541CB210B6006A014A /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233C7D531CB210B6006A014A /* Protocols.swift */; };
@@ -197,6 +198,7 @@
 		23332BA21CA08404006E4863 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = StockSwipeWidget/Base.lproj/MainInterface.storyboard; sourceTree = SOURCE_ROOT; };
 		23332BA41CA08416006E4863 /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TodayViewController.swift; path = StockSwipeWidget/TodayViewController.swift; sourceTree = SOURCE_ROOT; };
 		23345A30222ED33B00F02D27 /* TutorialPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
+		2338A6D3225A72C400B129BB /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
 		2339B0AE1B41A6CB009CE3EB /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		233BFDC31B1A28A3008B39ED /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		233C7D531CB210B6006A014A /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2338A6D4225A72C400B129BB /* NotificationCenter.framework in Frameworks */,
 				23CCA6A01DA5D0CA00EE4F09 /* WordCloud.framework in Frameworks */,
 				E7FA3E9A20A4DF5709F2FA4C /* Pods_StockSwipeWidget.framework in Frameworks */,
 			);
@@ -671,6 +674,7 @@
 		80893E71A9F8EDD83DB17696 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2338A6D3225A72C400B129BB /* NotificationCenter.framework */,
 				2343B6111C8361CF008BF2CA /* WordCloud */,
 				2394DFA81C8C691B0018A5A9 /* SweetAlert */,
 				2347E6121BD7C4A20036EA65 /* iCarousel */,
@@ -850,13 +854,13 @@
 					23E7F69D1BCB57A0009A016D = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = 8T3W9YR268;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					8AC17D9F1AC7366A004E6D2D = {
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = 8T3W9YR268;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 1020;
 						SystemCapabilities = {
 							com.apple.Push = {
 								enabled = 1;
@@ -1280,11 +1284,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = StockSwipeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "AG.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = StockSwipeTests;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StockSwipe.app/StockSwipe";
 			};
 			name = Debug;
@@ -1299,11 +1303,11 @@
 				);
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = StockSwipeTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "AG.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = StockSwipeTests;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StockSwipe.app/StockSwipe";
 			};
 			name = Release;
@@ -1330,7 +1334,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -1357,7 +1361,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -1503,7 +1507,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_EXEC = "$(SWIFT_EXEC)";
 				SWIFT_OBJC_BRIDGING_HEADER = "StockSwipe/Bundle Files/BridgingHeader.h";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1542,7 +1546,7 @@
 				SWIFT_EXEC = "$(SWIFT_EXEC)";
 				SWIFT_OBJC_BRIDGING_HEADER = "StockSwipe/Bundle Files/BridgingHeader.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

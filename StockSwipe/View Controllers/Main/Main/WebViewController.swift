@@ -9,7 +9,7 @@
 import UIKit
 import WebKit
 import Parse
-import Crashlytics
+import Firebase
 
 class WebViewController: UIViewController {
     
@@ -39,11 +39,14 @@ class WebViewController: UIViewController {
                 Functions.showNotificationBanner(title: "Success!", subtitle: nil, style: .success)
                 
                 // log shared successfully
-                Answers.logShare(withMethod: "\(activity!)",
-                    contentName: "\(self.url.path) shared",
-                    contentType: "Share",
-                    contentId: nil,
-                    customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                Analytics.logEvent(AnalyticsEventShare, parameters: [
+                    AnalyticsParameterContent: "Card shared",
+                    AnalyticsParameterContentType: "Share",
+                    AnalyticsParameterMethod: "\(activity!)",
+                    "user": PFUser.current()?.username ?? "N/A",
+                    "app_version": Constants.AppVersion,
+                    "url": "\(self.url.path)"
+                    ])
                 
                 //"Installation ID":PFInstallation.currentInstallation()!.installationId,
                 

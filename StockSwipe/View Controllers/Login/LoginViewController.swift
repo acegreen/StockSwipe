@@ -8,7 +8,7 @@
 
 import UIKit
 import Parse
-import Crashlytics
+import Firebase
 import ChimpKit
 import SwiftyJSON
 
@@ -440,7 +440,10 @@ class LoginViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
                 self.dismissVC(user: user)
                 
                 // log Login
-                Answers.logLogin(withMethod: ACAccountStore().accountType(withAccountTypeIdentifier: ACAccountTypeIdentifierTwitter).accountTypeDescription, success: 1, customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                Analytics.logEvent(AnalyticsEventLogin, parameters: [
+                    "user": PFUser.current()?.username ?? "N/A",
+                    "app_version": Constants.AppVersion
+                ])
                 
             } else {
                 print(error?.localizedDescription)

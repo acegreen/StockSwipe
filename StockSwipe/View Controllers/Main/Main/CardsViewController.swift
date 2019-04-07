@@ -10,7 +10,7 @@ import CoreData
 import CoreSpotlight
 import MDCSwipeToChoose
 import Parse
-import Crashlytics
+import Firebase
 import NVActivityIndicatorView
 import Reachability
 
@@ -497,7 +497,12 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             }
             
             // log swipe
-            Answers.logCustomEvent(withName: "Swipe", customAttributes: ["Direction":  Constants.UserChoices.SHORT.rawValue, "User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+            Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                AnalyticsParameterContentType: "Swipe",
+                "direction":  Constants.UserChoices.SHORT.rawValue,
+                "user": PFUser.current()?.username ?? "N/A",
+                "app_version": Constants.AppVersion
+            ])
             
         } else if wasChosenWithDirection == MDCSwipeDirection.right {
             
@@ -508,12 +513,22 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
             }
             
             // log swipe
-            Answers.logCustomEvent(withName: "Swipe", customAttributes: ["Direction": Constants.UserChoices.LONG.rawValue, "User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+            Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                AnalyticsParameterContentType: "Swipe",
+                "direction":  Constants.UserChoices.LONG.rawValue,
+                "user": PFUser.current()?.username ?? "N/A",
+                "app_version": Constants.AppVersion
+                ])
             
         } else {
             
             // log swipe
-            Answers.logCustomEvent(withName: "Swipe", customAttributes: ["Direction": Constants.UserChoices.SKIP.rawValue, "User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+            Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                AnalyticsParameterContentType: "Swipe",
+                "direction":  Constants.UserChoices.SKIP.rawValue,
+                "user": PFUser.current()?.username ?? "N/A",
+                "app_version": Constants.AppVersion
+                ])
         }
         
         // Create NSUserActivity

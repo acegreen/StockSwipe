@@ -11,9 +11,9 @@ import CoreSpotlight
 import MobileCoreServices
 import UserNotifications
 import Parse
-import Fabric
+import Firebase
 import TwitterKit
-import Crashlytics
+import Firebase
 import ChimpKit
 
 protocol PushNotificationDelegate {
@@ -57,8 +57,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PFFacebookUtils.facebookLoginManager().loginBehavior = .browser
         FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
         
-        // Intialize Fabric
-        Fabric.with([Crashlytics.self()])
+        // Intialize Firebase
+        FirebaseApp.configure()
+        
+        // Log event
+        Analytics.logEvent(AnalyticsEventAppOpen, parameters: [
+            "app_version": Constants.AppVersion
+        ])
         
         // Intialize ChimpKit
         ChimpKit.shared().apiKey = Constants.APIKeys.ChimpKit.key()

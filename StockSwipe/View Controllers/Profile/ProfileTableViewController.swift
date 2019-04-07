@@ -9,7 +9,7 @@
 import UIKit
 import Parse
 import DZNEmptyDataSet
-import Crashlytics
+import Firebase
 import Reachability
 
 protocol ProfileTableVieDelegate {
@@ -837,7 +837,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                             #endif
 
                             // log following
-                            Answers.logCustomEvent(withName: "Follow", customAttributes: ["From User": currentUser.username ?? "N/A", "To User": self.user.username ?? "N/A", "Activity Type": "Followed", "App Version": Constants.AppVersion])
+                            Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                                AnalyticsParameterContentType: "Follow",
+                                "from_user": currentUser.username ?? "N/A",
+                                "to_user": self.user.username ?? "N/A",
+                                "app_version": Constants.AppVersion
+                            ])
 
                         } else {
 
@@ -855,7 +860,12 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                     }
 
                     // log following
-                    Answers.logCustomEvent(withName: "Follow", customAttributes: ["From User": currentUser.username ?? "N/A", "To User": self.user.username ?? "N/A", "Activity Type": "Unfollowed", "App Version": Constants.AppVersion])
+                    Analytics.logEvent(AnalyticsEventSelectContent, parameters: [
+                        AnalyticsParameterContentType: "Unfollow",
+                        "from_user": currentUser.username ?? "N/A",
+                        "to_user": self.user.username ?? "N/A",
+                        "app_version": Constants.AppVersion
+                        ])
                 }
                 
             } catch {                

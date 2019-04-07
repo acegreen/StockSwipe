@@ -8,7 +8,7 @@
 
 import UIKit
 import Parse
-import Crashlytics
+import Firebase
 
 protocol IdeaPostDelegate {
     func ideaPosted(with activity: Activity, tradeIdeaTyp: Constants.TradeIdeaType)
@@ -157,7 +157,12 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
             if success {
                 
                 // log trade idea
-                Answers.logCustomEvent(withName: "Trade Idea", customAttributes: ["Symbol/User":self.prefillText, "User": User.current()?.username ?? "N/A", "Description": self.ideaTextView.text, "Activity Type": activityObject["activityType"],"App Version": Constants.AppVersion])
+                Analytics.logEvent("Trade Idea", parameters: [
+                    "user": User.current()?.username ?? "N/A",
+                    "description": self.ideaTextView.text,
+                    "activity_type": activityObject["activityType"],
+                    "app_version": Constants.AppVersion
+                ])
                 
                 self.delegate?.ideaPosted(with: activityObject, tradeIdeaTyp: self.tradeIdeaType)
                 

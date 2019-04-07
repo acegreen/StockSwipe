@@ -8,7 +8,7 @@
 
 import UIKit
 import Parse
-import Crashlytics
+import Firebase
 
 class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewDelegate, SegueHandlerType {
     
@@ -60,11 +60,12 @@ class CardDetailViewController: StatusBarAnimatableViewController, UIScrollViewD
                Functions.showNotificationBanner(title: "Success!", subtitle: nil, style: .success)
                 
                 // log shared successfully
-                Answers.logShare(withMethod: "\(activity!)",
-                    contentName: symbol + " Card Shared",
-                    contentType: "Share",
-                    contentId: nil,
-                    customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                Analytics.logEvent(AnalyticsEventShare, parameters: [
+                    AnalyticsParameterContent: "Card shared",
+                    AnalyticsParameterContentType: "Share",
+                    "user": PFUser.current()?.username ?? "N/A",
+                    "app_version": Constants.AppVersion
+                ])
                 
             } else if error != nil {
                 Functions.showNotificationBanner(title: "Error!", subtitle: "Something went wrong", style: .danger)

@@ -277,7 +277,7 @@ extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
     
     func presentFacebookInvite() {
         let content = FBSDKAppInviteContent()
-        content.appLinkURL = Constants.facebookAppLink as URL!
+        content.appLinkURL = Constants.facebookAppLink
         //optionally set previewImageURL
         //content.appInvitePreviewImageURL = NSURL(string: "https://www.mydomain.com/my_invite_image.jpg")!
         // Present the dialog. Assumes self is a view controller

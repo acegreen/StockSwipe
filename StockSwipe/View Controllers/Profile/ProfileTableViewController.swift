@@ -1001,7 +1001,7 @@ extension ProfileTableViewController: IdeaPostDelegate {
         
         guard self.user?.objectId == User.current()?.objectId else { return }
         
-        if selectedSegmentIndex == .zero, let activity = self.tradeIdeaActivities.find ({ $0.objectId == activity.objectId }), let index = self.tradeIdeaActivities.index(of: activity) {
+        if selectedSegmentIndex == .zero, let activity = self.tradeIdeaActivities.find ({ $0.objectId == activity.objectId }), let index = self.tradeIdeaActivities.firstIndex(of: activity) {
             let indexPath = IndexPath(row: index, section: 0)
             self.tradeIdeaActivities.removeObject(activity)
             self.tableView.deleteRows(at: [indexPath], with: .automatic)
@@ -1014,7 +1014,7 @@ extension ProfileTableViewController: IdeaPostDelegate {
 
     internal func ideaUpdated(with activity: Activity) {
      
-        if (selectedSegmentIndex == .zero || selectedSegmentIndex == .three), let activity = self.tradeIdeaActivities.find ({ $0.objectId == activity.objectId }), let index = self.tradeIdeaActivities.index(of: activity) {
+        if (selectedSegmentIndex == .zero || selectedSegmentIndex == .three), let activity = self.tradeIdeaActivities.find ({ $0.objectId == activity.objectId }), let index = self.tradeIdeaActivities.firstIndex(of: activity) {
             let indexPath = IndexPath(row: index, section: 0)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }

@@ -313,7 +313,7 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
     
     internal func ideaDeleted(with activity: Activity) {
         
-        if let activity = self.activities.find ({ $0.objectId == activity.objectId }), let index = self.activities.index(of: activity) {
+        if let activity = self.activities.find ({ $0.objectId == activity.objectId }), let index = self.activities.firstIndex(of: activity) {
             let indexPath = IndexPath(row: index, section: 0)
             self.activities.removeObject(activity)
             self.totalActivityCount -= 1
@@ -326,7 +326,7 @@ extension TradeIdeasTableViewController: IdeaPostDelegate {
     }
     
     internal func ideaUpdated(with activity: Activity) {
-        if let activity = self.activities.find ({ $0.objectId == activity.objectId }), let index = self.activities.index(of: activity) {
+        if let activity = self.activities.find ({ $0.objectId == activity.objectId }), let index = self.activities.firstIndex(of: activity) {
             let indexPath = IndexPath(row: index, section: 0)
             self.tableView.reloadRows(at: [indexPath], with: .automatic)
         }

@@ -201,7 +201,7 @@ class SearchTableViewController: UITableViewController {
         guard let currentUser = PFUser.current() else { return }
         
         if let existingObject = recentSearches.find( { $0.objectId == object.objectId } ) {
-            recentSearches.moveItem(fromIndex: recentSearches.index(of: existingObject)!, toIndex: 0)
+            recentSearches.moveItem(fromIndex: recentSearches.firstIndex(of: existingObject)!, toIndex: 0)
         } else {
             if self.recentSearches.count < 10 {
                 recentSearches.insert(object, at: 0)

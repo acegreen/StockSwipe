@@ -59,7 +59,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
             self.preferredContentSize = CGSize(width: 320, height: 300)
         }
         
-        requestStockTwitsTrendingStocks { (result) in
+        queryStockTwitsTrendingStocks { (result) in
             
         }
     }
@@ -199,7 +199,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         }
     }
     
-    func requestStockTwitsTrendingStocks(_ completion: @escaping (_ result: () throws -> ()) -> Void) {
+    func queryStockTwitsTrendingStocks(_ completion: @escaping (_ result: () throws -> ()) -> Void) {
         
         if let trendingStocksUrl = URL(string: "https://api.stocktwits.com/api/2/trending/symbols/equities.json") {
             
@@ -252,7 +252,7 @@ class TodayViewController: UIViewController, NCWidgetProviding, CloudLayoutOpera
         // If there's no update required, use NCUpdateResult.NoData
         // If there's an update, use NCUpdateResult.NewData
         
-        requestStockTwitsTrendingStocks({ (result) in
+        queryStockTwitsTrendingStocks({ (result) in
             do {
                 try result()
                 completionHandler(NCUpdateResult.newData)

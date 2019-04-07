@@ -11,7 +11,7 @@ import NVActivityIndicatorView
 
 extension Collection {
     func find(_ predicate: (Self.Iterator.Element) throws -> Bool) rethrows -> Self.Iterator.Element? {
-        return try index(where: predicate).map({self[$0]})
+        return try firstIndex(where: predicate).map({self[$0]})
     }
 }
 
@@ -43,7 +43,7 @@ extension Array {
 extension Array where Element: Equatable {
     
     mutating func removeObject(_ object: Element) {
-        if let index = self.index(of: object) {
+        if let index = self.firstIndex(of: object) {
             self.remove(at: index)
         }
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 import MessageUI
-import Crashlytics
+import Firebase
 import Parse
 import FBSDKShareKit
 
@@ -170,11 +170,12 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                     Functions.showNotificationBanner(title: "Success!", subtitle: nil, style: .success)
                     
                     // log shared successfully
-                    Answers.logShare(withMethod: "\(activity!)",
-                        contentName: "StockSwipe Shared",
-                        contentType: "Share",
-                        contentId: nil,
-                        customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+                    Analytics.logEvent(AnalyticsEventShare, parameters: [
+                        AnalyticsParameterContent: "StockSwipe shared",
+                        AnalyticsParameterContentType: "Share",
+                        "user": PFUser.current()?.username ?? "N/A",
+                        "app_version": Constants.AppVersion
+                    ])
                     
                 } else if error != nil {
                     Functions.showNotificationBanner(title: "Error!", subtitle: "That didn't go through", style: .danger)
@@ -263,11 +264,12 @@ extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
         print("invitation made")
         
         // log shared successfully
-        Answers.logShare(withMethod: "Facebook Invite",
-                                   contentName: "Facebook Invite Friends",
-                                   contentType: "Share",
-                                   contentId: nil,
-                                   customAttributes: ["User": PFUser.current()?.username ?? "N/A", "App Version": Constants.AppVersion])
+        Analytics.logEvent(AnalyticsEventShare, parameters: [
+            AnalyticsParameterContent: "Facebook Invite",
+            AnalyticsParameterContentType: "Share",
+            "user": PFUser.current()?.username ?? "N/A",
+            "app_version": Constants.AppVersion
+        ])
         
     }
     

@@ -8,7 +8,7 @@
 
 import UIKit
 import MessageUI
-import Crashlytics
+import Firebase
 import Parse
 
 class SettingsTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, SegueHandlerType, CellType {

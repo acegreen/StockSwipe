@@ -18,7 +18,7 @@ target 'StockSwipe' do
     pod 'NotificationBannerSwift'
 
     # Analytics
-    pod 'Crashlytics'
+    pod 'Firebase/Core'
     pod 'ChimpKit'
     
     # Parse

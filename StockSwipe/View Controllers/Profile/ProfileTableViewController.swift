@@ -833,7 +833,8 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
                                 print("send push didn't happen in debug")
                             #else
                                 // Send push
-                                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.user.objectId!, "checkSetting": "follower_notification", "title": "Follower Notification", "message": "@\(currentUser.username!) is now following you"])
+                                let title = "\(currentUser.full_name ?? currentUser.usertag) followed you"
+                                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.user.objectId!, "checkSetting": "follower_notification", "title": title, "message": ""])
                             #endif
 
                             // log following

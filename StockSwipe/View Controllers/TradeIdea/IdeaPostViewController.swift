@@ -49,7 +49,7 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
     @IBAction func postButttonPressed(_ sender: AnyObject) {
         
         guard Functions.isConnectedToNetwork() else { return }
-        guard let currentUser = PFUser.current() else {
+        guard let currentUser = PFUser.current() as? User else {
             Functions.isUserLoggedIn(presenting: self)
             return
         }
@@ -132,7 +132,9 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                     #if DEBUG
                         print("send push didn't happen in debug")
                     #else
-                        Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": userObject.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "mention_notification", "title": "Trade Idea Mention Notification", "message": "@\(currentUser.username!) mentioned you in a trade idea"])
+                        let title = "\(currentUser.full_name ?? currentUser.usertag) mentioned you:"
+                        let message = tradeIdeaObject.ideaDescription ?? ""
+                        Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": userObject.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "mention_notification", "title": title, "message": message])
                     #endif
                 }
             } catch {
@@ -170,8 +172,9 @@ class IdeaPostViewController: UIViewController, UITextViewDelegate {
                     #if DEBUG
                         print("send push didn't happen in debug")
                     #else
-                    let message = tradeIdeaObject.ideaDescription != nil ? "@\(currentUser.username!) posted:\n" + tradeIdeaObject.ideaDescription! : "@\(currentUser.username!) posted"
-                        Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId": currentUser.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": "Trade Idea New Notification", "message": message])
+                    let title = "\(currentUser.full_name ?? currentUser.usertag) posted:"
+                    let message = tradeIdeaObject.ideaDescription ?? ""
+                        Functions.sendPush(Constants.PushType.ToFollowers, parameters: ["userObjectId": currentUser.objectId!, "tradeIdeaObjectId": tradeIdeaObject.objectId!, "checkSetting": "newTradeIdea_notification", "title": title, "message": message])
                     #endif
                 }
                 

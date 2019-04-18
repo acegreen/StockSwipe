@@ -294,7 +294,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
     
     private func registerLike(on sender: UIButton) {
         
-        guard let currentUser = PFUser.current() else {
+        guard let currentUser = PFUser.current() as? User else {
             Functions.isUserLoggedIn(presenting: UIApplication.topViewController()!)
             return
         }
@@ -338,8 +338,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
                                 #if DEBUG
                                 print("send push didn't happen in debug")
                                 #else
-                                let message = tradeIdea.ideaDescription != nil ? "@\(currentUser.username!) liked:\n" + tradeIdea.ideaDescription! : "@\(currentUser.username!) liked"
-                                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.activity.fromUser.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "likeTradeIdea_notification", "title": "Trade Idea Like Notification", "message": message])
+                                let title = "\(currentUser.full_name ?? currentUser.usertag) liked:"
+                                let message = tradeIdea.ideaDescription ?? ""
+                                Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.activity.fromUser.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "likeTradeIdea_notification", "title": title, "message": message])
                                 #endif
                             }
                         }
@@ -531,8 +532,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             #if DEBUG
             print("send push didn't happen in debug")
             #else
-            let message = tradeIdea.ideaDescription != nil ? "@\(currentUser.username!) replied:\n" + tradeIdea.ideaDescription! : "@\(currentUser.username!) replied"
-            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": tradeIdea.user.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "replyTradeIdea_notification", "title": "Trade Idea Reply Notification", "message": message])
+            let title = "\(currentUser.full_name ?? currentUser.usertag) replied:"
+            let message = tradeIdea.ideaDescription ?? ""
+            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.activity.fromUser.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "replyTradeIdea_notification", "title": title, "message": message])
             #endif
             
         case .reshare:
@@ -540,8 +542,9 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             #if DEBUG
             print("send push didn't happen in debug")
             #else
-            let message = tradeIdea.ideaDescription != nil ? "@\(currentUser.username!) reshared:\n" + tradeIdea.ideaDescription! : "@\(currentUser.username!) reshared"
-            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": tradeIdea.user.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": "Trade Idea Reshare Notification", "message": message])
+            let title = "\(currentUser.full_name ?? currentUser.usertag) reshared:"
+            let message = tradeIdea.ideaDescription ?? ""
+            Functions.sendPush(Constants.PushType.ToUser, parameters: ["userObjectId": self.activity.fromUser.objectId!, "tradeIdeaObjectId": tradeIdea.objectId!, "checkSetting": "reshareTradeIdea_notification", "title": title, "message": message])
             #endif
         }
     }

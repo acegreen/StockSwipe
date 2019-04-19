@@ -657,8 +657,8 @@
 				232ECBD5221260FA00C30E46 /* StatusBarAnimatableViewController.swift */,
 				232ECBDB2212648B00C30E46 /* CardPresentationController.swift */,
 				232ECBDA2212648B00C30E46 /* CardTransition.swift */,
-				232ECBD92212648A00C30E46 /* DismissCardAnimator.swift */,
 				232ECBDC2212648B00C30E46 /* PresentCardAnimator.swift */,
+				232ECBD92212648A00C30E46 /* DismissCardAnimator.swift */,
 			);
 			path = Transition;
 			sourceTree = "<group>";

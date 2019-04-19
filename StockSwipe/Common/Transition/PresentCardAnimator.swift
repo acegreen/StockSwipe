@@ -125,11 +125,7 @@ final class PresentCardTransitionDriver {
                 case .fromCenter:
                     return cardDetailView.centerYAnchor.constraint(equalTo: animatedContainerView.centerYAnchor)
                 case .fromTop:
-                    // WTF: SUPER WEIRD BUG HERE.
-                    // I should set this constant to 0 (or nil), to make cardDetailView sticks to the animatedContainerView's top.
-                    // BUT, I can't set constant to 0, or any value in range (-1,1) here, or there will be abrupt top space inset while animating.
-                    // Funny how -1 and 1 work! WTF. You can try set it to 0.
-                    return cardDetailView.topAnchor.constraint(equalTo: animatedContainerView.topAnchor, constant: -1)
+                    return cardDetailView.topAnchor.constraint(equalTo: animatedContainerView.topAnchor)
                 }
             }()
             let cardConstraints = [
@@ -149,9 +145,6 @@ final class PresentCardTransitionDriver {
         // -------------------------------
         params.fromCell.isHidden = true
         params.fromCell.resetTransform()
-
-        let topTemporaryFix = screens.cardDetail.cardContentView.topAnchor.constraint(equalTo: cardDetailView.topAnchor, constant: 0)
-        topTemporaryFix.isActive = Constants.isEnabledWeirdTopInsetsFix
 
         container.layoutIfNeeded()
 
@@ -180,11 +173,6 @@ final class PresentCardTransitionDriver {
 
             // Re-add to the top
             container.addSubview(cardDetailView)
-
-            cardDetailView.removeConstraints([topTemporaryFix, cardWidthConstraint, cardHeightConstraint])
-
-            // Keep -1 to be consistent with the weird bug above.
-            cardDetailView.edges(to: container, top: -1)
 
             // No longer need the bottom constraint that pins bottom of card content to its root.
             screens.cardDetail.cardBottomToRootBottomConstraint.isActive = false

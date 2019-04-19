@@ -59,21 +59,17 @@ final class DismissCardAnimator: NSObject, UIViewControllerAnimatedTransitioning
         cardDetailView.edges(to: animatedContainerView)
 
         animatedContainerView.centerXAnchor.constraint(equalTo: container.centerXAnchor).isActive = true
-        let animatedContainerTopConstraint = animatedContainerView.topAnchor.constraint(equalTo: container.topAnchor, constant: 0)
+        let animatedContainerTopConstraint = animatedContainerView.topAnchor.constraint(equalTo: container.topAnchor)
         let animatedContainerWidthConstraint = animatedContainerView.widthAnchor.constraint(equalToConstant: container.frame.width)
         let animatedContainerHeightConstraint = animatedContainerView.heightAnchor.constraint(equalToConstant: container.frame.height)
 
         NSLayoutConstraint.activate([animatedContainerTopConstraint, animatedContainerWidthConstraint, animatedContainerHeightConstraint])
 
-        // Fix weird top inset
-        let topTemporaryFix = screens.cardDetail.cardContentView.topAnchor.constraint(equalTo: cardDetailView.topAnchor)
-        topTemporaryFix.isActive = Constants.isEnabledWeirdTopInsetsFix
-
         container.layoutIfNeeded()
-
+        
         // Force card filling bottom
         let stretchCardToFillBottom = screens.cardDetail.cardContentView.bottomAnchor.constraint(equalTo: cardDetailView.bottomAnchor)
-
+        
         func animateCardViewBackToPlace() {
             stretchCardToFillBottom.isActive = true
             screens.cardDetail.isFontStateHighlighted = false
@@ -95,14 +91,6 @@ final class DismissCardAnimator: NSObject, UIViewControllerAnimatedTransitioning
                 self.params.fromCell.isHidden = false
             } else {
                 screens.cardDetail.isFontStateHighlighted = true
-
-                // Remove temporary fixes if not success!
-                topTemporaryFix.isActive = false
-                stretchCardToFillBottom.isActive = false
-
-                cardDetailView.removeConstraint(topTemporaryFix)
-                cardDetailView.removeConstraint(stretchCardToFillBottom)
-
                 container.removeConstraints(container.constraints)
 
                 container.addSubview(cardDetailView)

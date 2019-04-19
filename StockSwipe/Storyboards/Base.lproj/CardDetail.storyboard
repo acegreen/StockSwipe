@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jSu-zw-ob7">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="jSu-zw-ob7">
     <device id="retina6_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.47"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,13 +23,13 @@
             <objects>
                 <viewController storyboardIdentifier="CardDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="jSu-zw-ob7" customClass="CardDetailViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="WsT-Aa-WZS">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="1200"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" contentInsetAdjustmentBehavior="never" translatesAutoresizingMaskIntoConstraints="NO" id="0VL-kZ-etH">
-                                <rect key="frame" x="0.0" y="0.0" width="414" height="1200"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentInsetAdjustmentBehavior="never" translatesAutoresizingMaskIntoConstraints="NO" id="0VL-kZ-etH">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="1117"/>
                                 <subviews>
-                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Xn-wT-6RA" userLabel="ContentView">
+                                    <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Xn-wT-6RA" userLabel="ContentView">
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="1270.3333333333333"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9In-5b-v3e" customClass="SwipeCardView" customModule="StockSwipe" customModuleProvider="target">
@@ -148,14 +148,11 @@
                                     </view>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="5Xn-wT-6RA" secondAttribute="bottom" id="6Xq-x5-iVX"/>
-                                    <constraint firstItem="5Xn-wT-6RA" firstAttribute="height" secondItem="0VL-kZ-etH" secondAttribute="height" priority="250" id="MKD-6h-cs5"/>
+                                    <constraint firstAttribute="bottom" secondItem="5Xn-wT-6RA" secondAttribute="bottom" id="8U2-BN-aP9"/>
                                     <constraint firstItem="5Xn-wT-6RA" firstAttribute="top" secondItem="0VL-kZ-etH" secondAttribute="top" id="Mar-Ab-bBD"/>
-                                    <constraint firstItem="5Xn-wT-6RA" firstAttribute="width" secondItem="4LB-Fk-Wj7" secondAttribute="width" id="PjA-nt-hfg"/>
                                     <constraint firstAttribute="trailing" secondItem="5Xn-wT-6RA" secondAttribute="trailing" id="cvw-Ff-dSv"/>
                                     <constraint firstItem="5Xn-wT-6RA" firstAttribute="leading" secondItem="0VL-kZ-etH" secondAttribute="leading" id="jmy-MG-CKw"/>
                                 </constraints>
-                                <viewLayoutGuide key="safeArea" id="4LB-Fk-Wj7"/>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -164,11 +161,11 @@
                             <constraint firstItem="rgA-G7-ft4" firstAttribute="trailing" secondItem="xmc-NR-M3T" secondAttribute="trailing" constant="20" id="BWG-dt-UC1"/>
                             <constraint firstItem="0VL-kZ-etH" firstAttribute="trailing" secondItem="rgA-G7-ft4" secondAttribute="trailing" id="CDY-EV-SVN"/>
                             <constraint firstItem="rgA-G7-ft4" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="9In-5b-v3e" secondAttribute="bottom" id="FmB-HH-NoN"/>
+                            <constraint firstItem="rgA-G7-ft4" firstAttribute="bottom" secondItem="0VL-kZ-etH" secondAttribute="bottom" id="OJr-13-O6s"/>
                             <constraint firstItem="0VL-kZ-etH" firstAttribute="leading" secondItem="rgA-G7-ft4" secondAttribute="leading" id="VQE-W0-7qA"/>
-                            <constraint firstItem="0VL-kZ-etH" firstAttribute="top" secondItem="WsT-Aa-WZS" secondAttribute="top" id="XdD-wc-4Zy"/>
                             <constraint firstItem="5Xn-wT-6RA" firstAttribute="width" secondItem="WsT-Aa-WZS" secondAttribute="width" id="Zv4-ih-Gyb"/>
+                            <constraint firstItem="0VL-kZ-etH" firstAttribute="top" secondItem="WsT-Aa-WZS" secondAttribute="top" id="g2y-ce-3ef"/>
                             <constraint firstItem="xmc-NR-M3T" firstAttribute="top" secondItem="5Xn-wT-6RA" secondAttribute="top" constant="20" id="sxe-8j-u01"/>
-                            <constraint firstAttribute="bottom" secondItem="0VL-kZ-etH" secondAttribute="bottom" id="zHO-1K-WBI"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="rgA-G7-ft4"/>
                     </view>

@@ -11,6 +11,7 @@
 		230428D51CA2E46C009DDC21 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23332BA41CA08416006E4863 /* TodayViewController.swift */; };
 		2307EB0E2213714100A098AC /* CardDetailContainerPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2307EB0D2213714100A098AC /* CardDetailContainerPageViewController.swift */; };
 		2307EB102213724300A098AC /* CardDetailFirstPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2307EB0F2213724300A098AC /* CardDetailFirstPageViewController.swift */; };
+		231140F422AC4AF20064AFB5 /* timenormal.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2339A7C022AC492800C9FA36 /* timenormal.ttf */; };
 		23142DC61D4FAF3A00F11531 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23142DC51D4FAF3A00F11531 /* News.swift */; };
 		231E89C01D28055C00CD009A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 231E89BF1D28055C00CD009A /* User.swift */; };
 		232ECBD222120CFA00C30E46 /* StockSwipe.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBCF22120CFA00C30E46 /* StockSwipe.xcdatamodeld */; };
@@ -23,6 +24,8 @@
 		232ECBE02212648B00C30E46 /* PresentCardAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDC2212648B00C30E46 /* PresentCardAnimator.swift */; };
 		23345A31222ED33B00F02D27 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23345A30222ED33B00F02D27 /* TutorialPageViewController.swift */; };
 		2338A6D4225A72C400B129BB /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2338A6D3225A72C400B129BB /* NotificationCenter.framework */; };
+		2339A7B722AC364D00C9FA36 /* Share.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2339A7B622AC364D00C9FA36 /* Share.storyboard */; };
+		2339A7BE22AC3E1100C9FA36 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2339A7BD22AC3E1100C9FA36 /* ShareViewController.swift */; };
 		2339B0AF1B41A6CB009CE3EB /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2339B0AE1B41A6CB009CE3EB /* MessageUI.framework */; };
 		233BFDC41B1A28A3008B39ED /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233BFDC31B1A28A3008B39ED /* CoreData.framework */; };
 		233C7D541CB210B6006A014A /* Protocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 233C7D531CB210B6006A014A /* Protocols.swift */; };
@@ -200,6 +203,9 @@
 		23332BA41CA08416006E4863 /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TodayViewController.swift; path = StockSwipeWidget/TodayViewController.swift; sourceTree = SOURCE_ROOT; };
 		23345A30222ED33B00F02D27 /* TutorialPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
 		2338A6D3225A72C400B129BB /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
+		2339A7B622AC364D00C9FA36 /* Share.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Share.storyboard; sourceTree = "<group>"; };
+		2339A7BD22AC3E1100C9FA36 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		2339A7C022AC492800C9FA36 /* timenormal.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = timenormal.ttf; sourceTree = "<group>"; };
 		2339B0AE1B41A6CB009CE3EB /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		233BFDC31B1A28A3008B39ED /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		233C7D531CB210B6006A014A /* Protocols.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
@@ -377,6 +383,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2339A7BF22AC3E1A00C9FA36 /* Share */ = {
+			isa = PBXGroup;
+			children = (
+				2339A7BD22AC3E1100C9FA36 /* ShareViewController.swift */,
+			);
+			path = Share;
+			sourceTree = "<group>";
+		};
 		2343B6111C8361CF008BF2CA /* WordCloud */ = {
 			isa = PBXGroup;
 			children = (
@@ -424,6 +438,7 @@
 		2375FE631D85A39A0049D297 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				2339A7C022AC492800C9FA36 /* timenormal.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -482,6 +497,7 @@
 				23F374E1220F969B00593EFF /* Profile.storyboard */,
 				23F374D1220F969A00593EFF /* Filter.storyboard */,
 				23F374D7220F969A00593EFF /* Search.storyboard */,
+				2339A7B622AC364D00C9FA36 /* Share.storyboard */,
 				23F374DF220F969B00593EFF /* Feedback.storyboard */,
 			);
 			path = Storyboards;
@@ -756,6 +772,7 @@
 				238F0781220BC810001DA69C /* Search */,
 				238F0784220BC854001DA69C /* Filter */,
 				238DB6BD1D85A01F00082918 /* Feedback */,
+				2339A7BF22AC3E1A00C9FA36 /* Share */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -868,6 +885,9 @@
 							com.apple.Push = {
 								enabled = 1;
 							};
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
 						};
 					};
 				};
@@ -916,6 +936,7 @@
 				235805A622107F80005C89DD /* TradeIdea.storyboard in Resources */,
 				23F374E8220F969B00593EFF /* Login.storyboard in Resources */,
 				23F374E9220F969B00593EFF /* Main.storyboard in Resources */,
+				231140F422AC4AF20064AFB5 /* timenormal.ttf in Resources */,
 				2375FE701D85A39A0049D297 /* StockSectorPreferences.plist in Resources */,
 				2375FE6E1D85A39A0049D297 /* StockExchangePreferences_CA.plist in Resources */,
 				2382B69E2210F28E00209EAF /* CardView.xib in Resources */,
@@ -926,6 +947,7 @@
 				23F374E7220F969B00593EFF /* LaunchScreen.storyboard in Resources */,
 				23D87256225A7A6700FD3822 /* GoogleService-Info.plist in Resources */,
 				2375FE721D85A45A0049D297 /* NotificationPreferences.plist in Resources */,
+				2339A7B722AC364D00C9FA36 /* Share.storyboard in Resources */,
 				23F374EB220F969B00593EFF /* Profile.storyboard in Resources */,
 				23F374E3220F969B00593EFF /* Filter.storyboard in Resources */,
 				2375FE6D1D85A39A0049D297 /* GeneralPreferences.plist in Resources */,
@@ -1011,6 +1033,7 @@
 				"${PODS_ROOT}/Target Support Files/Pods-StockSwipe/Pods-StockSwipe-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AMPopTip/AMPopTip.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/Branch/Branch.framework",
 				"${BUILT_PRODUCTS_DIR}/BubbleTransition/BubbleTransition.framework",
 				"${BUILT_PRODUCTS_DIR}/Charts/Charts.framework",
 				"${BUILT_PRODUCTS_DIR}/ChimpKit/ChimpKit.framework",
@@ -1039,6 +1062,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AMPopTip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Branch.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BubbleTransition.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Charts.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ChimpKit.framework",
@@ -1134,6 +1158,7 @@
 				23C221C31DC8E8D7003898E9 /* ChartXAxisFormatter.swift in Sources */,
 				238C1AFA1C8C65D6009F9CC1 /* AppDelegate.swift in Sources */,
 				23C221BA1DC8E8C5003898E9 /* SuperUITextView.swift in Sources */,
+				2339A7BE22AC3E1100C9FA36 /* ShareViewController.swift in Sources */,
 				238DB6F01D85A01F00082918 /* SearchTableViewController.swift in Sources */,
 				2347E6151BD7C4A20036EA65 /* iCarousel.m in Sources */,
 				238DB6DC1D85A01F00082918 /* LoginViewController.swift in Sources */,

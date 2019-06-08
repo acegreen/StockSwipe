@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QBj-Vy-z2e">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QBj-Vy-z2e">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -180,7 +180,7 @@
                             </barButtonItem>
                         </leftBarButtonItems>
                         <view key="titleView" contentMode="scaleToFill" id="qWB-de-rJ5">
-                            <rect key="frame" x="107" y="5.5" width="130.5" height="33"/>
+                            <rect key="frame" x="113" y="5.5" width="130.5" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stockswipe_logo_small" translatesAutoresizingMaskIntoConstraints="NO" id="tZG-zr-Fr2">
@@ -397,8 +397,52 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FAQCell" rowHeight="80" id="Yph-Hy-oRO">
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ShareCell" rowHeight="80" id="9n6-b8-toF">
                                         <rect key="frame" x="0.0" y="115" width="375" height="80"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9n6-b8-toF" id="HzS-ba-UCj">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="t1Q-S8-zwK">
+                                                    <rect key="frame" x="36" y="10" width="303" height="60"/>
+                                                    <subviews>
+                                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="gift" translatesAutoresizingMaskIntoConstraints="NO" id="blF-4J-WtH">
+                                                            <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" secondItem="blF-4J-WtH" secondAttribute="height" multiplier="1:1" id="Qsm-Oe-kUf"/>
+                                                                <constraint firstAttribute="width" constant="60" id="VY6-qE-Hjb"/>
+                                                            </constraints>
+                                                        </imageView>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="2tr-sk-yab">
+                                                            <rect key="frame" x="80" y="9" width="223" height="41.5"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Free Features" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="THI-zy-fCW">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="223" height="24"/>
+                                                                    <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="20"/>
+                                                                    <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invite Friends and get free stuff" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eal-d4-9cS">
+                                                                    <rect key="frame" x="0.0" y="24" width="223" height="17.5"/>
+                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
+                                                                    <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
+                                                    </subviews>
+                                                </stackView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="t1Q-S8-zwK" secondAttribute="trailing" constant="20" id="D5f-k3-eXU"/>
+                                                <constraint firstItem="t1Q-S8-zwK" firstAttribute="leading" secondItem="HzS-ba-UCj" secondAttribute="leadingMargin" constant="20" id="akP-Ug-SOp"/>
+                                                <constraint firstItem="t1Q-S8-zwK" firstAttribute="centerY" secondItem="HzS-ba-UCj" secondAttribute="centerY" id="mc0-Av-M71"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="FAQCell" rowHeight="80" id="Yph-Hy-oRO">
+                                        <rect key="frame" x="0.0" y="195" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Yph-Hy-oRO" id="ZR1-Kj-nDg">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
@@ -442,7 +486,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TutorialCell" rowHeight="80" id="4Ra-Mf-9nB">
-                                        <rect key="frame" x="0.0" y="195" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="275" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4Ra-Mf-9nB" id="rkR-00-4JM">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
@@ -486,7 +530,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="PublicationCell" rowHeight="80" id="seV-dD-UFK">
-                                        <rect key="frame" x="0.0" y="275" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="355" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="seV-dD-UFK" id="I7J-gj-2ra">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
@@ -530,7 +574,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="WriteReviewCell" rowHeight="80" id="p9V-81-Jwp">
-                                        <rect key="frame" x="0.0" y="355" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="435" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="p9V-81-Jwp" id="3eq-3Q-ad0">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
@@ -574,7 +618,7 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="GiveFeedbackCell" rowHeight="80" id="7eC-2r-lWe">
-                                        <rect key="frame" x="0.0" y="435" width="375" height="80"/>
+                                        <rect key="frame" x="0.0" y="515" width="375" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="7eC-2r-lWe" id="afZ-ay-Iy5">
                                             <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
@@ -617,94 +661,6 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="InviteFacebookCell" rowHeight="80" id="0d5-hS-sc3">
-                                        <rect key="frame" x="0.0" y="515" width="375" height="80"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="0d5-hS-sc3" id="D81-sy-FgK">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="8GS-N0-s06">
-                                                    <rect key="frame" x="36" y="10" width="303" height="60"/>
-                                                    <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="facebook" translatesAutoresizingMaskIntoConstraints="NO" id="xIi-Oe-kVU">
-                                                            <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="60" id="evZ-vY-in9"/>
-                                                                <constraint firstAttribute="width" secondItem="xIi-Oe-kVU" secondAttribute="height" multiplier="1:1" id="wd0-O3-bxC"/>
-                                                            </constraints>
-                                                        </imageView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8G9-b0-ucL">
-                                                            <rect key="frame" x="80" y="0.5" width="223" height="59"/>
-                                                            <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invite Friends" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ge0-QL-5C7">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="223" height="24"/>
-                                                                    <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="20"/>
-                                                                    <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Invite your facebook friends to try out StockSwipe" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6aI-JO-s9G">
-                                                                    <rect key="frame" x="0.0" y="24" width="223" height="35"/>
-                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                                    <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                            </subviews>
-                                                        </stackView>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="8GS-N0-s06" secondAttribute="trailingMargin" constant="20" id="FBf-yC-DwI"/>
-                                                <constraint firstItem="8GS-N0-s06" firstAttribute="centerY" secondItem="D81-sy-FgK" secondAttribute="centerY" id="YMv-Cr-gyY"/>
-                                                <constraint firstItem="8GS-N0-s06" firstAttribute="leading" secondItem="D81-sy-FgK" secondAttribute="leadingMargin" constant="20" id="v98-b8-OmH"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="ShareCell" rowHeight="80" id="9n6-b8-toF">
-                                        <rect key="frame" x="0.0" y="595" width="375" height="80"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="9n6-b8-toF" id="HzS-ba-UCj">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="79.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="t1Q-S8-zwK">
-                                                    <rect key="frame" x="28" y="10" width="319" height="60"/>
-                                                    <subviews>
-                                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="share" translatesAutoresizingMaskIntoConstraints="NO" id="blF-4J-WtH">
-                                                            <rect key="frame" x="0.0" y="0.0" width="60" height="60"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" secondItem="blF-4J-WtH" secondAttribute="height" multiplier="1:1" id="Qsm-Oe-kUf"/>
-                                                                <constraint firstAttribute="width" constant="60" id="VY6-qE-Hjb"/>
-                                                            </constraints>
-                                                        </imageView>
-                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="2tr-sk-yab">
-                                                            <rect key="frame" x="80" y="9" width="239" height="41.5"/>
-                                                            <subviews>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Share StockSwipe" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="THI-zy-fCW">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="239" height="24"/>
-                                                                    <fontDescription key="fontDescription" name="HelveticaNeue-CondensedBold" family="Helvetica Neue" pointSize="20"/>
-                                                                    <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sharing is caring" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eal-d4-9cS">
-                                                                    <rect key="frame" x="0.0" y="24" width="239" height="17.5"/>
-                                                                    <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="15"/>
-                                                                    <color key="textColor" red="0.43529412150000002" green="0.4431372583" blue="0.47450980539999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                                    <nil key="highlightedColor"/>
-                                                                </label>
-                                                            </subviews>
-                                                        </stackView>
-                                                    </subviews>
-                                                </stackView>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="t1Q-S8-zwK" secondAttribute="trailing" constant="20" id="D5f-k3-eXU"/>
-                                                <constraint firstItem="t1Q-S8-zwK" firstAttribute="leading" secondItem="HzS-ba-UCj" secondAttribute="leadingMargin" constant="20" id="akP-Ug-SOp"/>
-                                                <constraint firstItem="t1Q-S8-zwK" firstAttribute="centerY" secondItem="HzS-ba-UCj" secondAttribute="centerY" id="mc0-Av-M71"/>
-                                            </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
                                 </cells>
                             </tableViewSection>
                         </sections>
@@ -738,6 +694,7 @@
                         <segue destination="1A4-zn-if9" kind="show" identifier="FAQSegueIdentifier" id="ZT6-u9-tjp"/>
                         <segue destination="plz-aC-Joh" kind="show" identifier="ProfileSegueIdentifier" id="sLE-BL-QrO"/>
                         <segue destination="gdU-7J-pgc" kind="show" identifier="TutorialPageViewControllerSegueIdentifier" id="bqo-Mu-0O1"/>
+                        <segue destination="fb3-ta-ln8" kind="show" identifier="ShareSegueIdentifier" id="tKq-dl-gyx"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GyH-uC-EoR" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -751,6 +708,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="82z-aH-ifn" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2218" y="851"/>
+        </scene>
+        <!--ShareViewController-->
+        <scene sceneID="GHA-86-NGz">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Share" referencedIdentifier="ShareViewController" id="fb3-ta-ln8" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IeJ-Gh-AWv" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2159" y="1006"/>
         </scene>
         <!--Feedback-->
         <scene sceneID="0O1-hw-7JT">
@@ -1393,13 +1358,12 @@
         <image name="edit_pen" width="22" height="22"/>
         <image name="email_feedback" width="25" height="25"/>
         <image name="eye" width="30" height="30"/>
-        <image name="facebook" width="25" height="25"/>
         <image name="faq" width="25" height="25"/>
         <image name="filter" width="25" height="25"/>
+        <image name="gift" width="25" height="25"/>
         <image name="newspaper" width="25" height="25"/>
         <image name="notifications" width="25" height="25"/>
         <image name="search" width="22" height="22"/>
-        <image name="share" width="25" height="25"/>
         <image name="stockswipe_logo_small" width="37.5" height="37.5"/>
         <image name="trash" width="22" height="22"/>
         <image name="university" width="25" height="25"/>

@@ -29,11 +29,9 @@ target 'StockSwipe' do
     pod 'Parse/UI'
     
     # Facebook
-    pod 'FBSDKCoreKit'
-    pod 'FBSDKLoginKit'
-    pod 'FBSDKShareKit'
-    #pod 'FacebookCore'
-    #pod 'FacebookShare'
+    pod 'FacebookCore'
+    pod 'FacebookLogin'
+    pod 'FacebookShare'
     
     # Twitter
     pod 'TwitterKit'

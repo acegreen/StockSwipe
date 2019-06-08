@@ -127,7 +127,7 @@ final class CardView: UIView, NibLoadable {
             lineChartDataEntry.append(dataEntry)
         }
         
-        let lineDataSet = LineChartDataSet(values: lineChartDataEntry, label: nil)
+        let lineDataSet = LineChartDataSet(entries: lineChartDataEntry, label: nil)
         lineDataSet.drawValuesEnabled = false
         lineDataSet.axisDependency = .left
         lineDataSet.setColor(UIColor.white)

@@ -20,6 +20,7 @@ target 'StockSwipe' do
     # Analytics
     pod 'Firebase/Core'
     pod 'ChimpKit'
+    pod 'Branch'
     
     # Parse
     pod 'Parse'

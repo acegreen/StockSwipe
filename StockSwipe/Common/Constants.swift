@@ -51,6 +51,7 @@ class Constants {
     static let appReviewURL = URL(string: "itms-apps://itunes.apple.com/app/id1009599685?action=write-review")!
     static let settingsURL = URL(string: UIApplication.openSettingsURLString)
     static let publicationURL = URL(string: "https://medium.com/stockswipe-trade-ideas")
+    static let branchURL = URL(string: "https://n5qlr.app.link/VpY8IrjnmX")
     
     static let appEmail: String = "StockSwipe@gmail.com"
     static let emailTitle = "StockSwipe Feedback/Bug"

@@ -15,6 +15,7 @@ import Firebase
 import TwitterKit
 import Firebase
 import ChimpKit
+import Branch
 
 protocol PushNotificationDelegate {
     func didReceivePushNotification(_ userInfo: [AnyHashable: Any])
@@ -59,6 +60,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Intialize Firebase
         FirebaseApp.configure()
+        
+        // Intialize Branch
+        let branch: Branch = Branch.getInstance()
+        branch.initSession(launchOptions: launchOptions, andRegisterDeepLinkHandler: {params, error in
+            if error == nil {
+                // params are the deep linked params associated with the link that the user clicked -> was re-directed to this app
+                // params will be empty if no data found
+                // ... insert custom logic here ...
+                print("params: %@", params as? [String: AnyObject] ?? {})
+            }
+        })
         
         // Log event
         Analytics.logEvent(AnalyticsEventAppOpen, parameters: [
@@ -125,52 +137,59 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         
-        //        let sanitizedURL: NSURL = GSDDeepLink.handleDeepLink(url)
-        
-        switch url.scheme {
-            
-        case "stockswipe"?:
-            
-            guard url.host == "card", let window = self.window else { return true }
-            guard let symbolDict = url.parseQueryString(url.query!, firstSeperator: "&", secondSeperator: "=") else { return false }
-            guard let symbol = symbolDict["symbol"] as? String else { return
-                //TO-DO: Alert user that symbol was not found
-                false
-            }
-            
-            Functions.makeCard(for: symbol) { card in
-                do {
-                    let card = try card()
-                    
-                    let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
-                    let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
-                    cardDetailViewController.forceDisableDragDownToDismiss = true
-                    DispatchQueue.main.async {
-                        cardDetailViewController.card = card
-                        if mainTabBarController.presentationController != nil {
-                            mainTabBarController.dismiss(animated: false, completion: nil)
-                        }
-
-                        mainTabBarController.present(cardDetailViewController, animated: true, completion: nil)
-                    }
-                } catch {
-                    if let error = error as? QueryHelper.QueryError {
+        let branchHandled = Branch.getInstance().application(application,
+                                                             open: url,
+                                                             sourceApplication: sourceApplication,
+                                                             annotation: annotation
+        )
+        if (!branchHandled) {
+            switch url.scheme {
+            case "stockswipe"?:
+                guard url.host == "card", let window = self.window else { return true }
+                guard let symbolDict = url.parseQueryString(url.query!, firstSeperator: "&", secondSeperator: "=") else { return false }
+                guard let symbol = symbolDict["symbol"] as? String else { return
+                    //TO-DO: Alert user that symbol was not found
+                    false
+                }
+                
+                Functions.makeCard(for: symbol) { card in
+                    do {
+                        let card = try card()
+                        
+                        let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
+                        let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+                        cardDetailViewController.forceDisableDragDownToDismiss = true
                         DispatchQueue.main.async {
-                            Functions.showNotificationBanner(title: nil, subtitle: error.message(), style: .warning)
+                            cardDetailViewController.card = card
+                            if mainTabBarController.presentationController != nil {
+                                mainTabBarController.dismiss(animated: false, completion: nil)
+                            }
+                            
+                            mainTabBarController.present(cardDetailViewController, animated: true, completion: nil)
+                        }
+                    } catch {
+                        if let error = error as? QueryHelper.QueryError {
+                            DispatchQueue.main.async {
+                                Functions.showNotificationBanner(title: nil, subtitle: error.message(), style: .warning)
+                            }
                         }
                     }
                 }
+                
+                return true
+            case "fb863699560384982"?:
+                return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
+            default:
+                return false
             }
-            
-            return true
-        case "fb863699560384982"?:
-            return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
-        default:
-            return false
         }
+        
+        return false
     }
     
     func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        
+        Branch.getInstance().continue(userActivity)
         
         guard let window = self.window else { return true }
         

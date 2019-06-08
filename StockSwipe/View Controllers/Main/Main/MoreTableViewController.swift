@@ -10,7 +10,7 @@ import UIKit
 import MessageUI
 import Firebase
 import Parse
-import FBSDKShareKit
+//import FBSDKShareKit
 
 class MoreTableViewController: UITableViewController, MFMailComposeViewControllerDelegate, SegueHandlerType, CellType {
     
@@ -18,6 +18,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         case ProfileSegueIdentifier = "ProfileSegueIdentifier"
         case FAQSegueIdentifier = "FAQSegueIdentifier"
         case TutorialPageViewControllerSegueIdentifier = "TutorialPageViewControllerSegueIdentifier"
+        case ShareSegueIdentifier = "ShareSegueIdentifier"
     }
     
     enum CellIdentifier: String {
@@ -27,7 +28,6 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
         case PublicationCell = "PublicationCell"
         case WriteReviewCell = "WriteReviewCell"
         case GiveFeedbackCell =  "GiveFeedbackCell"
-        case InviteFacebookCell = "InviteFacebookCell"
         case ShareCell = "ShareCell"
     }
     
@@ -128,59 +128,8 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                 
             }
             
-        case .InviteFacebookCell:
-            
-            guard Functions.isConnectedToNetwork() else { return }
-            
-            presentFacebookInvite()
-            
         case .ShareCell:
-            
-            guard Functions.isConnectedToNetwork() else { return }
-            
-            let textToShare: String = "Checkout StockSwipe, it's like Tinder for stocks!"
-            
-            let objectsToShare: NSArray = [textToShare, Constants.appLinkURL!]
-            
-            let excludedActivityTypesArray = [
-                UIActivity.ActivityType.postToWeibo,
-                UIActivity.ActivityType.addToReadingList,
-                UIActivity.ActivityType.assignToContact,
-                UIActivity.ActivityType.print,
-                UIActivity.ActivityType.saveToCameraRoll,
-                UIActivity.ActivityType.assignToContact,
-                UIActivity.ActivityType.airDrop,
-            ]
-            
-            let activityVC = UIActivityViewController(activityItems: objectsToShare as [AnyObject], applicationActivities: nil)
-            activityVC.excludedActivityTypes = excludedActivityTypesArray
-            
-            activityVC.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.unknown
-            
-            activityVC.popoverPresentationController?.sourceView = self.view
-            activityVC.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2,width: 0,height: 0)
-            
-            self.present(activityVC, animated: true, completion: nil)
-            
-            activityVC.completionWithItemsHandler = { (activity, success, items, error) in
-                print("Activity: \(activity) Success: \(success) Items: \(items) Error: \(error)")
-                
-                if success {
-                    
-                    Functions.showNotificationBanner(title: "Success!", subtitle: nil, style: .success)
-                    
-                    // log shared successfully
-                    Analytics.logEvent(AnalyticsEventShare, parameters: [
-                        AnalyticsParameterContent: "StockSwipe shared",
-                        AnalyticsParameterContentType: "Share",
-                        "user": PFUser.current()?.username ?? "N/A",
-                        "app_version": Constants.AppVersion
-                    ])
-                    
-                } else if error != nil {
-                    Functions.showNotificationBanner(title: "Error!", subtitle: "That didn't go through", style: .danger)
-                }
-            }
+            self.performSegueWithIdentifier(.ShareSegueIdentifier, sender: self)
         }
     }
     
@@ -199,7 +148,7 @@ class MoreTableViewController: UITableViewController, MFMailComposeViewControlle
                 profileContainerController.user = self.currentUser
             }
             
-        case .FAQSegueIdentifier, .TutorialPageViewControllerSegueIdentifier:
+        case .FAQSegueIdentifier, .TutorialPageViewControllerSegueIdentifier, .ShareSegueIdentifier:
             break
         }
     }
@@ -255,35 +204,34 @@ extension MoreTableViewController: LoginDelegate, ProfileDetailTableViewControll
     }
 }
 
-
-extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
-    
-    //MARK: FBSDKAppInviteDialogDelegate
-    
-    func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [AnyHashable: Any]!) {
-        print("invitation made")
-        
-        // log shared successfully
-        Analytics.logEvent(AnalyticsEventShare, parameters: [
-            AnalyticsParameterContent: "Facebook Invite",
-            AnalyticsParameterContentType: "Share",
-            "user": PFUser.current()?.username ?? "N/A",
-            "app_version": Constants.AppVersion
-        ])
-        
-    }
-    
-    func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: Error!) {
-        print("error made")
-    }
-    
-    func presentFacebookInvite() {
-        let content = FBSDKAppInviteContent()
-        content.appLinkURL = Constants.facebookAppLink
-        //optionally set previewImageURL
-        //content.appInvitePreviewImageURL = NSURL(string: "https://www.mydomain.com/my_invite_image.jpg")!
-        // Present the dialog. Assumes self is a view controller
-        // which implements the protocol `FBSDKAppInviteDialogDelegate`.
-        FBSDKAppInviteDialog.show(from: self, with: content, delegate: self)
-    }
-}
+//extension MoreTableViewController: FBSDKAppInviteDialogDelegate {
+//
+//    //MARK: FBSDKAppInviteDialogDelegate
+//
+//    func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didCompleteWithResults results: [AnyHashable: Any]!) {
+//        print("invitation made")
+//
+//        // log shared successfully
+//        Analytics.logEvent(AnalyticsEventShare, parameters: [
+//            AnalyticsParameterContent: "Facebook Invite",
+//            AnalyticsParameterContentType: "Share",
+//            "user": PFUser.current()?.username ?? "N/A",
+//            "app_version": Constants.AppVersion
+//        ])
+//
+//    }
+//
+//    func appInviteDialog(_ appInviteDialog: FBSDKAppInviteDialog!, didFailWithError error: Error!) {
+//        print("error made")
+//    }
+//
+//    func presentFacebookInvite() {
+//        let content = FBSDKAppInviteContent()
+//        content.appLinkURL = Constants.facebookAppLink
+//        //optionally set previewImageURL
+//        //content.appInvitePreviewImageURL = NSURL(string: "https://www.mydomain.com/my_invite_image.jpg")!
+//        // Present the dialog. Assumes self is a view controller
+//        // which implements the protocol `FBSDKAppInviteDialogDelegate`.
+//        FBSDKAppInviteDialog.show(from: self, with: content, delegate: self)
+//    }
+//}

@@ -11,6 +11,7 @@ import Parse
 import Firebase
 import ChimpKit
 import SwiftyJSON
+import Branch
 
 protocol LoginDelegate {
     func didLoginSuccessfully()
@@ -109,6 +110,9 @@ class LoginViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
             if error == nil {
                 Functions.showNotificationBanner(title: "Logged Out!", subtitle: "You are now logged out", style: .success)
                 self.loginDelegate?.didLogoutSuccessfully()
+                
+                // logout user on Branch
+                Branch.getInstance().logout()
             }
         }
     }
@@ -452,7 +456,7 @@ class LoginViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
         })
     }
     
-    func registerUser(user: PFUser) {
+    private func registerUser(user: PFUser) {
         // register current installation
         if let currentInstallation = PFInstallation.current() {
             currentInstallation["user"] = user
@@ -461,6 +465,9 @@ class LoginViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
         
         let firstname = (user as? User)?.full_name?.components(separatedBy: " ").first
         let lastname = (user as? User)?.full_name?.components(separatedBy: " ").last
+        
+        // register to Branch
+        Branch.getInstance().setIdentity(user.objectId)
         
         // register to MailChimp
         self.registerUserMailChimp(listID: "4266807125", firstname: firstname, lastname: lastname, username: user.username, email: user.email)

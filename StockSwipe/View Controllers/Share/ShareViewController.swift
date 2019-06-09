@@ -41,7 +41,9 @@ class ShareViewController: UIViewController {
         Branch.getInstance().loadRewards { (changed, error) in
             if (error == nil) {
                 let credits = Branch.getInstance().getCredits()
-                self.creditsLabel.countFromZero(to: CGFloat(credits))
+                DispatchQueue.main.async {
+                    self.creditsLabel.countFromZero(to: CGFloat(credits))
+                }
             }
         }
     }

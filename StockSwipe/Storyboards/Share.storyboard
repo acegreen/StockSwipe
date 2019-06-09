@@ -24,69 +24,74 @@
             <objects>
                 <viewController storyboardIdentifier="ShareViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kOc-Jy-d8x" customClass="ShareViewController" customModule="StockSwipe" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="npc-6P-noc">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="756"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="QMd-U6-llt">
-                                <rect key="frame" x="40" y="100" width="334" height="574"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="L2F-o6-n2u">
+                                <rect key="frame" x="40" y="0.0" width="334" height="722"/>
                                 <subviews>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="BUh-dS-HFT">
-                                        <rect key="frame" x="118.5" y="0.0" width="97.5" height="84"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="QMd-U6-llt">
+                                        <rect key="frame" x="0.0" y="175" width="334" height="372.5"/>
                                         <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credits" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CN3-za-zlV">
-                                                <rect key="frame" x="0.0" y="0.0" width="97.5" height="26.5"/>
-                                                <fontDescription key="fontDescription" name="Time-Normal" family="Time" pointSize="20"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f7A-wC-vdS">
-                                                <rect key="frame" x="33.5" y="31.5" width="30.5" height="52.5"/>
-                                                <fontDescription key="fontDescription" name="Time-Normal" family="Time" pointSize="40"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="255" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="W9e-yE-dJM">
-                                        <rect key="frame" x="0.5" y="248" width="333" height="112"/>
-                                        <subviews>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="GET A HEAD START!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tt0-yB-IKj">
-                                                <rect key="frame" x="83" y="0.0" width="167" height="20.5"/>
-                                                <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="de4-PQ-4ae">
-                                                <rect key="frame" x="0.0" y="30.5" width="333" height="81.5"/>
-                                                <string key="text">Invite friends to StockSwipe. Once they sign up, you'll both get credits that you can apply towards paid features that are coming in the future</string>
-                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                <nil key="textColor"/>
-                                                <nil key="highlightedColor"/>
-                                            </label>
-                                        </subviews>
-                                    </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hUx-wq-sX4">
-                                        <rect key="frame" x="92" y="524" width="150" height="50"/>
-                                        <subviews>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RlI-Ih-b82">
-                                                <rect key="frame" x="0.0" y="0.0" width="150" height="50"/>
-                                                <color key="backgroundColor" name="green"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="150" id="9QR-bX-oqG"/>
-                                                    <constraint firstAttribute="height" constant="50" id="qBo-Sr-UEZ"/>
-                                                </constraints>
-                                                <state key="normal" title="Invite a friend">
-                                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                </state>
-                                                <userDefinedRuntimeAttributes>
-                                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                                        <real key="value" value="10"/>
-                                                    </userDefinedRuntimeAttribute>
-                                                </userDefinedRuntimeAttributes>
-                                                <connections>
-                                                    <action selector="inviteFriendsAction:" destination="kOc-Jy-d8x" eventType="touchUpInside" id="dpe-ZE-JTk"/>
-                                                </connections>
-                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="BUh-dS-HFT">
+                                                <rect key="frame" x="118.5" y="0.0" width="97.5" height="90.5"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Credits" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CN3-za-zlV">
+                                                        <rect key="frame" x="0.0" y="0.0" width="97.5" height="26.5"/>
+                                                        <fontDescription key="fontDescription" name="Time-Normal" family="Time" pointSize="20"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f7A-wC-vdS" customClass="UICountingLabel">
+                                                        <rect key="frame" x="31.5" y="31.5" width="34.5" height="59"/>
+                                                        <fontDescription key="fontDescription" name="Time-Normal" family="Time" pointSize="45"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="255" axis="vertical" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="W9e-yE-dJM">
+                                                <rect key="frame" x="0.5" y="150.5" width="333" height="112"/>
+                                                <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="GET A HEAD START!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tt0-yB-IKj">
+                                                        <rect key="frame" x="83" y="0.0" width="167" height="20.5"/>
+                                                        <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="de4-PQ-4ae">
+                                                        <rect key="frame" x="0.0" y="30.5" width="333" height="81.5"/>
+                                                        <string key="text">Invite friends to StockSwipe. Once they sign up, you'll both get credits that you can apply towards paid features that are coming in the future</string>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="hUx-wq-sX4">
+                                                <rect key="frame" x="92" y="322.5" width="150" height="50"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RlI-Ih-b82">
+                                                        <rect key="frame" x="0.0" y="0.0" width="150" height="50"/>
+                                                        <color key="backgroundColor" name="green"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="150" id="9QR-bX-oqG"/>
+                                                            <constraint firstAttribute="height" constant="50" id="qBo-Sr-UEZ"/>
+                                                        </constraints>
+                                                        <state key="normal" title="Invite a friend">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </state>
+                                                        <userDefinedRuntimeAttributes>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                                <real key="value" value="10"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                        </userDefinedRuntimeAttributes>
+                                                        <connections>
+                                                            <action selector="inviteFriendsAction:" destination="kOc-Jy-d8x" eventType="touchUpInside" id="dpe-ZE-JTk"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -94,16 +99,19 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="QMd-U6-llt" firstAttribute="leading" secondItem="Ggj-iQ-5Wt" secondAttribute="leading" constant="40" id="cT0-a7-KOM"/>
-                            <constraint firstItem="QMd-U6-llt" firstAttribute="top" secondItem="Ggj-iQ-5Wt" secondAttribute="top" constant="100" id="etu-CU-9wg"/>
-                            <constraint firstItem="Ggj-iQ-5Wt" firstAttribute="bottom" secondItem="QMd-U6-llt" secondAttribute="bottom" constant="100" id="kMM-hK-jgC"/>
-                            <constraint firstItem="Ggj-iQ-5Wt" firstAttribute="trailing" secondItem="QMd-U6-llt" secondAttribute="trailing" constant="40" id="zn5-3d-TJQ"/>
+                            <constraint firstItem="L2F-o6-n2u" firstAttribute="leading" secondItem="Ggj-iQ-5Wt" secondAttribute="leading" constant="40" id="6UK-zB-OTF"/>
+                            <constraint firstAttribute="trailing" secondItem="L2F-o6-n2u" secondAttribute="trailing" constant="40" id="7wP-qE-ktx"/>
+                            <constraint firstItem="L2F-o6-n2u" firstAttribute="top" secondItem="Ggj-iQ-5Wt" secondAttribute="top" id="HWE-gF-SGL"/>
+                            <constraint firstItem="Ggj-iQ-5Wt" firstAttribute="bottom" secondItem="L2F-o6-n2u" secondAttribute="bottom" id="azx-b8-ueD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Ggj-iQ-5Wt"/>
                     </view>
                     <navigationItem key="navigationItem" title="Free Features" largeTitleDisplayMode="always" id="KG5-58-lxm">
                         <barButtonItem key="rightBarButtonItem" image="x" id="9uG-gu-TdK">
                             <color key="tintColor" red="0.99999600649999998" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <connections>
+                                <action selector="dismissAction:" destination="kOc-Jy-d8x" id="aEs-Rd-vTm"/>
+                            </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
@@ -119,8 +127,8 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="6vy-nh-Mz0" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="BJv-2g-2Ls">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" largeTitles="YES" id="BJv-2g-2Ls">
+                        <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="barTintColor" name="green"/>
                         <textAttributes key="titleTextAttributes">

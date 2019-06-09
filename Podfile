@@ -41,6 +41,7 @@ target 'StockSwipe' do
     pod 'AMPopTip'
     pod 'SKSplashView', :git =>'https://github.com/acegreen/SKSplashView.git', :branch => 'ag-improvements'
     pod 'NVActivityIndicatorView'
+    pod 'UICountingLabel'
 
     shared_pods
     

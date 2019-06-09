@@ -180,7 +180,7 @@
                             </barButtonItem>
                         </leftBarButtonItems>
                         <view key="titleView" contentMode="scaleToFill" id="qWB-de-rJ5">
-                            <rect key="frame" x="113" y="5.5" width="130.5" height="33"/>
+                            <rect key="frame" x="107" y="5.5" width="130.5" height="33"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="stockswipe_logo_small" translatesAutoresizingMaskIntoConstraints="NO" id="tZG-zr-Fr2">
@@ -1136,25 +1136,66 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="ctE-JQ-q5I">
-                                <rect key="frame" x="10" y="5" width="355" height="652"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eOE-jX-fRo">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                                 <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gRv-ww-6xE" customClass="AGGradientView" customModule="StockSwipe" customModuleProvider="target">
+                                        <rect key="frame" x="10" y="10" width="355" height="60"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" alignment="center" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="A9n-kr-8CK">
+                                                <rect key="frame" x="10" y="0.0" width="335" height="60"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="256" verticalHuggingPriority="251" image="gift" translatesAutoresizingMaskIntoConstraints="NO" id="V9F-cy-u6L">
+                                                        <rect key="frame" x="0.0" y="5" width="50" height="50"/>
+                                                    </imageView>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EzC-Yx-Ef8">
+                                                        <rect key="frame" x="55" y="13.5" width="280" height="33"/>
+                                                        <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="18"/>
+                                                        <state key="normal" title="Invite friends, get free features">
+                                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                        </state>
+                                                        <connections>
+                                                            <segue destination="jJh-AJ-ki5" kind="showDetail" identifier="ShareSegueIdentifier" id="WzP-QE-vUy"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                        </subviews>
+                                        <constraints>
+                                            <constraint firstItem="A9n-kr-8CK" firstAttribute="leading" secondItem="gRv-ww-6xE" secondAttribute="leading" constant="10" id="KWr-KK-7ql"/>
+                                            <constraint firstAttribute="height" constant="60" id="Ztd-K7-fgf"/>
+                                            <constraint firstAttribute="trailing" secondItem="A9n-kr-8CK" secondAttribute="trailing" constant="10" id="ghE-8Z-ETA"/>
+                                            <constraint firstItem="A9n-kr-8CK" firstAttribute="top" secondItem="gRv-ww-6xE" secondAttribute="top" id="o5y-bj-JHQ"/>
+                                            <constraint firstAttribute="bottom" secondItem="A9n-kr-8CK" secondAttribute="bottom" id="uuv-DE-ucr"/>
+                                        </constraints>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="startColor">
+                                                <color key="value" name="gold"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="endColor">
+                                                <color key="value" name="gold"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                <real key="value" value="10"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pM0-kb-qMF" customClass="AGGradientView" customModule="StockSwipe" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="355" height="321"/>
+                                        <rect key="frame" x="10" y="80" width="355" height="300"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" axis="vertical" spacing="-5" translatesAutoresizingMaskIntoConstraints="NO" id="i9Q-K9-cXA">
-                                                <rect key="frame" x="0.0" y="0.0" width="355" height="321"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="355" height="300"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" verticalHuggingPriority="255" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="CrP-IC-muF">
                                                         <rect key="frame" x="0.0" y="0.0" width="355" height="50"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="Trending Cloud" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="JB7-5F-Su8">
                                                                 <rect key="frame" x="10" y="10" width="335" height="30"/>
-                                                                <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="22"/>
+                                                                <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="20"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <variation key="heightClass=regular-widthClass=regular">
-                                                                    <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="26"/>
+                                                                    <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="24"/>
                                                                 </variation>
                                                             </label>
                                                         </subviews>
@@ -1167,7 +1208,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" verticalHuggingPriority="245" translatesAutoresizingMaskIntoConstraints="NO" id="1gu-wg-TU4">
-                                                        <rect key="frame" x="0.0" y="45" width="355" height="271"/>
+                                                        <rect key="frame" x="0.0" y="45" width="355" height="250"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                 <real key="value" value="0.0"/>
@@ -1178,7 +1219,7 @@
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <view contentMode="scaleToFill" verticalHuggingPriority="255" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="FLX-e8-Tqk">
-                                                        <rect key="frame" x="0.0" y="311" width="355" height="10"/>
+                                                        <rect key="frame" x="0.0" y="290" width="355" height="10"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="10" id="gH5-Jj-bDK"/>
@@ -1195,6 +1236,7 @@
                                             <constraint firstAttribute="trailing" secondItem="i9Q-K9-cXA" secondAttribute="trailing" id="TaQ-nV-ekL"/>
                                             <constraint firstAttribute="trailing" secondItem="i9Q-K9-cXA" secondAttribute="trailing" id="Yl7-7O-foy"/>
                                             <constraint firstItem="i9Q-K9-cXA" firstAttribute="leading" secondItem="pM0-kb-qMF" secondAttribute="leading" id="fCZ-Uf-n4p"/>
+                                            <constraint firstAttribute="height" constant="300" id="o5X-Lf-2CM"/>
                                             <constraint firstItem="i9Q-K9-cXA" firstAttribute="top" secondItem="pM0-kb-qMF" secondAttribute="top" id="sNg-eJ-mUg"/>
                                         </constraints>
                                         <userDefinedRuntimeAttributes>
@@ -1210,21 +1252,21 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Wr-RP-X1n" customClass="AGGradientView" customModule="StockSwipe" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="331" width="355" height="321"/>
+                                        <rect key="frame" x="10" y="390" width="355" height="800"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8Rt-wj-Evx">
-                                                <rect key="frame" x="0.0" y="0.0" width="355" height="321"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="355" height="800"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" verticalHuggingPriority="255" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="5a2-8Y-GL1">
                                                         <rect key="frame" x="0.0" y="0.0" width="355" height="308.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="Top Stories" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="jrW-Bv-w0e">
                                                                 <rect key="frame" x="10" y="10" width="335" height="298.5"/>
-                                                                <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="22"/>
+                                                                <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="20"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
                                                                 <variation key="heightClass=regular-widthClass=regular">
-                                                                    <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="26"/>
+                                                                    <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="24"/>
                                                                 </variation>
                                                             </label>
                                                         </subviews>
@@ -1237,7 +1279,7 @@
                                                         </constraints>
                                                     </view>
                                                     <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="245" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ibj-d4-p5e">
-                                                        <rect key="frame" x="0.0" y="308.5" width="355" height="12.5"/>
+                                                        <rect key="frame" x="0.0" y="308.5" width="355" height="491.5"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <color key="separatorColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
@@ -1302,6 +1344,7 @@
                                         <constraints>
                                             <constraint firstItem="8Rt-wj-Evx" firstAttribute="top" secondItem="6Wr-RP-X1n" secondAttribute="top" id="PtB-YU-TeL"/>
                                             <constraint firstItem="8Rt-wj-Evx" firstAttribute="leading" secondItem="6Wr-RP-X1n" secondAttribute="leading" id="VTG-uz-GTY"/>
+                                            <constraint firstAttribute="height" constant="800" id="crg-ng-bmZ"/>
                                             <constraint firstAttribute="bottom" secondItem="8Rt-wj-Evx" secondAttribute="bottom" id="u4C-9T-bBR"/>
                                             <constraint firstAttribute="trailing" secondItem="8Rt-wj-Evx" secondAttribute="trailing" id="xfx-Ny-n7H"/>
                                         </constraints>
@@ -1318,15 +1361,29 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                 </subviews>
-                                <variation key="heightClass=regular-widthClass=regular" distribution="fillEqually" spacing="5"/>
-                            </stackView>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="gRv-ww-6xE" secondAttribute="trailing" constant="10" id="1p7-gw-RYr"/>
+                                    <constraint firstItem="gRv-ww-6xE" firstAttribute="top" secondItem="eOE-jX-fRo" secondAttribute="top" constant="10" id="3qU-j0-xps"/>
+                                    <constraint firstItem="6Wr-RP-X1n" firstAttribute="top" secondItem="pM0-kb-qMF" secondAttribute="bottom" constant="10" id="BV6-7o-VHf"/>
+                                    <constraint firstItem="6Wr-RP-X1n" firstAttribute="centerX" secondItem="eOE-jX-fRo" secondAttribute="centerX" id="Gd7-Xy-brT"/>
+                                    <constraint firstAttribute="trailing" secondItem="pM0-kb-qMF" secondAttribute="trailing" constant="10" id="Hcm-iM-VXL"/>
+                                    <constraint firstItem="pM0-kb-qMF" firstAttribute="top" secondItem="gRv-ww-6xE" secondAttribute="bottom" constant="10" id="O9f-gq-Npx"/>
+                                    <constraint firstItem="gRv-ww-6xE" firstAttribute="leading" secondItem="eOE-jX-fRo" secondAttribute="leading" constant="10" id="PUb-XC-T87"/>
+                                    <constraint firstAttribute="bottom" secondItem="6Wr-RP-X1n" secondAttribute="bottom" constant="10" id="Xbd-Hp-AgM"/>
+                                    <constraint firstItem="pM0-kb-qMF" firstAttribute="leading" secondItem="eOE-jX-fRo" secondAttribute="leading" constant="10" id="bKv-PD-wUL"/>
+                                    <constraint firstItem="6Wr-RP-X1n" firstAttribute="leading" secondItem="eOE-jX-fRo" secondAttribute="leading" constant="10" id="cNC-PR-toU"/>
+                                    <constraint firstItem="pM0-kb-qMF" firstAttribute="centerX" secondItem="eOE-jX-fRo" secondAttribute="centerX" id="mCd-7n-2k6"/>
+                                    <constraint firstAttribute="trailing" secondItem="6Wr-RP-X1n" secondAttribute="trailing" constant="10" id="sgN-98-n6s"/>
+                                </constraints>
+                            </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="uUj-bU-OE1" firstAttribute="trailing" secondItem="ctE-JQ-q5I" secondAttribute="trailing" constant="10" id="FQb-NW-lAo"/>
-                            <constraint firstItem="ctE-JQ-q5I" firstAttribute="leading" secondItem="uUj-bU-OE1" secondAttribute="leading" constant="10" id="HNq-jO-1MZ"/>
-                            <constraint firstAttribute="bottom" secondItem="ctE-JQ-q5I" secondAttribute="bottom" constant="10" id="NcX-PB-mCF"/>
-                            <constraint firstItem="ctE-JQ-q5I" firstAttribute="top" secondItem="C2V-Me-918" secondAttribute="top" constant="5" id="rKN-b6-PJf"/>
+                            <constraint firstItem="eOE-jX-fRo" firstAttribute="width" secondItem="uUj-bU-OE1" secondAttribute="width" id="K2o-eD-Wwf"/>
+                            <constraint firstItem="eOE-jX-fRo" firstAttribute="leading" secondItem="uUj-bU-OE1" secondAttribute="leading" id="NHg-mZ-vjg"/>
+                            <constraint firstItem="uUj-bU-OE1" firstAttribute="trailing" secondItem="eOE-jX-fRo" secondAttribute="trailing" id="Y4w-31-418"/>
+                            <constraint firstItem="eOE-jX-fRo" firstAttribute="top" secondItem="uUj-bU-OE1" secondAttribute="top" id="jYu-e3-mFY"/>
+                            <constraint firstItem="uUj-bU-OE1" firstAttribute="bottom" secondItem="eOE-jX-fRo" secondAttribute="bottom" id="mCC-6h-wq1"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="uUj-bU-OE1"/>
                     </view>
@@ -1339,6 +1396,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yy4-jf-MkH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3308" y="-2071"/>
+        </scene>
+        <!--Share-->
+        <scene sceneID="VtZ-gQ-rVH">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Share" id="jJh-AJ-ki5" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Mxo-lo-aVE" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3881" y="-2311"/>
         </scene>
         <!--CardDetail-->
         <scene sceneID="IRl-dy-Uvr">
@@ -1360,7 +1425,7 @@
         <image name="eye" width="30" height="30"/>
         <image name="faq" width="25" height="25"/>
         <image name="filter" width="25" height="25"/>
-        <image name="gift" width="25" height="25"/>
+        <image name="gift" width="50" height="50"/>
         <image name="newspaper" width="25" height="25"/>
         <image name="notifications" width="25" height="25"/>
         <image name="search" width="22" height="22"/>
@@ -1368,6 +1433,9 @@
         <image name="trash" width="22" height="22"/>
         <image name="university" width="25" height="25"/>
         <image name="write" width="25" height="25"/>
+        <namedColor name="gold">
+            <color red="0.96078431372549022" green="0.75294117647058822" blue="0.094117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="green">
             <color red="0.33725490196078434" green="0.6705882352941176" blue="0.18431372549019609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -10,10 +10,15 @@ import UIKit
 import Parse
 import Firebase
 import Branch
+import UICountingLabel
 
 class ShareViewController: UIViewController {
     
-    @IBOutlet weak var creditsLabel: UILabel!
+    @IBAction func dismissAction(_ sender: UIBarButtonItem) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBOutlet weak var creditsLabel: UICountingLabel!
     
     @IBAction func inviteFriendsAction(_ sender: UIButton) {
         self.presentShareSheet()
@@ -23,6 +28,7 @@ class ShareViewController: UIViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        creditsLabel.format = "%d"
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -35,7 +41,7 @@ class ShareViewController: UIViewController {
         Branch.getInstance().loadRewards { (changed, error) in
             if (error == nil) {
                 let credits = Branch.getInstance().getCredits()
-                self.creditsLabel.text = String(credits)
+                self.creditsLabel.countFromZero(to: CGFloat(credits))
             }
         }
     }

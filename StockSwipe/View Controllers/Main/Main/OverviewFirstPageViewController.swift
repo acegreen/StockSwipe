@@ -19,6 +19,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     
     enum SegueIdentifier: String {
         case CardDetailSegueIdentifier = "CardDetailSegueIdentifier"
+        case ShareSegueIdentifier = "ShareSegueIdentifier"
     }
     
     var cloudWords = [CloudWord]()
@@ -271,11 +272,11 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
         let segueIdentifier = segueIdentifierForSegue(segue)
         
         switch segueIdentifier {
-            
         case .CardDetailSegueIdentifier:
             let cardDetailViewController = segue.destination as! CardDetailViewController
             cardDetailViewController.card = sender as? Card
             cardDetailViewController.forceDisableDragDownToDismiss = true
+        default: break
         }
     }
 }

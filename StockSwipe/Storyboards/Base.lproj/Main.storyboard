@@ -1252,16 +1252,16 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Wr-RP-X1n" customClass="AGGradientView" customModule="StockSwipe" customModuleProvider="target">
-                                        <rect key="frame" x="10" y="390" width="355" height="800"/>
+                                        <rect key="frame" x="10" y="390" width="355" height="2400"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="8Rt-wj-Evx">
-                                                <rect key="frame" x="0.0" y="0.0" width="355" height="800"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="355" height="2400"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" verticalHuggingPriority="255" verticalCompressionResistancePriority="760" translatesAutoresizingMaskIntoConstraints="NO" id="5a2-8Y-GL1">
-                                                        <rect key="frame" x="0.0" y="0.0" width="355" height="308.5"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="355" height="491.5"/>
                                                         <subviews>
                                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="255" text="Top Stories" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="jrW-Bv-w0e">
-                                                                <rect key="frame" x="10" y="10" width="335" height="298.5"/>
+                                                                <rect key="frame" x="10" y="10" width="335" height="481.5"/>
                                                                 <fontDescription key="fontDescription" name="GTWalsheimProBold" family="GT Walsheim Pro" pointSize="20"/>
                                                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                 <nil key="highlightedColor"/>
@@ -1278,24 +1278,24 @@
                                                             <constraint firstItem="jrW-Bv-w0e" firstAttribute="top" secondItem="5a2-8Y-GL1" secondAttribute="top" constant="10" id="iu8-6H-SJI"/>
                                                         </constraints>
                                                     </view>
-                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="245" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ibj-d4-p5e">
-                                                        <rect key="frame" x="0.0" y="308.5" width="355" height="491.5"/>
+                                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" verticalHuggingPriority="245" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ibj-d4-p5e">
+                                                        <rect key="frame" x="0.0" y="491.5" width="355" height="1908.5"/>
                                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <color key="separatorColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                         <inset key="separatorInset" minX="15" minY="0.0" maxX="0.0" maxY="0.0"/>
                                                         <prototypes>
                                                             <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TopNewsCell" id="ebJ-Wz-W4y" customClass="TopNewsCell" customModule="StockSwipe" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="28" width="355" height="100"/>
+                                                                <rect key="frame" x="0.0" y="28" width="355" height="44"/>
                                                                 <autoresizingMask key="autoresizingMask"/>
                                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ebJ-Wz-W4y" id="JuJ-hi-XKX">
-                                                                    <rect key="frame" x="0.0" y="0.0" width="355" height="99.5"/>
+                                                                    <rect key="frame" x="0.0" y="0.0" width="355" height="43.5"/>
                                                                     <autoresizingMask key="autoresizingMask"/>
                                                                     <subviews>
                                                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="acd-BG-8ax">
-                                                                            <rect key="frame" x="10" y="10" width="335" height="79.5"/>
+                                                                            <rect key="frame" x="10" y="10" width="335" height="23.5"/>
                                                                             <subviews>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="News Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agE-c2-ZAh">
-                                                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="19.5"/>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" ambiguous="YES" text="News Title" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="agE-c2-ZAh">
+                                                                                    <rect key="frame" x="0.0" y="0.0" width="335" height="15.5"/>
                                                                                     <color key="tintColor" red="0.098039217289999994" green="0.78431373829999995" blue="0.098039217289999994" alpha="1" colorSpace="calibratedRGB"/>
                                                                                     <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="16"/>
                                                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -1304,8 +1304,8 @@
                                                                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="18"/>
                                                                                     </variation>
                                                                                 </label>
-                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" text="News Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GDr-zN-klj">
-                                                                                    <rect key="frame" x="0.0" y="27.5" width="335" height="52"/>
+                                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="250" ambiguous="YES" text="News Description" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GDr-zN-klj">
+                                                                                    <rect key="frame" x="0.0" y="23.5" width="335" height="0.0"/>
                                                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                                     <nil key="highlightedColor"/>
@@ -1344,7 +1344,7 @@
                                         <constraints>
                                             <constraint firstItem="8Rt-wj-Evx" firstAttribute="top" secondItem="6Wr-RP-X1n" secondAttribute="top" id="PtB-YU-TeL"/>
                                             <constraint firstItem="8Rt-wj-Evx" firstAttribute="leading" secondItem="6Wr-RP-X1n" secondAttribute="leading" id="VTG-uz-GTY"/>
-                                            <constraint firstAttribute="height" constant="800" id="crg-ng-bmZ"/>
+                                            <constraint firstAttribute="height" constant="2400" id="awm-ab-S03"/>
                                             <constraint firstAttribute="bottom" secondItem="8Rt-wj-Evx" secondAttribute="bottom" id="u4C-9T-bBR"/>
                                             <constraint firstAttribute="trailing" secondItem="8Rt-wj-Evx" secondAttribute="trailing" id="xfx-Ny-n7H"/>
                                         </constraints>

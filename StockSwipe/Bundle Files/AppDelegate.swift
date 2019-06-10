@@ -137,11 +137,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         
-        let branchHandled = Branch.getInstance().application(application,
-                                                             open: url,
-                                                             sourceApplication: sourceApplication,
-                                                             annotation: annotation
-        )
+        let branchHandled = Branch.getInstance()?.application(application,
+                                                              open: url,
+                                                              options: nil) ?? false
+        
         if (!branchHandled) {
             switch url.scheme {
             case "stockswipe"?:
@@ -156,10 +155,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     do {
                         let card = try card()
                         
-                        let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
-                        let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
-                        cardDetailViewController.forceDisableDragDownToDismiss = true
                         DispatchQueue.main.async {
+                            let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
+                            let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+                            cardDetailViewController.forceDisableDragDownToDismiss = true
                             cardDetailViewController.card = card
                             if mainTabBarController.presentationController != nil {
                                 mainTabBarController.dismiss(animated: false, completion: nil)
@@ -207,10 +206,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             do {
                 let card = try card()
                 
-                let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
-                let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
-                cardDetailViewController.forceDisableDragDownToDismiss = true
                 DispatchQueue.main.async {
+                    let mainTabBarController: MainTabBarController = window.rootViewController as! MainTabBarController
+                    let cardDetailViewController  = Constants.Storyboards.cardDetailStoryboard.instantiateViewController(withIdentifier: "CardDetailViewController") as! CardDetailViewController
+                    cardDetailViewController.forceDisableDragDownToDismiss = true
                     cardDetailViewController.card = card
                     if mainTabBarController.presentationController != nil {
                         mainTabBarController.dismiss(animated: false, completion: nil)

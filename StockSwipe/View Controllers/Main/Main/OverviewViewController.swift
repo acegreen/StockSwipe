@@ -235,7 +235,9 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
                     }
                 }
                 
-                self.carousel.isUserInteractionEnabled = true
+                DispatchQueue.main.async {
+                    self.carousel.isUserInteractionEnabled = true
+                }
             }
         }
     }

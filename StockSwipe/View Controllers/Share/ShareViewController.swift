@@ -53,45 +53,15 @@ class ShareViewController: UIViewController {
         guard Functions.isConnectedToNetwork() else { return }
         
         let textToShare: String = "Checkout StockSwipe! Discover trade ideas and trending stocks"
-        let objectsToShare: NSArray = [textToShare, Constants.branchURL!]
+        let branchObject = BranchUniversalObject(title: "StockSwipe")
+        branchObject.contentDescription = "StockSwipe lets you discover new stocks by swiping through cards. join traders who swiped and found some awesome trades #StockSwipe"
+        branchObject.imageUrl = "https://www.dropbox.com/s/4v79q81wbddgm8j/Icon_512.png"
+        branchObject.publiclyIndex = true
+        branchObject.locallyIndex = true
         
-        let excludedActivityTypesArray = [
-            UIActivity.ActivityType.postToWeibo,
-            UIActivity.ActivityType.addToReadingList,
-            UIActivity.ActivityType.assignToContact,
-            UIActivity.ActivityType.print,
-            UIActivity.ActivityType.saveToCameraRoll,
-            UIActivity.ActivityType.assignToContact,
-            UIActivity.ActivityType.airDrop,
-        ]
-        
-        let activityVC = UIActivityViewController(activityItems: objectsToShare as [AnyObject], applicationActivities: nil)
-        activityVC.excludedActivityTypes = excludedActivityTypesArray
-        
-        activityVC.popoverPresentationController?.permittedArrowDirections = UIPopoverArrowDirection.unknown
-        
-        activityVC.popoverPresentationController?.sourceView = self.view
-        activityVC.popoverPresentationController?.sourceRect = CGRect(x: self.view.bounds.width / 2, y: self.view.bounds.height / 2,width: 0,height: 0)
-        
-        self.present(activityVC, animated: true, completion: nil)
-        
-        activityVC.completionWithItemsHandler = { (activity, success, items, error) in
-            print("Activity: \(activity) Success: \(success) Items: \(items) Error: \(error)")
-            
-            if success {
-                
+        branchObject.showShareSheet(withShareText: textToShare) { (activityType, completed) in
+            if completed {
                 Functions.showNotificationBanner(title: "Success!", subtitle: nil, style: .success)
-                
-                // log shared successfully
-                Analytics.logEvent(AnalyticsEventShare, parameters: [
-                    AnalyticsParameterContent: "StockSwipe shared",
-                    AnalyticsParameterContentType: "Share",
-                    "user": PFUser.current()?.username ?? "N/A",
-                    "app_version": Constants.AppVersion
-                    ])
-                
-            } else if error != nil {
-                Functions.showNotificationBanner(title: "Error!", subtitle: "That didn't go through", style: .danger)
             }
         }
     }

@@ -513,14 +513,13 @@ class Functions {
         
         let attributeSet:CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeItem as String)
         attributeSet.contentDescription = card.companyName
-        attributeSet.artist = "Shorts: \(card.shortCount)"
-        attributeSet.album = "Longs: \(card.longCount)"
+        attributeSet.artist = card.exchange
         attributeSet.relatedUniqueIdentifier = card.symbol
         
         let activity = NSUserActivity(activityType: domainIdentifier)
         activity.title = card.symbol
-        activity.keywords = NSSet(array: [card.symbol, card.companyName, "Stocks", "Markets"]) as! Set<String>
-        activity.userInfo = ["symbol": card.symbol, "companyName": card.companyName]
+        activity.keywords = NSSet(array: [card.symbol, card.companyName, card.exchange, "Stocks", "Markets"]) as! Set<String>
+        activity.userInfo = ["symbol": card.symbol, "companyName": card.companyName, "exchange": card.exchange]
         activity.contentAttributeSet = attributeSet
         
         activity.requiredUserInfoKeys = NSSet(array: ["symbol", "companyName"]) as? Set<String>
@@ -537,9 +536,8 @@ class Functions {
         let attributeSet: CSSearchableItemAttributeSet = CSSearchableItemAttributeSet(itemContentType: kUTTypeMP3 as String)
         attributeSet.title = card.symbol
         attributeSet.contentDescription = card.companyName
-        attributeSet.artist = "Shorts: \(card.shortCount)"
-        attributeSet.album = "Longs: \(card.longCount)"
-        attributeSet.keywords = [card.symbol, card.companyName ?? "", "Stocks", "Markets"]
+        attributeSet.artist = card.exchange
+        attributeSet.keywords = [card.symbol, card.companyName ?? "", card.exchange ?? "", "Stocks", "Markets"]
         
         let searchableItem = CSSearchableItem(uniqueIdentifier: card.symbol, domainIdentifier: domainIdentifier, attributeSet: attributeSet)
         CSSearchableIndex.default().indexSearchableItems([searchableItem]) { (error) -> Void in

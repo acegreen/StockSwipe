@@ -24,7 +24,6 @@
 		232ECBE02212648B00C30E46 /* PresentCardAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 232ECBDC2212648B00C30E46 /* PresentCardAnimator.swift */; };
 		23345A31222ED33B00F02D27 /* TutorialPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 23345A30222ED33B00F02D27 /* TutorialPageViewController.swift */; };
 		2338A6D4225A72C400B129BB /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2338A6D3225A72C400B129BB /* NotificationCenter.framework */; };
-		2339A7B722AC364D00C9FA36 /* Share.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2339A7B622AC364D00C9FA36 /* Share.storyboard */; };
 		2339A7BE22AC3E1100C9FA36 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2339A7BD22AC3E1100C9FA36 /* ShareViewController.swift */; };
 		2339B0AF1B41A6CB009CE3EB /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2339B0AE1B41A6CB009CE3EB /* MessageUI.framework */; };
 		233BFDC41B1A28A3008B39ED /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 233BFDC31B1A28A3008B39ED /* CoreData.framework */; };
@@ -137,6 +136,8 @@
 		23F374E9220F969B00593EFF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23F374DD220F969A00593EFF /* Main.storyboard */; };
 		23F374EA220F969B00593EFF /* Feedback.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23F374DF220F969B00593EFF /* Feedback.storyboard */; };
 		23F374EB220F969B00593EFF /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23F374E1220F969B00593EFF /* Profile.storyboard */; };
+		23F3910422B55E8100C7E2CE /* Share.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 23F3910222B55E8100C7E2CE /* Share.storyboard */; };
+		23F3910B22B55F6600C7E2CE /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 23F3910A22B55F6600C7E2CE /* Colors.xcassets */; };
 		7888E1041B669C780087C255 /* CoreSpotlight.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 23D7602B1B62AC5B009777E1 /* CoreSpotlight.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E5C3BFE4C3ECF902EB643B0B /* Pods_StockSwipe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5BED1187118D34381FAD1EEC /* Pods_StockSwipe.framework */; };
 		E7FA3E9A20A4DF5709F2FA4C /* Pods_StockSwipeWidget.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62F9F5D5CA6A2A4EE014CA50 /* Pods_StockSwipeWidget.framework */; };
@@ -203,7 +204,6 @@
 		23332BA41CA08416006E4863 /* TodayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TodayViewController.swift; path = StockSwipeWidget/TodayViewController.swift; sourceTree = SOURCE_ROOT; };
 		23345A30222ED33B00F02D27 /* TutorialPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialPageViewController.swift; sourceTree = "<group>"; };
 		2338A6D3225A72C400B129BB /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
-		2339A7B622AC364D00C9FA36 /* Share.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Share.storyboard; sourceTree = "<group>"; };
 		2339A7BD22AC3E1100C9FA36 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		2339A7C022AC492800C9FA36 /* timenormal.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = timenormal.ttf; sourceTree = "<group>"; };
 		2339B0AE1B41A6CB009CE3EB /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
@@ -325,6 +325,8 @@
 		23F374DE220F969A00593EFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		23F374E0220F969B00593EFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Feedback.storyboard; sourceTree = "<group>"; };
 		23F374E2220F969B00593EFF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Profile.storyboard; sourceTree = "<group>"; };
+		23F3910322B55E8100C7E2CE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Share.storyboard; sourceTree = "<group>"; };
+		23F3910A22B55F6600C7E2CE /* Colors.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Colors.xcassets; sourceTree = "<group>"; };
 		302A57B5A56184CF31B8BD67 /* Pods-StockSwipeWidget.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipeWidget.release.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipeWidget/Pods-StockSwipeWidget.release.xcconfig"; sourceTree = "<group>"; };
 		379EE7BADF3F956ACE9B3CF1 /* Pods-StockSwipe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipe.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipe/Pods-StockSwipe.debug.xcconfig"; sourceTree = "<group>"; };
 		422C898FA876840C7EB3FDD1 /* Pods-StockSwipeWidget.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StockSwipeWidget.debug.xcconfig"; path = "Pods/Target Support Files/Pods-StockSwipeWidget/Pods-StockSwipeWidget.debug.xcconfig"; sourceTree = "<group>"; };
@@ -480,6 +482,7 @@
 				238C1AF61C8C65D6009F9CC1 /* AppDelegate.swift */,
 				238C1AF71C8C65D6009F9CC1 /* BridgingHeader.h */,
 				238C1AF81C8C65D6009F9CC1 /* Images.xcassets */,
+				23F3910A22B55F6600C7E2CE /* Colors.xcassets */,
 				238C1AF91C8C65D6009F9CC1 /* Info.plist */,
 				23D87255225A7A6700FD3822 /* GoogleService-Info.plist */,
 			);
@@ -497,7 +500,7 @@
 				23F374E1220F969B00593EFF /* Profile.storyboard */,
 				23F374D1220F969A00593EFF /* Filter.storyboard */,
 				23F374D7220F969A00593EFF /* Search.storyboard */,
-				2339A7B622AC364D00C9FA36 /* Share.storyboard */,
+				23F3910222B55E8100C7E2CE /* Share.storyboard */,
 				23F374DF220F969B00593EFF /* Feedback.storyboard */,
 			);
 			path = Storyboards;
@@ -937,7 +940,9 @@
 				23F374E8220F969B00593EFF /* Login.storyboard in Resources */,
 				23F374E9220F969B00593EFF /* Main.storyboard in Resources */,
 				231140F422AC4AF20064AFB5 /* timenormal.ttf in Resources */,
+				23F3910B22B55F6600C7E2CE /* Colors.xcassets in Resources */,
 				2375FE701D85A39A0049D297 /* StockSectorPreferences.plist in Resources */,
+				23F3910422B55E8100C7E2CE /* Share.storyboard in Resources */,
 				2375FE6E1D85A39A0049D297 /* StockExchangePreferences_CA.plist in Resources */,
 				2382B69E2210F28E00209EAF /* CardView.xib in Resources */,
 				23F374E6220F969B00593EFF /* Search.storyboard in Resources */,
@@ -947,7 +952,6 @@
 				23F374E7220F969B00593EFF /* LaunchScreen.storyboard in Resources */,
 				23D87256225A7A6700FD3822 /* GoogleService-Info.plist in Resources */,
 				2375FE721D85A45A0049D297 /* NotificationPreferences.plist in Resources */,
-				2339A7B722AC364D00C9FA36 /* Share.storyboard in Resources */,
 				23F374EB220F969B00593EFF /* Profile.storyboard in Resources */,
 				23F374E3220F969B00593EFF /* Filter.storyboard in Resources */,
 				2375FE6D1D85A39A0049D297 /* GeneralPreferences.plist in Resources */,
@@ -1305,6 +1309,14 @@
 				23F374E2220F969B00593EFF /* Base */,
 			);
 			name = Profile.storyboard;
+			sourceTree = "<group>";
+		};
+		23F3910222B55E8100C7E2CE /* Share.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				23F3910322B55E8100C7E2CE /* Base */,
+			);
+			name = Share.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

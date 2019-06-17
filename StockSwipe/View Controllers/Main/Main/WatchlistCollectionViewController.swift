@@ -417,9 +417,7 @@ extension WatchlistCollectionViewController: UICollectionViewDataSourcePrefetchi
 // MARK: - DZNEmptyDataSet delegate functions
 
 extension WatchlistCollectionViewController: DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
-    
 
-    
 //    func image(forEmptyDataSet scrollView: UIScrollView!) -> UIImage!{
 //        return UIImage(assetIdentifier: .ideaGuyImage)
 //    }

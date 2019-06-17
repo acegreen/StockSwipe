@@ -774,8 +774,8 @@
 				238F077D220B5E7F001DA69C /* Profile */,
 				238F0781220BC810001DA69C /* Search */,
 				238F0784220BC854001DA69C /* Filter */,
-				238DB6BD1D85A01F00082918 /* Feedback */,
 				2339A7BF22AC3E1A00C9FA36 /* Share */,
+				238DB6BD1D85A01F00082918 /* Feedback */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -866,7 +866,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0930;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = StockSwipe;
 				TargetAttributes = {
 					2378B5841B115FB3002ACFDC = {
@@ -1522,7 +1522,6 @@
 				ONLY_ACTIVE_ARCH = NO;
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

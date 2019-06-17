@@ -717,5 +717,5 @@
         <image name="share" width="25" height="25"/>
         <image name="x" width="16" height="16"/>
     </resources>
-    <color key="tintColor" name="green"/>
+    <color key="tintColor" name="greenDark"/>
 </document>

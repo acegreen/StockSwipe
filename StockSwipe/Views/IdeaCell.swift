@@ -110,7 +110,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             let reportIdea = UIAlertAction(title: "Report", style: .default) { action in
                 
-                SweetAlert().showAlert("Report \(self.activity.fromUser.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor(rgbValue: 0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Report \(self.activity.fromUser.username!)?", subTitle: "", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Report", buttonColor:UIColor(rgbValue: 0xD0D0D0), otherButtonTitle: "Report & Block", otherButtonColor: Constants.SSColors.greenDark) { (isOtherButton) -> Void in
                     
                     if !isOtherButton {
                         
@@ -192,7 +192,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
         }
         
         UIApplication.topViewController()?.present(threeDotsAlert, animated: true, completion: nil)
-        threeDotsAlert.view.tintColor = Constants.SSColors.green
+        threeDotsAlert.view.tintColor = Constants.SSColors.greenDark
     }
     
     private func configureMain(_ tradeIdea: TradeIdea?, user: User) {
@@ -481,7 +481,7 @@ class IdeaCell: UITableViewCell, IdeaPostDelegate, SegueHandlerType {
             
             let blockUser = UIAlertAction(title: "Block", style: .default) { action in
                 
-                SweetAlert().showAlert("Block @\(self.activity.fromUser.username!)?", subTitle: "@\(self.activity.fromUser.username!) will not be able to follow or view your ideas, and you will not see anything from @\(self.activity.fromUser.username!)", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.SSColors.green, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
+                SweetAlert().showAlert("Block @\(self.activity.fromUser.username!)?", subTitle: "@\(self.activity.fromUser.username!) will not be able to follow or view your ideas, and you will not see anything from @\(self.activity.fromUser.username!)", style: AlertStyle.warning, dismissTime: nil, buttonTitle:"Block", buttonColor:Constants.SSColors.greenDark, otherButtonTitle: nil, otherButtonColor: nil) { (isOtherButton) -> Void in
                     
                     if isOtherButton {
                         Functions.blockUser(user, postAlert: true)

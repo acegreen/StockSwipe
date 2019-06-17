@@ -73,7 +73,7 @@
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RlI-Ih-b82">
                                                         <rect key="frame" x="0.0" y="0.0" width="150" height="50"/>
-                                                        <color key="backgroundColor" name="green"/>
+                                                        <color key="backgroundColor" name="greenDark"/>
                                                         <constraints>
                                                             <constraint firstAttribute="width" constant="150" id="9QR-bX-oqG"/>
                                                             <constraint firstAttribute="height" constant="50" id="qBo-Sr-UEZ"/>
@@ -130,7 +130,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" barStyle="black" translucent="NO" largeTitles="YES" id="BJv-2g-2Ls">
                         <rect key="frame" x="0.0" y="44" width="414" height="96"/>
                         <autoresizingMask key="autoresizingMask"/>
-                        <color key="barTintColor" name="green"/>
+                        <color key="barTintColor" name="greenDark"/>
                         <textAttributes key="titleTextAttributes">
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </textAttributes>
@@ -150,8 +150,9 @@
     </scenes>
     <resources>
         <image name="x" width="16" height="16"/>
-        <namedColor name="green">
+        <namedColor name="greenDark">
             <color red="0.33725490196078434" green="0.6705882352941176" blue="0.18431372549019609" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
     </resources>
+    <color key="tintColor" name="greenDark"/>
 </document>

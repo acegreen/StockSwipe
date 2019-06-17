@@ -95,7 +95,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
         
         // Initial cards config
         self.options.delegate = self
-        self.options.longColor = Constants.SSColors.green
+        self.options.longColor = Constants.SSColors.greenDark
         self.options.onPan = { state -> Void in
             
             if self.secondCardView != nil {
@@ -376,7 +376,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
                             Functions.showPopTipOnceForKey("TAP_CARD_TIP_SHOWN", userDefaults: Constants.userDefaults,
                                                            popTipText: NSLocalizedString("Tap a card to view more details", comment: ""),
                                                            inView: self.view,
-                                                           fromFrame: self.frontCardViewFrame, direction: .up, color: Constants.SSColors.green)
+                                                           fromFrame: self.frontCardViewFrame, direction: .up, color: Constants.SSColors.greenDark)
                             
                     })
                 }

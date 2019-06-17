@@ -202,10 +202,10 @@ extension OverviewViewController: iCarouselDataSource, iCarouselDelegate {
         guard let tickerAtIndex = tickers.get(index) else { return itemView }
         itemView.nameLabel.text = tickerAtIndex.symbol
         itemView.priceLabel.text = tickerAtIndex.priceFormatted
-        //itemView.priceLabel.textColor = tickerAtIndex.changeInDollar < 0 ? Constants.stockSwipeRedColor : Constants.SSColors.green
+        //itemView.priceLabel.textColor = tickerAtIndex.changeInDollar < 0 ? Constants.stockSwipeRedColor : Constants.SSColors.greenDark
         
         itemView.priceChangeLabel.text = tickerAtIndex.changeFormatted
-        itemView.priceChangeLabel.textColor = tickerAtIndex.changeInDollar < 0 ? Constants.SSColors.red : Constants.SSColors.green
+        itemView.priceChangeLabel.textColor = tickerAtIndex.changeInDollar < 0 ? Constants.SSColors.redDark : Constants.SSColors.greenDark
         
         return itemView
     }

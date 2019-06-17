@@ -26,15 +26,15 @@ class FollowButton: UIButton {
             case .notFollowing:
                 isEnabled = true
                 backgroundColor = UIColor.white
-                borderColor = Constants.SSColors.green
-                tintColor = Constants.SSColors.green
-                setTitleColor(Constants.SSColors.green, for: UIControl.State())
+                borderColor = Constants.SSColors.greenDark
+                tintColor = Constants.SSColors.greenDark
+                setTitleColor(Constants.SSColors.greenDark, for: UIControl.State())
                 setImage(UIImage(named: "user_add"), for: UIControl.State())
                 setTitle("Follow", for: UIControl.State())
             case .following:
                 isEnabled = true
-                backgroundColor = Constants.SSColors.green
-                borderColor = Constants.SSColors.green
+                backgroundColor = Constants.SSColors.greenDark
+                borderColor = Constants.SSColors.greenDark
                 tintColor = UIColor.white
                 setTitleColor(UIColor.white, for: UIControl.State())
                 setImage(UIImage(named: "user_checked"), for: UIControl.State())

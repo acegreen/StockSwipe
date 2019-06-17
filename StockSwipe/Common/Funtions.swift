@@ -572,7 +572,7 @@ class Functions {
         
         DispatchQueue.main.async {
             
-            SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade?", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle: "SHORT", buttonColor: UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.SSColors.green) { (isOtherButton) -> Void in
+            SweetAlert().showAlert("Add To Watchlist?", subTitle: "Do you like this symbol as a long or short trade?", style: AlertStyle.customImag(imageFile: "add_watchlist"), dismissTime: nil, buttonTitle: "SHORT", buttonColor: UIColor.red , otherButtonTitle: "LONG", otherButtonColor: Constants.SSColors.greenDark) { (isOtherButton) -> Void in
                 
                 guard let topVC = UIApplication.topViewController(), Functions.isUserLoggedIn(presenting: topVC) else { return }
                 
@@ -606,13 +606,13 @@ class Functions {
             internal func color(for style: BannerStyle) -> UIColor {
                 switch style {
                 case .danger:
-                    return Constants.SSColors.red
+                    return Constants.SSColors.redDark
                 case .info:
                     return Constants.SSColors.grey
                 case .none:
                     return UIColor.clear
                 case .success:
-                    return Constants.SSColors.green
+                    return Constants.SSColors.greenDark
                 case .warning:
                     return Constants.SSColors.gold
                 }
@@ -743,9 +743,9 @@ class Functions {
         svc.modalTransitionStyle = .coverVertical
         svc.modalPresentationStyle = .overFullScreen
         if #available(iOS 10.0, *) {
-            svc.preferredControlTintColor = Constants.SSColors.green
+            svc.preferredControlTintColor = Constants.SSColors.greenDark
         } else {
-            svc.view.tintColor = Constants.SSColors.green
+            svc.view.tintColor = Constants.SSColors.greenDark
         }
         
         UIApplication.topViewController()?.present(svc, animated: true, completion: nil)

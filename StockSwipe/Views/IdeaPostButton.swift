@@ -14,7 +14,7 @@ class IdeaPostButton: UIButton {
     override var isEnabled: Bool {
         didSet {
             if isEnabled {
-                backgroundColor = Constants.SSColors.green
+                backgroundColor = Constants.SSColors.greenDark
             } else {
                 backgroundColor = UIColor.white
             }

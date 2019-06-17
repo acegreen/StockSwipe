@@ -20,7 +20,7 @@ class SearchTableViewController: UITableViewController {
         controller.definesPresentationContext = true
         controller.dimsBackgroundDuringPresentation = false
         controller.searchBar.searchBarStyle = .minimal
-        controller.searchBar.tintColor = Constants.SSColors.green
+        controller.searchBar.tintColor = Constants.SSColors.greenDark
         controller.searchBar.sizeToFit()
         return controller
     }()

@@ -75,9 +75,9 @@ final class CardView: UIView, NibLoadable {
             self.overlayLabel.transform = CGAffineTransform.identity.rotated(by: 15.toRadians())
             self.overlayLabel.isHidden = false
         case .LONG:
-            self.overlayLabel.layer.borderColor = Constants.SSColors.green.cgColor
+            self.overlayLabel.layer.borderColor = Constants.SSColors.greenDark.cgColor
             self.overlayLabel.text = "\(Constants.UserChoices.LONG.rawValue)"
-            self.overlayLabel.textColor = Constants.SSColors.green
+            self.overlayLabel.textColor = Constants.SSColors.greenDark
             self.overlayLabel.transform = CGAffineTransform.identity.rotated(by: -15.toRadians())
             self.overlayLabel.isHidden = false
         case .SKIP:

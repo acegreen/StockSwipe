@@ -591,7 +591,7 @@ extension Tintable where Self: UIView {
     
     func tint(_ bool: Bool) {
         if bool {
-            self.tintColor = Constants.SSColors.green
+            self.tintColor = Constants.SSColors.greenDark
         } else {
             self.tintColor = UIColor.lightGray
         }

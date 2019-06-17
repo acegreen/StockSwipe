@@ -96,13 +96,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Setup General Appearance
 //        UITabBar.appearance().barTintColor = UIColor.white
-//        UITabBar.appearance().tintColor = Constants.SSColors.green
+//        UITabBar.appearance().tintColor = Constants.SSColors.greenDark
         self.window?.backgroundColor = UIColor.white
         
         // Adding paging indicator
         let pageControl = UIPageControl.appearance()
         pageControl.pageIndicatorTintColor = Constants.SSColors.lightGrey
-        pageControl.currentPageIndicatorTintColor = Constants.SSColors.green
+        pageControl.currentPageIndicatorTintColor = Constants.SSColors.greenDark
         pageControl.backgroundColor = UIColor.white
         
         // Track user

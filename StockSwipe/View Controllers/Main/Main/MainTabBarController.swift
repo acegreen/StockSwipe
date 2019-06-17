@@ -60,7 +60,7 @@ class MainTabBarController: UITabBarController, PushNotificationDelegate, Splash
         //Twitter style splash
         let stockswipeLaunchScreenLogoSize = UIImage(named: "stockswipe_logo")!.size
         let splashIcon: SKSplashIcon = SKSplashIcon(image: UIImage(named: "stockswipe_logo"), initialSize: stockswipeLaunchScreenLogoSize, animationType: .bounce)
-        let backgroundColor: UIColor = Constants.SSColors.green
+        let backgroundColor: UIColor = Constants.SSColors.greenDark
         self.splashView = SKSplashView(splashIcon: splashIcon, backgroundColor: backgroundColor, animationType: .none)
         //self.splashView.delegate = self
         self.splashView.tintColor = UIColor.white

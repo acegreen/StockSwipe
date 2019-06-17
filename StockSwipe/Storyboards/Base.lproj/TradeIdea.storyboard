@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Xji-gg-Vpm">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Xji-gg-Vpm">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -306,7 +306,6 @@
                                 </attributes>
                             </fragment>
                         </attributedString>
-                        <color key="tintColor" red="0.33725490200000002" green="0.6705882353" blue="0.1843137255" alpha="1" colorSpace="calibratedRGB"/>
                         <connections>
                             <action selector="refreshControlAction:" destination="7sr-cl-tCf" eventType="valueChanged" id="MCE-tH-gsl"/>
                         </connections>
@@ -970,5 +969,5 @@
         <image name="write" width="25" height="25"/>
         <image name="x" width="16" height="16"/>
     </resources>
-    <color key="tintColor" name="green"/>
+    <color key="tintColor" name="greenDark"/>
 </document>

@@ -67,40 +67,15 @@ class QueryHelper {
             }
         }
     }
-    
+
     struct EODHistoricalResult: Codable {
         let date: String?
-        let open: String?
-        let high: String?
-        let low: String?
-        let close: String?
-        let adjustedClose: String?
-        let volume: String?
-        
-        var openValue: Double? {
-            guard let open = open else { return nil }
-            return Double(open)
-        }
-        var highValue: Double? {
-            guard let high = high else { return nil }
-            return Double(high)
-        }
-        var lowValue: Double? {
-            guard let low = low else { return nil }
-            return Double(low)
-        }
-        var closeValue: Double? {
-            guard let close = close else { return nil }
-            return Double(close)
-        }
-        var adjustedCloseValue: Double? {
-            guard let adjustedClose = adjustedClose else { return nil }
-            return Double(adjustedClose)
-        }
-        var volumeValue: Int? {
-            guard let volume = volume else { return nil }
-            return Int(volume)
-        }
+        let open: Double?
+        let high: Double?
+        let low: Double?
+        let close: Double?
+        let adjustedClose: Double?
+        let volume: Int?
         
         enum CodingKeys: String, CodingKey {
             case date
@@ -244,12 +219,12 @@ class QueryHelper {
         
         struct Technicals: Codable {
             let beta: String?
-            let fiftyTwoWeekLow: String?
-            let fiftyTwoWeekHigh: String?
+            let fiftyTwoWeekLow: Double?
+            let fiftyTwoWeekHigh: Double?
             let fiftyDayMA: String?
             let twoHundredDayMA: String?
-            let sharesShort: String?
-            let sharesShortPriorMonth: String?
+            let sharesShort: Int?
+            let sharesShortPriorMonth: Int?
             let shortRatio: String?
             let shortPercent: String?
             
@@ -267,8 +242,8 @@ class QueryHelper {
         }
         
         let general: General
-        let highlights: Highlights
-        let valuation: Valuation
+        let highlights: Highlights?
+        let valuation: Valuation?
         let technicals: Technicals
         
         enum CodingKeys: String, CodingKey {
@@ -289,7 +264,27 @@ class QueryHelper {
         static func decodeFrom(data: Data) throws -> EODFundamentalsResult {
             do {
                 return try JSONDecoder().decode(EODFundamentalsResult.self, from: data)
+            }  catch let DecodingError.dataCorrupted(context) {
+                print(context)
+                throw QueryError.errorParsingJSON
+
+            } catch let DecodingError.keyNotFound(key, context) {
+                print("Key '\(key)' not found:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+                throw QueryError.errorParsingJSON
+
+            } catch let DecodingError.valueNotFound(value, context) {
+                print("Value '\(value)' not found:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+                throw QueryError.errorParsingJSON
+
+            } catch let DecodingError.typeMismatch(type, context)  {
+                print("Type '\(type)' mismatch:", context.debugDescription)
+                print("codingPath:", context.codingPath)
+                throw QueryError.errorParsingJSON
+
             } catch {
+                print("error: ", error)
                 throw QueryError.errorParsingJSON
             }
         }
@@ -451,7 +446,7 @@ class QueryHelper {
             }
             
             let task = session.dataTask(with: queryURL, completionHandler: { (eodData, response, error) -> Void in
-                
+
                 guard error == nil else { return completionHandler({ throw QueryError.errorQueryingForData(error: error!) }) }
                 guard let eodData = eodData else {
                     return completionHandler({ throw QueryError.queryDataEmpty })
@@ -486,7 +481,8 @@ class QueryHelper {
             }
             
             let task = session.dataTask(with: queryURL, completionHandler: { (eodData, response, error) -> Void in
-                
+
+                print("AG", try? JSON(data: eodData!))
                 guard error == nil else { return completionHandler({ throw QueryError.errorQueryingForData(error: error!) }) }
                 guard let eodData = eodData else {
                     return completionHandler({ throw QueryError.queryDataEmpty })

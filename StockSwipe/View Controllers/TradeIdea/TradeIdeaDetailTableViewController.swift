@@ -30,7 +30,7 @@ class TradeIdeaDetailTableViewController: UITableViewController, CellType, Segue
     private var replyTradeIdeasLastRefreshDate: Date!
     private var totalReplyActivityCount = 0
     
-    private let reachability = Reachability()
+    private let reachability = try? Reachability()
     
     @IBOutlet var footerActivityIndicator: UIActivityIndicatorView!
     

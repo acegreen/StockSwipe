@@ -91,7 +91,7 @@ class LoginViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
             viewController.present(self.logInViewController, animated: true, completion: nil)
             
         } else {
-            Functions.showNotificationBanner(title: "No Action!", subtitle: "You are already Logged in", style: .none)
+            Functions.showNotificationBanner(title: "No Action!", subtitle: "You are already Logged in", style: .info)
             viewController.dismiss(animated: false, completion: nil)
         }
     }
@@ -224,10 +224,9 @@ class LoginViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
             
             if user.isNew {
                 
-                if let accessToken = FBSDKAccessToken.current() {
+                if let accessToken = AccessToken.current {
                     
-                    guard let req = FBSDKGraphRequest(graphPath: "me", parameters: ["fields":"email,id,name,first_name,last_name,picture,verified"], tokenString: accessToken.tokenString, version: nil, httpMethod: "GET") else { return }
-                    
+                    let req = GraphRequest(graphPath: "me", parameters: ["fields":"email,id,name,first_name,last_name,picture,verified"], tokenString: accessToken.tokenString, version: nil, httpMethod: HTTPMethod.get)
                     req.start(completionHandler: { (connection, object, error) in
                         
                         do {
@@ -239,8 +238,6 @@ class LoginViewController: UIViewController, PFLogInViewControllerDelegate, PFSi
                                 
                             guard object != nil else { return }
                             let result = try JSON(object)
-                            
-                            print(result)
                             
                             if let facebookNameFromName = result["name"].string {
                                 

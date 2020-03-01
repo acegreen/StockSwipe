@@ -57,7 +57,8 @@ final class CardView: UIView, NibLoadable {
 
         }
         
-        if let currencySymbol = card.eodFundamentalsData?.general.currencySymbol, let adjustedCloseString = card.eodHistoricalData?.last?.adjustedClose, let adjustedCloseRounded = Double(adjustedCloseString)?.roundTo(2) {
+        if let currencySymbol = card.eodFundamentalsData?.general.currencySymbol, let adjustedCloseString = card.eodHistoricalData?.last?.adjustedClose {
+            let adjustedCloseRounded = Double(adjustedCloseString).roundTo(2) 
             self.currentPriceLabel.text = currencySymbol + String(adjustedCloseRounded)
         } else {
             self.currentPriceLabel.text = "--"
@@ -95,7 +96,7 @@ final class CardView: UIView, NibLoadable {
         var xValues = [String]()
         var yValues = [Double]()
         for (key, value) in eodData.enumerated() {
-            if let adjustedClose = value.adjustedCloseValue {
+            if let adjustedClose = value.adjustedClose {
                 xValues.append(String(key))
                 yValues.append(adjustedClose)
             }
@@ -109,13 +110,13 @@ final class CardView: UIView, NibLoadable {
         guard let eodFundamentalsData = card.eodFundamentalsData else { return }
         
         self.highlightOneTitleLabel.text = "PE"
-        self.highlightOneSubtitleLabel.text = eodFundamentalsData.highlights.peRatio != nil ? String(Double(eodFundamentalsData.highlights.peRatio!)!.roundTo(2)) : "--"
+        self.highlightOneSubtitleLabel.text = String(Double(eodFundamentalsData.highlights?.peRatio ?? "--")?.roundTo(2) ?? 0)
         
         self.highlightTwoTitleLabel.text = "EPS"
-        self.highlightTwoSubtitleLabel.text = eodFundamentalsData.highlights.eps != nil ? String(Double(eodFundamentalsData.highlights.eps!)!.roundTo(2)) : "--"
+        self.highlightTwoSubtitleLabel.text =  String(Double(eodFundamentalsData.highlights?.eps ?? "--")?.roundTo(2) ?? 0)
         
         self.highlightThreeTitleLabel.text = "Short Ratio"
-        self.highlightThreeSubtitleLabel.text = eodFundamentalsData.technicals.shortRatio != nil ? String(Double(eodFundamentalsData.technicals.shortRatio!)!.roundTo(2)) : "--"
+        self.highlightThreeSubtitleLabel.text = String(Double(eodFundamentalsData.technicals.shortRatio ?? "--")?.roundTo(2) ?? 0)
     }
     
     private func setChart(_ dataPoints: [String], values: [Double]) {

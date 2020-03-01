@@ -23,7 +23,7 @@ import NotificationBannerSwift
 class Functions {
     
     class func isConnectedToNetwork() -> Bool {
-        if Reachability()?.isReachable == true {
+        if try! Reachability().isReachable == true {
             return true
         } else {
             showNotificationBanner(title: "No Internet Connection", subtitle: "Make sure your device is connected to the internet", style: .warning)
@@ -609,12 +609,12 @@ class Functions {
                     return Constants.SSColors.redDark
                 case .info:
                     return Constants.SSColors.grey
-                case .none:
-                    return UIColor.clear
                 case .success:
                     return Constants.SSColors.greenDark
                 case .warning:
                     return Constants.SSColors.gold
+                case .customView:
+                    return Constants.SSColors.grey
                 }
             }
             

@@ -56,7 +56,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Initialize Facebook
         PFFacebookUtils.initializeFacebook(applicationLaunchOptions: launchOptions)
         PFFacebookUtils.facebookLoginManager().loginBehavior = .browser
-        FBSDKApplicationDelegate.sharedInstance().application(application, didFinishLaunchingWithOptions: launchOptions)
+        ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         // Intialize Firebase
         FirebaseApp.configure()
@@ -137,7 +137,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         
-        let branchHandled = Branch.getInstance()?.application(application,
+        let branchHandled = Branch.getInstance().application(application,
                                                               open: url,
                                                               options: nil) ?? false
         
@@ -177,7 +177,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 
                 return true
             case "fb863699560384982"?:
-                return FBSDKApplicationDelegate.sharedInstance().application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
+                return ApplicationDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
             default:
                 return false
             }
@@ -248,7 +248,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         
         // Track Facebook events
-        FBSDKAppEvents.activateApp()
+        AppEvents.activateApp()
         
         // Clear Parse Push badges
         if application.isRegisteredForRemoteNotifications, let currentInstallation = PFInstallation.current() {

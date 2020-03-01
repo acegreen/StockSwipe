@@ -69,7 +69,7 @@ class CardsViewController: UIViewController, MDCSwipeToChooseDelegate, SegueHand
     let options = MDCSwipeToChooseViewOptions()
     private var transition: CardTransition?
     
-    let reachability = Reachability()
+    let reachability = try? Reachability()
     
     lazy var halo: NVActivityIndicatorView! = {
         let frame = CGRect(x: self.view.bounds.midX - self.view.bounds.height / 4 , y: self.view.bounds.midY - self.view.bounds.height / 4, width: self.view.bounds.height / 2, height: self.view.bounds.height / 2)

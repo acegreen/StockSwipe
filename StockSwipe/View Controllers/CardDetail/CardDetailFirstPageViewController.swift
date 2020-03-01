@@ -57,21 +57,21 @@ class CardDetailFirstPageViewController: UIViewController {
     func loadInfo() {
         guard let eodFundamentalsData = card.eodFundamentalsData else { return }
         
-        self.PELabel.text = eodFundamentalsData.highlights.peRatio ?? "--"
-        self.marketCapLabel.text = (eodFundamentalsData.highlights.marketCapitalization != nil) ? eodFundamentalsData.highlights.marketCapitalization?.suffixNumber() : "--"
-        self.EPSLabel.text = eodFundamentalsData.highlights.eps ?? "--"
-        self.bookValueLabel.text = eodFundamentalsData.highlights.bookValue ?? "--"
+        self.PELabel.text = eodFundamentalsData.highlights?.peRatio ?? "--"
+        self.marketCapLabel.text = (eodFundamentalsData.highlights?.marketCapitalization != nil) ? eodFundamentalsData.highlights?.marketCapitalization?.suffixNumber() : "--"
+        self.EPSLabel.text = eodFundamentalsData.highlights?.eps ?? "--"
+        self.bookValueLabel.text = eodFundamentalsData.highlights?.bookValue ?? "--"
 
-        if let dividendYield = eodFundamentalsData.highlights.dividendYield, let dividendDouble = Double(dividendYield) {
+        if let dividendYield = eodFundamentalsData.highlights?.dividendYield, let dividendDouble = Double(dividendYield) {
             self.divYieldLabel.text = String(dividendDouble * 100) + "%"
         }
 
-        self.earningsDateLabel.text = eodFundamentalsData.highlights.mostRecentQuarter ?? "--"
-        self.EBITDALabel.text = eodFundamentalsData.highlights.EBITDA != nil ? String(eodFundamentalsData.highlights.EBITDA!.suffixNumber()) : "--"
-        self.wallstreetTargetLabel.text = eodFundamentalsData.highlights.wallStreetTargetPrice ?? "--"
+        self.earningsDateLabel.text = eodFundamentalsData.highlights?.mostRecentQuarter ?? "--"
+        self.EBITDALabel.text = eodFundamentalsData.highlights?.EBITDA != nil ? String(eodFundamentalsData.highlights?.EBITDA?.suffixNumber() ?? "0") : "--"
+        self.wallstreetTargetLabel.text = eodFundamentalsData.highlights?.wallStreetTargetPrice ?? "--"
         
-        let fifyTwoWeekLow = eodFundamentalsData.technicals.fiftyTwoWeekLow ?? ""
-        let fifyTwoWeekHigh = eodFundamentalsData.technicals.fiftyTwoWeekHigh ?? ""
+        let fifyTwoWeekLow = String(eodFundamentalsData.technicals.fiftyTwoWeekLow ?? 0)
+        let fifyTwoWeekHigh = String(eodFundamentalsData.technicals.fiftyTwoWeekHigh ?? 0)
         self.fiftyTwoWeekRange.text = fifyTwoWeekLow + " - " + fifyTwoWeekHigh
         self.fiftyMALabel.text = eodFundamentalsData.technicals.fiftyDayMA ?? "--"
         self.twoHundredMALabel.text = eodFundamentalsData.technicals.twoHundredDayMA ?? "--"

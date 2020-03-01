@@ -30,7 +30,7 @@ class TradeIdeasTableViewController: UITableViewController, CellType, SegueHandl
     private var tradeIdeasLastRefreshDate: Date!
     private var totalActivityCount = 0
     
-    private let reachability = Reachability()
+    private let reachability = try? Reachability()
     
     @IBAction func xButtonPressed(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)

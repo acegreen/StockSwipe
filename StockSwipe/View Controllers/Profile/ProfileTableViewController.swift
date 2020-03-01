@@ -57,7 +57,7 @@ class ProfileTableViewController: UITableViewController, CellType, SubSegmentedC
         
     var selectedSegmentIndex: ProfileContainerController.SegmentIndex = ProfileContainerController.SegmentIndex(rawValue: 0)!
     
-    let reachability = Reachability()
+    let reachability = try? Reachability()
     
     @IBOutlet var headerView: UIView!
     @IBOutlet var avatarImage: UIImageView!

@@ -43,7 +43,7 @@ class OverviewFirstPageViewController: UIViewController, SegueHandlerType {
     var queryTimer: Timer?
     let QUERY_INTERVAL: Double = 60
 
-    let reachability = Reachability()
+    let reachability = try? Reachability()
     
     @IBOutlet var cloudView: UIView!
     

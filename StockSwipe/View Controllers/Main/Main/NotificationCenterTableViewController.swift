@@ -28,7 +28,7 @@ class NotificationCenterTableViewController: UITableViewController, CellType, Se
     private var notificationsLastRefreshDate: Date?
     private var totalNotificationActivityCount = 0
     
-    private let reachability = Reachability()
+    private let reachability = try? Reachability()
     
     @IBAction func xButtonPressed(_ sender: AnyObject) {
         self.dismiss(animated: true, completion: nil)

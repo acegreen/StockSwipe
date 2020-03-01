@@ -40,7 +40,7 @@ class WatchlistCollectionViewController: UIViewController, UICollectionViewDeleg
     
     private var transition: CardTransition?
     
-    let reachability = Reachability()
+    let reachability = try? Reachability()
     
     @IBOutlet var navigationBar: UINavigationBar!
     

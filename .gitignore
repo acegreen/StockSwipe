@@ -28,6 +28,9 @@ xcuserdata/
 *.dSYM.zip
 *.dSYM
 
+// Specific Files
+Constants.swift
+
 ## Playgrounds
 timeline.xctimeline
 playground.xcworkspace

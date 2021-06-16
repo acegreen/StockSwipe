@@ -1,5 +1,9 @@
 ![alt tag](https://user-images.githubusercontent.com/10794609/50870265-4d4d4b00-1385-11e9-8bff-b0698f72c488.png)
 
+# NOTICE # 
+
+This repo will not compile as its outdated and missing sensitive files. 
+
 # StockSwipe #
 
 Don't find a gold digger, find a gold miner. And instead of begging for a date, find a 10 bagger trade!!
